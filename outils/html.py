@@ -405,15 +405,58 @@ def lire_langue(sous_dossier):
     return blocs
 
 
+# LES INTERTITRES NE S'APPARIENT PAS PAR LEUR CLE. C'est deja la regle
+# du releve, et outils/controles.py la dit : « leur numerotation (tit-1,
+# tit-2...) est propre a chaque edition ». L'ido subdivise plus fin que
+# le francais -- sept intertitres au tableau 2 contre trois -- de sorte
+# que t02-tit-2 ne designe pas la meme chose des deux cotes. Le rendu,
+# lui, appariait tout par la cle : « La Torso. » se retrouvait en face
+# de « II. La Gymnastique. », et les deux colonnes annoncaient des
+# sections differentes. Dix-sept intertitres etaient ainsi mal apparies,
+# sur onze tableaux.
+#
+# CE QUI LES APPARIE, C'EST LA PLACE. Un intertitre ouvre un alinea, et
+# l'alinea, lui, porte la meme cle dans les deux editions -- c'est la
+# le pivot du releve. On groupe donc les intertitres par l'alinea qu'ils
+# precedent, et l'on apparie DANS L'ORDRE a l'interieur du groupe : la
+# ou une edition en met trois et l'autre deux, les deux premiers se
+# repondent et le troisieme reste seul. Ce qu'il doit rester.
+def apparier_subs(io_blocs, autre_blocs):
+    """{cle d'intertitre ido: cle d'intertitre de l'autre edition}"""
+    def groupes(blocs):
+        g, courant = {}, []
+        for b in blocs:
+            if b["tipo"] == "sub":
+                courant.append(b["cle"])
+            elif b["tipo"] == "p" and courant:
+                # Les cles d'alinea portent leur tableau : deux groupes
+                # de deux tableaux ne peuvent pas se confondre.
+                g[b["cle"]] = courant
+                courant = []
+        return g
+
+    ici, la = groupes(io_blocs), groupes(autre_blocs)
+    lien = {}
+    for alinea, subs_io in ici.items():
+        subs_la = la.get(alinea, [])
+        for i, cle in enumerate(subs_io):
+            if i < len(subs_la):
+                lien[cle] = subs_la[i]
+    return lien
+
+
 def paro():
     io = lire_langue("io")
-    autres = {}
+    autres, liens = {}, {}
     for lg in LANGUES:
         sd = DOSSIER.get(lg["kodo"])
         if sd and (RACINE / "texto" / sd).is_dir():
-            autres[lg["kodo"]] = {b["cle"]: b for b in lire_langue(sd)}
+            bl = lire_langue(sd)
+            autres[lg["kodo"]] = {b["cle"]: b for b in bl}
+            liens[lg["kodo"]] = apparier_subs(io, bl)
         else:
             autres[lg["kodo"]] = {}
+            liens[lg["kodo"]] = {}
 
     # L'ORDRE EST CELUI DE L'IDO. C'est le livret ido qui est l'objet du
     # site ; la colonne de droite le suit.
@@ -427,7 +470,12 @@ def paro():
              "folio": b["folio"], "folio2": b.get("folio2", ""),
              "feuillet": b["feuillet"], "tra": {}}
         for lg in LANGUES:
-            o = autres[lg["kodo"]].get(b["cle"])
+            # L'intertitre se cherche par sa place, tout le reste par sa
+            # cle. Sans vis-a-vis, la case de droite reste vide : c'est
+            # une subdivision que l'autre edition n'a pas.
+            cible = (liens[lg["kodo"]].get(b["cle"]) if b["tipo"] == "sub"
+                     else b["cle"])
+            o = autres[lg["kodo"]].get(cible) if cible else None
             if o:
                 r["tra"][lg["kodo"]] = {"t": o["html"], "f": o["folio"],
                                         "f2": o.get("folio2", ""),
@@ -525,12 +573,19 @@ def lier_notes(rangi):
         # renvoie a la premiere note, le second a la seconde, et c'est
         # ainsi que le lecteur de 1926 les lisait. On compte donc, pour
         # chaque note, son rang parmi celles de sa page.
+        # LE RANG SE COMPTE SUR LA PAGE ET LE MARQUEUR, rien de plus.
+        # « page_de » sert a lire la page d'un RANG de la table, non
+        # d'une note : pour la colonne de droite il va chercher
+        # r["tra"], que les notes n'ont pas. Il figurait ici en tete de
+        # « cle_page », dont seuls les deux derniers membres sont lus --
+        # un appel mort, mais qui levait KeyError des qu'une note de
+        # traduction se presentait. Aucune ne se presentait jamais,
+        # faute de cle appariee ; la premiere l'a fait tomber.
         rang = {}
         for n in notes:
-            cle_page = (page_de(n) if callable(page_de) else None,
-                        n.get("feuillet"), n.get("apelo"))
-            rang[id(n)] = rang.get(cle_page[1:], 0)
-            rang[cle_page[1:]] = rang.get(cle_page[1:], 0) + 1
+            cle_page = (n.get("feuillet"), n.get("apelo"))
+            rang[id(n)] = rang.get(cle_page, 0)
+            rang[cle_page] = rang.get(cle_page, 0) + 1
         for n in notes:
             marque = (n.get("apelo") or "").strip()
             if not marque:
