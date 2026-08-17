@@ -960,6 +960,27 @@ def joindre(morceaux):
     return out
 
 
+def libelle_bloc(brut):
+    """Le texte d'un bloc pour le volet, recolle comme il l'est a l'ecran."""
+    # Deux lignes de MEME CORPS sont un seul titre coupe par la
+    # composition, et se rejoignent avec le liant -- comme dans la page.
+    # Un changement de corps, ou un marqueur de scene, separe deux choses
+    # distinctes : « Unesma ceno. » et son titre gardent leur espace.
+    paires = [(korpo_de(m.group(1)), net_tdm(m.group(2)))
+              for m in LIGNE_AP.finditer(brut)]
+    paires = [(c, t) for c, t in paires if t]
+    if not paires:
+        return net_tdm(brut)
+    out = paires[0][1]
+    for (corps, texte), (corps_av, texte_av) in zip(paires[1:], paires):
+        if corps == corps_av and not CENO.search(texte_av) \
+                and not CENO.search(texte):
+            out = joindre([out, texte])
+        else:
+            out = f"{out} {texte}"
+    return out
+
+
 def sen_subtitro(t):
     """Le sous-titre entre parentheses ne va pas dans le volet."""
     # Le fac-simile precise certains titres par une parenthese --
@@ -1155,7 +1176,7 @@ def rendre(rangi):
             # ici et « Unesma ceno. La Mariaj-festino. » la, pour la meme
             # chose. Quand le marqueur est seul dans son bloc, on lui
             # rattache le bloc suivant, qui porte son titre.
-            libelle = net(brut)
+            libelle = libelle_bloc(brut)
             if all(CENO.search(x) for x in nues):
                 for q in rangi[idx + 1:]:
                     if q["tipo"] == "p":
@@ -1164,14 +1185,14 @@ def rendre(rangi):
                         continue
                     suite = texte_de(q)
                     if not est_ceno(suite):
-                        libelle = f"{libelle} {net(suite)}"
+                        libelle = f"{libelle} {libelle_bloc(suite)}"
                         fusionnes.add(q["cle"])
                     break
             tdm.append((r["cle"], libelle, "sc"))
             continue
         if r["cle"] in empruntes:
             continue
-        tdm.append((r["cle"], net(brut), "st"))
+        tdm.append((r["cle"], libelle_bloc(brut), "st"))
 
     lignes = []
     apres_ceno = False
