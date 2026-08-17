@@ -614,6 +614,41 @@ def rang_pdf(langue, feuillet):
     return _RANGS[sd].get(str(feuillet), 1)
 
 
+# CE QUI PRECEDE UN CHIFFRE ENTRE PARENTHESES EN DIT LA NATURE. Le
+# liminaire francais pose lui-meme la regle : « Nous avons imprime en
+# caracteres gras les substantifs qui se trouvent dans le vocabulaire
+# des Tableaux EN LES FAISANT SUIVRE DE LEUR NUMERO. » Un numero
+# d'objet suit donc toujours un substantif en gras -- « la
+# \VUgras{fumee}\textsuperscript{(1)} » -- tandis que l'appel de note
+# suit du texte ordinaire : « qui nous fut servi \textsuperscript{(1)} ».
+# L'exposant, lui, ne tranche rien : les deux volumes composent tantot
+# l'un tantot l'autre en exposant.
+AVANT_OBJET = re.compile(r'</b>\s*(?:<sup>\s*)?$')
+
+
+def appels_note(texte, marque):
+    """Positions des appels de note « (marque) » dans un bloc.
+
+    Ecarte les renvois au tableau mural, reconnus a leur substantif en
+    gras. Rend des couples (debut, fin) sur le texte donne.
+    """
+    if not texte:
+        return []
+    # UNE ASTERISQUE N'EST JAMAIS UN NUMERO D'OBJET : quand la note est
+    # marquee « (*) », rien n'est a departager, et le gras ne prouve
+    # rien. Le tableau 1 ido pose justement son appel apres un
+    # substantif en gras — « esas \VUgras{Henrikus} (*) » — parce que la
+    # note porte sur ce mot-la. La regle du gras ne vaut que pour les
+    # marques chiffrees, les seules que les deux emplois partagent.
+    chiffree = marque.isdigit()
+    out = []
+    for m in re.finditer(re.escape(f"({marque})"), texte):
+        if chiffree and AVANT_OBJET.search(texte[:m.start()]):
+            continue
+        out.append((m.start(), m.end()))
+    return out
+
+
 def ancro(cle):
     return cle
 
@@ -668,7 +703,13 @@ def lier_notes(rangi):
                 rapport["echecs"].append(
                     (langue, n["cle"], "?", "marqueur illisible en tete"))
                 continue
-            cible = re.escape(f"({marque})")
+            # UN « (1) » DE NOTE ET UN « (1) » D'OBJET S'ECRIVENT
+            # PAREIL. Rochelle marque ses notes du meme signe que ses
+            # numeros d'objets, qui vont jusqu'a 150 par planche. Au
+            # tableau 13, l'alinea « au deuxieme etage (1), ou j'ai tres
+            # bien dormi (1) » porte les deux, et on liait le premier :
+            # le bouton s'ouvrait sur l'etage. C'est le gras qui les
+            # separe (voir appels_note).
             # L'APPEL PEUT ETRE SUR LA PAGE D'AVANT. Un alinea a cheval
             # commence au verso et sa note tombe au bas du recto : le
             # releve fusionne les deux moities en un seul bloc, qui
@@ -693,7 +734,7 @@ def lier_notes(rangi):
                          if r["tipo"] in ("p", "sub", "apar")
                          and page_de(r) in pages
                          and lire_texte(r) is not None]
-                total = sum(len(re.findall(cible, lire_texte(r)))
+                total = sum(len(appels_note(lire_texte(r), marque))
                             for r in cands)
                 if total:
                     break
@@ -707,27 +748,28 @@ def lier_notes(rangi):
             vu = 0
             for r in cands:
                 t = lire_texte(r)
-                ici = len(re.findall(cible, t))
-                if vu + ici <= vise:
-                    vu += ici
+                places = appels_note(t, marque)
+                if vu + len(places) <= vise:
+                    vu += len(places)
                     continue
                 # L'appel cherche est le (vise - vu)-ieme de ce bloc.
-                saut = vise - vu
-                if True:
-                    compteur = [0]
-
-                    def poser(m, saut=saut):
-                        compteur[0] += 1
-                        if compteur[0] - 1 != saut:
-                            return m.group(0)
-                        return (f'<button class="apel" '
-                                f'data-noto="{langue}-{n["cle"]}" '
-                                f'aria-expanded="false">({marque})</button>')
-                    ecrire_texte(r, re.sub(cible, poser, t))
-                    n["porte"] = r["cle"]
-                    n["langue"] = langue
-                    rapport["lies"] += 1
-                    break
+                a, b = places[vise - vu]
+                # UN SEUL SIGNE POUR TOUTES LES NOTES. Guignon marque
+                # les siennes « (*) », Rochelle « (1) ». Garder a chacun
+                # sa marque, c'etait donner deux signes differents a la
+                # meme note en regard, et surtout reprendre en francais
+                # le signe des renvois au tableau mural. La page de
+                # lecture marque donc toutes les notes « (*) », le signe
+                # que l'ido employait deja partout ; les PDF, eux,
+                # gardent ce que chaque atelier a compose.
+                bouton = (f'<button class="apel" '
+                          f'data-noto="{langue}-{n["cle"]}" '
+                          f'aria-expanded="false">(*)</button>')
+                ecrire_texte(r, t[:a] + bouton + t[b:])
+                n["porte"] = r["cle"]
+                n["langue"] = langue
+                rapport["lies"] += 1
+                break
 
     # Colonne de gauche.
     relier([r for r in rangi if r["tipo"] == "noto"],
@@ -750,7 +792,40 @@ def lier_notes(rangi):
                lambda r, v, k=k: r["tra"][k].__setitem__("t", v),
                lambda r, k=k: (r["tra"].get(k) or {}).get("fe"), k)
 
+    uniformiser_notes(rangi)
     return rapport
+
+
+TETE_NOTE = re.compile(r'^((?:<[^>]+>)*)\((?:\*+|\d+)\)')
+
+
+def uniformiser_notes(rangi):
+    """Marque « (*) » la note elle-meme, comme son appel.
+
+    L'appel est deja rendu « (*) » pour tout le monde ; il fallait que
+    la note ouvre sur le meme signe, sans quoi le bouton « (*) » du
+    tableau 13 depliait une note commencant par « (1) ». On ne touche
+    qu'a la marque de tete, jamais au corps de la note -- celle du
+    tableau 6 cite « la E. baby, F. bebe », et ces parentheses-la
+    doivent rester.
+    """
+    n = 0
+    for r in rangi:
+        if r["tipo"] != "noto":
+            continue
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            neuf, combien = TETE_NOTE.subn(r"\1(*)", t, count=1)
+            if not combien or neuf == t:
+                continue
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+            n += 1
+    return n
 
 
 # LES LIGNES D'APPARAT, ET LA MEME LISTE POUR TOUT LE MONDE.
