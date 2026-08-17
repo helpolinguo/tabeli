@@ -246,6 +246,17 @@ def texte_html(t):
     # « 12) » sont un seul appel que la ligne a coupe en deux.
     t = re.sub(r"</sup>\s*<sup>", " ", t)
 
+    # LE TRAIT D'UNION N'A PAS D'ESPACES. Les titres du livret ido sont
+    # composes en interlettrage, et l'imprimeur y a fait respirer le
+    # trait d'union comme le reste : « EXPLIKO - LIBRETO »,
+    # « Matur - evo ed oldeso. », « la Delmas - tabeli », « la 3 - ma ».
+    # Ces espaces tiennent a la composition, non au mot ; a l'ecran, ou
+    # rien n'est interlettre, ils coupent le mot en deux. Le fac-simile
+    # francais n'en porte aucun. Le tiret cadratin, qui separe vraiment,
+    # s'ecrit « --- » dans le releve et sort deja en « — » : ni lui ni
+    # le tiret court d'un intervalle ne sont touches.
+    t = re.sub(r"(?<=[^\s\u2013\u2014-]) - (?=[^\s\u2013\u2014-])", "-", t)
+
     # L'apostrophe des deux fac-similes est la courbe, non la droite :
     # « l'unesma », « L'Ecole ». La droite est une commodite de clavier
     # que l'imprime ne connait pas.
@@ -812,14 +823,18 @@ def korpo_de(attrs):
 # serie, scene, section, sous-titre -- et c'est le role, non la macro,
 # que la feuille de style habille. Le role se lit sur la place et sur le
 # mot, les deux seules choses que les deux editions partagent.
-def roles_ap(html, porte_titre=False):
+def roles_ap(html, porte_titre=False, apres_ceno=False):
     """Marque chaque ligne d'apparat d'un data-rolo.
 
     « porte_titre » : ce bloc n'est pas une ouverture, mais il porte le
-    titre du tableau -- aux tableaux 7, 9, 14 et 15 le fac-simile ne met
-    rien sous le numero et le titre ouvre le premier intertitre. Sans
-    cela il se composait en petites capitales de SECTION, si bien que le
-    titre du tableau 14 ne ressemblait pas a celui du tableau 2.
+    titre du tableau -- aux tableaux 14 et 15 le fac-simile ne met rien
+    sous le numero et le titre ouvre le premier intertitre. Sans cela il
+    se composait en petites capitales de SECTION, si bien que le titre du
+    tableau 14 ne ressemblait pas a celui du tableau 2.
+
+    « apres_ceno » : le bloc precedent n'etait qu'un marqueur de scene,
+    et celui-ci porte donc le titre de cette scene. Aux tableaux 3, 7 et
+    9 la scene et son titre sont deux blocs ; au 4 et au 8, un seul.
     """
     lignes = [(m.group(1), m.group(2)) for m in LIGNE_AP.finditer(html)]
     if not lignes:
@@ -844,29 +859,38 @@ def roles_ap(html, porte_titre=False):
         elif SUBT.fullmatch(nu):
             role[k] = "subt"
 
-    # Le titre : la premiere ligne libre sous le numero, et les lignes
-    # de MEME CORPS qui la suivent, qui en sont la suite (voir la table
-    # des matieres, qui les recolle de la meme facon).
+    # OU COMMENCE LE TITRE, ET LEQUEL. Sous le numero vient le titre du
+    # tableau ; mais si une scene s'intercale -- « Unesma ceno. » au
+    # tableau 8 -- ce qui suit titre la SCENE, non le tableau. Un titre
+    # de scene doit se composer partout de la meme facon, que le tableau
+    # en compte une ou plusieurs, et plus grand qu'un simple intertitre.
+    depart, ceno_avant = None, apres_ceno
     if numero is not None:
-        ti = next((k for k in range(numero + 1, len(lignes))
+        depart = numero + 1
+        ceno_avant = False
+    elif any(r == "ceno" for r in role):
+        depart = max(k for k, r in enumerate(role) if r == "ceno") + 1
+        ceno_avant = True
+    elif porte_titre or apres_ceno:
+        depart = 0
+    if depart is not None:
+        ti = next((k for k in range(depart, len(lignes))
                    if role[k] is None and net_tdm(lignes[k][1])), None)
-        if ti is not None:
-            role[ti] = "tit"
+        if ti is not None and (numero is not None or porte_titre or ceno_avant):
+            if numero is not None:
+                ceno_avant = any(role[k] == "ceno"
+                                 for k in range(numero + 1, ti))
+            quel = "titceno" if ceno_avant else "tit"
+            role[ti] = quel
+            # Les lignes de MEME CORPS qui suivent sont la suite du meme
+            # titre (voir la table des matieres, qui les recolle ainsi).
             for k in range(ti + 1, len(lignes)):
                 if not net_tdm(lignes[k][1]):
                     continue
                 if role[k] is not None or \
                         korpo_de(lignes[k][0]) != korpo_de(lignes[ti][0]):
                     break
-                role[k] = "tit"
-
-    # Le titre loge hors de l'ouverture : la premiere ligne libre du
-    # bloc en tient lieu.
-    if numero is None and porte_titre:
-        libre = next((k for k in range(len(lignes))
-                      if role[k] is None and net_tdm(lignes[k][1])), None)
-        if libre is not None:
-            role[libre] = "tit"
+                role[k] = quel
 
     for k in range(len(lignes)):
         if role[k] is None:
@@ -874,13 +898,66 @@ def roles_ap(html, porte_titre=False):
             # « EXPLIKO - LIBRETO », « DI » ; au-dessous, une section.
             role[k] = "avan" if (numero is not None and k < numero) else "sekc"
 
+    # UN TITRE COUPE PAR LA COMPOSITION SE RELIT D'UN TRAIT. Le
+    # fac-simile ido casse « La Homala Korpo. --- La Amuztempo. » et
+    # « La Ludi. » sur deux lignes la ou le francais les unit d'un tiret.
+    # On les remet donc sur une ligne, avec le tiret quand la premiere
+    # s'acheve sur un point -- et sans lui quand elle s'acheve sur une
+    # virgule, ou la phrase se poursuit d'elle-meme (tableau 6).
+    joint = [False] * len(lignes)
+    k = 0
+    while k < len(lignes):
+        if role[k] in ("tit", "titceno"):
+            fin = k
+            while fin + 1 < len(lignes) and role[fin + 1] == role[k]:
+                fin += 1
+            if fin > k:
+                for j in range(k, fin + 1):
+                    joint[j] = True
+            k = fin + 1
+        else:
+            k += 1
+
     n = [0]
 
     def poser(m):
-        r = role[n[0]]
+        k = n[0]
         n[0] += 1
-        return f'{m.group(0)[:-1]} data-rolo="{r}">'
-    return OUVRE_AP.sub(poser, html)
+        att = f' data-rolo="{role[k]}"'
+        if joint[k]:
+            att += ' data-kunligita="1"'
+        return f'{m.group(0)[:-1]}{att}>'
+    html = OUVRE_AP.sub(poser, html)
+
+    # Le liant se pose DANS la ligne suivante, pour que la ligne garde sa
+    # propre ancre : la table des matieres compte les memes lignes.
+    n = [0]
+
+    def lier(m):
+        k = n[0]
+        n[0] += 1
+        if k == 0 or not (joint[k] and joint[k - 1]):
+            return m.group(0)
+        avant = net_tdm(lignes[k - 1][1])
+        liant = " — " if avant.endswith((".", ")", "!", "?")) else " "
+        return f'{m.group(0)}{liant}'
+    return OUVRE_AP.sub(lier, html)
+
+
+def joindre(morceaux):
+    """Recolle les lignes d'un meme titre, comme le fait la page."""
+    # Le meme liant qu'a l'ecran : un tiret quand la ligne precedente
+    # s'acheve sur un point, rien quand elle s'acheve sur une virgule et
+    # que la phrase se poursuit d'elle-meme.
+    out = ""
+    for m in morceaux:
+        if not out:
+            out = m
+        elif out.endswith((".", ")", "!", "?")):
+            out = f"{out} — {m}"
+        else:
+            out = f"{out} {m}"
+    return out
 
 
 def sen_subtitro(t):
@@ -920,6 +997,8 @@ def rendre(rangi):
     # Un intertitre repris en titre de tableau ne s'annonce pas deux fois
     # (voir plus bas).
     empruntes = set()
+    # Un titre de scene annonce avec sa scene ne s'annonce pas deux fois.
+    fusionnes = set()
     net = net_tdm
     for idx, r in enumerate(rangi):
         if r["tipo"] not in ("sub", "apar"):
@@ -974,8 +1053,8 @@ def rendre(rangi):
                     if corps[k] != corps[ti] or est_ceno(lignes_ap[k]):
                         break
                     suites.append(k)
-            titre = " ".join([net(lignes_ap[ti])] +
-                             [net(lignes_ap[k]) for k in suites]) \
+            titre = joindre([net(lignes_ap[ti])] +
+                            [net(lignes_ap[k]) for k in suites]) \
                 if ti is not None else ""
             if not titre:
                 # LE TITRE EST PARFOIS HORS DU BLOC D'OUVERTURE. Aux
@@ -1018,16 +1097,52 @@ def rendre(rangi):
             # au-dessus. Ce qui PRECEDE le numero ne compte pas : c'est
             # l'apparat de serie, « EXPLIKO - LIBRETO », « UNESMA SERIO ».
             for j in range(i + 1, len(lignes_ap)):
-                if j != ti and j not in suites and net(lignes_ap[j]):
-                    tdm.append((f'{r["cle"]}-l{j}', net(lignes_ap[j]), "sc"))
+                if j == ti or j in suites or not net(lignes_ap[j]):
+                    continue
+                lib = net(lignes_ap[j])
+                # La scene de l'ouverture emporte son titre, comme celles
+                # qui ont leur bloc a elles : au tableau 8 la scene et son
+                # titre sont dans l'ouverture, et le volet n'annoncait
+                # que « Unesma ceno. ».
+                # Une espace, non le liant : le tiret ne vaut qu'entre
+                # les lignes d'un MEME titre, et la scene n'en est pas
+                # une. Les autres scenes du volet s'ecrivent de meme.
+                if CENO.search(lib) and ti is not None and ti > j:
+                    lib = f"{lib} {titre}"
+                tdm.append((f'{r["cle"]}-l{j}', lib, "sc"))
             continue
 
-        # Un intertitre : scene si sa premiere ligne est en italique.
+        # Un intertitre : scene, ou section.
+        if r["cle"] in fusionnes:
+            continue
+        nues = [net(t) for t in lignes_ap if net(t)] or [net(brut)]
+        if est_ceno(brut):
+            # LE TITRE DE LA SCENE S'ANNONCE AVEC ELLE. Aux tableaux 3, 7,
+            # 8 et 9 la scene et son titre sont deux blocs ; au 4, un
+            # seul. Le volet donnait donc « Unesma ceno. » toute seule
+            # ici et « Unesma ceno. La Mariaj-festino. » la, pour la meme
+            # chose. Quand le marqueur est seul dans son bloc, on lui
+            # rattache le bloc suivant, qui porte son titre.
+            libelle = net(brut)
+            if all(CENO.search(x) for x in nues):
+                for q in rangi[idx + 1:]:
+                    if q["tipo"] == "p":
+                        break
+                    if q["tipo"] != "sub":
+                        continue
+                    suite = texte_de(q)
+                    if not est_ceno(suite):
+                        libelle = f"{libelle} {net(suite)}"
+                        fusionnes.add(q["cle"])
+                    break
+            tdm.append((r["cle"], libelle, "sc"))
+            continue
         if r["cle"] in empruntes:
             continue
-        tdm.append((r["cle"], net(brut), "sc" if est_ceno(brut) else "st"))
+        tdm.append((r["cle"], net(brut), "st"))
 
     lignes = []
+    apres_ceno = False
     for r in rangi:
         cl = ["r", r["tipo"]]
         io = r["io"]
@@ -1046,11 +1161,18 @@ def rendre(rangi):
         # intertitres seuls en portent ; le texte suivi n'a pas d'apparat.
         if r["tipo"] in ("apar", "sub"):
             porte = r["cle"] in empruntes
-            io = roles_ap(io, porte)
+            io = roles_ap(io, porte, apres_ceno)
             for lg in LANGUES:
                 o = r["tra"].get(lg["kodo"])
                 if o and o["t"]:
-                    o["t"] = roles_ap(o["t"], porte)
+                    o["t"] = roles_ap(o["t"], porte, apres_ceno)
+            # Le bloc suivant porte-t-il le titre de cette scene ? Oui si
+            # celui-ci s'acheve sur un marqueur de scene. C'est l'ido qui
+            # en decide : la colonne de droite le suit.
+            derniers = re.findall(r'data-rolo="([^"]*)"', io)
+            apres_ceno = bool(derniers) and derniers[-1] == "ceno"
+        elif r["tipo"] == "p":
+            apres_ceno = False
         # Les lignes d'apparat recoivent une ancre chacune : la table
         # des matieres renvoie a la scene, pas seulement au tableau.
         if r["tipo"] == "apar":

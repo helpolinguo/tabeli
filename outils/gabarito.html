@@ -157,6 +157,17 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
  margin:.45em 0 .3em}
 .k [data-rolo="tit"]{font-weight:700;font-size:1.1rem;letter-spacing:.02em;
  margin:.12em 0}
+/* LE TITRE D'UNE SCENE. Il se composait en section, si bien qu'il
+   changeait de taille d'un tableau a l'autre -- gras au tableau 7, ou
+   il tient lieu de titre du tableau, petites capitales au tableau 3, ou
+   il n'en tient pas lieu. C'est pourtant la meme chose. Il a donc son
+   rang a lui, entre le titre du tableau et l'intertitre. */
+.k [data-rolo="titceno"]{font-weight:700;font-size:1rem;letter-spacing:.02em;
+ margin:.15em 0 .3em}
+/* Les lignes d'un meme titre se relisent d'un trait : « inline-block »
+   les met sur une ligne sans leur oter leurs marges, et le liant -- le
+   tiret ou l'espace -- est pose dans le texte par rendre(). */
+.k [data-kunligita]{display:inline-block;margin-top:0;margin-bottom:0}
 .k [data-rolo="ceno"]{font-style:italic;font-variant:normal;font-size:.88rem;
  letter-spacing:.03em;margin:.55em 0 .25em}
 .k [data-rolo="sekc"]{font-variant:small-caps;font-weight:600;font-size:.85rem;
