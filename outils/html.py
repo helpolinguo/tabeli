@@ -35,6 +35,17 @@ from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
 
+
+# LE TABLEAU MURAL AU-DESSUS DE SON TEXTE. Le livret explique une
+# gravure que le lecteur n'a pas sous les yeux ; la page la lui donne.
+# Le catalogue est ecrit par outils/gravuri.py, qui prepare les images :
+# il porte les dimensions, et c'est par elles que la page reserve la
+# place avant meme le chargement -- sans quoi le texte sursaute quand
+# l'image arrive.
+def gravuri():
+    cat = RACINE / "gravuri" / "gravuri.json"
+    return json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
+
 # Les langues de la colonne de droite. « fr » est le texte source
 # (releve sur le fac-simile) ; les autres seront des traductions, et
 # porteront la mention qui convient.
@@ -1196,9 +1207,22 @@ def rendre(rangi):
 
     lignes = []
     apres_ceno = False
+    gravo = gravuri()
     for r in rangi:
         cl = ["r", r["tipo"]]
         io = r["io"]
+        # LA GRAVURE PRECEDE LE TITRE QU'ELLE ILLUSTRE. « tetes » ne
+        # porte que les ouvertures de tableau : c'est exactement la ou
+        # une gravure a sa place.
+        g = gravo.get(r["cle"][:3]) if r["cle"] in tetes else None
+        if g:
+            v = g["vido"]
+            lignes.append(
+                f'<figure class="gravuro" data-tabelo="{r["cle"][:3]}">'
+                f'<img src="gravuri/{r["cle"][:3]}-vido.webp" alt="" '
+                f'loading="lazy" decoding="async" '
+                f'width="{v["largeur"]}" height="{v["alteso"]}">'
+                f'</figure>')
         att = f' id="{ancro(r["cle"])}" data-cle="{r["cle"]}"'
         if r["cle"] in tetes:
             tete = (tetes[r["cle"]].replace("&", "&amp;")

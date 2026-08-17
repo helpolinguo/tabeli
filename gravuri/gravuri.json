@@ -1,0 +1,58 @@
+{
+ "t01": {
+  "alteso": 3659,
+  "detalo": {
+   "alteso": 1741,
+   "largeur": 2600,
+   "okteti": 855116
+  },
+  "largeur": 5463,
+  "vido": {
+   "alteso": 670,
+   "largeur": 1000,
+   "okteti": 167016
+  }
+ },
+ "t02": {
+  "alteso": 3641,
+  "detalo": {
+   "alteso": 1733,
+   "largeur": 2600,
+   "okteti": 819128
+  },
+  "largeur": 5463,
+  "vido": {
+   "alteso": 666,
+   "largeur": 1000,
+   "okteti": 174430
+  }
+ },
+ "t03": {
+  "alteso": 3663,
+  "detalo": {
+   "alteso": 1745,
+   "largeur": 2600,
+   "okteti": 875942
+  },
+  "largeur": 5459,
+  "vido": {
+   "alteso": 671,
+   "largeur": 1000,
+   "okteti": 183480
+  }
+ },
+ "t04": {
+  "alteso": 3642,
+  "detalo": {
+   "alteso": 1734,
+   "largeur": 2600,
+   "okteti": 962146
+  },
+  "largeur": 5460,
+  "vido": {
+   "alteso": 667,
+   "largeur": 1000,
+   "okteti": 183858
+  }
+ }
+}

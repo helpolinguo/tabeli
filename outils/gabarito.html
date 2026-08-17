@@ -246,6 +246,18 @@ b{font-weight:700}
 sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
 .k.io sup,.k.tra sup{margin-left:.08em}
 
+/* --- LE TABLEAU MURAL. Le livret decrit une gravure que le lecteur de
+   1926 avait au mur ; la page la lui rend, au-dessus du texte qu'elle
+   illustre. Elle ne se charge QUE lorsqu'elle approche du champ --
+   « loading=lazy » --, et ses dimensions sont ecrites dans la balise :
+   la place est donc reservee des le depart, et le texte ne sursaute pas
+   quand l'image arrive. --- */
+.gravuro{margin:2.2em 0 .6em;text-align:center}
+.gravuro img{max-width:100%;height:auto;border:1px solid var(--lin);
+ border-radius:3px;background:var(--pap2);cursor:zoom-in;
+ box-shadow:0 1px 4px rgba(0,0,0,.10)}
+@media (prefers-color-scheme:dark){.gravuro img{box-shadow:none}}
+
 /* La recherche : ce qui ne correspond pas disparait, et l'accord se
    marque dans le texte meme. Le surlignage se pose sur un <mark>
    fabrique par le script, jamais dans la source. */

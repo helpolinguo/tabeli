@@ -17,3 +17,9 @@ noto.*
 # Images de travail produites par outils/lekto.py.
 outils/.lekto/
 __pycache__/
+
+# Les tableaux muraux : les PDF d'origine pesent pres de 100 Mo, et les
+# deux couches extraites autant. Seuls les deux WebP par tableau, que
+# outils/gravuri.py en tire, sont versionnes -- environ 1 Mo chacun.
+gravuri/font/
+gravuri/kovri/
