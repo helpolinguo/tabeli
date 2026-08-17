@@ -4,7 +4,7 @@
   "detalo": {
    "alteso": 1741,
    "largeur": 2600,
-   "okteti": 854536
+   "okteti": 855218
   },
   "fonto": "page1.pdf",
   "koloro": true,
@@ -12,7 +12,7 @@
   "vido": {
    "alteso": 804,
    "largeur": 1200,
-   "okteti": 239098
+   "okteti": 238032
   }
  },
  "t02-apar-1": {
@@ -20,7 +20,7 @@
   "detalo": {
    "alteso": 1733,
    "largeur": 2600,
-   "okteti": 804482
+   "okteti": 802764
   },
   "fonto": "page3.pdf",
   "koloro": true,
@@ -28,7 +28,7 @@
   "vido": {
    "alteso": 800,
    "largeur": 1200,
-   "okteti": 241402
+   "okteti": 240824
   }
  },
  "t02-tit-0": {
@@ -52,7 +52,7 @@
   "detalo": {
    "alteso": 1745,
    "largeur": 2600,
-   "okteti": 878946
+   "okteti": 874858
   },
   "fonto": "page4.pdf",
   "koloro": true,
@@ -60,7 +60,7 @@
   "vido": {
    "alteso": 805,
    "largeur": 1200,
-   "okteti": 256632
+   "okteti": 256904
   }
  },
  "t04-apar-1": {
@@ -68,7 +68,7 @@
   "detalo": {
    "alteso": 1734,
    "largeur": 2600,
-   "okteti": 953994
+   "okteti": 955784
   },
   "fonto": "page5.pdf",
   "koloro": true,
@@ -76,7 +76,7 @@
   "vido": {
    "alteso": 800,
    "largeur": 1200,
-   "okteti": 260050
+   "okteti": 260242
   }
  },
  "t05-apar-1": {
@@ -84,7 +84,7 @@
   "detalo": {
    "alteso": 1751,
    "largeur": 2600,
-   "okteti": 769466
+   "okteti": 766812
   },
   "fonto": "page6.pdf",
   "koloro": true,
@@ -92,7 +92,7 @@
   "vido": {
    "alteso": 808,
    "largeur": 1200,
-   "okteti": 237596
+   "okteti": 238082
   }
  },
  "t05-apar-2": {
@@ -116,7 +116,7 @@
   "detalo": {
    "alteso": 1764,
    "largeur": 2600,
-   "okteti": 811454
+   "okteti": 808398
   },
   "fonto": "page8.pdf",
   "koloro": true,
@@ -124,7 +124,7 @@
   "vido": {
    "alteso": 814,
    "largeur": 1200,
-   "okteti": 245578
+   "okteti": 244766
   }
  },
  "t07-apar-1": {
@@ -132,7 +132,7 @@
   "detalo": {
    "alteso": 1752,
    "largeur": 2600,
-   "okteti": 936898
+   "okteti": 939678
   },
   "fonto": "page9.pdf",
   "koloro": true,
@@ -140,7 +140,7 @@
   "vido": {
    "alteso": 809,
    "largeur": 1200,
-   "okteti": 262916
+   "okteti": 262918
   }
  },
  "t08-apar-1": {
@@ -148,7 +148,7 @@
   "detalo": {
    "alteso": 1752,
    "largeur": 2600,
-   "okteti": 947000
+   "okteti": 945998
   },
   "fonto": "page10.pdf",
   "koloro": true,
@@ -156,7 +156,7 @@
   "vido": {
    "alteso": 809,
    "largeur": 1200,
-   "okteti": 269020
+   "okteti": 270756
   }
  },
  "t09-apar-1": {
@@ -164,7 +164,7 @@
   "detalo": {
    "alteso": 1745,
    "largeur": 2600,
-   "okteti": 1064424
+   "okteti": 1056172
   },
   "fonto": "page11.pdf",
   "koloro": true,
@@ -172,7 +172,7 @@
   "vido": {
    "alteso": 806,
    "largeur": 1200,
-   "okteti": 287260
+   "okteti": 287398
   }
  },
  "t10-apar-1": {
@@ -180,7 +180,7 @@
   "detalo": {
    "alteso": 1736,
    "largeur": 2600,
-   "okteti": 563104
+   "okteti": 566758
   },
   "fonto": "page12.pdf",
   "koloro": true,
@@ -188,7 +188,7 @@
   "vido": {
    "alteso": 801,
    "largeur": 1200,
-   "okteti": 165606
+   "okteti": 163740
   }
  },
  "t11-apar-1": {
@@ -196,7 +196,7 @@
   "detalo": {
    "alteso": 1745,
    "largeur": 2600,
-   "okteti": 814798
+   "okteti": 812138
   },
   "fonto": "page13.pdf",
   "koloro": true,
@@ -204,7 +204,7 @@
   "vido": {
    "alteso": 806,
    "largeur": 1200,
-   "okteti": 231488
+   "okteti": 230866
   }
  },
  "t12-01-1": {
@@ -228,7 +228,7 @@
   "detalo": {
    "alteso": 1730,
    "largeur": 2600,
-   "okteti": 766002
+   "okteti": 759874
   },
   "fonto": "page14.pdf",
   "koloro": true,
@@ -236,7 +236,7 @@
   "vido": {
    "alteso": 799,
    "largeur": 1200,
-   "okteti": 228042
+   "okteti": 228058
   }
  },
  "t13-apar-1": {
@@ -244,7 +244,7 @@
   "detalo": {
    "alteso": 1760,
    "largeur": 2600,
-   "okteti": 846964
+   "okteti": 837754
   },
   "fonto": "page16.pdf",
   "koloro": true,
@@ -252,7 +252,7 @@
   "vido": {
    "alteso": 812,
    "largeur": 1200,
-   "okteti": 251790
+   "okteti": 252196
   }
  },
  "t14-apar-1": {
@@ -260,7 +260,7 @@
   "detalo": {
    "alteso": 1746,
    "largeur": 2600,
-   "okteti": 839866
+   "okteti": 835840
   },
   "fonto": "page17.pdf",
   "koloro": true,
@@ -268,7 +268,7 @@
   "vido": {
    "alteso": 806,
    "largeur": 1200,
-   "okteti": 234250
+   "okteti": 234052
   }
  },
  "t15-apar-1": {
@@ -276,7 +276,7 @@
   "detalo": {
    "alteso": 1749,
    "largeur": 2600,
-   "okteti": 813130
+   "okteti": 805318
   },
   "fonto": "page18.pdf",
   "koloro": true,
@@ -284,7 +284,7 @@
   "vido": {
    "alteso": 807,
    "largeur": 1200,
-   "okteti": 224400
+   "okteti": 224840
   }
  },
  "t16-apar-1": {
@@ -292,7 +292,7 @@
   "detalo": {
    "alteso": 1736,
    "largeur": 2600,
-   "okteti": 1195920
+   "okteti": 1133372
   },
   "fonto": "page19.pdf",
   "koloro": true,
@@ -300,7 +300,7 @@
   "vido": {
    "alteso": 801,
    "largeur": 1200,
-   "okteti": 323686
+   "okteti": 310608
   }
  }
 }

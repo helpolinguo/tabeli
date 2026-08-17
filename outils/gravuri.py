@@ -156,86 +156,112 @@ def separer(chemin):
     return couleur, trait
 
 
-def recaler(couleur, trait, marge=24):
+def recaler(couleur, trait):
     """L'etirement et le decalage qui posent la couleur sur le trait.
 
-    LES DEUX COUCHES NE SE SUPERPOSENT PAS. Elles viennent de deux
-    chaines differentes -- la gravure vectorisee d'un cote, la couleur
-    d'un modele de l'autre -- et l'ecart n'est pas seulement une
-    translation : LES DEUX COUCHES N'ONT PAS LE MEME RAPPORT DE COTES.
-    La planche 13 donne 1.4902 pour la couleur et 1.4775 pour le trait ;
-    etirer l'une au cadre de l'autre, comme on faisait, promene le bord
-    de trente et un pixels. Le recalage tombait juste au milieu de
-    l'image et faux sur les bords, et c'est exactement ce qu'on voyait :
-    des aplats qui debordent du contour, de plus en plus loin qu'on
-    s'ecarte du centre.
+    LES DEUX COUCHES NE SE SUPERPOSENT PAS, et l'ecart n'est pas une
+    simple translation : elles n'ont pas le meme rapport de cotes -- la
+    planche 13 donne 1.4902 pour la couleur et 1.4775 pour le trait.
+    Porter l'une au cadre de l'autre promene donc le bord : la couleur
+    tombe juste au milieu de l'image et de plus en plus a cote qu'on
+    s'en ecarte. C'est ce que l'oeil voit comme un debordement des
+    aplats hors du contour.
 
-    On cherche donc quatre nombres et non deux -- deux etirements, deux
-    decalages. Le critere ne change pas : les CONTOURS de la couleur
-    doivent tomber sur les traits de la gravure, on correle le gradient
-    de l'une avec le trait de l'autre. Le calcul se fait sur une
-    reduction, ou tout est mille fois plus rapide, puis se rapporte a
-    l'echelle d'origine.
+    ON MESURE LE DEPLACEMENT, ON NE LE CHERCHE PAS A TATONS. Une grille
+    d'etirements essayes un a un ne convergeait pas : le score global de
+    correlation est plat, la couleur ayant ete peinte a la main sur le
+    trait et non decalquee. Mais un deplacement mesure ZONE PAR ZONE dit
+    tout : s'il croit regulierement avec x, sa pente EST l'etirement qui
+    manque, et son ordonnee le decalage.
 
-    Rend (sx, sy, dx, dy) : la couleur est d'abord portee a
-    (sx * largeur, sy * hauteur), puis translatee de (dx, dy).
+    Chaque zone est recalee par correlation normalisee de son trait avec
+    le contour de la couleur, et l'on ne garde que la moitie des zones
+    dont le pic domine nettement le reste de la surface -- un aplat de
+    ciel ou un mur nu ne dit rien de l'alignement. Une droite robuste
+    passe ensuite dans le nuage, les points aberrants rejetes ; trois a
+    cinq tours suffisent, et l'on retient le tour ou la derive residuelle
+    et l'ecart median sont les plus faibles.
+
+    Rend (sx, sy, dx, dy) : la couleur est portee a (sx * largeur,
+    sy * hauteur), puis translatee de (dx, dy).
     """
+    import cv2
     import numpy as np
 
+    W, HT = trait.width, trait.height
+    T = np.asarray(trait, np.float32)
     gris = couleur.convert("L")
 
-    def carte(ech, sx, sy):
-        """Le contour de la couleur, etiree de (sx, sy), au cadre reduit."""
-        h = round(ech * trait.height / trait.width)
-        c = np.asarray(gris.resize((max(2, round(ech * sx)),
-                                    max(2, round(h * sy))), Image.LANCZOS),
-                       dtype=np.float32)
-        # Ramener au cadre commun : on rogne ou l'on complete par le bord,
-        # de sorte que le decalage se compte toujours dans le meme repere.
-        g = np.zeros((h, ech), np.float32)
-        hh, ww = min(h, c.shape[0]), min(ech, c.shape[1])
-        g[:hh, :ww] = c[:hh, :ww]
-        if hh < h:
-            g[hh:] = g[hh - 1]
-        if ww < ech:
-            g[:, ww:] = g[:, ww - 1:ww]
-        gy, gx = np.gradient(g)
-        m = np.hypot(gx, gy)
-        return m - m.mean()
+    def champ(sx, sy, dx, dy, nx=12, ny=8, cote=430, ray=24, garde=0.5):
+        """Le deplacement qui reste, zone par zone, avec sa confiance."""
+        g = np.asarray(gris.resize((max(2, round(W * sx)),
+                                    max(2, round(HT * sy))), Image.LANCZOS),
+                       np.float32)
+        a = np.zeros((HT, W), np.float32)
+        hh, ww = min(HT, g.shape[0]), min(W, g.shape[1])
+        a[:hh, :ww] = g[:hh, :ww]
+        if hh < HT:
+            a[hh:] = a[hh - 1]
+        if ww < W:
+            a[:, ww:] = a[:, ww - 1:ww]
+        a = np.roll(a, (dy, dx), (0, 1))
+        gy, gx = np.gradient(a)
+        cont = np.hypot(gx, gy)
+        pts = []
+        for iy in range(ny):
+            for ix in range(nx):
+                x0 = max(ray, min(W - cote - ray,
+                                  round(W * (ix + .5) / nx) - cote // 2))
+                y0 = max(ray, min(HT - cote - ray,
+                                  round(HT * (iy + .5) / ny) - cote // 2))
+                tt = T[y0:y0 + cote, x0:x0 + cote]
+                if tt.std() < 1:
+                    continue
+                r = cv2.matchTemplate(
+                    cont[y0 - ray:y0 + cote + ray, x0 - ray:x0 + cote + ray],
+                    tt - tt.mean(), cv2.TM_CCOEFF_NORMED)
+                _, mx, _, loc = cv2.minMaxLoc(r)
+                # La confiance est l'avance du pic sur le reste de la
+                # surface : un pic large et mou ne situe rien.
+                m = r.copy()
+                cv2.circle(m, loc, 6, -1, -1)
+                pts.append((x0 + cote / 2, y0 + cote / 2,
+                            loc[0] - ray, loc[1] - ray, mx - m.max()))
+        p = np.array(pts, float)
+        if not len(p):
+            return p
+        return p[p[:, 4] >= np.quantile(p[:, 4], 1 - garde)]
 
-    def trace(ech):
-        h = round(ech * trait.height / trait.width)
-        t = np.asarray(trait.resize((ech, h), Image.LANCZOS), dtype=np.float32)
-        return t - t.mean()
+    def droite(v, d):
+        for _ in range(3):
+            a, b = np.polyfit(v, d, 1)
+            r = d - (a * v + b)
+            bons = np.abs(r) <= max(1.2, 2.2 * r.std())
+            if bons.all() or bons.sum() < 4:
+                break
+            v, d = v[bons], d[bons]
+        return a, b
 
-    def chercher(ech, centre, rayon, echelles):
-        t = trace(ech)
-        f = trait.width / ech
-        cx, cy = round(centre[0] / f), round(centre[1] / f)
-        meilleur = None
-        for sx, sy in echelles:
-            cont = carte(ech, sx, sy)
-            for dy in range(cy - rayon, cy + rayon + 1):
-                for dx in range(cx - rayon, cx + rayon + 1):
-                    a = np.roll(np.roll(cont, dy, 0), dx, 1)
-                    s = float((a * t).sum())
-                    if meilleur is None or s > meilleur[0]:
-                        meilleur = (s, sx, sy, round(dx * f), round(dy * f))
-        return meilleur[1], meilleur[2], meilleur[3], meilleur[4]
-
-    # TROIS PASSES. La premiere cherche l'etirement sur une forte
-    # reduction, ou une grille de vingt-cinq combinaisons coute peu ; la
-    # deuxieme resserre autour d'elle ; la troisieme fixe le decalage au
-    # pixel pres, l'etirement etant desormais tenu.
-    pas = [1 - 0.010, 1 - 0.005, 1.0, 1 + 0.005, 1 + 0.010]
-    sx, sy, dx, dy = chercher(
-        520, (0, 0), max(1, round(marge * 520 / trait.width)),
-        [(a, b) for a in pas for b in pas])
-    fin = [-0.004, -0.002, 0.0, 0.002, 0.004]
-    sx, sy, dx, dy = chercher(
-        1100, (dx, dy), 3, [(sx + a, sy + b) for a in fin for b in fin])
-    sx, sy, dx, dy = chercher(2800, (dx, dy), 4, [(sx, sy)])
-    return sx, sy, dx, dy
+    sx = sy = 1.0
+    dx = dy = 0
+    meilleur = None
+    for _ in range(5):
+        p = champ(sx, sy, dx, dy)
+        if len(p) < 6:
+            break
+        ax, bx = droite(p[:, 0], p[:, 2])
+        ay, by = droite(p[:, 1], p[:, 3])
+        cout = (abs(ax * W) + abs(ay * HT)
+                + np.median(np.abs(p[:, 2])) + np.median(np.abs(p[:, 3])))
+        if meilleur is None or cout < meilleur[0]:
+            meilleur = (cout, sx, sy, dx, dy)
+        sx, sy = sx * (1 - ax), sy * (1 - ay)
+        dx, dy = round(dx * (1 - ax) - bx), round(dy * (1 - ay) - by)
+    if meilleur is None:
+        return 1.0, 1.0, 0, 0
+    print(f"  alignement : derive residuelle et ecart median, "
+          f"somme {meilleur[0]:.1f} px")
+    return meilleur[1], meilleur[2], meilleur[3], meilleur[4]
 
 
 def composer(couleur, trait):
