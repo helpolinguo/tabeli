@@ -17,7 +17,12 @@
   "composee en romain propre — « Apartamenti », « Koridoro », « di la »",
   "— et ces lettres se decoupent mieux que des chiffres graves. Douze de",
   "ses vingt lectures sont des morceaux de mots, et plusieurs portent une",
-  "confiance de 1.05 : sur cette planche le score ne vaut rien du tout."
+  "confiance de 1.05 : sur cette planche le score ne vaut rien du tout.",
+  "",
+  "La figure du corps humain (t02-tit-0) ne porte AUCUN numero : c'est",
+  "un homme nu appuye sur un baton, sans un chiffre. Les trente-neuf du",
+  "tableau 2 sont tous sur la planche murale. Sa lecture unique etait",
+  "donc fausse, comme celle de l'horaire du tableau 12."
  ],
  "t01-apar-1": [
   3
@@ -27,6 +32,9 @@
   12,
   20,
   37
+ ],
+ "t02-tit-0": [
+  5
  ],
  "t04-apar-1": [
   54

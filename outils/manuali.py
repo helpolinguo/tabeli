@@ -8,23 +8,25 @@
 #  mais a la main SEULEMENT POUR CE QUE LA MACHINE NE SAIT PAS FAIRE.
 #
 #  LE PARTAGE DU TRAVAIL. L'oeil lit la planche par tuiles, sur une
-#  grille etiquetee, et dicte « 74 en H4 » : le numero, et sa case. La
-#  machine reprend la main et cherche CE nombre-la dans cette case et
-#  ses voisines, par le meme filtre adapte qui sert partout ailleurs.
-#  Ce filtre, incapable de choisir entre soixante-dix-sept nombres sur
-#  une planche entiere, ne se trompe plus quand on lui en donne UN
-#  SEUL dans neuf cases : il ne lui reste qu'a trouver ou il est.
+#  grille dont les lignes portent la coordonnee, et dicte « 74 en
+#  2286,1326 » : le numero, et sa place. Ce qui est deja trouve est
+#  cercle sur la tuile, de sorte qu'on ne relit jamais deux fois.
 #
-#  On gagne ainsi la precision sans la peine : une case fait sept
-#  hauteurs de chiffre, et dicter une position au pixel pres serait
-#  interminable et faux.
+#  ON A D'ABORD ESSAYE DE N'EN DICTER QUE LA MOITIE — la case, l'outil
+#  cherchant le nombre dedans par filtre adapte. Cela ne marche pas :
+#  « 72 » se posait sur le 71 d'a cote, « 77 » sur le 75, et resserrer
+#  la fenetre a une demi-case n'y changeait rien. Sur le tableau 1, le
+#  « 7 » de 72 est a demi cache derriere un chapeau, et le filtre ne
+#  reconnait pas un chiffre ampute meme quand on lui dit lequel
+#  chercher et ou. L'oeil, lui, lit le nombre ET sa place : autant
+#  qu'il dicte les deux.
 #
 #  gravuri/manuali.json se tient a la main, comme verdikti.json ;
 #  numeri.py le lit et ajoute ce qu'il nomme.
 #
 #  USAGE
 #      python3 outils/manuali.py tuiler t01-apar-1   # fait les tuiles
-#      python3 outils/manuali.py poser t01-apar-1 10=C3 11=B3 74=H4
+#      python3 outils/manuali.py poser t01-apar-1 10=615,868 74=2286,1326
 #      python3 outils/manuali.py planche t01-apar-1  # le controle
 # ===================================================================
 

@@ -59,12 +59,20 @@ def numeri():
         return {}
     o = RACINE / "gravuri" / "objekti.json"
     noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
-    out = {}
+    out, force = {}, {}
     for cle, v in json.loads(f.read_text(encoding="utf-8")).items():
         tab = cle[:3]
         for n, b in v["numeri"].items():
-            nom = noms.get(tab, {}).get(n, {})
-            out.setdefault(tab, {})[int(n)] = (
+            n = int(n)
+            # UN TABLEAU PEUT AVOIR DEUX PLANCHES — le 5 en a deux, le
+            # 12 aussi — et le meme numero peut alors etre lu sur les
+            # deux. On garde la lecture la mieux etayee, non la
+            # derniere venue.
+            if force.get((tab, n), -1) >= b[4]:
+                continue
+            force[(tab, n)] = b[4]
+            nom = noms.get(tab, {}).get(str(n), {})
+            out.setdefault(tab, {})[n] = (
                 cle, b[0], b[1], b[2], b[3],
                 (nom.get("io") or nom.get("fr") or [""])[0],
                 (nom.get("fr") or nom.get("io") or [""])[0])
