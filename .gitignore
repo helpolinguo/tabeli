@@ -1,0 +1,19 @@
+# Les feuillets numerises : ~180 Mo, et ils se regenerent en deux
+# commandes depuis les deux PDF d'origine (voir LISEZ-MOI, § 2).
+# « Livret explicatif.pdf » fait 114 Mo et depasse de toute facon la
+# limite de 100 Mo par fichier de GitHub.
+skan/
+
+# Sorties de LaTeX.
+*.aux
+*.log
+*.out
+*.toc
+essai.*
+altezo.*
+chaso.*
+noto.*
+
+# Images de travail produites par outils/lekto.py.
+outils/.lekto/
+__pycache__/

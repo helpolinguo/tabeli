@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="io"><meta charset="utf-8">
+<title>{{TITRO}}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--enk:#1a1a1a;--pap:#fbfaf7;--sub:#6b6560;--acc:#7a4b2a;--lin:#e2ddd5;
+ --pap2:#f4f1ea;--flag:#b4552d}
+@media(prefers-color-scheme:dark){:root{--enk:#e8e4de;--pap:#16161a;--sub:#9a938c;
+ --acc:#d69a6a;--lin:#2c2c33;--pap2:#1c1c21;--flag:#e08a5c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enk);
+ font:16px/1.55 "Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif}
+
+/* --- LA BARRE. Elle est glutinoza : ol restas sur la ecrano dum la
+   lekto. Sua alteso ne esas fixa -- du lineo de titulo sur telefono --
+   do la skripto mezuras ol e pozas ol en --kapo ; omna ancero haltas
+   sub ol. --- */
+header{position:sticky;top:0;background:var(--pap);border-bottom:1px solid var(--lin);
+ padding:13px 20px 11px;z-index:20}
+.tito{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
+h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:9px}
+.dls{flex:none;display:flex;gap:7px}
+.dl{display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+ border:1px solid var(--lin);border-radius:7px;padding:6px 11px;color:var(--acc);
+ background:var(--pap);font-size:13px;font-weight:600;white-space:nowrap;
+ transition:background .12s,border-color .12s}
+.dl:hover{background:var(--lin);border-color:var(--acc)}
+.dl svg{display:block;width:15px;height:15px;stroke:currentColor;fill:none;
+ stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:700px){.dl span{display:none}.dl{padding:7px 9px}}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input[type=search]{flex:1 1 240px;min-width:150px;padding:8px 11px;
+ border:1px solid var(--lin);border-radius:7px;background:var(--pap);
+ color:var(--enk);font:inherit;font-size:16px}
+/* 16px exacte, e ne min: Safari sur iPhone zomas automate sur irga
+   kampo di qua la litero-grandeso esas sub 16px, kande onu tushas lu.
+   La altra solvuro -- maximum-scale=1 -- impedus anke la zomo per la
+   fingri, do la lekteblesa por qui bezonas lu. */
+input[type=search]:focus{outline:2px solid var(--acc);outline-offset:-1px}
+select#lg{flex:none;padding:8px 10px;border:1px solid var(--lin);border-radius:7px;
+ background:var(--pap);color:var(--enk);font:600 13px/1 system-ui,sans-serif;
+ cursor:pointer}
+.tir{display:none;flex:none;border:1px solid var(--lin);border-radius:7px;
+ background:var(--pap);color:var(--acc);font:600 12.5px/1 system-ui,sans-serif;
+ padding:9px 11px;cursor:pointer}
+.tir:hover{background:var(--lin)}
+
+/* --- DU PANELI, ne tri. La Kompleta Gramatiko havas anke panelo dextra
+   por la chefa vorti ; ca libro ne havas oli, e la loko qua restas
+   servas la DU KOLONI DI TEXTO, qui bezonas ol. --- */
+main{display:grid;grid-template-columns:250px minmax(0,1fr);
+ max-width:1560px;margin:0 auto;gap:0}
+nav{position:sticky;top:var(--kapo,104px);height:calc(100vh - var(--kapo,104px));
+ overflow-y:auto;padding:16px 14px 60px;font-family:system-ui,sans-serif;
+ font-size:13px;border-right:1px solid var(--lin)}
+nav .parto{margin:14px 0 5px;font-size:11px;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--sub);font-weight:700}
+nav a{display:block;padding:3px 6px;border-radius:5px;text-decoration:none;
+ color:var(--enk);line-height:1.35;font-size:12.5px}
+/* Deux rangs dans la table : le tableau, et ses intertitres. Seize
+   tableaux et quatre-vingts intertitres a plat seraient illisibles. */
+/* Trois rangs, parce que le livre en a trois : le tableau, la scene,
+   l'intertitre. Seize tableaux et cent quarante intertitres a plat
+   seraient une liste, non une table. */
+nav a.tt{margin-top:13px;font-size:12.5px;font-weight:600}
+nav a.tt b{color:var(--acc);font-weight:700}
+nav a.sc{padding-left:14px;font-size:12px;font-style:italic}
+nav a.st{padding-left:26px;color:var(--sub);font-size:12px}
+nav a.st:hover,nav a.sc:hover{color:var(--enk)}
+nav a:hover{background:var(--lin)}
+nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
+
+#kont{padding:22px 26px 140px}
+
+/* --- LA DU KOLONI. Grid e ne du kolumni flotanta : la du celi di un
+   rango devas komencar ye la sama alteso, e nur grid garantias to
+   kande la texti havas diferanta longeso -- to qua eventas sempre,
+   nam la du edituri ne dicas la sama kozo per la sama nombro di vorti.
+   La linio inter la koloni esas la limito : ol montras ke la du texti
+   esas la sama alineo, ne du alinei sucedanta. --- */
+.r{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;
+ align-items:start;position:relative}
+.r+.r{margin-top:.62em}
+.k{position:relative;min-width:0;text-align:justify;hyphens:auto;
+ -webkit-hyphens:auto}
+.k.io{padding-right:17px;border-right:1px solid var(--lin)}
+.k.tra{padding-left:0}
+.r.sub .k,.r.apar .k{text-align:center}
+.vaka{}
+/* La celo vakua ne esas eroro : ol dicas ke ta alineo ne existas en
+   l'altra edituro. Guignon dividis per intertitli un texto quan
+   Rochelle laisas kurar ; la vakuo esas la diferenco mem, e la kasar
+   igus la du koloni mentiar. */
+.k.tra.vaka::after{content:"—";color:var(--lin);font-size:13px}
+.r.sub .k.tra.vaka::after{content:""}
+
+.r.p .k{text-indent:1.3em}
+.r.sub{margin:1.9em 0 .9em}
+.r.sub .k{font-variant:small-caps;letter-spacing:.06em;font-weight:600;
+ text-indent:0;color:var(--enk)}
+.r.apar{margin:.4em 0 1.8em}
+.r.apar .k{text-indent:0;line-height:1.5}
+.ln{display:block;letter-spacing:.09em;margin:.28em 0}
+.ln.lg{font-weight:700;letter-spacing:.01em;font-size:1.32em;margin:.42em 0}
+.r.apar .ln:first-child{font-size:1.05em}
+.fil{display:block;width:52px;height:1px;background:var(--lin);
+ margin:.85em auto}
+.orn{display:block;color:var(--sub);margin:.5em 0;font-size:.9em}
+
+/* La folio se pose EN DEHORS du texte, dans le blanc de gauche de sa
+   colonne : il ne doit ni entrer dans la justification ni la reduire.
+   Sur ecran etroit — ou les deux colonnes s'empilent — il rentre dans
+   le flux, faute de blanc ou se mettre. */
+.fol{position:absolute;left:-30px;top:.15em;font:600 11px/1 system-ui,sans-serif;
+ color:var(--sub);text-decoration:none;padding:2px 3px;border-radius:3px}
+.fol:hover{color:var(--acc);background:var(--lin)}
+.k.tra .fol{left:auto;right:-28px}
+@media (max-width:1180px){
+ .fol{position:static;float:left;margin:.2em .5em 0 0}
+ .k.tra .fol{float:right;margin:.2em 0 0 .5em}}
+
+/* --- LA NOTE SE REPLIE. Au bas d'une page imprimee la note a sa
+   place ; dans une colonne qui defile, posee entre deux alineas, elle
+   coupe la lecture. L'appel devient donc un bouton, et la note s'ouvre
+   sous l'alinea qui la porte -- comme dans la page du Kompleta
+   Gramatiko. C'est un <button> et non un <a> : il ne mene nulle part,
+   il montre et il cache ; le clavier et les lecteurs d'ecran le
+   comprennent ainsi, et aria-expanded le leur dit. --- */
+.apel{font:inherit;font-size:.72em;vertical-align:super;line-height:0;
+ background:none;border:0;padding:0 .12em;margin:0;cursor:pointer;
+ color:var(--acc);font-weight:600;border-bottom:1px dotted var(--acc)}
+.apel:hover{background:var(--lin)}
+.apel[aria-expanded=true]{background:var(--acc);color:var(--pap);
+ border-radius:3px;border-bottom:0}
+.noto{margin:.5em 0 .7em;padding:.6em .8em;border-left:2px solid var(--acc);
+ background:var(--pap2);font-size:13.5px;line-height:1.5;color:var(--sub);
+ border-radius:0 5px 5px 0}
+.noto b{color:var(--enk)}
+
+/* LA JOINTURE. Rochelle coupe parfois en deux un alinea que Guignon
+   laisse d'un tenant. Le PDF garde chaque edition telle quelle ; ici
+   les deux moities sont recollees pour que les rangs se repondent, et
+   ce filet dit ou l'autre edition allait a la ligne. Un simple blanc
+   se lisait comme une coquille. */
+.nal{display:inline-block;width:1.1em;margin:0 .25em;
+ border-left:1px solid var(--lin);height:.85em;vertical-align:-.05em}
+
+b{font-weight:700}
+sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
+.k.io sup,.k.tra sup{margin-left:.08em}
+
+/* La recherche : ce qui ne correspond pas disparait, et l'accord se
+   marque dans le texte meme. Le surlignage se pose sur un <mark>
+   fabrique par le script, jamais dans la source. */
+mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
+.for{display:none}
+
+/* --- SUR ECRAN ETROIT les deux colonnes s'empilent : l'ido d'abord,
+   la traduction dessous, avec un filet a gauche pour qu'on voie du
+   premier coup d'oeil laquelle on lit. Le paralelismo resta lisible
+   parce que chaque rango garde son bloc. --- */
+@media (max-width:900px){
+ main{grid-template-columns:1fr}
+ nav{position:fixed;left:0;top:var(--kapo,150px);bottom:0;width:270px;
+  background:var(--pap);z-index:15;transform:translateX(-100%);
+  transition:transform .18s;box-shadow:0 0 24px rgba(0,0,0,.14)}
+ nav.mont{transform:none}
+ .tir{display:block}
+ #kont{padding:18px 16px 120px}
+ .r{grid-template-columns:1fr;gap:.35em 0}
+ .k.io{padding-right:0;border-right:0}
+ .k.tra{padding-left:11px;border-left:2px solid var(--lin);color:var(--sub)}
+ .r.sub .k.tra,.r.apar .k.tra{border-left:0;padding-left:0}}
+@media (max-width:900px) and (prefers-color-scheme:dark){
+ nav{box-shadow:0 0 24px rgba(0,0,0,.6)}}
+
+</style>
+
+<header>
+<div class="tito">
+<div>
+<h1>{{TITRO}}</h1>
+<div class="sub">{{SUBTITRO}}</div>
+</div>
+<div class="dls">
+<a class="dl" href="tabeli.pdf" download title="Deskargar la Ido-versiono (PDF)">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg><span>Ido</span></a>
+<a class="dl" href="tableaux.pdf" download title="Télécharger la version française (PDF)">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg><span>Français</span></a>
+</div>
+</div>
+<div class="bar">
+ <button class="tir" id="tirL" aria-label="Tabelo di la materio">&#9776; Materio</button>
+ <input type="search" id="q" placeholder="Serchez en la du texti&hellip;" autocomplete="off">
+ <select id="lg" aria-label="Linguo dil dextra kolono">{{LINGUI}}</select>
+</div>
+</header>
+
+<main>
+<nav id="nav"><div class="parto">Unesma serio</div>{{NAV}}</nav>
+<div><div id="kont">
+{{KONTENO}}
+</div>
+
+</div>
+</main>
+
+<script>
+"use strict";
+var LANGUES = {{LINGUIJSON}};
+
+/* La hauteur de l'en-tete n'est pas une constante : deux lignes de
+   titre sur telephone, une sur ordinateur. On la mesure au chargement
+   et a chaque redimension, et on la depose dans --kapo ; les valeurs
+   en dur du CSS ne servent que de secours avant que le script ait
+   tourne. */
+function kapo(){
+  var h = document.querySelector("header").offsetHeight;
+  document.documentElement.style.setProperty("--kapo", h + "px");
+}
+addEventListener("resize", kapo); kapo();
+
+/* Le volet de la table des matieres, sur ecran etroit. */
+var nav = document.getElementById("nav");
+document.getElementById("tirL").onclick = function(){ nav.classList.toggle("mont"); };
+nav.addEventListener("click", function(e){
+  if (e.target.tagName === "A" && innerWidth <= 900) nav.classList.remove("mont");
+});
+
+/* --- LE CHOIX DE LANGUE. Une seule colonne de droite est visible a la
+   fois ; les autres restent dans la page, cachees. Elles n'y sont pas
+   pour rien : la recherche les traverse, et le passage d'une langue a
+   l'autre est instantane, sans requete. --- */
+var sel = document.getElementById("lg");
+function poserLangue(code){
+  document.querySelectorAll(".k.tra").forEach(function(k){
+    k.style.display = (k.dataset.lg === code) ? "" : "none";
+  });
+  try { localStorage.setItem("tabeli-lg", code); } catch(e){}
+}
+sel.onchange = function(){ poserLangue(sel.value); };
+var memo = null;
+try { memo = localStorage.getItem("tabeli-lg"); } catch(e){}
+if (memo && [].some.call(sel.options, function(o){ return o.value === memo; }))
+  sel.value = memo;
+poserLangue(sel.value);
+
+/* --- LA RECHERCHE. Elle porte sur LES DEUX textes a la fois : un mot
+   ido trouve le paragraphe, et sa traduction reste en face, meme si
+   elle ne contient pas le mot. C'est le but des deux colonnes ; une
+   recherche qui masquerait la case d'en face les separerait. --- */
+var q = document.getElementById("q");
+var rangi = [].slice.call(document.querySelectorAll(".r"));
+var origine = rangi.map(function(r){
+  return [].map.call(r.querySelectorAll(".k"), function(k){ return k.innerHTML; });
+});
+function sansAccent(s){
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+function surligner(el, brut, terme){
+  if (!terme) { el.innerHTML = brut; return false; }
+  /* On surligne dans le TEXTE, pas dans les balises : sans cela un
+     terme qui tombe dans un attribut (href, title) casserait la page.
+     On parcourt donc les noeuds de texte du fragment. */
+  var d = document.createElement("div");
+  d.innerHTML = brut;
+  var trouve = false;
+  var it = document.createTreeWalker(d, NodeFilter.SHOW_TEXT);
+  var noeuds = [], n;
+  while ((n = it.nextNode())) noeuds.push(n);
+  noeuds.forEach(function(t){
+    var s = t.nodeValue, plat = sansAccent(s), i = plat.indexOf(terme);
+    if (i < 0) return;
+    trouve = true;
+    var frag = document.createDocumentFragment(), pos = 0;
+    while (i >= 0){
+      frag.appendChild(document.createTextNode(s.slice(pos, i)));
+      var m = document.createElement("mark");
+      m.textContent = s.slice(i, i + terme.length);
+      frag.appendChild(m);
+      pos = i + terme.length;
+      i = plat.indexOf(terme, pos);
+    }
+    frag.appendChild(document.createTextNode(s.slice(pos)));
+    t.parentNode.replaceChild(frag, t);
+  });
+  el.innerHTML = d.innerHTML;
+  return trouve;
+}
+var minuteur = null;
+q.addEventListener("input", function(){
+  clearTimeout(minuteur);
+  minuteur = setTimeout(chercher, 110);
+});
+function chercher(){
+  var terme = sansAccent(q.value.trim());
+  rangi.forEach(function(r, i){
+    var celi = [].slice.call(r.querySelectorAll(".k"));
+    var trouve = false;
+    celi.forEach(function(k, j){
+      if (surligner(k, origine[i][j], terme)) trouve = true;
+    });
+    r.classList.toggle("for", !!terme && !trouve && r.classList.contains("p"));
+  });
+  poserLangue(sel.value);
+}
+
+/* --- LE DEPLI DES NOTES. La note vit a la fin du document, cachee ;
+   au clic, on la deplace sous l'alinea qui l'appelle, et un second
+   clic la remet. On la DEPLACE au lieu de la copier : ainsi elle
+   n'existe qu'une fois dans la page, et la recherche ne la trouve pas
+   deux fois. --- */
+document.addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest(".apel") : null;
+  if (!b) return;
+  var n = document.getElementById("noto-" + b.dataset.noto);
+  if (!n) return;
+  var ouvert = b.getAttribute("aria-expanded") === "true";
+  if (ouvert){
+    n.hidden = true;
+    b.setAttribute("aria-expanded", "false");
+  } else {
+    var rang = b.closest(".r");
+    if (rang && n.previousElementSibling !== rang)
+      rang.parentNode.insertBefore(n, rang.nextSibling);
+    n.hidden = false;
+    b.setAttribute("aria-expanded", "true");
+  }
+});
+
+/* --- L'INTITULE COURANT dans la table des matieres. On ne suit pas le
+   defilement pixel par pixel : on observe les blocs de titre, et le
+   dernier qui a passe le haut de la fenetre est celui qu'on lit. --- */
+var titres = [].slice.call(document.querySelectorAll(".r.sub, .r.apar"));
+var liens = {};
+document.querySelectorAll("nav a").forEach(function(a){ liens[a.dataset.ch] = a; });
+function courant(){
+  var h = parseInt(getComputedStyle(document.documentElement)
+            .getPropertyValue("--kapo")) || 104;
+  var vu = null;
+  titres.forEach(function(t){
+    if (t.getBoundingClientRect().top - h - 14 <= 1) vu = t;
+  });
+  for (var c in liens) liens[c].classList.remove("nun");
+  if (vu && liens[vu.dataset.cle]){
+    liens[vu.dataset.cle].classList.add("nun");
+    var a = liens[vu.dataset.cle], p = a.parentNode;
+    if (a.offsetTop < p.scrollTop || a.offsetTop > p.scrollTop + p.clientHeight - 30)
+      p.scrollTop = a.offsetTop - p.clientHeight / 2;
+  }
+}
+addEventListener("scroll", function(){
+  requestAnimationFrame(courant);
+}, {passive:true});
+courant();
+</script>
+</html>
