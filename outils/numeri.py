@@ -404,29 +404,118 @@ def lire(chemin, att):
     return gard, haut, enc.shape
 
 
-def controle(chemin, trouves, dest, haut):
-    """Une planche de controle : chaque numero lu, dans sa decoupe."""
-    im = Image.open(chemin)
-    marge = round(1.1 * haut)
-    cell = round(3.2 * haut)
-    cols = 12
-    lig = (len(trouves) + cols - 1) // cols
-    if not lig:
-        return
-    feuille = Image.new('L', (cols * cell, lig * (cell + 22)), 255)
+# UN NUMERO SE TIENT PRES DE CEUX QU'ON CITE AVEC LUI. Le texte decrit
+# la planche de proche en proche -- « la caissiere (14) [...] la caisse
+# (15) » -- et les objets nommes dans une meme phrase sont voisins sur
+# le dessin. La mesure le confirme : chez les lectures sures, deux
+# numeros co-cites sont de trois a huit fois plus proches que deux
+# numeros pris au hasard (0.12 fois la distance moyenne au tableau 13,
+# 0.27 au 11, 0.28 au 10).
+#
+# C'est donc un controle qui ne doit rien a la forme des chiffres, et
+# qui attrape ce qu'elle laisse passer : au tableau 13, « 14 » et « 34 »
+# tombaient a dix-huit et douze fois la distance ordinaire de leurs
+# voisins de phrase. On reste large -- six fois -- pour ne rejeter que
+# l'absurde : des lectures justes montent a quatre ou cinq quand le
+# texte saute d'un bout de la planche a l'autre.
+SEUIL_ELOIGNE = 6.0
+
+
+def phrases(tab):
+    """Les groupes de numeros cites dans une meme phrase du tabelo."""
+    f = list((RACINE / "texto" / "io").glob(f"*-tabelo-{tab}.tex"))
+    if not f:
+        return []
+    t = re.sub(r'%.*', '', f[0].read_text(encoding="utf-8"))
+    t = re.sub(r'\\(?:nl|cc)\b', ' ', t)
+    out = []
+    for ph in re.split(r'[.;:!?]\s', t):
+        ns = sorted({int(x) for x in re.findall(r'\((\d+)\)', ph)})
+        if len(ns) > 1:
+            out.append(ns)
+    return out
+
+
+def coherer(cle, trouves, la, ht):
+    """Ecarte les lectures posees loin de leurs voisines de phrase."""
+    from itertools import combinations
+    pos = {n: (v[0][0], v[0][1]) for n, v in trouves.items()}
+    surs = {n: pos[n] for n, v in trouves.items() if v[1] >= 0.95}
+    ph = phrases(cle[1:3])
+    ref = [np.hypot(surs[a][0] - surs[b][0], surs[a][1] - surs[b][1])
+           for g in ph for a, b in combinations([x for x in g if x in surs], 2)]
+    if len(ref) < 8:
+        return trouves, 0          # pas de quoi mesurer une echelle
+    ech = float(np.median(ref)) or 1.0
+    voisins = {}
+    for g in ph:
+        for a in g:
+            voisins.setdefault(a, set()).update(x for x in g if x != a)
+    gard, jetes = {}, 0
+    for n, v in trouves.items():
+        vs = [surs[w] for w in voisins.get(n, ()) if w in surs and w != n]
+        if vs:
+            x, y = pos[n]
+            dm = float(np.median([np.hypot(x - a, y - b) for a, b in vs]))
+            if dm / ech > SEUIL_ELOIGNE:
+                jetes += 1
+                continue
+        gard[n] = v
+    return gard, jetes
+
+
+def objekti(cle):
+    """Le nom de chaque objet numerote, s'il a ete releve."""
+    f = RACINE / "gravuri" / "objekti.json"
+    if not f.exists():
+        return {}
+    return json.loads(f.read_text(encoding="utf-8")).get(cle[:3], {})
+
+
+def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
+    """Une planche de controle : chaque numero lu, dans sa decoupe.
+
+    LE NOM DE L'OBJET EST PORTE SOUS LA DECOUPE. La forme du chiffre ne
+    suffit pas a juger une lecture douteuse -- une hachure ressemble a
+    beaucoup de choses -- mais le fac-simile dit ce que le numero
+    designe, et l'oeil tranche alors tout de suite : si « (20) » doit
+    montrer une bicyclette et que la decoupe n'en porte pas, la lecture
+    est fausse, quel qu'ait ete son score.
+
+    « seuil » ne retient que les lectures au-dessous d'une confiance
+    donnee, et « large » elargit la decoupe : c'est la planche des cas
+    douteux, ou l'on veut voir l'objet autour du numero, non le seul
+    chiffre.
+    """
     from PIL import ImageDraw
+    noms = objekti(cle_de(dest))
+    gard = {n: v for n, v in trouves.items()
+            if seuil is None or v[1] < seuil}
+    if not gard:
+        return 0
+    im = Image.open(chemin)
+    marge = round(large * haut)
+    cell = round(3.2 * haut * max(1.0, large / 1.1))
+    lig = (len(gard) + cols - 1) // cols
+    bas = 34
+    feuille = Image.new('L', (cols * cell, lig * (cell + bas)), 255)
     d = ImageDraw.Draw(feuille)
-    for k, n in enumerate(sorted(trouves)):
-        (x, y, w, h), f = trouves[n]
+    for k, n in enumerate(sorted(gard)):
+        (x, y, w, h), f = gard[n]
         cr = im.crop((x - marge, y - marge, x + w + marge, y + h + marge))
-        cr = cr.resize((cell, cell))
         r, c = divmod(k, cols)
-        feuille.paste(cr, (c * cell, r * (cell + 22)))
-        # La planche de controle porte la confiance a cote du nombre :
-        # c'est elle qu'on relit quand une decoupe ne montre rien.
-        d.text((c * cell + 4, r * (cell + 22) + cell + 4),
+        feuille.paste(cr.resize((cell, cell)), (c * cell, r * (cell + bas)))
+        d.text((c * cell + 4, r * (cell + bas) + cell + 3),
                f"{n}  ({f:.2f})", fill=0)
+        v = noms.get(str(n), {})
+        nom = (v.get("fr") or v.get("io") or ["—"])[0]
+        d.text((c * cell + 4, r * (cell + bas) + cell + 17), nom[:26], fill=0)
     feuille.save(dest)
+    return len(gard)
+
+
+def cle_de(dest):
+    return Path(dest).stem
 
 
 def main(cles=None):
@@ -446,9 +535,14 @@ def main(cles=None):
         if not att:
             continue
         trouves, haut, (ht, la) = lire(f, att)
+        trouves, jetes = coherer(cle, trouves, la, ht)
         tot_l += len(trouves)
         tot_a += len(att)
         controle(f, trouves, KONTROLO / f"{cle}.png", haut)
+        # LA PLANCHE DES CAS DOUTEUX, decoupee plus large et portant le
+        # nom de l'objet : c'est celle qu'on relit pour trancher.
+        n_d = controle(f, trouves, KONTROLO / f"{cle}-dubita.png", haut,
+                       seuil=0.95, large=3.4, cols=8)
         # EN FRACTION, non en points : la page sert la planche a trois
         # definitions, et le gros plan doit tomber juste sur chacune.
         cat[cle] = {"corpo": haut, "largeur": la, "alteso": ht,
@@ -464,7 +558,8 @@ def main(cles=None):
                                for n, ((x, y, w, h), f)
                                in sorted(trouves.items())}}
         print(f"  {cle}  {len(trouves):3d}/{len(att):3d} numeros lus "
-              f"(corps {haut} px)")
+              f"(corps {haut} px), dont {n_d} a verifier"
+              + (f", {jetes} ecartes par le voisinage" if jetes else ""))
     fich.write_text(json.dumps(cat, ensure_ascii=False, indent=1),
                     encoding="utf-8")
     if tot_a:

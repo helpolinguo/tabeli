@@ -1,0 +1,11052 @@
+{
+ "t01": {
+  "1": {
+   "io": [
+    "nigra tabelo"
+   ],
+   "fr": [
+    "tableau noir"
+   ]
+  },
+  "2": {
+   "io": [
+    "vishilo"
+   ],
+   "fr": [
+    "torchon"
+   ]
+  },
+  "3": {
+   "io": [
+    "kreto"
+   ],
+   "fr": [
+    "craie"
+   ]
+  },
+  "5": {
+   "io": [
+    "skribo-taski"
+   ],
+   "fr": [
+    "copies"
+   ]
+  },
+  "6": {
+   "io": [
+    "katedro"
+   ],
+   "fr": [
+    "chaire"
+   ]
+  },
+  "7": {
+   "io": [
+    "docisto"
+   ],
+   "fr": [
+    "professeur"
+   ]
+  },
+  "8": {
+   "io": [
+    "stulo"
+   ],
+   "fr": [
+    "chaise"
+   ]
+  },
+  "10": {
+   "io": [
+    "mapo"
+   ],
+   "fr": [
+    "carte géographique"
+   ]
+  },
+  "11": {
+   "io": [
+    "naturcienco"
+   ],
+   "fr": [
+    "histoire naturelle"
+   ]
+  },
+  "12": {
+   "io": [
+    "historio"
+   ],
+   "fr": [
+    "histoire"
+   ]
+  },
+  "13": {
+   "io": [
+    "terglobo"
+   ],
+   "fr": [
+    "globe terrestre"
+   ]
+  },
+  "14": {
+   "io": [
+    "sfero"
+   ],
+   "fr": [
+    "sphère"
+   ]
+  },
+  "15": {
+   "io": [
+    "armoro",
+    "fiziko"
+   ],
+   "fr": [
+    "armoire vitrée",
+    "physique"
+   ]
+  },
+  "16": {
+   "io": [
+    "kemio"
+   ],
+   "fr": [
+    "chimie"
+   ]
+  },
+  "17": {
+   "io": [
+    "plaso"
+   ],
+   "fr": [
+    "place"
+   ]
+  },
+  "18": {
+   "io": [
+    "tabli"
+   ],
+   "fr": [
+    "tables"
+   ]
+  },
+  "19": {
+   "io": [
+    "bona lernanti"
+   ],
+   "fr": [
+    "bons élèves"
+   ]
+  },
+  "22": {
+   "io": [
+    "leciono"
+   ],
+   "fr": [
+    "leçon"
+   ]
+  },
+  "25": {
+   "io": [
+    "inkuyo"
+   ],
+   "fr": [
+    "encrier"
+   ]
+  },
+  "26": {
+   "io": [
+    "kompaso"
+   ],
+   "fr": [
+    "compas"
+   ]
+  },
+  "27": {
+   "io": [
+    "kovrilo"
+   ],
+   "fr": [
+    "couverture"
+   ]
+  },
+  "28": {
+   "io": [
+    "kayero"
+   ],
+   "fr": [
+    "cahier"
+   ]
+  },
+  "29": {
+   "io": [
+    "libro"
+   ],
+   "fr": [
+    "livre"
+   ]
+  },
+  "30": {
+   "io": [
+    "lexiko"
+   ],
+   "fr": [
+    "dictionnaire"
+   ]
+  },
+  "31": {
+   "io": [
+    "skribiluyo"
+   ],
+   "fr": [
+    "plumier"
+   ]
+  },
+  "32": {
+   "io": [
+    "benki"
+   ],
+   "fr": [
+    "bancs"
+   ]
+  },
+  "33": {
+   "io": [
+    "kayeruyo"
+   ],
+   "fr": [
+    "serviette"
+   ]
+  },
+  "34": {
+   "io": [
+    "plumo"
+   ],
+   "fr": []
+  },
+  "35": {
+   "io": [
+    "klado-kayero"
+   ],
+   "fr": [
+    "cahier de brouillon"
+   ]
+  },
+  "36": {
+   "io": [
+    "efacokauchuko"
+   ],
+   "fr": [
+    "gomme à effacer"
+   ]
+  },
+  "37": {
+   "io": [
+    "krayoniero"
+   ],
+   "fr": [
+    "portecrayon"
+   ]
+  },
+  "38": {
+   "io": [
+    "Georgius"
+   ],
+   "fr": [
+    "Georges"
+   ]
+  },
+  "40": {
+   "io": [
+    "Ludovikus"
+   ],
+   "fr": [
+    "Ludovic"
+   ]
+  },
+  "41": {
+   "io": [
+    "absorbiva papero"
+   ],
+   "fr": []
+  },
+  "42": {
+   "io": [
+    "ardezo"
+   ],
+   "fr": [
+    "ardoise"
+   ]
+  },
+  "43": {
+   "io": [
+    "sponjo"
+   ],
+   "fr": [
+    "éponge"
+   ]
+  },
+  "44": {
+   "io": [
+    "Bernardus"
+   ],
+   "fr": [
+    "Bernard"
+   ]
+  },
+  "45": {
+   "io": [
+    "tubo"
+   ],
+   "fr": [
+    "tuyau"
+   ]
+  },
+  "46": {
+   "io": [
+    "furnelo"
+   ],
+   "fr": [
+    "poêle"
+   ]
+  },
+  "47": {
+   "io": [
+    "Iakobus"
+   ],
+   "fr": [
+    "Jacques"
+   ]
+  },
+  "48": {
+   "io": [
+    "Kristianus"
+   ],
+   "fr": [
+    "Christian"
+   ]
+  },
+  "49": {
+   "io": [
+    "krayono"
+   ],
+   "fr": [
+    "crayon"
+   ]
+  },
+  "50": {
+   "io": [
+    "linealo"
+   ],
+   "fr": [
+    "règle"
+   ]
+  },
+  "51": {
+   "io": [
+    "Ernestus"
+   ],
+   "fr": [
+    "Ernest"
+   ]
+  },
+  "52": {
+   "io": [
+    "Franciskus"
+   ],
+   "fr": [
+    "François"
+   ]
+  },
+  "53": {
+   "io": [
+    "skribkuseno"
+   ],
+   "fr": [
+    "sous-main"
+   ]
+  },
+  "54": {
+   "io": [
+    "notlibreto"
+   ],
+   "fr": [
+    "carnet de notes"
+   ]
+  },
+  "55": {
+   "io": [
+    "gramatiko"
+   ],
+   "fr": [
+    "grammaire"
+   ]
+  },
+  "56": {
+   "io": [
+    "kulteleto"
+   ],
+   "fr": [
+    "canif"
+   ]
+  },
+  "57": {
+   "io": [
+    "skolsako"
+   ],
+   "fr": [
+    "sac de classe"
+   ]
+  },
+  "58": {
+   "io": [
+    "vest-hoki"
+   ],
+   "fr": [
+    "portemanteaux"
+   ]
+  },
+  "59": {
+   "io": [
+    "busto"
+   ],
+   "fr": [
+    "buste"
+   ]
+  },
+  "60": {
+   "io": [
+    "docisto"
+   ],
+   "fr": [
+    "professeur"
+   ]
+  },
+  "61": {
+   "io": [
+    "desegnuri"
+   ],
+   "fr": [
+    "dessins"
+   ]
+  },
+  "62": {
+   "io": [
+    "lampo"
+   ],
+   "fr": [
+    "lampe"
+   ]
+  },
+  "63": {
+   "io": [
+    "horlojo"
+   ],
+   "fr": [
+    "horloge"
+   ]
+  },
+  "64": {
+   "io": [
+    "pianopleas"
+   ],
+   "fr": [
+    "piano"
+   ]
+  },
+  "65": {
+   "io": [
+    "pupitro"
+   ],
+   "fr": [
+    "pupitre"
+   ]
+  },
+  "66": {
+   "io": [
+    "muzik-docisto"
+   ],
+   "fr": [
+    "professeur de musique"
+   ]
+  },
+  "67": {
+   "io": [
+    "gamnoti"
+   ],
+   "fr": [
+    "notes"
+   ]
+  },
+  "68": {
+   "io": [
+    "skandas"
+   ],
+   "fr": [
+    "mesure"
+   ]
+  },
+  "69": {
+   "io": [
+    "manulabori"
+   ],
+   "fr": [
+    "travaux manuels"
+   ]
+  },
+  "70": {
+   "io": [
+    "gimnastikal aparati"
+   ],
+   "fr": [
+    "appareils de gymnastique"
+   ]
+  },
+  "71": {
+   "io": [
+    "(liceestro)"
+   ],
+   "fr": [
+    "proviseur"
+   ]
+  },
+  "72": {
+   "io": [
+    "censoro"
+   ],
+   "fr": [
+    "censeur"
+   ]
+  },
+  "73": {
+   "io": [
+    "inspektisto"
+   ],
+   "fr": [
+    "inspecteur"
+   ]
+  },
+  "74": {
+   "io": [
+    "Submaestro"
+   ],
+   "fr": [
+    "maître répétiteur"
+   ]
+  },
+  "75": {
+   "io": [
+    "korto"
+   ],
+   "fr": [
+    "cour"
+   ]
+  },
+  "76": {
+   "io": [
+    "amuz-tempo"
+   ],
+   "fr": [
+    "récréation"
+   ]
+  },
+  "77": {
+   "io": [
+    "pordisto"
+   ],
+   "fr": [
+    "concierge"
+   ]
+  },
+  "78": {
+   "io": [
+    "postigi"
+   ],
+   "fr": [
+    "vasistas"
+   ]
+  }
+ },
+ "t02": {
+  "1": {
+   "io": [
+    "gimnastikal aparati"
+   ],
+   "fr": [
+    "appareils de gymnastique"
+   ]
+  },
+  "2": {
+   "io": [
+    "skalo"
+   ],
+   "fr": [
+    "échelle"
+   ]
+  },
+  "3": {
+   "io": [
+    "ringi"
+   ],
+   "fr": [
+    "anneaux"
+   ]
+  },
+  "4": {
+   "io": [
+    "trapezo"
+   ],
+   "fr": [
+    "trapèze"
+   ]
+  },
+  "5": {
+   "io": [
+    "korda skalo"
+   ],
+   "fr": [
+    "l'échelle de corde"
+   ]
+  },
+  "6": {
+   "io": [
+    "kordo nodoza"
+   ],
+   "fr": [
+    "corde à nœuds"
+   ]
+  },
+  "7": {
+   "io": [
+    "ligna kavalo"
+   ],
+   "fr": [
+    "cheval de bois"
+   ]
+  },
+  "8": {
+   "io": [
+    "boxas"
+   ],
+   "fr": [
+    "boxe"
+   ]
+  },
+  "9": {
+   "io": [
+    "skermas"
+   ],
+   "fr": [
+    "escrime"
+   ]
+  },
+  "10": {
+   "io": [
+    "halteragas"
+   ],
+   "fr": [
+    "haltères"
+   ]
+  },
+  "11": {
+   "io": [
+    "stangi paralela"
+   ],
+   "fr": [
+    "barres parallèles"
+   ]
+  },
+  "12": {
+   "io": [
+    "docisto pri gimnastiko"
+   ],
+   "fr": [
+    "professeur de gymnastique"
+   ]
+  },
+  "13": {
+   "io": [
+    "kordo"
+   ],
+   "fr": [
+    "corde"
+   ]
+  },
+  "14": {
+   "io": [
+    "ringego"
+   ],
+   "fr": [
+    "cerceau"
+   ]
+  },
+  "15": {
+   "io": [
+    "kroket"
+   ],
+   "fr": [
+    "croquet"
+   ]
+  },
+  "16": {
+   "io": [
+    "kegli"
+   ],
+   "fr": [
+    "quilles"
+   ]
+  },
+  "17": {
+   "io": [
+    "bulo"
+   ],
+   "fr": [
+    "boule"
+   ]
+  },
+  "18": {
+   "io": [
+    "tupio"
+   ],
+   "fr": [
+    "toupie"
+   ]
+  },
+  "19": {
+   "io": [
+    "bilboketo"
+   ],
+   "fr": [
+    "bilboquet"
+   ]
+  },
+  "20": {
+   "io": [
+    "ranoludo",
+    "rano-ludo"
+   ],
+   "fr": [
+    "jeu de tonneau"
+   ]
+  },
+  "21": {
+   "io": [
+    "buleti"
+   ],
+   "fr": [
+    "billes"
+   ]
+  },
+  "22": {
+   "io": [
+    "mur-baloneto"
+   ],
+   "fr": [
+    "balle au mur"
+   ]
+  },
+  "24": {
+   "io": [
+    "stelti"
+   ],
+   "fr": [
+    "échasses"
+   ]
+  },
+  "25": {
+   "io": [
+    "celo-trovo"
+   ],
+   "fr": [
+    "cache-cache"
+   ]
+  },
+  "26": {
+   "io": [
+    "teplico"
+   ],
+   "fr": [
+    "serre"
+   ]
+  },
+  "28": {
+   "io": [
+    "frap-divino"
+   ],
+   "fr": [
+    "main-chaude"
+   ]
+  },
+  "29": {
+   "io": [
+    "flugbalono"
+   ],
+   "fr": [
+    "volant"
+   ]
+  },
+  "30": {
+   "io": [
+    "shultro-salto"
+   ],
+   "fr": [
+    "cheval fondu"
+   ]
+  },
+  "31": {
+   "io": [
+    "blindo-ludo"
+   ],
+   "fr": [
+    "colin-maillard"
+   ]
+  },
+  "32": {
+   "io": [
+    "ursino"
+   ],
+   "fr": [
+    "l'ourse"
+   ]
+  },
+  "33": {
+   "io": [
+    "kaito"
+   ],
+   "fr": [
+    "cerfvolant"
+   ]
+  },
+  "34": {
+   "io": [
+    "teniso"
+   ],
+   "fr": [
+    "lawntennis"
+   ]
+  },
+  "35": {
+   "io": [
+    "ocililo"
+   ],
+   "fr": [
+    "balançoire"
+   ]
+  },
+  "36": {
+   "io": [
+    "ped-balono"
+   ],
+   "fr": [
+    "foot-ball"
+   ]
+  },
+  "37": {
+   "io": [
+    "biciklo"
+   ],
+   "fr": [
+    "bicyclette"
+   ]
+  },
+  "38": {
+   "io": [
+    "baro-ludo"
+   ],
+   "fr": [
+    "jeu de barres"
+   ]
+  },
+  "39": {
+   "io": [
+    "kavalko"
+   ],
+   "fr": [
+    "l'équitation"
+   ]
+  },
+  "40": {
+   "io": [
+    "natarto"
+   ],
+   "fr": [
+    "natation"
+   ]
+  },
+  "41": {
+   "io": [
+    "balono"
+   ],
+   "fr": []
+  }
+ },
+ "t03": {
+  "1": {
+   "io": [
+    "cielo",
+    "shui"
+   ],
+   "fr": [
+    "ciel",
+    "souliers"
+   ]
+  },
+  "2": {
+   "io": [
+    "nubeti",
+    "trikota vesto"
+   ],
+   "fr": [
+    "nuages",
+    "tricot"
+   ]
+  },
+  "3": {
+   "io": [
+    "popli",
+    "balnokalsono"
+   ],
+   "fr": [
+    "peupliers",
+    "caleçon"
+   ]
+  },
+  "4": {
+   "io": [
+    "hirundi",
+    "boteti"
+   ],
+   "fr": [
+    "hirondelles",
+    "bottines"
+   ]
+  },
+  "5": {
+   "io": [
+    "klosheyo",
+    "shui"
+   ],
+   "fr": [
+    "clocher",
+    "souliers"
+   ]
+  },
+  "6": {
+   "io": [
+    "kirko",
+    "kalzeti"
+   ],
+   "fr": [
+    "église",
+    "chaussettes"
+   ]
+  },
+  "7": {
+   "io": [
+    "flecho",
+    "felta"
+   ],
+   "fr": [
+    "flèche",
+    "feutre"
+   ]
+  },
+  "8": {
+   "io": [
+    "horlojo",
+    "palia"
+   ],
+   "fr": [
+    "horloge",
+    "paille"
+   ]
+  },
+  "9": {
+   "io": [
+    "indexo",
+    "kravato"
+   ],
+   "fr": [
+    "petite aiguille",
+    "cravate"
+   ]
+  },
+  "10": {
+   "io": [
+    "granda",
+    "vestio"
+   ],
+   "fr": [
+    "grande",
+    "veste"
+   ]
+  },
+  "11": {
+   "io": [
+    "kloshi",
+    "kasqueto"
+   ],
+   "fr": [
+    "cloches",
+    "casquette"
+   ]
+  },
+  "12": {
+   "io": [
+    "kruco",
+    "kamizo"
+   ],
+   "fr": [
+    "croix",
+    "chemise"
+   ]
+  },
+  "13": {
+   "io": [
+    "portalo",
+    "kolumo"
+   ],
+   "fr": [
+    "porche",
+    "portail",
+    "col"
+   ]
+  },
+  "14": {
+   "io": [
+    "sakristio",
+    "mansheti"
+   ],
+   "fr": [
+    "sacristie",
+    "manchettes"
+   ]
+  },
+  "15": {
+   "io": [
+    "paroko",
+    "breteli"
+   ],
+   "fr": [
+    "Curé",
+    "bretelles"
+   ]
+  },
+  "16": {
+   "io": [
+    "pantalono"
+   ],
+   "fr": [
+    "bonnet",
+    "pantalon"
+   ]
+  },
+  "17": {
+   "io": [
+    "platano",
+    "jileto"
+   ],
+   "fr": [
+    "platane",
+    "gilet"
+   ]
+  },
+  "18": {
+   "io": [
+    "fruktarbori",
+    "persikieri",
+    "kardoni"
+   ],
+   "fr": [
+    "arbres fruitiers",
+    "pêchers",
+    "chardons"
+   ]
+  },
+  "19": {
+   "io": [
+    "parokeyo",
+    "abrikotieri",
+    "kani"
+   ],
+   "fr": [
+    "presbytère",
+    "abricotiers",
+    "roseaux"
+   ]
+  },
+  "20": {
+   "io": [
+    "flori",
+    "pirotekno"
+   ],
+   "fr": [
+    "fleurs",
+    "feu d'artifice"
+   ]
+  },
+  "21": {
+   "io": [
+    "abeluyo",
+    "barko"
+   ],
+   "fr": [
+    "barque"
+   ]
+  },
+  "22": {
+   "io": [
+    "abeli",
+    "yolo"
+   ],
+   "fr": [
+    "abeilles",
+    "yole"
+   ]
+  },
+  "23": {
+   "io": [
+    "asno",
+    "remili"
+   ],
+   "fr": [
+    "âne",
+    "rames"
+   ]
+  },
+  "24": {
+   "io": [
+    "laktovendistino",
+    "remeri"
+   ],
+   "fr": [
+    "laitière",
+    "rûche",
+    "rameurs"
+   ]
+  },
+  "25": {
+   "io": [
+    "gansi",
+    "guvernilo"
+   ],
+   "fr": [
+    "oies",
+    "gouvernail"
+   ]
+  },
+  "26": {
+   "io": [
+    "bersilo",
+    "guvernanto"
+   ],
+   "fr": [
+    "berceau",
+    "barreur"
+   ]
+  },
+  "27": {
+   "io": [
+    "ponto"
+   ],
+   "fr": [
+    "pont"
+   ]
+  },
+  "28": {
+   "io": [
+    "fulardo",
+    "buspritomasto"
+   ],
+   "fr": [
+    "foulard",
+    "mât de beaupré"
+   ]
+  },
+  "29": {
+   "io": [
+    "korsajo",
+    "flago"
+   ],
+   "fr": [
+    "corsage",
+    "drapeau"
+   ]
+  },
+  "30": {
+   "io": [
+    "avantalo",
+    "konkursanto"
+   ],
+   "fr": [
+    "tablier",
+    "concurrent"
+   ]
+  },
+  "31": {
+   "io": [
+    "subjupo",
+    "publiko"
+   ],
+   "fr": [
+    "jupon",
+    "public"
+   ]
+  },
+  "32": {
+   "io": [
+    "korseto",
+    "(batel)-turniras"
+   ],
+   "fr": [
+    "corset",
+    "joutent"
+   ]
+  },
+  "33": {
+   "io": [
+    "muro",
+    "kayo"
+   ],
+   "fr": [
+    "mur",
+    "quai"
+   ]
+  },
+  "34": {
+   "io": [
+    "dianti"
+   ],
+   "fr": [
+    "œillets"
+   ]
+  },
+  "35": {
+   "io": [
+    "papilioni",
+    "bubi"
+   ],
+   "fr": [
+    "papillons",
+    "gamins"
+   ]
+  },
+  "36": {
+   "io": [
+    "tulipi",
+    "muzikisti"
+   ],
+   "fr": [
+    "tulipes",
+    "musique"
+   ]
+  },
+  "37": {
+   "io": [
+    "maiflori",
+    "urbestro"
+   ],
+   "fr": [
+    "muguets",
+    "maire"
+   ]
+  },
+  "38": {
+   "io": [
+    "poti",
+    "pumpisti"
+   ],
+   "fr": [
+    "pots",
+    "pompiers"
+   ]
+  },
+  "39": {
+   "io": [
+    "rozi",
+    "ferioplaco"
+   ],
+   "fr": [
+    "roses",
+    "champ de foire"
+   ]
+  },
+  "40": {
+   "io": [
+    "kavali"
+   ],
+   "fr": [
+    "chevaux de bois"
+   ]
+  },
+  "41": {
+   "io": [
+    "cirko"
+   ],
+   "fr": [
+    "cirque"
+   ]
+  },
+  "42": {
+   "io": [
+    "hundo",
+    "publika balo"
+   ],
+   "fr": [
+    "petit chien",
+    "bal public"
+   ]
+  },
+  "43": {
+   "io": [
+    "hanino"
+   ],
+   "fr": [
+    "poule"
+   ]
+  },
+  "44": {
+   "io": [
+    "hanyuneti",
+    "areni"
+   ],
+   "fr": [
+    "poussins",
+    "arènes"
+   ]
+  },
+  "45": {
+   "io": [
+    "nutristino",
+    "premio-masto",
+    "tauro"
+   ],
+   "fr": [
+    "nourrice",
+    "mât de cocagne",
+    "taureau"
+   ]
+  },
+  "46": {
+   "io": [
+    "kofio",
+    "pafeyo"
+   ],
+   "fr": [
+    "tir"
+   ]
+  },
+  "47": {
+   "io": [
+    "novenaskinto",
+    "ferial teatro"
+   ],
+   "fr": [
+    "nouveau-né",
+    "théâtre"
+   ]
+  },
+  "48": {
+   "io": [
+    "denteli",
+    "giganto"
+   ],
+   "fr": [
+    "dentelles",
+    "géant"
+   ]
+  },
+  "49": {
+   "io": [
+    "baptopatrulo",
+    "relgliteyo"
+   ],
+   "fr": [
+    "parrain",
+    "russes"
+   ]
+  },
+  "50": {
+   "io": [
+    "cilindra chapelo",
+    "menajerio"
+   ],
+   "fr": [
+    "chapeau haut de forme",
+    "ménagerie"
+   ]
+  },
+  "51": {
+   "io": [
+    "ganti",
+    "tigrulo"
+   ],
+   "fr": [
+    "gants",
+    "tigre"
+   ]
+  },
+  "52": {
+   "io": [
+    "monetpeci",
+    "leonulo"
+   ],
+   "fr": [
+    "sous",
+    "lion"
+   ]
+  },
+  "53": {
+   "io": [
+    "baptomatro",
+    "jirafi"
+   ],
+   "fr": [
+    "marraine",
+    "girafes"
+   ]
+  },
+  "54": {
+   "io": [
+    "buketo",
+    "elefanto"
+   ],
+   "fr": [
+    "bouquet",
+    "éléphant"
+   ]
+  },
+  "55": {
+   "io": [
+    "bonboni",
+    "domtisto"
+   ],
+   "fr": [
+    "bonbons",
+    "dompteur"
+   ]
+  },
+  "56": {
+   "io": [
+    "onklulo"
+   ],
+   "fr": [
+    "oncle"
+   ]
+  },
+  "57": {
+   "io": [
+    "redingoto"
+   ],
+   "fr": [
+    "redingote"
+   ]
+  },
+  "58": {
+   "io": [
+    "onklino"
+   ],
+   "fr": [
+    "tante"
+   ]
+  },
+  "59": {
+   "io": [
+    "chapelo"
+   ],
+   "fr": [
+    "chapeau"
+   ]
+  },
+  "60": {
+   "io": [
+    "kuzulo"
+   ],
+   "fr": [
+    "cousin"
+   ]
+  },
+  "61": {
+   "io": [
+    "kuzino"
+   ],
+   "fr": [
+    "cousine"
+   ]
+  },
+  "62": {
+   "io": [
+    "fratino"
+   ],
+   "fr": [
+    "sœur"
+   ]
+  },
+  "63": {
+   "io": [
+    "fratulo"
+   ],
+   "fr": [
+    "frère"
+   ]
+  },
+  "64": {
+   "io": [
+    "parentino"
+   ],
+   "fr": [
+    "parente"
+   ]
+  },
+  "65": {
+   "io": [
+    "amiki"
+   ],
+   "fr": [
+    "amis"
+   ]
+  },
+  "66": {
+   "io": [
+    "mendikero"
+   ],
+   "fr": [
+    "mendiant"
+   ]
+  },
+  "67": {
+   "io": [
+    "grucho"
+   ],
+   "fr": [
+    "béquille"
+   ]
+  },
+  "68": {
+   "io": [
+    "polita"
+   ],
+   "fr": [
+    "poli"
+   ]
+  },
+  "69": {
+   "io": [
+    "rurano"
+   ],
+   "fr": [
+    "paysan"
+   ]
+  },
+  "70": {
+   "io": [
+    "ruranino"
+   ],
+   "fr": [
+    "paysanne"
+   ]
+  },
+  "71": {
+   "io": [
+    "oldino"
+   ],
+   "fr": [
+    "vieille femme"
+   ]
+  },
+  "72": {
+   "io": [
+    "bastono"
+   ],
+   "fr": [
+    "bâton"
+   ]
+  },
+  "73": {
+   "io": [
+    "muelisto"
+   ],
+   "fr": [
+    "meunier"
+   ]
+  },
+  "74": {
+   "io": [
+    "felta chapelo"
+   ],
+   "fr": [
+    "chapeau de feutre"
+   ]
+  },
+  "75": {
+   "io": [
+    "ligna shui"
+   ],
+   "fr": [
+    "sabots"
+   ]
+  }
+ },
+ "t04": {
+  "1": {
+   "io": [
+    "kastelo",
+    "kato"
+   ],
+   "fr": [
+    "château",
+    "chat"
+   ]
+  },
+  "2": {
+   "io": [
+    "perdriki",
+    "nepotuli"
+   ],
+   "fr": [
+    "perdrix",
+    "petitsfils"
+   ]
+  },
+  "3": {
+   "io": [
+    "kolino",
+    "nepotino"
+   ],
+   "fr": [
+    "colline",
+    "petite-fille"
+   ]
+  },
+  "4": {
+   "io": [
+    "busharo",
+    "mantelo"
+   ],
+   "fr": [
+    "buissons",
+    "manteau"
+   ]
+  },
+  "5": {
+   "io": [
+    "chasgardisto",
+    "zono"
+   ],
+   "fr": [
+    "gardechasse",
+    "ceinture"
+   ]
+  },
+  "6": {
+   "io": [
+    "hundo",
+    "kalzi"
+   ],
+   "fr": [
+    "chien",
+    "bas"
+   ]
+  },
+  "7": {
+   "io": [
+    "vito-grapi",
+    "surtuto"
+   ],
+   "fr": [
+    "grappes",
+    "pardessus"
+   ]
+  },
+  "8": {
+   "io": [
+    "verando",
+    "fur-kolumo"
+   ],
+   "fr": [
+    "véranda",
+    "fourrure"
+   ]
+  },
+  "9": {
+   "io": [
+    "krizantemi",
+    "posho"
+   ],
+   "fr": [
+    "chrysanthèmes",
+    "poche"
+   ]
+  },
+  "10": {
+   "io": [
+    "patrulo",
+    "plumi"
+   ],
+   "fr": [
+    "père",
+    "plumes"
+   ]
+  },
+  "11": {
+   "io": [
+    "servisto",
+    "jako"
+   ],
+   "fr": [
+    "domestique",
+    "jaquette"
+   ]
+  },
+  "12": {
+   "io": [
+    "forketi",
+    "boa-furo"
+   ],
+   "fr": [
+    "fourchettes",
+    "boa"
+   ]
+  },
+  "13": {
+   "io": [
+    "kulteli",
+    "mufo"
+   ],
+   "fr": [
+    "couteaux",
+    "manchon"
+   ]
+  },
+  "14": {
+   "io": [
+    "kulieri",
+    "servistino"
+   ],
+   "fr": [
+    "cuillères",
+    "bonne"
+   ]
+  },
+  "15": {
+   "io": [
+    "pladegi",
+    "boledo"
+   ],
+   "fr": [
+    "plats",
+    "bol"
+   ]
+  },
+  "16": {
+   "io": [
+    "tablo",
+    "l'apoteko"
+   ],
+   "fr": [
+    "table",
+    "pharmacie"
+   ]
+  },
+  "17": {
+   "io": [
+    "matro",
+    "luno"
+   ],
+   "fr": [
+    "mère",
+    "lune"
+   ]
+  },
+  "18": {
+   "io": [
+    "spozulo",
+    "steli"
+   ],
+   "fr": [
+    "mari",
+    "étoiles"
+   ]
+  },
+  "19": {
+   "io": [
+    "yuna muliero",
+    "nivo"
+   ],
+   "fr": [
+    "jeune femme",
+    "neige"
+   ]
+  },
+  "20": {
+   "io": [
+    "bopatrulo",
+    "blindo"
+   ],
+   "fr": [
+    "beau-père",
+    "aveugle"
+   ]
+  },
+  "21": {
+   "io": [
+    "bomatro",
+    "pudelo"
+   ],
+   "fr": [
+    "belle-mère",
+    "caniche"
+   ]
+  },
+  "22": {
+   "io": [
+    "invititi"
+   ],
+   "fr": [
+    "invités"
+   ]
+  },
+  "23": {
+   "io": [
+    "Tablo-chefo",
+    "avino"
+   ],
+   "fr": [
+    "maître d'hôtel",
+    "Grand'maman"
+   ]
+  },
+  "24": {
+   "io": [
+    "zelo",
+    "bastono"
+   ],
+   "fr": [
+    "demoiselle",
+    "canne"
+   ]
+  },
+  "25": {
+   "io": [
+    "honor-kompano",
+    "mediko"
+   ],
+   "fr": [
+    "garçon d'honneur",
+    "docteur"
+   ]
+  },
+  "26": {
+   "io": [
+    "honor-damzelo",
+    "orelo-binoklo"
+   ],
+   "fr": [
+    "demoiselle d'honneur",
+    "lunettes"
+   ]
+  },
+  "27": {
+   "io": [
+    "amiko",
+    "preskripto"
+   ],
+   "fr": [
+    "ami",
+    "ordonnance"
+   ]
+  },
+  "28": {
+   "io": [
+    "shui vernisizita",
+    "pociono"
+   ],
+   "fr": [
+    "souliers vernis",
+    "potion"
+   ]
+  },
+  "29": {
+   "io": [
+    "avino",
+    "kameno"
+   ],
+   "fr": [
+    "grand'mère",
+    "cheminée"
+   ]
+  },
+  "30": {
+   "io": [
+    "bofrato",
+    "belega fairo"
+   ],
+   "fr": [
+    "beau-frère",
+    "feu"
+   ]
+  },
+  "31": {
+   "io": [
+    "frako",
+    "lampo"
+   ],
+   "fr": [
+    "habit",
+    "lampe"
+   ]
+  },
+  "33": {
+   "io": [
+    "yuna damo",
+    "avulo"
+   ],
+   "fr": [
+    "jeune femme",
+    "grand-père"
+   ]
+  },
+  "34": {
+   "io": [
+    "stulego"
+   ],
+   "fr": [
+    "fauteuil"
+   ]
+  },
+  "35": {
+   "io": [
+    "orfano",
+    "chambro-robo"
+   ],
+   "fr": [
+    "orphelin",
+    "robe de chambre"
+   ]
+  },
+  "36": {
+   "io": [
+    "bluzo",
+    "butoni"
+   ],
+   "fr": [
+    "blouse",
+    "boutons"
+   ]
+  },
+  "37": {
+   "io": [
+    "bracho"
+   ],
+   "fr": [
+    "culotte"
+   ]
+  },
+  "38": {
+   "io": [
+    "tutelero",
+    "kuseno"
+   ],
+   "fr": [
+    "tuteur",
+    "coussin"
+   ]
+  },
+  "39": {
+   "io": [
+    "desero",
+    "tabureto"
+   ],
+   "fr": [
+    "dessert",
+    "tabouret"
+   ]
+  },
+  "40": {
+   "io": [
+    "persiki",
+    "orfanino"
+   ],
+   "fr": [
+    "pêches",
+    "orpheline"
+   ]
+  },
+  "41": {
+   "io": [
+    "piri",
+    "pelerino"
+   ],
+   "fr": [
+    "poires",
+    "pèlerine"
+   ]
+  },
+  "42": {
+   "io": [
+    "pomi",
+    "robo"
+   ],
+   "fr": [
+    "pommes",
+    "robe"
+   ]
+  },
+  "43": {
+   "io": [
+    "abrikoti",
+    "kalendario"
+   ],
+   "fr": [
+    "abricots",
+    "calendrier"
+   ]
+  },
+  "44": {
+   "io": [
+    "vitberi",
+    "treto"
+   ],
+   "fr": [
+    "raisins"
+   ]
+  },
+  "45": {
+   "io": [
+    "ananasi"
+   ],
+   "fr": [
+    "ananas"
+   ]
+  },
+  "46": {
+   "io": [
+    "kuko"
+   ],
+   "fr": [
+    "gâteau"
+   ]
+  },
+  "47": {
+   "io": [
+    "pladi"
+   ],
+   "fr": [
+    "assiettes"
+   ]
+  },
+  "48": {
+   "io": [
+    "liquor-boteli"
+   ],
+   "fr": [
+    "liqueur"
+   ]
+  },
+  "49": {
+   "io": [
+    "champanio"
+   ],
+   "fr": [
+    "champagne"
+   ]
+  },
+  "50": {
+   "io": [
+    "keleristo"
+   ],
+   "fr": [
+    "sommelier"
+   ]
+  },
+  "51": {
+   "io": [
+    "korko-tirilo"
+   ],
+   "fr": [
+    "tire-bouchon"
+   ]
+  },
+  "52": {
+   "io": [
+    "botelo"
+   ],
+   "fr": [
+    "bouteille"
+   ]
+  },
+  "53": {
+   "io": [
+    "korka stopilo"
+   ],
+   "fr": [
+    "bouchon"
+   ]
+  },
+  "54": {
+   "io": [
+    "servo-tuko"
+   ],
+   "fr": [
+    "serviette"
+   ]
+  }
+ },
+ "t05": {
+  "1": {
+   "io": [
+    "fasado",
+    "balneyo"
+   ],
+   "fr": [
+    "façade",
+    "salle de bains"
+   ]
+  },
+  "2": {
+   "io": [
+    "fundamenti"
+   ],
+   "fr": [
+    "fondations"
+   ]
+  },
+  "3": {
+   "io": [
+    "kelero"
+   ],
+   "fr": [
+    "cave"
+   ]
+  },
+  "4": {
+   "io": [
+    "pordo"
+   ],
+   "fr": [
+    "porte"
+   ]
+  },
+  "5": {
+   "io": [
+    "keler-fenestro"
+   ],
+   "fr": [
+    "soupirail"
+   ]
+  },
+  "6": {
+   "io": [
+    "seruro"
+   ],
+   "fr": [
+    "serrure"
+   ]
+  },
+  "7": {
+   "io": [
+    "teretajo"
+   ],
+   "fr": [
+    "rez-de-chaussée"
+   ]
+  },
+  "8": {
+   "io": [
+    "pordi",
+    "pordo"
+   ],
+   "fr": [
+    "portes",
+    "porte d'entrée"
+   ]
+  },
+  "9": {
+   "io": [
+    "perono"
+   ],
+   "fr": [
+    "perron"
+   ]
+  },
+  "10": {
+   "io": [
+    "solio"
+   ],
+   "fr": [
+    "seuil"
+   ]
+  },
+  "11": {
+   "io": [
+    "klosheto"
+   ],
+   "fr": [
+    "sonnette"
+   ]
+  },
+  "12": {
+   "io": [
+    "vestibulo"
+   ],
+   "fr": [
+    "vestibule"
+   ]
+  },
+  "13": {
+   "io": [
+    "eskalero"
+   ],
+   "fr": [
+    "escalier"
+   ]
+  },
+  "14": {
+   "io": [
+    "gradi"
+   ],
+   "fr": [
+    "marches"
+   ]
+  },
+  "15": {
+   "io": [
+    "pasamano"
+   ],
+   "fr": [
+    "rampe"
+   ]
+  },
+  "16": {
+   "io": [
+    "parqueti"
+   ],
+   "fr": [
+    "parquets"
+   ]
+  },
+  "17": {
+   "io": [
+    "fenestri"
+   ],
+   "fr": [
+    "fenêtres"
+   ]
+  },
+  "18": {
+   "io": [
+    "kareli"
+   ],
+   "fr": [
+    "vitres"
+   ]
+  },
+  "19": {
+   "io": [
+    "shutri"
+   ],
+   "fr": [
+    "volets"
+   ]
+  },
+  "20": {
+   "io": [
+    "latrino"
+   ],
+   "fr": [
+    "cabinets d'aisances"
+   ]
+  },
+  "21": {
+   "io": [
+    "teraso"
+   ],
+   "fr": [
+    "terrasse"
+   ]
+  },
+  "22": {
+   "io": [
+    "klosho"
+   ],
+   "fr": [
+    "cloche"
+   ]
+  },
+  "23": {
+   "io": [
+    "verando"
+   ],
+   "fr": [
+    "véranda"
+   ]
+  },
+  "24": {
+   "io": [
+    "zinka"
+   ],
+   "fr": [
+    "zinc"
+   ]
+  },
+  "25": {
+   "io": [
+    "vitrizita pordo"
+   ],
+   "fr": [
+    "porte vitrée"
+   ]
+  },
+  "26": {
+   "io": [
+    "plafoni"
+   ],
+   "fr": [
+    "plafonds"
+   ]
+  },
+  "27": {
+   "io": [
+    "etajo"
+   ],
+   "fr": [
+    "premier étage"
+   ]
+  },
+  "28": {
+   "io": [
+    "balkono"
+   ],
+   "fr": [
+    "balcon"
+   ]
+  },
+  "29": {
+   "io": [
+    "storo"
+   ],
+   "fr": [
+    "store"
+   ]
+  },
+  "31": {
+   "io": [
+    "tekto"
+   ],
+   "fr": [
+    "toit"
+   ]
+  },
+  "32": {
+   "io": [
+    "ardezkovrita"
+   ],
+   "fr": [
+    "ardoises"
+   ]
+  },
+  "33": {
+   "io": [
+    "verando",
+    "mansardi"
+   ],
+   "fr": [
+    "véranda",
+    "mansardes"
+   ]
+  },
+  "34": {
+   "io": [],
+   "fr": [
+    "grenier"
+   ]
+  },
+  "35": {
+   "io": [
+    "karpenturo"
+   ],
+   "fr": [
+    "charpente"
+   ]
+  },
+  "36": {
+   "io": [
+    "geblo"
+   ],
+   "fr": [
+    "pignon"
+   ]
+  },
+  "37": {
+   "io": [
+    "trabi"
+   ],
+   "fr": [
+    "poutres"
+   ]
+  },
+  "38": {
+   "io": [
+    "luko"
+   ],
+   "fr": [
+    "lucarne"
+   ]
+  },
+  "39": {
+   "io": [
+    "vento-flecho"
+   ],
+   "fr": [
+    "girouette"
+   ]
+  },
+  "40": {
+   "io": [
+    "parafulmino"
+   ],
+   "fr": [
+    "paratonnerre"
+   ]
+  },
+  "41": {
+   "io": [
+    "kameno"
+   ],
+   "fr": [
+    "cheminée"
+   ]
+  },
+  "42": {
+   "io": [
+    "tekto-kanali"
+   ],
+   "fr": [
+    "gouttières"
+   ]
+  },
+  "43": {
+   "io": [
+    "kanali"
+   ],
+   "fr": [
+    "chéneaux"
+   ]
+  },
+  "44": {
+   "io": [
+    "kupra"
+   ],
+   "fr": [
+    "fil de cuivre"
+   ]
+  },
+  "45": {
+   "io": [
+    "korto"
+   ],
+   "fr": [
+    "cour"
+   ]
+  },
+  "46": {
+   "io": [
+    "trancheo"
+   ],
+   "fr": [
+    "tranchée"
+   ]
+  },
+  "47": {
+   "io": [
+    "greto"
+   ],
+   "fr": [
+    "grille"
+   ]
+  },
+  "48": {
+   "io": [
+    "pordego"
+   ],
+   "fr": [
+    "porte cochère"
+   ]
+  },
+  "49": {
+   "io": [
+    "gardeneto"
+   ],
+   "fr": [
+    "jardin"
+   ]
+  },
+  "51": {
+   "io": [
+    "vetureyo"
+   ],
+   "fr": [
+    "remise"
+   ]
+  },
+  "52": {
+   "io": [
+    "veturo"
+   ],
+   "fr": [
+    "voiture"
+   ]
+  },
+  "53": {
+   "io": [
+    "riglo"
+   ],
+   "fr": [
+    "verrou"
+   ]
+  },
+  "54": {
+   "io": [
+    "kavaleyo"
+   ],
+   "fr": [
+    "écurie"
+   ]
+  },
+  "55": {
+   "io": [
+    "tegulkovrita"
+   ],
+   "fr": [
+    "tuiles"
+   ]
+  },
+  "56": {
+   "io": [
+    "lesiveyo"
+   ],
+   "fr": [
+    "buanderie"
+   ]
+  },
+  "58": {
+   "io": [],
+   "fr": [
+    "pompe"
+   ]
+  },
+  "59": {
+   "io": [
+    "quadri"
+   ],
+   "fr": [
+    "pierres"
+   ]
+  },
+  "60": {
+   "io": [
+    "petra bloki"
+   ],
+   "fr": [
+    "blocs"
+   ]
+  },
+  "61": {
+   "io": [
+    "briki"
+   ],
+   "fr": [
+    "briques"
+   ]
+  },
+  "62": {
+   "io": [
+    "sablo"
+   ],
+   "fr": [
+    "sable"
+   ]
+  },
+  "63": {
+   "io": [
+    "kalko"
+   ],
+   "fr": [
+    "chaux"
+   ]
+  },
+  "64": {
+   "io": [
+    "aquo"
+   ],
+   "fr": [
+    "eau"
+   ]
+  },
+  "65": {
+   "io": [
+    "mortero"
+   ],
+   "fr": [
+    "mortier"
+   ]
+  },
+  "66": {
+   "io": [
+    "ardezi"
+   ],
+   "fr": [
+    "ardoises"
+   ]
+  },
+  "67": {
+   "io": [
+    "feraji"
+   ],
+   "fr": [
+    "morceaux de fer"
+   ]
+  },
+  "69": {
+   "io": [],
+   "fr": [
+    "bois"
+   ]
+  },
+  "70": {
+   "io": [
+    "gipso"
+   ],
+   "fr": [
+    "plâtre"
+   ]
+  },
+  "71": {
+   "io": [
+    "sako"
+   ],
+   "fr": [
+    "sac"
+   ]
+  },
+  "73": {
+   "io": [
+    "mastico"
+   ],
+   "fr": [
+    "mastic"
+   ]
+  },
+  "75": {
+   "io": [
+    "L'arkitekto"
+   ],
+   "fr": [
+    "architecte"
+   ]
+  },
+  "76": {
+   "io": [
+    "plano"
+   ],
+   "fr": [
+    "plan"
+   ]
+  },
+  "77": {
+   "io": [
+    "l'entraprezisto"
+   ],
+   "fr": [
+    "entrepreneur"
+   ]
+  },
+  "78": {
+   "io": [
+    "linealo"
+   ],
+   "fr": [
+    "règle"
+   ]
+  },
+  "81": {
+   "io": [
+    "ter-laboristo"
+   ],
+   "fr": [
+    "terrassier"
+   ]
+  },
+  "82": {
+   "io": [
+    "shovelo"
+   ],
+   "fr": [
+    "pelle"
+   ]
+  },
+  "83": {
+   "io": [
+    "quadro-taliisti"
+   ],
+   "fr": [
+    "tailleurs de pierre"
+   ]
+  },
+  "84": {
+   "io": [
+    "martelo"
+   ],
+   "fr": [
+    "marteau"
+   ]
+  },
+  "85": {
+   "io": [
+    "petro-segilo"
+   ],
+   "fr": [
+    "scie à pierre"
+   ]
+  },
+  "87": {
+   "io": [
+    "dilutisto"
+   ],
+   "fr": [
+    "gâche-mortier"
+   ]
+  },
+  "90": {
+   "io": [
+    "benko"
+   ],
+   "fr": [
+    "établi"
+   ]
+  },
+  "91": {
+   "io": [
+    "rabotilo"
+   ],
+   "fr": [
+    "rabot"
+   ]
+  },
+  "92": {
+   "io": [
+    "fixigilo"
+   ],
+   "fr": [
+    "valet"
+   ]
+  },
+  "94": {
+   "io": [
+    "segilo"
+   ],
+   "fr": [
+    "scie"
+   ]
+  },
+  "95": {
+   "io": [
+    "kompaso"
+   ],
+   "fr": [
+    "compas"
+   ]
+  },
+  "96": {
+   "io": [
+    "vitristo"
+   ],
+   "fr": [
+    "vitrier"
+   ]
+  },
+  "97": {
+   "io": [
+    "seruristo"
+   ],
+   "fr": [
+    "serrurier"
+   ]
+  },
+  "98": {
+   "io": [
+    "limilo"
+   ],
+   "fr": [
+    "lime"
+   ]
+  },
+  "99": {
+   "io": [
+    "gipsisto"
+   ],
+   "fr": [
+    "plâtrier"
+   ]
+  },
+  "100": {
+   "io": [
+    "trulo"
+   ],
+   "fr": [
+    "truelle"
+   ]
+  },
+  "101": {
+   "io": [
+    "trogo"
+   ],
+   "fr": [
+    "auge"
+   ]
+  },
+  "102": {
+   "io": [
+    "indutisto"
+   ],
+   "fr": [
+    "peintre"
+   ]
+  },
+  "103": {
+   "io": [
+    "farbo"
+   ],
+   "fr": [
+    "peinture"
+   ]
+  },
+  "104": {
+   "io": [
+    "pinselo"
+   ],
+   "fr": [
+    "pinceau"
+   ]
+  },
+  "106": {
+   "io": [
+    "skalo"
+   ],
+   "fr": [
+    "échelle"
+   ]
+  },
+  "107": {
+   "io": [
+    "morter-portisto",
+    "tapetisto"
+   ],
+   "fr": [
+    "mortier",
+    "tapissier"
+   ]
+  },
+  "108": {
+   "io": [
+    "masonisto"
+   ],
+   "fr": [
+    "maçon"
+   ]
+  },
+  "109": {
+   "io": [
+    "aplombo"
+   ],
+   "fr": [
+    "un fil à plomb"
+   ]
+  },
+  "110": {
+   "io": [
+    "eshafodo"
+   ],
+   "fr": [
+    "échafaudage"
+   ]
+  },
+  "111": {
+   "io": [
+    "servisto"
+   ],
+   "fr": [
+    "aidemaçon"
+   ]
+  },
+  "112": {
+   "io": [
+    "brueto"
+   ],
+   "fr": [
+    "brouette"
+   ]
+  },
+  "113": {
+   "io": [
+    "aprentiso"
+   ],
+   "fr": [
+    "apprenti"
+   ]
+  },
+  "114": {
+   "io": [
+    "sitelo"
+   ],
+   "fr": [
+    "seau"
+   ]
+  },
+  "115": {
+   "io": [
+    "karpentisto"
+   ],
+   "fr": [
+    "charpentier"
+   ]
+  },
+  "116": {
+   "io": [
+    "hakilo"
+   ],
+   "fr": [
+    "hache"
+   ]
+  },
+  "117": {
+   "io": [
+    "stifti"
+   ],
+   "fr": [
+    "chevilles"
+   ]
+  },
+  "118": {
+   "io": [
+    "tektisto"
+   ],
+   "fr": [
+    "couvreur"
+   ]
+  },
+  "121": {
+   "io": [
+    "zinko-laboristo"
+   ],
+   "fr": [
+    "zingueur"
+   ]
+  },
+  "124": {
+   "io": [
+    "elektristo"
+   ],
+   "fr": [
+    "l'électricien"
+   ]
+  },
+  "125": {
+   "io": [],
+   "fr": [
+    "forgeron"
+   ]
+  },
+  "126": {
+   "io": [
+    "forjeyo"
+   ],
+   "fr": [
+    "forge"
+   ]
+  },
+  "127": {
+   "io": [
+    "amboso"
+   ],
+   "fr": [
+    "enclume"
+   ]
+  },
+  "128": {
+   "io": [
+    "pinco"
+   ],
+   "fr": [
+    "pince"
+   ]
+  },
+  "129": {
+   "io": [
+    "gardenisto"
+   ],
+   "fr": [
+    "jardinier"
+   ]
+  },
+  "130": {
+   "io": [
+    "rastilo"
+   ],
+   "fr": [
+    "râteau"
+   ]
+  },
+  "131": {
+   "io": [
+    "spado"
+   ],
+   "fr": [
+    "bêche"
+   ]
+  },
+  "132": {
+   "io": [
+    "arozilo"
+   ],
+   "fr": [
+    "soir"
+   ]
+  },
+  "133": {
+   "io": [
+    "kaval-servisto"
+   ],
+   "fr": [
+    "valet d'écurie"
+   ]
+  },
+  "134": {
+   "io": [
+    "manupumpilo"
+   ],
+   "fr": [
+    "pompe à main"
+   ]
+  },
+  "135": {
+   "io": [
+    "char-duktisto"
+   ],
+   "fr": [
+    "charretier"
+   ]
+  },
+  "136": {
+   "io": [
+    "charioto"
+   ],
+   "fr": [
+    "charrette"
+   ]
+  },
+  "140": {
+   "io": [],
+   "fr": [
+    "manœuvre"
+   ]
+  },
+  "146": {
+   "io": [
+    "Manulaboristo"
+   ],
+   "fr": []
+  },
+  "150": {
+   "io": [
+    "bedi"
+   ],
+   "fr": [
+    "plates-bandes"
+   ]
+  }
+ },
+ "t06": {
+  "1": {
+   "io": [
+    "tualet-tablo",
+    "statueto",
+    "furnelo",
+    "herdo",
+    "balno-kuvo"
+   ],
+   "fr": [
+    "table de toilette",
+    "statuette",
+    "poêle",
+    "âtre",
+    "baignoire"
+   ]
+  },
+  "2": {
+   "io": [
+    "kuveto",
+    "lambrequino",
+    "tubo",
+    "balno-varmigilo"
+   ],
+   "fr": [
+    "cuvette",
+    "lambrequin",
+    "tuyau",
+    "chauffe-bain"
+   ]
+  },
+  "3": {
+   "io": [
+    "aquo-krucho",
+    "vazi",
+    "fonteneto",
+    "fairo",
+    "saponkonko"
+   ],
+   "fr": [
+    "pot à eau",
+    "vases",
+    "fontaine",
+    "feu",
+    "porte-savon"
+   ]
+  },
+  "4": {
+   "io": [
+    "kapo-brosilo",
+    "paracintilo",
+    "skabelo",
+    "tualet-tuki"
+   ],
+   "fr": [
+    "brosse à cheveux",
+    "pare-étincelles",
+    "escabeau",
+    "serviettes de toilette"
+   ]
+  },
+  "5": {
+   "io": [
+    "pektilo",
+    "skribo-tablo",
+    "kredenco",
+    "spiso-turnilo",
+    "tuk-portilo"
+   ],
+   "fr": [
+    "peigne",
+    "bureau",
+    "dressoir",
+    "tourne-broche",
+    "porte-serviette"
+   ]
+  },
+  "6": {
+   "io": [
+    "sapono",
+    "chambristino",
+    "vitral kurteni",
+    "spisagita",
+    "fayencaji"
+   ],
+   "fr": [
+    "savon",
+    "rideaux de vitrage",
+    "broche",
+    "faïence"
+   ]
+  },
+  "7": {
+   "io": [
+    "sponjo",
+    "pateri",
+    "hanyuno rostita",
+    "rostajo",
+    "dushaparato"
+   ],
+   "fr": [
+    "éponge",
+    "patères",
+    "poulet rôti",
+    "rôti",
+    "appareil à douche"
+   ]
+  },
+  "8": {
+   "io": [
+    "flakoneto",
+    "ligili",
+    "fisho",
+    "suflilo",
+    "baseneto"
+   ],
+   "fr": [
+    "flacon",
+    "embrasses",
+    "poisson",
+    "soufflet",
+    "bassin"
+   ]
+  },
+  "9": {
+   "io": [
+    "sitelo",
+    "supre drapirita",
+    "frukti",
+    "karbon-shovelo"
+   ],
+   "fr": [
+    "seau",
+    "draperie",
+    "fruits",
+    "pelle à charbon"
+   ]
+  },
+  "10": {
+   "io": [
+    "avanchambro",
+    "planto",
+    "kupo",
+    "lenii"
+   ],
+   "fr": [
+    "antichambre",
+    "plante",
+    "coupe",
+    "bûches"
+   ]
+  },
+  "11": {
+   "io": [
+    "parapluvi",
+    "potuyo",
+    "fromajo",
+    "lanterno"
+   ],
+   "fr": [
+    "parapluies",
+    "cachepot",
+    "fromage",
+    "lanterne"
+   ]
+  },
+  "12": {
+   "io": [
+    "parapluvuyo",
+    "petrol-lampo",
+    "pano",
+    "alumeti"
+   ],
+   "fr": [
+    "porte-parapluies",
+    "lampe",
+    "pain",
+    "allumettes"
+   ]
+  },
+  "13": {
+   "io": [
+    "vestohoki",
+    "lum-shirmilo",
+    "flakonuyo",
+    "alumetuyo"
+   ],
+   "fr": [
+    "portemanteaux",
+    "abat-jour",
+    "huilier",
+    "porte-allumettes"
+   ]
+  },
+  "14": {
+   "io": [
+    "spegularmoro",
+    "salo",
+    "kandeliero"
+   ],
+   "fr": [
+    "armoire à glace",
+    "jeune fille",
+    "sel",
+    "chandelier"
+   ]
+  },
+  "15": {
+   "io": [
+    "linjaro",
+    "pipro",
+    "bujiero"
+   ],
+   "fr": [
+    "linge",
+    "piano",
+    "poivre",
+    "bougeoir"
+   ]
+  },
+  "16": {
+   "io": [
+    "tabureto",
+    "mustarduyo",
+    "bujio"
+   ],
+   "fr": [
+    "femme de chambre",
+    "tabouret",
+    "moutardier",
+    "chandelle"
+   ]
+  },
+  "17": {
+   "io": [
+    "lito",
+    "muzik-armoro",
+    "kuko",
+    "terkarbono"
+   ],
+   "fr": [
+    "lit",
+    "casier à musique",
+    "gâteau",
+    "charbon de terre"
+   ]
+  },
+  "18": {
+   "io": [
+    "lito-doselo",
+    "biblioteko",
+    "termometro",
+    "karbon-sitelo"
+   ],
+   "fr": [
+    "ciel de lit",
+    "bibliothèque",
+    "thermomètre",
+    "seau à charbon"
+   ]
+  },
+  "19": {
+   "io": [
+    "kurteni",
+    "libro",
+    "barometro",
+    "koquo-furnelo"
+   ],
+   "fr": [
+    "rideaux",
+    "livre",
+    "baromètre",
+    "fourneau de cuisuine"
+   ]
+  },
+  "20": {
+   "io": [
+    "lito-framo",
+    "yuno",
+    "mur-horlojo",
+    "forno"
+   ],
+   "fr": [
+    "bois de lit",
+    "jeune garçon",
+    "cartel",
+    "four"
+   ]
+  },
+  "21": {
+   "io": [
+    "resort-matraco",
+    "busto",
+    "ligno-paneli",
+    "pot-kuliero"
+   ],
+   "fr": [
+    "sommier",
+    "buste",
+    "boiserie",
+    "cuillère à pot"
+   ]
+  },
+  "22": {
+   "io": [
+    "traco",
+    "damo",
+    "pordo-tapeto",
+    "spum-kuliero"
+   ],
+   "fr": [
+    "matelas",
+    "dame",
+    "portière",
+    "écumoire"
+   ]
+  },
+  "23": {
+   "io": [
+    "littuki",
+    "domo-mastrino",
+    "plad-moblo",
+    "koquistino"
+   ],
+   "fr": [
+    "draps",
+    "maîtresse de maison",
+    "buffet",
+    "cuisinière"
+   ]
+  },
+  "24": {
+   "io": [
+    "kovrilo",
+    "kanapeo",
+    "tasi",
+    "sauco"
+   ],
+   "fr": [
+    "couverture",
+    "canapé",
+    "tasses",
+    "sauce"
+   ]
+  },
+  "25": {
+   "io": [
+    "transversa kuseno",
+    "stulego",
+    "subtasi",
+    "koquilaro"
+   ],
+   "fr": [
+    "traversin",
+    "fauteuil",
+    "soucoupes",
+    "batterie de cuisine"
+   ]
+  },
+  "26": {
+   "io": [
+    "kap-kuseno",
+    "dors-apogilo",
+    "pendo-lumizilo",
+    "kasroli"
+   ],
+   "fr": [
+    "oreiller",
+    "dossier",
+    "suspension",
+    "casseroles"
+   ]
+  },
+  "27": {
+   "io": [
+    "ederduna kovrilo",
+    "sidilo",
+    "manjo-tablo",
+    "lakto-poto"
+   ],
+   "fr": [
+    "édredon",
+    "siège",
+    "table",
+    "pot au lait"
+   ]
+  },
+  "28": {
+   "io": [
+    "lito-tableto",
+    "tablo-tuko",
+    "kribleto"
+   ],
+   "fr": [
+    "table de nuit",
+    "nappe",
+    "passoire"
+   ]
+  },
+  "29": {
+   "io": [
+    "vekigilo",
+    "portreto",
+    "bok-tuko",
+    "raspilo"
+   ],
+   "fr": [
+    "réveille-matin",
+    "portrait",
+    "serviette",
+    "râpe"
+   ]
+  },
+  "30": {
+   "io": [
+    "nokto-lampeto",
+    "kadro",
+    "boteli",
+    "sal-buxo"
+   ],
+   "fr": [
+    "veilleuse",
+    "cadre",
+    "bouteilles",
+    "boîte au sel"
+   ]
+  },
+  "31": {
+   "io": [
+    "bujio",
+    "stuli",
+    "karafo",
+    "te-krucho"
+   ],
+   "fr": [
+    "bougie",
+    "chaises",
+    "carafe",
+    "théière"
+   ]
+  },
+  "32": {
+   "io": [
+    "tapiso litala",
+    "albumo",
+    "glaso",
+    "oleo-botelego"
+   ],
+   "fr": [
+    "descente de lit",
+    "album",
+    "verre",
+    "bonbonne"
+   ]
+  },
+  "33": {
+   "io": [
+    "tabureto",
+    "fotografuri",
+    "plado",
+    "tirkesto"
+   ],
+   "fr": [
+    "tabouret",
+    "photographies",
+    "assiette",
+    "tiroir"
+   ]
+  },
+  "34": {
+   "io": [
+    "laborkorbo",
+    "Chiniana vazo",
+    "kuliero",
+    "balayilo"
+   ],
+   "fr": [
+    "corbeille à ouvrage",
+    "potiche",
+    "cuillère",
+    "balai"
+   ]
+  },
+  "35": {
+   "io": [
+    "broduri",
+    "paper-kultelo",
+    "forketo",
+    "plum-fasko"
+   ],
+   "fr": [
+    "broderie",
+    "coupe-papier",
+    "fourchette",
+    "plumeau"
+   ]
+  },
+  "36": {
+   "io": [
+    "filo",
+    "paravento",
+    "kultelo",
+    "lignobloko"
+   ],
+   "fr": [
+    "fil",
+    "paravent",
+    "couteau",
+    "billot"
+   ]
+  },
+  "37": {
+   "io": [
+    "aguli",
+    "pikturi",
+    "supuyo",
+    "Manuvishilo"
+   ],
+   "fr": [
+    "aiguilles",
+    "tableaux",
+    "soupière",
+    "essuie-mains"
+   ]
+  },
+  "38": {
+   "io": [
+    "labor-tablo",
+    "plafonlustro",
+    "disho",
+    "funelo"
+   ],
+   "fr": [
+    "table à ouvrage",
+    "lustre",
+    "mets",
+    "entonnoir"
+   ]
+  },
+  "39": {
+   "io": [
+    "cizo",
+    "elektral-lampi",
+    "servisto",
+    "rostilo"
+   ],
+   "fr": [
+    "ciseaux",
+    "lampes électriques",
+    "domestique",
+    "gril"
+   ]
+  },
+  "40": {
+   "io": [
+    "klefo",
+    "tapiso",
+    "hachilo"
+   ],
+   "fr": [
+    "clef",
+    "tapis",
+    "hachoir"
+   ]
+  },
+  "41": {
+   "io": [
+    "unpeda tablo",
+    "timbro elektrala",
+    "hachoplanko"
+   ],
+   "fr": [
+    "guéridon",
+    "sonnette électrique",
+    "planche à hacher"
+   ]
+  },
+  "42": {
+   "io": [
+    "karafo",
+    "parieto",
+    "tabulo"
+   ],
+   "fr": [
+    "carafe",
+    "cloison",
+    "planche"
+   ]
+  },
+  "43": {
+   "io": [
+    "sukruyo",
+    "poti"
+   ],
+   "fr": [
+    "sucrier",
+    "pots"
+   ]
+  },
+  "44": {
+   "io": [
+    "sukro-prenilo",
+    "boliopoto"
+   ],
+   "fr": [
+    "pince à sucre",
+    "pot au feu"
+   ]
+  },
+  "45": {
+   "io": [
+    "kovrilo"
+   ],
+   "fr": [
+    "couvercle"
+   ]
+  },
+  "46": {
+   "io": [
+    "vesto-brosilo",
+    "marmito"
+   ],
+   "fr": [
+    "brosse à habits",
+    "marmite"
+   ]
+  },
+  "47": {
+   "io": [
+    "longa stulego",
+    "padelo"
+   ],
+   "fr": [
+    "chaise longue",
+    "poêle"
+   ]
+  },
+  "48": {
+   "io": [
+    "kuseno",
+    "robineto"
+   ],
+   "fr": [
+    "coussin",
+    "robinet"
+   ]
+  },
+  "49": {
+   "io": [
+    "kameno",
+    "eviero"
+   ],
+   "fr": [
+    "cheminée",
+    "évier"
+   ]
+  },
+  "50": {
+   "io": [
+    "Shovelo",
+    "kruchego"
+   ],
+   "fr": [
+    "Pelle",
+    "cruche"
+   ]
+  },
+  "51": {
+   "io": [
+    "pincegi",
+    "vinagro-barelo"
+   ],
+   "fr": [
+    "pincettes",
+    "tonneau"
+   ]
+  },
+  "52": {
+   "io": [
+    "ligno-kesto",
+    "robineto"
+   ],
+   "fr": [
+    "coffre à bois",
+    "cannelle"
+   ]
+  },
+  "53": {
+   "io": [
+    "lenii",
+    "rezidu-buxo"
+   ],
+   "fr": [
+    "bois",
+    "boîte à ordures"
+   ]
+  },
+  "54": {
+   "io": [
+    "fairo-skreno",
+    "desneta pladi"
+   ],
+   "fr": [
+    "écran",
+    "vaisselle"
+   ]
+  },
+  "55": {
+   "io": [
+    "morilii",
+    "kuvego"
+   ],
+   "fr": [
+    "chenets",
+    "cuvier"
+   ]
+  },
+  "56": {
+   "io": [
+    "cindro-barilo",
+    "kaldrono"
+   ],
+   "fr": [
+    "garde-cendre",
+    "chaudron"
+   ]
+  },
+  "57": {
+   "io": [
+    "pendul-horlojo",
+    "karel-sulo"
+   ],
+   "fr": [
+    "pendule",
+    "carrelage"
+   ]
+  },
+  "58": {
+   "io": [
+    "kandelabri",
+    "legumi"
+   ],
+   "fr": [
+    "candélabres",
+    "légumes"
+   ]
+  },
+  "59": {
+   "io": [
+    "poshkozuyi",
+    "gasfurnelo"
+   ],
+   "fr": [
+    "vide-poches",
+    "fourneau à gaz"
+   ]
+  },
+  "60": {
+   "io": [
+    "spegulo",
+    "vaporo"
+   ],
+   "fr": [
+    "glace",
+    "vapeur"
+   ]
+  },
+  "61": {
+   "io": [
+    "bersilo",
+    "kauchuka tubeto"
+   ],
+   "fr": [
+    "berceau",
+    "tuyau de caoutchouc"
+   ]
+  },
+  "62": {
+   "io": [
+    "gasbrulilo"
+   ],
+   "fr": [
+    "bec de gaz"
+   ]
+  },
+  "63": {
+   "io": [
+    "kafe-muelilo"
+   ],
+   "fr": [
+    "moulin à café"
+   ]
+  },
+  "64": {
+   "io": [
+    "kafe-krucho"
+   ],
+   "fr": [
+    "cafetière"
+   ]
+  },
+  "65": {
+   "io": [
+    "baseno"
+   ],
+   "fr": [
+    "bassine"
+   ]
+  },
+  "66": {
+   "io": [
+    "jornala servistino"
+   ],
+   "fr": [
+    "femme de ménage"
+   ]
+  }
+ },
+ "t07": {
+  "1": {
+   "io": [
+    "la fumuro",
+    "suno"
+   ],
+   "fr": [
+    "fumée",
+    "soleil"
+   ]
+  },
+  "2": {
+   "io": [
+    "albergo",
+    "radii"
+   ],
+   "fr": [
+    "auberge",
+    "rayons"
+   ]
+  },
+  "3": {
+   "io": [
+    "insigno",
+    "ruro"
+   ],
+   "fr": [
+    "enseigne",
+    "campagne"
+   ]
+  },
+  "4": {
+   "io": [
+    "L'albergisto",
+    "agro"
+   ],
+   "fr": [
+    "L'aubergiste",
+    "champ"
+   ]
+  },
+  "5": {
+   "io": [
+    "forjisto",
+    "plugilo"
+   ],
+   "fr": [
+    "maréchal ferrant",
+    "charrue"
+   ]
+  },
+  "6": {
+   "io": [
+    "fero",
+    "plugisto"
+   ],
+   "fr": [
+    "fer",
+    "laboureur"
+   ]
+  },
+  "7": {
+   "io": [
+    "shuisto",
+    "kavalo"
+   ],
+   "fr": [
+    "cordonnier"
+   ]
+  },
+  "8": {
+   "io": [
+    "razisto",
+    "sulko"
+   ],
+   "fr": [
+    "barbier",
+    "sillon"
+   ]
+  },
+  "9": {
+   "io": [
+    "charifisto",
+    "semero"
+   ],
+   "fr": [
+    "charron",
+    "semeur"
+   ]
+  },
+  "10": {
+   "io": [
+    "selifisto",
+    "feno"
+   ],
+   "fr": [
+    "sellier",
+    "foin"
+   ]
+  },
+  "11": {
+   "io": [
+    "dilijenco",
+    "falchisti"
+   ],
+   "fr": [
+    "diligence",
+    "faucheurs"
+   ]
+  },
+  "12": {
+   "io": [
+    "skolo",
+    "forki"
+   ],
+   "fr": [
+    "école",
+    "fourches"
+   ]
+  },
+  "13": {
+   "io": [
+    "docistino",
+    "frukto-gardeno"
+   ],
+   "fr": [
+    "institutrice",
+    "verger"
+   ]
+  },
+  "14": {
+   "io": [
+    "lernanto",
+    "pirieri"
+   ],
+   "fr": [
+    "élève",
+    "poiriers"
+   ]
+  },
+  "15": {
+   "io": [
+    "docisto",
+    "prunieri"
+   ],
+   "fr": [
+    "instituteur",
+    "pruniers"
+   ]
+  },
+  "16": {
+   "io": [
+    "mueleyo",
+    "gardenisto"
+   ],
+   "fr": [
+    "moulin",
+    "jardinier"
+   ]
+  },
+  "17": {
+   "io": [
+    "roto",
+    "legum-gardeno"
+   ],
+   "fr": [
+    "roue",
+    "potager"
+   ]
+  },
+  "18": {
+   "io": [
+    "kirko",
+    "pavono"
+   ],
+   "fr": [
+    "église",
+    "paon"
+   ]
+  },
+  "19": {
+   "io": [
+    "korvi",
+    "kavaleyo"
+   ],
+   "fr": [
+    "corbeaux",
+    "écurie"
+   ]
+  },
+  "20": {
+   "io": [
+    "tombeyo",
+    "kaval-servisto"
+   ],
+   "fr": [
+    "cimetière",
+    "garçon d'écurie"
+   ]
+  },
+  "21": {
+   "io": [
+    "tombi",
+    "kavalino"
+   ],
+   "fr": [
+    "tombes",
+    "jument"
+   ]
+  },
+  "22": {
+   "io": [
+    "cipreso",
+    "kavalyuno"
+   ],
+   "fr": [
+    "cyprès",
+    "poulain"
+   ]
+  },
+  "23": {
+   "io": [
+    "rivereto",
+    "litiero"
+   ],
+   "fr": [
+    "ruisseau",
+    "litière"
+   ]
+  },
+  "24": {
+   "io": [
+    "bovyuno"
+   ],
+   "fr": [
+    "veau"
+   ]
+  },
+  "25": {
+   "io": [
+    "glacio",
+    "bovini"
+   ],
+   "fr": [
+    "glace",
+    "vaches"
+   ]
+  },
+  "26": {
+   "io": [
+    "sketilo",
+    "trogo"
+   ],
+   "fr": [
+    "patin",
+    "auge"
+   ]
+  },
+  "27": {
+   "io": [
+    "rural gardisto",
+    "bovulo"
+   ],
+   "fr": [
+    "garde champêtre",
+    "bœuf"
+   ]
+  },
+  "28": {
+   "io": [
+    "kepio",
+    "korni"
+   ],
+   "fr": [
+    "képi",
+    "cornes"
+   ]
+  },
+  "29": {
+   "io": [
+    "getri",
+    "puteo"
+   ],
+   "fr": [
+    "guêtres",
+    "puits"
+   ]
+  },
+  "30": {
+   "io": [
+    "charetedo de ligna faski",
+    "sitelo"
+   ],
+   "fr": [
+    "charrette de fagots",
+    "seau"
+   ]
+  },
+  "31": {
+   "io": [
+    "mulini",
+    "kordo"
+   ],
+   "fr": [
+    "mules",
+    "corde"
+   ]
+  },
+  "32": {
+   "io": [
+    "glit-veturo",
+    "servistino"
+   ],
+   "fr": [
+    "traîneau",
+    "servante"
+   ]
+  },
+  "33": {
+   "io": [
+    "gliteyo",
+    "garbeyo"
+   ],
+   "fr": [
+    "glissoire",
+    "grange"
+   ]
+  },
+  "34": {
+   "io": [
+    "falo",
+    "hemo"
+   ],
+   "fr": [
+    "chute",
+    "maison d'habitation"
+   ]
+  },
+  "35": {
+   "io": [
+    "kravatego",
+    "filifistino"
+   ],
+   "fr": [
+    "cache-nez",
+    "fileuse"
+   ]
+  },
+  "36": {
+   "io": [
+    "farmisto"
+   ],
+   "fr": [
+    "fermier"
+   ]
+  },
+  "37": {
+   "io": [
+    "niv-amaso",
+    "hundo"
+   ],
+   "fr": [
+    "neige",
+    "chien"
+   ]
+  },
+  "38": {
+   "io": [
+    "niv-buli",
+    "kabano"
+   ],
+   "fr": [
+    "boules de neige",
+    "niche"
+   ]
+  },
+  "39": {
+   "io": [
+    "nivura statuo",
+    "piocho"
+   ],
+   "fr": [
+    "bonhomme de neige",
+    "pioche"
+   ]
+  },
+  "40": {
+   "io": [
+    "ponto",
+    "herso"
+   ],
+   "fr": [
+    "pont",
+    "herse"
+   ]
+  },
+  "41": {
+   "io": [
+    "kolombo"
+   ],
+   "fr": [
+    "pigeon"
+   ]
+  },
+  "42": {
+   "io": [
+    "kastani",
+    "kolombeyo"
+   ],
+   "fr": [
+    "pigeonnier"
+   ]
+  },
+  "43": {
+   "io": [
+    "shalacho",
+    "hanini"
+   ],
+   "fr": [
+    "châle",
+    "poules"
+   ]
+  },
+  "44": {
+   "io": [
+    "haneyo"
+   ],
+   "fr": [
+    "poulailler"
+   ]
+  },
+  "45": {
+   "io": [
+    "pastoro"
+   ],
+   "fr": []
+  },
+  "46": {
+   "io": [
+    "bastono"
+   ],
+   "fr": [
+    "houlette"
+   ]
+  },
+  "47": {
+   "io": [
+    "bluzo"
+   ],
+   "fr": [
+    "blouse"
+   ]
+  },
+  "48": {
+   "io": [
+    "mutoneyo"
+   ],
+   "fr": [
+    "bergerie"
+   ]
+  },
+  "49": {
+   "io": [
+    "po"
+   ],
+   "fr": [
+    "troupeau"
+   ]
+  },
+  "50": {
+   "io": [
+    "mutonuli"
+   ],
+   "fr": [
+    "moutons"
+   ]
+  },
+  "51": {
+   "io": [
+    "kaprini"
+   ],
+   "fr": [
+    "chèvres"
+   ]
+  },
+  "52": {
+   "io": [
+    "kaproyuni"
+   ],
+   "fr": [
+    "chevreaux"
+   ]
+  },
+  "53": {
+   "io": [
+    "mutonini"
+   ],
+   "fr": [
+    "brebis"
+   ]
+  },
+  "54": {
+   "io": [
+    "mutonyuni"
+   ],
+   "fr": [
+    "agneaux"
+   ]
+  },
+  "55": {
+   "io": [
+    "hundo"
+   ],
+   "fr": [
+    "chien"
+   ]
+  },
+  "56": {
+   "io": [
+    "laktifanta bovino"
+   ],
+   "fr": [
+    "vache laitière"
+   ]
+  },
+  "57": {
+   "io": [
+    "klosheto"
+   ],
+   "fr": [
+    "clochette"
+   ]
+  },
+  "58": {
+   "io": [
+    "stablo"
+   ],
+   "fr": [
+    "étable"
+   ]
+  },
+  "59": {
+   "io": [
+    "lakteyo"
+   ],
+   "fr": [
+    "laiterie"
+   ]
+  },
+  "60": {
+   "io": [
+    "farmistino"
+   ],
+   "fr": [
+    "fermière"
+   ]
+  },
+  "61": {
+   "io": [
+    "butrifilo"
+   ],
+   "fr": [
+    "baratte"
+   ]
+  },
+  "62": {
+   "io": [
+    "lakto-poti"
+   ],
+   "fr": [
+    "pots au lait"
+   ]
+  },
+  "63": {
+   "io": [
+    "kuvego"
+   ],
+   "fr": [
+    "cuvier"
+   ]
+  },
+  "64": {
+   "io": [
+    "fromaji"
+   ],
+   "fr": [
+    "fromages"
+   ]
+  },
+  "65": {
+   "io": [
+    "farm-servisto"
+   ],
+   "fr": [
+    "garçon de ferme"
+   ]
+  },
+  "66": {
+   "io": [
+    "anadini"
+   ],
+   "fr": [
+    "canes"
+   ]
+  },
+  "67": {
+   "io": [
+    "anaduli"
+   ],
+   "fr": [
+    "canards"
+   ]
+  },
+  "68": {
+   "io": [
+    "dindulo"
+   ],
+   "fr": [
+    "dindon"
+   ]
+  },
+  "69": {
+   "io": [
+    "gansi"
+   ],
+   "fr": [
+    "oies"
+   ]
+  },
+  "70": {
+   "io": [
+    "sua beko"
+   ],
+   "fr": [
+    "bec"
+   ]
+  },
+  "71": {
+   "io": [
+    "hanulo"
+   ],
+   "fr": [
+    "coq"
+   ]
+  },
+  "72": {
+   "io": [
+    "kresto"
+   ],
+   "fr": [
+    "crête"
+   ]
+  },
+  "73": {
+   "io": [
+    "kaudo"
+   ],
+   "fr": [
+    "queue"
+   ]
+  },
+  "74": {
+   "io": [
+    "Hanin-matro"
+   ],
+   "fr": [
+    "poule mère"
+   ]
+  },
+  "75": {
+   "io": [
+    "(han-)yuneti"
+   ],
+   "fr": [
+    "poussins"
+   ]
+  },
+  "76": {
+   "io": [
+    "ovi"
+   ],
+   "fr": [
+    "œufs"
+   ]
+  },
+  "77": {
+   "io": [
+    "porkino"
+   ],
+   "fr": [
+    "truie"
+   ]
+  },
+  "78": {
+   "io": [
+    "porkyuno"
+   ],
+   "fr": [
+    "cochon de lait"
+   ]
+  },
+  "79": {
+   "io": [
+    "kunikli"
+   ],
+   "fr": [
+    "lapins"
+   ]
+  },
+  "80": {
+   "io": [
+    "herbo"
+   ],
+   "fr": [
+    "herbe"
+   ]
+  },
+  "81": {
+   "io": [
+    "sterko"
+   ],
+   "fr": [
+    "fumier"
+   ]
+  }
+ },
+ "t08": {
+  "1": {
+   "io": [
+    "Aciani",
+    "rospi"
+   ],
+   "fr": [
+    "Bluets",
+    "crapauds"
+   ]
+  },
+  "2": {
+   "io": [
+    "papavereti",
+    "lacerti"
+   ],
+   "fr": [
+    "coquelicots",
+    "lézards"
+   ]
+  },
+  "3": {
+   "io": [
+    "digitali",
+    "kaprulo"
+   ],
+   "fr": [
+    "digitales",
+    "bouc"
+   ]
+  },
+  "4": {
+   "io": [
+    "ceriziero",
+    "hundi"
+   ],
+   "fr": [
+    "cerisier",
+    "chiens"
+   ]
+  },
+  "5": {
+   "io": [
+    "cerizi",
+    "chasero"
+   ],
+   "fr": [
+    "cerises",
+    "chasseur"
+   ]
+  },
+  "6": {
+   "io": [
+    "mutonyuni",
+    "fusilo"
+   ],
+   "fr": [
+    "agneaux",
+    "fusil"
+   ]
+  },
+  "7": {
+   "io": [
+    "mutonini"
+   ],
+   "fr": [
+    "brebis"
+   ]
+  },
+  "8": {
+   "io": [
+    "mutonuli"
+   ],
+   "fr": [
+    "moutons"
+   ]
+  },
+  "9": {
+   "io": [
+    "pastureyo",
+    "chas-kostumo"
+   ],
+   "fr": [
+    "pâturage",
+    "costume"
+   ]
+  },
+  "10": {
+   "io": [
+    "pastoro",
+    "vildo-sako"
+   ],
+   "fr": [
+    "pâtre",
+    "carnier"
+   ]
+  },
+  "12": {
+   "io": [
+    "siklo",
+    "rekolto-korbo"
+   ],
+   "fr": [
+    "faucille",
+    "panier à vendange"
+   ]
+  },
+  "13": {
+   "io": [
+    "muton-gardisto"
+   ],
+   "fr": [
+    "berger",
+    "gobelet"
+   ]
+  },
+  "14": {
+   "io": [
+    "gurdo",
+    "suko"
+   ],
+   "fr": [
+    "gourde",
+    "jus"
+   ]
+  },
+  "15": {
+   "io": [
+    "hundo",
+    "folio-krono"
+   ],
+   "fr": [
+    "chien",
+    "couronne de feuillage"
+   ]
+  },
+  "16": {
+   "io": [
+    "rivereto",
+    "paseri"
+   ],
+   "fr": [
+    "ruisseau",
+    "moineaux"
+   ]
+  },
+  "17": {
+   "io": [
+    "raneto",
+    "dorso-korbi"
+   ],
+   "fr": [
+    "hottes"
+   ]
+  },
+  "18": {
+   "io": [
+    "nenufari",
+    "vit-rekoltisti"
+   ],
+   "fr": [
+    "nénuphars",
+    "vendangeurs"
+   ]
+  },
+  "19": {
+   "io": [
+    "Motacilo",
+    "barelifisto"
+   ],
+   "fr": [
+    "bergeronnette",
+    "tonnelier"
+   ]
+  },
+  "20": {
+   "io": [
+    "fonteto",
+    "bareli"
+   ],
+   "fr": [
+    "source",
+    "barriques"
+   ]
+  },
+  "21": {
+   "io": [
+    "l'arbusti dornoza",
+    "fundi"
+   ],
+   "fr": [
+    "broussailles",
+    "fonds"
+   ]
+  },
+  "22": {
+   "io": [
+    "krateg-bushi",
+    "duvi"
+   ],
+   "fr": [
+    "buissons d'aubépine",
+    "douves"
+   ]
+  },
+  "23": {
+   "io": [
+    "palio-amasi",
+    "ringegi"
+   ],
+   "fr": [
+    "tas de paille"
+   ]
+  },
+  "24": {
+   "io": [
+    "butas"
+   ],
+   "fr": []
+  },
+  "25": {
+   "io": [
+    "falchili",
+    "kuvegi"
+   ],
+   "fr": [
+    "faux",
+    "cuves"
+   ]
+  },
+  "26": {
+   "io": [
+    "rekoltisti",
+    "vitberi"
+   ],
+   "fr": [
+    "moissonneurs",
+    "raisin"
+   ]
+  },
+  "27": {
+   "io": [
+    "frumentagro",
+    "kelero"
+   ],
+   "fr": [
+    "champ de blé",
+    "cellier"
+   ]
+  },
+  "28": {
+   "io": [
+    "orea stipi",
+    "presilo"
+   ],
+   "fr": [
+    "tiges",
+    "pressoir"
+   ]
+  },
+  "29": {
+   "io": [
+    "spiki",
+    "skrubego"
+   ],
+   "fr": [
+    "épis",
+    "vis"
+   ]
+  },
+  "30": {
+   "io": [
+    "grindo-petro",
+    "lupulo"
+   ],
+   "fr": [
+    "pierre",
+    "houblon"
+   ]
+  },
+  "31": {
+   "io": [
+    "garbi",
+    "vino"
+   ],
+   "fr": [
+    "gerbes",
+    "vin"
+   ]
+  },
+  "32": {
+   "io": [
+    "fasketi",
+    "kuveto"
+   ],
+   "fr": [
+    "javelles",
+    "baquet"
+   ]
+  },
+  "33": {
+   "io": [
+    "brutaro",
+    "pomiero"
+   ],
+   "fr": [
+    "bétail",
+    "pommier"
+   ]
+  },
+  "34": {
+   "io": [
+    "pastureyo",
+    "kajo"
+   ],
+   "fr": [
+    "prairie",
+    "cage"
+   ]
+  },
+  "35": {
+   "io": [
+    "tilio",
+    "serino"
+   ],
+   "fr": [
+    "tilleul",
+    "serin"
+   ]
+  },
+  "36": {
+   "io": [
+    "reto",
+    "karduelo"
+   ],
+   "fr": [
+    "filet",
+    "chardonneret"
+   ]
+  },
+  "37": {
+   "io": [
+    "chareto"
+   ],
+   "fr": [
+    "charrette"
+   ]
+  },
+  "38": {
+   "io": [
+    "forko",
+    "vit-agro"
+   ],
+   "fr": [
+    "fourche",
+    "vignoble"
+   ]
+  },
+  "39": {
+   "io": [
+    "planajo",
+    "(vito)-trunki"
+   ],
+   "fr": [
+    "plaine",
+    "ceps de vigne"
+   ]
+  },
+  "40": {
+   "io": [
+    "drashili",
+    "vito-stangi"
+   ],
+   "fr": [
+    "fléaux",
+    "échalas"
+   ]
+  },
+  "41": {
+   "io": [
+    "alaudi",
+    "vit-rekoltistini"
+   ],
+   "fr": [
+    "alouettes",
+    "vendangeuses"
+   ]
+  },
+  "42": {
+   "io": [
+    "falcho-mashino",
+    "vit-kultivisto"
+   ],
+   "fr": [
+    "moissonneuse mécanique",
+    "vigneron"
+   ]
+  },
+  "43": {
+   "io": [
+    "sekalo",
+    "mulini"
+   ],
+   "fr": [
+    "seigle",
+    "mules"
+   ]
+  },
+  "44": {
+   "io": [
+    "garb-amasi",
+    "fil-peskeri"
+   ],
+   "fr": [
+    "meules",
+    "pêcheurs"
+   ]
+  },
+  "45": {
+   "io": [
+    "lokomobilo",
+    "pesko-bastoni"
+   ],
+   "fr": [
+    "locomobile",
+    "cannes à pêche"
+   ]
+  },
+  "46": {
+   "io": [
+    "transmis-rimeno",
+    "filo"
+   ],
+   "fr": [
+    "courroie",
+    "ligne"
+   ]
+  },
+  "47": {
+   "io": [
+    "drashmashino",
+    "fisho"
+   ],
+   "fr": [
+    "machine à battre",
+    "poisson"
+   ]
+  },
+  "48": {
+   "io": [
+    "kabani",
+    "reto-peskero"
+   ],
+   "fr": [
+    "pêcheur au filet"
+   ]
+  },
+  "49": {
+   "io": [
+    "bosko",
+    "barko"
+   ],
+   "fr": [
+    "bois",
+    "barque"
+   ]
+  },
+  "50": {
+   "io": [
+    "vento-muelilo",
+    "rivero"
+   ],
+   "fr": [
+    "moulin à vent",
+    "rivière"
+   ]
+  },
+  "51": {
+   "io": [
+    "alegi",
+    "voyi"
+   ],
+   "fr": [
+    "ailes",
+    "routes"
+   ]
+  },
+  "52": {
+   "io": [
+    "ciel-arko",
+    "kalvalke"
+   ],
+   "fr": [
+    "arc-en-ciel",
+    "cheval"
+   ]
+  },
+  "53": {
+   "io": [
+    "sturmegi",
+    "bicikle"
+   ],
+   "fr": [
+    "orages",
+    "bicyclette"
+   ]
+  },
+  "54": {
+   "io": [
+    "ventego de westo",
+    "automobile"
+   ],
+   "fr": [
+    "vent d'ouest",
+    "automobile"
+   ]
+  },
+  "55": {
+   "io": [
+    "fulmino"
+   ],
+   "fr": [
+    "éclair"
+   ]
+  },
+  "56": {
+   "io": [
+    "nubegi",
+    "hirundi"
+   ],
+   "fr": [
+    "nuages",
+    "hirondelles"
+   ]
+  },
+  "57": {
+   "io": [
+    "nuciero"
+   ],
+   "fr": [
+    "noyer"
+   ]
+  },
+  "58": {
+   "io": [
+    "keto"
+   ],
+   "fr": [
+    "bouquet"
+   ]
+  },
+  "59": {
+   "io": [
+    "altajo"
+   ],
+   "fr": [
+    "hauteur"
+   ]
+  },
+  "60": {
+   "io": [
+    "suno"
+   ],
+   "fr": [
+    "soleil"
+   ]
+  },
+  "61": {
+   "io": [
+    "bekasi"
+   ],
+   "fr": [
+    "bécasses"
+   ]
+  }
+ },
+ "t09": {
+  "1": {
+   "io": [
+    "montaro",
+    "araneo"
+   ],
+   "fr": [
+    "chaîne",
+    "araignée"
+   ]
+  },
+  "2": {
+   "io": [
+    "kresto",
+    "reto"
+   ],
+   "fr": [
+    "crête",
+    "toile"
+   ]
+  },
+  "3": {
+   "io": [
+    "somiti",
+    "musho"
+   ],
+   "fr": [
+    "sommets",
+    "mouche"
+   ]
+  },
+  "4": {
+   "io": [
+    "monto-pinti",
+    "heliko"
+   ],
+   "fr": [
+    "pics",
+    "escargot"
+   ]
+  },
+  "5": {
+   "io": [
+    "glacieri",
+    "insekti"
+   ],
+   "fr": [
+    "glaciers",
+    "insectes"
+   ]
+  },
+  "6": {
+   "io": [
+    "volkano",
+    "formikeyo"
+   ],
+   "fr": [
+    "volcan",
+    "fourmilière"
+   ]
+  },
+  "7": {
+   "io": [
+    "flanko dil monto",
+    "Serpento"
+   ],
+   "fr": [
+    "flanc de la montagne",
+    "serpent"
+   ]
+  },
+  "8": {
+   "io": [
+    "fortreso",
+    "fuorto",
+    "limako"
+   ],
+   "fr": [
+    "forteresse",
+    "fort",
+    "limace"
+   ]
+  },
+  "9": {
+   "io": [
+    "aglo",
+    "primuli"
+   ],
+   "fr": [
+    "aigle",
+    "primevères"
+   ]
+  },
+  "10": {
+   "io": [
+    "pervinki"
+   ],
+   "fr": [
+    "cascade",
+    "pervenches"
+   ]
+  },
+  "11": {
+   "io": [
+    "bosko de abieti",
+    "frageti"
+   ],
+   "fr": [
+    "bois de sapin",
+    "bohémien",
+    "fraises"
+   ]
+  },
+  "12": {
+   "io": [
+    "meteorologial observatorio",
+    "herbotufi"
+   ],
+   "fr": [
+    "observatoire météorologique",
+    "touffes d'herbe"
+   ]
+  },
+  "13": {
+   "io": [
+    "funikularo",
+    "porkyuno"
+   ],
+   "fr": [
+    "funiculaire",
+    "porc"
+   ]
+  },
+  "14": {
+   "io": [
+    "ruinaji",
+    "fungo"
+   ],
+   "fr": [
+    "ruines",
+    "ours",
+    "champignon"
+   ]
+  },
+  "15": {
+   "io": [
+    "baln-urbo",
+    "hundo basota"
+   ],
+   "fr": [
+    "ville d'eaux",
+    "chien basset"
+   ]
+  },
+  "16": {
+   "io": [
+    "viadukto",
+    "forestisto"
+   ],
+   "fr": [
+    "viaduc",
+    "garde forestier"
+   ]
+  },
+  "17": {
+   "io": [
+    "sanatorio",
+    "vildo"
+   ],
+   "fr": [
+    "sanatorium",
+    "gibier"
+   ]
+  },
+  "18": {
+   "io": [
+    "parko",
+    "leporo"
+   ],
+   "fr": [
+    "parc",
+    "lièvre"
+   ]
+  },
+  "19": {
+   "io": [
+    "cervino"
+   ],
+   "fr": [
+    "villas",
+    "pâturage",
+    "biche"
+   ]
+  },
+  "20": {
+   "io": [
+    "voyo",
+    "kapreolo"
+   ],
+   "fr": [
+    "route",
+    "chevreuil"
+   ]
+  },
+  "21": {
+   "io": [
+    "apro"
+   ],
+   "fr": [
+    "casino",
+    "sanglier"
+   ]
+  },
+  "22": {
+   "io": [
+    "choseo",
+    "furtechasero"
+   ],
+   "fr": [
+    "chaussée",
+    "braconnier"
+   ]
+  },
+  "23": {
+   "io": [
+    "taluso",
+    "fagi"
+   ],
+   "fr": [
+    "talus",
+    "hêtres"
+   ]
+  },
+  "24": {
+   "io": [
+    "rivereto",
+    "hedero"
+   ],
+   "fr": [
+    "ruisseau",
+    "lierre"
+   ]
+  },
+  "25": {
+   "io": [
+    "valo",
+    "silvo"
+   ],
+   "fr": [
+    "vallée",
+    "futaie"
+   ]
+  },
+  "26": {
+   "io": [
+    "lago",
+    "birki"
+   ],
+   "fr": [
+    "lac",
+    "bouleaux"
+   ]
+  },
+  "27": {
+   "io": [
+    "defileo",
+    "rezino"
+   ],
+   "fr": [
+    "col",
+    "résine"
+   ]
+  },
+  "28": {
+   "io": [
+    "fer-mineyo"
+   ],
+   "fr": [
+    "mine"
+   ]
+  },
+  "29": {
+   "io": [
+    "fornego",
+    "querki"
+   ],
+   "fr": [
+    "haut fourneau",
+    "chênes"
+   ]
+  },
+  "30": {
+   "io": [
+    "petro-mineyo",
+    "pikverdo"
+   ],
+   "fr": [
+    "carrière",
+    "pic-vert"
+   ]
+  },
+  "31": {
+   "io": [
+    "abieti",
+    "musko"
+   ],
+   "fr": [
+    "sapin",
+    "mousse"
+   ]
+  },
+  "32": {
+   "io": [
+    "ravino",
+    "radiki"
+   ],
+   "fr": [
+    "ravin",
+    "racines"
+   ]
+  },
+  "33": {
+   "io": [
+    "torento",
+    "hakisto"
+   ],
+   "fr": [
+    "torrent",
+    "bûcheron"
+   ]
+  },
+  "34": {
+   "io": [
+    "abismo",
+    "segilo"
+   ],
+   "fr": [
+    "gouffre",
+    "scie"
+   ]
+  },
+  "35": {
+   "io": [
+    "voyi",
+    "proprietero"
+   ],
+   "fr": [
+    "chemins",
+    "propriétaire"
+   ]
+  },
+  "36": {
+   "io": [
+    "Termini",
+    "trunki"
+   ],
+   "fr": [
+    "bornes",
+    "troncs"
+   ]
+  },
+  "37": {
+   "io": [
+    "indik-fosti",
+    "kortico"
+   ],
+   "fr": [
+    "poteaux indicateurs",
+    "écorce"
+   ]
+  },
+  "38": {
+   "io": [
+    "montano",
+    "hakilo"
+   ],
+   "fr": [
+    "montagnard",
+    "cognée"
+   ]
+  },
+  "39": {
+   "io": [
+    "marmoto",
+    "jorn-laboristo"
+   ],
+   "fr": [
+    "marmotte",
+    "journalier"
+   ]
+  },
+  "40": {
+   "io": [
+    "bisako",
+    "fasko"
+   ],
+   "fr": [
+    "besace",
+    "fagot"
+   ]
+  },
+  "41": {
+   "io": [
+    "cigano",
+    "karbonifisto"
+   ],
+   "fr": [
+    "charbonnier"
+   ]
+  },
+  "42": {
+   "io": [
+    "furtoko",
+    "shovelo amaso"
+   ],
+   "fr": [
+    "toque de fourrure",
+    "meule"
+   ]
+  },
+  "43": {
+   "io": [
+    "kapuco",
+    "lageto"
+   ],
+   "fr": [
+    "capuchon",
+    "étang"
+   ]
+  },
+  "44": {
+   "io": [
+    "kateno urso",
+    "inundo"
+   ],
+   "fr": [
+    "inondation"
+   ]
+  },
+  "45": {
+   "io": [
+    "rokaji",
+    "cigno"
+   ],
+   "fr": [
+    "rochers",
+    "cygne"
+   ]
+  },
+  "46": {
+   "io": [
+    "turisto",
+    "forestistal domo"
+   ],
+   "fr": [
+    "touriste",
+    "maison forestière"
+   ]
+  },
+  "47": {
+   "io": [
+    "sako",
+    "ulmo"
+   ],
+   "fr": [
+    "sac",
+    "orme"
+   ]
+  },
+  "48": {
+   "io": [
+    "guidisto",
+    "popli"
+   ],
+   "fr": [
+    "guide",
+    "peupliers"
+   ]
+  },
+  "49": {
+   "io": [
+    "pastureyo",
+    "cedro"
+   ],
+   "fr": [
+    "cèdre"
+   ]
+  },
+  "50": {
+   "io": [
+    "muton-trupo",
+    "cervulo"
+   ],
+   "fr": [
+    "troupeau de moutons",
+    "cerf"
+   ]
+  },
+  "51": {
+   "io": [
+    "Pino",
+    "(chas)-hundaro"
+   ],
+   "fr": [
+    "pin",
+    "meute"
+   ]
+  },
+  "52": {
+   "io": [
+    "ligna dometo",
+    "chaseri kavalkanta"
+   ],
+   "fr": [
+    "chalet",
+    "piqueurs"
+   ]
+  },
+  "53": {
+   "io": [
+    "voyeto",
+    "korno"
+   ],
+   "fr": [
+    "sentier",
+    "cor"
+   ]
+  },
+  "54": {
+   "io": [
+    "chamo-chasisto",
+    "kopso"
+   ],
+   "fr": [
+    "chamois",
+    "taillis"
+   ]
+  },
+  "55": {
+   "io": [
+    "filiko",
+    "brancho"
+   ],
+   "fr": [
+    "fougère",
+    "branche"
+   ]
+  },
+  "56": {
+   "io": [
+    "groto",
+    "pigo"
+   ],
+   "fr": [
+    "grotte",
+    "pie"
+   ]
+  },
+  "57": {
+   "io": [
+    "eriko",
+    "ramo"
+   ],
+   "fr": [
+    "bruyère",
+    "rameau"
+   ]
+  },
+  "58": {
+   "io": [
+    "foliaro"
+   ],
+   "fr": [
+    "feuillage"
+   ]
+  },
+  "60": {
+   "io": [
+    "korniko"
+   ],
+   "fr": [
+    "corneille"
+   ]
+  },
+  "61": {
+   "io": [
+    "skurelo"
+   ],
+   "fr": [
+    "écureuil"
+   ]
+  }
+ },
+ "t10": {
+  "1": {
+   "io": [
+    "Oceano"
+   ],
+   "fr": [
+    "l'Océan"
+   ]
+  },
+  "2": {
+   "io": [
+    "horizonto"
+   ],
+   "fr": [
+    "horizon"
+   ]
+  },
+  "3": {
+   "io": [
+    "vapor-navi"
+   ],
+   "fr": [
+    "bateaux à vapeur"
+   ]
+  },
+  "4": {
+   "io": [
+    "digo"
+   ],
+   "fr": [
+    "digue"
+   ]
+  },
+  "5": {
+   "io": [
+    "milital portuo"
+   ],
+   "fr": [
+    "port militaire"
+   ]
+  },
+  "6": {
+   "io": [
+    "kroznavi"
+   ],
+   "fr": [
+    "croiseurs"
+   ]
+  },
+  "7": {
+   "io": [
+    "kanon-bateli"
+   ],
+   "fr": [
+    "canonnières"
+   ]
+  },
+  "8": {
+   "io": [
+    "torped-navo"
+   ],
+   "fr": [
+    "torpilleur"
+   ]
+  },
+  "9": {
+   "io": [
+    "kurasnavo"
+   ],
+   "fr": [
+    "cuirassé"
+   ]
+  },
+  "10": {
+   "io": [
+    "submara navo"
+   ],
+   "fr": [
+    "sous-marin"
+   ]
+  },
+  "11": {
+   "io": [
+    "fregato"
+   ],
+   "fr": [
+    "frégate"
+   ]
+  },
+  "12": {
+   "io": [
+    "transporto-navi"
+   ],
+   "fr": [
+    "transports"
+   ]
+  },
+  "13": {
+   "io": [
+    "seglo-navi"
+   ],
+   "fr": [
+    "voiliers"
+   ]
+  },
+  "14": {
+   "io": [
+    "warfo"
+   ],
+   "fr": [
+    "jetée"
+   ]
+  },
+  "15": {
+   "io": [
+    "rempari"
+   ],
+   "fr": [
+    "remparts"
+   ]
+  },
+  "16": {
+   "io": [
+    "remorkero"
+   ],
+   "fr": [
+    "remorqueur"
+   ]
+  },
+  "17": {
+   "io": [
+    "kargo-bateli"
+   ],
+   "fr": [
+    "chalands"
+   ]
+  },
+  "18": {
+   "io": [
+    "konstrukteyi"
+   ],
+   "fr": [
+    "chantiers de construction"
+   ]
+  },
+  "19": {
+   "io": [
+    "manovr-agro"
+   ],
+   "fr": [
+    "manoeuvres"
+   ]
+  },
+  "20": {
+   "io": [
+    "ponteto"
+   ],
+   "fr": [
+    "passerelle"
+   ]
+  },
+  "21": {
+   "io": [
+    "arsenalo"
+   ],
+   "fr": [
+    "arsenal"
+   ]
+  },
+  "22": {
+   "io": [
+    "kanoni"
+   ],
+   "fr": [
+    "canons"
+   ]
+  },
+  "23": {
+   "io": [
+    "kugleqi"
+   ],
+   "fr": [
+    "boulets"
+   ]
+  },
+  "24": {
+   "io": [
+    "metaliferio"
+   ],
+   "fr": [
+    "usine métallurgique"
+   ]
+  },
+  "25": {
+   "io": [
+    "kaldieri"
+   ],
+   "fr": [
+    "chaudières"
+   ]
+  },
+  "26": {
+   "io": [
+    "doki"
+   ],
+   "fr": [
+    "bassins"
+   ]
+  },
+  "27": {
+   "io": [
+    "flotacanta doki"
+   ],
+   "fr": [
+    "docks flottants"
+   ]
+  },
+  "28": {
+   "io": [
+    "helico"
+   ],
+   "fr": [
+    "hélice"
+   ]
+  },
+  "29": {
+   "io": [
+    "kilio"
+   ],
+   "fr": [
+    "quille"
+   ]
+  },
+  "30": {
+   "io": [
+    "guvernilo"
+   ],
+   "fr": [
+    "gouvernail"
+   ]
+  },
+  "31": {
+   "io": [
+    "palet-navi"
+   ],
+   "fr": [
+    "bateaux à aubes"
+   ]
+  },
+  "32": {
+   "io": [
+    "mastizo-krani"
+   ],
+   "fr": [
+    "grue à mâter"
+   ]
+  },
+  "34": {
+   "io": [
+    "trans-Atlantiki"
+   ],
+   "fr": [
+    "transatlantiques"
+   ]
+  },
+  "35": {
+   "io": [
+    "flagi"
+   ],
+   "fr": [
+    "pavillon"
+   ]
+  },
+  "36": {
+   "io": [
+    "piloto"
+   ],
+   "fr": [
+    "pilote"
+   ]
+  },
+  "37": {
+   "io": [
+    "avanajo"
+   ],
+   "fr": [
+    "avant"
+   ]
+  },
+  "38": {
+   "io": [
+    "dopajo"
+   ],
+   "fr": [
+    "arrière"
+   ]
+  },
+  "39": {
+   "io": [
+    "bini"
+   ],
+   "fr": [
+    "cabines"
+   ]
+  },
+  "40": {
+   "io": [
+    "boyi"
+   ],
+   "fr": [
+    "bouées"
+   ]
+  },
+  "41": {
+   "io": [
+    "gabari"
+   ],
+   "fr": [
+    "gabares"
+   ]
+  },
+  "42": {
+   "io": [
+    "kargo-batelo"
+   ],
+   "fr": [
+    "cargo-boat"
+   ]
+  },
+  "43": {
+   "io": [
+    "magazino"
+   ],
+   "fr": [
+    "entrepôt"
+   ]
+  },
+  "44": {
+   "io": [
+    "mar-staciono"
+   ],
+   "fr": [
+    "gare maritime"
+   ]
+  },
+  "45": {
+   "io": [
+    "kayolineo"
+   ],
+   "fr": [
+    "ligne des quais"
+   ]
+  },
+  "46": {
+   "io": [
+    "barki"
+   ],
+   "fr": [
+    "embarcations"
+   ]
+  },
+  "47": {
+   "io": [
+    "remilo"
+   ],
+   "fr": [
+    "aviron"
+   ]
+  },
+  "48": {
+   "io": [
+    "ferdeko"
+   ],
+   "fr": [
+    "pont"
+   ]
+  },
+  "49": {
+   "io": [
+    "seglo-barko"
+   ],
+   "fr": [
+    "voile"
+   ]
+  },
+  "50": {
+   "io": [
+    "yardi"
+   ],
+   "fr": [
+    "vergues"
+   ]
+  },
+  "51": {
+   "io": [
+    "masto"
+   ],
+   "fr": [
+    "mât"
+   ]
+  },
+  "52": {
+   "io": [
+    "kordegi"
+   ],
+   "fr": [
+    "cordages"
+   ]
+  },
+  "53": {
+   "io": [
+    "flot-doko"
+   ],
+   "fr": [
+    "bassin à flot"
+   ]
+  },
+  "54": {
+   "io": [
+    "per yolo"
+   ],
+   "fr": [
+    "yole"
+   ]
+  },
+  "55": {
+   "io": [
+    "pesko-barki"
+   ],
+   "fr": [
+    "barques de pêcheurs"
+   ]
+  },
+  "56": {
+   "io": [
+    "reti"
+   ],
+   "fr": [
+    "filets"
+   ]
+  },
+  "58": {
+   "io": [
+    "kayo"
+   ],
+   "fr": [
+    "quai"
+   ]
+  },
+  "59": {
+   "io": [
+    "vari"
+   ],
+   "fr": [
+    "marchandises"
+   ]
+  },
+  "60": {
+   "io": [
+    "kesti"
+   ],
+   "fr": [
+    "caisses"
+   ]
+  },
+  "61": {
+   "io": [
+    "pakegi"
+   ],
+   "fr": []
+  },
+  "62": {
+   "io": [
+    "krani"
+   ],
+   "fr": [
+    "grues"
+   ]
+  },
+  "63": {
+   "io": [
+    "kargajo"
+   ],
+   "fr": [
+    "cargaison"
+   ]
+  },
+  "64": {
+   "io": [
+    "kamioni"
+   ],
+   "fr": [
+    "camions"
+   ]
+  },
+  "65": {
+   "io": [
+    "doganeyo"
+   ],
+   "fr": [
+    "bureau de la douane"
+   ]
+  },
+  "66": {
+   "io": [
+    "turnoponto"
+   ],
+   "fr": [
+    "pont-tournant"
+   ]
+  },
+  "67": {
+   "io": [
+    "kanalo"
+   ],
+   "fr": [
+    "canal"
+   ]
+  },
+  "68": {
+   "io": [
+    "drag-mashino"
+   ],
+   "fr": [
+    "drague"
+   ]
+  },
+  "69": {
+   "io": [
+    "sluzo"
+   ],
+   "fr": [
+    "écluse"
+   ]
+  },
+  "70": {
+   "io": [
+    "semaforo"
+   ],
+   "fr": [
+    "sémaphore"
+   ]
+  },
+  "71": {
+   "io": [
+    "shalupi"
+   ],
+   "fr": [
+    "chaloupes"
+   ]
+  },
+  "72": {
+   "io": [
+    "ondo"
+   ],
+   "fr": [
+    "vague"
+   ]
+  },
+  "73": {
+   "io": [
+    "plajo"
+   ],
+   "fr": [
+    "plage"
+   ]
+  },
+  "74": {
+   "io": [
+    "elektrala tramvoyo"
+   ],
+   "fr": [
+    "tramway électrique"
+   ]
+  },
+  "75": {
+   "io": [
+    "halteyo"
+   ],
+   "fr": [
+    "halte"
+   ]
+  },
+  "76": {
+   "io": [
+    "balkono"
+   ],
+   "fr": [
+    "balcon"
+   ]
+  },
+  "77": {
+   "io": [
+    "ankri"
+   ],
+   "fr": [
+    "ancres"
+   ]
+  },
+  "78": {
+   "io": [
+    "lietnanti"
+   ],
+   "fr": [
+    "lieutenants de vaisseau"
+   ]
+  },
+  "79": {
+   "io": [
+    "kapitani di artilrio"
+   ],
+   "fr": [
+    "capitaines d'artillerie"
+   ]
+  },
+  "80": {
+   "io": [
+    "infantrio"
+   ],
+   "fr": [
+    "infanterie"
+   ]
+  },
+  "81": {
+   "io": [
+    "navano"
+   ],
+   "fr": [
+    "matelot"
+   ]
+  },
+  "82": {
+   "io": [
+    "sublietnanti"
+   ],
+   "fr": [
+    "enseignes"
+   ]
+  },
+  "83": {
+   "io": [
+    "komandanto"
+   ],
+   "fr": [
+    "capitaine de vaisseau"
+   ]
+  },
+  "84": {
+   "io": [
+    "admiralo"
+   ],
+   "fr": [
+    "amiral"
+   ]
+  },
+  "85": {
+   "io": [
+    "quatermastro"
+   ],
+   "fr": [
+    "quartier-maître"
+   ]
+  },
+  "86": {
+   "io": [
+    "tendi"
+   ],
+   "fr": [
+    "tentes"
+   ]
+  },
+  "87": {
+   "io": [
+    "kabini"
+   ],
+   "fr": [
+    "cabines"
+   ]
+  },
+  "88": {
+   "io": [
+    "balneri"
+   ],
+   "fr": [
+    "gneurs"
+   ]
+  },
+  "89": {
+   "io": [
+    "kazino"
+   ],
+   "fr": [
+    "casino"
+   ]
+  },
+  "90": {
+   "io": [],
+   "fr": [
+    "isthme"
+   ]
+  },
+  "91": {
+   "io": [
+    "peninsulo"
+   ],
+   "fr": [
+    "presqu'île"
+   ]
+  },
+  "92": {
+   "io": [
+    "ondego"
+   ],
+   "fr": [
+    "lame"
+   ]
+  },
+  "93": {
+   "io": [
+    "faro"
+   ],
+   "fr": [
+    "phare"
+   ]
+  },
+  "94": {
+   "io": [
+    "klifo"
+   ],
+   "fr": [
+    "falaise"
+   ]
+  },
+  "95": {
+   "io": [
+    "bayi"
+   ],
+   "fr": [
+    "baies"
+   ]
+  },
+  "96": {
+   "io": [
+    "platajo"
+   ],
+   "fr": [
+    "plateau"
+   ]
+  },
+  "97": {
+   "io": [
+    "fuorto"
+   ],
+   "fr": [
+    "fort"
+   ]
+  },
+  "98": {
+   "io": [
+    "(maro)stretajo"
+   ],
+   "fr": [
+    "détroit"
+   ]
+  },
+  "99": {
+   "io": [
+    "insulo"
+   ],
+   "fr": [
+    "île"
+   ]
+  },
+  "100": {
+   "io": [
+    "rifi"
+   ],
+   "fr": [
+    "écueils"
+   ]
+  }
+ },
+ "t11": {
+  "1": {
+   "io": [
+    "portuo"
+   ],
+   "fr": [
+    "port"
+   ]
+  },
+  "2": {
+   "io": [
+    "kayi"
+   ],
+   "fr": [
+    "quais"
+   ]
+  },
+  "3": {
+   "io": [
+    "preurbo"
+   ],
+   "fr": [
+    "faubourg"
+   ]
+  },
+  "4": {
+   "io": [
+    "fabrikerii"
+   ],
+   "fr": [
+    "fabriques"
+   ]
+  },
+  "5": {
+   "io": [
+    "gasiferio"
+   ],
+   "fr": [
+    "usine à gaz"
+   ]
+  },
+  "6": {
+   "io": [
+    "kameno"
+   ],
+   "fr": [
+    "cheminée"
+   ]
+  },
+  "7": {
+   "io": [
+    "fortifikita kastelo"
+   ],
+   "fr": [
+    "château-fort"
+   ]
+  },
+  "8": {
+   "io": [
+    "pordo"
+   ],
+   "fr": [
+    "porte"
+   ]
+  },
+  "9": {
+   "io": [
+    "turmi"
+   ],
+   "fr": [
+    "tours"
+   ]
+  },
+  "10": {
+   "io": [
+    "doganeyo"
+   ],
+   "fr": [
+    "douane"
+   ]
+  },
+  "11": {
+   "io": [
+    "stradeto"
+   ],
+   "fr": [
+    "rue"
+   ]
+  },
+  "12": {
+   "io": [
+    "komon-domo"
+   ],
+   "fr": [
+    "hôtel de ville"
+   ]
+  },
+  "13": {
+   "io": [
+    "klosheyo"
+   ],
+   "fr": [
+    "beffroi"
+   ]
+  },
+  "14": {
+   "io": [
+    "Borso"
+   ],
+   "fr": [
+    "bourse"
+   ]
+  },
+  "15": {
+   "io": [
+    "prefekteyo"
+   ],
+   "fr": [
+    "préfecture"
+   ]
+  },
+  "16": {
+   "io": [
+    "kazerni"
+   ],
+   "fr": [
+    "casernes"
+   ]
+  },
+  "17": {
+   "io": [
+    "parko komonala"
+   ],
+   "fr": [
+    "parc municipal"
+   ]
+  },
+  "18": {
+   "io": [
+    "spar-kaseyo"
+   ],
+   "fr": [
+    "caisse d'épargne"
+   ]
+  },
+  "19": {
+   "io": [
+    "bulvardo"
+   ],
+   "fr": [
+    "boulevard"
+   ]
+  },
+  "20": {
+   "io": [
+    "katedralo"
+   ],
+   "fr": [
+    "cathédrale"
+   ]
+  },
+  "21": {
+   "io": [
+    "liceo"
+   ],
+   "fr": [
+    "lycée"
+   ]
+  },
+  "22": {
+   "io": [
+    "Tribunalo"
+   ],
+   "fr": [
+    "palais de justice"
+   ]
+  },
+  "25": {
+   "io": [
+    "kafeerio"
+   ],
+   "fr": [
+    "café"
+   ]
+  },
+  "26": {
+   "io": [
+    "gardeno publika"
+   ],
+   "fr": [
+    "jardin public"
+   ]
+  },
+  "27": {
+   "io": [
+    "kiosko"
+   ],
+   "fr": [
+    "kiosque"
+   ]
+  },
+  "28": {
+   "io": [
+    "statuo"
+   ],
+   "fr": [
+    "statue"
+   ]
+  },
+  "29": {
+   "io": [
+    "gas-brulili"
+   ],
+   "fr": [
+    "becs de gaz"
+   ]
+  },
+  "31": {
+   "io": [
+    "elektral tramvoyi"
+   ],
+   "fr": [
+    "tramways électriques"
+   ]
+  },
+  "32": {
+   "io": [
+    "Banko"
+   ],
+   "fr": [
+    "banque"
+   ]
+  },
+  "33": {
+   "io": [
+    "banko-komisionisti"
+   ],
+   "fr": [
+    "garçons de banque"
+   ]
+  },
+  "34": {
+   "io": [
+    "biblioteko"
+   ],
+   "fr": [
+    "bibliothèque"
+   ]
+  },
+  "35": {
+   "io": [
+    "kolektaji pri naturcienco"
+   ],
+   "fr": [
+    "collections d'histoire naturelle"
+   ]
+  },
+  "36": {
+   "io": [
+    "piktur-muzeo"
+   ],
+   "fr": [
+    "galerie de tableaux"
+   ]
+  },
+  "37": {
+   "io": [
+    "gardisto"
+   ],
+   "fr": [
+    "gardien"
+   ]
+  },
+  "38": {
+   "io": [
+    "piktisti"
+   ],
+   "fr": [
+    "artistes peintres"
+   ]
+  },
+  "39": {
+   "io": [
+    "hospitalo"
+   ],
+   "fr": [
+    "hôpital"
+   ]
+  },
+  "40": {
+   "io": [
+    "kupolo"
+   ],
+   "fr": [
+    "dôme"
+   ]
+  },
+  "41": {
+   "io": [
+    "normal skolo"
+   ],
+   "fr": [
+    "école normale"
+   ]
+  },
+  "42": {
+   "io": [
+    "domo privata"
+   ],
+   "fr": [
+    "maison particulière"
+   ]
+  },
+  "43": {
+   "io": [
+    "posto-kontoro"
+   ],
+   "fr": [
+    "bureau de poste"
+   ]
+  },
+  "44": {
+   "io": [
+    "postisti"
+   ],
+   "fr": [
+    "employés des postes"
+   ]
+  },
+  "45": {
+   "io": [
+    "letristi"
+   ],
+   "fr": [
+    "facteurs"
+   ]
+  },
+  "46": {
+   "io": [
+    "trotuaro"
+   ],
+   "fr": [
+    "trottoir"
+   ]
+  },
+  "47": {
+   "io": [
+    "choseo"
+   ],
+   "fr": [
+    "chaussée"
+   ]
+  },
+  "48": {
+   "io": [
+    "Tramduktisto"
+   ],
+   "fr": [
+    "wattman"
+   ]
+  },
+  "50": {
+   "io": [
+    "ambulanco-veturo"
+   ],
+   "fr": [
+    "voiture des ambulances urbaines"
+   ]
+  },
+  "51": {
+   "io": [
+    "flegisto"
+   ],
+   "fr": [
+    "infirmier"
+   ]
+  },
+  "52": {
+   "io": [
+    "kirurgiisto"
+   ],
+   "fr": [
+    "chirurgien"
+   ]
+  },
+  "53": {
+   "io": [
+    "vundito"
+   ],
+   "fr": [
+    "blessé"
+   ]
+  },
+  "54": {
+   "io": [
+    "kamilo"
+   ],
+   "fr": [
+    "brancard"
+   ]
+  },
+  "55": {
+   "io": [
+    "jurnal-kiosko"
+   ],
+   "fr": [
+    "kiosque à journaux"
+   ]
+  },
+  "56": {
+   "io": [
+    "kuriozi"
+   ],
+   "fr": [
+    "curieux"
+   ]
+  },
+  "57": {
+   "io": [
+    "soldati"
+   ],
+   "fr": [
+    "soldats"
+   ]
+  },
+  "61": {
+   "io": [
+    "kavalkanta jendarmi urbala"
+   ],
+   "fr": [
+    "gardes municipaux"
+   ]
+  },
+  "63": {
+   "io": [
+    "jendarmi"
+   ],
+   "fr": [
+    "gendarmes"
+   ]
+  },
+  "64": {
+   "io": [
+    "policisti"
+   ],
+   "fr": [
+    "agents de police"
+   ]
+  },
+  "65": {
+   "io": [
+    "acidentito"
+   ],
+   "fr": [
+    "victime"
+   ]
+  },
+  "66": {
+   "io": [
+    "L'oficiro"
+   ],
+   "fr": [
+    "officier"
+   ]
+  },
+  "67": {
+   "io": [
+    "vapor-pumpilo"
+   ],
+   "fr": [
+    "pompe à vapeur"
+   ]
+  },
+  "68": {
+   "io": [
+    "manu-pumpilo"
+   ],
+   "fr": [
+    "pompe"
+   ]
+  },
+  "69": {
+   "io": [
+    "tubo"
+   ],
+   "fr": [
+    "tuyau"
+   ]
+  },
+  "70": {
+   "io": [
+    "spricilo"
+   ],
+   "fr": [
+    "lance"
+   ]
+  },
+  "71": {
+   "io": [
+    "sprico"
+   ],
+   "fr": [
+    "jet"
+   ]
+  },
+  "72": {
+   "io": [
+    "skalo"
+   ],
+   "fr": [
+    "échelle"
+   ]
+  },
+  "73": {
+   "io": [
+    "teatro"
+   ],
+   "fr": [
+    "théâtre"
+   ]
+  },
+  "74": {
+   "io": [
+    "L'incendio"
+   ],
+   "fr": [
+    "feu"
+   ]
+  },
+  "75": {
+   "io": [
+    "fumuro"
+   ],
+   "fr": [
+    "fumée"
+   ]
+  },
+  "76": {
+   "io": [
+    "spektanti"
+   ],
+   "fr": [
+    "spectateurs"
+   ]
+  },
+  "77": {
+   "io": [
+    "balkono"
+   ],
+   "fr": [
+    "balcon"
+   ]
+  },
+  "78": {
+   "io": [
+    "peristilo"
+   ],
+   "fr": [
+    "péristyle"
+   ]
+  },
+  "79": {
+   "io": [
+    "afisho"
+   ],
+   "fr": [
+    "affiche"
+   ]
+  },
+  "80": {
+   "io": [
+    "l'orkestro"
+   ],
+   "fr": [
+    "orchestre"
+   ]
+  },
+  "81": {
+   "io": [
+    "muzikisti",
+    "violino"
+   ],
+   "fr": [
+    "musiciens",
+    "violon"
+   ]
+  },
+  "82": {
+   "io": [
+    "fluto"
+   ],
+   "fr": [
+    "flûte"
+   ]
+  },
+  "83": {
+   "io": [
+    "violoncelo"
+   ],
+   "fr": [
+    "violoncelle"
+   ]
+  },
+  "84": {
+   "io": [
+    "trombono"
+   ],
+   "fr": [
+    "trombone"
+   ]
+  },
+  "85": {
+   "io": [
+    "tamburo"
+   ],
+   "fr": [
+    "tambour"
+   ]
+  },
+  "86": {
+   "io": [
+    "pumpisti"
+   ],
+   "fr": [
+    "pompiers"
+   ]
+  },
+  "87": {
+   "io": [
+    "moblaro"
+   ],
+   "fr": [
+    "mobilier"
+   ]
+  },
+  "88": {
+   "io": [
+    "l'aktorini"
+   ],
+   "fr": [
+    "actrices"
+   ]
+  },
+  "89": {
+   "io": [
+    "L'aktoruli"
+   ],
+   "fr": [
+    "acteurs"
+   ]
+  },
+  "90": {
+   "io": [
+    "kostumo"
+   ],
+   "fr": [
+    "costume"
+   ]
+  },
+  "91": {
+   "io": [
+    "prefekto"
+   ],
+   "fr": [
+    "préfet"
+   ]
+  },
+  "92": {
+   "io": [
+    "jurnalisto"
+   ],
+   "fr": [
+    "journaliste"
+   ]
+  },
+  "93": {
+   "io": [
+    "urbestro"
+   ],
+   "fr": [
+    "maire"
+   ]
+  },
+  "94": {
+   "io": [
+    "komisario di polico"
+   ],
+   "fr": [
+    "commissaire de police"
+   ]
+  },
+  "95": {
+   "io": [
+    "judicial oficisto"
+   ],
+   "fr": [
+    "magistrat"
+   ]
+  },
+  "96": {
+   "io": [
+    "placo"
+   ],
+   "fr": [
+    "place"
+   ]
+  }
+ },
+ "t12": {
+  "1": {
+   "io": [
+    "voyajonti"
+   ],
+   "fr": [
+    "voyageurs"
+   ]
+  },
+  "2": {
+   "io": [
+    "sacerdoto"
+   ],
+   "fr": [
+    "prêtre"
+   ]
+  },
+  "3": {
+   "io": [
+    "voyaj-sako"
+   ],
+   "fr": [
+    "sac de nuit"
+   ]
+  },
+  "4": {
+   "io": [
+    "la telegraf-kontoro"
+   ],
+   "fr": [
+    "bureau du télégraphe"
+   ]
+  },
+  "5": {
+   "io": [
+    "depesho (telegramo)"
+   ],
+   "fr": [
+    "dépêche (télégramme)"
+   ]
+  },
+  "6": {
+   "io": [
+    "kontrolisto"
+   ],
+   "fr": [
+    "contrôleur"
+   ]
+  },
+  "7": {
+   "io": [
+    "varto-salono"
+   ],
+   "fr": [
+    "salle d'attente"
+   ]
+  },
+  "8": {
+   "io": [
+    "gicheto"
+   ],
+   "fr": [
+    "guichet"
+   ]
+  },
+  "9": {
+   "io": [
+    "bilieto"
+   ],
+   "fr": [
+    "billet"
+   ]
+  },
+  "10": {
+   "io": [
+    "Soldato"
+   ],
+   "fr": [
+    "soldat"
+   ]
+  },
+  "11": {
+   "io": [
+    "jendarmo"
+   ],
+   "fr": [
+    "gendarme"
+   ]
+  },
+  "12": {
+   "io": [
+    "komisario"
+   ],
+   "fr": [
+    "commissaire"
+   ]
+  },
+  "13": {
+   "io": [
+    "stacionestro"
+   ],
+   "fr": [
+    "chef de gare"
+   ]
+  },
+  "14": {
+   "io": [
+    "biblioteko"
+   ],
+   "fr": [
+    "bibliothèque"
+   ]
+  },
+  "15": {
+   "io": [
+    "klok-libro"
+   ],
+   "fr": [
+    "indicateur"
+   ]
+  },
+  "16": {
+   "io": [
+    "portisto"
+   ],
+   "fr": [
+    "porteur"
+   ]
+  },
+  "17": {
+   "io": [
+    "bagaji"
+   ],
+   "fr": [
+    "bagages"
+   ]
+  },
+  "19": {
+   "io": [
+    "charioto pakala"
+   ],
+   "fr": [
+    "chariot"
+   ]
+  },
+  "21": {
+   "io": [
+    "ponder-aparato"
+   ],
+   "fr": [
+    "bascule"
+   ]
+  },
+  "22": {
+   "io": [
+    "la kontoristo"
+   ],
+   "fr": [
+    "employé"
+   ]
+  },
+  "23": {
+   "io": [],
+   "fr": [
+    "guichet des bagages"
+   ]
+  },
+  "24": {
+   "io": [
+    "valizo"
+   ],
+   "fr": [
+    "valise"
+   ]
+  },
+  "25": {
+   "io": [
+    "(bagaj)-depozeyo"
+   ],
+   "fr": [
+    "consigne"
+   ]
+  },
+  "26": {
+   "io": [
+    "klok-tabeli"
+   ],
+   "fr": [
+    "horaires"
+   ]
+  },
+  "27": {
+   "io": [
+    "(bagaj)-distributeyo"
+   ],
+   "fr": [
+    "distribution des bagages"
+   ]
+  },
+  "28": {
+   "io": [
+    "kesti"
+   ],
+   "fr": [
+    "caisses"
+   ]
+  },
+  "29": {
+   "io": [
+    "bilieto"
+   ],
+   "fr": [
+    "bulletin"
+   ]
+  },
+  "30": {
+   "io": [
+    "korbi"
+   ],
+   "fr": [
+    "paniers"
+   ]
+  },
+  "32": {
+   "io": [
+    "ekireyo"
+   ],
+   "fr": [
+    "sortie"
+   ]
+  },
+  "33": {
+   "io": [
+    "L'oficisti dil acizo"
+   ],
+   "fr": [
+    "employés de l'octroi"
+   ]
+  },
+  "34": {
+   "io": [
+    "bufeto"
+   ],
+   "fr": [
+    "buffet"
+   ]
+  },
+  "35": {
+   "io": [
+    "garsono"
+   ],
+   "fr": [
+    "garçon"
+   ]
+  },
+  "36": {
+   "io": [
+    "treno"
+   ],
+   "fr": [
+    "train"
+   ]
+  },
+  "37": {
+   "io": [
+    "vagono"
+   ],
+   "fr": [
+    "wagon"
+   ]
+  },
+  "38": {
+   "io": [
+    "fako"
+   ],
+   "fr": [
+    "compartiment"
+   ]
+  },
+  "39": {
+   "io": [
+    "pordo"
+   ],
+   "fr": [
+    "portière"
+   ]
+  },
+  "40": {
+   "io": [
+    "ped-apogilo"
+   ],
+   "fr": [
+    "marche-pied"
+   ]
+  },
+  "41": {
+   "io": [
+    "storo"
+   ],
+   "fr": [
+    "store"
+   ]
+  },
+  "42": {
+   "io": [
+    "benketo"
+   ],
+   "fr": [
+    "banquette"
+   ]
+  },
+  "43": {
+   "io": [
+    "reto"
+   ],
+   "fr": [
+    "filet"
+   ]
+  },
+  "44": {
+   "io": [
+    "lampisto"
+   ],
+   "fr": [
+    "lampiste"
+   ]
+  },
+  "45": {
+   "io": [
+    "kapkuseni"
+   ],
+   "fr": [
+    "oreillers"
+   ]
+  },
+  "46": {
+   "io": [
+    "trenestro"
+   ],
+   "fr": [
+    "chef de train"
+   ]
+  },
+  "47": {
+   "io": [
+    "furgono"
+   ],
+   "fr": [
+    "fourgon des bagages"
+   ]
+  },
+  "48": {
+   "io": [],
+   "fr": [
+    "bouillottes"
+   ]
+  },
+  "49": {
+   "io": [
+    "tendro"
+   ],
+   "fr": [
+    "tender"
+   ]
+  },
+  "50": {
+   "io": [
+    "fairisto"
+   ],
+   "fr": [
+    "chauffeur"
+   ]
+  },
+  "51": {
+   "io": [
+    "la mashinisto"
+   ],
+   "fr": [
+    "mécanicien"
+   ]
+  },
+  "52": {
+   "io": [
+    "staciono-subchefo"
+   ],
+   "fr": [
+    "souschef de gare"
+   ]
+  },
+  "53": {
+   "io": [
+    "trotuaro"
+   ],
+   "fr": [
+    "quai"
+   ]
+  },
+  "54": {
+   "io": [
+    "lokomotivo"
+   ],
+   "fr": [
+    "locomotive"
+   ]
+  },
+  "55": {
+   "io": [
+    "kameno"
+   ],
+   "fr": [
+    "cheminée"
+   ]
+  },
+  "56": {
+   "io": [
+    "kaldiero"
+   ],
+   "fr": [
+    "chaudière"
+   ]
+  },
+  "57": {
+   "io": [
+    "roti"
+   ],
+   "fr": [
+    "roues"
+   ]
+  },
+  "58": {
+   "io": [
+    "pistoni"
+   ],
+   "fr": [
+    "pistons"
+   ]
+  },
+  "59": {
+   "io": [
+    "siflo"
+   ],
+   "fr": [
+    "sifflet"
+   ]
+  },
+  "60": {
+   "io": [
+    "vaporo"
+   ],
+   "fr": [
+    "vapeur"
+   ]
+  },
+  "63": {
+   "io": [
+    "voyo"
+   ],
+   "fr": [
+    "voie"
+   ]
+  },
+  "64": {
+   "io": [
+    "reli"
+   ],
+   "fr": [
+    "rails"
+   ]
+  },
+  "65": {
+   "io": [
+    "trotuari"
+   ],
+   "fr": [
+    "trottoirs"
+   ]
+  },
+  "66": {
+   "io": [
+    "latrini"
+   ],
+   "fr": [
+    "cabinets d'aisances"
+   ]
+  },
+  "67": {
+   "io": [
+    "dormo-vagoni"
+   ],
+   "fr": [
+    "wagonslits"
+   ]
+  },
+  "68": {
+   "io": [
+    "restor-vagono"
+   ],
+   "fr": [
+    "wagon-restaurant"
+   ]
+  },
+  "69": {
+   "io": [
+    "posto-vagono"
+   ],
+   "fr": [
+    "wagon-poste"
+   ]
+  },
+  "71": {
+   "io": [
+    "staciono dil vari"
+   ],
+   "fr": [
+    "gare des marchandises"
+   ]
+  },
+  "72": {
+   "io": [
+    "vari"
+   ],
+   "fr": [
+    "marchandises"
+   ]
+  },
+  "73": {
+   "io": [
+    "aquo-rezervuyo"
+   ],
+   "fr": [
+    "château-d'eau"
+   ]
+  },
+  "74": {
+   "io": [
+    "fera ponto"
+   ],
+   "fr": [
+    "pont de fer"
+   ]
+  },
+  "75": {
+   "io": [
+    "bestio-vagoni"
+   ],
+   "fr": [
+    "wagons à bestiaux"
+   ]
+  },
+  "76": {
+   "io": [
+    "Esquadani"
+   ],
+   "fr": [
+    "hommes d'équipe"
+   ]
+  },
+  "78": {
+   "io": [
+    "bifurkeyo"
+   ],
+   "fr": [
+    "aiguille"
+   ]
+  },
+  "79": {
+   "io": [
+    "platforma vagoni"
+   ],
+   "fr": [
+    "wagons plateforme"
+   ]
+  },
+  "80": {
+   "io": [
+    "varo-treno"
+   ],
+   "fr": [
+    "train de marchandises"
+   ]
+  },
+  "81": {
+   "io": [
+    "fluvio"
+   ],
+   "fr": [
+    "fleuve"
+   ]
+  },
+  "82": {
+   "io": [
+    "remorkeri"
+   ],
+   "fr": [
+    "remorqueurs"
+   ]
+  },
+  "83": {
+   "io": [
+    "kargo-bateli"
+   ],
+   "fr": [
+    "chalands"
+   ]
+  },
+  "84": {
+   "io": [
+    "voyaj-navo"
+   ],
+   "fr": [
+    "bateau de voyageurs"
+   ]
+  },
+  "85": {
+   "io": [
+    "pontono"
+   ],
+   "fr": [
+    "ponton"
+   ]
+  },
+  "86": {
+   "io": [
+    "signal-disko"
+   ],
+   "fr": [
+    "disque"
+   ]
+  },
+  "87": {
+   "io": [
+    "tuneli"
+   ],
+   "fr": [
+    "tunnels"
+   ]
+  },
+  "88": {
+   "io": [],
+   "fr": [
+    "maisonnettes"
+   ]
+  },
+  "89": {
+   "io": [
+    "horlojego"
+   ],
+   "fr": [
+    "horloge"
+   ]
+  },
+  "90": {
+   "io": [
+    "grand indexo"
+   ],
+   "fr": [
+    "grande aiguille"
+   ]
+  },
+  "91": {
+   "io": [
+    "mikra"
+   ],
+   "fr": [
+    "petite"
+   ]
+  },
+  "92": {
+   "io": [
+    "cifro-plako"
+   ],
+   "fr": [
+    "cadran"
+   ]
+  },
+  "93": {
+   "io": [
+    "afishi"
+   ],
+   "fr": [
+    "affiches"
+   ]
+  },
+  "94": {
+   "io": [
+    "reto"
+   ],
+   "fr": [
+    "réseau"
+   ]
+  }
+ },
+ "t13": {
+  "1": {
+   "io": [
+    "etajo"
+   ],
+   "fr": [
+    "deuxième étage"
+   ]
+  },
+  "2": {
+   "io": [
+    "chambro"
+   ],
+   "fr": [
+    "chambre"
+   ]
+  },
+  "3": {
+   "io": [
+    "servistino"
+   ],
+   "fr": [
+    "bonne"
+   ]
+  },
+  "4": {
+   "io": [
+    "lekteyo"
+   ],
+   "fr": [
+    "cabinet de lecture"
+   ]
+  },
+  "5": {
+   "io": [
+    "fumeyo"
+   ],
+   "fr": [
+    "fumoir"
+   ]
+  },
+  "6": {
+   "io": [
+    "jurnali"
+   ],
+   "fr": [
+    "journaux"
+   ]
+  },
+  "8": {
+   "io": [
+    "sigareto"
+   ],
+   "fr": [
+    "cigarette"
+   ]
+  },
+  "9": {
+   "io": [
+    "acensilo"
+   ],
+   "fr": [
+    "ascenseur"
+   ]
+  },
+  "10": {
+   "io": [
+    "balneyo"
+   ],
+   "fr": [
+    "salle de bain"
+   ]
+  },
+  "11": {
+   "io": [
+    "komuna tablo"
+   ],
+   "fr": [
+    "table d'hôte"
+   ]
+  },
+  "12": {
+   "io": [
+    "kontoristo"
+   ],
+   "fr": [
+    "bureau"
+   ]
+  },
+  "13": {
+   "io": [
+    "telefonilo"
+   ],
+   "fr": [
+    "téléphone"
+   ]
+  },
+  "14": {
+   "io": [
+    "kasistino"
+   ],
+   "fr": [
+    "caissière"
+   ]
+  },
+  "15": {
+   "io": [
+    "kaseyo"
+   ],
+   "fr": [
+    "caisse"
+   ]
+  },
+  "16": {
+   "io": [
+    "voyajeroregistro"
+   ],
+   "fr": [
+    "livre des voyageurs"
+   ]
+  },
+  "17": {
+   "io": [
+    "fakturo"
+   ],
+   "fr": [
+    "note"
+   ]
+  },
+  "18": {
+   "io": [
+    "pordistulo"
+   ],
+   "fr": [
+    "concierge"
+   ]
+  },
+  "19": {
+   "io": [
+    "grumo"
+   ],
+   "fr": [
+    "chasseur"
+   ]
+  },
+  "20": {
+   "io": [
+    "bicikle"
+   ],
+   "fr": [
+    "bicyclette"
+   ]
+  },
+  "21": {
+   "io": [
+    "letristo"
+   ],
+   "fr": [
+    "facteur"
+   ]
+  },
+  "22": {
+   "io": [
+    "letro"
+   ],
+   "fr": [
+    "lettre"
+   ]
+  },
+  "23": {
+   "io": [
+    "letrobuxo"
+   ],
+   "fr": [
+    "boîte aux lettres"
+   ]
+  },
+  "24": {
+   "io": [
+    "portisto"
+   ],
+   "fr": [
+    "homme de peine"
+   ]
+  },
+  "25": {
+   "io": [
+    "manuveturo"
+   ],
+   "fr": [
+    "voiture à bras"
+   ]
+  },
+  "26": {
+   "io": [
+    "chapel-buxo"
+   ],
+   "fr": [
+    "carton à chapeau"
+   ]
+  },
+  "27": {
+   "io": [
+    "mea valizo"
+   ],
+   "fr": [
+    "valise"
+   ]
+  },
+  "28": {
+   "io": [
+    "mea voyaj-sako"
+   ],
+   "fr": [
+    "sac de voyage"
+   ]
+  },
+  "29": {
+   "io": [
+    "omnibuso"
+   ],
+   "fr": [
+    "omnibus"
+   ]
+  },
+  "30": {
+   "io": [
+    "konduktoro"
+   ],
+   "fr": [
+    "conducteur"
+   ]
+  },
+  "31": {
+   "io": [
+    "kofro"
+   ],
+   "fr": []
+  },
+  "32": {
+   "io": [
+    "voyajero"
+   ],
+   "fr": [
+    "voyageur"
+   ]
+  },
+  "33": {
+   "io": [
+    "hotel-mastro"
+   ],
+   "fr": [
+    "hôtelier"
+   ]
+  },
+  "34": {
+   "io": [
+    "telegramo"
+   ],
+   "fr": [
+    "dépêche"
+   ]
+  },
+  "35": {
+   "io": [
+    "telegrafisto"
+   ],
+   "fr": [
+    "télégraphiste"
+   ]
+  },
+  "36": {
+   "io": [
+    "turisto"
+   ],
+   "fr": [
+    "touriste"
+   ]
+  },
+  "37": {
+   "io": [
+    "guid-libro"
+   ],
+   "fr": [
+    "guide"
+   ]
+  },
+  "38": {
+   "io": [
+    "fotograf-aparato"
+   ],
+   "fr": [
+    "appareil photographique"
+   ]
+  },
+  "39": {
+   "io": [
+    "komisionisto"
+   ],
+   "fr": [
+    "commissionnaire"
+   ]
+  },
+  "40": {
+   "io": [
+    "porto-hoko"
+   ],
+   "fr": [
+    "crochets"
+   ]
+  },
+  "41": {
+   "io": [
+    "ciraj-kesto"
+   ],
+   "fr": [
+    "boîte à cirer"
+   ]
+  },
+  "42": {
+   "io": [
+    "(linjo-)lavistino"
+   ],
+   "fr": [
+    "blanchisseuse"
+   ]
+  },
+  "43": {
+   "io": [
+    "korbo"
+   ],
+   "fr": [
+    "panier"
+   ]
+  },
+  "44": {
+   "io": [
+    "tabl-oficisto"
+   ],
+   "fr": [
+    "maître d'hôtel"
+   ]
+  },
+  "45": {
+   "io": [
+    "koquistulo"
+   ],
+   "fr": [
+    "cuisinier"
+   ]
+  },
+  "46": {
+   "io": [
+    "skuristo"
+   ],
+   "fr": [
+    "marmiton"
+   ]
+  },
+  "47": {
+   "io": [
+    "koqueyo"
+   ],
+   "fr": [
+    "cuisine"
+   ]
+  },
+  "48": {
+   "io": [
+    "sub-ter-etajo"
+   ],
+   "fr": [
+    "sous-sol"
+   ]
+  },
+  "49": {
+   "io": [
+    "automobilo"
+   ],
+   "fr": [
+    "automobile"
+   ]
+  },
+  "50": {
+   "io": [
+    "motoristo"
+   ],
+   "fr": [
+    "chauffeur"
+   ]
+  },
+  "51": {
+   "io": [
+    "petrol-triciklo"
+   ],
+   "fr": [
+    "tricycle à pétrole"
+   ]
+  },
+  "52": {
+   "io": [
+    "mashinisto"
+   ],
+   "fr": [
+    "mécanicien"
+   ]
+  },
+  "53": {
+   "io": [
+    "ciklisto"
+   ],
+   "fr": [
+    "cycliste"
+   ]
+  },
+  "54": {
+   "io": [
+    "grumo"
+   ],
+   "fr": [
+    "groom"
+   ]
+  },
+  "55": {
+   "io": [
+    "bir-glasi"
+   ],
+   "fr": [
+    "bocks"
+   ]
+  },
+  "57": {
+   "io": [
+    "garsono"
+   ],
+   "fr": [
+    "garçon"
+   ]
+  },
+  "59": {
+   "io": [
+    "gratifiketo"
+   ],
+   "fr": [
+    "pourboire"
+   ]
+  },
+  "60": {
+   "io": [
+    "jerero"
+   ],
+   "fr": [
+    "gérant"
+   ]
+  },
+  "62": {
+   "io": [
+    "Oceano"
+   ],
+   "fr": [
+    "Océan"
+   ]
+  },
+  "63": {
+   "io": [
+    "barketi"
+   ],
+   "fr": [
+    "barques"
+   ]
+  },
+  "64": {
+   "io": [
+    "seglo-navi"
+   ],
+   "fr": [
+    "voiliers"
+   ]
+  },
+  "65": {
+   "io": [
+    "paketboto"
+   ],
+   "fr": [
+    "paquebot"
+   ]
+  },
+  "66": {
+   "io": [
+    "horizonto"
+   ],
+   "fr": [
+    "horizon"
+   ]
+  },
+  "67": {
+   "io": [
+    "nubi"
+   ],
+   "fr": [
+    "nuages"
+   ]
+  },
+  "68": {
+   "io": [
+    "halo"
+   ],
+   "fr": [
+    "hall"
+   ]
+  },
+  "69": {
+   "io": [
+    "insigno"
+   ],
+   "fr": [
+    "enseigne"
+   ]
+  },
+  "70": {
+   "io": [
+    "standardo"
+   ],
+   "fr": [
+    "drapeau"
+   ]
+  },
+  "71": {
+   "io": [
+    "bilorneto"
+   ],
+   "fr": [
+    "lorgnette"
+   ]
+  },
+  "72": {
+   "io": [
+    "lorno"
+   ],
+   "fr": [
+    "longuevue"
+   ]
+  },
+  "73": {
+   "io": [
+    "drinkajo"
+   ],
+   "fr": [
+    "consommation"
+   ]
+  },
+  "74": {
+   "io": [
+    "biliardeyo"
+   ],
+   "fr": [
+    "salle de billard"
+   ]
+  },
+  "75": {
+   "io": [
+    "biliardo-partio"
+   ],
+   "fr": [
+    "billard"
+   ]
+  },
+  "78": {
+   "io": [
+    "shako"
+   ],
+   "fr": [
+    "échecs"
+   ]
+  },
+  "79": {
+   "io": [
+    "dami"
+   ],
+   "fr": [
+    "dames"
+   ]
+  },
+  "80": {
+   "io": [
+    "domino-stoni"
+   ],
+   "fr": [
+    "dominos"
+   ]
+  },
+  "81": {
+   "io": [
+    "triktrako"
+   ],
+   "fr": [
+    "trictrac"
+   ]
+  },
+  "82": {
+   "io": [
+    "karti"
+   ],
+   "fr": [
+    "cartes"
+   ]
+  },
+  "83": {
+   "io": [
+    "papero"
+   ],
+   "fr": [
+    "papier"
+   ]
+  },
+  "84": {
+   "io": [
+    "kuverto"
+   ],
+   "fr": [
+    "enveloppe"
+   ]
+  },
+  "85": {
+   "io": [
+    "postal-marko"
+   ],
+   "fr": [
+    "timbre-poste"
+   ]
+  },
+  "86": {
+   "io": [
+    "inko"
+   ],
+   "fr": [
+    "encre"
+   ]
+  },
+  "87": {
+   "io": [
+    "plumo"
+   ],
+   "fr": [
+    "plume"
+   ]
+  },
+  "88": {
+   "io": [
+    "veturo"
+   ],
+   "fr": [
+    "voiture"
+   ]
+  },
+  "89": {
+   "io": [
+    "vetur-pordo"
+   ],
+   "fr": [
+    "portière"
+   ]
+  },
+  "91": {
+   "io": [
+    "sidilo"
+   ],
+   "fr": [
+    "siège"
+   ]
+  },
+  "92": {
+   "io": [
+    "veturisto"
+   ],
+   "fr": [
+    "cocher"
+   ]
+  },
+  "93": {
+   "io": [
+    "flogeto"
+   ],
+   "fr": [
+    "fouet"
+   ]
+  }
+ },
+ "t14": {
+  "1": {
+   "io": [
+    "observatorio"
+   ],
+   "fr": [
+    "observatoire"
+   ]
+  },
+  "2": {
+   "io": [
+    "Turka balnerio"
+   ],
+   "fr": [
+    "établissement de bains turcs"
+   ]
+  },
+  "3": {
+   "io": [
+    "strado"
+   ],
+   "fr": [
+    "rue"
+   ]
+  },
+  "4": {
+   "io": [
+    "funero"
+   ],
+   "fr": [
+    "enterrement"
+   ]
+  },
+  "5": {
+   "io": [
+    "birerio"
+   ],
+   "fr": [
+    "brasserie"
+   ]
+  },
+  "6": {
+   "io": [
+    "marquizo"
+   ],
+   "fr": [
+    "marquise"
+   ]
+  },
+  "7": {
+   "io": [
+    "liquoristo"
+   ],
+   "fr": [
+    "liquoriste"
+   ]
+  },
+  "8": {
+   "io": [
+    "konsuleyo"
+   ],
+   "fr": [
+    "consulat"
+   ]
+  },
+  "9": {
+   "io": [
+    "konsulo"
+   ],
+   "fr": [
+    "consul"
+   ]
+  },
+  "10": {
+   "io": [
+    "muzik-vendisto"
+   ],
+   "fr": [
+    "marchand de musique"
+   ]
+  },
+  "11": {
+   "io": [
+    "balayisti"
+   ],
+   "fr": [
+    "balayeurs"
+   ]
+  },
+  "12": {
+   "io": [
+    "balayo-veturo"
+   ],
+   "fr": [
+    "balayeuse mécanique"
+   ]
+  },
+  "13": {
+   "io": [
+    "moblo-vendisto"
+   ],
+   "fr": [
+    "marchand de meubles"
+   ]
+  },
+  "14": {
+   "io": [
+    "lad-(if-) isto"
+   ],
+   "fr": [
+    "quincaillier"
+   ]
+  },
+  "15": {
+   "io": [
+    "magazino"
+   ],
+   "fr": [
+    "magasin"
+   ]
+  },
+  "16": {
+   "io": [
+    "transporto-veturo"
+   ],
+   "fr": [
+    "voiture de déménagement"
+   ]
+  },
+  "17": {
+   "io": [
+    "veturifisto"
+   ],
+   "fr": [
+    "carrossier"
+   ]
+  },
+  "18": {
+   "io": [
+    "vendisto di cikli ed automobili"
+   ],
+   "fr": [
+    "marchand de cycles et d'automobiles"
+   ]
+  },
+  "19": {
+   "io": [
+    "pakigisto"
+   ],
+   "fr": [
+    "emballeur"
+   ]
+  },
+  "20": {
+   "io": [
+    "fotografisto"
+   ],
+   "fr": [
+    "photographe"
+   ]
+  },
+  "21": {
+   "io": [
+    "fotografilo"
+   ],
+   "fr": []
+  },
+  "22": {
+   "io": [
+    "portreti"
+   ],
+   "fr": [
+    "portraits"
+   ]
+  },
+  "23": {
+   "io": [
+    "kuafisto"
+   ],
+   "fr": [
+    "coiffeur"
+   ]
+  },
+  "24": {
+   "io": [
+    "tabakvendeyo"
+   ],
+   "fr": [
+    "appareil photographique",
+    "bureau de tabac"
+   ]
+  },
+  "25": {
+   "io": [
+    "lanterno"
+   ],
+   "fr": [
+    "lanterne"
+   ]
+  },
+  "26": {
+   "io": [
+    "insigno"
+   ],
+   "fr": [
+    "enseigne"
+   ]
+  },
+  "27": {
+   "io": [
+    "sniflante tabako"
+   ],
+   "fr": [
+    "prise"
+   ]
+  },
+  "29": {
+   "io": [
+    "kambiisto"
+   ],
+   "fr": [
+    "changeur"
+   ]
+  },
+  "30": {
+   "io": [
+    "dentisto"
+   ],
+   "fr": [
+    "dentiste"
+   ]
+  },
+  "31": {
+   "io": [
+    "kukifisto"
+   ],
+   "fr": [
+    "pâtissier"
+   ]
+  },
+  "32": {
+   "io": [
+    "skribo-chambro"
+   ],
+   "fr": [
+    "bureau"
+   ]
+  },
+  "33": {
+   "io": [
+    "mashinskribisto"
+   ],
+   "fr": [
+    "dactylographe"
+   ]
+  },
+  "34": {
+   "io": [
+    "kuzulo"
+   ],
+   "fr": [
+    "cousin"
+   ]
+  },
+  "35": {
+   "io": [
+    "sekretario"
+   ],
+   "fr": [
+    "secrétaire"
+   ]
+  },
+  "36": {
+   "io": [
+    "plako"
+   ],
+   "fr": [
+    "plaque"
+   ]
+  },
+  "37": {
+   "io": [
+    "horlojo-juvelisto"
+   ],
+   "fr": [
+    "horloger-bijoutier"
+   ]
+  },
+  "38": {
+   "io": [
+    "optikisto"
+   ],
+   "fr": [
+    "opticien"
+   ]
+  },
+  "39": {
+   "io": [
+    "chapelisto"
+   ],
+   "fr": [
+    "chapelier"
+   ]
+  },
+  "40": {
+   "io": [
+    "gantisto"
+   ],
+   "fr": [
+    "gantier"
+   ]
+  },
+  "41": {
+   "io": [
+    "regimento"
+   ],
+   "fr": [
+    "régiment"
+   ]
+  },
+  "42": {
+   "io": [
+    "tamburestro"
+   ],
+   "fr": [
+    "tambour-major"
+   ]
+  },
+  "43": {
+   "io": [
+    "tamburisti"
+   ],
+   "fr": [
+    "tambours"
+   ]
+  },
+  "44": {
+   "io": [
+    "klarionisti"
+   ],
+   "fr": [
+    "clairons"
+   ]
+  },
+  "45": {
+   "io": [
+    "ralo"
+   ],
+   "fr": [
+    "général"
+   ]
+  },
+  "46": {
+   "io": [
+    "La stab-oficiri"
+   ],
+   "fr": [
+    "état-major"
+   ]
+  },
+  "47": {
+   "io": [
+    "batalioni"
+   ],
+   "fr": [
+    "bataillon"
+   ]
+  },
+  "48": {
+   "io": [
+    "fonteno"
+   ],
+   "fr": [
+    "fontaine"
+   ]
+  },
+  "49": {
+   "io": [
+    "aquo-spricilo"
+   ],
+   "fr": [
+    "jet d'eau"
+   ]
+  },
+  "50": {
+   "io": [
+    "la voyo-kruco"
+   ],
+   "fr": [
+    "carrefour"
+   ]
+  },
+  "51": {
+   "io": [
+    "parapluvisto"
+   ],
+   "fr": [
+    "marchand de parapluies"
+   ]
+  },
+  "52": {
+   "io": [
+    "fiakri"
+   ],
+   "fr": [
+    "fiacres"
+   ]
+  },
+  "53": {
+   "io": [
+    "tintisto"
+   ],
+   "fr": [
+    "teinturier"
+   ]
+  },
+  "54": {
+   "io": [
+    "armifisto"
+   ],
+   "fr": [
+    "armurier"
+   ]
+  },
+  "55": {
+   "io": [
+    "Komerco-voyajisto"
+   ],
+   "fr": [
+    "voyageur de commerce"
+   ]
+  },
+  "56": {
+   "io": [
+    "aroz-fudro"
+   ],
+   "fr": [
+    "tonne d'arrosage"
+   ]
+  },
+  "57": {
+   "io": [
+    "mastro-veturi"
+   ],
+   "fr": [
+    "voitures de maître"
+   ]
+  },
+  "58": {
+   "io": [
+    "omnibuso"
+   ],
+   "fr": [
+    "omnibus"
+   ]
+  },
+  "59": {
+   "io": [
+    "emperialo"
+   ],
+   "fr": [
+    "impériale"
+   ]
+  },
+  "60": {
+   "io": [
+    "kantero vagera"
+   ],
+   "fr": [
+    "chanteur ambulant"
+   ]
+  },
+  "61": {
+   "io": [
+    "turnorgeno"
+   ],
+   "fr": [
+    "orgue de Barbarie"
+   ]
+  },
+  "62": {
+   "io": [
+    "taliori"
+   ],
+   "fr": [
+    "tailleurs"
+   ]
+  },
+  "63": {
+   "io": [
+    "sutistini"
+   ],
+   "fr": [
+    "couturières"
+   ]
+  },
+  "64": {
+   "io": [
+    "stof-komerceyo"
+   ],
+   "fr": [
+    "magasin de nouveautés"
+   ]
+  },
+  "65": {
+   "io": [
+    "La komercisto"
+   ],
+   "fr": [
+    "négociant"
+   ]
+  },
+  "66": {
+   "io": [
+    "kostumi"
+   ],
+   "fr": [
+    "costumes"
+   ]
+  },
+  "67": {
+   "io": [
+    "drapaji"
+   ],
+   "fr": [
+    "drap"
+   ]
+  },
+  "68": {
+   "io": [
+    "kloak-aperturo"
+   ],
+   "fr": [
+    "bouche d'égout"
+   ]
+  },
+  "69": {
+   "io": [
+    "kolportero"
+   ],
+   "fr": [
+    "colporteur"
+   ]
+  },
+  "70": {
+   "io": [
+    "libristo"
+   ],
+   "fr": [
+    "libraire"
+   ]
+  },
+  "71": {
+   "io": [
+    "redakteyo"
+   ],
+   "fr": [
+    "rédaction"
+   ]
+  },
+  "72": {
+   "io": [
+    "litografisti"
+   ],
+   "fr": [
+    "lithographes"
+   ]
+  },
+  "73": {
+   "io": [
+    "kupro-grabisti"
+   ],
+   "fr": [
+    "graveurs"
+   ]
+  },
+  "74": {
+   "io": [
+    "imprimlaboristi"
+   ],
+   "fr": [
+    "typographes"
+   ]
+  },
+  "75": {
+   "io": [
+    "imprimeyo"
+   ],
+   "fr": [
+    "imprimerie"
+   ]
+  },
+  "76": {
+   "io": [
+    "incendio-avertilo"
+   ],
+   "fr": [
+    "avertisseur d'incendie"
+   ]
+  },
+  "77": {
+   "io": [
+    "mercereyo"
+   ],
+   "fr": [
+    "mercier"
+   ]
+  },
+  "78": {
+   "io": [
+    "ston-fonteno"
+   ],
+   "fr": [
+    "borne-fontaine"
+   ]
+  },
+  "79": {
+   "io": [
+    "grumo"
+   ],
+   "fr": [
+    "groom"
+   ]
+  },
+  "80": {
+   "io": [
+    "porto-triciklo"
+   ],
+   "fr": [
+    "tricycle-porteur"
+   ]
+  },
+  "81": {
+   "io": [
+    "posto-veturo"
+   ],
+   "fr": [
+    "voiture des postes"
+   ]
+  },
+  "82": {
+   "io": [
+    "advokato"
+   ],
+   "fr": [
+    "avocat"
+   ]
+  },
+  "83": {
+   "io": [
+    "imposto-kolektisto"
+   ],
+   "fr": [
+    "percepteur"
+   ]
+  },
+  "84": {
+   "io": [
+    "notario"
+   ],
+   "fr": [
+    "notaire"
+   ]
+  },
+  "85": {
+   "io": [
+    "kukista garsono"
+   ],
+   "fr": [
+    "garçon pâtissier"
+   ]
+  },
+  "86": {
+   "io": [
+    "vesto-vendisto"
+   ],
+   "fr": [
+    "marchand d'habits"
+   ]
+  },
+  "87": {
+   "io": [
+    "lantern-acendisto"
+   ],
+   "fr": [
+    "allumeur de réverbères"
+   ]
+  },
+  "88": {
+   "io": [
+    "gasisto"
+   ],
+   "fr": [
+    "gazier"
+   ]
+  },
+  "89": {
+   "io": [
+    "regulierino"
+   ],
+   "fr": [
+    "religieuse"
+   ]
+  },
+  "91": {
+   "io": [
+    "kamenoskrapisti"
+   ],
+   "fr": [
+    "ramoneurs"
+   ]
+  },
+  "92": {
+   "io": [
+    "buketistino"
+   ],
+   "fr": [
+    "marchande de fleurs"
+   ]
+  },
+  "93": {
+   "io": [
+    "edukistino"
+   ],
+   "fr": [
+    "gouvernante"
+   ]
+  },
+  "94": {
+   "io": [
+    "vendistino"
+   ],
+   "fr": [
+    "marchande"
+   ]
+  },
+  "95": {
+   "io": [
+    "kompana siorino"
+   ],
+   "fr": [
+    "dame de compagnie"
+   ]
+  },
+  "96": {
+   "io": [
+    "injenioro"
+   ],
+   "fr": [
+    "ingénieur"
+   ]
+  },
+  "97": {
+   "io": [
+    "chapelistino"
+   ],
+   "fr": [
+    "modiste"
+   ]
+  },
+  "98": {
+   "io": [
+    "infantala gardistino"
+   ],
+   "fr": [
+    "bonne d'enfant"
+   ]
+  },
+  "99": {
+   "io": [
+    "monaki"
+   ],
+   "fr": [
+    "moines"
+   ]
+  }
+ },
+ "t15": {
+  "1": {
+   "io": [
+    "halo"
+   ],
+   "fr": [
+    "halle"
+   ]
+  },
+  "2": {
+   "io": [
+    "porko-karnisto"
+   ],
+   "fr": [
+    "charcutier"
+   ]
+  },
+  "3": {
+   "io": [
+    "shinko"
+   ],
+   "fr": [
+    "jambon"
+   ]
+  },
+  "4": {
+   "io": [
+    "sango-sociso"
+   ],
+   "fr": [
+    "boudin"
+   ]
+  },
+  "5": {
+   "io": [
+    "sociseto"
+   ],
+   "fr": [
+    "saucisse"
+   ]
+  },
+  "6": {
+   "io": [
+    "tripsociseto"
+   ],
+   "fr": [
+    "andouillette"
+   ]
+  },
+  "7": {
+   "io": [
+    "lardo"
+   ],
+   "fr": [
+    "lard"
+   ]
+  },
+  "8": {
+   "io": [
+    "butro-e fromajo-vendistino"
+   ],
+   "fr": [
+    "marchande de beurre et de fromage"
+   ]
+  },
+  "9": {
+   "io": [
+    "Holandana fromaji"
+   ],
+   "fr": [
+    "fromages de Hollande"
+   ]
+  },
+  "10": {
+   "io": [
+    "Camembert-fromaji"
+   ],
+   "fr": [
+    "camemberts"
+   ]
+  },
+  "11": {
+   "io": [
+    "Gruyère-diski"
+   ],
+   "fr": [
+    "pains de gruyère"
+   ]
+  },
+  "12": {
+   "io": [
+    "butro-bloki"
+   ],
+   "fr": [
+    "mottes de beurre"
+   ]
+  },
+  "13": {
+   "io": [
+    "legum-vendistino"
+   ],
+   "fr": [
+    "marchande de légumes"
+   ]
+  },
+  "14": {
+   "io": [
+    "tomati"
+   ],
+   "fr": [
+    "tomates"
+   ]
+  },
+  "15": {
+   "io": [
+    "florkauli"
+   ],
+   "fr": [
+    "chouxfleurs"
+   ]
+  },
+  "16": {
+   "io": [
+    "salado"
+   ],
+   "fr": [
+    "salade"
+   ]
+  },
+  "17": {
+   "io": [
+    "kap-kauli"
+   ],
+   "fr": [
+    "choux pommés"
+   ]
+  },
+  "18": {
+   "io": [
+    "meloni"
+   ],
+   "fr": [
+    "melons"
+   ]
+  },
+  "19": {
+   "io": [
+    "kukurbiti"
+   ],
+   "fr": [
+    "citrouilles"
+   ]
+  },
+  "20": {
+   "io": [
+    "fungi"
+   ],
+   "fr": [
+    "champignons"
+   ]
+  },
+  "21": {
+   "io": [
+    "livro-veturo"
+   ],
+   "fr": [
+    "voiture de livraison"
+   ]
+  },
+  "22": {
+   "io": [
+    "bir-bareli"
+   ],
+   "fr": [
+    "tonneaux de bière"
+   ]
+  },
+  "23": {
+   "io": [
+    "artichoki"
+   ],
+   "fr": [
+    "artichauts"
+   ]
+  },
+  "24": {
+   "io": [
+    "auciono-vendo"
+   ],
+   "fr": [
+    "criée"
+   ]
+  },
+  "25": {
+   "io": [
+    "trip-vendistino"
+   ],
+   "fr": [
+    "tripière"
+   ]
+  },
+  "26": {
+   "io": [
+    "domo-mastrini"
+   ],
+   "fr": []
+  },
+  "27": {
+   "io": [
+    "koquistulo"
+   ],
+   "fr": [
+    "cuisinier"
+   ]
+  },
+  "28": {
+   "io": [
+    "fish-vendistino"
+   ],
+   "fr": [
+    "marchande de poissons"
+   ]
+  },
+  "29": {
+   "io": [
+    "pultro-vendistino"
+   ],
+   "fr": [
+    "marchande de volaille"
+   ]
+  },
+  "30": {
+   "io": [
+    "tel-vendisto"
+   ],
+   "fr": [
+    "marchand de toiles"
+   ]
+  },
+  "31": {
+   "io": [
+    "kultelisto"
+   ],
+   "fr": [
+    "coutelier"
+   ]
+  },
+  "32": {
+   "io": [
+    "spicvenderio"
+   ],
+   "fr": [
+    "épicerie",
+    "petits pains"
+   ]
+  },
+  "33": {
+   "io": [
+    "teo"
+   ],
+   "fr": [
+    "thé"
+   ]
+  },
+  "34": {
+   "io": [
+    "chokolado"
+   ],
+   "fr": [
+    "chocolat"
+   ]
+  },
+  "35": {
+   "io": [
+    "konservaji"
+   ],
+   "fr": [
+    "conserves"
+   ]
+  },
+  "36": {
+   "io": [
+    "liquori"
+   ],
+   "fr": [
+    "liqueurs"
+   ]
+  },
+  "37": {
+   "io": [
+    "bloka sukro"
+   ],
+   "fr": [
+    "sucre en pain"
+   ]
+  },
+  "38": {
+   "io": [
+    "sapono"
+   ],
+   "fr": [
+    "savon"
+   ]
+  },
+  "39": {
+   "io": [
+    "leporo"
+   ],
+   "fr": [
+    "lièvre"
+   ]
+  },
+  "40": {
+   "io": [
+    "turdi"
+   ],
+   "fr": [
+    "grives"
+   ]
+  },
+  "41": {
+   "io": [
+    "perdriki"
+   ],
+   "fr": [
+    "perdrix"
+   ]
+  },
+  "42": {
+   "io": [
+    "qualii"
+   ],
+   "fr": [
+    "cailles"
+   ]
+  },
+  "43": {
+   "io": [
+    "sovaj anado"
+   ],
+   "fr": [
+    "canard sauvage"
+   ]
+  },
+  "44": {
+   "io": [
+    "fazano"
+   ],
+   "fr": [
+    "faisan"
+   ]
+  },
+  "45": {
+   "io": [
+    "garsono"
+   ],
+   "fr": [
+    "garçon"
+   ]
+  },
+  "46": {
+   "io": [
+    "banani"
+   ],
+   "fr": [
+    "bananes"
+   ]
+  },
+  "47": {
+   "io": [
+    "konfitajo"
+   ],
+   "fr": [
+    "confiture"
+   ]
+  },
+  "48": {
+   "io": [
+    "graso"
+   ],
+   "fr": [
+    "graisse"
+   ]
+  },
+  "49": {
+   "io": [
+    "kukombreti"
+   ],
+   "fr": [
+    "cornichons"
+   ]
+  },
+  "50": {
+   "io": [
+    "sardini"
+   ],
+   "fr": [
+    "sardines"
+   ]
+  },
+  "51": {
+   "io": [
+    "klientini"
+   ],
+   "fr": [
+    "clientes"
+   ]
+  },
+  "52": {
+   "io": [
+    "piri"
+   ],
+   "fr": [
+    "poires"
+   ]
+  },
+  "53": {
+   "io": [
+    "pruni"
+   ],
+   "fr": [
+    "prunes"
+   ]
+  },
+  "54": {
+   "io": [
+    "vitberi"
+   ],
+   "fr": [
+    "raisins"
+   ]
+  },
+  "55": {
+   "io": [
+    "persiki"
+   ],
+   "fr": [
+    "pêches"
+   ]
+  },
+  "56": {
+   "io": [
+    "mandeli"
+   ],
+   "fr": [
+    "amandes"
+   ]
+  },
+  "57": {
+   "io": [
+    "nuci"
+   ],
+   "fr": [
+    "noix"
+   ]
+  },
+  "58": {
+   "io": [
+    "rizo"
+   ],
+   "fr": [
+    "riz"
+   ]
+  },
+  "59": {
+   "io": [
+    "lensi"
+   ],
+   "fr": [
+    "lentilles"
+   ]
+  },
+  "60": {
+   "io": [
+    "haringi"
+   ],
+   "fr": [
+    "harengs-saurs"
+   ]
+  },
+  "61": {
+   "io": [
+    "terpomo"
+   ],
+   "fr": [
+    "pomme de terre"
+   ]
+  },
+  "62": {
+   "io": [
+    "pomi"
+   ],
+   "fr": [
+    "pommes"
+   ]
+  },
+  "63": {
+   "io": [
+    "fazeolo"
+   ],
+   "fr": [
+    "haricot"
+   ]
+  },
+  "64": {
+   "io": [
+    "figi"
+   ],
+   "fr": [
+    "figues"
+   ]
+  },
+  "65": {
+   "io": [
+    "sika pruni"
+   ],
+   "fr": [
+    "pruneaux"
+   ]
+  },
+  "66": {
+   "io": [
+    "avelani"
+   ],
+   "fr": [
+    "noisettes"
+   ]
+  },
+  "67": {
+   "io": [
+    "ovi"
+   ],
+   "fr": [
+    "œufs"
+   ]
+  },
+  "68": {
+   "io": [
+    "olivi"
+   ],
+   "fr": [
+    "olives"
+   ]
+  },
+  "69": {
+   "io": [
+    "servistini"
+   ],
+   "fr": [
+    "bonnes"
+   ]
+  },
+  "70": {
+   "io": [
+    "korbi"
+   ],
+   "fr": [
+    "paniers"
+   ]
+  },
+  "71": {
+   "io": [
+    "spicisto"
+   ],
+   "fr": [
+    "épicier"
+   ]
+  },
+  "72": {
+   "io": [
+    "kafeo"
+   ],
+   "fr": [
+    "café"
+   ]
+  },
+  "73": {
+   "io": [
+    "provizo-reti"
+   ],
+   "fr": [
+    "filets à provisions"
+   ]
+  },
+  "74": {
+   "io": [
+    "brueto"
+   ],
+   "fr": [
+    "brouette"
+   ]
+  },
+  "75": {
+   "io": [
+    "bucho-servisto"
+   ],
+   "fr": [
+    "garçon d'abattoir"
+   ]
+  },
+  "76": {
+   "io": [
+    "husaro"
+   ],
+   "fr": [
+    "hussard"
+   ]
+  },
+  "78": {
+   "io": [
+    "paniferio"
+   ],
+   "fr": [
+    "boulangerie"
+   ]
+  },
+  "79": {
+   "io": [
+    "pano"
+   ],
+   "fr": [
+    "pain"
+   ]
+  },
+  "80": {
+   "io": [
+    "panifisto"
+   ],
+   "fr": [
+    "boulanger"
+   ]
+  },
+  "81": {
+   "io": [
+    "krecenti"
+   ],
+   "fr": [
+    "croissants"
+   ]
+  },
+  "82": {
+   "io": [
+    "semli"
+   ],
+   "fr": []
+  },
+  "83": {
+   "io": [
+    "disko-pani"
+   ],
+   "fr": [
+    "miches"
+   ]
+  },
+  "84": {
+   "io": [
+    "linjistino"
+   ],
+   "fr": [
+    "lingère"
+   ]
+  },
+  "85": {
+   "io": [
+    "brodistini"
+   ],
+   "fr": [
+    "brodeuses"
+   ]
+  },
+  "86": {
+   "io": [
+    "lav-glatistino"
+   ],
+   "fr": [
+    "blanchisseuse-repasseuse"
+   ]
+  },
+  "87": {
+   "io": [
+    "glatigilo"
+   ],
+   "fr": [
+    "fer"
+   ]
+  },
+  "88": {
+   "io": [
+    "linjaro"
+   ],
+   "fr": [
+    "linge"
+   ]
+  },
+  "89": {
+   "io": [
+    "karnerio"
+   ],
+   "fr": [
+    "boucherie"
+   ]
+  },
+  "90": {
+   "io": [
+    "karni, mutonkarno"
+   ],
+   "fr": [
+    "mouton"
+   ]
+  },
+  "92": {
+   "io": [
+    "bovyun-karno"
+   ],
+   "fr": [
+    "veau"
+   ]
+  },
+  "93": {
+   "io": [
+    "bucho-garsono"
+   ],
+   "fr": [
+    "garçon boucher"
+   ]
+  },
+  "94": {
+   "io": [
+    "bov-karno"
+   ],
+   "fr": [
+    "bœuf"
+   ]
+  },
+  "96": {
+   "io": [
+    "medul-osti"
+   ],
+   "fr": [
+    "os"
+   ]
+  },
+  "97": {
+   "io": [
+    "ostro-vendistino"
+   ],
+   "fr": [
+    "écaillère"
+   ]
+  },
+  "98": {
+   "io": [
+    "ostri"
+   ],
+   "fr": [
+    "huîtres"
+   ]
+  },
+  "99": {
+   "io": [
+    "legum-kolportistini"
+   ],
+   "fr": [
+    "marchandes des quatre saisons"
+   ]
+  },
+  "100": {
+   "io": [
+    "policisto"
+   ],
+   "fr": [
+    "police"
+   ]
+  },
+  "101": {
+   "io": [
+    "alio"
+   ],
+   "fr": [
+    "ail"
+   ]
+  },
+  "102": {
+   "io": [
+    "vendisto"
+   ],
+   "fr": [
+    "marchand"
+   ]
+  },
+  "103": {
+   "io": [
+    "vitristo"
+   ],
+   "fr": [
+    "vitrier"
+   ]
+  },
+  "104": {
+   "io": [
+    "karbonisto"
+   ],
+   "fr": [
+    "charbonnier"
+   ]
+  },
+  "105": {
+   "io": [
+    "karbona sakedo"
+   ],
+   "fr": [
+    "sac"
+   ]
+  }
+ },
+ "t16": {
+  "1": {
+   "io": [
+    "ludili"
+   ],
+   "fr": [
+    "jouets"
+   ]
+  },
+  "2": {
+   "io": [
+    "lum-projektili"
+   ],
+   "fr": [
+    "lanternes magiques"
+   ]
+  },
+  "3": {
+   "io": [
+    "kuraso"
+   ],
+   "fr": [
+    "cuirasse"
+   ]
+  },
+  "4": {
+   "io": [
+    "pistolo"
+   ],
+   "fr": [
+    "pistolet"
+   ]
+  },
+  "5": {
+   "io": [
+    "facionero"
+   ],
+   "fr": [
+    "factionnaire"
+   ]
+  },
+  "6": {
+   "io": [
+    "Papagayo"
+   ],
+   "fr": [
+    "perroquet"
+   ]
+  },
+  "7": {
+   "io": [
+    "rinocero"
+   ],
+   "fr": [
+    "rhinocéros"
+   ]
+  },
+  "8": {
+   "io": [
+    "rentiro"
+   ],
+   "fr": [
+    "renne"
+   ]
+  },
+  "9": {
+   "io": [
+    "strucho"
+   ],
+   "fr": [
+    "autruche"
+   ]
+  },
+  "10": {
+   "io": [
+    "simio"
+   ],
+   "fr": []
+  },
+  "11": {
+   "io": [
+    "foxo"
+   ],
+   "fr": [
+    "renard"
+   ]
+  },
+  "12": {
+   "io": [
+    "krokodilo"
+   ],
+   "fr": [
+    "crocodile"
+   ]
+  },
+  "13": {
+   "io": [
+    "kamelo"
+   ],
+   "fr": [
+    "chameau"
+   ]
+  },
+  "14": {
+   "io": [
+    "levriero"
+   ],
+   "fr": [
+    "lévrier"
+   ]
+  },
+  "15": {
+   "io": [
+    "pantero"
+   ],
+   "fr": [
+    "panthère"
+   ]
+  },
+  "16": {
+   "io": [
+    "vizelo"
+   ],
+   "fr": [
+    "belette"
+   ]
+  },
+  "17": {
+   "io": [
+    "hieno"
+   ],
+   "fr": [
+    "hyène"
+   ]
+  },
+  "18": {
+   "io": [
+    "leopardo"
+   ],
+   "fr": [
+    "léopard"
+   ]
+  },
+  "19": {
+   "io": [
+    "rateti"
+   ],
+   "fr": [
+    "rats"
+   ]
+  },
+  "20": {
+   "io": [
+    "museti"
+   ],
+   "fr": [
+    "souris"
+   ]
+  },
+  "21": {
+   "io": [
+    "volfo"
+   ],
+   "fr": [
+    "loup"
+   ]
+  },
+  "22": {
+   "io": [
+    "hipopotamo"
+   ],
+   "fr": [
+    "hippopotame"
+   ]
+  },
+  "23": {
+   "io": [
+    "medaro"
+   ],
+   "fr": [
+    "dromadaire"
+   ]
+  },
+  "24": {
+   "io": [
+    "invalida"
+   ],
+   "fr": [
+    "invalide"
+   ]
+  },
+  "25": {
+   "io": [
+    "jenio-soldato"
+   ],
+   "fr": [
+    "soldat du génie"
+   ]
+  },
+  "26": {
+   "io": [
+    "Alpala-chasero"
+   ],
+   "fr": [
+    "chasseur alpin"
+   ]
+  },
+  "27": {
+   "io": [
+    "mayor-serjento"
+   ],
+   "fr": [
+    "sergent-major"
+   ]
+  },
+  "28": {
+   "io": [
+    "artilrio-serjento"
+   ],
+   "fr": [
+    "maréchal des logis"
+   ]
+  },
+  "29": {
+   "io": [
+    "plomba soldati"
+   ],
+   "fr": [
+    "soldats de plomb"
+   ]
+  },
+  "31": {
+   "io": [
+    "flecho"
+   ],
+   "fr": [
+    "flèche"
+   ]
+  },
+  "32": {
+   "io": [
+    "arbalesto"
+   ],
+   "fr": [
+    "arbalète"
+   ]
+  },
+  "33": {
+   "io": [
+    "arko"
+   ],
+   "fr": [
+    "arc"
+   ]
+  },
+  "34": {
+   "io": [
+    "uceli kantera"
+   ],
+   "fr": [
+    "oiseaux chanteurs"
+   ]
+  },
+  "35": {
+   "io": [
+    "vespertilio"
+   ],
+   "fr": [
+    "chauvesouris"
+   ]
+  },
+  "36": {
+   "io": [
+    "boao"
+   ],
+   "fr": [
+    "serpent boa"
+   ]
+  },
+  "37": {
+   "io": [
+    "tortugo"
+   ],
+   "fr": [
+    "tortue"
+   ]
+  },
+  "38": {
+   "io": [
+    "mar-hundo"
+   ],
+   "fr": [
+    "phoque"
+   ]
+  },
+  "39": {
+   "io": [
+    "baleno"
+   ],
+   "fr": [
+    "baleine"
+   ]
+  },
+  "40": {
+   "io": [
+    "sharko"
+   ],
+   "fr": [
+    "requin"
+   ]
+  },
+  "41": {
+   "io": [
+    "marionetteatro"
+   ],
+   "fr": [
+    "théâtre"
+   ]
+  },
+  "42": {
+   "io": [
+    "Arlekino"
+   ],
+   "fr": [
+    "Arlequin"
+   ]
+  },
+  "43": {
+   "io": [
+    "Pulchinelo"
+   ],
+   "fr": [
+    "Polichinelle"
+   ]
+  },
+  "44": {
+   "io": [
+    "Pierrot"
+   ],
+   "fr": [
+    "Pierrot"
+   ]
+  },
+  "45": {
+   "io": [
+    "otusi"
+   ],
+   "fr": [
+    "hiboux"
+   ]
+  },
+  "46": {
+   "io": [
+    "merli"
+   ],
+   "fr": [
+    "merles"
+   ]
+  },
+  "47": {
+   "io": [
+    "fonografilo"
+   ],
+   "fr": [
+    "phonographe"
+   ]
+  },
+  "48": {
+   "io": [
+    "navala kombato"
+   ],
+   "fr": [
+    "combat naval"
+   ]
+  },
+  "49": {
+   "io": [
+    "dragono"
+   ],
+   "fr": [
+    "dragon"
+   ]
+  },
+  "50": {
+   "io": [
+    "inkasisto"
+   ],
+   "fr": [
+    "encaisseur"
+   ]
+  },
+  "51": {
+   "io": [
+    "kaso"
+   ],
+   "fr": [
+    "caisse"
+   ]
+  },
+  "53": {
+   "io": [
+    "seli"
+   ],
+   "fr": [
+    "selles"
+   ]
+  },
+  "54": {
+   "io": [
+    "estribi"
+   ],
+   "fr": [
+    "étriers"
+   ]
+  },
+  "55": {
+   "io": [
+    "bridi"
+   ],
+   "fr": [
+    "brides"
+   ]
+  },
+  "56": {
+   "io": [
+    "morsi"
+   ],
+   "fr": [
+    "mors"
+   ]
+  },
+  "57": {
+   "io": [
+    "fakestro"
+   ],
+   "fr": [
+    "chef de rayon"
+   ]
+  },
+  "58": {
+   "io": [
+    "kristali"
+   ],
+   "fr": [
+    "cristaux"
+   ]
+  },
+  "59": {
+   "io": [
+    "tekruchi"
+   ],
+   "fr": [
+    "théières"
+   ]
+  },
+  "60": {
+   "io": [
+    "korseti"
+   ],
+   "fr": [
+    "corsets"
+   ]
+  },
+  "61": {
+   "io": [
+    "komizino"
+   ],
+   "fr": [
+    "demoiselle de magasin"
+   ]
+  },
+  "62": {
+   "io": [
+    "komprantino"
+   ],
+   "fr": [
+    "acheteuse"
+   ]
+  },
+  "63": {
+   "io": [
+    "kalzoni"
+   ],
+   "fr": [
+    "caleçons"
+   ]
+  },
+  "64": {
+   "io": [
+    "texuri"
+   ],
+   "fr": [
+    "tissus"
+   ]
+  },
+  "65": {
+   "io": [
+    "lanterni"
+   ],
+   "fr": [
+    "lanternes"
+   ]
+  },
+  "66": {
+   "io": [
+    "parasuni"
+   ],
+   "fr": [
+    "parasols"
+   ]
+  },
+  "67": {
+   "io": [
+    "ferkesti"
+   ],
+   "fr": [
+    "coffres-forts"
+   ]
+  },
+  "68": {
+   "io": [
+    "komodi"
+   ],
+   "fr": [
+    "commodes"
+   ]
+  },
+  "69": {
+   "io": [
+    "infanto-veturi"
+   ],
+   "fr": [
+    "voitures d'enfant"
+   ]
+  },
+  "70": {
+   "io": [
+    "palmieri"
+   ],
+   "fr": [
+    "palmiers"
+   ]
+  },
+  "71": {
+   "io": [
+    "harpi"
+   ],
+   "fr": [
+    "harpes"
+   ]
+  },
+  "72": {
+   "io": [
+    "gitari"
+   ],
+   "fr": [
+    "guitares"
+   ]
+  },
+  "73": {
+   "io": [
+    "mandolini"
+   ],
+   "fr": [
+    "mandolines"
+   ]
+  },
+  "74": {
+   "io": [
+    "valvo-korneti"
+   ],
+   "fr": [
+    "cornets à piston"
+   ]
+  },
+  "75": {
+   "io": [
+    "klarioneti"
+   ],
+   "fr": [
+    "clarinettes"
+   ]
+  },
+  "76": {
+   "io": [
+    "arketo"
+   ],
+   "fr": [
+    "archet"
+   ]
+  },
+  "77": {
+   "io": [
+    "tamburego"
+   ],
+   "fr": [
+    "grosse caisse"
+   ]
+  },
+  "78": {
+   "io": [
+    "studento"
+   ],
+   "fr": [
+    "étudiant"
+   ]
+  },
+  "79": {
+   "io": [
+    "komizo"
+   ],
+   "fr": [
+    "commis"
+   ]
+  },
+  "80": {
+   "io": [
+    "alfabet-libro"
+   ],
+   "fr": [
+    "alphabet"
+   ]
+  },
+  "81": {
+   "io": [
+    "Kristnasko-arboro"
+   ],
+   "fr": [
+    "arbre de Noël"
+   ]
+  },
+  "82": {
+   "io": [
+    "ligna kavali"
+   ],
+   "fr": [
+    "chevaux de bois"
+   ]
+  },
+  "83": {
+   "io": [
+    "pupei"
+   ],
+   "fr": [
+    "poupées"
+   ]
+  },
+  "84": {
+   "io": [
+    "parfum-vendeyo"
+   ],
+   "fr": [
+    "parfumerie"
+   ]
+  },
+  "85": {
+   "io": [
+    "astronomio-tabelo"
+   ],
+   "fr": [
+    "astronomie"
+   ]
+  },
+  "86": {
+   "io": [
+    "garsono livrista"
+   ],
+   "fr": [
+    "garçon livreur"
+   ]
+  },
+  "87": {
+   "io": [
+    "ventizili"
+   ],
+   "fr": [
+    "éventails"
+   ]
+  },
+  "88": {
+   "io": [
+    "monetuyi"
+   ],
+   "fr": [
+    "porte-monnaie"
+   ]
+  },
+  "89": {
+   "io": [
+    "portfolii"
+   ],
+   "fr": [
+    "portefeuilles"
+   ]
+  },
+  "90": {
+   "io": [
+    "plumi"
+   ],
+   "fr": [
+    "plumes"
+   ]
+  },
+  "91": {
+   "io": [
+    "zono-bukli"
+   ],
+   "fr": [
+    "boucles"
+   ]
+  },
+  "92": {
+   "io": [
+    "dento-brosili"
+   ],
+   "fr": [
+    "brosses à dents"
+   ]
+  },
+  "93": {
+   "io": [
+    "har-pingli"
+   ],
+   "fr": [
+    "épingles à cheveux"
+   ]
+  },
+  "94": {
+   "io": [
+    "flori artificala"
+   ],
+   "fr": [
+    "fleurs artificielles"
+   ]
+  },
+  "95": {
+   "io": [
+    "hiacinti"
+   ],
+   "fr": [
+    "jacinthes"
+   ]
+  },
+  "96": {
+   "io": [
+    "geranii"
+   ],
+   "fr": [
+    "géraniums"
+   ]
+  },
+  "97": {
+   "io": [
+    "lilii"
+   ],
+   "fr": [
+    "lis"
+   ]
+  },
+  "98": {
+   "io": [
+    "kapuchini"
+   ],
+   "fr": [
+    "capucines"
+   ]
+  },
+  "99": {
+   "io": [
+    "kliento"
+   ],
+   "fr": [
+    "client"
+   ]
+  },
+  "100": {
+   "io": [
+    "expediajo"
+   ],
+   "fr": [
+    "expédition"
+   ]
+  },
+  "101": {
+   "io": [
+    "bronzaji"
+   ],
+   "fr": [
+    "bronzes"
+   ]
+  },
+  "102": {
+   "io": [
+    "Furtisto"
+   ],
+   "fr": [
+    "voleur"
+   ]
+  },
+  "103": {
+   "io": [
+    "inspektisto"
+   ],
+   "fr": [
+    "inspecteur"
+   ]
+  }
+ }
+}
