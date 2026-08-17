@@ -137,8 +137,16 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    colonne : il ne doit ni entrer dans la justification ni la reduire.
    Sur ecran etroit — ou les deux colonnes s'empilent — il rentre dans
    le flux, faute de blanc ou se mettre. */
+/* « text-indent:0 » n'est pas un detail. L'alinea porte
+   « text-indent:1.3em », et le folio, qui est un bloc dans cette
+   colonne, en HERITAIT : son numero se trouvait pousse de 21px vers la
+   droite sur les alineas, et restait au bord sur les titres et les
+   ouvertures, qui n'ont pas d'alinea. Le numero semblait donc filer
+   vers la gauche des qu'on quittait un paragraphe -- alors qu'il ne
+   bougeait pas : c'etaient les autres qui etaient de trop a droite. */
 .fol{position:absolute;left:-30px;top:.15em;font:600 11px/1 system-ui,sans-serif;
- color:var(--sub);text-decoration:none;padding:2px 3px;border-radius:3px}
+ color:var(--sub);text-decoration:none;padding:2px 3px;border-radius:3px;
+ text-indent:0}
 .fol:hover{color:var(--acc);background:var(--lin)}
 .k.tra .fol{left:auto;right:-28px}
 @media (max-width:1180px){
@@ -249,7 +257,10 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 </header>
 
 <main>
-<nav id="nav"><div class="parto">Unesma serio</div>{{NAV}}</nav>
+<!-- Les divisions de serie viennent avec {{NAV}} : le fac-simile les
+     annonce en tete des tableaux 1, 7 et 11, et les ecrire ici en dur
+     n'en donnait qu'une pour les seize tableaux. -->
+<nav id="nav">{{NAV}}</nav>
 <div><div id="kont">
 {{KONTENO}}
 </div>
@@ -278,6 +289,18 @@ var nav = document.getElementById("nav");
 document.getElementById("tirL").onclick = function(){ nav.classList.toggle("mont"); };
 nav.addEventListener("click", function(e){
   if (e.target.tagName === "A" && innerWidth <= 900) nav.classList.remove("mont");
+});
+/* UN TOUCHER AU DEHORS LE REFERME. Sur telephone le volet couvre la
+   page ; il ne se fermait qu'en touchant de nouveau « Materio » ou en
+   suivant un renvoi, et l'on restait pris devant la table. On ecoute
+   donc le toucher plutot que le clic -- sur telephone il vient le
+   premier, et le volet part sans attendre les 300ms du clic. Le bouton
+   est exclu : il a deja sa bascule, et la fermer ici la rouvrirait
+   aussitot. */
+document.addEventListener("pointerdown", function(e){
+  if (!nav.classList.contains("mont")) return;
+  if (nav.contains(e.target) || e.target.closest("#tirL")) return;
+  nav.classList.remove("mont");
 });
 
 /* --- LE CHOIX DE LANGUE. Une seule colonne de droite est visible a la

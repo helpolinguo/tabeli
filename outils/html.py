@@ -120,13 +120,25 @@ def texte_html(t):
     # SANS STYLE, \u00ab pk \u00bb : le rendu ne change pas d'un pixel, mais la
     # ligne se compte. Le nom de la classe doit rester accorde a
     # LIGNE_AP, qui la relit.
-    arite = {"\\VUcentre": (3, 2, '<span class="ln">%s</span>'),
-             "\\VUtitre": (3, 2, '<span class="ln lg">%s</span>'),
-             "\\VUpk": (3, 2, '<span class="pk">%s</span>'),
-             "\\VUcentreA": (4, 3, '<span class="ln">%s</span>'),
+    # LE CORPS DE CARACTERE SE GARDE, LUI. Les autres mesures du
+    # fac-simile ne servent qu'a l'imprime, mais le corps dit si deux
+    # lignes d'apparat sont une seule et meme chose : le titre du tableau
+    # 6 tient sur deux lignes de 11.4pt, celui du 13 sur deux lignes de
+    # 10.2pt, et la table les annoncait comme un titre suivi d'une
+    # section. Une ligne de corps DIFFERENT, elle, commence autre chose
+    # \u2014 au tableau 2, \u00ab La Korpo homala. \u00bb est en 13.2pt sous un titre
+    # en 11.4pt. On le depose donc dans data-korpo, que la table relit.
+    arite = {"\\VUcentre": (3, 2, '<span class="ln" data-korpo="%(korpo)s">'
+                                  '%(texto)s</span>'),
+             "\\VUtitre": (3, 2, '<span class="ln lg" data-korpo="%(korpo)s">'
+                                 '%(texto)s</span>'),
+             "\\VUpk": (3, 2, '<span class="pk" data-korpo="%(korpo)s">'
+                              '%(texto)s</span>'),
+             "\\VUcentreA": (4, 3, '<span class="ln" data-korpo="%(korpo)s">'
+                                   '%(texto)s</span>'),
              "\\VUfilet": (1, None, '<span class="fil"></span>'),
              "\\VUornamento": (1, None, '<span class="orn">\u2766</span>'),
-             "\\VUnotes": (2, 1, "%s"),
+             "\\VUnotes": (2, 1, "%(texto)s"),
              # \fontsize{corps}{interligne} : deux mesures du fac-simile,
              # rien a garder. Non declaree, elle passait pour une macro
              # inconnue a UN argument : le corps tombait dans le texte et
@@ -167,7 +179,9 @@ def texte_html(t):
                     if garde is None:
                         out.append(habit)
                     elif garde < len(args):
-                        out.append(habit % texte_html(args[garde]))
+                        out.append(habit % {
+                            "texto": texte_html(args[garde]),
+                            "korpo": args[0] if args else ""})
                     i = k
                     continue
                 if nom in balises and j < len(t) and t[j] == "{":
@@ -280,8 +294,13 @@ def lire(chemin):
         if m:
             if courant:
                 blocs.append(courant)
+            # Le troisieme membre d'une cle : « suite » pour la reprise
+            # d'un alinea coupe par un changement de page, « pos=<cle> »
+            # pour un bloc qui SE LIT ailleurs qu'il s'imprime.
+            extra = m.group(3) or ""
             courant = {"cle": m.group(1), "tipo": m.group(2),
-                       "suite": m.group(3) == "suite",
+                       "suite": extra == "suite",
+                       "apres": extra[4:] if extra.startswith("pos=") else "",
                        "folio": folio, "feuillet": feuillet, "brut": []}
             continue
         if ligne.startswith("%"):
@@ -394,6 +413,29 @@ DOSSIER = {"fr": "fr"}      # code de langue -> sous-dossier de texto/
 #
 # Le partage se lit sur le nom du fichier : « 00- » les liminaires,
 # « 90- » la fin, et entre les deux les tableaux.
+# « pos= » : CE QUI S'IMPRIME ICI SE LIT LA. Le fac-simile compose
+# parfois un intertitre a une place que la page de lecture ne peut pas
+# garder. Au tableau 2, « LA KAPO. » est imprime AVANT l'alinea 1 -- qui
+# n'est pas la tete, mais l'annonce des trois parties du corps -- et le
+# volume francais met la, lui, le titre de section « I. Le Corps
+# Humain. ». Les deux colonnes annoncaient donc des choses differentes.
+#
+# Deplacer la macro dans le releve corrigerait la page de lecture et
+# FAUSSERAIT LE PDF, qui est la transcription diplomatique : la ligne
+# doit rester ou l'imprimeur l'a mise. On note donc le deplacement a
+# cote d'elle, et le PDF ne bouge pas d'un point.
+def deplacer(blocs):
+    """Repose les blocs marques « pos= » derriere le bloc qu'ils visent."""
+    fixes = [b for b in blocs if not b.get("apres")]
+    for b in [b for b in blocs if b.get("apres")]:
+        i = next((k for k, x in enumerate(fixes) if x["cle"] == b["apres"]),
+                 None)
+        if i is None:
+            raise SystemExit(f'%%K {b["cle"]} : pos={b["apres"]} introuvable')
+        fixes.insert(i + 1, b)
+    return fixes
+
+
 def lire_langue(sous_dossier):
     """Les seize tableaux d'une langue, dans l'ordre."""
     d = RACINE / "texto" / sous_dossier
@@ -401,7 +443,7 @@ def lire_langue(sous_dossier):
     for f in sorted(d.glob("*.tex")):
         if f.name.startswith(("00-", "90-")):
             continue
-        blocs.extend(fusionner(lire(f)))
+        blocs.extend(deplacer(fusionner(lire(f))))
     return blocs
 
 
@@ -685,8 +727,11 @@ def lier_notes(rangi):
 # renvois de la table tombent a cote de la ligne annoncee. D'ou une
 # seule liste de classes, lue par les deux.
 CLASSE_AP = r'ln[^"]*|pk'
-LIGNE_AP = re.compile(rf'<span class="(?:{CLASSE_AP})">(.*?)</span>', re.S)
-OUVRE_AP = re.compile(rf'<span class="({CLASSE_AP})">')
+ATTRS_AP = r'(?: [a-z-]+="[^"]*")*'
+LIGNE_AP = re.compile(
+    rf'<span class="(?:{CLASSE_AP})"({ATTRS_AP})>(.*?)</span>', re.S)
+OUVRE_AP = re.compile(rf'<span class="({CLASSE_AP})"({ATTRS_AP})>')
+KORPO = re.compile(r'data-korpo="([^"]*)"')
 
 
 def net_tdm(x):
@@ -705,8 +750,22 @@ def est_ceno(x):
     # LE FAC-SIMILE LES COMPOSE EN ITALIQUE, et c'est a cela qu'on les
     # reconnait : le mot, lui, change d'une langue a l'autre. On accepte
     # la ligne nue comme la ligne encore dans son span.
-    x = re.sub(rf'^\s*<span class="(?:{CLASSE_AP})">', "", x)
+    x = re.sub(rf'^\s*<span class="(?:{CLASSE_AP})"{ATTRS_AP}>', "", x)
     return bool(re.match(r"\s*<i>", x))
+
+
+# LA SERIE. Le livre en a trois, et le fac-simile l'annonce en tete du
+# tableau qui l'ouvre : « UNESMA SERIO » au 1, « DUESMA SERIO » au 7,
+# « TRIESMA SERIO » au 11. Le volet n'en portait qu'une, ecrite en dur
+# dans le gabarit, de sorte que les seize tableaux paraissaient tous
+# sous la premiere serie.
+SERIO = re.compile(r"\b(UNESMA|DUESMA|TRIESMA|QUARESMA)\s+SERIO\b", re.I)
+
+
+def korpo_de(attrs):
+    """Le corps de caractere d'une ligne d'apparat, ou rien."""
+    m = KORPO.search(attrs)
+    return m.group(1) if m else ""
 
 
 def rendre(rangi):
@@ -728,12 +787,18 @@ def rendre(rangi):
     # donc ici le numero et le titre, deja calcules pour la table, et la
     # page s'en sert comme titre courant de ses resultats.
     tetes = {}
+    # Un intertitre repris en titre de tableau ne s'annonce pas deux fois
+    # (voir plus bas).
+    empruntes = set()
     net = net_tdm
     for idx, r in enumerate(rangi):
         if r["tipo"] not in ("sub", "apar"):
             continue
         brut = texte_de(r)
-        lignes_ap = LIGNE_AP.findall(brut)
+        paires = [(m.group(2), korpo_de(m.group(1)))
+                  for m in LIGNE_AP.finditer(brut)]
+        lignes_ap = [texte for texte, _ in paires]
+        corps = [c for _, c in paires]
 
         if r["tipo"] == "apar":
             i = next((k for k, l in enumerate(lignes_ap)
@@ -762,7 +827,26 @@ def rendre(rangi):
             ti = next((k for k in range(i + 1, len(lignes_ap))
                        if net(lignes_ap[k]) and not est_ceno(lignes_ap[k])),
                       None)
-            titre = net(lignes_ap[ti]) if ti is not None else ""
+            # UN TITRE PEUT TENIR SUR PLUSIEURS LIGNES, et c'est le CORPS
+            # qui le dit : les lignes de meme corps que la premiere sont
+            # la suite du meme titre, une ligne d'un autre corps commence
+            # autre chose. Le titre du tableau 6 tient sur deux lignes de
+            # 11.4pt, celui du 13 sur deux de 10.2pt, celui du 16 sur
+            # deux de 13.2pt ; la table coupait apres la premiere et
+            # annoncait « la Lumizado. », « La Kafeerio. », « La Ludili. »
+            # comme des sections a part -- en italique, au rang des
+            # scenes, alors qu'elles achevent le titre du tableau.
+            suites = []
+            if ti is not None:
+                for k in range(ti + 1, len(lignes_ap)):
+                    if not net(lignes_ap[k]):
+                        continue
+                    if corps[k] != corps[ti] or est_ceno(lignes_ap[k]):
+                        break
+                    suites.append(k)
+            titre = " ".join([net(lignes_ap[ti])] +
+                             [net(lignes_ap[k]) for k in suites]) \
+                if ti is not None else ""
             if not titre:
                 # LE TITRE EST PARFOIS HORS DU BLOC D'OUVERTURE. Aux
                 # tableaux 7, 9, 10, 14 et 15, le fac-simile ido ne met
@@ -782,7 +866,18 @@ def rendre(rangi):
                     if est_ceno(suite):
                         continue
                     titre = net(suite)
+                    # ET IL NE S'ANNONCE PAS DEUX FOIS. Emprunte au
+                    # premier intertitre, le titre reparaissait juste
+                    # au-dessous en sous-entree : le volet lisait
+                    # « TABELO No 10 La Maro. --- La Portuo. » puis
+                    # « La Maro. --- La Portuo. ».
+                    empruntes.add(q["cle"])
                     break
+            # La serie s'annonce avant le tableau qui l'ouvre.
+            serie = next((SERIO.search(net(l)) for l in lignes_ap[:i]
+                          if SERIO.search(net(l))), None)
+            if serie:
+                tdm.append((None, serie.group(0).capitalize(), "parto"))
             tdm.append((r["cle"], f"<b>{num}</b> {titre}".strip(), "tt"))
             # Le point median, comme dans la ligne d'auteur de la page :
             # les titres portent deja des tirets cadratins, et un tiret
@@ -793,11 +888,13 @@ def rendre(rangi):
             # au-dessus. Ce qui PRECEDE le numero ne compte pas : c'est
             # l'apparat de serie, « EXPLIKO - LIBRETO », « UNESMA SERIO ».
             for j in range(i + 1, len(lignes_ap)):
-                if j != ti and net(lignes_ap[j]):
+                if j != ti and j not in suites and net(lignes_ap[j]):
                     tdm.append((f'{r["cle"]}-l{j}', net(lignes_ap[j]), "sc"))
             continue
 
         # Un intertitre : scene si sa premiere ligne est en italique.
+        if r["cle"] in empruntes:
+            continue
         tdm.append((r["cle"], net(brut), "sc" if est_ceno(brut) else "st"))
 
     lignes = []
@@ -821,8 +918,10 @@ def rendre(rangi):
 
             def ancrer(m):
                 n[0] += 1
+                # Les attributs de la ligne sont recopies : data-korpo
+                # doit survivre a l'ancrage.
                 return (f'<span id="{r["cle"]}-l{n[0]-1}" '
-                        f'class="{m.group(1)}">')
+                        f'class="{m.group(1)}"{m.group(2)}>')
             # OUVRE_AP, et non « ln » seul : la table compte aussi les
             # lignes « pk », et les deux numerotations doivent coincider.
             io = OUVRE_AP.sub(ancrer, io)
@@ -861,8 +960,10 @@ def rendre(rangi):
         lignes.append(f'<div class="{" ".join(cl)}"{att}>' +
                       "".join(cel) + "</div>")
 
-    nav = "".join(f'<a href="#{c}" data-ch="{c}" class="{k}">{t}</a>'
-                  for c, t, k in tdm)
+    nav = "".join(
+        f'<div class="parto">{t}</div>' if k == "parto"
+        else f'<a href="#{c}" data-ch="{c}" class="{k}">{t}</a>'
+        for c, t, k in tdm)
     opcioni = "".join(
         f'<option value="{lg["kodo"]}">{lg["nomo"]}</option>'
         for lg in LANGUES)
