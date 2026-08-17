@@ -473,6 +473,7 @@ document.querySelectorAll("nav a.tt").forEach(function(a){
   ouvertures[a.dataset.ch] = 1;
 });
 var nulo = document.getElementById("nulo");
+var gravuri = [].slice.call(document.querySelectorAll(".gravuro"));
 
 function chercher(){
   var terme = sansAccent(q.value.trim());
@@ -511,6 +512,15 @@ function chercher(){
       }
     });
   }
+  /* LES GRAVURES SE RETIRENT PENDANT LA RECHERCHE. Elles ne sont pas
+     dans les rangs mais a cote d'eux, et le filtre les laissait donc en
+     place : on cherchait un mot, les blocs disparaissaient, et les
+     dix-neuf planches restaient a l'ecran, seules. Une planche fait
+     douze cents points de large ; entre deux resultats elle les separe
+     plus qu'elle ne les eclaire. La liste de resultats est une vue de
+     TEXTE, et le tableau se regarde a sa place, dans la lecture. */
+  gravuri.forEach(function(f){ f.classList.toggle("for", !!terme); });
+
   var rien = !trouves.some(function(v){ return v; });
   nulo.textContent = terme
     ? "Nula rezulto por « " + q.value.trim() + " »." : "";

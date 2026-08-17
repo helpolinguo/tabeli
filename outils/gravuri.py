@@ -157,49 +157,85 @@ def separer(chemin):
 
 
 def recaler(couleur, trait, marge=24):
-    """Le decalage (dx, dy) qui pose la couleur sur le trait.
+    """L'etirement et le decalage qui posent la couleur sur le trait.
 
-    LES DEUX COUCHES NE SE SUPERPOSENT PAS TOUJOURS. Elles viennent de
-    deux chaines differentes -- la gravure vectorisee d'un cote, la
-    couleur d'un modele de l'autre -- et sur plusieurs planches la
-    couleur est posee de quelques pixels a cote : les aplats debordent
-    du contour noir, et l'oeil le voit tout de suite.
+    LES DEUX COUCHES NE SE SUPERPOSENT PAS. Elles viennent de deux
+    chaines differentes -- la gravure vectorisee d'un cote, la couleur
+    d'un modele de l'autre -- et l'ecart n'est pas seulement une
+    translation : LES DEUX COUCHES N'ONT PAS LE MEME RAPPORT DE COTES.
+    La planche 13 donne 1.4902 pour la couleur et 1.4775 pour le trait ;
+    etirer l'une au cadre de l'autre, comme on faisait, promene le bord
+    de trente et un pixels. Le recalage tombait juste au milieu de
+    l'image et faux sur les bords, et c'est exactement ce qu'on voyait :
+    des aplats qui debordent du contour, de plus en plus loin qu'on
+    s'ecarte du centre.
 
-    On mesure donc le decalage plutot que de le supposer. Les CONTOURS de
-    la couleur doivent tomber sur les traits de la gravure : on prend le
-    gradient de l'une et le trait de l'autre, et l'on cherche la
-    translation qui les fait le mieux coincider. Le calcul se fait sur
-    une reduction -- le decalage est le meme, et c'est mille fois plus
-    rapide -- puis se rapporte a l'echelle d'origine.
+    On cherche donc quatre nombres et non deux -- deux etirements, deux
+    decalages. Le critere ne change pas : les CONTOURS de la couleur
+    doivent tomber sur les traits de la gravure, on correle le gradient
+    de l'une avec le trait de l'autre. Le calcul se fait sur une
+    reduction, ou tout est mille fois plus rapide, puis se rapporte a
+    l'echelle d'origine.
+
+    Rend (sx, sy, dx, dy) : la couleur est d'abord portee a
+    (sx * largeur, sy * hauteur), puis translatee de (dx, dy).
     """
     import numpy as np
 
-    def chercher(ech, centre, rayon):
-        """La meilleure translation, cherchee a l'echelle « ech »."""
+    gris = couleur.convert("L")
+
+    def carte(ech, sx, sy):
+        """Le contour de la couleur, etiree de (sx, sy), au cadre reduit."""
+        h = round(ech * trait.height / trait.width)
+        c = np.asarray(gris.resize((max(2, round(ech * sx)),
+                                    max(2, round(h * sy))), Image.LANCZOS),
+                       dtype=np.float32)
+        # Ramener au cadre commun : on rogne ou l'on complete par le bord,
+        # de sorte que le decalage se compte toujours dans le meme repere.
+        g = np.zeros((h, ech), np.float32)
+        hh, ww = min(h, c.shape[0]), min(ech, c.shape[1])
+        g[:hh, :ww] = c[:hh, :ww]
+        if hh < h:
+            g[hh:] = g[hh - 1]
+        if ww < ech:
+            g[:, ww:] = g[:, ww - 1:ww]
+        gy, gx = np.gradient(g)
+        m = np.hypot(gx, gy)
+        return m - m.mean()
+
+    def trace(ech):
         h = round(ech * trait.height / trait.width)
         t = np.asarray(trait.resize((ech, h), Image.LANCZOS), dtype=np.float32)
-        c = np.asarray(couleur.convert("L").resize((ech, h), Image.LANCZOS),
-                       dtype=np.float32)
-        gy, gx = np.gradient(c)          # le contour de la couleur
-        cont = np.hypot(gx, gy) - np.hypot(gx, gy).mean()
-        t = t - t.mean()
+        return t - t.mean()
+
+    def chercher(ech, centre, rayon, echelles):
+        t = trace(ech)
         f = trait.width / ech
         cx, cy = round(centre[0] / f), round(centre[1] / f)
         meilleur = None
-        for dy in range(cy - rayon, cy + rayon + 1):
-            for dx in range(cx - rayon, cx + rayon + 1):
-                a = np.roll(np.roll(cont, dy, 0), dx, 1)
-                s = float((a * t).sum())
-                if meilleur is None or s > meilleur[0]:
-                    meilleur = (s, round(dx * f), round(dy * f))
-        return meilleur[1], meilleur[2]
+        for sx, sy in echelles:
+            cont = carte(ech, sx, sy)
+            for dy in range(cy - rayon, cy + rayon + 1):
+                for dx in range(cx - rayon, cx + rayon + 1):
+                    a = np.roll(np.roll(cont, dy, 0), dx, 1)
+                    s = float((a * t).sum())
+                    if meilleur is None or s > meilleur[0]:
+                        meilleur = (s, sx, sy, round(dx * f), round(dy * f))
+        return meilleur[1], meilleur[2], meilleur[3], meilleur[4]
 
-    # DEUX PASSES. La premiere balaie large sur une forte reduction : elle
-    # situe le decalage, mais au pas de huit pixels. La seconde reprend
-    # autour de ce point a une echelle quatre fois plus fine, et descend a
-    # deux pixels pres -- assez pour que l'aplat cesse de deborder.
-    gros = chercher(700, (0, 0), max(1, round(marge * 700 / trait.width)))
-    return chercher(2800, gros, 3)
+    # TROIS PASSES. La premiere cherche l'etirement sur une forte
+    # reduction, ou une grille de vingt-cinq combinaisons coute peu ; la
+    # deuxieme resserre autour d'elle ; la troisieme fixe le decalage au
+    # pixel pres, l'etirement etant desormais tenu.
+    pas = [1 - 0.010, 1 - 0.005, 1.0, 1 + 0.005, 1 + 0.010]
+    sx, sy, dx, dy = chercher(
+        520, (0, 0), max(1, round(marge * 520 / trait.width)),
+        [(a, b) for a in pas for b in pas])
+    fin = [-0.004, -0.002, 0.0, 0.002, 0.004]
+    sx, sy, dx, dy = chercher(
+        1100, (dx, dy), 3, [(sx + a, sy + b) for a in fin for b in fin])
+    sx, sy, dx, dy = chercher(2800, (dx, dy), 4, [(sx, sy)])
+    return sx, sy, dx, dy
 
 
 def composer(couleur, trait):
@@ -208,18 +244,31 @@ def composer(couleur, trait):
     Sans couche de couleur -- une planche vectorielle --, le fond est le
     papier.
     """
+    import numpy as np
+
     if couleur is None:
         fond = Image.new("RGB", trait.size, (255, 255, 255))
     else:
-        fond = couleur.resize(trait.size, Image.LANCZOS)
-        dx, dy = recaler(fond, trait)
+        sx, sy, dx, dy = recaler(couleur, trait)
+        print(f"  recalage de la couleur : etirement {sx:.4f} x {sy:.4f}, "
+              f"decalage {dx:+d}, {dy:+d} px")
+        etire = couleur.resize((max(2, round(trait.width * sx)),
+                                max(2, round(trait.height * sy))),
+                               Image.LANCZOS)
+        # Le bord decouvert reprend la couleur voisine plutot que du
+        # blanc, qui trancherait sous la gravure.
+        a = np.asarray(etire.convert("RGB"))
+        g = np.zeros((trait.height, trait.width, 3), a.dtype)
+        hh = min(trait.height, a.shape[0])
+        ww = min(trait.width, a.shape[1])
+        g[:hh, :ww] = a[:hh, :ww]
+        if hh < trait.height:
+            g[hh:] = g[hh - 1]
+        if ww < trait.width:
+            g[:, ww:] = g[:, ww - 1:ww]
         if dx or dy:
-            print(f"  recalage de la couleur : {dx:+d}, {dy:+d} px")
-            # Le bord decouvert reprend la couleur voisine plutot que du
-            # blanc, qui trancherait sous la gravure.
-            fond = Image.fromarray(
-                __import__("numpy").roll(
-                    __import__("numpy").asarray(fond), (dy, dx), (0, 1)))
+            g = np.roll(g, (dy, dx), (0, 1))
+        fond = Image.fromarray(g)
     return Image.composite(Image.new("RGB", trait.size, (0, 0, 0)), fond, trait)
 
 
@@ -257,8 +306,11 @@ def preparer(cle, chemin):
     # l'image soit chargee, sans quoi la page sursaute au chargement.
     cat = GRAVURI / "gravuri.json"
     tout = json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
+    # La source est notee : sans elle, on ne savait plus quelle planche
+    # venait de quel fichier, et refaire la serie demandait de comparer
+    # des dimensions.
     tout[cle] = {"largeur": plein.width, "alteso": plein.height,
-                 "koloro": couleur is not None,
+                 "koloro": couleur is not None, "fonto": Path(chemin).name,
                  "vido": taille["vido"], "detalo": taille["detalo"]}
     cat.write_text(json.dumps(tout, indent=1, sort_keys=True,
                               ensure_ascii=False) + "\n", encoding="utf-8")
