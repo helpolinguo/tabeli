@@ -851,10 +851,12 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
     lignes = [(m.group(1), m.group(2)) for m in trouves]
     # UN ORNEMENT OU UN FILET SEPARE. Deux lignes de meme corps sont la
     # suite d'un meme titre -- sauf si l'imprimeur a mis une vignette ou
-    # un filet entre elles, ce qui les donne pour deux choses. Le
-    # tableau 12 francais compose ainsi « La Gare. --- Les Chemins de
-    # fer. », un ornement, puis « Les Bateaux. » : les recoller donnait
-    # un tiret pendu au debut d'une ligne restee seule.
+    # un filet entre elles, ce qui les donne pour deux choses. Les six
+    # cas de l'edition sont les ouvertures de serie : « la Delmas-tabeli
+    # helpanta » puis un fleuron puis « UNESMA SERIO », et de meme aux
+    # deuxieme et troisieme series, ou la mention de serie precede le
+    # numero du tableau. Sans cette regle on recollerait le titre du
+    # volume et le nom de la serie en une seule ligne.
     coupe = [False] * len(trouves)
     for k in range(1, len(trouves)):
         entre = html[trouves[k - 1].end():trouves[k].start()]
@@ -1029,6 +1031,55 @@ def sen_subtitro(t):
     # pendu au bout de l'entree.
     court = re.sub(r"\s*[—–-]\s*$", "", court).strip()
     return court or t
+
+
+FILET = '<span class="fil"></span>'
+
+
+def uniformiser_filets(rangi):
+    """Met le meme filet dans les deux colonnes.
+
+    Le filet est une fantaisie d'imprimeur, et les deux ateliers ne
+    l'ont pas posee aux memes endroits : le francais ferme le tableau 2
+    par un filet que l'ido n'a pas, ouvre le tableau 13 par un filet que
+    l'ido n'a pas non plus, tandis que seuls les tableaux 1, 7 et 11
+    portent un filet sous leur titre dans les DEUX volumes. En regard,
+    cela donnait un trait dans une colonne et rien en face, a la meme
+    hauteur -- et un tableau qui s'ouvre autrement que le precedent.
+
+    La page de lecture n'est pas le fac-simile : les PDF gardent ce que
+    l'imprimeur a compose, la page harmonise. Deux regles suffisent :
+    tout tableau s'ouvre sur un filet sous son titre, et tout filet
+    presente dans une colonne se retrouve dans l'autre. On ne touche
+    qu'a la FIN des blocs, la ou tous ces filets se trouvent deja.
+    """
+    pose = 0
+    for r in rangi:
+        if r["tipo"] == "noto":
+            continue
+        cels = [("io", r)] + [(lg["kodo"], r["tra"].get(lg["kodo"]))
+                              for lg in LANGUES]
+        textes = {k: (o["io"] if k == "io" else o["t"])
+                  for k, o in cels if o}
+        pleins = {k: t for k, t in textes.items() if t and t.strip()}
+        if not pleins:
+            continue
+        ouverture = r["tipo"] == "apar" and any(
+            "TABELO" in t or "TABLEAU" in t for t in pleins.values())
+        veut = ouverture or any(t.rstrip().endswith(FILET)
+                                for t in pleins.values())
+        if not veut:
+            continue
+        for k, t in pleins.items():
+            if t.rstrip().endswith(FILET):
+                continue
+            neuf = t.rstrip() + FILET
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+            pose += 1
+    return pose
 
 
 def rendre(rangi):
@@ -1373,6 +1424,8 @@ def rendre(rangi):
 if __name__ == "__main__":
     r = paro()
     rap = lier_notes(r)
+    print(f"  filets ajoutes pour egaliser les colonnes : "
+          f"{uniformiser_filets(r)}")
     rendre(r)
     print(f"  notes reliees a leur appel : {rap['lies']}")
     for langue, cle, marque, pourquoi in rap["echecs"]:
