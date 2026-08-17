@@ -666,6 +666,13 @@ def rendre(rangi):
         return r["io"] or next(iter(r["tra"].values()), {}).get("t", "")
 
     tdm = []
+    # LE LIBELLE COURT DE CHAQUE OUVERTURE DE TABLEAU. La recherche
+    # masque tout ce qui ne repond pas, y compris les titres ; mais un
+    # resultat sans son tableau ne se situe pas, et l'ouverture entiere
+    # ferait quatre lignes d'apparat au-dessus de deux alineas. On garde
+    # donc ici le numero et le titre, deja calcules pour la table, et la
+    # page s'en sert comme titre courant de ses resultats.
+    tetes = {}
     net = net_tdm
     for idx, r in enumerate(rangi):
         if r["tipo"] not in ("sub", "apar"):
@@ -722,6 +729,10 @@ def rendre(rangi):
                     titre = net(suite)
                     break
             tdm.append((r["cle"], f"<b>{num}</b> {titre}".strip(), "tt"))
+            # Le point median, comme dans la ligne d'auteur de la page :
+            # les titres portent deja des tirets cadratins, et un tiret
+            # de plus ne se distinguerait pas d'eux.
+            tetes[r["cle"]] = f"{num} · {titre}" if titre else num
             # Ce qui reste du bloc -- scene, intertitre -- vaut une
             # entree a soi. Le titre en est ote : il est deja annonce
             # au-dessus. Ce qui PRECEDE le numero ne compte pas : c'est
@@ -739,6 +750,10 @@ def rendre(rangi):
         cl = ["r", r["tipo"]]
         io = r["io"]
         att = f' id="{ancro(r["cle"])}" data-cle="{r["cle"]}"'
+        if r["cle"] in tetes:
+            tete = (tetes[r["cle"]].replace("&", "&amp;")
+                    .replace('"', "&quot;").replace("<", "&lt;"))
+            att += f' data-tete="{tete}"'
         fol = ""
         if r["folio"]:
             pg = rang_pdf("io", r["feuillet"])

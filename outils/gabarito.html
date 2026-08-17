@@ -190,6 +190,22 @@ sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
    fabrique par le script, jamais dans la source. */
 mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 .for{display:none}
+/* L'ouverture du tableau reste au-dessus de ses resultats, pour qu'on
+   sache OU l'on a trouve. Mais elle n'est pas un resultat : on la
+   reduit a son libelle -- numero et titre, que le script a depose dans
+   data-tete -- au lieu d'etaler les quatre lignes de son apparat, page
+   de serie et sous-titres de lecons comprises, au-dessus de deux
+   alineas. */
+.r.apar.tete{display:block;margin:1.6em 0 .1em;padding-bottom:.3em;
+ border-bottom:1px solid var(--lin);text-align:left}
+.r.apar.tete>*{display:none}
+.r.apar.tete::before{content:attr(data-tete);display:block;color:var(--acc);
+ font:600 13px/1.4 system-ui,sans-serif;letter-spacing:.02em}
+/* Une recherche sans reponse doit se voir : sans cela la page reste
+   simplement vide, et l'on croit a une panne. */
+.nulo{display:none;padding:2.6em 20px;color:var(--sub);text-align:center;
+ font-size:14.5px}
+.nulo.mont{display:block}
 
 /* --- SUR ECRAN ETROIT les deux colonnes s'empilent : l'ido d'abord,
    la traduction dessous, avec un filet a gauche pour qu'on voie du
@@ -237,6 +253,7 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 <div><div id="kont">
 {{KONTENO}}
 </div>
+<p class="nulo" id="nulo" role="status"></p>
 
 </div>
 </main>
@@ -328,16 +345,56 @@ q.addEventListener("input", function(){
   clearTimeout(minuteur);
   minuteur = setTimeout(chercher, 110);
 });
+/* Les ouvertures de tableau. La table des matieres les connait deja --
+   ce sont ses entrees de premier rang -- et on s'en sert plutot que de
+   les marquer une seconde fois dans la page. */
+var ouvertures = {};
+document.querySelectorAll("nav a.tt").forEach(function(a){
+  ouvertures[a.dataset.ch] = 1;
+});
+var nulo = document.getElementById("nulo");
+
 function chercher(){
   var terme = sansAccent(q.value.trim());
-  rangi.forEach(function(r, i){
-    var celi = [].slice.call(r.querySelectorAll(".k"));
+  /* CE QUI NE REPOND PAS DISPARAIT, DE QUELQUE RANG QUE CE SOIT. La
+     condition portait « && r.classList.contains("p") » : seuls les
+     alineas etaient filtres, et les cent quarante-neuf titres du livre
+     -- ouvertures de tableau et intertitres -- restaient a l'ecran quoi
+     qu'on cherche. Deux alineas repondaient a « kranio », et l'on en
+     voyait cent cinquante et un blocs ; une recherche sans reponse ne
+     changeait rien du tout a la page, et l'on croyait le champ mort. Le
+     rang d'un bloc ne dit pas s'il repond : seul son texte le dit. */
+  var trouves = rangi.map(function(r, i){
     var trouve = false;
-    celi.forEach(function(k, j){
+    [].slice.call(r.querySelectorAll(".k")).forEach(function(k, j){
       if (surligner(k, origine[i][j], terme)) trouve = true;
     });
-    r.classList.toggle("for", !!terme && !trouve && r.classList.contains("p"));
+    r.classList.toggle("for", !!terme && !trouve);
+    r.classList.remove("tete");
+    return trouve;
   });
+
+  /* MAIS UN RESULTAT SANS SON TABLEAU NE SE SITUE PAS. On rend donc
+     l'ouverture du tableau qui garde au moins une reponse : elle sert
+     de titre courant a ses resultats. Une seule par tableau, et aucune
+     pour les tableaux qui n'ont rien. */
+  if (terme){
+    var tete = null;
+    rangi.forEach(function(r, i){
+      // Si l'ouverture repond elle-meme, elle reste un resultat entier
+      // et n'a pas a se replier sur son libelle.
+      if (ouvertures[r.dataset.cle]) tete = trouves[i] ? null : r;
+      else if (trouves[i] && tete){
+        tete.classList.remove("for");
+        tete.classList.add("tete");
+        tete = null;
+      }
+    });
+  }
+  var rien = !trouves.some(function(v){ return v; });
+  nulo.textContent = terme
+    ? "Nula rezulto por « " + q.value.trim() + " »." : "";
+  nulo.classList.toggle("mont", !!terme && rien);
   poserLangue(sel.value);
 }
 
