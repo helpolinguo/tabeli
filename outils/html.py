@@ -1127,8 +1127,16 @@ def rendre(rangi):
                     # « La Maro. --- La Portuo. ».
                     empruntes.add(q["cle"])
                     break
-            # La serie s'annonce avant le tableau qui l'ouvre.
-            serie = next((SERIO.search(net(l)) for l in lignes_ap[:i]
+            # LA SERIE S'ANNONCE AVANT LE TABLEAU QUI L'OUVRE, et parfois
+            # dans le bloc d'AVANT : l'ouverture du tableau 1 est coupee
+            # en deux pour loger la gravure, et « UNESMA SERIO » est
+            # reste avec l'apparat du volume. On regarde donc aussi la ou
+            # elle a pu tomber.
+            avant = lignes_ap[:i]
+            if idx and rangi[idx - 1]["tipo"] == "apar":
+                avant = [m.group(2) for m in
+                         LIGNE_AP.finditer(texte_de(rangi[idx - 1]))] + avant
+            serie = next((SERIO.search(net(l)) for l in avant
                           if SERIO.search(net(l))), None)
             if serie:
                 tdm.append((None, serie.group(0).capitalize(), "parto"))
@@ -1211,15 +1219,33 @@ def rendre(rangi):
     for r in rangi:
         cl = ["r", r["tipo"]]
         io = r["io"]
-        # LA GRAVURE PRECEDE LE TITRE QU'ELLE ILLUSTRE. « tetes » ne
-        # porte que les ouvertures de tableau : c'est exactement la ou
-        # une gravure a sa place.
-        g = gravo.get(r["cle"][:3]) if r["cle"] in tetes else None
+        # LA GRAVURE PRECEDE LE BLOC QU'ELLE ILLUSTRE, et c'est la CLE
+        # qui le dit -- non le numero du tableau. La plupart des planches
+        # ouvrent leur tableau, mais pas toutes : la figure du corps
+        # humain se pose sous « La Korpo homala. », le plan de la maison
+        # sous le « (Videz la plano.) » du tableau 5, et le tableau 1
+        # entre l'apparat du volume et son propre titre -- ce pourquoi
+        # son ouverture est coupee en deux dans le releve.
+        g = gravo.get(r["cle"])
         if g:
-            v = g["vido"]
+            v, d = g["vido"], g["detalo"]
             lignes.append(
-                f'<figure class="gravuro" data-tabelo="{r["cle"][:3]}">'
-                f'<img src="gravuri/{r["cle"][:3]}-vido.webp" alt="" '
+                f'<figure class="gravuro" data-cle="{r["cle"]}" '
+                f'data-detalo="gravuri/{r["cle"]}-detalo.webp" '
+                f'data-dl="{d["largeur"]}" data-dh="{d["alteso"]}">'
+                # DEUX DEFINITIONS, ET LE NAVIGATEUR CHOISIT. Sur un
+                # ecran ordinaire la vue d'ensemble suffit ; sur un
+                # Retina, ou chaque point de la page vaut deux points de
+                # l'ecran, elle paraissait floue. « sizes » dit la
+                # largeur reelle d'affichage : un telephone prend donc la
+                # petite, et seul un grand ecran dense va chercher
+                # l'image de detail -- celle-la meme qui servira au plein
+                # ecran et aux gros plans, donc jamais chargee deux fois.
+                f'<img src="gravuri/{r["cle"]}-vido.webp" alt="" '
+                f'srcset="gravuri/{r["cle"]}-vido.webp {v["largeur"]}w, '
+                f'gravuri/{r["cle"]}-detalo.webp {d["largeur"]}w" '
+                f'sizes="(max-width:900px) calc(100vw - 64px), '
+                f'min(calc(100vw - 314px), 1246px)" '
                 f'loading="lazy" decoding="async" '
                 f'width="{v["largeur"]}" height="{v["alteso"]}">'
                 f'</figure>')

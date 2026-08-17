@@ -3,8 +3,21 @@
 """
 gravuri.py — prepare les tableaux muraux pour la page de lecture.
 
-    python3 outils/gravuri.py 1 gravuri/font/page1.pdf
+    python3 outils/gravuri.py t01-apar-1 gravuri/font/page1.pdf
+    python3 outils/gravuri.py t02-tit-0  gravuri/font/page2.pdf
     python3 outils/gravuri.py --tuto          # ce que fait l'outil, en detail
+
+UNE PLANCHE SE RANGE SOUS UNE CLE DE BLOC, non sous un numero de
+tableau. La plupart illustrent l'ouverture -- « t01-apar-1 » -- mais pas
+toutes : la figure du corps humain va sous « La Korpo homala. », donc
+sous t02-tit-0, et le plan de la maison sous le « (Videz la plano.) »
+du tableau 5, donc sous t05-apar-2. C'est la cle qui dit ou la gravure
+se pose, et un tableau peut en porter plusieurs.
+
+DEUX ESPECES DE PLANCHES. Les tableaux muraux sont en deux couches (voir
+plus bas) ; le plan de la maison et la figure du corps humain, eux, sont
+de purs traces vectoriels, sans couleur ni image. On les rastere alors,
+a 300 points par pouce, et le reste ne change pas.
 
 CE QU'IL Y A DANS UN PDF DE TABLEAU. Le tableau mural n'est pas une
 image plate : c'est un empilement de DEUX COUCHES, et c'est la tout
@@ -60,7 +73,13 @@ GRAVURI = RACINE / "gravuri"
 # et c'est elle qui decide de leur nettete. 2600px donne un gros plan de
 # 400px de source dans une boite de 700 : un peu doux, mais lisible, et
 # elle ne pese que 868 Ko la ou 3200px en pese 1165.
-LARGE_VIDO = 1000
+# 1200 et non 1000 : un ecran de bureau ordinaire affiche la gravure sur
+# environ 1090 points, et une vue d'ensemble de 1000 passait donc juste
+# au-dessous -- le navigateur allait alors chercher l'image de detail,
+# huit fois plus lourde, pour un ecran qui n'en avait pas besoin. A 1200
+# elle couvre aussi les telephones, dont l'ecran triple densite reclame
+# un millier de points ; seul un grand ecran Retina monte au detail.
+LARGE_VIDO = 1200
 LARGE_DETALO = 2600
 QUAL_VIDO = 72
 QUAL_DETALO = 72
@@ -93,11 +112,34 @@ def kovri(pdf):
     return trouve
 
 
+def rasterer(chemin, dpi=300):
+    """Une planche vectorielle, rendue en un masque de trait."""
+    import subprocess
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        base = Path(tmp) / "p"
+        subprocess.run(["pdftoppm", "-r", str(dpi), "-png", "-singlefile",
+                        str(chemin), str(base)], check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        im = Image.open(str(base) + ".png").convert("L")
+        im.load()
+    # Le rendu est noir sur blanc ; le reste de l'outil attend un ALPHA,
+    # ou le blanc est l'encre. On retourne donc, et les deux especes de
+    # planches se composent ensuite de la meme facon.
+    return Image.eval(im, lambda v: 255 - v)
+
+
 def separer(chemin):
     """(couleur RGB, trait en alpha) d'un PDF de tableau."""
     couleur = trait = None
     pdf = pikepdf.open(chemin)
-    for obj in kovri(pdf):
+    images = kovri(pdf)
+    if not images:
+        # UNE PLANCHE PUREMENT VECTORIELLE. Le plan de la maison et la
+        # figure du corps humain n'ont ni couleur ni image : tout y est
+        # trace. On les rastere, et le trait sort noir sur blanc.
+        return None, rasterer(chemin)
+    for obj in images:
         if "/SMask" in obj:
             # L'ENCRE EST NOIRE PURE : on l'a verifiee, son canal de gris
             # vaut 0 partout. Tout le dessin est donc dans le masque, et
@@ -114,9 +156,70 @@ def separer(chemin):
     return couleur, trait
 
 
+def recaler(couleur, trait, marge=24):
+    """Le decalage (dx, dy) qui pose la couleur sur le trait.
+
+    LES DEUX COUCHES NE SE SUPERPOSENT PAS TOUJOURS. Elles viennent de
+    deux chaines differentes -- la gravure vectorisee d'un cote, la
+    couleur d'un modele de l'autre -- et sur plusieurs planches la
+    couleur est posee de quelques pixels a cote : les aplats debordent
+    du contour noir, et l'oeil le voit tout de suite.
+
+    On mesure donc le decalage plutot que de le supposer. Les CONTOURS de
+    la couleur doivent tomber sur les traits de la gravure : on prend le
+    gradient de l'une et le trait de l'autre, et l'on cherche la
+    translation qui les fait le mieux coincider. Le calcul se fait sur
+    une reduction -- le decalage est le meme, et c'est mille fois plus
+    rapide -- puis se rapporte a l'echelle d'origine.
+    """
+    import numpy as np
+
+    def chercher(ech, centre, rayon):
+        """La meilleure translation, cherchee a l'echelle « ech »."""
+        h = round(ech * trait.height / trait.width)
+        t = np.asarray(trait.resize((ech, h), Image.LANCZOS), dtype=np.float32)
+        c = np.asarray(couleur.convert("L").resize((ech, h), Image.LANCZOS),
+                       dtype=np.float32)
+        gy, gx = np.gradient(c)          # le contour de la couleur
+        cont = np.hypot(gx, gy) - np.hypot(gx, gy).mean()
+        t = t - t.mean()
+        f = trait.width / ech
+        cx, cy = round(centre[0] / f), round(centre[1] / f)
+        meilleur = None
+        for dy in range(cy - rayon, cy + rayon + 1):
+            for dx in range(cx - rayon, cx + rayon + 1):
+                a = np.roll(np.roll(cont, dy, 0), dx, 1)
+                s = float((a * t).sum())
+                if meilleur is None or s > meilleur[0]:
+                    meilleur = (s, round(dx * f), round(dy * f))
+        return meilleur[1], meilleur[2]
+
+    # DEUX PASSES. La premiere balaie large sur une forte reduction : elle
+    # situe le decalage, mais au pas de huit pixels. La seconde reprend
+    # autour de ce point a une echelle quatre fois plus fine, et descend a
+    # deux pixels pres -- assez pour que l'aplat cesse de deborder.
+    gros = chercher(700, (0, 0), max(1, round(marge * 700 / trait.width)))
+    return chercher(2800, gros, 3)
+
+
 def composer(couleur, trait):
-    """La couleur dessous, l'encre noire dessus selon l'alpha du trait."""
-    fond = couleur.resize(trait.size, Image.LANCZOS)
+    """La couleur dessous, l'encre noire dessus selon l'alpha du trait.
+
+    Sans couche de couleur -- une planche vectorielle --, le fond est le
+    papier.
+    """
+    if couleur is None:
+        fond = Image.new("RGB", trait.size, (255, 255, 255))
+    else:
+        fond = couleur.resize(trait.size, Image.LANCZOS)
+        dx, dy = recaler(fond, trait)
+        if dx or dy:
+            print(f"  recalage de la couleur : {dx:+d}, {dy:+d} px")
+            # Le bord decouvert reprend la couleur voisine plutot que du
+            # blanc, qui trancherait sous la gravure.
+            fond = Image.fromarray(
+                __import__("numpy").roll(
+                    __import__("numpy").asarray(fond), (dy, dx), (0, 1)))
     return Image.composite(Image.new("RGB", trait.size, (0, 0, 0)), fond, trait)
 
 
@@ -128,16 +231,17 @@ def poser(im, chemin, largeur, qualite):
     return petite.size, chemin.stat().st_size
 
 
-def preparer(numero, chemin):
-    cle = f"t{int(numero):02d}"
+def preparer(cle, chemin):
     couleur, trait = separer(chemin)
-    print(f"  couleur {couleur.size}   trait {trait.size}")
+    print(f"  couleur {couleur.size if couleur else '(aucune)'}"
+          f"   trait {trait.size}")
 
     # Les couches restent a part : c'est sur elles qu'on reprendra les
     # couleurs, la gravure n'ayant pas a en souffrir.
     kov = GRAVURI / "kovri"
     kov.mkdir(parents=True, exist_ok=True)
-    couleur.save(kov / f"{cle}-koloro.png")
+    if couleur is not None:
+        couleur.save(kov / f"{cle}-koloro.png")
     trait.save(kov / f"{cle}-trako.png")
 
     plein = composer(couleur, trait)
@@ -154,6 +258,7 @@ def preparer(numero, chemin):
     cat = GRAVURI / "gravuri.json"
     tout = json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
     tout[cle] = {"largeur": plein.width, "alteso": plein.height,
+                 "koloro": couleur is not None,
                  "vido": taille["vido"], "detalo": taille["detalo"]}
     cat.write_text(json.dumps(tout, indent=1, sort_keys=True,
                               ensure_ascii=False) + "\n", encoding="utf-8")

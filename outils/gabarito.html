@@ -253,10 +253,35 @@ sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
    la place est donc reservee des le depart, et le texte ne sursaute pas
    quand l'image arrive. --- */
 .gravuro{margin:2.2em 0 .6em;text-align:center}
-.gravuro img{max-width:100%;height:auto;border:1px solid var(--lin);
+.gravuro img{width:100%;max-width:1246px;height:auto;/* La gravure remplit son cadre : sans largeur declaree, elle s'arretait
+   a sa taille propre et « sizes » annoncait alors une largeur qu'elle
+   n'occupait pas -- le navigateur choisissait de travers. */
+ border:1px solid var(--lin);
  border-radius:3px;background:var(--pap2);cursor:zoom-in;
- box-shadow:0 1px 4px rgba(0,0,0,.10)}
-@media (prefers-color-scheme:dark){.gravuro img{box-shadow:none}}
+ box-shadow:0 1px 4px rgba(0,0,0,.10);transition:box-shadow .15s}
+.gravuro img:hover{box-shadow:0 2px 10px rgba(0,0,0,.18)}
+@media (prefers-color-scheme:dark){.gravuro img,.gravuro img:hover{box-shadow:none}}
+
+/* --- LE PLEIN ECRAN. Un tableau mural se regarde de pres ; la colonne
+   de lecture est trop etroite pour cela. Au clic il s'ouvre sur toute
+   la fenetre, SANS quitter la page -- ni nouvel onglet, ni nouvelle
+   requete : c'est l'image de detail, celle-la meme ou se decouperont
+   les gros plans, et une fois chargee elle ne l'est plus jamais.
+   La transition porte sur l'opacite et sur une legere echelle : c'est
+   assez pour que l'oeil suive l'ouverture sans que rien ne saute.
+   « prefers-reduced-motion » la coupe pour qui n'en veut pas. --- */
+.plena{position:fixed;inset:0;z-index:50;display:flex;align-items:center;
+ justify-content:center;background:rgba(20,18,16,.94);
+ opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s;
+ cursor:zoom-out;padding:18px}
+.plena.mont{opacity:1;visibility:visible}
+.plena img{max-width:100%;max-height:100%;object-fit:contain;
+ transform:scale(.97);transition:transform .22s ease;border-radius:2px}
+.plena.mont img{transform:scale(1)}
+.plena .fermi{position:absolute;top:12px;right:16px;border:0;background:none;
+ color:#f2ede6;font:600 26px/1 system-ui,sans-serif;cursor:pointer;padding:6px 10px}
+@media (prefers-reduced-motion:reduce){
+ .plena,.plena img{transition:none}}
 
 /* La recherche : ce qui ne correspond pas disparait, et l'accord se
    marque dans le texte meme. Le surlignage se pose sur un <mark>
@@ -333,6 +358,10 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 {{KONTENO}}
 </div>
 <p class="nulo" id="nulo" role="status"></p>
+<div class="plena" id="plena" role="dialog" aria-modal="true" aria-label="Tabelo">
+ <button class="fermi" id="fermi" aria-label="Klozar">&times;</button>
+ <img id="plena-bildo" alt="">
+</div>
 
 </div>
 </main>
@@ -488,6 +517,47 @@ function chercher(){
   nulo.classList.toggle("mont", !!terme && rien);
   poserLangue(sel.value);
 }
+
+/* --- LE TABLEAU EN PLEIN ECRAN. Au clic, la gravure s'ouvre sur toute
+   la fenetre, sans quitter la page. Ce n'est pas la vue d'ensemble qu'on
+   y montre mais l'IMAGE DE DETAIL : c'est celle qu'on veut regarder de
+   pres, et c'est la meme ou se decouperont les gros plans -- une fois
+   chargee, elle ne l'est plus jamais. --- */
+var plena = document.getElementById("plena");
+var plenaBildo = document.getElementById("plena-bildo");
+var plenaVenis = null;
+
+function ouvrirPlena(fig){
+  var url = fig.dataset.detalo;
+  if (plenaBildo.getAttribute("src") !== url){
+    plenaBildo.width = fig.dataset.dl;
+    plenaBildo.height = fig.dataset.dh;
+    /* La vue d'ensemble s'affiche le temps que le detail arrive : on ne
+       reste pas devant un rectangle vide. */
+    plenaBildo.src = fig.querySelector("img").currentSrc
+                  || fig.querySelector("img").src;
+    var grand = new Image();
+    grand.onload = function(){ plenaBildo.src = url; };
+    grand.src = url;
+  }
+  plenaVenis = fig.querySelector("img");
+  plena.classList.add("mont");
+  document.body.style.overflow = "hidden";
+  document.getElementById("fermi").focus();
+}
+function fermarPlena(){
+  plena.classList.remove("mont");
+  document.body.style.overflow = "";
+  if (plenaVenis) plenaVenis.focus({preventScroll:true});
+}
+document.addEventListener("click", function(e){
+  var fig = e.target.closest ? e.target.closest(".gravuro") : null;
+  if (fig){ ouvrirPlena(fig); return; }
+  if (plena.classList.contains("mont")) fermarPlena();
+});
+addEventListener("keydown", function(e){
+  if (e.key === "Escape" && plena.classList.contains("mont")) fermarPlena();
+});
 
 /* --- LE DEPLI DES NOTES. La note vit a la fin du document, cachee ;
    au clic, on la deplace sous l'alinea qui l'appelle, et un second

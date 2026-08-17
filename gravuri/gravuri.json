@@ -1,58 +1,152 @@
 {
- "t01": {
+ "t01-apar-1": {
   "alteso": 3659,
   "detalo": {
    "alteso": 1741,
    "largeur": 2600,
-   "okteti": 855116
+   "okteti": 850874
   },
+  "koloro": true,
   "largeur": 5463,
   "vido": {
-   "alteso": 670,
-   "largeur": 1000,
-   "okteti": 167016
+   "alteso": 804,
+   "largeur": 1200,
+   "okteti": 239386
   }
  },
- "t02": {
+ "t02-apar-1": {
   "alteso": 3641,
   "detalo": {
    "alteso": 1733,
    "largeur": 2600,
-   "okteti": 819128
+   "okteti": 820152
   },
+  "koloro": true,
   "largeur": 5463,
   "vido": {
-   "alteso": 666,
-   "largeur": 1000,
-   "okteti": 174430
+   "alteso": 800,
+   "largeur": 1200,
+   "okteti": 243906
   }
  },
- "t03": {
+ "t02-tit-0": {
+  "alteso": 2481,
+  "detalo": {
+   "alteso": 1839,
+   "largeur": 2600,
+   "okteti": 147024
+  },
+  "koloro": false,
+  "largeur": 3508,
+  "vido": {
+   "alteso": 849,
+   "largeur": 1200,
+   "okteti": 48116
+  }
+ },
+ "t03-apar-1": {
   "alteso": 3663,
   "detalo": {
    "alteso": 1745,
    "largeur": 2600,
-   "okteti": 875942
+   "okteti": 878312
   },
+  "koloro": true,
   "largeur": 5459,
   "vido": {
-   "alteso": 671,
-   "largeur": 1000,
-   "okteti": 183480
+   "alteso": 805,
+   "largeur": 1200,
+   "okteti": 256074
   }
  },
- "t04": {
+ "t04-apar-1": {
   "alteso": 3642,
   "detalo": {
    "alteso": 1734,
    "largeur": 2600,
-   "okteti": 962146
+   "okteti": 961192
   },
+  "koloro": true,
   "largeur": 5460,
   "vido": {
-   "alteso": 667,
-   "largeur": 1000,
-   "okteti": 183858
+   "alteso": 800,
+   "largeur": 1200,
+   "okteti": 260420
+  }
+ },
+ "t05-apar-1": {
+  "alteso": 3680,
+  "detalo": {
+   "alteso": 1751,
+   "largeur": 2600,
+   "okteti": 768736
+  },
+  "koloro": true,
+  "largeur": 5464,
+  "vido": {
+   "alteso": 808,
+   "largeur": 1200,
+   "okteti": 237780
+  }
+ },
+ "t05-apar-2": {
+  "alteso": 2481,
+  "detalo": {
+   "alteso": 1839,
+   "largeur": 2600,
+   "okteti": 67108
+  },
+  "koloro": false,
+  "largeur": 3508,
+  "vido": {
+   "alteso": 849,
+   "largeur": 1200,
+   "okteti": 27100
+  }
+ },
+ "t06-apar-1": {
+  "alteso": 3700,
+  "detalo": {
+   "alteso": 1764,
+   "largeur": 2600,
+   "okteti": 811824
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 814,
+   "largeur": 1200,
+   "okteti": 244542
+  }
+ },
+ "t07-apar-1": {
+  "alteso": 3674,
+  "detalo": {
+   "alteso": 1752,
+   "largeur": 2600,
+   "okteti": 938688
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 809,
+   "largeur": 1200,
+   "okteti": 262418
+  }
+ },
+ "t08-apar-1": {
+  "alteso": 3674,
+  "detalo": {
+   "alteso": 1752,
+   "largeur": 2600,
+   "okteti": 948744
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 809,
+   "largeur": 1200,
+   "okteti": 269016
   }
  }
 }
