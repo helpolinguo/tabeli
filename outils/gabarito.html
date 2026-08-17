@@ -247,19 +247,21 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
  border-radius:3px;border-bottom-color:transparent}
 /* Le gros plan se pose sous l'alinea, comme une note : c'est la meme
    idee, montrer sans quitter sa ligne. */
-/* La vue ne prend pas toute la largeur de la colonne : a six pour un,
-   elle montrait une bande ou l'objet designe se perdait entre ses
-   voisins. Deux pour un cadre l'objet et ce qu'il faut autour. */
-.lupo-vido{margin:.5em auto .8em;max-width:640px;
- border:1px solid var(--lin);border-left:2px solid var(--acc);
+/* LA VUE EST PANORAMIQUE, ET C'EST VOULU. Sa HAUTEUR est fixe — donc
+   le grossissement aussi, neuf hauteurs de chiffre quelle que soit la
+   fenetre — et sa largeur prend tout ce que la page lui donne. Une
+   fenetre large montre donc plus de la scene autour de l'objet, au
+   meme grossissement ; une fenetre etroite en montre moins. C'est la
+   scene qui explique l'objet, non l'objet seul. */
+.lupo-vido{margin:.5em 0 .8em;border-left:2px solid var(--acc);
  background:var(--pap2);border-radius:0 5px 5px 0;overflow:hidden}
-.lupo-vido .kadro{width:100%;height:300px;background-repeat:no-repeat;
+.lupo-vido .kadro{width:100%;height:250px;background-repeat:no-repeat;
  background-color:var(--pap2);cursor:zoom-out}
 .lupo-vido .dir{display:flex;justify-content:space-between;gap:1em;
  padding:.42em .8em;font-size:12.5px;color:var(--sub);
  border-top:1px solid var(--lin)}
 .lupo-vido .dir b{color:var(--enk);font-weight:600}
-@media (max-width:900px){.lupo-vido .kadro{height:210px}}
+@media (max-width:900px){.lupo-vido .kadro{height:190px}}
 
 /* LA JOINTURE. Rochelle coupe parfois en deux un alinea que Guignon
    laisse d'un tenant. Le PDF garde chaque edition telle quelle ; ici
