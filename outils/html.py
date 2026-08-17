@@ -771,13 +771,101 @@ def est_ceno(x):
 # « TRIESMA SERIO » au 11. Le volet n'en portait qu'une, ecrite en dur
 # dans le gabarit, de sorte que les seize tableaux paraissaient tous
 # sous la premiere serie.
-SERIO = re.compile(r"\b(UNESMA|DUESMA|TRIESMA|QUARESMA)\s+SERIO\b", re.I)
+SERIO = re.compile(
+    r"\b(?:unesma|duesma|triesma|quaresma"
+    r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me)\s+"
+    r"(?:serio|s[eé]rie)\b", re.I)
+
+# LA SCENE, DANS LES DEUX LANGUES. On la reconnaissait a l'italique du
+# fac-simile ; mais l'italique est justement ce qui differe -- Guignon
+# compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
+# scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
+# la serie, juste au-dessus.
+CENO = re.compile(
+    r"\b(?:unesma|duesma|triesma|quaresma"
+    r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me)\s+"
+    r"(?:ceno|sc[eè]ne)\b", re.I)
+
+# LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
+# volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
+# « (Simple leçon d'histoire naturelle). » chez Rochelle -- et un test
+# sur la derniere lettre laissait donc le francais de cote.
+SUBT = re.compile(r"\(.*\)\s*[.,;:!?]?")
 
 
 def korpo_de(attrs):
     """Le corps de caractere d'une ligne d'apparat, ou rien."""
     m = KORPO.search(attrs)
     return m.group(1) if m else ""
+
+
+# LE ROLE PREVAUT SUR LA MACRO. Les deux volumes ne composent pas de la
+# meme facon ce qui joue le meme role : le titre du tableau 8 passe par
+# \VUpk cote ido et par \VUtitre cote francais, de sorte que la page
+# donnait « La Rekolto. » en corps de texte en face d'un « La Moisson.
+# --- Les aspects de la campagne. » en gros et gras. De meme la scene :
+# italique d'un cote, romain de l'autre. Le PDF doit garder chaque
+# fac-simile tel qu'il est ; la page de lecture, elle, sert a COMPARER,
+# et deux choses qui se repondent doivent se ressembler.
+#
+# On marque donc chaque ligne d'apparat de son ROLE -- numero, titre,
+# serie, scene, section, sous-titre -- et c'est le role, non la macro,
+# que la feuille de style habille. Le role se lit sur la place et sur le
+# mot, les deux seules choses que les deux editions partagent.
+def roles_ap(html):
+    """Marque chaque ligne d'apparat d'un data-rolo."""
+    lignes = [(m.group(1), m.group(2)) for m in LIGNE_AP.finditer(html)]
+    if not lignes:
+        # Quelques titres sont composes a la main, sans macro \VU, et
+        # n'ont donc aucune ligne a marquer : on prend le bloc entier.
+        nu = net_tdm(html)
+        if not nu:
+            return html
+        return f'<span class="pk" data-rolo="sekc">{html}</span>'
+
+    role = [None] * len(lignes)
+    numero = next((k for k, (_, t) in enumerate(lignes)
+                   if "TABELO" in t or "TABLEAU" in t), None)
+    for k, (_, t) in enumerate(lignes):
+        nu = net_tdm(t)
+        if k == numero:
+            role[k] = "nom"
+        elif SERIO.search(nu):
+            role[k] = "serio"
+        elif CENO.search(nu):
+            role[k] = "ceno"
+        elif SUBT.fullmatch(nu):
+            role[k] = "subt"
+
+    # Le titre : la premiere ligne libre sous le numero, et les lignes
+    # de MEME CORPS qui la suivent, qui en sont la suite (voir la table
+    # des matieres, qui les recolle de la meme facon).
+    if numero is not None:
+        ti = next((k for k in range(numero + 1, len(lignes))
+                   if role[k] is None and net_tdm(lignes[k][1])), None)
+        if ti is not None:
+            role[ti] = "tit"
+            for k in range(ti + 1, len(lignes)):
+                if not net_tdm(lignes[k][1]):
+                    continue
+                if role[k] is not None or \
+                        korpo_de(lignes[k][0]) != korpo_de(lignes[ti][0]):
+                    break
+                role[k] = "tit"
+
+    for k in range(len(lignes)):
+        if role[k] is None:
+            # Au-dessus du numero c'est l'apparat du volume lui-meme --
+            # « EXPLIKO - LIBRETO », « DI » ; au-dessous, une section.
+            role[k] = "avan" if (numero is not None and k < numero) else "sekc"
+
+    n = [0]
+
+    def poser(m):
+        r = role[n[0]]
+        n[0] += 1
+        return f'{m.group(0)[:-1]} data-rolo="{r}">'
+    return OUVRE_AP.sub(poser, html)
 
 
 def sen_subtitro(t):
@@ -938,6 +1026,15 @@ def rendre(rangi):
             pg = rang_pdf("io", r["feuillet"])
             fol = (f'<a class="fol" href="tabeli.pdf#page={pg}" '
                    f'title="Folio {r["folio"]} en la PDF">{r["folio"]}</a>')
+        # LE ROLE SE MARQUE AVANT L'ANCRAGE, et sur les deux colonnes :
+        # c'est lui qui les fait se ressembler. Les ouvertures et les
+        # intertitres seuls en portent ; le texte suivi n'a pas d'apparat.
+        if r["tipo"] in ("apar", "sub"):
+            io = roles_ap(io)
+            for lg in LANGUES:
+                o = r["tra"].get(lg["kodo"])
+                if o and o["t"]:
+                    o["t"] = roles_ap(o["t"])
         # Les lignes d'apparat recoivent une ancre chacune : la table
         # des matieres renvoie a la scene, pas seulement au tableau.
         if r["tipo"] == "apar":

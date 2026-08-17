@@ -128,7 +128,36 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .r.apar .k{text-indent:0;line-height:1.5}
 .ln{display:block;letter-spacing:.09em;margin:.28em 0}
 .ln.lg{font-weight:700;letter-spacing:.01em;font-size:1.32em;margin:.42em 0}
-.r.apar .ln:first-child{font-size:1.05em}
+
+/* --- LE ROLE HABILLE LA LIGNE, NON LA MACRO. Les deux volumes ne
+   composent pas de la meme facon ce qui joue le meme role : le titre du
+   tableau 8 passe par \VUpk cote ido et par \VUtitre cote francais, de
+   sorte que la page donnait « La Rekolto. » en corps de texte en face
+   d'un « La Moisson. --- Les aspects de la campagne. » en gros et gras ;
+   et la scene etait italique d'un cote, romaine de l'autre. Le PDF garde
+   chaque fac-simile tel qu'il est ; la page de lecture, elle, sert a
+   COMPARER, et deux choses qui se repondent doivent se ressembler. Ces
+   regles viennent APRES « .ln » et « .ln.lg », qu'elles annulent : a
+   specificite egale, c'est la derniere qui l'emporte. --- */
+.k [data-rolo]{display:block;font-style:normal;font-weight:400;
+ font-size:1em;letter-spacing:.04em;margin:.3em 0}
+/* L'italique du releve ne decide plus : le role s'en charge. Sans quoi
+   « Unesma ceno. », compose en italique par Guignon, restait penche en
+   face d'un « Première scène. » droit. */
+.k [data-rolo] i,.k [data-rolo] em{font-style:inherit}
+.k [data-rolo="avan"]{font-size:.92em;color:var(--sub);letter-spacing:.09em}
+.k [data-rolo="serio"]{font-size:.86em;color:var(--sub);letter-spacing:.14em;
+ text-transform:uppercase;margin:.7em 0 .35em}
+.k [data-rolo="nom"]{font-weight:700;font-size:1.32em;letter-spacing:.02em;
+ margin:.45em 0 .3em}
+.k [data-rolo="tit"]{font-weight:700;font-size:1.12em;letter-spacing:.02em;
+ margin:.12em 0}
+.k [data-rolo="ceno"]{font-style:italic;font-variant:normal;
+ letter-spacing:.03em;margin:.55em 0 .25em}
+.k [data-rolo="sekc"]{font-variant:small-caps;font-weight:600;
+ letter-spacing:.07em;margin:.45em 0 .25em}
+.k [data-rolo="subt"]{font-style:italic;font-size:.92em;color:var(--sub);
+ letter-spacing:.02em;margin:.1em 0 .35em}
 .fil{display:block;width:52px;height:1px;background:var(--lin);
  margin:.85em auto}
 .orn{display:block;color:var(--sub);margin:.5em 0;font-size:.9em}
