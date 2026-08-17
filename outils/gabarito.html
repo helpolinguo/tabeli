@@ -139,24 +139,29 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    COMPARER, et deux choses qui se repondent doivent se ressembler. Ces
    regles viennent APRES « .ln » et « .ln.lg », qu'elles annulent : a
    specificite egale, c'est la derniere qui l'emporte. --- */
+/* « font-variant:normal » des la base : la cellule d'un intertitre
+   porte « small-caps », et un titre de tableau loge dans un intertitre
+   -- tableaux 7, 9, 14, 15 -- en heritait, si bien qu'il sortait en
+   petites capitales quand celui du tableau 10 sortait en gras. C'est
+   « sekc » qui redemande les petites capitales, et lui seul. */
 .k [data-rolo]{display:block;font-style:normal;font-weight:400;
- font-size:1em;letter-spacing:.04em;margin:.3em 0}
+ font-variant:normal;font-size:1rem;letter-spacing:.04em;margin:.3em 0}
 /* L'italique du releve ne decide plus : le role s'en charge. Sans quoi
    « Unesma ceno. », compose en italique par Guignon, restait penche en
    face d'un « Première scène. » droit. */
 .k [data-rolo] i,.k [data-rolo] em{font-style:inherit}
-.k [data-rolo="avan"]{font-size:.92em;color:var(--sub);letter-spacing:.09em}
-.k [data-rolo="serio"]{font-size:.86em;color:var(--sub);letter-spacing:.14em;
+.k [data-rolo="avan"]{font-size:.9rem;color:var(--sub);letter-spacing:.09em}
+.k [data-rolo="serio"]{font-size:.82rem;color:var(--sub);letter-spacing:.14em;
  text-transform:uppercase;margin:.7em 0 .35em}
-.k [data-rolo="nom"]{font-weight:700;font-size:1.32em;letter-spacing:.02em;
+.k [data-rolo="nom"]{font-weight:700;font-size:1.32rem;letter-spacing:.02em;
  margin:.45em 0 .3em}
-.k [data-rolo="tit"]{font-weight:700;font-size:1.12em;letter-spacing:.02em;
+.k [data-rolo="tit"]{font-weight:700;font-size:1.1rem;letter-spacing:.02em;
  margin:.12em 0}
-.k [data-rolo="ceno"]{font-style:italic;font-variant:normal;
+.k [data-rolo="ceno"]{font-style:italic;font-variant:normal;font-size:.88rem;
  letter-spacing:.03em;margin:.55em 0 .25em}
-.k [data-rolo="sekc"]{font-variant:small-caps;font-weight:600;
+.k [data-rolo="sekc"]{font-variant:small-caps;font-weight:600;font-size:.85rem;
  letter-spacing:.07em;margin:.45em 0 .25em}
-.k [data-rolo="subt"]{font-style:italic;font-size:.92em;color:var(--sub);
+.k [data-rolo="subt"]{font-style:italic;font-size:.78rem;color:var(--sub);
  letter-spacing:.02em;margin:.1em 0 .35em}
 .fil{display:block;width:52px;height:1px;background:var(--lin);
  margin:.85em auto}

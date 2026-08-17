@@ -812,8 +812,15 @@ def korpo_de(attrs):
 # serie, scene, section, sous-titre -- et c'est le role, non la macro,
 # que la feuille de style habille. Le role se lit sur la place et sur le
 # mot, les deux seules choses que les deux editions partagent.
-def roles_ap(html):
-    """Marque chaque ligne d'apparat d'un data-rolo."""
+def roles_ap(html, porte_titre=False):
+    """Marque chaque ligne d'apparat d'un data-rolo.
+
+    « porte_titre » : ce bloc n'est pas une ouverture, mais il porte le
+    titre du tableau -- aux tableaux 7, 9, 14 et 15 le fac-simile ne met
+    rien sous le numero et le titre ouvre le premier intertitre. Sans
+    cela il se composait en petites capitales de SECTION, si bien que le
+    titre du tableau 14 ne ressemblait pas a celui du tableau 2.
+    """
     lignes = [(m.group(1), m.group(2)) for m in LIGNE_AP.finditer(html)]
     if not lignes:
         # Quelques titres sont composes a la main, sans macro \VU, et
@@ -852,6 +859,14 @@ def roles_ap(html):
                         korpo_de(lignes[k][0]) != korpo_de(lignes[ti][0]):
                     break
                 role[k] = "tit"
+
+    # Le titre loge hors de l'ouverture : la premiere ligne libre du
+    # bloc en tient lieu.
+    if numero is None and porte_titre:
+        libre = next((k for k in range(len(lignes))
+                      if role[k] is None and net_tdm(lignes[k][1])), None)
+        if libre is not None:
+            role[libre] = "tit"
 
     for k in range(len(lignes)):
         if role[k] is None:
@@ -1030,11 +1045,12 @@ def rendre(rangi):
         # c'est lui qui les fait se ressembler. Les ouvertures et les
         # intertitres seuls en portent ; le texte suivi n'a pas d'apparat.
         if r["tipo"] in ("apar", "sub"):
-            io = roles_ap(io)
+            porte = r["cle"] in empruntes
+            io = roles_ap(io, porte)
             for lg in LANGUES:
                 o = r["tra"].get(lg["kodo"])
                 if o and o["t"]:
-                    o["t"] = roles_ap(o["t"])
+                    o["t"] = roles_ap(o["t"], porte)
         # Les lignes d'apparat recoivent une ancre chacune : la table
         # des matieres renvoie a la scene, pas seulement au tableau.
         if r["tipo"] == "apar":
