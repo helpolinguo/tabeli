@@ -464,6 +464,24 @@ def coherer(cle, trouves, la, ht):
     return gard, jetes
 
 
+def manuali(cle, la, ht, corps):
+    """Les numeros que l'oeil a poses lui-meme sur cette planche.
+
+    Le lecteur automatique plafonne la ou la reserve de blanc se
+    referme : le chiffre touche une hachure, ou se cache a demi derriere
+    un chapeau, et rien ne l'en distingue plus. Ces numeros-la se
+    relevent a la main, avec outils/manuali.py, et gravuri/manuali.json
+    les garde. Comme verdikti.json, ce fichier ne s'ecrit pas tout seul.
+    """
+    f = RACINE / "gravuri" / "manuali.json"
+    if not f.exists():
+        return {}
+    d = json.loads(f.read_text(encoding="utf-8")).get(cle, {})
+    return {int(n): ((round(v[0] * la), round(v[1] * ht),
+                      round(v[2] * la), round(v[3] * ht)), v[4])
+            for n, v in d.items()}
+
+
 def verdikti(cle):
     """Les lectures que l'oeil a refusees, pour cette planche.
 
@@ -556,6 +574,9 @@ def main(cles=None):
         refuses = verdikti(cle) & set(trouves)
         for n in refuses:
             del trouves[n]
+        # Ce que l'oeil a pose l'emporte sur tout le reste.
+        mains = manuali(cle, la, ht, haut)
+        trouves.update({n: v for n, v in mains.items() if n in att})
         tot_l += len(trouves)
         tot_a += len(att)
         controle(f, trouves, KONTROLO / f"{cle}.png", haut)
@@ -583,7 +604,8 @@ def main(cles=None):
         print(f"  {cle}  {len(trouves):3d}/{len(att):3d} numeros lus "
               f"(corps {haut} px), dont {n_d} a verifier"
               + (f", {jetes} ecartes par le voisinage" if jetes else "")
-              + (f", {len(refuses)} refuses a l'oeil" if refuses else ""))
+              + (f", {len(refuses)} refuses a l'oeil" if refuses else "")
+              + (f", {len(mains)} poses a la main" if mains else ""))
     fich.write_text(json.dumps(cat, ensure_ascii=False, indent=1),
                     encoding="utf-8")
     if tot_a:
