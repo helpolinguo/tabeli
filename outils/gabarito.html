@@ -96,7 +96,15 @@ nav a.st:hover,nav a.sc:hover{color:var(--enk)}
 nav a:hover{background:var(--lin)}
 nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 
-#kont{padding:22px 26px 140px}
+/* LE BLANC LATERAL DOIT LOGER LE FOLIO. Il se pose HORS de sa colonne
+   -- 30px a gauche pour l'ido, 28px a droite pour la traduction -- et
+   ce blanc-ci est tout ce qu'il a pour s'y tenir. A 26px il en manquait
+   deux a droite : la page depassait la fenetre de 2px, et l'on pouvait
+   la faire glisser lateralement. Cela ne se voyait qu'entre 1181px --
+   sous quoi le folio rentre dans le flux -- et 1600px, ou les marges
+   automatiques de « main » finissent par absorber le debordement ;
+   d'ou une gene qui paraissait aller et venir sans raison. */
+#kont{padding:22px 32px 140px}
 
 /* --- LA DU KOLONI. Grid e ne du kolumni flotanta : la du celi di un
    rango devas komencar ye la sama alteso, e nur grid garantias to
