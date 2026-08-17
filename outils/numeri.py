@@ -270,7 +270,12 @@ def attendus(cle):
             re.findall(r'\((\d+)\)', f[0].read_text(encoding="utf-8"))}
 
 
-SEUIL_BAL = 0.55
+# Le balayage etait trop timide : a 0.55 il ne rendait que ce que les
+# ilots voyaient deja. Descendre a 0.42 fait passer la lecture de 60 a
+# 70 % sur les quatre planches d'essai. Le bruit qu'il laisse entrer
+# est arrete plus loin, par la liste des numeros attendus et par le
+# depart entre lectures rivales.
+SEUIL_BAL = 0.50
 MARGE_BAL = 0.04
 
 
@@ -395,7 +400,7 @@ def lire(chemin, att):
             continue
         p.sort(key=lambda q: -q[1])
         if len(p) == 1 or p[0][1] - p[1][1] >= ECART_PREUVE:
-            gard[n] = p[0][0]
+            gard[n] = (p[0][0], round(p[0][1], 3))
     return gard, haut, enc.shape
 
 
@@ -412,12 +417,15 @@ def controle(chemin, trouves, dest, haut):
     from PIL import ImageDraw
     d = ImageDraw.Draw(feuille)
     for k, n in enumerate(sorted(trouves)):
-        x, y, w, h = trouves[n]
+        (x, y, w, h), f = trouves[n]
         cr = im.crop((x - marge, y - marge, x + w + marge, y + h + marge))
         cr = cr.resize((cell, cell))
         r, c = divmod(k, cols)
         feuille.paste(cr, (c * cell, r * (cell + 22)))
-        d.text((c * cell + 4, r * (cell + 22) + cell + 4), str(n), fill=0)
+        # La planche de controle porte la confiance a cote du nombre :
+        # c'est elle qu'on relit quand une decoupe ne montre rien.
+        d.text((c * cell + 4, r * (cell + 22) + cell + 4),
+               f"{n}  ({f:.2f})", fill=0)
     feuille.save(dest)
 
 
@@ -444,9 +452,17 @@ def main(cles=None):
         # EN FRACTION, non en points : la page sert la planche a trois
         # definitions, et le gros plan doit tomber juste sur chacune.
         cat[cle] = {"corpo": haut, "largeur": la, "alteso": ht,
+                    # LA CONFIANCE EST ENREGISTREE AVEC LA POSITION. Une
+                    # lecture entierement decoupee par les ilots est sure ;
+                    # une lecture ou le balayage a fourni un chiffre l'est
+                    # beaucoup moins, et c'est sur les planches chargees que
+                    # la difference se voit. La page pourra donc n'ouvrir un
+                    # gros plan que sur les lectures qui la meritent, sans
+                    # qu'il faille relancer l'outil.
                     "numeri": {str(n): [round(x / la, 6), round(y / ht, 6),
-                                        round(w / la, 6), round(h / ht, 6)]
-                               for n, (x, y, w, h) in sorted(trouves.items())}}
+                                        round(w / la, 6), round(h / ht, 6), f]
+                               for n, ((x, y, w, h), f)
+                               in sorted(trouves.items())}}
         print(f"  {cle}  {len(trouves):3d}/{len(att):3d} numeros lus "
               f"(corps {haut} px)")
     fich.write_text(json.dumps(cat, ensure_ascii=False, indent=1),
