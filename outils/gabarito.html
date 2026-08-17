@@ -126,12 +126,22 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    Gramatiko. C'est un <button> et non un <a> : il ne mene nulle part,
    il montre et il cache ; le clavier et les lecteurs d'ecran le
    comprennent ainsi, et aria-expanded le leur dit. --- */
-.apel{font:inherit;font-size:.72em;vertical-align:super;line-height:0;
+/* L'EXPOSANT GARDE SA BOITE. « vertical-align:super » avec
+   « line-height:0 » la reduisait a zero de haut : le glyphe debordait
+   seul, le pointille lui passait au travers, et l'etat ouvert -- fond
+   « --acc », texte « --pap » -- n'avait plus rien ou se peindre. Le
+   marqueur devenait creme sur creme, donc invisible au clic. On garde
+   donc une boite pleine et on remonte l'exposant par un decalage
+   relatif, qui ne compte pas dans la ligne : les interlignes du releve
+   ne bougent pas d'un pixel. */
+.apel{font:inherit;font-size:.72em;line-height:1;position:relative;top:-.42em;
  background:none;border:0;padding:0 .12em;margin:0;cursor:pointer;
  color:var(--acc);font-weight:600;border-bottom:1px dotted var(--acc)}
 .apel:hover{background:var(--lin)}
+/* Une bordure transparente, et non « 0 » : les deux etats font alors la
+   meme hauteur, et le mot ne tressaute pas quand la note s'ouvre. */
 .apel[aria-expanded=true]{background:var(--acc);color:var(--pap);
- border-radius:3px;border-bottom:0}
+ border-radius:3px;border-bottom:1px solid transparent}
 .noto{margin:.5em 0 .7em;padding:.6em .8em;border-left:2px solid var(--acc);
  background:var(--pap2);font-size:13.5px;line-height:1.5;color:var(--sub);
  border-radius:0 5px 5px 0}
