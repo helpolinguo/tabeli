@@ -10,6 +10,16 @@
 body{margin:0;background:var(--pap);color:var(--enk);
  font:16px/1.55 "Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif}
 
+/* L'ANCRE S'ARRETE SOUS LA BARRE. La barre est « sticky » : elle
+   recouvre le haut de la page, et un saut vers #t02-apar-1 amenait la
+   cible a zero, donc DERRIERE elle -- le titre ido du tableau etait
+   cache, et la lecture commencait au milieu du bloc. La barre se
+   mesurait bien dans --kapo, mais cette mesure ne servait qu'a poser le
+   volet lateral ; rien ne la retranchait du saut. Une seule declaration
+   sur le conteneur de defilement suffit, et vaut pour toutes les cibles
+   -- les blocs comme les lignes d'apparat, qui sont des <span>. */
+html{scroll-padding-top:calc(var(--kapo,104px) + 12px)}
+
 /* --- LA BARRE. Elle est glutinoza : ol restas sur la ecrano dum la
    lekto. Sua alteso ne esas fixa -- du lineo de titulo sur telefono --
    do la skripto mezuras ol e pozas ol en --kapo ; omna ancero haltas
@@ -40,6 +50,22 @@ input[type=search]:focus{outline:2px solid var(--acc);outline-offset:-1px}
 select#lg{flex:none;padding:8px 10px;border:1px solid var(--lin);border-radius:7px;
  background:var(--pap);color:var(--enk);font:600 13px/1 system-ui,sans-serif;
  cursor:pointer}
+/* LE CHOIX DE LANGUE TIENT SUR LA LIGNE DE LA RECHERCHE. Sur telephone
+   il passait a la ligne pour lui seul : « Materio » plus la recherche
+   plus le selecteur depassaient de quelques pixels la largeur d'un
+   iPhone, et ce retour a la ligne enflait la barre -- 215px de haut au
+   lieu de 170 -- qui mange d'autant la page, puisqu'elle est collante.
+   Or le retour a la ligne se decide sur la largeur DE BASE, non sur la
+   largeur minimale : c'est « flex-basis » qu'il faut baisser, et
+   laisser ensuite la recherche s'etirer pour prendre ce qui reste. Le
+   selecteur se retrouve ainsi a droite, sous les deux boutons de
+   telechargement, et la barre tient sur deux lignes jusqu'a 320px.
+   CETTE REGLE VIENT APRES CELLES QU'ELLE CORRIGE. Une requete de media
+   n'ajoute rien a la specificite : placee plus haut, elle perdait
+   contre le « min-width:150px » de la recherche, et rien ne bougeait. */
+@media (max-width:700px){
+ input[type=search]{min-width:0;flex:1 1 60px}
+ select#lg{padding:8px 6px}}
 .tir{display:none;flex:none;border:1px solid var(--lin);border-radius:7px;
  background:var(--pap);color:var(--acc);font:600 12.5px/1 system-ui,sans-serif;
  padding:9px 11px;cursor:pointer}

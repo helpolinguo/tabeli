@@ -111,13 +111,28 @@ def texte_html(t):
     # lignes d'apparat d'une ouverture de tableau sont des LIGNES, et
     # doivent le rester a l'ecran — sans quoi « EXPLIKO - LIBRETO DI la
     # Delmas - tabeli helpanta UNESMA SERIO » se lit d'un trait.
+    # \VUpk ne compose rien autour de son texte \u2014 le bloc qui la porte
+    # le centre deja \u2014 mais c'est une LIGNE d'apparat, et la table des
+    # matieres doit la compter comme telle : les titres des tableaux 8,
+    # 11, 12, 13 et 16 passent par elle, et non par \VUtitre. Sans
+    # marque, ils etaient invisibles a la table, qui annoncait ces
+    # tableaux sous leur seul numero. On la marque donc d'une classe
+    # SANS STYLE, \u00ab pk \u00bb : le rendu ne change pas d'un pixel, mais la
+    # ligne se compte. Le nom de la classe doit rester accorde a
+    # LIGNE_AP, qui la relit.
     arite = {"\\VUcentre": (3, 2, '<span class="ln">%s</span>'),
              "\\VUtitre": (3, 2, '<span class="ln lg">%s</span>'),
-             "\\VUpk": (3, 2, "%s"),
+             "\\VUpk": (3, 2, '<span class="pk">%s</span>'),
              "\\VUcentreA": (4, 3, '<span class="ln">%s</span>'),
              "\\VUfilet": (1, None, '<span class="fil"></span>'),
              "\\VUornamento": (1, None, '<span class="orn">\u2766</span>'),
-             "\\VUnotes": (2, 1, "%s")}
+             "\\VUnotes": (2, 1, "%s"),
+             # \fontsize{corps}{interligne} : deux mesures du fac-simile,
+             # rien a garder. Non declaree, elle passait pour une macro
+             # inconnue a UN argument : le corps tombait dans le texte et
+             # l'interligne restait entre accolades \u2014 le titre de la
+             # Balneyo s'annoncait \u00ab 10.2pt{10.2pt}[40]{La Balneyo.} \u00bb.
+             "\\fontsize": (2, None, "")}
     while i < len(t):
         if t[i] == "\\":
             m = re.match(r"\\[A-Za-z]+", t[i:])
@@ -126,6 +141,17 @@ def texte_html(t):
                 j = i + len(nom)
                 while j < len(t) and t[j] == " ":
                     j += 1
+                # L'ARGUMENT OPTIONNEL SE LIT AUSSI. \textls[40]{...}
+                # porte son interlettrage entre crochets ; non lu, il
+                # sortait tel quel — « [40]{La Balneyo.} ». C'est une
+                # mesure du fac-simile : on la lit et on la jette.
+                while j < len(t) and t[j] == "[":
+                    ferme = t.find("]", j)
+                    if ferme < 0:
+                        break
+                    j = ferme + 1
+                    while j < len(t) and t[j] == " ":
+                        j += 1
                 if nom in arite:
                     n, garde, habit = arite[nom]
                     args = []
@@ -169,6 +195,19 @@ def texte_html(t):
                 continue
             out.append(t[i + 1:i + 2])
             i += 2
+            continue
+        # UN GROUPE N'EST PAS DU TEXTE. Quelques endroits du releve
+        # composent a la main ce que les macros \VU font ailleurs :
+        # « {\centering\textit{(Videz la plano.)}\par} ». Les accolades y
+        # ouvrent une PORTEE LaTeX, elles ne s'impriment pas ; laissees
+        # telles quelles, elles sortaient dans la page et dans la table
+        # des matieres — « {(Videz la plano.)} ». On lit le groupe et on
+        # ne garde que son contenu. L'accolade litterale, elle, s'ecrit
+        # « \{ » dans le releve, et le cas est traite juste au-dessus.
+        if t[i] == "{":
+            dedans, k = accolade(t, i)
+            out.append(texte_html(dedans))
+            i = k
             continue
         out.append(t[i])
         i += 1
@@ -583,6 +622,38 @@ def lier_notes(rangi):
     return rapport
 
 
+# LES LIGNES D'APPARAT, ET LA MEME LISTE POUR TOUT LE MONDE.
+# \VUcentre et \VUtitre portent « ln », \VUpk porte « pk » : les trois
+# composent une LIGNE du fac-simile. Deux endroits les relisent -- la
+# table des matieres, qui en tire ses entrees, et l'ancrage, qui pose un
+# « -lN » sur chacune -- et il faut qu'ils comptent LES MEMES, sinon les
+# renvois de la table tombent a cote de la ligne annoncee. D'ou une
+# seule liste de classes, lue par les deux.
+CLASSE_AP = r'ln[^"]*|pk'
+LIGNE_AP = re.compile(rf'<span class="(?:{CLASSE_AP})">(.*?)</span>', re.S)
+OUVRE_AP = re.compile(rf'<span class="({CLASSE_AP})">')
+
+
+def net_tdm(x):
+    """Le texte nu d'une ligne, pour la table des matieres."""
+    # L'appel de note est un bouton dans la page ; dans la table il ne
+    # mene nulle part. On l'ote, et on recoud : « La Rekolto (*). » sans
+    # son marqueur laisserait « La Rekolto . ».
+    x = re.sub(r'<button class="apel".*?</button>', "", x, flags=re.S)
+    x = re.sub(r"<[^>]+>", "", x)
+    x = re.sub(r"\s+", " ", x)
+    return re.sub(r" +([.,;:])", r"\1", x).strip()
+
+
+def est_ceno(x):
+    """Un marqueur de scene -- « Unesma ceno. », « Duesma ceno. »."""
+    # LE FAC-SIMILE LES COMPOSE EN ITALIQUE, et c'est a cela qu'on les
+    # reconnait : le mot, lui, change d'une langue a l'autre. On accepte
+    # la ligne nue comme la ligne encore dans son span.
+    x = re.sub(rf'^\s*<span class="(?:{CLASSE_AP})">', "", x)
+    return bool(re.match(r"\s*<i>", x))
+
+
 def rendre(rangi):
     # La table des matieres se tire des blocs de titre.
     # LA TABLE DES MATIERES A TROIS RANGS, parce que le livre en a
@@ -591,50 +662,77 @@ def rendre(rangi):
     # et « Duesma ceno », composes en italique et non en petites
     # capitales ; c'est ce qui les distingue, et c'est au fac-simile
     # qu'on le lit, pas a la logique.
+    def texte_de(r):
+        return r["io"] or next(iter(r["tra"].values()), {}).get("t", "")
+
     tdm = []
-    for r in rangi:
+    net = net_tdm
+    for idx, r in enumerate(rangi):
         if r["tipo"] not in ("sub", "apar"):
             continue
-        brut = r["io"] or next(iter(r["tra"].values()), {}).get("t", "")
-        lignes_ap = re.findall(r'<span class="ln[^"]*">(.*?)</span>', brut)
-
-        def net(x):
-            return re.sub(r"<[^>]+>", "", x).strip()
+        brut = texte_de(r)
+        lignes_ap = LIGNE_AP.findall(brut)
 
         if r["tipo"] == "apar":
-            num = next((net(l) for l in lignes_ap
-                        if "TABELO" in l or "TABLEAU" in l), "")
-            if num:
-                # Le titre du tableau est la ligne qui SUIT le numero,
-                # non la derniere du bloc : au tableau 2, la derniere
-                # est « (Simpla leciono pri naturcienco.) », un
-                # sous-titre de section, et la table annoncait donc le
-                # tableau 2 sous le nom d'une de ses lecons.
-                i = next(i for i, l in enumerate(lignes_ap)
-                         if "TABELO" in l or "TABLEAU" in l)
-                titre = net(lignes_ap[i + 1]) if i + 1 < len(lignes_ap) else ""
-                tdm.append((r["cle"], f"<b>{num}</b> {titre}".strip(), "tt"))
-                # Ce qui suit encore dans la meme page d'apparat --
-                # scene, intertitre -- vaut une entree a soi.
-                for j, l in enumerate(lignes_ap[i + 2:], start=i + 2):
-                    if net(l):
-                        tdm.append((f'{r["cle"]}-l{j}', net(l), "sc"))
-            else:
-                # Couverture, dedicace, table des matieres, annonces :
-                # pas de numero de tableau. Leur premiere ligne grasse
-                # les nomme ; le bloc entier concatene donnait des
-                # entrees de trois lignes, illisibles.
-                grasses = re.findall(
-                    r'<span class="ln lg">(.*?)</span>', brut)
-                titre = net(grasses[0]) if grasses else net(
-                    lignes_ap[0] if lignes_ap else brut)
-                tdm.append((r["cle"], titre[:60], "tt"))
+            i = next((k for k, l in enumerate(lignes_ap)
+                      if "TABELO" in l or "TABLEAU" in l), None)
+            if i is None:
+                # PAS UNE OUVERTURE DE TABLEAU, DONC PAS UNE ENTREE.
+                # Trois blocs d'apparat tombent en cours de tableau : la
+                # note de l'editeur sur les tableaux 3 et 4, le
+                # « (Videz la plano.) » du tableau 5, l'alinea de
+                # liaison du tableau 6. Ce sont des indications de
+                # lecture, non des titres, et la table les annoncait au
+                # rang des tableaux -- « (La 3 - ma e 4 - ma tabeli esas
+                # tale kombinita ke li prizent ». La branche d'origine
+                # visait la couverture et la dedicace ; mais celles-la
+                # ne parviennent jamais ici, puisque lire_langue ecarte
+                # « 00- » et « 90- ». Elle ne ramassait plus que ces
+                # trois-la.
+                continue
+            num = net(lignes_ap[i])
+            # LE TITRE NE SUIT PAS TOUJOURS LE NUMERO. Les tableaux a
+            # plusieurs scenes glissent « Unesma ceno. » entre les deux :
+            # on passe les marqueurs de scene. Et ce n'est pas non plus
+            # la DERNIERE ligne du bloc -- au tableau 2 la derniere est
+            # « (Simpla leciono pri naturcienco.) », le sous-titre d'une
+            # lecon, sous lequel la table annoncait tout le tableau.
+            ti = next((k for k in range(i + 1, len(lignes_ap))
+                       if net(lignes_ap[k]) and not est_ceno(lignes_ap[k])),
+                      None)
+            titre = net(lignes_ap[ti]) if ti is not None else ""
+            if not titre:
+                # LE TITRE EST PARFOIS HORS DU BLOC D'OUVERTURE. Aux
+                # tableaux 7, 9, 10, 14 et 15, le fac-simile ido ne met
+                # sous le numero qu'un blanc, et le titre ouvre le
+                # premier intertitre qui suit -- la ou le volume
+                # francais, lui, le garde dans l'ouverture. La table
+                # annoncait donc ces cinq tableaux sous leur seul
+                # numero, « TABELO No 10 » et rien de plus. On va le
+                # chercher au premier intertitre qui n'est pas une
+                # scene, sans franchir le tableau suivant.
+                for q in rangi[idx + 1:]:
+                    if q["tipo"] == "apar":
+                        break
+                    if q["tipo"] != "sub":
+                        continue
+                    suite = texte_de(q)
+                    if est_ceno(suite):
+                        continue
+                    titre = net(suite)
+                    break
+            tdm.append((r["cle"], f"<b>{num}</b> {titre}".strip(), "tt"))
+            # Ce qui reste du bloc -- scene, intertitre -- vaut une
+            # entree a soi. Le titre en est ote : il est deja annonce
+            # au-dessus. Ce qui PRECEDE le numero ne compte pas : c'est
+            # l'apparat de serie, « EXPLIKO - LIBRETO », « UNESMA SERIO ».
+            for j in range(i + 1, len(lignes_ap)):
+                if j != ti and net(lignes_ap[j]):
+                    tdm.append((f'{r["cle"]}-l{j}', net(lignes_ap[j]), "sc"))
             continue
 
         # Un intertitre : scene si sa premiere ligne est en italique.
-        scene = bool(re.match(r'\s*<span class="ln[^"]*"><i>', brut)) or \
-            bool(re.match(r"\s*<i>", brut))
-        tdm.append((r["cle"], net(brut), "sc" if scene else "st"))
+        tdm.append((r["cle"], net(brut), "sc" if est_ceno(brut) else "st"))
 
     lignes = []
     for r in rangi:
@@ -655,7 +753,9 @@ def rendre(rangi):
                 n[0] += 1
                 return (f'<span id="{r["cle"]}-l{n[0]-1}" '
                         f'class="{m.group(1)}">')
-            io = re.sub(r'<span class="(ln[^"]*)">', ancrer, io)
+            # OUVRE_AP, et non « ln » seul : la table compte aussi les
+            # lignes « pk », et les deux numerotations doivent coincider.
+            io = OUVRE_AP.sub(ancrer, io)
         cel_io = f'<div class="k io">{fol}{io}</div>' if io else \
                  '<div class="k io vaka"></div>'
         cel = [cel_io]
