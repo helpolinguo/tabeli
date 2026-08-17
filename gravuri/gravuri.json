@@ -148,5 +148,80 @@
    "largeur": 1200,
    "okteti": 269016
   }
+ },
+ "t09-apar-1": {
+  "alteso": 3660,
+  "detalo": {
+   "alteso": 1745,
+   "largeur": 2600,
+   "okteti": 1057510
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 806,
+   "largeur": 1200,
+   "okteti": 286756
+  }
+ },
+ "t10-apar-1": {
+  "alteso": 3640,
+  "detalo": {
+   "alteso": 1736,
+   "largeur": 2600,
+   "okteti": 567912
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 801,
+   "largeur": 1200,
+   "okteti": 165730
+  }
+ },
+ "t11-apar-1": {
+  "alteso": 3660,
+  "detalo": {
+   "alteso": 1745,
+   "largeur": 2600,
+   "okteti": 818890
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 806,
+   "largeur": 1200,
+   "okteti": 231602
+  }
+ },
+ "t12-01-1": {
+  "alteso": 2481,
+  "detalo": {
+   "alteso": 1839,
+   "largeur": 2600,
+   "okteti": 115422
+  },
+  "koloro": false,
+  "largeur": 3508,
+  "vido": {
+   "alteso": 849,
+   "largeur": 1200,
+   "okteti": 43942
+  }
+ },
+ "t12-apar-1": {
+  "alteso": 3628,
+  "detalo": {
+   "alteso": 1730,
+   "largeur": 2600,
+   "okteti": 780460
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 799,
+   "largeur": 1200,
+   "okteti": 232542
+  }
  }
 }

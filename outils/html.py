@@ -847,7 +847,18 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
     et celui-ci porte donc le titre de cette scene. Aux tableaux 3, 7 et
     9 la scene et son titre sont deux blocs ; au 4 et au 8, un seul.
     """
-    lignes = [(m.group(1), m.group(2)) for m in LIGNE_AP.finditer(html)]
+    trouves = list(LIGNE_AP.finditer(html))
+    lignes = [(m.group(1), m.group(2)) for m in trouves]
+    # UN ORNEMENT OU UN FILET SEPARE. Deux lignes de meme corps sont la
+    # suite d'un meme titre -- sauf si l'imprimeur a mis une vignette ou
+    # un filet entre elles, ce qui les donne pour deux choses. Le
+    # tableau 12 francais compose ainsi « La Gare. --- Les Chemins de
+    # fer. », un ornement, puis « Les Bateaux. » : les recoller donnait
+    # un tiret pendu au debut d'une ligne restee seule.
+    coupe = [False] * len(trouves)
+    for k in range(1, len(trouves)):
+        entre = html[trouves[k - 1].end():trouves[k].start()]
+        coupe[k] = 'class="orn"' in entre or 'class="fil"' in entre
     if not lignes:
         # Quelques titres sont composes a la main, sans macro \VU, et
         # n'ont donc aucune ligne a marquer : on prend le bloc entier.
@@ -898,6 +909,10 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
             for k in range(ti + 1, len(lignes)):
                 if not net_tdm(lignes[k][1]):
                     continue
+                # L'ornement ne change pas la NATURE de la ligne : « Les
+                # Bateaux. » reste un morceau du titre du tableau 12,
+                # comme « La Navi. » cote ido. Il empeche seulement de
+                # les recoller sur une meme ligne, plus bas.
                 if role[k] is not None or \
                         korpo_de(lignes[k][0]) != korpo_de(lignes[ti][0]):
                     break
@@ -920,7 +935,8 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
     while k < len(lignes):
         if role[k] in ("tit", "titceno"):
             fin = k
-            while fin + 1 < len(lignes) and role[fin + 1] == role[k]:
+            while fin + 1 < len(lignes) and role[fin + 1] == role[k] \
+                    and not coupe[fin + 1]:
                 fin += 1
             if fin > k:
                 for j in range(k, fin + 1):
@@ -984,8 +1000,13 @@ def libelle_bloc(brut):
         return net_tdm(brut)
     out = paires[0][1]
     for (corps, texte), (corps_av, texte_av) in zip(paires[1:], paires):
+        # UN SOUS-TITRE ENTRE PARENTHESES N'EST PAS LA SUITE DU TITRE,
+        # meme compose au meme corps. « Gimnastiko. » et « (Naraco da un
+        # de la lernanti.) » le sont tous deux en 10.2pt : le volet les
+        # joignait donc d'un tiret, puis otait la parenthese -- et le
+        # tiret restait tout seul, « Gimnastiko. — ».
         if corps == corps_av and not CENO.search(texte_av) \
-                and not CENO.search(texte):
+                and not CENO.search(texte) and not SUBT.fullmatch(texte):
             out = joindre([out, texte])
         else:
             out = f"{out} {texte}"
@@ -1004,6 +1025,9 @@ def sen_subtitro(t):
     # titre : une entree qui ne serait que parenthese se garde entiere,
     # faute de mieux que rien.
     court = re.sub(r"\s*\([^()]*\)\s*$", "", t).strip()
+    # Et le liant qui la precedait s'en va avec elle : rien ne doit rester
+    # pendu au bout de l'entree.
+    court = re.sub(r"\s*[—–-]\s*$", "", court).strip()
     return court or t
 
 
