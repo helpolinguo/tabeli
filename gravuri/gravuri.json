@@ -223,5 +223,65 @@
    "largeur": 1200,
    "okteti": 232542
   }
+ },
+ "t13-apar-1": {
+  "alteso": 3690,
+  "detalo": {
+   "alteso": 1760,
+   "largeur": 2600,
+   "okteti": 881438
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 812,
+   "largeur": 1200,
+   "okteti": 256640
+  }
+ },
+ "t14-apar-1": {
+  "alteso": 3662,
+  "detalo": {
+   "alteso": 1746,
+   "largeur": 2600,
+   "okteti": 824846
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 806,
+   "largeur": 1200,
+   "okteti": 231380
+  }
+ },
+ "t15-apar-1": {
+  "alteso": 3668,
+  "detalo": {
+   "alteso": 1749,
+   "largeur": 2600,
+   "okteti": 812208
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 807,
+   "largeur": 1200,
+   "okteti": 225690
+  }
+ },
+ "t16-apar-1": {
+  "alteso": 3640,
+  "detalo": {
+   "alteso": 1736,
+   "largeur": 2600,
+   "okteti": 1186024
+  },
+  "koloro": true,
+  "largeur": 5452,
+  "vido": {
+   "alteso": 801,
+   "largeur": 1200,
+   "okteti": 319052
+  }
  }
 }

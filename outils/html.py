@@ -793,7 +793,56 @@ def lier_notes(rangi):
                lambda r, k=k: (r["tra"].get(k) or {}).get("fe"), k)
 
     uniformiser_notes(rangi)
+    uniformiser_renvois(rangi)
     return rapport
+
+
+# LE RENVOI AU TABLEAU MURAL, TOUJOURS COMPOSE DE LA MEME FACON.
+# On prend le numero avec ce qui le porte -- l'exposant s'il en a un --
+# et le blanc qui le precede s'il y en a un.
+RENVOI = re.compile(r'(\s*)(?:<sup>\s*)?\((\d+)\)(?:\s*</sup>)?')
+
+
+def uniformiser_renvois(rangi):
+    """Une seule facon d'ecrire « mot (N) », sur toute la page.
+
+    Les deux ateliers hesitent : 2884 renvois sont separes du substantif
+    par un blanc, 478 lui sont colles, et sept — tous ido — ne sont meme
+    pas en exposant. Rien ne distingue ces cas : c'est du flottement de
+    composition. La page de lecture les ecrit donc tous pareil, exposant
+    et blanc.
+
+    LE BLANC EST INSECABLE. Un renvoi rejeté seul en tete de ligne ne
+    veut plus rien dire ; en colonne etroite, sur telephone, cela
+    arrivait. Le numero reste desormais accroche a son substantif.
+
+    Tous les nombres entre parentheses du texte suivi sont des renvois :
+    ils vont de 1 a 150, et les appels de note portent « (*) ».
+    """
+    n = 0
+
+    def poser(m):
+        # Un renvoi qui ouvre un bloc — alinea coupe par un changement
+        # de page — n'a pas de mot devant lui a qui s'accrocher.
+        # « \u00a0 » et non un blanc ordinaire : ecrit en clair,
+        # parce qu'a l'oeil rien ne l'aurait distingue.
+        blanc = "\u00a0" if m.start() else ""
+        return f'{blanc}<sup>({m.group(2)})</sup>'
+
+    for r in rangi:
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            neuf, combien = RENVOI.subn(poser, t)
+            if not combien or neuf == t:
+                continue
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+            n += combien
+    return n
 
 
 TETE_NOTE = re.compile(r'^((?:<[^>]+>)*)\((?:\*+|\d+)\)')
