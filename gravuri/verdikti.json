@@ -1,0 +1,32 @@
+{
+ "_": [
+  "LES LECTURES ECARTEES A L'OEIL, planche de controle par planche de",
+  "controle. Chaque decoupe des cas douteux a ete relue avec, sous elle,",
+  "le nom que le fac-simile donne a l'objet ; sont listees ici celles ou",
+  "le numero annonce ne se trouve pas — soit qu'aucun chiffre n'y",
+  "paraisse, soit qu'un autre nombre y soit ecrit.",
+  "",
+  "Ce fichier se tient A LA MAIN : la machine ne doit pas l'ecrire, sans",
+  "quoi le jugement se perdrait au premier relancement. numeri.py le lit",
+  "et retire ce qu'il nomme.",
+  "",
+  "Deux planches donnent le plus de fautes, et pour une raison qu'on",
+  "voit : le tableau 14 porte de vraies enseignes de boutiques dont les",
+  "lettres se decoupent aussi proprement que des chiffres, et le tableau",
+  "16 est un grand magasin ou tout est etiquete."
+ ],
+ "t01-apar-1": [3],
+ "t02-apar-1": [5, 12, 20, 37],
+ "t04-apar-1": [54],
+ "t05-apar-1": [22, 39, 84, 104],
+ "t06-apar-1": [12, 49],
+ "t07-apar-1": [13, 26, 46, 48, 49, 74],
+ "t10-apar-1": [18, 22, 38, 46, 58, 91, 94],
+ "t11-apar-1": [13, 67, 71],
+ "t12-01-1": [7],
+ "t12-apar-1": [45, 55, 73, 91],
+ "t13-apar-1": [2, 9, 64, 84],
+ "t14-apar-1": [13, 18, 22, 24, 37, 58, 64, 65, 73, 78, 81],
+ "t15-apar-1": [14, 15, 19, 47, 48, 56, 78, 81],
+ "t16-apar-1": [3, 13, 18, 34, 40, 47, 55, 57, 67, 74, 78, 94]
+}

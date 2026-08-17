@@ -464,6 +464,23 @@ def coherer(cle, trouves, la, ht):
     return gard, jetes
 
 
+def verdikti(cle):
+    """Les lectures que l'oeil a refusees, pour cette planche.
+
+    LA MACHINE N'ECRIT PAS CE FICHIER. gravuri/verdikti.json se tient a
+    la main : chaque decoupe douteuse a ete relue avec, sous elle, le
+    nom que le fac-simile donne a l'objet, et l'on y a inscrit celles ou
+    le numero annonce ne se trouve pas. Si l'outil pouvait le reecrire,
+    le jugement se perdrait au premier relancement -- or c'est la seule
+    piece du dispositif qu'aucune mesure ne remplace.
+    """
+    f = RACINE / "gravuri" / "verdikti.json"
+    if not f.exists():
+        return set()
+    d = json.loads(f.read_text(encoding="utf-8"))
+    return set(d.get(cle, []))
+
+
 def objekti(cle):
     """Le nom de chaque objet numerote, s'il a ete releve."""
     f = RACINE / "gravuri" / "objekti.json"
@@ -536,13 +553,19 @@ def main(cles=None):
             continue
         trouves, haut, (ht, la) = lire(f, att)
         trouves, jetes = coherer(cle, trouves, la, ht)
+        refuses = verdikti(cle) & set(trouves)
+        for n in refuses:
+            del trouves[n]
         tot_l += len(trouves)
         tot_a += len(att)
         controle(f, trouves, KONTROLO / f"{cle}.png", haut)
         # LA PLANCHE DES CAS DOUTEUX, decoupee plus large et portant le
         # nom de l'objet : c'est celle qu'on relit pour trancher.
+        # Quatre colonnes et non huit : a huit, le chiffre au centre de
+        # la decoupe ne fait plus que quelques points a l'ecran, et l'on
+        # ne peut pas juger. La planche est plus haute, elle se lit.
         n_d = controle(f, trouves, KONTROLO / f"{cle}-dubita.png", haut,
-                       seuil=0.95, large=3.4, cols=8)
+                       seuil=0.95, large=3.4, cols=4)
         # EN FRACTION, non en points : la page sert la planche a trois
         # definitions, et le gros plan doit tomber juste sur chacune.
         cat[cle] = {"corpo": haut, "largeur": la, "alteso": ht,
@@ -559,7 +582,8 @@ def main(cles=None):
                                in sorted(trouves.items())}}
         print(f"  {cle}  {len(trouves):3d}/{len(att):3d} numeros lus "
               f"(corps {haut} px), dont {n_d} a verifier"
-              + (f", {jetes} ecartes par le voisinage" if jetes else ""))
+              + (f", {jetes} ecartes par le voisinage" if jetes else "")
+              + (f", {len(refuses)} refuses a l'oeil" if refuses else ""))
     fich.write_text(json.dumps(cat, ensure_ascii=False, indent=1),
                     encoding="utf-8")
     if tot_a:
