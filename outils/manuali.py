@@ -81,6 +81,14 @@ def tuiler(cle):
                    .read_text(encoding="utf-8"))[cle]
     connus = {int(n): (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
               for n, v in d["numeri"].items()}
+    # Ce qu'on vient de poser a la main compte aussi, sans quoi il
+    # faudrait relancer tout le lecteur entre deux tuiles pour cesser de
+    # relire ce qu'on a deja releve.
+    fm = RACINE / "gravuri" / "manuali.json"
+    if fm.exists():
+        for n, v in json.loads(fm.read_text(encoding="utf-8")) \
+                .get(cle, {}).items():
+            connus[int(n)] = (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
     F = police(34)
     for k, (x0, y0, x1, y1) in enumerate(cads):
         t = im.crop((x0, y0, x1, y1)).convert("RGB")
@@ -114,7 +122,7 @@ def tuiler(cle):
             g.text((8, gy + 2), e, fill=(0, 190, 255), font=F)
         t.save(TUILES / f"{cle}-{k}.png")
     att = N.attendus(cle)
-    manque = sorted(att - {int(n) for n in d["numeri"]})
+    manque = sorted(att - set(connus))
     print(f"  {cle} : {len(cads)} tuiles, {len(manque)} numeros manquants")
     print(f"  {manque}")
 
