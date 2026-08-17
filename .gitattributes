@@ -1,0 +1,9 @@
+# Les relevés sont du texte, en UTF-8, avec des fins de ligne LF.
+*.tex   text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.html  text eol=lf
+*.mk    text eol=lf
+# La gravure du tableau 12 est le seul binaire versionné.
+*.png   binary
+*.pdf   binary
