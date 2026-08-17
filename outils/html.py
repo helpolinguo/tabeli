@@ -1033,9 +1033,19 @@ def rendre(rangi):
             # la DERNIERE ligne du bloc -- au tableau 2 la derniere est
             # « (Simpla leciono pri naturcienco.) », le sous-titre d'une
             # lecon, sous lequel la table annoncait tout le tableau.
-            ti = next((k for k in range(i + 1, len(lignes_ap))
-                       if net(lignes_ap[k]) and not est_ceno(lignes_ap[k])),
-                      None)
+            # UNE SCENE AVANT LE TITRE, ET LE TABLEAU N'EN A PAS. Aux
+            # tableaux 7, 8 et 9 le numero est suivi d'un « Unesma
+            # ceno. » : ce qui vient ensuite titre la SCENE, non le
+            # tableau, et les deux volumes le disent de meme -- le
+            # francais du tableau 8 porte « Première scène. » puis « La
+            # Moisson. --- Les aspects de la campagne. ». La table
+            # annoncait pourtant ce titre de scene comme celui du
+            # tableau, qui n'en a pas.
+            premiere = next((k for k in range(i + 1, len(lignes_ap))
+                             if net(lignes_ap[k])), None)
+            ceno_dabord = premiere is not None and \
+                bool(CENO.search(net(lignes_ap[premiere])))
+            ti = None if ceno_dabord else premiere
             # UN TITRE PEUT TENIR SUR PLUSIEURS LIGNES, et c'est le CORPS
             # qui le dit : les lignes de meme corps que la premiere sont
             # la suite du meme titre, une ligne d'un autre corps commence
@@ -1056,9 +1066,9 @@ def rendre(rangi):
             titre = joindre([net(lignes_ap[ti])] +
                             [net(lignes_ap[k]) for k in suites]) \
                 if ti is not None else ""
-            if not titre:
+            if not titre and not ceno_dabord:
                 # LE TITRE EST PARFOIS HORS DU BLOC D'OUVERTURE. Aux
-                # tableaux 7, 9, 10, 14 et 15, le fac-simile ido ne met
+                # tableaux 14 et 15, le fac-simile ido ne met
                 # sous le numero qu'un blanc, et le titre ouvre le
                 # premier intertitre qui suit -- la ou le volume
                 # francais, lui, le garde dans l'ouverture. La table
@@ -1072,8 +1082,11 @@ def rendre(rangi):
                     if q["tipo"] != "sub":
                         continue
                     suite = texte_de(q)
-                    if est_ceno(suite):
-                        continue
+                    if est_ceno(suite) or CENO.search(net(suite)):
+                        # Une scene ouvre le tableau : ce qui suit la
+                        # titre, elle, et le tableau reste sans titre.
+                        # C'est le cas des tableaux 7 et 9.
+                        break
                     titre = net(suite)
                     # ET IL NE S'ANNONCE PAS DEUX FOIS. Emprunte au
                     # premier intertitre, le titre reparaissait juste
@@ -1096,19 +1109,38 @@ def rendre(rangi):
             # entree a soi. Le titre en est ote : il est deja annonce
             # au-dessus. Ce qui PRECEDE le numero ne compte pas : c'est
             # l'apparat de serie, « EXPLIKO - LIBRETO », « UNESMA SERIO ».
+            absorbe = set()
             for j in range(i + 1, len(lignes_ap)):
-                if j == ti or j in suites or not net(lignes_ap[j]):
+                if j == ti or j in suites or j in absorbe \
+                        or not net(lignes_ap[j]):
                     continue
                 lib = net(lignes_ap[j])
-                # La scene de l'ouverture emporte son titre, comme celles
+                # LA SCENE DE L'OUVERTURE EMPORTE SON TITRE, comme celles
                 # qui ont leur bloc a elles : au tableau 8 la scene et son
-                # titre sont dans l'ouverture, et le volet n'annoncait
-                # que « Unesma ceno. ».
-                # Une espace, non le liant : le tiret ne vaut qu'entre
-                # les lignes d'un MEME titre, et la scene n'en est pas
-                # une. Les autres scenes du volet s'ecrivent de meme.
-                if CENO.search(lib) and ti is not None and ti > j:
-                    lib = f"{lib} {titre}"
+                # titre sont tous deux dans l'ouverture, et le volet
+                # annoncait « Unesma ceno. », « La Rekolto. » et « La
+                # Aspekti di la Ruro. » en trois entrees.
+                if CENO.search(lib):
+                    parts, k, base = [], j + 1, None
+                    while k < len(lignes_ap):
+                        if not net(lignes_ap[k]):
+                            k += 1
+                            continue
+                        if k in (ti,) or k in suites \
+                                or CENO.search(net(lignes_ap[k])):
+                            break
+                        if base is None:
+                            base = corps[k]
+                        elif corps[k] != base:
+                            break
+                        parts.append(net(lignes_ap[k]))
+                        absorbe.add(k)
+                        k += 1
+                    if parts:
+                        # Une espace, non le liant : le tiret ne vaut
+                        # qu'entre les lignes d'un MEME titre, et la
+                        # scene n'en est pas une.
+                        lib = f"{lib} {joindre(parts)}"
                 tdm.append((f'{r["cle"]}-l{j}', lib, "sc"))
             continue
 
