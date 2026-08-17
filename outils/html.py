@@ -46,6 +46,35 @@ def gravuri():
     cat = RACINE / "gravuri" / "gravuri.json"
     return json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
 
+
+def numeri():
+    """{tabelo: {numero: (cle de gravure, x, y, l, h, nom)}}.
+
+    Les positions sont en FRACTION de la planche : la page sert la meme
+    gravure a trois definitions, et le gros plan doit tomber juste sur
+    chacune. Le nom vient du releve des substantifs en gras.
+    """
+    f = RACINE / "gravuri" / "numeri.json"
+    if not f.exists():
+        return {}
+    o = RACINE / "gravuri" / "objekti.json"
+    noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
+    out = {}
+    for cle, v in json.loads(f.read_text(encoding="utf-8")).items():
+        tab = cle[:3]
+        for n, b in v["numeri"].items():
+            nom = noms.get(tab, {}).get(n, {})
+            out.setdefault(tab, {})[int(n)] = (
+                cle, b[0], b[1], b[2], b[3],
+                (nom.get("io") or nom.get("fr") or [""])[0],
+                (nom.get("fr") or nom.get("io") or [""])[0])
+    return out
+
+
+# LE RENVOI QUI SAIT OU IL POINTE DEVIENT UN BOUTON. Les autres restent
+# du texte : on ne promet pas un gros plan qu'on ne saurait pas montrer.
+RENVOI_REND = re.compile(r'<sup>\((\d+)\)</sup>')
+
 # Les langues de la colonne de droite. « fr » est le texte source
 # (releve sur le fac-simile) ; les autres seront des traductions, et
 # porteront la mention qui convient.
@@ -794,6 +823,7 @@ def lier_notes(rangi):
 
     uniformiser_notes(rangi)
     uniformiser_renvois(rangi)
+    boutons_renvois(rangi)
     return rapport
 
 
@@ -801,6 +831,62 @@ def lier_notes(rangi):
 # On prend le numero avec ce qui le porte -- l'exposant s'il en a un --
 # et le blanc qui le precede s'il y en a un.
 RENVOI = re.compile(r'(\s*)(?:<sup>\s*)?\((\d+)\)(?:\s*</sup>)?')
+
+
+def boutons_renvois(rangi):
+    """Le renvoi devient un bouton quand on sait ou il pointe.
+
+    UN GROS PLAN QU'ON NE SAURAIT PAS MONTRER NE SE PROMET PAS. La
+    lecture des numeros sur les planches est partielle -- la reserve de
+    blanc qui porte le chiffre se referme des que la gravure est dense,
+    et le chiffre se perd dans les hachures. Les renvois dont la
+    position est connue prennent donc un bouton ; les autres restent du
+    texte ordinaire, exactement comme ils etaient. Rien ne bouge dans la
+    ligne : le bouton garde le corps et l'exposant du renvoi.
+
+    Le bouton porte la CLE DE LA GRAVURE et le cadre en fractions de
+    celle-ci. La page n'a plus qu'a recadrer l'image qu'elle a deja.
+    """
+    num = numeri()
+    if not num:
+        return 0
+    pose = 0
+    for r in rangi:
+        tab = r["cle"][:3]
+        par = num.get(tab)
+        if not par:
+            continue
+
+        def bouton(m, par=par, langue="io"):
+            nonlocal pose
+            n = int(m.group(1))
+            v = par.get(n)
+            if not v:
+                return m.group(0)
+            cle, x, y, w, h, io, fr = v
+            pose += 1
+            # LE NOM SUIT SA COLONNE : le lecteur du francais lit
+            # « fumoir », celui de l'ido « fumeyo ».
+            titre = ((io if langue == "io" else fr) or io or fr)
+            titre = titre.replace('"', "&quot;")
+            return (f'<button class="lupo" data-g="{cle}" '
+                    f'data-c="{x},{y},{w},{h}" data-n="{n}" '
+                    f'title="{titre}" aria-expanded="false">'
+                    f'<sup>({n})</sup></button>')
+
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            texte = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not texte:
+                continue
+            neuf = RENVOI_REND.sub(
+                lambda m, k=k: bouton(m, langue=k), texte)
+            if neuf == texte:
+                continue
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+    return pose
 
 
 def uniformiser_renvois(rangi):
