@@ -768,6 +768,21 @@ def korpo_de(attrs):
     return m.group(1) if m else ""
 
 
+def sen_subtitro(t):
+    """Le sous-titre entre parentheses ne va pas dans le volet."""
+    # Le fac-simile precise certains titres par une parenthese --
+    # « (Naraco da un de la lernanti.) » sous « Gimnastiko. »,
+    # « (Simpla leciono pri naturcienco.) » sous « La Korpo homala. »,
+    # « (Balno-chambro.) » sous « La Balneyo. ». Cela a sa place dans la
+    # page, qui reproduit la mise en page ; dans le volet, ou l'on
+    # cherche un titre du coin de l'oeil, cela double la longueur de
+    # l'entree sans rien apprendre. On ne l'ote que si elle SUIT un
+    # titre : une entree qui ne serait que parenthese se garde entiere,
+    # faute de mieux que rien.
+    court = re.sub(r"\s*\([^()]*\)\s*$", "", t).strip()
+    return court or t
+
+
 def rendre(rangi):
     # La table des matieres se tire des blocs de titre.
     # LA TABLE DES MATIERES A TROIS RANGS, parce que le livre en a
@@ -962,7 +977,7 @@ def rendre(rangi):
 
     nav = "".join(
         f'<div class="parto">{t}</div>' if k == "parto"
-        else f'<a href="#{c}" data-ch="{c}" class="{k}">{t}</a>'
+        else f'<a href="#{c}" data-ch="{c}" class="{k}">{sen_subtitro(t)}</a>'
         for c, t, k in tdm)
     opcioni = "".join(
         f'<option value="{lg["kodo"]}">{lg["nomo"]}</option>'
