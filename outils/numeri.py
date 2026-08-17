@@ -196,6 +196,8 @@ def grouper(gl):
 SEUIL_VOISIN = 0.42
 # L'avance minimale du chiffre retenu sur son suivant, pour allonger.
 MARGE_VOISIN = 0.05
+# L'avance qu'il faut a une lecture sur sa rivale pour l'emporter.
+ECART_PREUVE = 0.05
 BASE = None
 
 
@@ -268,6 +270,71 @@ def attendus(cle):
             re.findall(r'\((\d+)\)', f[0].read_text(encoding="utf-8"))}
 
 
+SEUIL_BAL = 0.55
+MARGE_BAL = 0.04
+
+
+def balayer(enc_f, corps, seuil=SEUIL_BAL, marge=MARGE_BAL):
+    """Le filtre adapte passe sur la planche entiere, chiffre par chiffre.
+
+    LES ILOTS NE VOIENT QUE CE QUE LE BLANC ISOLE. Des qu'un chiffre
+    touche une hachure, sa composante fusionne avec le dessin et il
+    disparait — c'est ce qui plafonnait la lecture des planches
+    chargees. Le filtre adapte, lui, n'a pas besoin qu'on decoupe le
+    chiffre : il lui suffit que le trait soit la et la reserve vide.
+
+    Seul, il est trop bavard — une gravure offre des milliers de pics.
+    Il sert donc en RENFORT des ilots, et deux garde-fous le tiennent :
+    le score doit etre franc, et le chiffre retenu doit devancer son
+    suivant. Ce qui passe quand meme sera elimine plus loin, faute
+    d'appartenir aux nombres attendus.
+    """
+    # LE BALAYAGE N'EMET PAS DE « 1 ». Le chiffre n'est qu'une barre,
+    # et le filtre le retrouve dans la hampe d'un 4, le flanc d'un 9,
+    # une hachure verticale : sur le tableau 1 il faisait lire « 13 »
+    # pour 3, « 16 » pour 26, « 71 » pour 74. Les ilots, eux, le
+    # reconnaissent honnetement — ils decoupent la forme au lieu de la
+    # correler — et gardent la charge de le trouver.
+    noms = [c for c in sorted(_base()) if c != "1"]
+    cartes, geo, ref = [], [], None
+    for c in noms:
+        T, M, L = gabarit(c, corps)
+        r = cv2.matchTemplate(enc_f, T, cv2.TM_CCORR)
+        if ref is None:
+            ref = r.shape
+        rr = np.full(ref, -9, np.float32)
+        h = min(ref[0], r.shape[0])
+        w = min(ref[1], r.shape[1])
+        rr[:h, :w] = r[:h, :w]
+        cartes.append(rr)
+        geo.append((M, L))
+    S = np.stack(cartes)
+    ordre = np.argsort(-S, axis=0)
+    best = np.take_along_axis(S, ordre[:1], 0)[0]
+    ecart = best - np.take_along_axis(S, ordre[1:2], 0)[0]
+    k = max(3, (corps // 2) | 1)
+    pics = ((best >= cv2.dilate(best, np.ones((k, k), np.uint8)) - 1e-6)
+            & (best > seuil) & (ecart > marge))
+    out = []
+    for y, x in zip(*np.where(pics)):
+        i = int(ordre[0, y, x])
+        M, L = geo[i]
+        out.append((x + M, y + M, L, corps, noms[i],
+                    float(best[y, x]), "balayage"))
+    return out
+
+
+def fusionner(a, b, corps):
+    """b n'apporte que ce que a n'a pas deja vu."""
+    out = list(a)
+    for g in b:
+        if any(abs(g[0] - h[0]) < 0.5 * corps and abs(g[1] - h[1]) < 0.5 * corps
+               for h in out):
+            continue
+        out.append(g)
+    return out
+
+
 def lire(chemin, att):
     """Rend {numero: (x, y, largeur, hauteur)} en points de la planche."""
     a = np.asarray(Image.open(chemin))
@@ -278,7 +345,8 @@ def lire(chemin, att):
                                4, 0.16):
         c, s = classer(v)
         if c and s >= (SEUIL_UN if c == '1' else SEUIL):
-            gl.append((x, y, w, h, c, s))
+            gl.append((x, y, w, h, c, s, "ilot"))
+    gl = fusionner(gl, balayer(enc.astype(np.float32), haut), haut)
     lus = {}
     ef = enc.astype(np.float32)
     ecart = round(0.13 * haut)
@@ -293,8 +361,11 @@ def lire(chemin, att):
         y1 = max(g[1] + g[3] for g in grp)
         sd, cd, pd, md = voisin(ef, x1 + ecart, y0, haut)
         sg, cg, pg, mg = voisin(ef, x0 - ecart - large, y0, haut)
+        force = (sum(g[5] for g in grp) / len(grp)
+                 + (0.15 if all(g[6] == "ilot" for g in grp) else 0.0))
         if max(sd, sg) <= SEUIL_VOISIN:
-            lus.setdefault(int(t), []).append((x0, y0, x1 - x0, y1 - y0))
+            lus.setdefault(int(t), []).append(((x0, y0, x1 - x0, y1 - y0),
+                                               force))
             continue
         if max(md if sd > SEUIL_VOISIN else 0,
                mg if sg > SEUIL_VOISIN else 0) < MARGE_VOISIN:
@@ -309,12 +380,23 @@ def lire(chemin, att):
         if sg > SEUIL_VOISIN and int(cg + t) in att:
             prop.append((int(cg + t), (pg[0], y0, x1 - pg[0], y1 - y0)))
         if len(prop) == 1:
-            lus.setdefault(prop[0][0], []).append(prop[0][1])
-    # UN NOMBRE LU DEUX FOIS EST UN NOMBRE DONT ON NE SAIT RIEN : chaque
-    # numero ne parait qu'une fois sur la planche, deux lectures veulent
-    # dire qu'au moins l'une est fausse, et rien ne dit laquelle.
-    return ({n: p[0] for n, p in lus.items() if len(p) == 1 and n in att},
-            haut, enc.shape)
+            lus.setdefault(prop[0][0], []).append((prop[0][1], force))
+    # UN NOMBRE LU DEUX FOIS. Chaque numero ne parait qu'une fois sur la
+    # planche : deux lectures veulent dire qu'au moins l'une est fausse.
+    # Les jeter toutes les deux coutait cher — le balayage, plus bavard
+    # que les ilots, en faisait perdre de bonnes. On les departage donc
+    # par la force de leur preuve : la ressemblance moyenne des
+    # chiffres, et une prime a la lecture entierement tiree des ilots,
+    # ou le chiffre a ete decoupe et non seulement correle. Si les deux
+    # se valent, on ne tranche pas.
+    gard = {}
+    for n, p in lus.items():
+        if n not in att:
+            continue
+        p.sort(key=lambda q: -q[1])
+        if len(p) == 1 or p[0][1] - p[1][1] >= ECART_PREUVE:
+            gard[n] = p[0][0]
+    return gard, haut, enc.shape
 
 
 def controle(chemin, trouves, dest, haut):
