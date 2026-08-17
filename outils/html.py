@@ -541,13 +541,25 @@ def paro():
     # precedent de la meme langue, avec la marque du retour a la ligne
     # qu'il portait -- rien n'est perdu, rien n'est deplace, et les
     # deux colonnes redeviennent paralleles.
+    #
+    # UN INTERTITRE APPARIE PAR SA PLACE N'EST PAS ORPHELIN. Ce
+    # recollage juge sur la CLE, et les intertitres, eux, s'apparient sur
+    # leur place : un intertitre de traduction dont la cle ne figure pas
+    # cote ido tient pourtant deja sa case, en face de celui qu'il
+    # traduit. Compte pour orphelin, il paraissait DEUX fois -- « Deuxième
+    # scène. » a son rang, et recolle a la fin de l'alinea precedent.
     par_cle = {r["cle"]: i for i, r in enumerate(rangi)}
     for lg in LANGUES:
         k = lg["kodo"]
+        pris = {tra: io for io, tra in liens[k].items()}
         precedent = None
         for cle, o in autres[k].items():
             if cle in par_cle:
                 precedent = par_cle[cle]
+                continue
+            if cle in pris:
+                # Il a sa case : c'est desormais lui, le precedent.
+                precedent = par_cle.get(pris[cle], precedent)
                 continue
             if precedent is None:
                 continue
