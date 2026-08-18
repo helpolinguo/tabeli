@@ -270,8 +270,16 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    scene qui explique l'objet, non l'objet seul. */
 .lupo-vido{margin:.5em 0 .8em;border-left:2px solid var(--acc);
  background:var(--pap2);border-radius:0 5px 5px 0;overflow:hidden}
+/* ET LA VUE SE DEPLACE. Le gros plan tombe sur l'objet nomme, mais
+   l'oeil veut souvent voir a cote — ce qu'il y a au bout du comptoir,
+   qui est le voisin de gauche. On tire donc la vue au doigt ou a la
+   souris, comme une carte. « touch-action:none » est ce qui le rend
+   possible au doigt : sans lui le navigateur prend le glissement pour
+   un defilement de page et ne nous en dit rien. */
 .lupo-vido .kadro{width:100%;height:250px;background-repeat:no-repeat;
- background-color:var(--pap2);cursor:zoom-out}
+ background-color:var(--pap2);cursor:grab;touch-action:none;
+ -webkit-user-select:none;user-select:none}
+.lupo-vido .kadro.tiras{cursor:grabbing}
 .lupo-vido .dir{display:flex;justify-content:space-between;gap:1em;
  padding:.42em .8em;font-size:12.5px;color:var(--sub);
  border-top:1px solid var(--lin)}
@@ -317,13 +325,35 @@ sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
 .plena{position:fixed;inset:0;z-index:50;display:flex;align-items:center;
  justify-content:center;background:rgba(20,18,16,.94);
  opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s;
- cursor:zoom-out;padding:18px}
+ padding:18px;overflow:hidden;touch-action:none}
 .plena.mont{opacity:1;visibility:visible}
+/* « -webkit-user-drag » N'EST PAS UN ORNEMENT. Sans lui, tirer sur une
+   image lance le glisser-deposer du navigateur, qui coupe le suivi du
+   pointeur au deuxieme mouvement : la vue avancait d'un pas puis se
+   figeait. */
 .plena img{max-width:100%;max-height:100%;object-fit:contain;
- transform:scale(.97);transition:transform .22s ease;border-radius:2px}
+ transform:scale(.97);transition:transform .22s ease;border-radius:2px;
+ cursor:zoom-in;-webkit-user-select:none;user-select:none;
+ -webkit-user-drag:none}
 .plena.mont img{transform:scale(1)}
+/* UNE FOIS AGRANDIE, L'IMAGE SE TIRE. Le curseur le dit, et la
+   transition s'efface : elle est bonne pour l'ouverture, elle
+   traineraient derriere le doigt. */
+.plena.prox img{cursor:grab;transition:none}
+.plena.prox.tiras img{cursor:grabbing}
 .plena .fermi{position:absolute;top:12px;right:16px;border:0;background:none;
- color:#f2ede6;font:600 26px/1 system-ui,sans-serif;cursor:pointer;padding:6px 10px}
+ color:#f2ede6;font:600 26px/1 system-ui,sans-serif;cursor:pointer;padding:6px 10px;
+ z-index:2}
+/* LES BOUTONS DE GROSSISSEMENT, pour qui n'a ni molette ni deux doigts.
+   Ils disent aussi que la vue s'agrandit : sans eux rien ne l'annonce. */
+.plena .lupili{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+ display:flex;gap:2px;background:rgba(0,0,0,.42);border-radius:6px;
+ padding:3px;z-index:2}
+.plena .lupili button{border:0;background:none;color:#f2ede6;cursor:pointer;
+ font:600 17px/1 system-ui,sans-serif;padding:7px 13px;border-radius:4px}
+.plena .lupili button:hover{background:rgba(255,255,255,.16)}
+.plena .lupili .grado{font-weight:400;font-size:12.5px;padding:8px 6px;
+ min-width:3.4em;text-align:center;opacity:.82;pointer-events:none}
 @media (prefers-reduced-motion:reduce){
  .plena,.plena img{transition:none}}
 
@@ -404,7 +434,13 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 <p class="nulo" id="nulo" role="status"></p>
 <div class="plena" id="plena" role="dialog" aria-modal="true" aria-label="Tabelo">
  <button class="fermi" id="fermi" aria-label="Klozar">&times;</button>
- <img id="plena-bildo" alt="">
+ <img id="plena-bildo" alt="" draggable="false">
+ <div class="lupili">
+  <button type="button" data-lupilo="-" aria-label="Min granda">&minus;</button>
+  <span class="grado" id="plena-grado">1&times;</span>
+  <button type="button" data-lupilo="+" aria-label="Plu granda">+</button>
+  <button type="button" data-lupilo="0" aria-label="Tuta tabelo">&#8862;</button>
+ </div>
 </div>
 
 </div>
@@ -597,6 +633,7 @@ function ouvrirPlena(fig){
   plenaVenis = fig.querySelector("img");
   plena.classList.add("mont");
   document.body.style.overflow = "hidden";
+  poserVue(1, 0, 0);
   document.getElementById("fermi").focus();
 }
 function fermarPlena(){
@@ -604,13 +641,170 @@ function fermarPlena(){
   document.body.style.overflow = "";
   if (plenaVenis) plenaVenis.focus({preventScroll:true});
 }
+
+/* --- LE TABLEAU S'AGRANDIT. Le plein ecran montre la planche entiere ;
+   a cette taille une devanture fait deux centimetres et l'on n'y lit
+   rien. On y ajoute donc le grossissement : molette, deux doigts,
+   double-clic, ou les boutons du bas.
+
+   L'ECHELLE 1 EST CELLE QUI TIENT DANS LA FENETRE, non celle de
+   l'image : c'est ce que l'oeil appelle « le tableau entier », et le
+   chiffre affiche compte a partir de la. Au-dela de six fois, on
+   verrait la trame du fac-simile et plus la gravure ; en deca de un,
+   la planche flotterait dans du noir. On borne donc.
+
+   ON DEPLACE EN GARDANT LE POINT SOUS LE DOIGT. Zoomer autour du
+   centre de la fenetre parait juste tant qu'on regarde le centre ; des
+   qu'on vise un coin, l'objet vise s'enfuit. Le point d'ancrage est
+   donc celui qu'on montre — la souris, ou le milieu des deux doigts. --- */
+var vuo = {k:1, x:0, y:0};
+var VUO_MAX = 6;
+
+function poserVue(k, x, y){
+  vuo.k = Math.min(VUO_MAX, Math.max(1, k));
+  /* LA MARGE DE DEPLACEMENT, c'est ce qui depasse de la fenetre une fois
+     l'image agrandie. A l'echelle 1 elle est nulle des deux cotes :
+     l'image tient tout entiere, et rien ne peut la faire glisser. */
+  var b = plena.getBoundingClientRect();
+  var mx = Math.max(0, (plenaBildo.offsetWidth * vuo.k - b.width) / 2);
+  var my = Math.max(0, (plenaBildo.offsetHeight * vuo.k - b.height) / 2);
+  vuo.x = Math.min(mx, Math.max(-mx, x));
+  vuo.y = Math.min(my, Math.max(-my, y));
+  plenaBildo.style.transform = "translate(" + vuo.x + "px," + vuo.y + "px) scale("
+                             + vuo.k + ")";
+  plena.classList.toggle("prox", vuo.k > 1.001);
+  var g = document.getElementById("plena-grado");
+  if (g) g.textContent = (Math.round(vuo.k * 10) / 10) + "\u00d7";
+}
+
+/* Le grossissement autour d'un point de la fenetre : ce point ne bouge
+   pas, tout le reste s'ecarte de lui. */
+function grossir(nk, px, py){
+  var b = plena.getBoundingClientRect();
+  var cx = px - b.left - b.width / 2, cy = py - b.top - b.height / 2;
+  nk = Math.min(VUO_MAX, Math.max(1, nk));
+  var f = nk / vuo.k;
+  poserVue(nk, cx - (cx - vuo.x) * f, cy - (cy - vuo.y) * f);
+}
+
+plena.addEventListener("wheel", function(e){
+  if (!plena.classList.contains("mont")) return;
+  e.preventDefault();
+  /* Le pave tactile d'un portable envoie un pincement comme une molette
+     tenue avec Ctrl : les deux se traitent pareil, au pas pres. */
+  var pas = e.ctrlKey ? 0.012 : 0.0022;
+  grossir(vuo.k * Math.exp(-e.deltaY * pas), e.clientX, e.clientY);
+}, {passive:false});
+
+plena.addEventListener("dblclick", function(e){
+  if (e.target.closest(".lupili") || e.target.closest(".fermi")) return;
+  grossir(vuo.k > 1.001 ? 1 : 3, e.clientX, e.clientY);
+});
+
+document.querySelectorAll(".plena .lupili button").forEach(function(t){
+  t.addEventListener("click", function(e){
+    e.stopPropagation();
+    var b = plena.getBoundingClientRect();
+    var mx = b.left + b.width / 2, my = b.top + b.height / 2;
+    if (t.dataset.lupilo === "+") grossir(vuo.k * 1.5, mx, my);
+    else if (t.dataset.lupilo === "-") grossir(vuo.k / 1.5, mx, my);
+    else poserVue(1, 0, 0);
+  });
+});
+
+/* LE GLISSEMENT, a la souris comme au doigt. « pointerdown » couvre les
+   trois — souris, doigt, stylet — et deux doigts a la fois donnent le
+   pincement : on suit alors leur ECART, qui donne l'echelle, et leur
+   MILIEU, qui donne le point fixe. */
+var doigts = new Map(), depart = null, bougea = false;
+
+plena.addEventListener("dragstart", function(e){ e.preventDefault(); });
+plena.addEventListener("pointerdown", function(e){
+  if (e.target.closest(".lupili") || e.target.closest(".fermi")) return;
+  doigts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  bougea = false;
+  if (doigts.size === 1){
+    depart = {x:e.clientX, y:e.clientY, vx:vuo.x, vy:vuo.y};
+    plena.classList.add("tiras");
+    plena.setPointerCapture(e.pointerId);
+  } else if (doigts.size === 2){
+    var d = [...doigts.values()];
+    depart = {ecart:Math.hypot(d[0].x-d[1].x, d[0].y-d[1].y), k:vuo.k,
+              mx:(d[0].x+d[1].x)/2, my:(d[0].y+d[1].y)/2,
+              vx:vuo.x, vy:vuo.y};
+  }
+});
+plena.addEventListener("pointermove", function(e){
+  if (!doigts.has(e.pointerId) || !depart) return;
+  doigts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (doigts.size >= 2 && depart.ecart){
+    var d = [...doigts.values()];
+    var ec = Math.hypot(d[0].x-d[1].x, d[0].y-d[1].y);
+    if (ec > 4){
+      vuo.x = depart.vx; vuo.y = depart.vy; vuo.k = depart.k;
+      grossir(depart.k * ec / depart.ecart, depart.mx, depart.my);
+      bougea = true;
+    }
+    return;
+  }
+  var dx = e.clientX - depart.x, dy = e.clientY - depart.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) bougea = true;
+  if (vuo.k > 1.001) poserVue(vuo.k, depart.vx + dx, depart.vy + dy);
+});
+function lacher(e){
+  doigts.delete(e.pointerId);
+  if (doigts.size === 0){ depart = null; plena.classList.remove("tiras"); }
+  else if (doigts.size === 1){
+    var d = [...doigts.entries()][0];
+    depart = {x:d[1].x, y:d[1].y, vx:vuo.x, vy:vuo.y};
+  }
+}
+plena.addEventListener("pointerup", lacher);
+plena.addEventListener("pointercancel", lacher);
+
 document.addEventListener("click", function(e){
   var fig = e.target.closest ? e.target.closest(".gravuro") : null;
   if (fig){ ouvrirPlena(fig); return; }
-  if (plena.classList.contains("mont")) fermarPlena();
+  if (!plena.classList.contains("mont")) return;
+  /* ON NE FERME PAS EN TIRANT. Un glissement finit par un « click » que
+     le navigateur envoie quand meme ; sans cette garde, deplacer la vue
+     la refermait. */
+  if (bougea){ bougea = false; return; }
+  if (e.target.closest(".fermi")){ fermarPlena(); return; }
+  if (e.target.closest(".lupili")) return;
+  /* SUR L'IMAGE AGRANDIE, LE CLIC NE FERME PLUS : il sert a la
+     deplacer, et se refermer au moindre arret de la main serait
+     insupportable. On ferme alors par le fond, par la croix, ou par
+     Echap.
+     C'est la PLACE du clic qui decide, non sa cible : une image en
+     « object-fit » agrandie par une transformation ne se designe pas
+     de facon sure — le navigateur rend tantot l'image, tantot le fond
+     qui la porte, pour un clic tombe au meme endroit. Le rectangle,
+     lui, ne ment pas. */
+  if (vuo.k > 1.001){
+    var r = plenaBildo.getBoundingClientRect();
+    if (e.clientX >= r.left && e.clientX <= r.right &&
+        e.clientY >= r.top && e.clientY <= r.bottom) return;
+  }
+  fermarPlena();
 });
 addEventListener("keydown", function(e){
-  if (e.key === "Escape" && plena.classList.contains("mont")) fermarPlena();
+  if (!plena.classList.contains("mont")) return;
+  if (e.key === "Escape"){ fermarPlena(); return; }
+  var b = plena.getBoundingClientRect();
+  var mx = b.left + b.width / 2, my = b.top + b.height / 2;
+  if (e.key === "+" || e.key === "=") grossir(vuo.k * 1.5, mx, my);
+  else if (e.key === "-") grossir(vuo.k / 1.5, mx, my);
+  else if (e.key === "0") poserVue(1, 0, 0);
+  else if (vuo.k > 1.001 && e.key.indexOf("Arrow") === 0){
+    var p = 80;
+    poserVue(vuo.k, vuo.x + (e.key === "ArrowLeft" ? p : e.key === "ArrowRight" ? -p : 0),
+                    vuo.y + (e.key === "ArrowUp" ? p : e.key === "ArrowDown" ? -p : 0));
+    e.preventDefault();
+  }
+});
+addEventListener("resize", function(){
+  if (plena.classList.contains("mont")) poserVue(vuo.k, vuo.x, vuo.y);
 });
 
 /* --- LE DEPLI DES NOTES. La note vit a la fin du document, cachee ;
@@ -713,12 +907,69 @@ function ouvrirLupo(b){
   var sx = Math.min(1 - sw, Math.max(0, cx - sw / 2));
   var sy = Math.min(1 - sh, Math.max(0, cy - sh / 2));
   kadro.style.backgroundImage = 'url("' + fig.dataset.detalo + '")';
-  kadro.style.backgroundSize = (100 / sw) + "% " + (100 / sh) + "%";
-  kadro.style.backgroundPosition =
-    (sw < 1 ? (sx / (1 - sw)) * 100 : 50) + "% " +
-    (sh < 1 ? (sy / (1 - sh)) * 100 : 50) + "%";
+  /* LA PLACE SE COMPTE EN POINTS D'ECRAN, non en pour-cent. Les deux
+     disent la meme chose tant que la vue ne bouge pas ; des qu'on la
+     tire, le pour-cent oblige a repasser par la fraction de planche a
+     chaque mouvement du doigt — et il se divise par une marge qui vaut
+     zero quand l'image tient juste. En points, glisser c'est ajouter. */
+  kadro._vido = {bw: lg / sw, bh: ht / sh, px: -(sx / sw) * lg,
+                 py: -(sy / sh) * ht};
+  poserKadro(kadro);
   b.setAttribute("aria-expanded", "true");
 }
+
+/* --- LA VUE SE DEPLACE. Le gros plan tombe sur l'objet nomme ; l'oeil
+   veut ensuite voir a cote — l'etalage au bout du comptoir, la maison
+   d'a cote. On tire donc la vue, a la souris comme au doigt.
+   Le grossissement, lui, ne change pas : il est ce qu'il est pour que
+   l'objet tienne dans le cadre avec ce qui l'entoure, et le lecteur qui
+   veut plus grand a le plein ecran, qui grossit. --- */
+function poserKadro(kadro){
+  var d = kadro._vido;
+  if (!d) return;
+  var lg = kadro.clientWidth, ht = kadro.clientHeight;
+  d.px = Math.min(0, Math.max(lg - d.bw, d.px));
+  d.py = Math.min(0, Math.max(ht - d.bh, d.py));
+  kadro.style.backgroundSize = d.bw + "px " + d.bh + "px";
+  kadro.style.backgroundPosition = d.px + "px " + d.py + "px";
+}
+
+var tirage = null, tiraBougea = false;
+document.addEventListener("pointerdown", function(e){
+  var k = e.target.closest ? e.target.closest(".lupo-vido .kadro") : null;
+  if (!k || !k._vido) return;
+  tirage = {k:k, x:e.clientX, y:e.clientY, px:k._vido.px, py:k._vido.py};
+  tiraBougea = false;
+  k.classList.add("tiras");
+  k.setPointerCapture(e.pointerId);
+});
+document.addEventListener("pointermove", function(e){
+  if (!tirage) return;
+  var dx = e.clientX - tirage.x, dy = e.clientY - tirage.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) tiraBougea = true;
+  tirage.k._vido.px = tirage.px + dx;
+  tirage.k._vido.py = tirage.py + dy;
+  poserKadro(tirage.k);
+});
+function lacherKadro(){
+  if (!tirage) return;
+  tirage.k.classList.remove("tiras");
+  tirage = null;
+}
+document.addEventListener("pointerup", lacherKadro);
+document.addEventListener("pointercancel", lacherKadro);
+/* Le glissement finit par un « click » que le navigateur envoie quand
+   meme ; sans cette garde, deplacer la vue la refermait. */
+document.addEventListener("click", function(e){
+  if (!tiraBougea) return;
+  if (e.target.closest && e.target.closest(".lupo-vido")){
+    e.stopPropagation();
+    tiraBougea = false;
+  }
+}, true);
+addEventListener("resize", function(){
+  document.querySelectorAll(".lupo-vido .kadro").forEach(poserKadro);
+});
 
 /* --- L'INTITULE COURANT dans la table des matieres. On ne suit pas le
    defilement pixel par pixel : on observe les blocs de titre, et le
