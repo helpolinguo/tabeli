@@ -741,8 +741,15 @@ def main(cles=None):
         # ils sont enregistres en fraction de la NOUVELLE planche : les
         # relire sur l'ancienne couche de trait, qui n'a plus ni les
         # memes dimensions ni le meme cadrage, ecraserait le travail.
-        # Le lecteur automatique apprendra a lire le gris le jour ou les
-        # seize planches auront ete reprises ; d'ici la, on garde.
+        # ON A ESSAYE DE LUI APPRENDRE LE GRIS, et l'on a mesure ce
+        # que cela vaut : mille cinq cents numeros deja places font
+        # quatorze cents chiffres etiquetes, de quoi refaire les
+        # modeles dans le medium meme (outils/chifri.py). Le lecteur
+        # ainsi refait retrouve 442 numeros a leur place, en pose 132
+        # AILLEURS, et en propose 45 de neufs. Un sur quatre est faux :
+        # c'est trop pour entrer ici tout seul. Il sert donc a
+        # PROPOSER, non a decider, et ce que l'oeil garde de ses
+        # propositions entre par manuali.json comme le reste.
         if repris(cle) and cle in cat:
             # On garde les LECTURES, mais on continue d'accueillir ce que
             # l'oeil pose : un numero releve a la main sur le fac-simile

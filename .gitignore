@@ -28,3 +28,10 @@ gravuri/kovri/
 # fac-simile versionne (outils/originali.py netigar), et pese huit fois
 # plus lourd que lui.
 originali/kovri/
+
+# Feuilles de travail pour le releve a l'oeil : les tuiles de manuali.py
+# et la feuille de relecture de chifri.py. Elles se refont en une
+# commande, et ce qu'on en garde part dans gravuri/manuali.json.
+gravuri/tuili/
+gravuri/proponi.png
+gravuri/proponi.json
