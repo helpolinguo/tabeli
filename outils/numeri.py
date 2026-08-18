@@ -667,11 +667,17 @@ def main(cles=None):
             lus = {n: ((b[0] + x0, b[1] + y0, b[2], b[3]), fo)
                    for n, (b, fo) in lus.items()}
             # Le cadre englobant deborde sur les vignettes voisines --
-            # celui de l'ovale du tableau 6 les chevauche toutes quatre.
-            # On ne garde que ce qui tombe vraiment dans la forme.
-            lus = {n: v for n, v in lus.items()
-                   if dedans(forme, (v[0][0] + v[0][2] / 2) / la,
-                             (v[0][1] + v[0][3] / 2) / ht)}
+            # celui de l'ovale du tableau 6 les chevauche toutes quatre,
+            # et son « 6 » de faience tombait aussi dans le salon. La
+            # PREMIERE forme qui contient le point l'emporte : l'ovale
+            # est essaye avant les quatre vignettes, et rien n'est lu
+            # deux fois.
+            def qui(v):
+                x = (v[0][0] + v[0][2] / 2) / la
+                y = (v[0][1] + v[0][3] / 2) / ht
+                return next((s for s, f in formes if dedans(f, x, y)), None)
+
+            lus = {n: v for n, v in lus.items() if qui(v) == sc}
             lus, jt = coherer(cle, lus, la, ht, sc)
             jetes += jt
             trouves.update({kl(sc, n): v for n, v in lus.items()})
