@@ -269,20 +269,20 @@
   }
  },
  "t14-apar-1": {
-  "alteso": 3065,
+  "alteso": 1506,
   "detalo": {
-   "alteso": 3065,
-   "largeur": 4553,
-   "okteti": 1504934
+   "alteso": 1506,
+   "largeur": 2238,
+   "okteti": 695872
   },
   "fonto": "t14-apar-1-koloro.png",
   "koloro": true,
-  "largeur": 4553,
+  "largeur": 2238,
   "origino": true,
   "vido": {
    "alteso": 808,
    "largeur": 1200,
-   "okteti": 204458
+   "okteti": 245990
   }
  },
  "t15-apar-1": {
@@ -303,20 +303,20 @@
   }
  },
  "t16-apar-1": {
-  "alteso": 3034,
+  "alteso": 1460,
   "detalo": {
-   "alteso": 3034,
-   "largeur": 4539,
-   "okteti": 2138324
+   "alteso": 1460,
+   "largeur": 2184,
+   "okteti": 765654
   },
   "fonto": "t16-apar-1-koloro.png",
   "koloro": true,
-  "largeur": 4539,
+  "largeur": 2184,
   "origino": true,
   "vido": {
    "alteso": 802,
    "largeur": 1200,
-   "okteti": 271918
+   "okteti": 291754
   }
  }
 }

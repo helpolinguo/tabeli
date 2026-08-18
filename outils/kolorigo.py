@@ -1,49 +1,72 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  kolorigo.py — rendre a une planche la couleur de son original.
+#  kolorigo.py — servir l'original en couleur a la place du fac-simile,
+#  cadre sur le meme cadre, pour que les numeros tombent toujours juste.
 #
-#  Deux tirages de la meme pierre nous sont parvenus, et ils ne
-#  portent pas la meme chose. Le fac-simile de la Bibliotheque
-#  nationale est LA PIERRE NOIRE SEULE, tiree sans les couleurs :
-#  quatre mille cinq cents points de large, chaque hachure nette,
-#  chaque numero lisible. L'original en couleur est la meme pierre
-#  AVEC ses pierres de teinte, mais photographie a moitie moins fin —
-#  deux mille trois cents points — et le trait y est mou.
+#  Deux tirages de la meme pierre nous sont parvenus. Le fac-simile de
+#  la Bibliotheque nationale est LA PIERRE NOIRE SEULE, tiree sans les
+#  couleurs : quatre mille cinq cents points de large, chaque hachure
+#  nette. L'original est la meme planche AVEC ses couleurs, mais
+#  photographie a moitie moins fin.
 #
-#  L'UN A LE TRAIT, L'AUTRE A LE LAVIS. C'est tout le probleme, et
-#  c'en est aussi la solution.
+#  POUR CES DEUX TABLEAUX, C'EST L'ORIGINAL QU'ON SERT. On y perd de la
+#  finesse — le gros plan sur un numero est plus doux qu'ailleurs — et
+#  l'on y gagne la planche telle qu'elle etait au mur de la classe.
+#  C'est un choix d'edition, pas une mesure.
 #
-#  CE QUI NE MARCHE PAS. On prend d'abord la clarte du fac-simile et
-#  la couleur de l'original — c'est la recette ordinaire, celle qui
-#  sert a coloriser une photographie noir et blanc. Ici elle rate, et
-#  pour une raison qui se voit des le premier toit : dans l'original
-#  ce toit est un lavis d'ardoise, plein et sombre ; dans le
-#  fac-simile c'est du papier blanc sous une hachure. La clarte du
-#  fac-simile efface donc le lavis, et l'on obtient une gravure
-#  teintee, pale, ou les aplats ont disparu.
+#  LE FAC-SIMILE NE DISPARAIT PAS POUR AUTANT : il reste la planche de
+#  travail, celle ou les numeros se lisent et se posent, et il sert ici
+#  de MIRE. Mille six cents numeros sont ranges en fractions de son
+#  cadre ; si l'original se pose de travers, chaque gros plan tombe a
+#  cote. On le recale donc sur lui, et l'on ne garde de lui que cela.
 #
-#  ON RECOMMENCE DONC COMME L'IMPRIMEUR : le lavis dessous, le trait
-#  dessus. C'est une multiplication — la ou la pierre noire a pose son
-#  encre, la couleur s'assombrit ; la ou elle a laisse le papier, la
-#  couleur passe entiere. Le toit redevient ardoise, et la hachure
-#  reste nette.
+#  LE RECALAGE VA EN QUATRE TEMPS, du grossier au fin :
 #
-#  LE LAVIS SEUL. L'original porte, lui aussi, le trait de la pierre
-#  noire ; le multiplier tel quel doublerait chaque ligne. On l'en
-#  debarrasse par une FERMETURE morphologique : le trait est fin et
-#  sombre, elle l'efface ; un chapeau noir est large, elle le garde.
+#   1. LE CADRE. Le filet de la gravure court d'un bord a l'autre ;
+#      c'est la premiere rangee, en venant du dehors, ou plus de la
+#      moitie des points sont sombres. Deux rectangles, une similitude.
 #
-#  LE PAPIER A JAUNI, LA COULEUR A PASSE. On ramene le papier vers le
-#  neutre — pas entierement : il etait ivoire, non blanc — et l'on
-#  ranime la teinte d'un sixieme. Au-dela, la planche prend un air de
-#  chromo moderne qu'elle n'a jamais eu.
+#   2. ECC, sur les deux images floutees. Il descend a quelques points.
+#
+#   3. LA SIMILITUDE AJUSTEE TUILE PAR TUILE. ECC travaille sur une
+#      reduction a douze cents points : dix points d'ecart sur la
+#      planche n'en font que deux et demi chez lui, et il les laisse
+#      passer. On mesure donc, sur une grille, ou chaque morceau veut
+#      aller, et l'on ajuste la similitude qui les mene tous.
+#
+#   4. LE PLIAGE. Il en reste, et au tableau 16 ils atteignent
+#      soixante-dix points aux angles : la feuille photographiee
+#      n'etait ni plane ni d'aplomb. Cela ne s'ecrit pas en six
+#      coefficients — on a essaye un polynome du second degre, il
+#      laissait vingt points. On pose donc les glissements mesures sur
+#      une grille, on comble les trous par diffusion, on floute, et
+#      l'on remappe. Le champ est doux par construction : il ne peut
+#      pas inventer un pli plus fin que sa maille.
+#
+#  LE FLOU DE DOUZE POINTS, aux temps 2 a 4, n'est pas une negligence :
+#  c'est la seule echelle a laquelle les deux tirages se ressemblent.
+#  Plus fin, l'un n'a que le trait et l'autre que le lavis, et la
+#  correlation tombe a rien — mesure faite, 0.04.
+#
+#  LA RESTAURATION est legere, et elle se compte :
+#   — le papier a jauni : on lui retire deux cinquiemes de son jaune,
+#     pas davantage. Il etait ivoire, non blanc ;
+#   — la couleur a passe : on la ranime d'un sixieme. Au-dela, la
+#     planche prend un air de chromo moderne qu'elle n'a jamais eu ;
+#   — la prise de vue est molle : un leger masque flou lui rend son
+#     mordant, sans halo visible.
+#
+#  ON REND A LA DEFINITION DE L'ORIGINAL, ni plus ni moins. Le porter a
+#  celle du fac-simile ne fabriquerait pas un point de detail et
+#  doublerait le poids du fichier.
 #
 #  USAGE
 #      python3 outils/kolorigo.py t14-apar-1 originali/t14col.pdf
 #      python3 outils/kolorigo.py t14-apar-1 originali/t14col.pdf --essai
 #
-#  « --essai » ne sert rien : il ecrit une bande de comparaison dans
-#  gravuri/kontrolo/ pour juger le reglage a l'oeil.
+#  « --essai » ne sert rien : il ecrit dans gravuri/kontrolo/ une bande
+#  de comparaison — l'original brut, le rendu, le fac-simile — pour
+#  juger le reglage et le recalage a l'oeil.
 # ===================================================================
 
 import json
@@ -64,10 +87,11 @@ Image.MAX_IMAGE_PIXELS = None
 RACINE = N.RACINE
 KOVRI = RACINE / "originali" / "kovri"
 
-FERMO = 25        # le disque qui efface le trait de l'original
 BLANKESO = 0.40   # part du jaune du papier qu'on retire
 VIVECO = 1.15     # ranimation de la teinte
+NETESO = 0.55     # force du masque flou
 MARGE = O.MARGE_FILET
+FLOU = 12.0       # l'echelle a laquelle les deux tirages se ressemblent
 
 
 def tirar(pdf):
@@ -121,10 +145,6 @@ def poser(cle, col, verbeux=True):
     if verbeux:
         print(f"  cadre de l'original ({x0}, {y0})-({x1}, {y1}), "
               f"echelles {kx:.4f} et {ky:.4f}")
-    # L'AFFINAGE. Le cadre pose l'original a quelques points pres ; on
-    # finit par ECC, sur les deux images floutees a l'echelle ou toutes
-    # deux ont encore du signal. Plus fin, l'original n'a plus rien a
-    # dire : sa prise de vue s'arrete la ou le fac-simile commence.
     W2 = 1200
     s = W2 / LN
 
@@ -147,13 +167,6 @@ def poser(cle, col, verbeux=True):
     Wp = (np.diag([1 / s, 1 / s, 1.0]) @ np.vstack([warp, [0, 0, 1]])
           @ np.diag([s, s, 1.0]))
     T = (Wp @ np.vstack([T0, [0, 0, 1]]))[:2].astype(np.float32)
-    # ET L'ON FINIT PAR UNE TRANSLATION, MESUREE EN GRAND. ECC travaille
-    # sur une reduction a douze cents points ; dix points de decalage
-    # sur la planche n'en font que deux et demi chez lui, et il les
-    # laisse passer. On les voit pourtant : le lavis se pose a cote de
-    # la figure. On mesure donc le glissement qui reste sur les images
-    # entieres, floutees a l'echelle du lavis -- la seule ou les deux
-    # tirages se ressemblent -- et on l'ajoute.
     for _ in range(3):
         T, n, co = afini(T, col, gp)
     if verbeux:
@@ -162,26 +175,13 @@ def poser(cle, col, verbeux=True):
     return T, gp
 
 
-# CE QUE LA SIMILITUDE NE RATTRAPE PAS. Au tableau 16 l'original a ete
-# photographie de biais, ou la feuille bombait : le lavis se pose bien
-# au milieu et glisse de vingt points aux angles. Une similitude ne sait
-# pas cela — il lui faudrait plier.
-#
-# On mesure donc le glissement sur une grille serree, et on l'ajuste par
-# un POLYNOME DU SECOND DEGRE en x et y : six coefficients par axe, de
-# quoi suivre une perspective ou un gonflement, pas assez pour suivre le
-# bruit. Puis on remappe. C'est une deformation douce, et elle ne porte
-# que sur le lavis : le trait, lui, vient du fac-simile et ne bouge pas.
-def plier(T, col, gp, sigma=12.0, marge=70, cases=(7, 10), R=190,
-          seuil=0.35, verbeux=True):
-    """Le champ de glissement, ajuste par un polynome, puis applique."""
+def tuili(pose, gp, sigma, marge, cases, R, seuil):
+    """Ou chaque morceau de l'original veut aller, tuile par tuile."""
     HN, LN = gp.shape
-    pose = cv2.warpAffine(col, T, (LN, HN), flags=cv2.INTER_CUBIC,
-                          borderValue=(255, 255, 255))
     a = cv2.GaussianBlur(cv2.cvtColor(pose, cv2.COLOR_RGB2GRAY)
                          .astype(np.float32), (0, 0), sigma)
     b = cv2.GaussianBlur(gp, (0, 0), sigma)
-    P, D = [], []
+    out = []
     for j in range(cases[0]):
         for i in range(cases[1]):
             y = round((j + 0.5) * HN / cases[0])
@@ -195,106 +195,133 @@ def plier(T, col, gp, sigma=12.0, marge=70, cases=(7, 10), R=190,
             v = (v - v.mean()) / max(1e-6, v.std())
             r = cv2.matchTemplate(v, u, cv2.TM_CCOEFF_NORMED)
             _, mx, _, loc = cv2.minMaxLoc(r)
-            if mx < seuil:
-                continue
-            P.append((x, y))
-            D.append((loc[0] - marge, loc[1] - marge))
-    if len(P) < 12:
-        if verbeux:
-            print(f"  pas de quoi plier ({len(P)} tuiles) : on laisse droit")
-        return pose
-    # LE CHAMP SE FAIT PAR DIFFUSION, non par formule. Un polynome du
-    # second degre laissait vingt points d'ecart au tableau 16 : la
-    # deformation n'est pas une perspective, c'est une feuille qui a
-    # gondole, et cela ne s'ecrit pas. On pose donc les glissements
-    # mesures sur une grille grossiere, on comble les trous par
-    # diffusion — chaque tour remplace un point vide par la moyenne de
-    # ses voisins — et l'on floute largement. Ce qui reste est doux par
-    # construction : le champ ne peut pas inventer un pli plus fin que
-    # la maille.
-    P = np.float64(P); D = np.float64(D)
-    pas = 64
-    gh, gw = HN // pas + 2, LN // pas + 2
-    fx = np.zeros((gh, gw), np.float32); fy = np.zeros_like(fx)
-    pn = np.zeros_like(fx)
-    for (x, y), (dx, dy) in zip(P, D):
-        j, i = int(y / pas), int(x / pas)
-        fx[j, i] += dx; fy[j, i] += dy; pn[j, i] += 1
-    plein = pn > 0
-    fx[plein] /= pn[plein]; fy[plein] /= pn[plein]
-    for _ in range(600):
-        for f in (fx, fy):
-            m = cv2.blur(f, (3, 3))
-            f[~plein] = m[~plein]
-    fx = cv2.GaussianBlur(fx, (0, 0), 2.0)
-    fy = cv2.GaussianBlur(fy, (0, 0), 2.0)
-    ys, xs = np.mgrid[0:HN, 0:LN].astype(np.float32)
-    gx = cv2.resize(fx, (LN, HN), interpolation=cv2.INTER_CUBIC)
-    gy = cv2.resize(fy, (LN, HN), interpolation=cv2.INTER_CUBIC)
-    out = cv2.remap(pose, xs - gx, ys - gy, cv2.INTER_CUBIC,
-                    borderMode=cv2.BORDER_CONSTANT, borderValue=(255, 255, 255))
-    if verbeux:
-        print(f"  pliage sur {len(P)} tuiles : glissement de "
-              f"{np.abs(D).max():.0f} points au plus")
+            if mx >= seuil:
+                out.append((x, y, loc[0] - marge, loc[1] - marge, float(mx)))
     return out
 
 
-# LE RECALAGE SE FINIT TUILE PAR TUILE. ECC travaille sur une reduction
-# a douze cents points : dix points de decalage sur la planche n'en font
-# que deux et demi chez lui, et il les laisse passer. On les voit
-# pourtant — le lavis se pose a cote de la figure — et au tableau 16 le
-# cadre de l'original ne donne meme pas le bon rapport : trois pour cent
-# d'ecart en hauteur, la prise de vue n'etait pas d'aplomb.
-#
-# On mesure donc, sur une grille, ou chaque morceau de l'original veut
-# aller ; on ne garde que les morceaux qui se reconnaissent franchement,
-# et l'on ajuste sur eux la similitude qui les mene tous a la fois. Le
-# flou de douze points n'est pas un defaut : c'est l'echelle a laquelle
-# les DEUX tirages se ressemblent, l'un n'ayant que le trait et l'autre
-# que le lavis.
-def afini(T, col, gp, sigma=12.0, marge=90, cases=(5, 7), R=280, seuil=0.35):
+def afini(T, col, gp, sigma=FLOU, marge=90, cases=(5, 7), R=280, seuil=0.35):
     """Un tour de recalage : la similitude qui suit le mieux les tuiles."""
     HN, LN = gp.shape
     pose = cv2.warpAffine(col, T, (LN, HN), flags=cv2.INTER_LINEAR,
                           borderValue=(255, 255, 255))
-    a = cv2.GaussianBlur(cv2.cvtColor(pose, cv2.COLOR_RGB2GRAY)
-                         .astype(np.float32), (0, 0), sigma)
-    b = cv2.GaussianBlur(gp, (0, 0), sigma)
-    ici, la, sco = [], [], []
-    for j in range(cases[0]):
-        for i in range(cases[1]):
-            y = round((j + 0.5) * HN / cases[0])
-            x = round((i + 0.5) * LN / cases[1])
-            if (y - R - marge < 0 or y + R + marge > HN
-                    or x - R - marge < 0 or x + R + marge > LN):
-                continue
-            u = a[y - R:y + R, x - R:x + R]
-            v = b[y - R - marge:y + R + marge, x - R - marge:x + R + marge]
-            u = (u - u.mean()) / max(1e-6, u.std())
-            v = (v - v.mean()) / max(1e-6, v.std())
-            r = cv2.matchTemplate(v, u, cv2.TM_CCOEFF_NORMED)
-            _, mx, _, loc = cv2.minMaxLoc(r)
-            if mx < seuil:
-                continue
-            ici.append((x, y))
-            la.append((x + loc[0] - marge, y + loc[1] - marge))
-            sco.append(float(mx))
-    if len(ici) < 6:
-        return T, len(ici), float(np.median(sco)) if sco else float("nan")
-    M, _ = cv2.estimateAffinePartial2D(np.float32(ici), np.float32(la),
-                                       method=cv2.RANSAC,
+    t = tuili(pose, gp, sigma, marge, cases, R, seuil)
+    if len(t) < 6:
+        return T, len(t), float(np.median([q[4] for q in t])) if t else float("nan")
+    ici = np.float32([(q[0], q[1]) for q in t])
+    la = np.float32([(q[0] + q[2], q[1] + q[3]) for q in t])
+    M, _ = cv2.estimateAffinePartial2D(ici, la, method=cv2.RANSAC,
                                        ransacReprojThreshold=12.0)
+    co = float(np.median([q[4] for q in t]))
     if M is None:
-        return T, len(ici), float(np.median(sco))
+        return T, len(t), co
     T2 = (np.vstack([M, [0, 0, 1]]) @ np.vstack([T, [0, 0, 1]]))[:2]
-    return T2.astype(np.float32), len(ici), float(np.median(sco))
+    return T2.astype(np.float32), len(t), co
 
 
-def lavis(col, fermo=FERMO, blankeso=BLANKESO, viveco=VIVECO, verbeux=True):
-    """L'original debarrasse de son trait, et rendu a ses couleurs."""
-    e = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (fermo, fermo))
-    w = cv2.morphologyEx(col, cv2.MORPH_CLOSE, e)
-    lab = cv2.cvtColor(w, cv2.COLOR_RGB2LAB).astype(np.float32)
+# ON PLIE DEUX FOIS, DU LARGE AU SERRE. Le premier tour se mesure sur
+# de grandes tuiles floutees a douze points : c'est robuste, et cela
+# rattrape la perspective et le gondolement. Il reste vingt points
+# d'ecart en moyenne — mesure faite sur les numeros eux-memes, qui sont
+# le seul juge qui compte. Le second tour, sur des tuiles trois fois
+# plus petites et un flou de cinq points, descend a moins de dix.
+#
+# On ne va pas plus fin. Sous cinq points de flou les deux tirages ne
+# se ressemblent plus assez pour se reconnaitre — l'un n'a que le
+# trait, l'autre que le lavis — et la mesure se met a suivre le bruit.
+PLIADI = ((FLOU, 70, (7, 10), 190, 0.35),
+          (5.0, 40, (12, 16), 110, 0.30))
+
+
+def plier(T, col, gp, pas=40, verbeux=True):
+    """Le champ de glissement qui reste, en points de la planche."""
+    HN, LN = gp.shape
+    gh, gw = HN // pas + 2, LN // pas + 2
+    champ = np.zeros((2, gh, gw), np.float32)
+    for sigma, marge, cases, R, seuil in PLIADI:
+        pose = rendre(col, T, champ, (LN, HN), 1.0, cv2.INTER_LINEAR)
+        t = tuili(pose, gp, sigma, marge, cases, R, seuil)
+        if len(t) < 12:
+            if verbeux:
+                print(f"  flou {sigma:.0f} : {len(t)} tuiles seulement, "
+                      f"on passe")
+            continue
+        f = np.zeros((2, gh, gw), np.float32)
+        pn = np.zeros((gh, gw), np.float32)
+        for x, y, dx, dy, _ in t:
+            j, i = int(y / pas), int(x / pas)
+            f[0, j, i] += dx
+            f[1, j, i] += dy
+            pn[j, i] += 1
+        plein = pn > 0
+        f[0][plein] /= pn[plein]
+        f[1][plein] /= pn[plein]
+        # LES TROUS SE COMBLENT PAR DIFFUSION : chaque tour remplace un
+        # point vide par la moyenne de ses voisins. Le champ est doux
+        # par construction — il ne peut pas inventer un pli plus fin que
+        # sa maille — et c'est ce qui l'empeche de suivre une tuile qui
+        # s'est trompee.
+        for _ in range(900):
+            for k in (0, 1):
+                m = cv2.blur(f[k], (3, 3))
+                f[k][~plein] = m[~plein]
+        for k in (0, 1):
+            f[k] = cv2.GaussianBlur(f[k], (0, 0), 1.6)
+        champ += f
+        if verbeux:
+            d = np.array([(q[2], q[3]) for q in t], float)
+            print(f"  pliage au flou {sigma:.0f} : {len(t)} tuiles, "
+                  f"reprise de {np.abs(d).max():.0f} points au plus")
+    return champ
+
+
+# ON A ESSAYE DE PLIER SUR LES NUMEROS EUX-MEMES, et c'est pire.
+# L'idee etait bonne : on sait ou sont les mille six cent soixante-seize
+# numeros sur le fac-simile, au point pres, et ce sont eux que le gros
+# plan doit viser — pourquoi caler sur du paysage ce qu'on peut caler
+# sur eux ? Parce que le suiveur ne les retrouve pas assez surement
+# dans la photographie : sur quatre-vingt-treize numeros du tableau 14
+# il n'en reconnait franchement que quarante-huit, et le champ tire de
+# ces quarante-huit-la fait passer l'ecart median de seize a
+# vingt-quatre points. Une poignee de reperes bruyants, etires par la
+# diffusion, deforme plus qu'elle ne corrige. Mesure faite deux fois,
+# sur les deux planches.
+#
+# ET CE QUI RESTE D'ECART N'EST PAS UNE ERREUR DE MESURE : quinze a
+# vingt points, quel que soit le reglage du suiveur — fenetre de
+# quatre-vingts points ou de cent vingt, flou d'un point et demi ou de
+# trois, seuil de confiance a trois dixiemes ou a six. Ce sont DEUX
+# EXEMPLAIRES DIFFERENTS de la meme planche : tires a des dates
+# differentes, sur un papier qui n'a pas retreci pareil, et dont les
+# pierres n'etaient pas calees au meme point. Un demi pour cent sur
+# quatre mille cinq cents points fait vingt points, et c'est exactement
+# ce qu'on trouve. Aucune similitude ne rattrape cela.
+#
+# Seize points d'ecart sur une vue de gros plan qui en montre deux cent
+# quatre-vingt-dix : le numero vise n'est pas au centre au point pres,
+# il est a un vingtieme du centre. On s'en tient la.
+
+
+def rendre(col, T, champ, taille, echelo, interp=cv2.INTER_CUBIC):
+    LT, HT = taille
+    ys, xs = np.mgrid[0:HT, 0:LT].astype(np.float32)
+    # de la sortie vers la planche, en defaisant le pliage
+    px, py = xs / echelo, ys / echelo
+    px -= cv2.resize(champ[0], (LT, HT), interpolation=cv2.INTER_CUBIC)
+    py -= cv2.resize(champ[1], (LT, HT), interpolation=cv2.INTER_CUBIC)
+    # de la planche vers l'original
+    Ti = cv2.invertAffineTransform(T)
+    sx = Ti[0, 0] * px + Ti[0, 1] * py + Ti[0, 2]
+    sy = Ti[1, 0] * px + Ti[1, 1] * py + Ti[1, 2]
+    return cv2.remap(col, sx, sy, interp,
+                     borderMode=cv2.BORDER_CONSTANT,
+                     borderValue=(255, 255, 255))
+
+
+def restaurar(im, blankeso=BLANKESO, viveco=VIVECO, neteso=NETESO,
+              verbeux=True):
+    """Le papier rendu au neutre, la teinte ranimee, le trait raffermi."""
+    lab = cv2.cvtColor(im, cv2.COLOR_RGB2LAB).astype(np.float32)
     L, A, B = lab[..., 0], lab[..., 1] - 128, lab[..., 2] - 128
     # LE TON DU PAPIER se prend sur le papier, c'est-a-dire sur ce que
     # la planche a de plus clair : le blanc de reserve entre les
@@ -306,6 +333,15 @@ def lavis(col, fermo=FERMO, blankeso=BLANKESO, viveco=VIVECO, verbeux=True):
               f"on lui en retire {blankeso:.0%}")
     A = (A - blankeso * ca) * viveco
     B = (B - blankeso * cb) * viveco
+    # LE MORDANT SE REND A LA CLARTE SEULE. Aiguiser les trois couleurs
+    # ensemble reveille le grain colore de la photographie ; sur la
+    # clarte, il ne reveille que le trait.
+    # (La clarte d'un Lab TIRE D'UNE IMAGE A HUIT BITS va de 0 a 255, non
+    #  de 0 a 100 : la borner a cent ecrasait tout le haut du ton, et la
+    #  planche sortait en aplats.)
+    if neteso > 0:
+        L = np.clip(L + neteso * (L - cv2.GaussianBlur(L, (0, 0), 1.1)),
+                    0, 255)
     return cv2.cvtColor(np.dstack([L, np.clip(A + 128, 0, 255),
                                    np.clip(B + 128, 0, 255)]).astype(np.uint8),
                         cv2.COLOR_LAB2RGB)
@@ -315,36 +351,42 @@ def kolorigi(cle, pdf, essai=False, **kw):
     col = tirar(pdf)
     print(f"  {Path(pdf).name} : {col.shape[1]} x {col.shape[0]} points")
     T, gp = poser(cle, col)
-    pose = plier(T, col, gp)
-    w = lavis(pose, **kw)
-    # LE TIRAGE : le lavis dessous, la pierre noire dessus.
-    out = (w.astype(np.float32) * (gp[..., None] / 255.0))
-    out = out.clip(0, 255).astype(np.uint8)
+    HN, LN = gp.shape
+    champ = plier(T, col, gp)
+    # LA DEFINITION DE SORTIE EST CELLE DE L'ORIGINAL. L'echelle de la
+    # similitude dit de combien la photographie a ete grandie pour
+    # tomber sur le fac-simile ; on rend l'inverse.
+    k = float(np.hypot(T[0, 0], T[1, 0]))
+    echelo = 1.0 / k
+    LT, HT = round(LN * echelo), round(HN * echelo)
+    out = restaurar(rendre(col, T, champ, (LT, HT), echelo), **kw)
+    print(f"  rendu {LT} x {HT} points, la planche en faisant {LN} x {HN}")
     KOVRI.mkdir(parents=True, exist_ok=True)
     dest = KOVRI / f"{cle}-koloro.png"
     Image.fromarray(out).save(dest)
     print(f"  ecrit dans {dest}")
     if essai:
-        bande(cle, pose, out, gp)
+        bande(cle, col, T, champ, out, gp)
     return dest
 
 
-def bande(cle, pose, out, gp, boite=None):
-    """Une bande de comparaison : l'original, le tirage, la pierre."""
+def bande(cle, col, T, champ, out, gp, boite=None):
+    """L'original brut, le rendu, le fac-simile : la meme portion."""
     HN, LN = gp.shape
     if boite is None:
-        x = round(0.72 * LN)
-        y = round(0.37 * HN)
+        x, y = round(0.72 * LN), round(0.37 * HN)
         boite = (x, y, x + 600, y + 400)
     x0, y0, x1, y1 = boite
-    trio = [pose[y0:y1, x0:x1], out[y0:y1, x0:x1],
+    brut = rendre(col, T, np.zeros_like(champ), (LN, HN), 1.0)
+    o = np.asarray(Image.fromarray(out).resize((LN, HN), Image.LANCZOS))
+    trio = [brut[y0:y1, x0:x1], o[y0:y1, x0:x1],
             np.dstack([gp[y0:y1, x0:x1].astype(np.uint8)] * 3)]
     sep = np.full((y1 - y0, 6, 3), 255, np.uint8)
-    im = np.hstack([x for p in zip(trio, [sep] * 3) for x in p][:-1])
+    im = np.hstack([q for p in zip(trio, [sep] * 3) for q in p][:-1])
     d = N.KONTROLO / f"{cle}-koloro.png"
     d.parent.mkdir(parents=True, exist_ok=True)
     Image.fromarray(im).save(d)
-    print(f"  l'original, le tirage et la pierre dans {d}")
+    print(f"  l'original, le rendu et le fac-simile dans {d}")
 
 
 def main(args):
