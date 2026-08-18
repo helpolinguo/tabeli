@@ -141,6 +141,7 @@ def charger():
     pile = np.stack([m for c in d.files for m in d[c]]).reshape(len(noms), -1)
     N.NOMS = noms
     N.PILE = pile / np.linalg.norm(pile, axis=1, keepdims=True)
+    N.GRIS = True
 
 
 def proponar(cles=None):

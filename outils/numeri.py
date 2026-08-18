@@ -229,16 +229,36 @@ ECART_PREUVE = 0.05
 BASE = None
 
 
+# DEUX JEUX DE MODELES, parce qu'il y a deux encres. Le pochoir tire
+# du PDF colorise a des contours nets ; le fac-simile a l'encre grise,
+# les pleins qui bavent et les delies qui s'effacent. Un gabarit taille
+# dans l'un ne se pose pas dans l'autre : sur le gris, le filtre adapte
+# du pochoir marque 0.24 la ou il devrait marquer pres de 1. On tient
+# donc les deux, et GRIS dit lequel sert -- c'est l'appelant qui le
+# sait, puisque c'est lui qui sait quelle planche il regarde.
+GRIS = False
+
+
 def _base():
     global BASE
     if BASE is None:
-        d = np.load(RACINE / "outils" / "chifri.npz")
         BASE = {}
+    fich = "chifri-gris.npz" if GRIS else "chifri.npz"
+    if fich not in BASE:
+        d = np.load(RACINE / "outils" / fich)
+        b = {}
         for c in d.files:
+            # ON RAMENE LE MODELE A UN PLEIN DE 1. Les modeles du
+            # pochoir sont des moyennes de decoupes, ceux du gris des
+            # centres de groupes DEJA NORMES : leur plein vaut cinq
+            # centiemes, et le gabarit, qui prend le trait a la moitie
+            # du plein, n'y trouvait plus rien du tout.
             m = d[c].mean(0)
+            m = m / max(1e-6, float(m.max()))
             col = m.max(0) > 0.15
-            BASE[c] = m[:, col.argmax(): len(col) - col[::-1].argmax()]
-    return BASE
+            b[c] = m[:, col.argmax(): len(col) - col[::-1].argmax()]
+        BASE[fich] = b
+    return BASE[fich]
 
 
 def gabarit(c, corps, marge=10):

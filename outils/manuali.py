@@ -304,6 +304,11 @@ def poser(cle, refs, rayon=0.62):
     — « c3:12=1840,2210 » —, sans quoi on ne saurait pas de quel douze
     il s'agit.
     """
+    # LE GABARIT SE TAILLE DANS L'ENCRE QU'ON REGARDE. Sur une planche
+    # reprise, les modeles du pochoir marquent 0.24 la ou ceux du gris
+    # marquent pres de 1 : le filtre glissait alors d'une dizaine de
+    # points, et le cadre tombait a cote du chiffre.
+    N.GRIS = N.repris(cle)
     enc = (N.enko(cle) > 100).astype(np.float32)
     HT, LA = enc.shape
     d = json.loads((RACINE / "gravuri" / "numeri.json")
