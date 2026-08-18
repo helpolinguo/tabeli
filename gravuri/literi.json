@@ -25,7 +25,18 @@
   "sont lettrees de a a m.",
   "",
   "Les places viennent ensuite, planche par planche, en fraction de la",
-  "planche comme celles des numeros : x, y, largeur, hauteur."
+  "planche comme celles des numeros : x, y, largeur, hauteur.",
+  "",
+  "UN SEUL SORT POUR DEUX SIGNES. Au tableau 5, la salle de bains",
+  "porte, dans les deux livrets, un renvoi compose « (1) ». Ce n'est",
+  "pas le numero 1 — qui est la facade de la maison — mais la LETTRE",
+  "l : le plan lui-meme le dit, sa legende porte « l. Balneyo » entre",
+  "le k des enfants et le m du palier. Dans cette fonte le l bas de",
+  "casse et le chiffre 1 sont le meme dessin, et rien sur la page ne",
+  "les separe ; on n'y touche donc pas, la transcription reste ce",
+  "qu'elle lit. Mais le gros plan, lui, doit montrer la salle de",
+  "bains et non la facade. « unu-sorto » dit ou : le bloc, le mot",
+  "gras qui precede le renvoi, et la lettre qu'il faut viser."
  ],
  "patri": {
   "t01-18-1": [
@@ -214,7 +225,99 @@
    1.0
   ]
  },
- "t05-apar-2": {},
+ "t05-apar-2": {
+  "a": [
+   0.489168,
+   0.097541,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "b": [
+   0.541049,
+   0.21846,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "c": [
+   0.541049,
+   0.113664,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "d": [
+   0.422463,
+   0.097541,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "e": [
+   0.409065,
+   0.149536,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "f": [
+   0.403649,
+   0.213624,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "g": [
+   0.552452,
+   0.538896,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "h": [
+   0.440992,
+   0.469972,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "i": [
+   0.47919,
+   0.413543,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "j": [
+   0.585234,
+   0.493753,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "k": [
+   0.445838,
+   0.534059,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "l": [
+   0.57041,
+   0.415155,
+   0.008552,
+   0.012092,
+   1.0
+  ],
+  "m": [
+   0.539054,
+   0.481258,
+   0.008552,
+   0.012092,
+   1.0
+  ]
+ },
  "t16-apar-1": {
   "85a": [
    0.576669,
@@ -257,6 +360,18 @@
    0.00683,
    0.010218,
    1.0
+  ]
+ },
+ "unu-sorto": {
+  "t05-01-53": [
+   [
+    "balneyo",
+    "l"
+   ],
+   [
+    "de bains",
+    "l"
+   ]
   ]
  }
 }

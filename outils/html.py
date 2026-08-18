@@ -963,11 +963,52 @@ def literi():
     return d, d.get("patri", {})
 
 
+# UN SEUL SORT POUR DEUX SIGNES. Au tableau 5, la salle de bains porte
+# un renvoi compose « (1) » — dans les deux livrets. Ce n'est pas le
+# numero 1, qui est la facade de la maison : c'est la LETTRE l, et le
+# plan le dit lui-meme, sa legende portant « l. Balneyo » entre le k des
+# enfants et le m du palier. Dans cette fonte le l bas de casse et le
+# chiffre 1 ont le meme dessin ; rien sur la page ne les separe, et l'on
+# ne touche donc pas a la transcription — elle reste ce qu'elle lit.
+#
+# Mais le gros plan, lui, doit montrer la salle de bains. On reprend
+# donc le bouton DEJA POSE par boutons_renvois et l'on change ce qu'il
+# vise, sans toucher a ce qu'il montre : le lecteur lit « (1) », comme
+# le livret, et voit la piece que le livret nomme.
+BOUTON_UN = re.compile(
+    r'<button class="lupo" data-g="[^"]*" data-c="[^"]*" data-n="1" '
+    r'title="[^"]*" aria-expanded="false"><sup>\(1\)</sup></button>')
+
+
+def sorto_unika(t, regles, planche, places, noms, langue):
+    """Redirige vers sa lettre le « (1) » qui n'est pas un numero."""
+    for mot, L in regles:
+        i = t.find(f"{mot}</b>")
+        v = places.get(L)
+        if i < 0 or not v:
+            continue
+        m = BOUTON_UN.search(t, i, i + 400)
+        if not m:
+            continue
+        nm = noms.get(planche[:3], {}).get(L, {})
+        io = (nm.get("io") or nm.get("fr") or [""])[0]
+        fr = (nm.get("fr") or nm.get("io") or [""])[0]
+        titre = ((io if langue == "io" else fr) or io or fr)
+        t = t[:m.start()] + (
+            f'<button class="lupo" data-g="{planche}" '
+            f'data-c="{v[0]},{v[1]},{v[2]},{v[3]}" data-n="{L}" '
+            f'title="{titre.replace(chr(34), "&quot;")}" '
+            f'aria-expanded="false"><sup>(1)</sup></button>'
+        ) + t[m.end():]
+    return t
+
+
 def boutons_literi(rangi):
     """Le renvoi a lettre devient un bouton, comme le renvoi a numero."""
     tout, patri = literi()
     if not patri:
         return 0
+    uniq = tout.get("unu-sorto", {})
     o = RACINE / "gravuri" / "objekti.json"
     noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
     pose = 0
@@ -1006,6 +1047,9 @@ def boutons_literi(rangi):
             if not t:
                 continue
             neuf = RENVOI_LIT.sub(lambda m, k=k: bouton(m, k), t)
+            if uniq.get(r["cle"]):
+                neuf = sorto_unika(neuf, uniq[r["cle"]], planche,
+                                   places, noms, k)
             if neuf == t:
                 continue
             if k == "io":
