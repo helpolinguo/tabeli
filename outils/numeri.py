@@ -288,6 +288,49 @@ def voisin(enc, cx, cy, corps, ray=6):
     return best, qui, pos, marge
 
 
+
+# COMMENT LE FAC-SIMILE APPELLE UN NUMERO. Trois formes, et il a fallu
+# les trois :
+#
+#   (18)              la forme ordinaire ;
+#   (9, 11, 12)       UN GROUPE — « les tableaux muraux (9, 11, 12) » —
+#                     qui vaut pour trois objets a la fois. On n'en
+#                     lisait aucun, et le 9 du tableau 1 n'etait appele
+#                     nulle part ailleurs : il manquait tout entier ;
+#   41)               une parenthese ouvrante qui manque. Trois endroits
+#                     dans les deux livrets. Coquille du releve ou sorte
+#                     cassee de l'imprimeur, on ne peut le dire sans le
+#                     fac-simile sous les yeux — alors on ne touche pas
+#                     a la source, et l'on se contente de reconnaitre le
+#                     renvoi.
+#
+# Un groupe coupe par une fin de ligne est compose en DEUX exposants,
+# « (9, 11, » puis « 12) ». On les recolle avant de lire.
+RECOLLE_EXPO = re.compile(
+    r'\\textsuperscript\{([^{}]*,)\}\s*(?:\\nl|\\cc)?\s*\n?\s*'
+    r'\\textsuperscript\{([^{}]*)\}')
+EXPO = re.compile(r'\\textsuperscript\{([^{}]*)\}')
+SUITE = re.compile(r'\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?\s*\)?\s*$')
+CHIFRO = re.compile(r'\d{1,3}')
+
+
+def renvoji(texte):
+    """Tous les numeros qu'un texte appelle, sous quelque forme que ce
+    soit. Rend la liste dans l'ordre du texte, doublons compris."""
+    t = texte
+    for _ in range(3):
+        t = RECOLLE_EXPO.sub(r'\\textsuperscript{\1 \2}', t)
+    out = []
+    for c in EXPO.findall(t):
+        if SUITE.fullmatch(c.strip()):
+            out += [int(x) for x in CHIFRO.findall(c)]
+    # Les renvois que le fac-simile n'a pas mis en exposant -- il y en a
+    # sept, tous du cote ido.
+    for c in re.findall(r'\((\d{1,3}(?:\s*,\s*\d{1,3})*)\)', EXPO.sub('', t)):
+        out += [int(x) for x in CHIFRO.findall(c)]
+    return out
+
+
 # UNE PLANCHE PEUT PORTER PLUSIEURS SCENES, et chacune recommence sa
 # numerotation a 1 : le tableau 6 a cinq vignettes, le 3, le 4, le 7, le
 # 8 et le 9 en ont deux. Le meme « 39 » s'y lit donc deux fois, et le
@@ -346,12 +389,12 @@ def attendus(cle):
     if not bl:
         return {}
     if not ceni(cle):
-        n = {int(x) for _, c in bl for x in re.findall(r'\((\d+)\)', c)}
+        n = {x for _, c in bl for x in renvoji(c)}
         return {"": n} if n else {}
     out = {}
     for sc, corps in bl:
-        for x in re.findall(r'\((\d+)\)', corps):
-            out.setdefault(sc, set()).add(int(x))
+        for x in renvoji(corps):
+            out.setdefault(sc, set()).add(x)
     return {k: v for k, v in out.items() if k}
 
 
@@ -537,7 +580,7 @@ def phrases(tab, scene=""):
     t = re.sub(r'\\(?:nl|cc)\b', ' ', t)
     out = []
     for ph in re.split(r'[.;:!?]\s', t):
-        ns = sorted({int(x) for x in re.findall(r'\((\d+)\)', ph)})
+        ns = sorted(set(renvoji(ph)))
         if len(ns) > 1:
             out.append(ns)
     return out
@@ -701,12 +744,34 @@ def main(cles=None):
         # Le lecteur automatique apprendra a lire le gris le jour ou les
         # seize planches auront ete reprises ; d'ici la, on garde.
         if repris(cle) and cle in cat:
+            # On garde les LECTURES, mais on continue d'accueillir ce que
+            # l'oeil pose : un numero releve a la main sur le fac-simile
+            # doit entrer, sans quoi la planche reprise serait figee.
             e = cat[cle]
-            print(f"  {cle}  {len(e['numeri']):3d}/{len(att) and sum(len(v) for v in att.values()):3d} "
-                  f"numeros — planche d'origine, lecture conservee")
+            la, ht, haut = e["largeur"], e["alteso"], e["corpo"]
+            trouves = {n: ((round(v[0] * la), round(v[1] * ht),
+                            round(v[2] * la), round(v[3] * ht)), v[4])
+                       for n, v in e["numeri"].items()}
+            ref = verdikti(cle)
+            for n in [n for n in trouves
+                      if n in ref or str(descle(n)[1]) in ref]:
+                del trouves[n]
+            possibles = {kl(sc, n) for sc, ns in att.items() for n in ns}
+            mains = manuali(cle, la, ht, haut)
+            trouves.update({n: v for n, v in mains.items() if n in possibles})
+            attendu = sum(len(v) for v in att.values())
+            e["numeri"] = {str(n): [round(x / la, 6), round(y / ht, 6),
+                                    round(w / la, 6), round(h / ht, 6), f]
+                           for n, ((x, y, w, h), f)
+                           in sorted(trouves.items(),
+                                     key=lambda q: descle(str(q[0])))}
+            controle(f, trouves, KONTROLO / f"{cle}.png", haut)
+            print(f"  {cle}  {len(trouves):3d}/{attendu:3d} numeros — "
+                  f"planche d'origine, lecture conservee"
+                  + (f", {len(mains)} poses a la main" if mains else ""))
             t = par_tab.setdefault(cle[:3], [set(), 0])
             t[0].update(e["numeri"])
-            t[1] = max(t[1], sum(len(v) for v in att.values()))
+            t[1] = max(t[1], attendu)
             continue
         a = np.asarray(Image.open(f))
         ht, la = a.shape

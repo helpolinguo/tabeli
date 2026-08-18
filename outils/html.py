@@ -80,7 +80,8 @@ def numeri():
 
 # LE RENVOI QUI SAIT OU IL POINTE DEVIENT UN BOUTON. Les autres restent
 # du texte : on ne promet pas un gros plan qu'on ne saurait pas montrer.
-RENVOI_REND = re.compile(r'<sup>\((\d+)\)</sup>')
+RENVOI_REND = re.compile(
+    r'<sup>(\(?)\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)\s*(\)?)</sup>')
 
 # Les langues de la colonne de droite. « fr » est le texte source
 # (releve sur le fac-simile) ; les autres seront des traductions, et
@@ -837,7 +838,18 @@ def lier_notes(rangi):
 # LE RENVOI AU TABLEAU MURAL, TOUJOURS COMPOSE DE LA MEME FACON.
 # On prend le numero avec ce qui le porte -- l'exposant s'il en a un --
 # et le blanc qui le precede s'il y en a un.
-RENVOI = re.compile(r'(\s*)(?:<sup>\s*)?\((\d+)\)(?:\s*</sup>)?')
+# TROIS FORMES DE RENVOI, et il a fallu les trois : la forme
+# ordinaire, le GROUPE — « les tableaux muraux (9, 11, 12) », qui
+# vaut pour trois objets a la fois et dont on ne lisait aucun — et
+# « 41) », ou la parenthese ouvrante manque, en trois endroits des
+# deux livrets. On garde les parentheses TELLES QU'ON LES A
+# RELEVEES : dire si ce 41) vient d'une coquille du releve ou d'une
+# sorte cassee de l'imprimeur demanderait le fac-simile sous les
+# yeux. On uniformise l'exposant et le blanc, rien d'autre.
+RENVOI = re.compile(
+    r'(\s*)'
+    r'(?:<sup>\s*(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*\)?)\s*</sup>'
+    r'|\((\d{1,3}(?:\s*,\s*\d{1,3})*)\))')
 
 
 def boutons_renvois(rangi):
@@ -870,22 +882,45 @@ def boutons_renvois(rangi):
         ms = re.match(r't\d\d-(c\d)-', r["cle"])
         scene = ms.group(1) if ms else ""
 
-        def bouton(m, par=par, langue="io", scene=scene):
-            nonlocal pose
-            n = int(m.group(1))
+        def ouvrir(n, langue, nu):
+            """Le debut du bouton d'un numero, ou None si l'on ignore
+            ou il se trouve : on ne promet pas un gros plan qu'on ne
+            saurait pas montrer."""
             v = par.get(f"{scene}:{n}" if scene else str(n))
             if not v:
-                return m.group(0)
+                return None
             cle, x, y, w, h, io, fr = v
-            pose += 1
             # LE NOM SUIT SA COLONNE : le lecteur du francais lit
             # « fumoir », celui de l'ido « fumeyo ».
             titre = ((io if langue == "io" else fr) or io or fr)
             titre = titre.replace('"', "&quot;")
-            return (f'<button class="lupo" data-g="{cle}" '
-                    f'data-c="{x},{y},{w},{h}" data-n="{n}" '
-                    f'title="{titre}" aria-expanded="false">'
-                    f'<sup>({n})</sup></button>')
+            return (f'<button class="lupo{chr(32) + "nuda" if nu else ""}" '
+                    f'data-g="{cle}" data-c="{x},{y},{w},{h}" data-n="{n}" '
+                    f'title="{titre}" aria-expanded="false">')
+
+        def bouton(m, par=par, langue="io", scene=scene):
+            nonlocal pose
+            ouv, corps, fer = m.group(1), m.group(2), m.group(3)
+            ns = [int(x) for x in re.findall(r"\d+", corps)]
+            # UN GROUPE VAUT POUR PLUSIEURS OBJETS A LA FOIS. Chaque
+            # numero y devient cliquable separement ; les parentheses et
+            # les virgules restent du texte, et rien ne bouge dans la
+            # ligne.
+            if len(ns) > 1:
+                bouts, fait = [], 0
+                for n in ns:
+                    d = ouvrir(n, langue, True)
+                    bouts.append(f"{d}{n}</button>" if d else str(n))
+                    fait += 1 if d else 0
+                if not fait:
+                    return m.group(0)
+                pose += fait
+                return f"<sup>{ouv}" + ", ".join(bouts) + f"{fer}</sup>"
+            d = ouvrir(ns[0], langue, False)
+            if not d:
+                return m.group(0)
+            pose += 1
+            return f"{d}<sup>{ouv}{ns[0]}{fer}</sup></button>"
 
         for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
             texte = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
@@ -926,7 +961,10 @@ def uniformiser_renvois(rangi):
         # « \u00a0 » et non un blanc ordinaire : ecrit en clair,
         # parce qu'a l'oeil rien ne l'aurait distingue.
         blanc = "\u00a0" if m.start() else ""
-        return f'{blanc}<sup>({m.group(2)})</sup>'
+        corps = m.group(2)
+        if corps is None:                    # releve sans exposant
+            corps = f"({m.group(3)})"
+        return f'{blanc}<sup>{corps.strip()}</sup>'
 
     for r in rangi:
         for k in ["io"] + [lg["kodo"] for lg in LANGUES]:

@@ -241,10 +241,17 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    position sur la planche restent du texte, sans souligne. */
 .lupo{font:inherit;background:none;border:0;padding:0;margin:0;
  cursor:zoom-in;color:inherit;line-height:inherit}
-.lupo sup{border-bottom:1px dotted var(--acc)}
-.lupo:hover sup{background:var(--lin)}
-.lupo[aria-expanded=true] sup{background:var(--acc);color:var(--pap);
+.lupo sup, .lupo.nuda{border-bottom:1px dotted var(--acc)}
+.lupo:hover sup, .lupo.nuda:hover{background:var(--lin)}
+.lupo[aria-expanded=true] sup, .lupo.nuda[aria-expanded=true]{
+ background:var(--acc);color:var(--pap);
  border-radius:3px;border-bottom-color:transparent}
+/* UN RENVOI PEUT EN VALOIR TROIS. « Les tableaux muraux (9, 11, 12) »
+   nomme trois objets a la fois ; chaque numero y est cliquable pour son
+   compte, tandis que les parentheses et les virgules restent du texte.
+   Le bouton est alors NU -- il n'a pas d'exposant a lui, se trouvant
+   deja dans celui du groupe -- et porte donc lui-meme le pointille. */
+.lupo.nuda{font:inherit;vertical-align:baseline}
 /* Le gros plan se pose sous l'alinea, comme une note : c'est la meme
    idee, montrer sans quitter sa ligne. */
 /* LA VUE EST PANORAMIQUE, ET C'EST VOULU. Sa HAUTEUR est fixe — donc

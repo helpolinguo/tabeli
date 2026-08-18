@@ -35,11 +35,18 @@ RACINE = Path(__file__).resolve().parent.parent
 
 # Le substantif en gras, puis son numero — avec ou sans exposant, avec
 # ou sans blanc entre les deux, le fac-simile hesitant sur les trois.
+# TROIS FORMES DE RENVOI, et il a fallu les trois : « (18) », le groupe
+# « (9, 11, 12) » qui vaut pour trois objets a la fois, et « 41) » ou la
+# parenthese ouvrante manque. Le substantif se range sous chacun des
+# numeros du groupe : « les tableaux muraux (9, 11, 12) » nomme les
+# trois.
 GRAS = re.compile(
     r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'      # \VUgras{...}
     r'(?:\s|\\nl|\\cc|%|\n)*'                   # coupures de ligne
-    r'(?:\\textsuperscript\{)?'
-    r'\((\d+)\)')
+    r'(?:\\textsuperscript\{'
+    r'(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?\s*\)?)\}'
+    r'|\((\d{1,3}(?:\s*,\s*\d{1,3})*)\))')
+CHIFRO = re.compile(r'\d{1,3}')
 
 # Ce qui reste de balisage dans le nom releve.
 MACROS = re.compile(r'\\(?:textit|textsc|emph|VUgras|nl|cc|hbox|,)\b\{?')
@@ -65,6 +72,12 @@ RECOLLE = [
      r'\\VUgras{\1\2}'),
     (re.compile(r'\\VUgras\{([^{}]*)\}\\nl\s*\n\s*\\VUgras\{([^{}]*)\}'),
      r'\\VUgras{\1 \2}'),
+    # UN GROUPE COUPE PAR UNE FIN DE LIGNE est compose en deux exposants,
+    # « (9, 11, » puis « 12) ». Sans ce recollage, le douze restait
+    # orphelin et les tableaux muraux n'avaient que deux noms sur trois.
+    (re.compile(r'\\textsuperscript\{([^{}]*,)\}\s*(?:\\nl|\\cc)?\s*\n?\s*'
+                r'\\textsuperscript\{([^{}]*)\}'),
+     r'\\textsuperscript{\1 \2}'),
 ]
 
 
@@ -116,10 +129,11 @@ def relever(dossier, motif):
                 nom = nettoyer(g.group(1))
                 if not nom:
                     continue
-                k = f"{sc}:{g.group(2)}" if sc else g.group(2)
-                noms = par.setdefault(k, [])
-                if nom not in noms:
-                    noms.append(nom)
+                for n in CHIFRO.findall(g.group(2) or g.group(3) or ""):
+                    k = f"{sc}:{n}" if sc else n
+                    noms = par.setdefault(k, [])
+                    if nom not in noms:
+                        noms.append(nom)
         relever.scene = ""
     return out
 

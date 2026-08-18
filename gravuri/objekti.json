@@ -56,6 +56,14 @@
     "chaise"
    ]
   },
+  "9": {
+   "io": [
+    "mural tabeli"
+   ],
+   "fr": [
+    "tableaux muraux"
+   ]
+  },
   "10": {
    "io": [
     "mapo"
@@ -66,17 +74,21 @@
   },
   "11": {
    "io": [
+    "mural tabeli",
     "naturcienco"
    ],
    "fr": [
+    "tableaux muraux",
     "histoire naturelle"
    ]
   },
   "12": {
    "io": [
+    "mural tabeli",
     "historio"
    ],
    "fr": [
+    "tableaux muraux",
     "histoire"
    ]
   },
@@ -268,7 +280,9 @@
    "io": [
     "absorbiva papero"
    ],
-   "fr": []
+   "fr": [
+    "buvard"
+   ]
   },
   "42": {
    "io": [
@@ -8515,7 +8529,9 @@
    "io": [
     "pakegi"
    ],
-   "fr": []
+   "fr": [
+    "ballots"
+   ]
   },
   "62": {
    "io": [
@@ -12585,7 +12601,9 @@
    "io": [
     "simio"
    ],
-   "fr": []
+   "fr": [
+    "singe"
+   ]
   },
   "11": {
    "io": [
