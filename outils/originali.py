@@ -230,6 +230,119 @@ def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
     return best
 
 
+# ON N'ESSAIE PAS DE RECONNAITRE LE FILET : ON ESSAIE TOUTES LES LIGNES
+# CANDIDATES, ET L'ON GARDE CELLE QU'ON SUIT LE MIEUX.
+#
+# Deux fausses pistes ont ete parcourues avant celle-ci. Prendre la
+# rangee la plus encree : elle tombe sur le titre de la collection, qui
+# court en haut de chaque feuillet — « Tableaux Auxiliaires Delmas pour
+# l'Enseignement pratique des Langues vivantes par l'Image » — et qui
+# est bien plus noir que le filet ; l'ecart d'ajustement montait alors a
+# dix ou douze points sur neuf planches. Prendre le sommet le plus FIN :
+# on attrape alors une hachure du dessin, et l'on perd les trois quarts
+# des colonnes.
+#
+# Ce qui distingue le filet n'est ni sa noirceur ni sa finesse, c'est
+# qu'il COURT D'UN BORD A L'AUTRE, tout droit. Cela ne se devine pas sur
+# un profil : cela se verifie en le suivant. On prend donc les huit
+# meilleurs sommets de la bande, on suit chacun, et l'on garde
+# l'ajustement le plus serre parmi ceux qui gardent assez de colonnes.
+def meilleur_filet(enc, a0, a1, x0, x1, cand=8):
+    """Le filet d'une bande : le candidat qu'on suit le mieux."""
+    prof = enc[a0:a1, round(0.20 * enc.shape[1]):
+               round(0.80 * enc.shape[1])].mean(1)
+    ordre = np.argsort(prof)[::-1]
+    pris = []
+    for i in ordre:
+        if all(abs(int(i) - j) > 25 for j in pris):
+            pris.append(int(i))
+        if len(pris) >= cand:
+            break
+    best = None
+    for i in pris:
+        y = a0 + i
+        m = suivre_filet(enc, max(0, y - 22), min(enc.shape[0], y + 23),
+                         x0, x1)
+        if not m or m[2] < 40:
+            continue
+        if best is None or m[1] < best[0][1]:
+            best = (m, y)
+    return best
+
+
+# LE BORD LATERAL SE MESURE DE DEUX FACONS, ET L'ON GARDE LA PLUS
+# LARGE.
+#
+# Les filets verticaux ne sont pas les horizontaux. Ceux-ci courent
+# d'un bord a l'autre et se suivent ; ceux-la sont parfois graves d'un
+# trait franc, parfois a peine, parfois pas du tout — au tableau 8 il
+# n'y a rien a gauche que la hachure de l'etang qui vient mourir au
+# bord. Chercher un sommet dans un profil ou la mediane est celle du
+# DESSIN, et non du papier, ne pouvait donner qu'un accident du
+# dessin : le rognage tombait alors cent points trop avant et coupait
+# les numeros 16, 18, 19 du tableau 8, cent trente points trop court a
+# droite du tableau 12, quatre-vingts au tableau 11 — le 76 s'y
+# retrouvait dehors.
+#
+# On mesure donc deux choses, en partant de la marge :
+#
+#   le FILET — le premier sommet fin qui se leve nettement au-dessus du
+#   PAPIER (et non au-dessus de la mediane du profil) ;
+#
+#   l'ENTREE DU DESSIN — l'endroit ou l'encre passe a mi-chemin entre
+#   le papier et le plein du dessin, et n'en redescend plus.
+#
+# Puis l'on garde CELLE DES DEUX QUI EST LA PLUS EXTERIEURE. Un peu de
+# marge blanche ne coute rien ; un trait de gravure coupe ne se
+# rattrape pas. Verifie sur les seize planches : les deux mesures
+# tombent l'une sur l'autre douze fois, et les quatre fois qu'elles
+# different c'est la plus exterieure qui est sur le filet.
+def _paper(q, marge):
+    m = round(marge * len(q))
+    return float(np.percentile(q[:m], 20)), float(np.median(q[m:]))
+
+
+def filet_lateral(q, marge=0.30, large=20):
+    """Le premier sommet fin qui se leve au-dessus du papier."""
+    fond, plein = _paper(q, marge)
+    haut = max(6.0, 0.25 * (plein - fond))
+    for i in range(2, len(q) - 2):
+        if q[i] >= q[i - 1] and q[i] > q[i + 1] and q[i] - fond >= haut:
+            mi = fond + (q[i] - fond) / 2
+            a, b = i, i
+            while a > 0 and q[a] > mi:
+                a -= 1
+            while b < len(q) - 1 and q[b] > mi:
+                b += 1
+            if b - a <= large:
+                return i
+    return None
+
+
+def entree_dessin(q, marge=0.30, tenue=20):
+    """L'endroit ou l'encre monte a mi-plein et n'en redescend plus."""
+    fond, plein = _paper(q, marge)
+    if plein - fond < 4:
+        return None
+    seuil = fond + 0.40 * (plein - fond)
+    for i in range(len(q) - tenue):
+        if (q[i:i + tenue] > seuil).all():
+            return i
+    return None
+
+
+def bord_lateral(prof, sens):
+    """Le bord d'un cote : la plus exterieure des deux mesures."""
+    q = np.asarray(prof, dtype=float)
+    if sens < 0:
+        q = q[::-1]
+    duo = [i for i in (filet_lateral(q), entree_dessin(q)) if i is not None]
+    if not duo:
+        return None
+    i = min(duo)
+    return i if sens > 0 else len(q) - 1 - i
+
+
 # MESURER LE FILET, PLUTOT QUE DE CHERCHER SON ANGLE. On tournait la
 # bande d'essai par pas d'un quarantieme de degre et l'on gardait
 # l'angle qui rendait le pic le plus franc. Au tableau 1 les deux filets
@@ -239,53 +352,83 @@ def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
 #
 # On mesure donc le filet LUI-MEME : pour une centaine de colonnes
 # reparties sur la largeur, la ligne la plus encree dans une fenetre
-# etroite ; puis une droite ajustee par moindres carres, deux fois, en
-# rejetant entre les deux ce qui s'ecarte de plus de trois points. La
+# etroite ; puis une droite ajustee par moindres carres, en rejetant
+# d'une passe a l'autre ce qui s'ecarte trop de la precedente. La
 # pente donne l'angle, et l'ecart residuel dit si l'on a bien suivi un
 # filet ou couru apres une branche d'arbre.
 def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
-    """Suit une droite presque horizontale et rend (angle, ecart, n)."""
-    xs, ys = [], []
+    """Suit une droite presque horizontale et rend (angle, ecart, n).
+
+    ON NE GARDE QUE LES COLONNES OU LE FILET SE VOIT. Sur une planche
+    dont le ciel ou le sol est hachure, une colonne sur trois n'offre
+    aucun pic franc, et le barycentre s'y pose n'importe ou : l'ecart
+    d'ajustement montait alors a dix ou onze points, et l'angle ne
+    valait plus rien. On mesure donc la FORCE de chaque pic -- sa
+    hauteur au-dessus du fond de la fenetre -- et l'on jette les
+    colonnes qui n'atteignent pas la moitie de la force mediane.
+    Ensuite seulement on ajuste, quatre fois, en resserrant sur l'ecart
+    absolu median.
+    """
+    xs, ys, fs = [], [], []
     for x in range(x0, x1 - pas, pas):
         col = enc[y0:y1, x:x + pas].mean(1)
         if col.max() < 8:
             continue
         i = int(np.argmax(col))
-        a, b = max(0, i - fenetre), min(len(col), i + fenetre + 1)
-        w = col[a:b]
+        a0, b0 = max(0, i - fenetre), min(len(col), i + fenetre + 1)
+        w = col[a0:b0]
         if w.sum() <= 0:
             continue
-        # le barycentre de l'encre : plus fin que le maximum seul
         xs.append(x + pas / 2)
-        ys.append(y0 + a + float((w * np.arange(len(w))).sum() / w.sum()))
+        ys.append(y0 + a0 + float((w * np.arange(len(w))).sum() / w.sum()))
+        fs.append(float(w.max() - np.median(col)))
     if len(xs) < 8:
         return None
-    X, Y = np.array(xs), np.array(ys)
-    for _ in range(2):
+    X, Y, F = np.array(xs), np.array(ys), np.array(fs)
+    garde = F >= 0.5 * float(np.median(F))
+    if garde.sum() >= 8:
+        X, Y = X[garde], Y[garde]
+    m = c = 0.0
+    for _ in range(4):
         A = np.vstack([X, np.ones_like(X)]).T
         (m, c), *_ = np.linalg.lstsq(A, Y, rcond=None)
         r = np.abs(Y - (m * X + c))
-        garde = r <= max(3.0, 2.5 * float(np.median(r)))
-        if garde.sum() < 8:
+        seuil = max(2.0, 3.0 * float(np.median(r)))
+        g = r <= seuil
+        if g.sum() < 8 or g.all():
             break
-        X, Y = X[garde], Y[garde]
+        X, Y = X[g], Y[g]
     return (float(np.degrees(np.arctan(m))),
             float(np.sqrt(((Y - (m * X + c)) ** 2).mean())), int(len(X)))
 
 
-def cadre(enc):
-    """Les quatre filets, dans une image deja redressee."""
+# LE CADRE : les horizontales sont donnees, les verticales se mesurent.
+#
+# On ne recherche plus les filets du haut et du bas : ils ont deja ete
+# SUIVIS, colonne par colonne, pour trouver l'angle de la feuille, et
+# meilleur_filet a rendu la rangee ou chacun passe. La redresser ne la
+# deplace pas — le point (W/2, y) tourne autour de (W/2, H/2), donc le
+# long de l'axe meme de la rotation. On la reprend telle quelle, avec un
+# dernier calage a vingt points pres.
+def cadre(enc, yh, yb):
+    """Le cadre d'une image deja redressee, les horizontales connues."""
     H, W = enc.shape
     mh, mv = round(0.045 * H), round(0.035 * W)
-    def pic(y0, y1, x0, x1, axe):
-        p = enc[y0:y1, x0:x1].mean(axis=axe)
-        return int(np.argmax(p)) + (y0 if axe == 1 else x0), \
-            float(p.max() - np.median(p))
-    haut, fh = pic(round(0.04 * H), round(0.10 * H), mv, W - mv, 1)
-    bas, fb = pic(round(0.86 * H), round(0.95 * H), mv, W - mv, 1)
-    gau, fg = pic(mh, H - mh, round(0.02 * W), round(0.06 * W), 0)
-    dro, fd = pic(mh, H - mh, round(0.94 * W), round(0.98 * W), 0)
-    return (gau, haut, dro, bas), (fg, fh, fd, fb)
+
+    def caler(y, r=20):
+        a, b = max(0, y - r), min(H, y + r + 1)
+        p = enc[a:b, mv:W - mv].mean(1)
+        return a + int(np.argmax(p)), float(p.max() - np.median(p))
+
+    haut, fh = caler(yh) if yh is not None else (round(0.055 * H), 0.0)
+    bas, fb = caler(yb) if yb is not None else (round(0.905 * H), 0.0)
+    pg = enc[mh:H - mh, 0:round(0.12 * W)].mean(0)
+    pd = enc[mh:H - mh, round(0.88 * W):W].mean(0)
+    g = bord_lateral(pg, +1)
+    d = bord_lateral(pd, -1)
+    gau = 0 if g is None else g
+    dro = W - 1 if d is None else round(0.88 * W) + d
+    return (gau, haut, dro, bas), (0.0, fh, 0.0, fb)
 
 
 def netigar(chemin, dest=None, verbeux=True):
@@ -304,25 +447,38 @@ def netigar(chemin, dest=None, verbeux=True):
     #    mesures se contredisaient alors d'un demi-degre. On repere donc
     #    la ligne la plus encree de la moitie exterieure, et l'on ne suit
     #    le filet qu'a vingt-cinq points de part et d'autre.
-    def bande(a0, a1):
-        prof = enc[a0:a1, round(0.20 * W):round(0.80 * W)].mean(1)
-        y = a0 + int(np.argmax(prof))
-        return (max(0, y - 25), min(H, y + 26),
-                round(0.08 * W), round(0.92 * W))
+    # LA BANDE OU LE FILET SE TROUVE, et nulle part ailleurs. Les seize
+    # feuillets sont imprimes de la meme facon : le filet du haut tombe
+    # entre le vingt-troisieme et le vingt-septieme centieme du feuillet,
+    # celui du bas entre le quatre-vingt-neuvieme et le quatre-vingt-
+    # onzieme. Chercher plus large, c'est attraper le bord de la feuille
+    # — plus droit que le filet, et faux.
+    X0, X1 = round(0.08 * W), round(0.92 * W)
+    rh = meilleur_filet(enc, round(0.045 * H), round(0.100 * H), X0, X1)
+    rb = meilleur_filet(enc, round(0.875 * H), round(0.925 * H), X0, X1)
+    mh, yh = rh if rh else (None, None)
+    mb, yb = rb if rb else (None, None)
+    # QUAND LES DEUX FILETS SE CONTREDISENT, ON CROIT LE MIEUX MESURE.
+    # Ils s'accordent a un dixieme de degre pres sur onze planches ; sur
+    # les cinq autres l'un des deux a ete suivi sur moitie moins de
+    # colonnes, et c'est lui qui s'ecarte. Le poids d'une mesure, c'est
+    # le nombre de colonnes gardees divise par son ecart d'ajustement.
+    def poids(m):
+        return m[2] / (m[1] + 0.5) if m else 0.0
 
-    hb = bande(0, round(0.14 * H))
-    bb = bande(round(0.86 * H), H)
-    mh = suivre_filet(enc, *hb)
-    mb = suivre_filet(enc, *bb)
-    bons = [m for m in (mh, mb) if m and m[1] < 2.5]
-    if not bons:
-        bons = [m for m in (mh, mb) if m]
-    th = sum(m[0] for m in bons) / len(bons)
+    duo = [m for m in (mh, mb) if m]
+    if len(duo) == 2 and abs(mh[0] - mb[0]) > 0.35:
+        th = max(duo, key=poids)[0]
+    elif duo:
+        pt = sum(poids(m) for m in duo)
+        th = sum(m[0] * poids(m) for m in duo) / pt
+    else:
+        th = 0.0
     # 2. le cadre, mesure sur une copie redressee (jetee ensuite)
     Mr = _tourner(a, th, (W / 2, H / 2))
     droit = cv2.warpAffine(enc, Mr, (W, H), flags=cv2.INTER_LINEAR,
                            borderValue=0)
-    (x0, y0, x1, y1), forces = cadre(droit)
+    (x0, y0, x1, y1), forces = cadre(droit, yh, yb)
     x0, y0 = x0 - MARGE_FILET, y0 - MARGE_FILET
     x1, y1 = x1 + MARGE_FILET, y1 + MARGE_FILET
     # 3. rotation ET rognage en une seule matrice, une seule passe
@@ -474,9 +630,21 @@ def transporti(cle, neta, verbeux=True, force=False):
     T, korelo, (LO, HO), (LN, HN) = mezuri(cle, neta, verbeux=verbeux)
     k = float(np.hypot(T[0, 0], T[1, 0]))
 
-    def boite(v):
+    # CE QUI SORT DE LA PLANCHE NE SE GARDE PAS. Le rognage ne tombe pas
+    # au meme endroit d'une reprise a l'autre — il suit les filets, et
+    # les filets se mesurent — de sorte qu'un numero pose tout au bord
+    # peut se retrouver dehors. Le garder, c'est promettre un gros plan
+    # sur du vide. On le dit, et on le laisse tomber : il sera a
+    # rechercher sur la nouvelle planche.
+    perdus = []
+
+    def boite(v, nom=""):
         """(x, y, l, h) en fraction de l'ancienne -> de la nouvelle."""
         x, y = _pt(T, v[0] * LO, v[1] * HO)
+        cx, cy = x + v[2] * LO * k / 2, y + v[3] * HO * k / 2
+        if not (0 <= cx < LN and 0 <= cy < HN):
+            perdus.append(nom)
+            return None
         return [round(x / LN, 6), round(y / HN, 6),
                 round(v[2] * LO * k / LN, 6), round(v[3] * HO * k / HN, 6)] \
             + list(v[4:])
@@ -486,7 +654,8 @@ def transporti(cle, neta, verbeux=True, force=False):
     d = json.loads(f.read_text(encoding="utf-8"))
     if cle in d:
         e = d[cle]
-        e["numeri"] = {q: boite(v) for q, v in e["numeri"].items()}
+        e["numeri"] = {q: b for q, v in e["numeri"].items()
+                       if (b := boite(v, q)) is not None}
         e["largeur"], e["alteso"] = LN, HN
         e["corpo"] = max(1, round(e["corpo"] * k))
         n += len(e["numeri"])
@@ -497,7 +666,8 @@ def transporti(cle, neta, verbeux=True, force=False):
     if f.exists():
         d = json.loads(f.read_text(encoding="utf-8"))
         if cle in d:
-            d[cle] = {q: boite(v) for q, v in d[cle].items()}
+            d[cle] = {q: b for q, v in d[cle].items()
+                      if (b := boite(v, q)) is not None}
             m = len(d[cle])
             f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
                          encoding="utf-8")
@@ -527,7 +697,8 @@ def transporti(cle, neta, verbeux=True, force=False):
     if f.exists():
         d = json.loads(f.read_text(encoding="utf-8"))
         if d.get(cle):
-            d[cle] = {q: boite(v) for q, v in d[cle].items()}
+            d[cle] = {q: b for q, v in d[cle].items()
+                      if (b := boite(v, q)) is not None}
             lt = len(d[cle])
             f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
                          encoding="utf-8")
@@ -543,6 +714,9 @@ def transporti(cle, neta, verbeux=True, force=False):
         print(f"  {n} numeros portes, dont {m} poses a la main"
               + (f", {c} scenes" if c else "")
               + (f", {lt} lettres" if lt else ""))
+        if perdus:
+            print(f"  ATTENTION : {len(perdus)} sortis de la planche au "
+                  f"rognage, a rechercher — {', '.join(sorted(perdus))}")
     return T
 
 
