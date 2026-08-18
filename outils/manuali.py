@@ -60,17 +60,29 @@ def police(taille):
         return ImageFont.load_default()
 
 
-def cadres(cle, n=NX):
-    """Le decoupage d'une planche en n x n : (x0, y0, x1, y1) de chacune."""
+def cadres(cle, n=NX, scene=""):
+    """Le decoupage en n x n : (x0, y0, x1, y1) de chaque tuile.
+
+    Avec une scene, on ne decoupe que sa vignette : sur une planche qui
+    en porte cinq, tuiler la planche entiere donne des tuiles a cheval
+    sur deux numerotations, et l'oeil ne sait plus lequel des deux
+    « 12 » il regarde.
+    """
     im = Image.open(N.KOVRI / f"{cle}-trako.png")
     W, H = im.size
+    bx0, by0, bx1, by1 = 0.0, 0.0, 1.0, 1.0
+    if scene:
+        forme = dict(N.ceni(cle))[scene]
+        bx0, by0, bx1, by1 = N.boite(forme)
+    X0, Y0 = bx0 * W, by0 * H
+    LG, HT = (bx1 - bx0) * W, (by1 - by0) * H
     out = []
     for iy in range(n):
         for ix in range(n):
-            x0 = max(0, round(W * ix / n - W * MARGE))
-            y0 = max(0, round(H * iy / n - H * MARGE))
-            x1 = min(W, round(W * (ix + 1) / n + W * MARGE))
-            y1 = min(H, round(H * (iy + 1) / n + H * MARGE))
+            x0 = max(0, round(X0 + LG * ix / n - LG * MARGE))
+            y0 = max(0, round(Y0 + HT * iy / n - HT * MARGE))
+            x1 = min(W, round(X0 + LG * (ix + 1) / n + LG * MARGE))
+            y1 = min(H, round(Y0 + HT * (iy + 1) / n + HT * MARGE))
             out.append((x0, y0, x1, y1))
     return im, out
 
@@ -81,10 +93,10 @@ def restant(cle, connus):
     return sorted(att - set(connus), key=N.descle)
 
 
-def tuiler(cle, n=NX, z=1.0):
+def tuiler(cle, n=NX, z=1.0, scene=""):
     """Ecrit les tuiles, les numeros deja connus cercles."""
     TUILES.mkdir(parents=True, exist_ok=True)
-    im, cads = cadres(cle, n)
+    im, cads = cadres(cle, n, scene)
     W, H = im.size
     d = json.loads((RACINE / "gravuri" / "numeri.json")
                    .read_text(encoding="utf-8"))[cle]
@@ -138,8 +150,10 @@ def tuiler(cle, n=NX, z=1.0):
             g.rectangle([3, gy * z + 3, 26 + 17 * len(e), gy * z + 46],
                         fill=(0, 0, 0))
             g.text((8, gy * z + 2), e, fill=(0, 190, 255), font=F)
-        t.save(TUILES / f"{cle}-{k}.png")
+        t.save(TUILES / f"{cle}{'-' + scene if scene else ''}-{k}.png")
     manque = restant(cle, connus)
+    if scene:
+        manque = [q for q in manque if N.descle(q)[0] == scene]
     print(f"  {cle} : {len(cads)} tuiles, {len(manque)} numeros manquants")
     print(f"  {manque}")
 
@@ -451,7 +465,8 @@ def main(args):
     verbe, cle = args[0], args[1]
     if verbe == "tuiler":
         tuiler(cle, int(args[2]) if len(args) > 2 else NX,
-               float(args[3]) if len(args) > 3 else 1.0)
+               float(args[3]) if len(args) > 3 else 1.0,
+               args[4] if len(args) > 4 else "")
     elif verbe == "zono":
         zono(cle)
     elif verbe == "revizo":
