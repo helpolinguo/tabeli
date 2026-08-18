@@ -384,12 +384,12 @@ def deja_porte(cle):
 # cents numeros partiraient de travers sans que rien ne le signale.
 # L'outil refuse donc de recommencer, a moins qu'on ne le lui dise.
 def transporti(cle, neta, verbeux=True, force=False):
+    """Porte les numeros, les scenes et les tailles sur la nouvelle planche."""
     if deja_porte(cle) and not force:
         raise SystemExit(
             f"  {cle} : deja porte sur son original. Recommencer "
             f"deplacerait les numeros une seconde fois.\n"
             f"  Si c'est bien ce qu'on veut : ajouter « force ».")
-    """Porte les numeros, les scenes et les tailles sur la nouvelle planche."""
     T, korelo, (LO, HO), (LN, HN) = mezuri(cle, neta, verbeux=verbeux)
     k = float(np.hypot(T[0, 0], T[1, 0]))
 
