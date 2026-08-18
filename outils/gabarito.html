@@ -250,8 +250,16 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    nomme trois objets a la fois ; chaque numero y est cliquable pour son
    compte, tandis que les parentheses et les virgules restent du texte.
    Le bouton est alors NU -- il n'a pas d'exposant a lui, se trouvant
-   deja dans celui du groupe -- et porte donc lui-meme le pointille. */
-.lupo.nuda{font:inherit;vertical-align:baseline}
+   deja dans celui du groupe -- et porte donc lui-meme le pointille.
+
+   LA HAUTEUR DE LIGNE DOIT ETRE RENDUE AU BOUTON NU. Un exposant porte
+   « line-height:0 » pour ne pas ecarter les lignes du paragraphe ; le
+   bouton, qui en herite, se retrouve avec une boite haute d'un point,
+   et son pointille tombe alors AU MILIEU des chiffres au lieu de passer
+   dessous -- cinq points trop haut, mesure faite. « normal » lui rend sa
+   boite : elle retombe exactement sur celle des autres renvois, et
+   l'interligne du paragraphe ne bouge pas d'un point. */
+.lupo.nuda{font:inherit;line-height:normal}
 /* Le gros plan se pose sous l'alinea, comme une note : c'est la meme
    idee, montrer sans quitter sa ligne. */
 /* LA VUE EST PANORAMIQUE, ET C'EST VOULU. Sa HAUTEUR est fixe — donc
