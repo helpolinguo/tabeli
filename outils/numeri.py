@@ -57,7 +57,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
 
 RACINE = Path(__file__).resolve().parent.parent
 KOVRI = RACINE / "gravuri" / "kovri"
@@ -68,6 +68,34 @@ H, W = 40, 32
 # est pleine. On lui demande donc davantage qu'aux autres.
 SEUIL = 0.80
 SEUIL_UN = 0.86
+
+
+
+# LA PLANCHE DE TRAVAIL. Tant qu'un tableau n'a pas ete repris sur la
+# numerisation d'origine, on travaille sur la couche de trait tiree du
+# PDF colorise, ou l'encre vaut 255. Des qu'il l'a ete, c'est le
+# fac-simile lui-meme qu'on regarde, et l'encre y est SOMBRE. Les deux
+# outils qui montrent des decoupes a l'oeil passent donc par ici, et
+# n'ont plus a savoir d'ou vient l'image.
+def neta(cle):
+    return RACINE / "originali" / "kovri" / f"{cle}-neta.png"
+
+
+def repris(cle):
+    """Ce tableau a-t-il ete repris sur sa numerisation d'origine ?"""
+    return neta(cle).exists()
+
+
+def planche(cle):
+    """L'image telle que l'oeil doit la voir : l'encre en SOMBRE."""
+    if repris(cle):
+        return Image.open(neta(cle)).convert("L")
+    return ImageOps.invert(Image.open(KOVRI / f"{cle}-trako.png").convert("L"))
+
+
+def enko(cle):
+    """La densite d'encre en flottant : fort = encre."""
+    return 255.0 - np.asarray(planche(cle)).astype(np.float32)
 
 
 def modeles():
@@ -606,12 +634,16 @@ def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
     chiffre.
     """
     from PIL import ImageDraw
-    noms = objekti(cle_de(dest))
+    cle = cle_de(dest)
+    noms = objekti(cle)
     gard = {n: v for n, v in trouves.items()
             if seuil is None or v[1] < seuil}
     if not gard:
         return 0
-    im = Image.open(chemin)
+    # LE DECOUPAGE SE FAIT TOUJOURS DANS LA PLANCHE DE TRAVAIL, et
+    # celle-ci porte son encre en sombre : une feuille de controle se
+    # lit comme une gravure, non comme un negatif.
+    im = planche(cle)
     marge = round(large * haut)
     cell = round(3.2 * haut * max(1.0, large / 1.1))
     lig = (len(gard) + cols - 1) // cols
@@ -632,8 +664,13 @@ def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
     return len(gard)
 
 
+# LA CLE DE PLANCHE SE TIRE DU NOM DE FICHIER, quel que soit le suffixe
+# que la feuille porte -- « -dubita », « -manuali », « -revizo2 ». On la
+# lit au motif, plutot que de retrancher une liste de suffixes qu'il
+# faudrait tenir a jour.
 def cle_de(dest):
-    return Path(dest).stem
+    m = re.match(r'(t\d\d-[a-z0-9]+-\d+)', Path(dest).stem)
+    return m.group(1) if m else Path(dest).stem
 
 
 def main(cles=None):
@@ -655,6 +692,21 @@ def main(cles=None):
             continue
         att = attendus(cle)
         if not att:
+            continue
+        # UNE PLANCHE REPRISE SUR SON ORIGINAL NE SE RELIT PAS. Ses
+        # numeros ont ete portes par originali.py, verifies un a un, et
+        # ils sont enregistres en fraction de la NOUVELLE planche : les
+        # relire sur l'ancienne couche de trait, qui n'a plus ni les
+        # memes dimensions ni le meme cadrage, ecraserait le travail.
+        # Le lecteur automatique apprendra a lire le gris le jour ou les
+        # seize planches auront ete reprises ; d'ici la, on garde.
+        if repris(cle) and cle in cat:
+            e = cat[cle]
+            print(f"  {cle}  {len(e['numeri']):3d}/{len(att) and sum(len(v) for v in att.values()):3d} "
+                  f"numeros — planche d'origine, lecture conservee")
+            t = par_tab.setdefault(cle[:3], [set(), 0])
+            t[0].update(e["numeri"])
+            t[1] = max(t[1], sum(len(v) for v in att.values()))
             continue
         a = np.asarray(Image.open(f))
         ht, la = a.shape

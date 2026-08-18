@@ -1,18 +1,19 @@
 {
  "t01-apar-1": {
-  "alteso": 3659,
+  "alteso": 3052,
   "detalo": {
-   "alteso": 1741,
-   "largeur": 2600,
-   "okteti": 855218
+   "alteso": 3052,
+   "largeur": 4491,
+   "okteti": 1841576
   },
-  "fonto": "page1.pdf",
-  "koloro": true,
-  "largeur": 5463,
+  "fonto": "t01-apar-1-neta.png",
+  "koloro": false,
+  "largeur": 4491,
+  "origino": true,
   "vido": {
-   "alteso": 804,
+   "alteso": 815,
    "largeur": 1200,
-   "okteti": 238032
+   "okteti": 237114
   }
  },
  "t02-apar-1": {

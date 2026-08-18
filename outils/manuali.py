@@ -68,7 +68,7 @@ def cadres(cle, n=NX, scene=""):
     sur deux numerotations, et l'oeil ne sait plus lequel des deux
     « 12 » il regarde.
     """
-    im = Image.open(N.KOVRI / f"{cle}-trako.png")
+    im = N.planche(cle)
     W, H = im.size
     bx0, by0, bx1, by1 = 0.0, 0.0, 1.0, 1.0
     if scene:
@@ -115,8 +115,7 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
         # LE TRAIT RETOURNE. La couche porte l'encre en blanc sur fond
         # noir ; l'oeil y perd la moitie de ce qu'il saurait lire. On la
         # remet dans son sens, et la tuile redevient une gravure.
-        t = ImageOps.invert(im.crop((x0, y0, x1, y1)).convert("L")) \
-            .convert("RGB")
+        t = im.crop((x0, y0, x1, y1)).convert("RGB")
         if z != 1.0:
             t = t.resize((round(t.width * z), round(t.height * z)),
                          Image.LANCZOS)
@@ -174,7 +173,7 @@ ZONE_Z = 2.1                     # le chiffre y fait quatre-vingts points
 def zono(cle, rayon=None):
     """Decoupe, autour de la place presumee, ce qui manque encore."""
     TUILES.mkdir(parents=True, exist_ok=True)
-    im = Image.open(N.KOVRI / f"{cle}-trako.png")
+    im = N.planche(cle)
     W, H = im.size
     d = json.loads((RACINE / "gravuri" / "numeri.json")
                    .read_text(encoding="utf-8"))[cle]
@@ -224,8 +223,7 @@ def zono(cle, rayon=None):
         # LE TRAIT EN NOIR SUR BLANC. La couche de trait porte l'encre en
         # blanc sur fond noir ; a l'oeil, cela se lit mal — on la retourne,
         # et la planche redevient ce qu'elle est, une gravure.
-        t = ImageOps.invert(im.crop((x0, y0, x1, y1)).convert("L")) \
-            .convert("RGB")
+        t = im.crop((x0, y0, x1, y1)).convert("RGB")
         t = t.resize((round(t.width * ZONE_Z), round(t.height * ZONE_Z)),
                      Image.LANCZOS)
         g = ImageDraw.Draw(t)
@@ -306,8 +304,7 @@ def poser(cle, refs, rayon=0.62):
     — « c3:12=1840,2210 » —, sans quoi on ne saurait pas de quel douze
     il s'agit.
     """
-    enc = (np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png"))
-           > 128).astype(np.float32)
+    enc = (N.enko(cle) > 100).astype(np.float32)
     HT, LA = enc.shape
     d = json.loads((RACINE / "gravuri" / "numeri.json")
                    .read_text(encoding="utf-8"))[cle]
@@ -398,7 +395,7 @@ def planche(cle):
                     round(v[2] * LA), round(v[3] * HT)), v[4])
                for n, v in par.items()}
     N.KONTROLO.mkdir(parents=True, exist_ok=True)
-    n = N.controle(N.KOVRI / f"{cle}-trako.png", trouves,
+    n = N.controle(cle, trouves,
                    N.KONTROLO / f"{cle}-manuali.png", corps,
                    large=1.5, cols=10)
     print(f"  {cle} : {n} decoupes dans "
@@ -426,8 +423,7 @@ def revizo(cle, page=0, par=24, cols=6, Z=3):
     if not lot:
         print(f"  {cle} : plus rien a relire")
         return 0
-    im = ImageOps.invert(Image.open(N.KOVRI / f"{cle}-trako.png")
-                         .convert("L"))
+    im = N.planche(cle)
     w, h = round(corps * 4.4), round(corps * 3.0)
     F = police(20)
     F2 = ImageFont.truetype(

@@ -23,3 +23,8 @@ __pycache__/
 # outils/gravuri.py en tire, sont versionnes -- environ 1 Mo chacun.
 gravuri/font/
 gravuri/kovri/
+
+# La numerisation nettoyee : elle se refait en une commande depuis le
+# fac-simile versionne (outils/originali.py netigar), et pese huit fois
+# plus lourd que lui.
+originali/kovri/

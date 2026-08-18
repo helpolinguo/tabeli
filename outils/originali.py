@@ -25,6 +25,7 @@
 #  USAGE
 #      python3 outils/originali.py caler  t01-apar-1 origine.jpg
 #      python3 outils/originali.py compar t01-apar-1 origine.jpg 0.79 0.20
+#      python3 outils/originali.py netigar t01-apar-1 originali/t01.jpg
 # ===================================================================
 
 import json
@@ -179,11 +180,332 @@ def compar(cle, chemin, cx=0.5, cy=0.5, w=0.115, h=0.095, sortie=None):
     print(f"  comparaison dans {sortie}")
 
 
+# -------------------------------------------------------------------
+#  LE NETTOYAGE, ET CE QU'IL S'INTERDIT
+# -------------------------------------------------------------------
+#  On redresse et l'on rogne, RIEN DE PLUS, et EN UN SEUL
+#  REECHANTILLONNAGE : la rotation et le rognage sont composes en une
+#  matrice, appliquee une fois. Deux passes a la file — tourner, puis
+#  couper — coutent une interpolation de trop, et cela se voit sur une
+#  hachure de deux points de large.
+#
+#  L'ANGLE SE MESURE SUR LE FILET DU CADRE, non sur le dessin. On
+#  prend les deux filets horizontaux, qui courent sur quatre mille
+#  points et donnent l'angle a un vingtieme de degre pres ; les filets
+#  verticaux servent de controle. Au tableau 1 les deux horizontaux
+#  s'accordent sur 0.30 degre, et une fois redresses ils tombent
+#  exactement a zero.
+#
+#  ON NE REDRESSE PAS LES VERTICALES. Apres redressement elles gardent
+#  un tiers de degre : la feuille a gondole, ou la planche a ete
+#  imprimee de biais. Corriger cela demanderait un cisaillement, c'est
+#  a dire d'inventer une geometrie que le fac-simile n'a pas. On
+#  l'enregistre et on la laisse.
+#
+#  ET L'ON NE TOUCHE PAS AU TON. Le papier est creme — son mode est a
+#  235, l'encre la plus noire a 66 — et c'est ainsi qu'il faut le
+#  garder : l'edition est diplomatique, l'eclaircissement se fera a
+#  l'affichage si on le veut, et restera reversible.
+MARGE_FILET = 8
+
+
+def _tourner(a, th, centre):
+    return cv2.getRotationMatrix2D(centre, th, 1.0)
+
+
+def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
+    """L'angle qui rend une droite du cadre la plus franche."""
+    best = None
+    y0, y1, x0, x1 = bande
+    b = enc[y0:y1, x0:x1]
+    for th in np.arange(-ampl, ampl + 1e-9, pas):
+        M = _tourner(b, th, (b.shape[1] / 2, b.shape[0] / 2))
+        r = cv2.warpAffine(b, M, (b.shape[1], b.shape[0]),
+                           flags=cv2.INTER_LINEAR, borderValue=0)
+        p = r.mean(axis=axe)
+        v = float(p.max() - np.median(p))
+        if best is None or v > best[0]:
+            best = (v, float(th), int(np.argmax(p)))
+    return best
+
+
+def cadre(enc):
+    """Les quatre filets, dans une image deja redressee."""
+    H, W = enc.shape
+    mh, mv = round(0.045 * H), round(0.035 * W)
+    def pic(y0, y1, x0, x1, axe):
+        p = enc[y0:y1, x0:x1].mean(axis=axe)
+        return int(np.argmax(p)) + (y0 if axe == 1 else x0), \
+            float(p.max() - np.median(p))
+    haut, fh = pic(round(0.04 * H), round(0.10 * H), mv, W - mv, 1)
+    bas, fb = pic(round(0.86 * H), round(0.95 * H), mv, W - mv, 1)
+    gau, fg = pic(mh, H - mh, round(0.02 * W), round(0.06 * W), 0)
+    dro, fd = pic(mh, H - mh, round(0.94 * W), round(0.98 * W), 0)
+    return (gau, haut, dro, bas), (fg, fh, fd, fb)
+
+
+def netigar(chemin, dest=None, verbeux=True):
+    """Redresse et rogne une numerisation, en un seul rechantillonnage."""
+    im = Image.open(chemin)
+    a = np.asarray(im.convert("L"))
+    # LA FEUILLE EST RELIEE EN HAUTEUR, la gravure y est couchee.
+    tour = 3 if a.shape[0] > a.shape[1] else 0
+    a = np.rot90(a, tour)
+    H, W = a.shape
+    enc = np.clip(200.0 - a.astype(np.float32), 0, None)
+    # 1. l'angle, sur les deux filets horizontaux
+    hb = (round(0.04 * H), round(0.10 * H), round(0.08 * W), round(0.90 * W))
+    bb = (round(0.86 * H), round(0.95 * H), round(0.08 * W), round(0.90 * W))
+    (_, th1, _), (_, th2, _) = angle_filet(enc, hb, 1), angle_filet(enc, bb, 1)
+    th = (th1 + th2) / 2
+    # 2. le cadre, mesure sur une copie redressee (jetee ensuite)
+    Mr = _tourner(a, th, (W / 2, H / 2))
+    droit = cv2.warpAffine(enc, Mr, (W, H), flags=cv2.INTER_LINEAR,
+                           borderValue=0)
+    (x0, y0, x1, y1), forces = cadre(droit)
+    x0, y0 = x0 - MARGE_FILET, y0 - MARGE_FILET
+    x1, y1 = x1 + MARGE_FILET, y1 + MARGE_FILET
+    # 3. rotation ET rognage en une seule matrice, une seule passe
+    M = Mr.copy()
+    M[0, 2] -= x0
+    M[1, 2] -= y0
+    LG, HT = x1 - x0, y1 - y0
+    src = np.rot90(np.asarray(im.convert("L")), tour)
+    out = cv2.warpAffine(src, M, (LG, HT), flags=cv2.INTER_CUBIC,
+                         borderMode=cv2.BORDER_REPLICATE)
+    # controle : ce qui reste de biais aux verticales
+    e2 = np.clip(200.0 - out.astype(np.float32), 0, None)
+    vg = angle_filet(e2, (round(.05*HT), round(.95*HT), 0, 40), 0, 1.0)[1]
+    vd = angle_filet(e2, (round(.05*HT), round(.95*HT), LG-40, LG), 0, 1.0)[1]
+    if verbeux:
+        print(f"  quart de tour {tour}, redressement {th:+.3f} deg "
+              f"(filets a {th1:+.3f} et {th2:+.3f})")
+        print(f"  cadre en ({x0}, {y0})-({x1}, {y1}) : {LG} x {HT} points")
+        print(f"  verticales laissees de biais : {vg:+.3f} et {vd:+.3f} deg")
+    if dest:
+        Path(dest).parent.mkdir(parents=True, exist_ok=True)
+        Image.fromarray(out).save(dest)
+        if verbeux:
+            print(f"  ecrit dans {dest}")
+    return out, {"tour": tour, "angulo": round(th, 4),
+                 "kadro": [int(x0), int(y0), int(x1), int(y1)],
+                 "vertikali": [round(vg, 3), round(vd, 3)]}
+
+
+# -------------------------------------------------------------------
+#  LE TRANSPORT DES NUMEROS
+# -------------------------------------------------------------------
+#  Mille cinq cents numeros ont ete releves a la main sur les planches
+#  colorisees. Ils sont enregistres EN FRACTION de la planche : pour les
+#  porter sur la numerisation d'origine, il suffit de la similitude qui
+#  mene de l'une a l'autre.
+#
+#  ELLE SE MESURE PAR CORRELATION, sur une carte de densite d'encre —
+#  les deux images floutees, centrees, reduites. Le pochoir et le
+#  fac-simile ne se ressemblent pas trait pour trait, mais leurs masses
+#  d'encre, oui : au tableau 1 la correlation monte a 0.95.
+#
+#  ATTENTION AU SENS DE L'ENCRE. Dans la couche de trait l'encre vaut
+#  255, dans une numerisation elle est sombre. Les avoir prises dans le
+#  meme sens faisait tomber la correlation de 0.95 a 0.10, et l'on
+#  cherchait la faute ailleurs.
+def densito(a, W, sigma=1.6):
+    """Une carte de densite d'encre, comparable d'un rendu a l'autre."""
+    h = round(W * a.shape[0] / a.shape[1])
+    s = cv2.resize(a.astype(np.float32), (W, h), interpolation=cv2.INTER_AREA)
+    s = cv2.GaussianBlur(s, (0, 0), sigma)
+    return (s - s.mean()) / (s.std() + 1e-6)
+
+
+def mezuri(cle, neta, W=1000, verbeux=True):
+    """La matrice qui mene de l'ancienne planche a la nouvelle."""
+    vieux = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")
+                       ).astype(np.float32)          # l'encre y vaut 255
+    neuf = 255.0 - np.asarray(Image.open(neta).convert("L")).astype(np.float32)
+    LO, HO = vieux.shape[1], vieux.shape[0]
+    LN, HN = neuf.shape[1], neuf.shape[0]
+    sO, sN = W / LO, W / LN
+    A, B = densito(vieux, W), densito(neuf, W)
+
+    def essai(k, th, m=0.14):
+        hA, wA = A.shape
+        M = cv2.getRotationMatrix2D((wA / 2, hA / 2), th, k)
+        r = cv2.warpAffine(A, M, (wA, hA), flags=cv2.INTER_LINEAR,
+                           borderValue=0)
+        y0, y1 = round(m * hA), round((1 - m) * hA)
+        x0, x1 = round(m * wA), round((1 - m) * wA)
+        g = r[y0:y1, x0:x1]
+        if g.shape[0] >= B.shape[0] or g.shape[1] >= B.shape[1]:
+            return None
+        res = cv2.matchTemplate(B, g, cv2.TM_CCOEFF_NORMED)
+        _, mx, _, loc = cv2.minMaxLoc(res)
+        return float(mx), float(k), float(th), loc, (x0, y0)
+
+    best = None
+    for k in np.arange(0.90, 1.101, 0.005):
+        for th in np.arange(-1.0, 1.01, 0.1):
+            e = essai(k, th)
+            if e and (best is None or e[0] > best[0]):
+                best = e
+    for k in np.arange(best[1] - 0.006, best[1] + 0.0061, 0.0005):
+        for th in np.arange(best[2] - 0.12, best[2] + 0.121, 0.01):
+            e = essai(k, th)
+            if e and e[0] > best[0]:
+                best = e
+    mx, k, th, loc, (gx, gy) = best
+    hA, wA = A.shape
+    M3 = np.vstack([cv2.getRotationMatrix2D((wA / 2, hA / 2), th, k), [0, 0, 1]])
+    D = np.array([[1, 0, loc[0] - gx], [0, 1, loc[1] - gy], [0, 0, 1]], float)
+    T = np.diag([1 / sN, 1 / sN, 1.0]) @ D @ M3 @ np.diag([sO, sO, 1.0])
+    if verbeux:
+        print(f"  {cle} : correlation {mx:.4f}, echelle {T[0, 0]:.5f}, "
+              f"rotation {th:+.2f} deg")
+        print(f"  l'ancienne planche ({LO} x {HO}) se pose en "
+              f"({T[0, 2]:.0f}, {T[1, 2]:.0f}) de la nouvelle ({LN} x {HN})")
+    return T, float(mx), (LO, HO), (LN, HN)
+
+
+def _pt(T, x, y):
+    q = T @ np.array([x, y, 1.0])
+    return float(q[0]), float(q[1])
+
+
+def transporti(cle, neta, verbeux=True):
+    """Porte les numeros, les scenes et les tailles sur la nouvelle planche."""
+    T, korelo, (LO, HO), (LN, HN) = mezuri(cle, neta, verbeux=verbeux)
+    k = float(np.hypot(T[0, 0], T[1, 0]))
+
+    def boite(v):
+        """(x, y, l, h) en fraction de l'ancienne -> de la nouvelle."""
+        x, y = _pt(T, v[0] * LO, v[1] * HO)
+        return [round(x / LN, 6), round(y / HN, 6),
+                round(v[2] * LO * k / LN, 6), round(v[3] * HO * k / HN, 6)] \
+            + list(v[4:])
+
+    n = 0
+    f = RACINE / "gravuri" / "numeri.json"
+    d = json.loads(f.read_text(encoding="utf-8"))
+    if cle in d:
+        e = d[cle]
+        e["numeri"] = {q: boite(v) for q, v in e["numeri"].items()}
+        e["largeur"], e["alteso"] = LN, HN
+        e["corpo"] = max(1, round(e["corpo"] * k))
+        n += len(e["numeri"])
+        f.write_text(json.dumps(d, ensure_ascii=False, indent=1),
+                     encoding="utf-8")
+    m = 0
+    f = RACINE / "gravuri" / "manuali.json"
+    if f.exists():
+        d = json.loads(f.read_text(encoding="utf-8"))
+        if cle in d:
+            d[cle] = {q: boite(v) for q, v in d[cle].items()}
+            m = len(d[cle])
+            f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
+                         encoding="utf-8")
+    c = 0
+    f = RACINE / "gravuri" / "ceni.json"
+    if f.exists():
+        d = json.loads(f.read_text(encoding="utf-8"))
+        if cle in d:
+            for sc, forme in d[cle].items():
+                if forme[0] == "elipso":
+                    x, y = _pt(T, forme[1] * LO, forme[2] * HO)
+                    d[cle][sc] = ["elipso", round(x / LN, 6), round(y / HN, 6),
+                                  round(forme[3] * LO * k / LN, 6),
+                                  round(forme[4] * HO * k / HN, 6)]
+                else:
+                    x0, y0 = _pt(T, forme[1] * LO, forme[2] * HO)
+                    x1, y1 = _pt(T, forme[3] * LO, forme[4] * HO)
+                    d[cle][sc] = ["rekt", round(max(0.0, x0 / LN), 6),
+                                  round(max(0.0, y0 / HN), 6),
+                                  round(min(1.0, x1 / LN), 6),
+                                  round(min(1.0, y1 / HN), 6)]
+                c += 1
+            f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
+                         encoding="utf-8")
+    cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
+           if CATALOGO.exists() else {})
+    e = cat.setdefault(cle, {})
+    e["transporto"] = {"matrico": [[float(v) for v in r] for r in T[:2]],
+                       "korelo": round(korelo, 4),
+                       "de": [LO, HO], "a": [LN, HN]}
+    CATALOGO.write_text(json.dumps(cat, ensure_ascii=False, indent=1) + "\n",
+                        encoding="utf-8")
+    if verbeux:
+        print(f"  {n} numeros portes, dont {m} poses a la main"
+              + (f", et {c} scenes" if c else ""))
+    return T
+
+
+# -------------------------------------------------------------------
+#  SERVIR LA PLANCHE
+# -------------------------------------------------------------------
+#  Deux tailles, comme avant : la vue d'ensemble posee au-dessus du
+#  titre, et l'image ou l'on decoupe les gros plans. Mais celle-ci n'est
+#  plus rabotee a 2600 points : ON SERT LA PLANCHE ENTIERE.
+#
+#  La mesure le demande. Le gros plan montre neuf hauteurs de chiffre,
+#  soit deux cent quatre-vingt-dix points de planche, sur deux cent
+#  cinquante points d'ecran — cinq cents sur un ecran a double densite.
+#  Meme a pleine definition on est donc en dessous du compte : rogner
+#  encore n'aurait aucun sens. A 2600 points, en outre, la hachure fine
+#  moire, ce qui ne pardonne pas sur une gravure sur bois.
+#
+#  L'image ne coute qu'au PREMIER clic sur un numero du tableau, et sert
+#  ensuite a tous les autres.
+LARGE_VIDO = 1200
+QUAL_VIDO = 74
+QUAL_DETALO = 74
+
+
+def servir(cle, neta, verbeux=True):
+    """Les deux WebP, tires de la planche d'origine nettoyee."""
+    im = Image.open(neta).convert("RGB")
+    GRAVURI = RACINE / "gravuri"
+    taille = {}
+    for nom, largeur, qualite in (("vido", LARGE_VIDO, QUAL_VIDO),
+                                  ("detalo", im.width, QUAL_DETALO)):
+        h = round(largeur * im.height / im.width)
+        petite = im if largeur == im.width else im.resize((largeur, h),
+                                                          Image.LANCZOS)
+        dest = GRAVURI / f"{cle}-{nom}.webp"
+        petite.save(dest, format="WEBP", quality=qualite, method=6)
+        o = dest.stat().st_size
+        taille[nom] = {"largeur": petite.width, "alteso": petite.height,
+                       "okteti": o}
+        if verbeux:
+            print(f"  {cle}-{nom}.webp  {petite.width}x{petite.height}  "
+                  f"{o / 1024:.0f} Ko")
+    cat = GRAVURI / "gravuri.json"
+    tout = json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
+    tout[cle] = {"largeur": im.width, "alteso": im.height,
+                 "koloro": False, "fonto": Path(neta).name,
+                 "origino": True,
+                 "vido": taille["vido"], "detalo": taille["detalo"]}
+    cat.write_text(json.dumps(tout, indent=1, sort_keys=True,
+                              ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 def main(args):
     if len(args) < 2:
         raise SystemExit(__doc__)
     verbe, cle, chemin = args[0], args[1], args[2]
-    if verbe == "caler":
+    if verbe == "netigar":
+        cle_ = cle
+        out, par = netigar(chemin, RACINE / "originali" / "kovri" /
+                           f"{cle_}-neta.png")
+        cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
+               if CATALOGO.exists() else {})
+        e = cat.setdefault(cle_, {})
+        e["fonto"] = str(chemin)
+        e["netigo"] = par
+        CATALOGO.write_text(json.dumps(cat, ensure_ascii=False, indent=1)
+                            + "\n", encoding="utf-8")
+    elif verbe == "servir":
+        servir(cle, chemin)
+    elif verbe == "transporti":
+        transporti(cle, chemin)
+    elif verbe == "caler":
         M, score, tour = caler(cle, chemin)
         cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
                if CATALOGO.exists() else {})
