@@ -48,6 +48,36 @@ GRAS = re.compile(
     r'|\((\d{1,3}(?:\s*,\s*\d{1,3})*)\))')
 CHIFRO = re.compile(r'\d{1,3}')
 
+# LES RENVOIS A LETTRE. « rondo (a), quadrato (b) » : la lettre est
+# gravee sur l'objet qui la porte -- le tableau noir, la carte -- et
+# n'a de sens que rapportee a lui. gravuri/literi.json dit, bloc par
+# bloc, sous quel prefixe la ranger : le « a » du tableau noir est
+# « 1a », celui de la carte « 10a ».
+GRAS_LIT = re.compile(
+    r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'
+    r'(?:\s|\\nl|\\cc|%|\n)*'
+    r'(?:\\textsuperscript\{\(([a-z]{1,2})\)\}|\(([a-z]{1,2})\))')
+
+
+def patri():
+    f = RACINE / 'gravuri' / 'literi.json'
+    if not f.exists():
+        return {}
+    return json.loads(f.read_text(encoding='utf-8')).get('patri', {})
+
+
+PATRI = patri()
+
+# LE SUBSTANTIF N'EST PAS TOUJOURS EN GRAS DEVANT UNE LETTRE. « la
+# zoologio (a), botaniko (b), geologio (c) » : trois mots nus, alors
+# que la regle du liminaire veut le gras. Les deux ateliers s'y
+# tiennent pour les numeros et l'oublient pour les lettres. On
+# reprend donc le mot qui precede, faute de mieux : sans lui le gros
+# plan s'ouvrirait sans rien dire de ce qu'il montre.
+NUD_LIT = re.compile(
+    r"([\w'\u2019-]+)\s*(?:\\nl|\\cc)?\s*"
+    r'\\textsuperscript\{\(([a-z]{1,2})\)\}')
+
 # Ce qui reste de balisage dans le nom releve.
 MACROS = re.compile(r'\\(?:textit|textsc|emph|VUgras|nl|cc|hbox|,)\b\{?')
 
@@ -125,6 +155,26 @@ def relever(dossier, motif):
             if mk:
                 relever.scene = mk.group(1)
             sc = getattr(relever, "scene", "") if scenes else ""
+            # Les lettres du bloc, s'il en porte.
+            pa = PATRI.get(parts[i])
+            if pa:
+                for g in GRAS_LIT.finditer(parts[i + 1]):
+                    nom = nettoyer(g.group(1))
+                    if not nom:
+                        continue
+                    for L in (g.group(2) or g.group(3) or ""):
+                        k = pa[1] + L
+                        noms = par.setdefault(k, [])
+                        if nom not in noms:
+                            noms.append(nom)
+                for g in NUD_LIT.finditer(parts[i + 1]):
+                    for L in g.group(2):
+                        k = pa[1] + L
+                        if par.get(k):
+                            continue
+                        nom = nettoyer(g.group(1))
+                        if nom:
+                            par.setdefault(k, []).append(nom)
             for g in GRAS.finditer(parts[i + 1]):
                 nom = nettoyer(g.group(1))
                 if not nom:
@@ -139,8 +189,9 @@ def relever(dossier, motif):
 
 
 def rang(k):
-    s, n = (k.split(":", 1) + [""])[:2] if ":" in k else ("", k)
-    return (s, int(n or k))
+    s, n = k.split(":", 1) if ":" in k else ("", k)
+    m = re.match(r'(\d*)([a-z]*)$', n)
+    return (s, int(m.group(1) or 0), m.group(2))
 
 
 def construire():

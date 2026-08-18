@@ -832,6 +832,7 @@ def lier_notes(rangi):
     uniformiser_notes(rangi)
     uniformiser_renvois(rangi)
     boutons_renvois(rangi)
+    boutons_literi(rangi)
     return rapport
 
 
@@ -929,6 +930,83 @@ def boutons_renvois(rangi):
             neuf = RENVOI_REND.sub(
                 lambda m, k=k: bouton(m, langue=k), texte)
             if neuf == texte:
+                continue
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+    return pose
+
+
+# -------------------------------------------------------------------
+#  LES RENVOIS A LETTRE
+# -------------------------------------------------------------------
+#  Trois tableaux ne se contentent pas de numeros. « Ni vidas sur la
+#  tabelo la precipua figuri geometriala : rondo (a), quadrato (b) » —
+#  ces lettres sont gravees SUR le tableau noir, qui porte lui-meme le
+#  numero 1, et n'ont de sens que rapportees a lui : le « a » du tableau
+#  noir est un cercle, celui de la carte l'Amerique, celui du tableau de
+#  sciences naturelles un cheval.
+#
+#  gravuri/literi.json dit, bloc par bloc, de quel objet les lettres
+#  dependent — cela ne se devine pas, le texte ne le disant pas toujours
+#  — et ou chacune se trouve sur la planche.
+RENVOI_LIT = re.compile(r'<sup>\(([a-z]{1,2})\)</sup>')
+
+
+def literi():
+    """{planche: {cle: place}} et la table des blocs."""
+    f = RACINE / "gravuri" / "literi.json"
+    if not f.exists():
+        return {}, {}
+    d = json.loads(f.read_text(encoding="utf-8"))
+    return d, d.get("patri", {})
+
+
+def boutons_literi(rangi):
+    """Le renvoi a lettre devient un bouton, comme le renvoi a numero."""
+    tout, patri = literi()
+    if not patri:
+        return 0
+    o = RACINE / "gravuri" / "objekti.json"
+    noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
+    pose = 0
+    for r in rangi:
+        pa = patri.get(r["cle"])
+        if not pa:
+            continue
+        planche, prefixo = pa
+        places = tout.get(planche, {})
+
+        def bouton(m, langue="io"):
+            nonlocal pose
+            bouts, fait = [], 0
+            for L in m.group(1):
+                v = places.get(prefixo + L)
+                if not v:
+                    bouts.append(L)
+                    continue
+                nm = noms.get(planche[:3], {}).get(prefixo + L, {})
+                io = (nm.get("io") or nm.get("fr") or [""])[0]
+                fr = (nm.get("fr") or nm.get("io") or [""])[0]
+                titre = ((io if langue == "io" else fr) or io or fr)
+                titre = titre.replace('"', "&quot;")
+                bouts.append(
+                    f'<button class="lupo nuda" data-g="{planche}" '
+                    f'data-c="{v[0]},{v[1]},{v[2]},{v[3]}" data-n="{L}" '
+                    f'title="{titre}" aria-expanded="false">{L}</button>')
+                fait += 1
+            if not fait:
+                return m.group(0)
+            pose += fait
+            return "<sup>(" + "".join(bouts) + ")</sup>"
+
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            neuf = RENVOI_LIT.sub(lambda m, k=k: bouton(m, k), t)
+            if neuf == t:
                 continue
             if k == "io":
                 r["io"] = neuf

@@ -8,6 +8,46 @@
     "tableau noir"
    ]
   },
+  "1a": {
+   "io": [
+    "rondo"
+   ],
+   "fr": [
+    "cercle"
+   ]
+  },
+  "1b": {
+   "io": [
+    "quadrato"
+   ],
+   "fr": [
+    "carré"
+   ]
+  },
+  "1c": {
+   "io": [
+    "triangulo"
+   ],
+   "fr": [
+    "triangle"
+   ]
+  },
+  "1d": {
+   "io": [
+    "lineo"
+   ],
+   "fr": [
+    "ligne"
+   ]
+  },
+  "1e": {
+   "io": [
+    "divido"
+   ],
+   "fr": [
+    "division"
+   ]
+  },
   "2": {
    "io": [
     "vishilo"
@@ -64,12 +104,116 @@
     "tableaux muraux"
    ]
   },
+  "9a": {
+   "io": [
+    "metro"
+   ],
+   "fr": [
+    "mètre"
+   ]
+  },
+  "9b": {
+   "io": [
+    "balanco"
+   ],
+   "fr": [
+    "balance"
+   ]
+  },
+  "9d": {
+   "io": [
+    "metral kubo"
+   ],
+   "fr": [
+    "mètre cube"
+   ]
+  },
+  "9e": {
+   "io": [
+    "ponderili, litro"
+   ],
+   "fr": [
+    "litre"
+   ]
+  },
+  "9f": {
+   "io": [
+    "dekalitro"
+   ],
+   "fr": [
+    "décalitre"
+   ]
+  },
   "10": {
    "io": [
     "mapo"
    ],
    "fr": [
     "carte géographique"
+   ]
+  },
+  "10a": {
+   "io": [
+    "Amerika"
+   ],
+   "fr": [
+    "Amérique"
+   ]
+  },
+  "10b": {
+   "io": [
+    "Amerika"
+   ],
+   "fr": [
+    "Amérique"
+   ]
+  },
+  "10c": {
+   "io": [
+    "Pacifiko"
+   ],
+   "fr": [
+    "Océan Pacifique"
+   ]
+  },
+  "10d": {
+   "io": [
+    "Atlantiko"
+   ],
+   "fr": [
+    "Océan Atlantique"
+   ]
+  },
+  "10e": {
+   "io": [
+    "Azia"
+   ],
+   "fr": [
+    "Asie"
+   ]
+  },
+  "10f": {
+   "io": [
+    "Afrika"
+   ],
+   "fr": [
+    "Afrique"
+   ]
+  },
+  "10g": {
+   "io": [
+    "Europa"
+   ],
+   "fr": [
+    "Europe"
+   ]
+  },
+  "10h": {
+   "io": [
+    "Oceania"
+   ],
+   "fr": [
+    "Océanie"
    ]
   },
   "11": {
@@ -80,6 +224,30 @@
    "fr": [
     "tableaux muraux",
     "histoire naturelle"
+   ]
+  },
+  "11a": {
+   "io": [
+    "zoologio"
+   ],
+   "fr": [
+    "zoologie"
+   ]
+  },
+  "11b": {
+   "io": [
+    "botaniko"
+   ],
+   "fr": [
+    "botanique"
+   ]
+  },
+  "11c": {
+   "io": [
+    "geologio"
+   ],
+   "fr": [
+    "géologie"
    ]
   },
   "12": {
@@ -2643,6 +2811,102 @@
   }
  },
  "t05": {
+  "a": {
+   "io": [
+    "koridoro"
+   ],
+   "fr": [
+    "corridor"
+   ]
+  },
+  "b": {
+   "io": [
+    "salono"
+   ],
+   "fr": [
+    "salon"
+   ]
+  },
+  "c": {
+   "io": [
+    "manjo-chambro"
+   ],
+   "fr": [
+    "salle à manger"
+   ]
+  },
+  "d": {
+   "io": [
+    "koqueyo"
+   ],
+   "fr": [
+    "cuisine"
+   ]
+  },
+  "e": {
+   "io": [
+    "servisteyo"
+   ],
+   "fr": [
+    "office"
+   ]
+  },
+  "f": {
+   "io": [
+    "skribo-chambro"
+   ],
+   "fr": [
+    "cabinet de travail"
+   ]
+  },
+  "g": {
+   "io": [
+    "dormo-chambro"
+   ],
+   "fr": [
+    "chambre à coucher"
+   ]
+  },
+  "h": {
+   "io": [
+    "alkovo"
+   ],
+   "fr": [
+    "alcôve"
+   ]
+  },
+  "i": {
+   "io": [
+    "chambro por amiki"
+   ],
+   "fr": [
+    "chambre d'amis"
+   ]
+  },
+  "j": {
+   "io": [
+    "tualeteyo"
+   ],
+   "fr": [
+    "cabinet de toilette"
+   ]
+  },
+  "k": {
+   "io": [
+    "chambro por l'infanti"
+   ],
+   "fr": [
+    "chambre des enfants"
+   ]
+  },
+  "m": {
+   "io": [
+    "fluro"
+   ],
+   "fr": [
+    "palier"
+   ]
+  },
   "1": {
    "io": [
     "fasado",
@@ -13188,6 +13452,36 @@
    "fr": [
     "astronomie"
    ]
+  },
+  "85a": {
+   "io": [
+    "kometi"
+   ],
+   "fr": []
+  },
+  "85b": {
+   "io": [
+    "lun-e sun-eklipsi"
+   ],
+   "fr": []
+  },
+  "85c": {
+   "io": [
+    "quar punti kardinala"
+   ],
+   "fr": []
+  },
+  "85e": {
+   "io": [
+    "planeti"
+   ],
+   "fr": []
+  },
+  "85f": {
+   "io": [
+    "sun-sistemo"
+   ],
+   "fr": []
   },
   "86": {
    "io": [

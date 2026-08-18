@@ -1,0 +1,219 @@
+{
+ "_": [
+  "LES RENVOIS A LETTRE, et l'objet dont ils dependent.",
+  "",
+  "Trois tableaux ne se contentent pas de numeros : ils portent aussi des",
+  "lettres. « Ni vidas sur la tabelo la precipua figuri geometriala :",
+  "rondo (a), quadrato (b), triangulo (c), lineo (d) » — ces quatre",
+  "lettres sont gravees SUR LE TABLEAU NOIR, qui porte lui-meme le",
+  "numero 1. Une lettre n'a donc de sens que rapportee a son objet : le",
+  "« a » du tableau noir est un cercle, celui de la carte est l'Amerique",
+  "du Nord, celui du tableau de sciences naturelles est un cheval.",
+  "",
+  "C'EST POURQUOI CE FICHIER SE TIENT A LA MAIN. Le texte ne dit pas",
+  "toujours de quel objet les lettres dependent : au bloc t01-19-1 il",
+  "parle du « tableau du systeme metrique » sans le numeroter, et c'est",
+  "le 9 — le seul numero du tableau 1 que le texte n'appelle qu'une fois,",
+  "dans le groupe « les tableaux muraux (9, 11, 12) ». Aucune mesure ne",
+  "trouve cela ; il faut lire.",
+  "",
+  "« patri » donne, pour chaque bloc, la planche et le prefixe sous",
+  "lesquels ranger ses lettres. Le prefixe est le numero de l'objet",
+  "porteur — « 1 » pour le tableau noir, « 10 » pour la carte — ou vide",
+  "quand la planche entiere EST l'objet : le plan de la maison du",
+  "tableau 5 n'est pas un objet numerote, c'est un plan, et ses pieces",
+  "sont lettrees de a a m.",
+  "",
+  "Les places viennent ensuite, planche par planche, en fraction de la",
+  "planche comme celles des numeros : x, y, largeur, hauteur."
+ ],
+ "patri": {
+  "t01-18-1": [
+   "t01-apar-1",
+   "1"
+  ],
+  "t01-18-2": [
+   "t01-apar-1",
+   "1"
+  ],
+  "t01-19-1": [
+   "t01-apar-1",
+   "9"
+  ],
+  "t01-19-2": [
+   "t01-apar-1",
+   "11"
+  ],
+  "t01-19-5": [
+   "t01-apar-1",
+   "10"
+  ],
+  "t05-01-51": [
+   "t05-apar-2",
+   ""
+  ],
+  "t05-01-52": [
+   "t05-apar-2",
+   ""
+  ],
+  "t05-01-53": [
+   "t05-apar-2",
+   ""
+  ],
+  "t16-15-1": [
+   "t16-apar-1",
+   "85"
+  ]
+ },
+ "t01-apar-1": {
+  "1a": [
+   0.016923,
+   0.658585,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "1b": [
+   0.049878,
+   0.626474,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "1c": [
+   0.047206,
+   0.670708,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "1d": [
+   0.032509,
+   0.739843,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "1e": [
+   0.063015,
+   0.67595,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "9a": [
+   0.049655,
+   0.380079,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "9b": [
+   0.012469,
+   0.379423,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "9d": [
+   0.029615,
+   0.324705,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "9e": [
+   0.057448,
+   0.343709,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "9f": [
+   0.010688,
+   0.258519,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10a": [
+   0.071031,
+   0.100917,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10b": [
+   0.082164,
+   0.148427,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10c": [
+   0.033623,
+   0.146134,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10d": [
+   0.114228,
+   0.161533,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10e": [
+   0.159653,
+   0.143512,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10f": [
+   0.153641,
+   0.230013,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10g": [
+   0.207526,
+   0.166121,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "10h": [
+   0.207081,
+   0.256553,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "11a": [
+   0.121799,
+   0.290301,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "11b": [
+   0.130038,
+   0.365007,
+   0.007125,
+   0.010485,
+   1.0
+  ],
+  "11c": [
+   0.125139,
+   0.431193,
+   0.007125,
+   0.010485,
+   1.0
+  ]
+ },
+ "t05-apar-2": {},
+ "t16-apar-1": {}
+}

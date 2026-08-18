@@ -455,6 +455,76 @@ def revizo(cle, page=0, par=24, cols=6, Z=3):
     return len(tout)
 
 
+# -------------------------------------------------------------------
+#  LES LETTRES
+# -------------------------------------------------------------------
+#  Trois tableaux portent, a cote des numeros, des lettres gravees sur
+#  un objet : les figures du tableau noir, les parties du monde sur la
+#  carte, les pieces du plan de la maison. Elles se posent comme les
+#  numeros -- l'oeil lit la place sur la grille et la dicte -- mais se
+#  rangent dans gravuri/literi.json, sous le prefixe de l'objet qui les
+#  porte : « 1a » est le cercle du tableau noir, « 10a » l'Amerique du
+#  Nord sur la carte.
+#
+#  LA BOITE EST CARREE, du corps du chiffre : une lettre n'a pas de
+#  largeur previsible, et le gros plan la prend de toute facon large.
+#
+#      python3 outils/manuali.py litero t01-apar-1 1a=91,2026 1b=239,1926
+LITERI = RACINE / "gravuri" / "literi.json"
+
+
+def litero(cle, refs):
+    """Pose des lettres a l'oeil, comme on pose des numeros."""
+    d = json.loads((RACINE / "gravuri" / "numeri.json")
+                   .read_text(encoding="utf-8"))[cle]
+    LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
+    tout = json.loads(LITERI.read_text(encoding="utf-8"))
+    par = tout.setdefault(cle, {})
+    for k, ref in refs:
+        px, py = (int(v) for v in ref.split(","))
+        par[k] = [round((px - corps / 2) / LA, 6),
+                  round((py - corps / 2) / HT, 6),
+                  round(corps / LA, 6), round(corps / HT, 6), 1.0]
+        print(f"  {k:>6} pose a l'oeil en ({px}, {py})")
+    LITERI.write_text(json.dumps(tout, ensure_ascii=False, indent=1) + "\n",
+                      encoding="utf-8")
+
+
+def planche_literi(cle):
+    """La feuille de controle des lettres posees."""
+    tout = json.loads(LITERI.read_text(encoding="utf-8"))
+    par = tout.get(cle, {})
+    if not par:
+        print(f"  {cle} : aucune lettre posee")
+        return
+    d = json.loads((RACINE / "gravuri" / "numeri.json")
+                   .read_text(encoding="utf-8"))[cle]
+    LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
+    im = N.planche(cle).convert("RGB")
+    cols, Z = 8, 3
+    w = h = round(corps * 3.0)
+    lot = sorted(par.items())
+    lig = (len(lot) + cols - 1) // cols
+    pl = Image.new("RGB", (cols * (w * Z + 8) + 8, lig * (h * Z + 30) + 8),
+                   (255, 255, 255))
+    g = ImageDraw.Draw(pl)
+    F = police(19)
+    for i, (k, v) in enumerate(lot):
+        cx, cy = (v[0] + v[2] / 2) * LA, (v[1] + v[3] / 2) * HT
+        c = im.crop((round(cx - w / 2), round(cy - h / 2),
+                     round(cx + w / 2), round(cy + h / 2))) \
+            .resize((w * Z, h * Z), Image.LANCZOS)
+        X, Y = 8 + (i % cols) * (w * Z + 8), 8 + (i // cols) * (h * Z + 30)
+        pl.paste(c, (X, Y))
+        g.rectangle([X, Y, X + w * Z, Y + h * Z], outline=(200, 0, 0))
+        g.text((X + 2, Y + h * Z + 4), k, fill=(0, 0, 0), font=F)
+    N.KONTROLO.mkdir(parents=True, exist_ok=True)
+    dest = N.KONTROLO / f"{cle}-literi.png"
+    pl.save(dest)
+    print(f"  {cle} : {len(lot)} lettres dans {dest}")
+
+
+
 def main(args):
     if not args:
         raise SystemExit(__doc__)
@@ -465,6 +535,10 @@ def main(args):
                args[4] if len(args) > 4 else "")
     elif verbe == "zono":
         zono(cle)
+    elif verbe == "litero":
+        litero(cle, [tuple(a.split("=")) for a in args[2:]])
+    elif verbe == "literi":
+        planche_literi(cle)
     elif verbe == "revizo":
         revizo(cle, int(args[2]) if len(args) > 2 else 0)
     elif verbe == "planche":
