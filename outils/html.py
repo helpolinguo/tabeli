@@ -1643,9 +1643,18 @@ def rendre(rangi):
         g = gravo.get(r["cle"])
         if g:
             v, d = g["vido"], g["detalo"]
+            # LE NOM DE FICHIER NE CHANGE PAS QUAND LA PLANCHE CHANGE.
+            # On reprend les seize gravures une a une sur leur
+            # fac-simile ; le fichier garde son nom, et le navigateur qui
+            # l'a deja vu ressert l'ancienne — celle en couleur — sans
+            # rien demander. Le lecteur croit alors que rien n'a bouge.
+            # On accroche donc a l'adresse le POIDS du fichier, que
+            # gravuri.json note deja : il change des que l'image change,
+            # et ne bouge pas tant qu'elle ne bouge pas.
+            qv, qd = f"?v={v['okteti']}", f"?v={d['okteti']}"
             lignes.append(
                 f'<figure class="gravuro" data-cle="{r["cle"]}" '
-                f'data-detalo="gravuri/{r["cle"]}-detalo.webp" '
+                f'data-detalo="gravuri/{r["cle"]}-detalo.webp{qd}" '
                 f'data-dl="{d["largeur"]}" data-dh="{d["alteso"]}">'
                 # DEUX DEFINITIONS, ET LE NAVIGATEUR CHOISIT. Sur un
                 # ecran ordinaire la vue d'ensemble suffit ; sur un
@@ -1655,9 +1664,9 @@ def rendre(rangi):
                 # petite, et seul un grand ecran dense va chercher
                 # l'image de detail -- celle-la meme qui servira au plein
                 # ecran et aux gros plans, donc jamais chargee deux fois.
-                f'<img src="gravuri/{r["cle"]}-vido.webp" alt="" '
-                f'srcset="gravuri/{r["cle"]}-vido.webp {v["largeur"]}w, '
-                f'gravuri/{r["cle"]}-detalo.webp {d["largeur"]}w" '
+                f'<img src="gravuri/{r["cle"]}-vido.webp{qv}" alt="" '
+                f'srcset="gravuri/{r["cle"]}-vido.webp{qv} {v["largeur"]}w, '
+                f'gravuri/{r["cle"]}-detalo.webp{qd} {d["largeur"]}w" '
                 f'sizes="(max-width:900px) calc(100vw - 64px), '
                 f'min(calc(100vw - 314px), 1246px)" '
                 f'loading="lazy" decoding="async" '
