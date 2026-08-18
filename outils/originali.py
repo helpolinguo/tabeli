@@ -230,6 +230,49 @@ def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
     return best
 
 
+# MESURER LE FILET, PLUTOT QUE DE CHERCHER SON ANGLE. On tournait la
+# bande d'essai par pas d'un quarantieme de degre et l'on gardait
+# l'angle qui rendait le pic le plus franc. Au tableau 1 les deux filets
+# horizontaux s'accordaient a +0.300 ; au tableau 2 ils donnaient -0.275
+# et +0.225, un demi-degre d'ecart -- l'un des deux avait accroche autre
+# chose que le filet.
+#
+# On mesure donc le filet LUI-MEME : pour une centaine de colonnes
+# reparties sur la largeur, la ligne la plus encree dans une fenetre
+# etroite ; puis une droite ajustee par moindres carres, deux fois, en
+# rejetant entre les deux ce qui s'ecarte de plus de trois points. La
+# pente donne l'angle, et l'ecart residuel dit si l'on a bien suivi un
+# filet ou couru apres une branche d'arbre.
+def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
+    """Suit une droite presque horizontale et rend (angle, ecart, n)."""
+    xs, ys = [], []
+    for x in range(x0, x1 - pas, pas):
+        col = enc[y0:y1, x:x + pas].mean(1)
+        if col.max() < 8:
+            continue
+        i = int(np.argmax(col))
+        a, b = max(0, i - fenetre), min(len(col), i + fenetre + 1)
+        w = col[a:b]
+        if w.sum() <= 0:
+            continue
+        # le barycentre de l'encre : plus fin que le maximum seul
+        xs.append(x + pas / 2)
+        ys.append(y0 + a + float((w * np.arange(len(w))).sum() / w.sum()))
+    if len(xs) < 8:
+        return None
+    X, Y = np.array(xs), np.array(ys)
+    for _ in range(2):
+        A = np.vstack([X, np.ones_like(X)]).T
+        (m, c), *_ = np.linalg.lstsq(A, Y, rcond=None)
+        r = np.abs(Y - (m * X + c))
+        garde = r <= max(3.0, 2.5 * float(np.median(r)))
+        if garde.sum() < 8:
+            break
+        X, Y = X[garde], Y[garde]
+    return (float(np.degrees(np.arctan(m))),
+            float(np.sqrt(((Y - (m * X + c)) ** 2).mean())), int(len(X)))
+
+
 def cadre(enc):
     """Les quatre filets, dans une image deja redressee."""
     H, W = enc.shape
@@ -254,11 +297,27 @@ def netigar(chemin, dest=None, verbeux=True):
     a = np.rot90(a, tour)
     H, W = a.shape
     enc = np.clip(200.0 - a.astype(np.float32), 0, None)
-    # 1. l'angle, sur les deux filets horizontaux
-    hb = (round(0.04 * H), round(0.10 * H), round(0.08 * W), round(0.90 * W))
-    bb = (round(0.86 * H), round(0.95 * H), round(0.08 * W), round(0.90 * W))
-    (_, th1, _), (_, th2, _) = angle_filet(enc, hb, 1), angle_filet(enc, bb, 1)
-    th = (th1 + th2) / 2
+    # 1. l'angle, sur les deux filets horizontaux, suivis point par point.
+    #    ON RESSERRE D'ABORD LA BANDE AUTOUR DU FILET. Au tableau 2 le sol
+    #    est hachure horizontalement jusqu'au bas de la gravure, et le
+    #    suiveur accrochait une hachure au lieu du filet : les deux
+    #    mesures se contredisaient alors d'un demi-degre. On repere donc
+    #    la ligne la plus encree de la moitie exterieure, et l'on ne suit
+    #    le filet qu'a vingt-cinq points de part et d'autre.
+    def bande(a0, a1):
+        prof = enc[a0:a1, round(0.20 * W):round(0.80 * W)].mean(1)
+        y = a0 + int(np.argmax(prof))
+        return (max(0, y - 25), min(H, y + 26),
+                round(0.08 * W), round(0.92 * W))
+
+    hb = bande(0, round(0.14 * H))
+    bb = bande(round(0.86 * H), H)
+    mh = suivre_filet(enc, *hb)
+    mb = suivre_filet(enc, *bb)
+    bons = [m for m in (mh, mb) if m and m[1] < 2.5]
+    if not bons:
+        bons = [m for m in (mh, mb) if m]
+    th = sum(m[0] for m in bons) / len(bons)
     # 2. le cadre, mesure sur une copie redressee (jetee ensuite)
     Mr = _tourner(a, th, (W / 2, H / 2))
     droit = cv2.warpAffine(enc, Mr, (W, H), flags=cv2.INTER_LINEAR,
@@ -279,8 +338,12 @@ def netigar(chemin, dest=None, verbeux=True):
     vg = angle_filet(e2, (round(.05*HT), round(.95*HT), 0, 40), 0, 1.0)[1]
     vd = angle_filet(e2, (round(.05*HT), round(.95*HT), LG-40, LG), 0, 1.0)[1]
     if verbeux:
-        print(f"  quart de tour {tour}, redressement {th:+.3f} deg "
-              f"(filets a {th1:+.3f} et {th2:+.3f})")
+        def dire(m):
+            return (f"{m[0]:+.3f} (ecart {m[1]:.2f} sur {m[2]} points)"
+                    if m else "introuvable")
+        print(f"  quart de tour {tour}, redressement {th:+.3f} deg")
+        print(f"    filet du haut : {dire(mh)}")
+        print(f"    filet du bas  : {dire(mb)}")
         print(f"  cadre en ({x0}, {y0})-({x1}, {y1}) : {LG} x {HT} points")
         print(f"  verticales laissees de biais : {vg:+.3f} et {vd:+.3f} deg")
     if dest:
@@ -290,6 +353,14 @@ def netigar(chemin, dest=None, verbeux=True):
             print(f"  ecrit dans {dest}")
     return out, {"tour": tour, "angulo": round(th, 4),
                  "kadro": [int(x0), int(y0), int(x1), int(y1)],
+                 # LES DEUX FILETS SEPAREMENT, avec l'ecart de leur
+                 # ajustement : c'est la seule facon de savoir plus tard
+                 # si l'on a bien suivi le cadre, et si la feuille etait
+                 # droite. Au tableau 2 ils convergent de quatre dixiemes
+                 # de degre -- la gravure y est en trapeze, et l'on ne
+                 # corrige pas cela sans inventer une geometrie.
+                 "filetoj": [[round(m[0], 3), round(m[1], 2), m[2]]
+                             if m else None for m in (mh, mb)],
                  "vertikali": [round(vg, 3), round(vd, 3)]}
 
 
@@ -320,8 +391,18 @@ def densito(a, W, sigma=1.6):
 
 def mezuri(cle, neta, W=1000, verbeux=True):
     """La matrice qui mene de l'ancienne planche a la nouvelle."""
-    vieux = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")
-                       ).astype(np.float32)          # l'encre y vaut 255
+    # LA REFERENCE EST LA PLANCHE PRECEDENTE, quelle qu'elle soit. La
+    # premiere fois c'est la couche de trait du PDF colorise, ou l'encre
+    # vaut 255 ; ensuite, si l'on renettoie, c'est le fac-simile deja
+    # nettoye, ou l'encre est sombre. Sans cela un second nettoyage
+    # ferait repartir les numeros du pochoir, qu'ils ont quitte.
+    ancienne = RACINE / "originali" / "kovri" / f"{cle}-neta-antaua.png"
+    if ancienne.exists():
+        vieux = 255.0 - np.asarray(Image.open(ancienne).convert("L")
+                                   ).astype(np.float32)
+    else:
+        vieux = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")
+                           ).astype(np.float32)      # l'encre y vaut 255
     neuf = 255.0 - np.asarray(Image.open(neta).convert("L")).astype(np.float32)
     LO, HO = vieux.shape[1], vieux.shape[0]
     LN, HN = neuf.shape[1], neuf.shape[0]
@@ -441,6 +522,15 @@ def transporti(cle, neta, verbeux=True, force=False):
                 c += 1
             f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
                          encoding="utf-8")
+    lt = 0
+    f = RACINE / "gravuri" / "literi.json"
+    if f.exists():
+        d = json.loads(f.read_text(encoding="utf-8"))
+        if d.get(cle):
+            d[cle] = {q: boite(v) for q, v in d[cle].items()}
+            lt = len(d[cle])
+            f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
+                         encoding="utf-8")
     cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
            if CATALOGO.exists() else {})
     e = cat.setdefault(cle, {})
@@ -451,7 +541,8 @@ def transporti(cle, neta, verbeux=True, force=False):
                         encoding="utf-8")
     if verbeux:
         print(f"  {n} numeros portes, dont {m} poses a la main"
-              + (f", et {c} scenes" if c else ""))
+              + (f", {c} scenes" if c else "")
+              + (f", {lt} lettres" if lt else ""))
     return T
 
 
@@ -514,6 +605,10 @@ def servir(cle, neta, verbeux=True):
 #      python3 outils/originali.py reprendre t02-apar-1 originali/t02.jpg
 def reprendre(cle, chemin, force=False):
     dest = RACINE / "originali" / "kovri" / f"{cle}-neta.png"
+    # On met de cote la planche precedente : c'est sur ELLE que les
+    # numeros sont poses, et c'est d'elle qu'il faudra les porter.
+    if dest.exists():
+        dest.replace(dest.with_name(f"{cle}-neta-antaua.png"))
     out, par = netigar(chemin, dest)
     cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
            if CATALOGO.exists() else {})

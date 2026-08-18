@@ -1,35 +1,36 @@
 {
  "t01-apar-1": {
-  "alteso": 3052,
+  "alteso": 3053,
   "detalo": {
-   "alteso": 3052,
-   "largeur": 4491,
-   "okteti": 1841576
+   "alteso": 3053,
+   "largeur": 4490,
+   "okteti": 1837756
   },
   "fonto": "t01-apar-1-neta.png",
   "koloro": false,
-  "largeur": 4491,
+  "largeur": 4490,
   "origino": true,
   "vido": {
-   "alteso": 815,
+   "alteso": 816,
    "largeur": 1200,
-   "okteti": 237114
+   "okteti": 238074
   }
  },
  "t02-apar-1": {
-  "alteso": 3641,
+  "alteso": 3013,
   "detalo": {
-   "alteso": 1733,
-   "largeur": 2600,
-   "okteti": 802764
+   "alteso": 3013,
+   "largeur": 4509,
+   "okteti": 1675026
   },
-  "fonto": "page3.pdf",
-  "koloro": true,
-  "largeur": 5463,
+  "fonto": "t02-apar-1-neta.png",
+  "koloro": false,
+  "largeur": 4509,
+  "origino": true,
   "vido": {
-   "alteso": 800,
+   "alteso": 802,
    "largeur": 1200,
-   "okteti": 240824
+   "okteti": 222216
   }
  },
  "t02-tit-0": {
