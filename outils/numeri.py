@@ -322,7 +322,16 @@ def voisin(enc, cx, cy, corps, ray=6):
 #                     cassee de l'imprimeur, on ne peut le dire sans le
 #                     fac-simile sous les yeux — alors on ne touche pas
 #                     a la source, et l'on se contente de reconnaitre le
-#                     renvoi.
+#                     renvoi ;
+#   94 bis            UN NUMERO QUI N'EST PAS UN NOMBRE. Le graveur a
+#                     ajoute deux outils apres coup, et plutot que de
+#                     renumeroter toute la planche il les a glisses
+#                     entre les autres : « 94bis » est grave sur le
+#                     ciseau, entre le 94 et le 95, et « 95bis » sur le
+#                     maillet. Il y en a deux dans tout l'ouvrage, tous
+#                     deux au tableau 5. Leur cle est « 94bis », et le
+#                     lecteur automatique ne les lira jamais -- il ne
+#                     connait que des chiffres.
 #
 # Un groupe coupe par une fin de ligne est compose en DEUX exposants,
 # « (9, 11, » puis « 12) ». On les recolle avant de lire.
@@ -330,8 +339,10 @@ RECOLLE_EXPO = re.compile(
     r'\\textsuperscript\{([^{}]*,)\}\s*(?:\\nl|\\cc)?\s*\n?\s*'
     r'\\textsuperscript\{([^{}]*)\}')
 EXPO = re.compile(r'\\textsuperscript\{([^{}]*)\}')
-SUITE = re.compile(r'\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?\s*\)?\s*$')
+SUITE = re.compile(r'\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?'
+                   r'(?:\s*(?:\\textit\{)?bis\}?)?\s*\)?\s*$')
 CHIFRO = re.compile(r'\d{1,3}')
+BIS = re.compile(r'\bbis\b')
 
 
 def renvoji(texte):
@@ -343,7 +354,13 @@ def renvoji(texte):
     out = []
     for c in EXPO.findall(t):
         if SUITE.fullmatch(c.strip()):
-            out += [int(x) for x in CHIFRO.findall(c)]
+            ns = [int(x) for x in CHIFRO.findall(c)]
+            # « 94 bis » ne vaut pas 94 : c'est un objet a part, glisse
+            # entre le 94 et le 95. Le « bis » se rapporte au dernier
+            # nombre du renvoi.
+            if ns and BIS.search(c):
+                ns[-1] = f"{ns[-1]}bis"
+            out += ns
     # Les renvois que le fac-simile n'a pas mis en exposant -- il y en a
     # sept, tous du cote ido.
     for c in re.findall(r'\((\d{1,3}(?:\s*,\s*\d{1,3})*)\)', EXPO.sub('', t)):
@@ -402,18 +419,44 @@ def blokoj(tab):
     return out
 
 
+# LE RENVOI QUI NE MONTRE RIEN. Le livret appelle parfois un numero
+# que la planche ne porte pas : au tableau 5, « les plates-bandes
+# (150) », alors que la numerotation s'arrete a 146 et que l'objet est
+# grave « 50 ». gravuri/korekti.json dit, tableau par tableau, quel
+# renvoi lire a la place de quel autre. La source ne bouge pas ; c'est
+# la lecture qui se corrige.
+_KOREKTI = None
+
+
+def korekti(tab):
+    """Les renvois a corriger pour ce tableau : {lu: a lire}."""
+    global _KOREKTI
+    if _KOREKTI is None:
+        f = RACINE / "gravuri" / "korekti.json"
+        _KOREKTI = (json.loads(f.read_text(encoding="utf-8"))
+                    if f.exists() else {})
+    return _KOREKTI.get(f"t{int(tab):02d}", {})
+
+
+def _lire_renvoji(corps, kor):
+    for x in renvoji(corps):
+        v = kor.get(str(x), x)
+        yield int(v) if str(v).isdigit() else v
+
+
 def attendus(cle):
     """{scene: numeros appeles}. La scene est "" quand il n'y en a qu'une."""
     tab = cle[1:3]
     bl = blokoj(tab)
     if not bl:
         return {}
+    kor = korekti(tab)
     if not ceni(cle):
-        n = {x for _, c in bl for x in renvoji(c)}
+        n = {x for _, c in bl for x in _lire_renvoji(c, kor)}
         return {"": n} if n else {}
     out = {}
     for sc, corps in bl:
-        for x in renvoji(corps):
+        for x in _lire_renvoji(corps, kor):
             out.setdefault(sc, set()).add(x)
     return {k: v for k, v in out.items() if k}
 
@@ -425,11 +468,22 @@ def kl(scene, n):
 
 
 def descle(k):
-    """L'inverse : « c1:39 » -> ("c1", 39)."""
-    if ":" in k:
-        s, n = k.split(":", 1)
-        return s, int(n)
-    return "", int(k)
+    """L'inverse : « c1:39 » -> ("c1", 39), « 94bis » -> ("", "94bis")."""
+    s, n = k.split(":", 1) if ":" in k else ("", str(k))
+    return s, (int(n) if n.isdigit() else n)
+
+
+# TRIER DES CLES QUI NE SONT PAS TOUTES DES NOMBRES. « 94bis » se range
+# entre 94 et 95, non a la fin ni au debut : on trie sur le nombre, puis
+# sur ce qui le suit.
+ORDO = re.compile(r'(\d*)(.*)$')
+
+
+def ordo(k):
+    """La cle de tri d'un numero : sa scene, son nombre, son suffixe."""
+    s, n = k.split(":", 1) if ":" in str(k) else ("", str(k))
+    m = ORDO.match(n)
+    return s, int(m.group(1) or 0), m.group(2)
 
 
 # Le balayage etait trop timide : a 0.55 il ne rendait que ce que les
@@ -600,7 +654,8 @@ def phrases(tab, scene=""):
     t = re.sub(r'\\(?:nl|cc)\b', ' ', t)
     out = []
     for ph in re.split(r'[.;:!?]\s', t):
-        ns = sorted(set(renvoji(ph)))
+        ns = sorted(set(_lire_renvoji(ph, korekti(tab))),
+                    key=lambda q: ordo(str(q)))
         if len(ns) > 1:
             out.append(ns)
     return out
@@ -713,7 +768,7 @@ def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
     bas = 34
     feuille = Image.new('L', (cols * cell, lig * (cell + bas)), 255)
     d = ImageDraw.Draw(feuille)
-    for k, n in enumerate(sorted(gard, key=lambda q: descle(str(q)))):
+    for k, n in enumerate(sorted(gard, key=lambda q: ordo(str(q)))):
         (x, y, w, h), f = gard[n]
         cr = im.crop((x - marge, y - marge, x + w + marge, y + h + marge))
         r, c = divmod(k, cols)
@@ -783,6 +838,17 @@ def main(cles=None):
             for n in [n for n in trouves
                       if n in ref or str(descle(n)[1]) in ref]:
                 del trouves[n]
+            # CE QUE LA MAIN A POSE, LA MAIN PEUT LE REPRENDRE. Les
+            # positions relevees a l'oeil entrent ici avec une confiance
+            # de 1.0 exactement -- aucune lecture automatique n'y
+            # arrive -- et, une fois ecrites dans numeri.json, elles
+            # devenaient indiscernables des lectures portees depuis
+            # l'ancienne planche : les retirer de manuali.json ne les
+            # retirait plus de rien. On les jette donc toutes avant de
+            # remettre celles que le fichier tient encore. Un numero
+            # pose de travers se corrige alors la ou on l'a pose.
+            for n in [n for n, v in trouves.items() if v[1] == 1.0]:
+                del trouves[n]
             possibles = {kl(sc, n) for sc, ns in att.items() for n in ns}
             mains = manuali(cle, la, ht, haut)
             trouves.update({n: v for n, v in mains.items() if n in possibles})
@@ -791,7 +857,7 @@ def main(cles=None):
                                     round(w / la, 6), round(h / ht, 6), f]
                            for n, ((x, y, w, h), f)
                            in sorted(trouves.items(),
-                                     key=lambda q: descle(str(q[0])))}
+                                     key=lambda q: ordo(str(q[0])))}
             controle(f, trouves, KONTROLO / f"{cle}.png", haut)
             print(f"  {cle}  {len(trouves):3d}/{attendu:3d} numeros — "
                   f"planche d'origine, lecture conservee"
@@ -870,7 +936,7 @@ def main(cles=None):
                                         round(w / la, 6), round(h / ht, 6), f]
                                for n, ((x, y, w, h), f)
                                in sorted(trouves.items(),
-                                         key=lambda q: descle(str(q[0])))}}
+                                         key=lambda q: ordo(str(q[0])))}}
         print(f"  {cle}  {len(trouves):3d}/{attendu:3d} numeros lus "
               f"(corps {haut} px), dont {n_d} a verifier"
               + (f", {jetes} ecartes par le voisinage" if jetes else "")

@@ -47,6 +47,23 @@ def gravuri():
     return json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
 
 
+# LE RENVOI QUE LA PLANCHE NE PORTE PAS. gravuri/korekti.json dit,
+# tableau par tableau, quel renvoi lire a la place de quel autre : au
+# tableau 5, « les plates-bandes (150) » sont gravees « 50 ». La source
+# ne bouge pas ; c'est la page de lecture qui montre le bon numero.
+_KOREKTI = None
+
+
+def korekti(tab):
+    """Les renvois a corriger pour ce tableau : {lu: a lire}."""
+    global _KOREKTI
+    if _KOREKTI is None:
+        f = RACINE / "gravuri" / "korekti.json"
+        _KOREKTI = (json.loads(f.read_text(encoding="utf-8"))
+                    if f.exists() else {})
+    return _KOREKTI.get(tab, {})
+
+
 def numeri():
     """{tabelo: {numero: (cle de gravure, x, y, l, h, nom)}}.
 
@@ -80,8 +97,14 @@ def numeri():
 
 # LE RENVOI QUI SAIT OU IL POINTE DEVIENT UN BOUTON. Les autres restent
 # du texte : on ne promet pas un gros plan qu'on ne saurait pas montrer.
+# « 94 bis » N'EST PAS 94. Le graveur du tableau 5 a ajoute deux outils
+# apres coup et les a glisses entre les autres plutot que de renumeroter
+# la planche : le ciseau porte « 94bis », le maillet « 95bis ». Le
+# renvoi garde le mot -- en italique du cote francais, nu du cote ido --
+# et le bouton vise l'objet a part, non son voisin.
 RENVOI_REND = re.compile(
-    r'<sup>(\(?)\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)\s*(\)?)</sup>')
+    r'<sup>(\(?)\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)'
+    r'(\s*(?:<i>)?bis(?:</i>)?)?\s*(\)?)</sup>')
 
 # Les langues de la colonne de droite. « fr » est le texte source
 # (releve sur le fac-simile) ; les autres seront des traductions, et
@@ -882,6 +905,10 @@ def boutons_renvois(rangi):
         # celui d'un bloc t06-c1. La cle du bloc le dit.
         ms = re.match(r't\d\d-(c\d)-', r["cle"])
         scene = ms.group(1) if ms else ""
+        # Le renvoi que la planche ne porte pas : au tableau 5 le
+        # « (150) » des plates-bandes, gravees « 50 ». On lit la
+        # correction, on la montre, et la source ne bouge pas.
+        kor = korekti(tab)
 
         def ouvrir(n, langue, nu):
             """Le debut du bouton d'un numero, ou None si l'on ignore
@@ -901,8 +928,9 @@ def boutons_renvois(rangi):
 
         def bouton(m, par=par, langue="io", scene=scene):
             nonlocal pose
-            ouv, corps, fer = m.group(1), m.group(2), m.group(3)
-            ns = [int(x) for x in re.findall(r"\d+", corps)]
+            ouv, corps, bis, fer = (m.group(1), m.group(2),
+                                    m.group(3) or "", m.group(4))
+            ns = [int(kor.get(x, x)) for x in re.findall(r"\d+", corps)]
             # UN GROUPE VAUT POUR PLUSIEURS OBJETS A LA FOIS. Chaque
             # numero y devient cliquable separement ; les parentheses et
             # les virgules restent du texte, et rien ne bouge dans la
@@ -916,12 +944,12 @@ def boutons_renvois(rangi):
                 if not fait:
                     return m.group(0)
                 pose += fait
-                return f"<sup>{ouv}" + ", ".join(bouts) + f"{fer}</sup>"
-            d = ouvrir(ns[0], langue, False)
+                return f"<sup>{ouv}" + ", ".join(bouts) + f"{bis}{fer}</sup>"
+            d = ouvrir(f"{ns[0]}bis" if bis else ns[0], langue, False)
             if not d:
                 return m.group(0)
             pose += 1
-            return f"{d}<sup>{ouv}{ns[0]}{fer}</sup></button>"
+            return f"{d}<sup>{ouv}{ns[0]}{bis}{fer}</sup></button>"
 
         for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
             texte = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
@@ -968,13 +996,15 @@ def literi():
 # numero 1, qui est la facade de la maison : c'est la LETTRE l, et le
 # plan le dit lui-meme, sa legende portant « l. Balneyo » entre le k des
 # enfants et le m du palier. Dans cette fonte le l bas de casse et le
-# chiffre 1 ont le meme dessin ; rien sur la page ne les separe, et l'on
-# ne touche donc pas a la transcription — elle reste ce qu'elle lit.
+# chiffre 1 ont le meme dessin, et la casse du compositeur n'avait
+# peut-etre que l'un des deux : rien sur la page ne les separe.
 #
-# Mais le gros plan, lui, doit montrer la salle de bains. On reprend
-# donc le bouton DEJA POSE par boutons_renvois et l'on change ce qu'il
-# vise, sans toucher a ce qu'il montre : le lecteur lit « (1) », comme
-# le livret, et voit la piece que le livret nomme.
+# LA SOURCE NE BOUGE PAS — les deux PDF restent le fac-simile — mais la
+# page de lecture, elle, n'a pas a repeter une ambiguite que le plan
+# leve. On y lit donc « (l) », et le gros plan montre la salle de
+# bains. C'est le seul endroit du livre ou la page de lecture corrige
+# ce que la transcription conserve, et c'est pourquoi il se declare
+# dans literi.json plutot que de se deviner.
 BOUTON_UN = re.compile(
     r'<button class="lupo" data-g="[^"]*" data-c="[^"]*" data-n="1" '
     r'title="[^"]*" aria-expanded="false"><sup>\(1\)</sup></button>')
@@ -998,7 +1028,7 @@ def sorto_unika(t, regles, planche, places, noms, langue):
             f'<button class="lupo" data-g="{planche}" '
             f'data-c="{v[0]},{v[1]},{v[2]},{v[3]}" data-n="{L}" '
             f'title="{titre.replace(chr(34), "&quot;")}" '
-            f'aria-expanded="false"><sup>(1)</sup></button>'
+            f'aria-expanded="false"><sup>({L})</sup></button>'
         ) + t[m.end():]
     return t
 

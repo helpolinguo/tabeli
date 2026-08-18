@@ -1,0 +1,22 @@
+{
+ "_": [
+  "LES RENVOIS QU'IL FAUT CORRIGER POUR QU'ILS MONTRENT QUELQUE CHOSE.",
+  "",
+  "Le livret renvoie parfois a un numero que la planche ne porte pas.",
+  "Au tableau 5, « il arrosera les plates-bandes (150) » : or la",
+  "numerotation de cette planche s'arrete a 146, il n'y a pas de 149,",
+  "et l'objet vise est grave « 50 », entre le 132 de l'arrosoir et le",
+  "134 de la pompe. Un 1 de trop, du compositeur ou du releveur ; on ne",
+  "peut pas le savoir, et cela ne change rien a ce qu'il faut montrer.",
+  "",
+  "LA SOURCE NE BOUGE PAS — les deux PDF restent le fac-simile. Cette",
+  "table ne vaut que pour la page de lecture et pour le compte des",
+  "numeros attendus : elle dit, tableau par tableau, quel renvoi lire",
+  "a la place de quel autre. Elle se tient A LA MAIN, comme",
+  "verdikti.json : aucune mesure ne la remplace, il faut avoir compare",
+  "le livret et la planche."
+ ],
+ "t05": {
+  "150": "50"
+ }
+}

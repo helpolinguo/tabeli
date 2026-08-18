@@ -2811,14 +2811,116 @@
   }
  },
  "t05": {
-  "1": {
+  "a": {
    "io": [
-    "fasado",
+    "koridoro"
+   ],
+   "fr": [
+    "corridor"
+   ]
+  },
+  "b": {
+   "io": [
+    "salono"
+   ],
+   "fr": [
+    "salon"
+   ]
+  },
+  "c": {
+   "io": [
+    "manjo-chambro"
+   ],
+   "fr": [
+    "salle à manger"
+   ]
+  },
+  "d": {
+   "io": [
+    "koqueyo"
+   ],
+   "fr": [
+    "cuisine"
+   ]
+  },
+  "e": {
+   "io": [
+    "servisteyo"
+   ],
+   "fr": [
+    "office"
+   ]
+  },
+  "f": {
+   "io": [
+    "skribo-chambro"
+   ],
+   "fr": [
+    "cabinet de travail"
+   ]
+  },
+  "g": {
+   "io": [
+    "dormo-chambro"
+   ],
+   "fr": [
+    "chambre à coucher"
+   ]
+  },
+  "h": {
+   "io": [
+    "alkovo"
+   ],
+   "fr": [
+    "alcôve"
+   ]
+  },
+  "i": {
+   "io": [
+    "chambro por amiki"
+   ],
+   "fr": [
+    "chambre d'amis"
+   ]
+  },
+  "j": {
+   "io": [
+    "tualeteyo"
+   ],
+   "fr": [
+    "cabinet de toilette"
+   ]
+  },
+  "k": {
+   "io": [
+    "chambro por l'infanti"
+   ],
+   "fr": [
+    "chambre des enfants"
+   ]
+  },
+  "l": {
+   "io": [
     "balneyo"
    ],
    "fr": [
-    "façade",
     "salle de bains"
+   ]
+  },
+  "m": {
+   "io": [
+    "fluro"
+   ],
+   "fr": [
+    "palier"
+   ]
+  },
+  "1": {
+   "io": [
+    "fasado"
+   ],
+   "fr": [
+    "façade"
    ]
   },
   "2": {
@@ -3199,6 +3301,14 @@
     "jardin"
    ]
   },
+  "50": {
+   "io": [
+    "bedi"
+   ],
+   "fr": [
+    "plates-bandes"
+   ]
+  },
   "51": {
    "io": [
     "vetureyo"
@@ -3467,12 +3577,28 @@
     "scie"
    ]
   },
+  "94bis": {
+   "io": [
+    "cizelo"
+   ],
+   "fr": [
+    "ciseau"
+   ]
+  },
   "95": {
    "io": [
     "kompaso"
    ],
    "fr": [
     "compas"
+   ]
+  },
+  "95bis": {
+   "io": [
+    "martelo"
+   ],
+   "fr": [
+    "maillet"
    ]
   },
   "96": {
@@ -3774,118 +3900,6 @@
     "Manulaboristo"
    ],
    "fr": []
-  },
-  "150": {
-   "io": [
-    "bedi"
-   ],
-   "fr": [
-    "plates-bandes"
-   ]
-  },
-  "a": {
-   "io": [
-    "koridoro"
-   ],
-   "fr": [
-    "corridor"
-   ]
-  },
-  "b": {
-   "io": [
-    "salono"
-   ],
-   "fr": [
-    "salon"
-   ]
-  },
-  "c": {
-   "io": [
-    "manjo-chambro"
-   ],
-   "fr": [
-    "salle à manger"
-   ]
-  },
-  "d": {
-   "io": [
-    "koqueyo"
-   ],
-   "fr": [
-    "cuisine"
-   ]
-  },
-  "e": {
-   "io": [
-    "servisteyo"
-   ],
-   "fr": [
-    "office"
-   ]
-  },
-  "f": {
-   "io": [
-    "skribo-chambro"
-   ],
-   "fr": [
-    "cabinet de travail"
-   ]
-  },
-  "g": {
-   "io": [
-    "dormo-chambro"
-   ],
-   "fr": [
-    "chambre à coucher"
-   ]
-  },
-  "h": {
-   "io": [
-    "alkovo"
-   ],
-   "fr": [
-    "alcôve"
-   ]
-  },
-  "i": {
-   "io": [
-    "chambro por amiki"
-   ],
-   "fr": [
-    "chambre d'amis"
-   ]
-  },
-  "j": {
-   "io": [
-    "tualeteyo"
-   ],
-   "fr": [
-    "cabinet de toilette"
-   ]
-  },
-  "k": {
-   "io": [
-    "chambro por l'infanti"
-   ],
-   "fr": [
-    "chambre des enfants"
-   ]
-  },
-  "l": {
-   "io": [
-    "balneyo"
-   ],
-   "fr": [
-    "salle de bains"
-   ]
-  },
-  "m": {
-   "io": [
-    "fluro"
-   ],
-   "fr": [
-    "palier"
-   ]
   }
  },
  "t06": {

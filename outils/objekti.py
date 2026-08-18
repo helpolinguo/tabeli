@@ -44,9 +44,11 @@ GRAS = re.compile(
     r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'      # \VUgras{...}
     r'(?:\s|\\nl|\\cc|%|\n)*'                   # coupures de ligne
     r'(?:\\textsuperscript\{'
-    r'(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?\s*\)?)\}'
+    r'(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?'
+    r'(?:\s*(?:\\textit\{)?bis\}?)?\s*\)?)\}'
     r'|\((\d{1,3}(?:\s*,\s*\d{1,3})*)\))')
 CHIFRO = re.compile(r'\d{1,3}')
+BIS = re.compile(r'\bbis\b')
 
 # LES RENVOIS A LETTRE. « rondo (a), quadrato (b) » : la lettre est
 # gravee sur l'objet qui la porte -- le tableau noir, la carte -- et
@@ -59,14 +61,36 @@ GRAS_LIT = re.compile(
     r'(?:\\textsuperscript\{\(([a-z]{1,2})\)\}|\(([a-z]{1,2})\))')
 
 
-def patri():
+def literi(champo):
     f = RACINE / 'gravuri' / 'literi.json'
     if not f.exists():
         return {}
-    return json.loads(f.read_text(encoding='utf-8')).get('patri', {})
+    return json.loads(f.read_text(encoding='utf-8')).get(champo, {})
 
 
-PATRI = patri()
+PATRI = literi('patri')
+
+# LE « (1) » QUI EST UN l. Au tableau 5, la salle de bains porte un
+# renvoi compose « (1) » : dans cette fonte le l bas de casse et le
+# chiffre 1 ont le meme dessin, et le plan de la maison tranche — sa
+# legende porte « l. Balneyo ». Le nom irait donc se ranger sous le
+# numero 1, qui est la facade ; on le range sous la lettre.
+UNU_SORTO = literi('unu-sorto')
+
+
+# LE RENVOI QUE LA PLANCHE NE PORTE PAS. « les plates-bandes (150) »,
+# au tableau 5, sont gravees « 50 » : le nom doit se ranger sous le
+# numero qu'on montrera, non sous celui qu'on lit. gravuri/korekti.json
+# tient la table, et numeri.py la lit de meme.
+def korekti():
+    f = RACINE / 'gravuri' / 'korekti.json'
+    if not f.exists():
+        return {}
+    return {k: v for k, v in json.loads(
+        f.read_text(encoding='utf-8')).items() if not k.startswith('_')}
+
+
+KOREKTI = korekti()
 
 # LE SUBSTANTIF N'EST PAS TOUJOURS EN GRAS DEVANT UNE LETTRE. « la
 # zoologio (a), botaniko (b), geologio (c) » : trois mots nus, alors
@@ -175,11 +199,31 @@ def relever(dossier, motif):
                         nom = nettoyer(g.group(1))
                         if nom:
                             par.setdefault(k, []).append(nom)
+            uniq = UNU_SORTO.get(parts[i], [])
             for g in GRAS.finditer(parts[i + 1]):
                 nom = nettoyer(g.group(1))
                 if not nom:
                     continue
-                for n in CHIFRO.findall(g.group(2) or g.group(3) or ""):
+                brut = g.group(2) or g.group(3) or ""
+                # Le mot gras est parfois coupe en deux par la fin de
+                # ligne — « salle » puis « de bains » — et la regle ne
+                # nomme que le dernier morceau : on l'accepte en fin de
+                # nom comme en nom entier.
+                L = next((L for m, L in uniq
+                          if nom == m or nom.endswith(" " + m)), None)
+                if L:
+                    k = pa[1] + L if pa else L
+                    noms = par.setdefault(k, [])
+                    if nom not in noms:
+                        noms.append(nom)
+                    continue
+                ns = CHIFRO.findall(brut)
+                # « 94 bis » ne nomme pas le 94 : c'est un objet a part.
+                if ns and BIS.search(brut):
+                    ns[-1] = f"{ns[-1]}bis"
+                kor = KOREKTI.get(f"t{tab:02d}", {})
+                for n in ns:
+                    n = kor.get(str(n), n)
                     k = f"{sc}:{n}" if sc else n
                     noms = par.setdefault(k, [])
                     if nom not in noms:

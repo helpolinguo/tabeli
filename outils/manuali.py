@@ -273,9 +273,17 @@ def case(cle, tuile, ref):
     return cx, cy
 
 
+# LE GABARIT NE SE TAILLE QUE DANS DES CHIFFRES. « 94bis » n'en est
+# pas un : le graveur a glisse deux outils entre les autres plutot que
+# de renumeroter la planche, et leur numero porte un mot. On taille le
+# gabarit sur les chiffres seuls -- c'est par eux qu'on le retrouvera --
+# et l'on rallonge le cadre de ce que le mot occupe, pour que le gros
+# plan le montre en entier.
 def gabarit(n, corps, marge=12, ecart=0.13):
+    t = str(n)
+    suite = t[len(t.rstrip("abcdefghijklmnopqrstuvwxyz")):]
     parts = []
-    for c in str(n):
+    for c in t[:len(t) - len(suite)]:
         m = N._base()[c]
         parts.append(cv2.resize(m, (max(1, round(m.shape[1] * corps / N.H)),
                                     corps), interpolation=cv2.INTER_AREA))
@@ -290,7 +298,8 @@ def gabarit(n, corps, marge=12, ecart=0.13):
     q[marge:marge + corps, marge:marge + L] = g
     pos = (q >= 0.5).astype(np.float32)
     neg = 1.0 - pos
-    return pos / pos.sum() - neg / neg.sum(), marge, L
+    return pos / pos.sum() - neg / neg.sum(), marge, \
+        L + round(0.62 * corps * len(suite))
 
 
 # LA FENETRE DE RECHERCHE RESTE ETROITE. A une case et demie, le filtre
