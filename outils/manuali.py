@@ -26,6 +26,7 @@
 #
 #  USAGE
 #      python3 outils/manuali.py tuiler t01-apar-1   # fait les tuiles
+#      python3 outils/manuali.py zono   t01-apar-1   # ce qui manque, de pres
 #      python3 outils/manuali.py poser t01-apar-1 10=615,868 74=2286,1326
 #      python3 outils/manuali.py planche t01-apar-1  # le controle
 # ===================================================================
@@ -37,7 +38,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numeri as N                                          # noqa: E402
@@ -59,25 +60,25 @@ def police(taille):
         return ImageFont.load_default()
 
 
-def cadres(cle):
-    """Les quatre tuiles d'une planche : (x0, y0) de chacune."""
+def cadres(cle, n=NX):
+    """Le decoupage d'une planche en n x n : (x0, y0, x1, y1) de chacune."""
     im = Image.open(N.KOVRI / f"{cle}-trako.png")
     W, H = im.size
     out = []
-    for iy in range(NY):
-        for ix in range(NX):
-            x0 = max(0, round(W * ix / NX - W * MARGE))
-            y0 = max(0, round(H * iy / NY - H * MARGE))
-            x1 = min(W, round(W * (ix + 1) / NX + W * MARGE))
-            y1 = min(H, round(H * (iy + 1) / NY + H * MARGE))
+    for iy in range(n):
+        for ix in range(n):
+            x0 = max(0, round(W * ix / n - W * MARGE))
+            y0 = max(0, round(H * iy / n - H * MARGE))
+            x1 = min(W, round(W * (ix + 1) / n + W * MARGE))
+            y1 = min(H, round(H * (iy + 1) / n + H * MARGE))
             out.append((x0, y0, x1, y1))
     return im, out
 
 
-def tuiler(cle):
+def tuiler(cle, n=NX, z=1.0):
     """Ecrit les tuiles, les numeros deja connus cercles."""
     TUILES.mkdir(parents=True, exist_ok=True)
-    im, cads = cadres(cle)
+    im, cads = cadres(cle, n)
     W, H = im.size
     d = json.loads((RACINE / "gravuri" / "numeri.json")
                    .read_text(encoding="utf-8"))[cle]
@@ -93,19 +94,26 @@ def tuiler(cle):
             connus[int(n)] = (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
     F = police(34)
     for k, (x0, y0, x1, y1) in enumerate(cads):
-        t = im.crop((x0, y0, x1, y1)).convert("RGB")
+        # LE TRAIT RETOURNE. La couche porte l'encre en blanc sur fond
+        # noir ; l'oeil y perd la moitie de ce qu'il saurait lire. On la
+        # remet dans son sens, et la tuile redevient une gravure.
+        t = ImageOps.invert(im.crop((x0, y0, x1, y1)).convert("L")) \
+            .convert("RGB")
+        if z != 1.0:
+            t = t.resize((round(t.width * z), round(t.height * z)),
+                         Image.LANCZOS)
         g = ImageDraw.Draw(t)
         # CE QUI EST DEJA TROUVE EST CERCLE : l'oeil n'a plus qu'a lire
         # ce qui ne l'est pas, et ne relit pas deux fois la meme chose.
-        for n, (cx, cy) in connus.items():
+        for nu, (cx, cy) in connus.items():
             if x0 <= cx < x1 and y0 <= cy < y1:
-                g.ellipse([cx - x0 - 34, cy - y0 - 34,
-                           cx - x0 + 34, cy - y0 + 34],
-                          outline=(255, 110, 0), width=6)
-        for gx in range(0, t.width, PAS):
-            g.line([gx, 0, gx, t.height], fill=(0, 150, 255), width=2)
-        for gy in range(0, t.height, PAS):
-            g.line([0, gy, t.width, gy], fill=(0, 150, 255), width=2)
+                a, b = (cx - x0) * z, (cy - y0) * z
+                g.ellipse([a - 34 * z, b - 34 * z, a + 34 * z, b + 34 * z],
+                          outline=(255, 60, 0), width=6)
+        for gx in range(0, x1 - x0, PAS):
+            g.line([gx * z, 0, gx * z, t.height], fill=(0, 130, 255), width=2)
+        for gy in range(0, y1 - y0, PAS):
+            g.line([0, gy * z, t.width, gy * z], fill=(0, 130, 255), width=2)
         # LES LIGNES PORTENT LA COORDONNEE DE LA PLANCHE, non un nom de
         # case. On a d'abord dicte « 74 en H4 » et laisse la machine
         # chercher dans la case : elle n'y arrive pas. Sur cette
@@ -114,19 +122,123 @@ def tuiler(cle):
         # choisir entre deux nombres de meme longueur, se trompe meme
         # dans une demi-case. L'oeil, lui, lit le nombre ET sa place ;
         # autant qu'il dicte les deux.
-        for gx in range(0, t.width, PAS):
+        for gx in range(0, x1 - x0, PAS):
             e = f"{x0 + gx}"
-            g.rectangle([gx + 3, 3, gx + 26 + 17 * len(e), 46], fill=(0, 0, 0))
-            g.text((gx + 8, 2), e, fill=(0, 190, 255), font=F)
-        for gy in range(PAS, t.height, PAS):
+            g.rectangle([gx * z + 3, 3, gx * z + 26 + 17 * len(e), 46],
+                        fill=(0, 0, 0))
+            g.text((gx * z + 8, 2), e, fill=(0, 190, 255), font=F)
+        for gy in range(PAS, y1 - y0, PAS):
             e = f"{y0 + gy}"
-            g.rectangle([3, gy + 3, 26 + 17 * len(e), gy + 46], fill=(0, 0, 0))
-            g.text((8, gy + 2), e, fill=(0, 190, 255), font=F)
+            g.rectangle([3, gy * z + 3, 26 + 17 * len(e), gy * z + 46],
+                        fill=(0, 0, 0))
+            g.text((8, gy * z + 2), e, fill=(0, 190, 255), font=F)
         t.save(TUILES / f"{cle}-{k}.png")
     att = N.attendus(cle)
     manque = sorted(att - set(connus))
     print(f"  {cle} : {len(cads)} tuiles, {len(manque)} numeros manquants")
     print(f"  {manque}")
+
+
+# LES ZONES. Les derniers numeros d'une planche dense sont ceux que
+# l'oeil n'a pas su voir sur une tuile de demi-planche : a cette
+# reduction le chiffre ne fait plus que vingt-sept points. On regarde
+# donc de plus pres, mais seulement OU IL FAUT. Le numero n se trouve,
+# neuf fois sur dix, a moins de trois cent cinquante points du milieu
+# du segment qui joint n-1 a n+1 — mesure faite sur les trente-huit
+# numeros du tableau 14 dont les deux voisins sont connus. On decoupe
+# donc autour de ce milieu, et les fenetres qui se recouvrent se
+# fondent en une seule, de sorte qu'une image serve souvent a plusieurs.
+ZONE_L, ZONE_H = 950, 680
+ZONE_Z = 2.1                     # le chiffre y fait quatre-vingts points
+
+
+def zono(cle, rayon=None):
+    """Decoupe, autour de la place presumee, ce qui manque encore."""
+    TUILES.mkdir(parents=True, exist_ok=True)
+    im = Image.open(N.KOVRI / f"{cle}-trako.png")
+    W, H = im.size
+    d = json.loads((RACINE / "gravuri" / "numeri.json")
+                   .read_text(encoding="utf-8"))[cle]
+    connus = {int(n): ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
+              for n, v in d["numeri"].items()}
+    fm = RACINE / "gravuri" / "manuali.json"
+    if fm.exists():
+        for n, v in json.loads(fm.read_text(encoding="utf-8")) \
+                .get(cle, {}).items():
+            connus[int(n)] = ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
+    manque = sorted(N.attendus(cle) - set(connus))
+    if not manque:
+        print(f"  {cle} : rien ne manque")
+        return
+    # La place presumee : le milieu des deux voisins connus les plus
+    # proches en rang, ou le voisin unique quand il n'y en a qu'un.
+    def presume(n):
+        bas = max((k for k in connus if k < n), default=None)
+        haut = min((k for k in connus if k > n), default=None)
+        if bas is not None and haut is not None:
+            return ((connus[bas][0] + connus[haut][0]) / 2,
+                    (connus[bas][1] + connus[haut][1]) / 2)
+        if bas is not None:
+            return connus[bas]
+        if haut is not None:
+            return connus[haut]
+        return (W / 2, H / 2)
+
+    zones = []                                  # (x0, y0, [numeros])
+    for n in manque:
+        cx, cy = presume(n)
+        for z in zones:
+            if abs(z[0] + ZONE_L / 2 - cx) < ZONE_L * 0.35 and \
+               abs(z[1] + ZONE_H / 2 - cy) < ZONE_H * 0.35:
+                z[2].append(n)
+                break
+        else:
+            x0 = min(max(0, round(cx - ZONE_L / 2)), max(0, W - ZONE_L))
+            y0 = min(max(0, round(cy - ZONE_H / 2)), max(0, H - ZONE_H))
+            zones.append([x0, y0, [n]])
+    F = police(30)
+    for k, (x0, y0, ns) in enumerate(zones):
+        x1, y1 = min(W, x0 + ZONE_L), min(H, y0 + ZONE_H)
+        # LE TRAIT EN NOIR SUR BLANC. La couche de trait porte l'encre en
+        # blanc sur fond noir ; a l'oeil, cela se lit mal — on la retourne,
+        # et la planche redevient ce qu'elle est, une gravure.
+        t = ImageOps.invert(im.crop((x0, y0, x1, y1)).convert("L")) \
+            .convert("RGB")
+        t = t.resize((round(t.width * ZONE_Z), round(t.height * ZONE_Z)),
+                     Image.LANCZOS)
+        g = ImageDraw.Draw(t)
+        Z = ZONE_Z
+        for n, (cx, cy) in connus.items():
+            if x0 <= cx < x1 and y0 <= cy < y1:
+                a, b = (cx - x0) * Z, (cy - y0) * Z
+                g.ellipse([a - 34 * Z, b - 34 * Z, a + 34 * Z, b + 34 * Z],
+                          outline=(255, 60, 0), width=6)
+        pas = 100
+        dx = (-x0) % pas
+        dy = (-y0) % pas
+        for gx in range(dx, x1 - x0, pas):
+            fort = (x0 + gx) % 500 == 0
+            g.line([gx * Z, 0, gx * Z, t.height],
+                   fill=(0, 130, 255) if fort else (120, 190, 235),
+                   width=3 if fort else 1)
+            if fort:
+                e = f"{x0 + gx}"
+                g.rectangle([gx * Z + 3, 3, gx * Z + 22 + 15 * len(e), 40],
+                            fill=(0, 0, 0))
+                g.text((gx * Z + 7, 2), e, fill=(0, 190, 255), font=F)
+        for gy in range(dy, y1 - y0, pas):
+            fort = (y0 + gy) % 500 == 0
+            g.line([0, gy * Z, t.width, gy * Z],
+                   fill=(0, 130, 255) if fort else (120, 190, 235),
+                   width=3 if fort else 1)
+            if fort:
+                e = f"{y0 + gy}"
+                g.rectangle([3, gy * Z + 3, 22 + 15 * len(e), gy * Z + 40],
+                            fill=(0, 0, 0))
+                g.text((7, gy * Z + 2), e, fill=(0, 190, 255), font=F)
+        t.save(TUILES / f"{cle}-z{k}.png")
+        print(f"  z{k} ({x0},{y0}) : {ns}")
+    print(f"  {cle} : {len(zones)} zones, {len(manque)} numeros manquants")
 
 
 def case(cle, tuile, ref):
@@ -180,6 +292,24 @@ def poser(cle, refs, rayon=0.62):
               for v in d["numeri"].values()]
     occupe += [(round(v[0] * LA), round(v[1] * HT)) for v in par.values()]
     for n, tuile, ref in refs:
+        if ref.count(",") == 2:
+            # L'oeil a vu le nombre, mais l'a montre du doigt : on cherche
+            # dans le rayon dicte, et le filtre pose le cadre au chiffre
+            # pres. Rayon court -- c'est ce qui interdit les glissements.
+            cx, cy, ray = (int(v) for v in ref.split(","))
+            T, M, L = gabarit(n, corps)
+            x0, y0 = int(cx - L / 2) - ray, int(cy - corps / 2) - ray
+            x1 = int(cx - L / 2) + ray + T.shape[1]
+            y1 = int(cy - corps / 2) + ray + T.shape[0]
+            x0, y0 = max(0, x0), max(0, y0)
+            x1, y1 = min(LA, x1), min(HT, y1)
+            r = cv2.matchTemplate(enc[y0:y1, x0:x1], T, cv2.TM_CCORR)
+            _, mx, _, loc = cv2.minMaxLoc(r)
+            px, py = x0 + loc[0] + M, y0 + loc[1] + M
+            par[str(n)] = [round(px / LA, 6), round(py / HT, 6),
+                           round(L / LA, 6), round(corps / HT, 6), 1.0]
+            print(f"  {n:>4} cale sur ({px}, {py})  score {mx:.3f}")
+            continue
         if "," in ref:
             # L'oeil a lu la place sur la grille : on la prend telle
             # quelle, sans rien chercher. C'est le cas le plus sur.
@@ -247,12 +377,71 @@ def planche(cle):
           f"{N.KONTROLO / (cle + '-manuali.png')}")
 
 
+# LA RELECTURE DES LECTURES AUTOMATIQUES. Le score ne dit pas tout : le
+# filtre qui cherche « 14 » le trouve dans le « 144 » d'a cote, et rien
+# ne l'en avertit -- le morceau est parfaitement forme. Il faut donc
+# passer les lectures sous l'oeil, une planche a la fois, chacune
+# decoupee large et portant le nom que le fac-simile donne a l'objet.
+# Ce qui a ete pose a la main n'y figure pas : c'est deja juge.
+def revizo(cle, page=0, par=24, cols=6, Z=3):
+    """Les lectures automatiques d'une planche, a relire une a une."""
+    d = json.loads((RACINE / "gravuri" / "numeri.json")
+                   .read_text(encoding="utf-8"))[cle]
+    LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
+    fm = RACINE / "gravuri" / "manuali.json"
+    mains = (json.loads(fm.read_text(encoding="utf-8")).get(cle, {})
+             if fm.exists() else {})
+    noms = N.objekti(cle)
+    tout = [(int(n), v) for n, v in d["numeri"].items() if n not in mains]
+    tout.sort()
+    lot = tout[page * par:(page + 1) * par]
+    if not lot:
+        print(f"  {cle} : plus rien a relire")
+        return 0
+    im = ImageOps.invert(Image.open(N.KOVRI / f"{cle}-trako.png")
+                         .convert("L"))
+    w, h = round(corps * 4.4), round(corps * 3.0)
+    F = police(20)
+    F2 = ImageFont.truetype(
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 17)
+    lig = (len(lot) + cols - 1) // cols
+    pl = Image.new("RGB", (cols * (w * Z + 10) + 10,
+                           lig * (h * Z + 52) + 10), (255, 255, 255))
+    g = ImageDraw.Draw(pl)
+    for i, (n, v) in enumerate(lot):
+        cx, cy = (v[0] + v[2] / 2) * LA, (v[1] + v[3] / 2) * HT
+        c = im.crop((round(cx - w / 2), round(cy - h / 2),
+                     round(cx + w / 2), round(cy + h / 2))).convert("RGB")
+        c = c.resize((w * Z, h * Z), Image.LANCZOS)
+        X, Y = 10 + (i % cols) * (w * Z + 10), 10 + (i // cols) * (h * Z + 52)
+        pl.paste(c, (X, Y))
+        g.rectangle([X, Y, X + w * Z, Y + h * Z], outline=(200, 0, 0))
+        nm = noms.get(str(n), {})
+        nom = (nm.get("fr") or nm.get("io") or [""])[0]
+        g.text((X + 2, Y + h * Z + 3), f"{n} — {nom[:24]}",
+               fill=(0, 0, 0), font=F)
+        g.text((X + 2, Y + h * Z + 26),
+               f"{v[4]:.2f}   {round(cx)},{round(cy)}",
+               fill=(90, 90, 90), font=F2)
+    N.KONTROLO.mkdir(parents=True, exist_ok=True)
+    dest = N.KONTROLO / f"{cle}-revizo{page}.png"
+    pl.save(dest)
+    print(f"  {cle} : page {page}, {len(lot)} lectures sur {len(tout)} "
+          f"-> {dest}")
+    return len(tout)
+
+
 def main(args):
     if not args:
         raise SystemExit(__doc__)
     verbe, cle = args[0], args[1]
     if verbe == "tuiler":
-        tuiler(cle)
+        tuiler(cle, int(args[2]) if len(args) > 2 else NX,
+               float(args[3]) if len(args) > 3 else 1.0)
+    elif verbe == "zono":
+        zono(cle)
+    elif verbe == "revizo":
+        revizo(cle, int(args[2]) if len(args) > 2 else 0)
     elif verbe == "planche":
         planche(cle)
     elif verbe == "poser":
