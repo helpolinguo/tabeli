@@ -26,6 +26,7 @@
 #      python3 outils/originali.py caler  t01-apar-1 origine.jpg
 #      python3 outils/originali.py compar t01-apar-1 origine.jpg 0.79 0.20
 #      python3 outils/originali.py netigar t01-apar-1 originali/t01.jpg
+#      python3 outils/originali.py reprendre t02-apar-1 originali/t02.jpg
 # ===================================================================
 
 import json
@@ -370,7 +371,24 @@ def _pt(T, x, y):
     return float(q[0]), float(q[1])
 
 
-def transporti(cle, neta, verbeux=True):
+def deja_porte(cle):
+    """Ce tableau a-t-il deja ete porte sur son original ?"""
+    if not CATALOGO.exists():
+        return False
+    return "transporto" in json.loads(
+        CATALOGO.read_text(encoding="utf-8")).get(cle, {})
+
+
+# LE TRANSPORT NE SE FAIT QU'UNE FOIS. Le refaire appliquerait la
+# similitude a des positions qui l'ont deja subie, et les mille cinq
+# cents numeros partiraient de travers sans que rien ne le signale.
+# L'outil refuse donc de recommencer, a moins qu'on ne le lui dise.
+def transporti(cle, neta, verbeux=True, force=False):
+    if deja_porte(cle) and not force:
+        raise SystemExit(
+            f"  {cle} : deja porte sur son original. Recommencer "
+            f"deplacerait les numeros une seconde fois.\n"
+            f"  Si c'est bien ce qu'on veut : ajouter « force ».")
     """Porte les numeros, les scenes et les tailles sur la nouvelle planche."""
     T, korelo, (LO, HO), (LN, HN) = mezuri(cle, neta, verbeux=verbeux)
     k = float(np.hypot(T[0, 0], T[1, 0]))
@@ -486,11 +504,37 @@ def servir(cle, neta, verbeux=True):
                               ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+# -------------------------------------------------------------------
+#  LA REPRISE ENTIERE, EN UNE COMMANDE
+# -------------------------------------------------------------------
+#  Nettoyer, porter les numeros, servir les deux images : trois gestes
+#  qui vont toujours ensemble et dans cet ordre. Quinze planches
+#  restent a reprendre ; autant ne pas les taper trois fois chacune.
+#
+#      python3 outils/originali.py reprendre t02-apar-1 originali/t02.jpg
+def reprendre(cle, chemin, force=False):
+    dest = RACINE / "originali" / "kovri" / f"{cle}-neta.png"
+    out, par = netigar(chemin, dest)
+    cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
+           if CATALOGO.exists() else {})
+    e = cat.setdefault(cle, {})
+    e["fonto"] = str(chemin)
+    e["netigo"] = par
+    CATALOGO.write_text(json.dumps(cat, ensure_ascii=False, indent=1) + "\n",
+                        encoding="utf-8")
+    transporti(cle, dest, force=force)
+    servir(cle, dest)
+    print(f"  {cle} : repris. Verifier la planche de controle, "
+          f"puis relancer numeri.py et html.py.")
+
+
 def main(args):
     if len(args) < 2:
         raise SystemExit(__doc__)
     verbe, cle, chemin = args[0], args[1], args[2]
-    if verbe == "netigar":
+    if verbe == "reprendre":
+        reprendre(cle, chemin, force="force" in args)
+    elif verbe == "netigar":
         cle_ = cle
         out, par = netigar(chemin, RACINE / "originali" / "kovri" /
                            f"{cle_}-neta.png")
@@ -504,7 +548,7 @@ def main(args):
     elif verbe == "servir":
         servir(cle, chemin)
     elif verbe == "transporti":
-        transporti(cle, chemin)
+        transporti(cle, chemin, force="force" in args)
     elif verbe == "caler":
         M, score, tour = caler(cle, chemin)
         cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
