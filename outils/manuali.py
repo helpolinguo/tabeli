@@ -75,6 +75,12 @@ def cadres(cle, n=NX):
     return im, out
 
 
+def restant(cle, connus):
+    """Ce que le texte appelle et que personne n'a encore trouve."""
+    att = {N.kl(sc, n) for sc, ns in N.attendus(cle).items() for n in ns}
+    return sorted(att - set(connus), key=N.descle)
+
+
 def tuiler(cle, n=NX, z=1.0):
     """Ecrit les tuiles, les numeros deja connus cercles."""
     TUILES.mkdir(parents=True, exist_ok=True)
@@ -82,7 +88,7 @@ def tuiler(cle, n=NX, z=1.0):
     W, H = im.size
     d = json.loads((RACINE / "gravuri" / "numeri.json")
                    .read_text(encoding="utf-8"))[cle]
-    connus = {int(n): (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
+    connus = {n: (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
               for n, v in d["numeri"].items()}
     # Ce qu'on vient de poser a la main compte aussi, sans quoi il
     # faudrait relancer tout le lecteur entre deux tuiles pour cesser de
@@ -91,7 +97,7 @@ def tuiler(cle, n=NX, z=1.0):
     if fm.exists():
         for n, v in json.loads(fm.read_text(encoding="utf-8")) \
                 .get(cle, {}).items():
-            connus[int(n)] = (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
+            connus[n] = (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
     F = police(34)
     for k, (x0, y0, x1, y1) in enumerate(cads):
         # LE TRAIT RETOURNE. La couche porte l'encre en blanc sur fond
@@ -133,8 +139,7 @@ def tuiler(cle, n=NX, z=1.0):
                         fill=(0, 0, 0))
             g.text((8, gy * z + 2), e, fill=(0, 190, 255), font=F)
         t.save(TUILES / f"{cle}-{k}.png")
-    att = N.attendus(cle)
-    manque = sorted(att - set(connus))
+    manque = restant(cle, connus)
     print(f"  {cle} : {len(cads)} tuiles, {len(manque)} numeros manquants")
     print(f"  {manque}")
 
@@ -159,29 +164,32 @@ def zono(cle, rayon=None):
     W, H = im.size
     d = json.loads((RACINE / "gravuri" / "numeri.json")
                    .read_text(encoding="utf-8"))[cle]
-    connus = {int(n): ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
+    connus = {n: ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
               for n, v in d["numeri"].items()}
     fm = RACINE / "gravuri" / "manuali.json"
     if fm.exists():
         for n, v in json.loads(fm.read_text(encoding="utf-8")) \
                 .get(cle, {}).items():
-            connus[int(n)] = ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
-    manque = sorted(N.attendus(cle) - set(connus))
+            connus[n] = ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
+    manque = restant(cle, connus)
     if not manque:
         print(f"  {cle} : rien ne manque")
         return
     # La place presumee : le milieu des deux voisins connus les plus
     # proches en rang, ou le voisin unique quand il n'y en a qu'un.
-    def presume(n):
-        bas = max((k for k in connus if k < n), default=None)
-        haut = min((k for k in connus if k > n), default=None)
+    def presume(k):
+        sc, n = N.descle(k)
+        frat = {N.descle(q)[1]: v for q, v in connus.items()
+                if N.descle(q)[0] == sc}
+        bas = max((k for k in frat if k < n), default=None)
+        haut = min((k for k in frat if k > n), default=None)
         if bas is not None and haut is not None:
-            return ((connus[bas][0] + connus[haut][0]) / 2,
-                    (connus[bas][1] + connus[haut][1]) / 2)
+            return ((frat[bas][0] + frat[haut][0]) / 2,
+                    (frat[bas][1] + frat[haut][1]) / 2)
         if bas is not None:
-            return connus[bas]
+            return frat[bas]
         if haut is not None:
-            return connus[haut]
+            return frat[haut]
         return (W / 2, H / 2)
 
     zones = []                                  # (x0, y0, [numeros])
@@ -278,7 +286,12 @@ def gabarit(n, corps, marge=12, ecart=0.13):
 # 71 d'a cote, « 73 » sur le 75. Une demi-case suffit des lors que
 # l'oeil a bien lu la grille, et elle interdit ces glissements.
 def poser(cle, refs, rayon=0.62):
-    """Trouve chaque nombre dicte dans sa case et ses voisines."""
+    """Trouve chaque nombre dicte dans sa case et ses voisines.
+
+    Sur une planche a plusieurs scenes le numero se dicte avec la sienne
+    — « c3:12=1840,2210 » —, sans quoi on ne saurait pas de quel douze
+    il s'agit.
+    """
     enc = (np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png"))
            > 128).astype(np.float32)
     HT, LA = enc.shape
@@ -291,7 +304,8 @@ def poser(cle, refs, rayon=0.62):
     occupe = [(round(v[0] * LA), round(v[1] * HT))
               for v in d["numeri"].values()]
     occupe += [(round(v[0] * LA), round(v[1] * HT)) for v in par.values()]
-    for n, tuile, ref in refs:
+    for k, tuile, ref in refs:
+        n = N.descle(k)[1]
         if ref.count(",") == 2:
             # L'oeil a vu le nombre, mais l'a montre du doigt : on cherche
             # dans le rayon dicte, et le filtre pose le cadre au chiffre
@@ -306,19 +320,19 @@ def poser(cle, refs, rayon=0.62):
             r = cv2.matchTemplate(enc[y0:y1, x0:x1], T, cv2.TM_CCORR)
             _, mx, _, loc = cv2.minMaxLoc(r)
             px, py = x0 + loc[0] + M, y0 + loc[1] + M
-            par[str(n)] = [round(px / LA, 6), round(py / HT, 6),
-                           round(L / LA, 6), round(corps / HT, 6), 1.0]
-            print(f"  {n:>4} cale sur ({px}, {py})  score {mx:.3f}")
+            par[k] = [round(px / LA, 6), round(py / HT, 6),
+                      round(L / LA, 6), round(corps / HT, 6), 1.0]
+            print(f"  {k:>7} cale sur ({px}, {py})  score {mx:.3f}")
             continue
         if "," in ref:
             # L'oeil a lu la place sur la grille : on la prend telle
             # quelle, sans rien chercher. C'est le cas le plus sur.
             px, py = (int(v) for v in ref.split(","))
             T, M, L = gabarit(n, corps)
-            par[str(n)] = [round((px - L / 2) / LA, 6),
-                           round((py - corps / 2) / HT, 6),
-                           round(L / LA, 6), round(corps / HT, 6), 1.0]
-            print(f"  {n:>4} pose a l'oeil en ({px}, {py})")
+            par[k] = [round((px - L / 2) / LA, 6),
+                      round((py - corps / 2) / HT, 6),
+                      round(L / LA, 6), round(corps / HT, 6), 1.0]
+            print(f"  {k:>7} pose a l'oeil en ({px}, {py})")
             continue
         cx, cy = case(cle, tuile, ref)
         T, M, L = gabarit(n, corps)
@@ -346,9 +360,9 @@ def poser(cle, refs, rayon=0.62):
                     r[a0:a1, b0:b1] = -9
         _, mx, _, loc = cv2.minMaxLoc(r)
         px, py = x0 + loc[0] + M, y0 + loc[1] + M
-        par[str(n)] = [round(px / LA, 6), round(py / HT, 6),
-                       round(L / LA, 6), round(corps / HT, 6), round(mx, 3)]
-        print(f"  {n:>4} en {ref} (tuile {tuile}) -> "
+        par[k] = [round(px / LA, 6), round(py / HT, 6),
+                  round(L / LA, 6), round(corps / HT, 6), round(mx, 3)]
+        print(f"  {k:>7} en {ref} (tuile {tuile}) -> "
               f"({px}, {py})  score {mx:.3f}")
     f.write_text(json.dumps(tout, ensure_ascii=False, indent=1) + "\n",
                  encoding="utf-8")
@@ -366,8 +380,8 @@ def planche(cle):
     d = json.loads((RACINE / "gravuri" / "numeri.json")
                    .read_text(encoding="utf-8"))[cle]
     LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
-    trouves = {int(n): ((round(v[0] * LA), round(v[1] * HT),
-                         round(v[2] * LA), round(v[3] * HT)), v[4])
+    trouves = {n: ((round(v[0] * LA), round(v[1] * HT),
+                    round(v[2] * LA), round(v[3] * HT)), v[4])
                for n, v in par.items()}
     N.KONTROLO.mkdir(parents=True, exist_ok=True)
     n = N.controle(N.KOVRI / f"{cle}-trako.png", trouves,
@@ -392,8 +406,8 @@ def revizo(cle, page=0, par=24, cols=6, Z=3):
     mains = (json.loads(fm.read_text(encoding="utf-8")).get(cle, {})
              if fm.exists() else {})
     noms = N.objekti(cle)
-    tout = [(int(n), v) for n, v in d["numeri"].items() if n not in mains]
-    tout.sort()
+    tout = [(n, v) for n, v in d["numeri"].items() if n not in mains]
+    tout.sort(key=lambda q: N.descle(q[0]))
     lot = tout[page * par:(page + 1) * par]
     if not lot:
         print(f"  {cle} : plus rien a relire")
@@ -451,8 +465,8 @@ def main(args):
             if a.startswith("t="):
                 tuile = int(a[2:])
                 continue
-            n, ref = a.split("=")
-            refs.append((int(n), tuile, ref))
+            k, ref = a.split("=")
+            refs.append((k, tuile, ref))
         poser(cle, refs)
     else:
         raise SystemExit(__doc__)

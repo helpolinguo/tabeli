@@ -77,8 +77,25 @@ def recoller(texte):
     return texte
 
 
+# LES PLANCHES A PLUSIEURS SCENES. Six tableaux montrent deux vignettes
+# ou davantage, et chacune recommence sa numerotation a 1 : le « (39) »
+# de la premiere scene et celui de la quatrieme ne nomment pas le meme
+# objet. Le nom se range donc sous une cle qui porte la scene —
+# « c1:39 » —, comme dans numeri.json. gravuri/ceni.json dit quels
+# tableaux sont dans ce cas.
+def a_ceni():
+    f = RACINE / "gravuri" / "ceni.json"
+    if not f.exists():
+        return set()
+    return {c[:3] for c in json.loads(f.read_text(encoding="utf-8"))
+            if not c.startswith("_")}
+
+
+CENI = a_ceni()
+
+
 def relever(dossier, motif):
-    """{numero de tableau: {numero d'objet: [noms]}} pour une langue."""
+    """{numero de tableau: {cle d'objet: [noms]}} pour une langue."""
     out = {}
     for f in sorted((RACINE / "texto" / dossier).glob(motif)):
         m = re.search(r'-(?:tabelo|tableau)-(\d+)\.tex$', f.name)
@@ -86,14 +103,30 @@ def relever(dossier, motif):
             continue
         tab = int(m.group(1))
         par = out.setdefault(tab, {})
-        for g in GRAS.finditer(recoller(f.read_text(encoding="utf-8"))):
-            nom = nettoyer(g.group(1))
-            if not nom:
-                continue
-            noms = par.setdefault(int(g.group(2)), [])
-            if nom not in noms:
-                noms.append(nom)
+        scenes = f"t{tab:02d}" in CENI
+        texte = recoller(f.read_text(encoding="utf-8"))
+        # On coupe par cle de bloc, pour savoir de quelle scene on parle.
+        parts = re.split(r'^%%K (\S+)', texte, flags=re.M)
+        for i in range(1, len(parts), 2):
+            mk = re.match(r't\d\d-(c\d)-', parts[i])
+            if mk:
+                relever.scene = mk.group(1)
+            sc = getattr(relever, "scene", "") if scenes else ""
+            for g in GRAS.finditer(parts[i + 1]):
+                nom = nettoyer(g.group(1))
+                if not nom:
+                    continue
+                k = f"{sc}:{g.group(2)}" if sc else g.group(2)
+                noms = par.setdefault(k, [])
+                if nom not in noms:
+                    noms.append(nom)
+        relever.scene = ""
     return out
+
+
+def rang(k):
+    s, n = (k.split(":", 1) + [""])[:2] if ":" in k else ("", k)
+    return (s, int(n or k))
 
 
 def construire():
@@ -102,27 +135,23 @@ def construire():
     tout = {}
     for tab in sorted(set(io) | set(fr)):
         par = {}
-        for n in sorted(set(io.get(tab, {})) | set(fr.get(tab, {}))):
-            par[str(n)] = {"io": io.get(tab, {}).get(n, []),
-                           "fr": fr.get(tab, {}).get(n, [])}
+        for k in sorted(set(io.get(tab, {})) | set(fr.get(tab, {})), key=rang):
+            par[k] = {"io": io.get(tab, {}).get(k, []),
+                      "fr": fr.get(tab, {}).get(k, [])}
         tout[f"t{tab:02d}"] = par
     return tout
 
 
 def attendus(tab):
-    f = list((RACINE / "texto" / "io").glob(f"*-tabelo-{tab:02d}.tex"))
-    if not f:
-        return set()
-    return {int(x) for x in
-            re.findall(r'\((\d+)\)', f[0].read_text(encoding="utf-8"))}
+    return set(relever("io", f"*-tabelo-{tab:02d}.tex").get(tab, {}))
 
 
 def main(args):
     tout = construire()
     if args:
         tab = f"t{int(args[0]):02d}"
-        for n, v in sorted(tout[tab].items(), key=lambda kv: int(kv[0])):
-            print(f"  {n:>4}  {' / '.join(v['io']) or '—':40s}  "
+        for n, v in sorted(tout[tab].items(), key=lambda kv: rang(kv[0])):
+            print(f"  {n:>6}  {' / '.join(v['io']) or '—':40s}  "
                   f"{' / '.join(v['fr']) or '—'}")
         return
     (RACINE / "gravuri" / "objekti.json").write_text(

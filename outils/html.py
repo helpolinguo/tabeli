@@ -63,7 +63,6 @@ def numeri():
     for cle, v in json.loads(f.read_text(encoding="utf-8")).items():
         tab = cle[:3]
         for n, b in v["numeri"].items():
-            n = int(n)
             # UN TABLEAU PEUT AVOIR DEUX PLANCHES — le 5 en a deux, le
             # 12 aussi — et le meme numero peut alors etre lu sur les
             # deux. On garde la lecture la mieux etayee, non la
@@ -71,7 +70,7 @@ def numeri():
             if force.get((tab, n), -1) >= b[4]:
                 continue
             force[(tab, n)] = b[4]
-            nom = noms.get(tab, {}).get(str(n), {})
+            nom = noms.get(tab, {}).get(n, {})
             out.setdefault(tab, {})[n] = (
                 cle, b[0], b[1], b[2], b[3],
                 (nom.get("io") or nom.get("fr") or [""])[0],
@@ -864,11 +863,17 @@ def boutons_renvois(rangi):
         par = num.get(tab)
         if not par:
             continue
+        # LA SCENE DU BLOC DECIDE DE QUEL NUMERO IL S'AGIT. Six planches
+        # portent plusieurs vignettes, et chacune recommence a 1 : le
+        # « (39) » d'un bloc t06-c3 ne montre pas le meme objet que
+        # celui d'un bloc t06-c1. La cle du bloc le dit.
+        ms = re.match(r't\d\d-(c\d)-', r["cle"])
+        scene = ms.group(1) if ms else ""
 
-        def bouton(m, par=par, langue="io"):
+        def bouton(m, par=par, langue="io", scene=scene):
             nonlocal pose
             n = int(m.group(1))
-            v = par.get(n)
+            v = par.get(f"{scene}:{n}" if scene else str(n))
             if not v:
                 return m.group(0)
             cle, x, y, w, h, io, fr = v

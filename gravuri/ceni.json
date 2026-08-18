@@ -1,0 +1,57 @@
+{
+ "_": [
+  "LES SCENES D'UNE PLANCHE, et leur place sur elle.",
+  "",
+  "Six des seize planches ne portent pas UNE image mais plusieurs, et",
+  "CHACUNE RECOMMENCE SA NUMEROTATION A 1. Le tableau 6 le montre le",
+  "mieux : cinq vignettes bordees d'un feston -- la chambre a coucher",
+  "(I), le salon (II), la salle a manger (III), la cuisine (IV) -- et,",
+  "au milieu, l'ovale de la salle de bain (V). Le meme « 39 » se lit",
+  "deux fois sur la planche, une fois par vignette qui l'appelle.",
+  "",
+  "Le texte le dit dans ses cles : un bloc « t06-c3-04-1 » appartient a",
+  "la troisieme scene, et son « (12) » ne montre pas le meme objet que",
+  "le « (12) » de la premiere. Sans ce fichier, le lecteur cherchait un",
+  "numero unique la ou il y en a cinq, et le rendait au hasard.",
+  "",
+  "Les cinq planches a deux vignettes se coupent toutes au meme endroit :",
+  "une gouttiere de blanc parfait, sans un point d'encre, de 0.496 a",
+  "0.505 de la largeur. Elle a ete mesuree, non estimee. Le tableau 6",
+  "n'en a pas -- ses vignettes ont des bords dechires -- et ses cadres",
+  "sont releves a l'oeil sur l'epreuve en couleurs.",
+  "",
+  "L'ordre compte : on essaie les formes l'une apres l'autre, et la",
+  "premiere qui contient le numero l'emporte. L'ovale du tableau 6 vient",
+  "donc en tete, sans quoi ses huit numeros tomberaient dans les quatre",
+  "vignettes qu'il chevauche.",
+  "",
+  "Rekt : x0, y0, x1, y1. Elipso : cx, cy, rx, ry. Tout en fraction."
+ ],
+ "t03-apar-1": {
+  "c1": ["rekt", 0.0, 0.0, 0.4962, 1.0],
+  "c2": ["rekt", 0.5052, 0.0, 1.0, 1.0]
+ },
+ "t04-apar-1": {
+  "c1": ["rekt", 0.0, 0.0, 0.4962, 1.0],
+  "c2": ["rekt", 0.5051, 0.0, 1.0, 1.0]
+ },
+ "t06-apar-1": {
+  "c5": ["elipso", 0.4975, 0.5405, 0.1005, 0.1130],
+  "c1": ["rekt", 0.0, 0.0, 0.5000, 0.4960],
+  "c2": ["rekt", 0.5000, 0.0, 1.0, 0.4960],
+  "c3": ["rekt", 0.0, 0.4960, 0.5000, 1.0],
+  "c4": ["rekt", 0.5000, 0.4960, 1.0, 1.0]
+ },
+ "t07-apar-1": {
+  "c1": ["rekt", 0.0, 0.0, 0.4958, 1.0],
+  "c2": ["rekt", 0.5050, 0.0, 1.0, 1.0]
+ },
+ "t08-apar-1": {
+  "c1": ["rekt", 0.0, 0.0, 0.4960, 1.0],
+  "c2": ["rekt", 0.5050, 0.0, 1.0, 1.0]
+ },
+ "t09-apar-1": {
+  "c1": ["rekt", 0.0, 0.0, 0.4960, 1.0],
+  "c2": ["rekt", 0.5048, 0.0, 1.0, 1.0]
+ }
+}

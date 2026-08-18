@@ -260,14 +260,85 @@ def voisin(enc, cx, cy, corps, ray=6):
     return best, qui, pos, marge
 
 
-def attendus(cle):
-    """Les numeros que le texte du tabelo appelle."""
-    n = cle[1:3]
-    f = list((RACINE / "texto" / "io").glob(f"*-tabelo-{n}.tex"))
+# UNE PLANCHE PEUT PORTER PLUSIEURS SCENES, et chacune recommence sa
+# numerotation a 1 : le tableau 6 a cinq vignettes, le 3, le 4, le 7, le
+# 8 et le 9 en ont deux. Le meme « 39 » s'y lit donc deux fois, et le
+# lecteur, qui croyait chaque numero unique, en jetait l'une des deux ou
+# rendait l'autre au hasard. gravuri/ceni.json donne la place de chaque
+# scene ; on lit alors vignette par vignette, chacune avec les seuls
+# numeros que SON texte appelle.
+def ceni(cle):
+    """Les scenes d'une planche : [(nom, forme)], dans l'ordre d'essai."""
+    f = RACINE / "gravuri" / "ceni.json"
+    if not f.exists():
+        return []
+    d = json.loads(f.read_text(encoding="utf-8")).get(cle)
+    return list(d.items()) if d else []
+
+
+def dedans(forme, x, y):
+    """Le point (x, y), en fraction, est-il dans la forme ?"""
+    if forme[0] == "elipso":
+        _, cx, cy, rx, ry = forme
+        return ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1.0
+    _, x0, y0, x1, y1 = forme
+    return x0 <= x <= x1 and y0 <= y <= y1
+
+
+def boite(forme):
+    """Le cadre englobant d'une forme, en fraction."""
+    if forme[0] == "elipso":
+        _, cx, cy, rx, ry = forme
+        return (max(0.0, cx - rx), max(0.0, cy - ry),
+                min(1.0, cx + rx), min(1.0, cy + ry))
+    return tuple(forme[1:])
+
+
+def blokoj(tab):
+    """Le texte du tabelo, coupe par cle : [(scene, corps)]."""
+    f = list((RACINE / "texto" / "io").glob(f"*-tabelo-{tab}.tex"))
     if not f:
-        return set()
-    return {int(x) for x in
-            re.findall(r'\((\d+)\)', f[0].read_text(encoding="utf-8"))}
+        return []
+    parts = re.split(r'^%%K (\S+)', f[0].read_text(encoding="utf-8"),
+                     flags=re.M)
+    out, sc = [], ""
+    for i in range(1, len(parts), 2):
+        m = re.match(r't\d\d-(c\d)-', parts[i])
+        if m:
+            sc = m.group(1)
+        # Une note ou un titre suit la scene ou il se trouve.
+        out.append((sc, parts[i + 1]))
+    return out
+
+
+def attendus(cle):
+    """{scene: numeros appeles}. La scene est "" quand il n'y en a qu'une."""
+    tab = cle[1:3]
+    bl = blokoj(tab)
+    if not bl:
+        return {}
+    if not ceni(cle):
+        n = {int(x) for _, c in bl for x in re.findall(r'\((\d+)\)', c)}
+        return {"": n} if n else {}
+    out = {}
+    for sc, corps in bl:
+        for x in re.findall(r'\((\d+)\)', corps):
+            out.setdefault(sc, set()).add(int(x))
+    return {k: v for k, v in out.items() if k}
+
+
+def kl(scene, n):
+    """La cle d'un numero : « 39 » sur une planche d'une scene, « c1:39 »
+    sur une planche qui en porte plusieurs."""
+    return f"{scene}:{n}" if scene else str(n)
+
+
+def descle(k):
+    """L'inverse : « c1:39 » -> ("c1", 39)."""
+    if ":" in k:
+        s, n = k.split(":", 1)
+        return s, int(n)
+    return "", int(k)
 
 
 # Le balayage etait trop timide : a 0.55 il ne rendait que ce que les
@@ -340,11 +411,11 @@ def fusionner(a, b, corps):
     return out
 
 
-def lire(chemin, att):
-    """Rend {numero: (x, y, largeur, hauteur)} en points de la planche."""
-    a = np.asarray(Image.open(chemin))
+def lire(a, att, haut=None):
+    """Rend {numero: ((x, y, l, h), force)} en points du tableau donne."""
     enc = (a > 128).astype(np.uint8)
-    haut = hauteur(enc)
+    if haut is None:
+        haut = hauteur(enc)
     gl = []
     for x, y, w, h, v in ilots(enc, round(0.68 * haut), round(1.35 * haut),
                                4, 0.16):
@@ -401,7 +472,7 @@ def lire(chemin, att):
         p.sort(key=lambda q: -q[1])
         if len(p) == 1 or p[0][1] - p[1][1] >= ECART_PREUVE:
             gard[n] = (p[0][0], round(p[0][1], 3))
-    return gard, haut, enc.shape
+    return gard
 
 
 # UN NUMERO SE TIENT PRES DE CEUX QU'ON CITE AVEC LUI. Le texte decrit
@@ -421,12 +492,13 @@ def lire(chemin, att):
 SEUIL_ELOIGNE = 6.0
 
 
-def phrases(tab):
+def phrases(tab, scene=""):
     """Les groupes de numeros cites dans une meme phrase du tabelo."""
-    f = list((RACINE / "texto" / "io").glob(f"*-tabelo-{tab}.tex"))
-    if not f:
+    bl = blokoj(tab)
+    if not bl:
         return []
-    t = re.sub(r'%.*', '', f[0].read_text(encoding="utf-8"))
+    t = "".join(c for sc, c in bl if not scene or sc == scene)
+    t = re.sub(r'%.*', '', t)
     t = re.sub(r'\\(?:nl|cc)\b', ' ', t)
     out = []
     for ph in re.split(r'[.;:!?]\s', t):
@@ -436,12 +508,12 @@ def phrases(tab):
     return out
 
 
-def coherer(cle, trouves, la, ht):
+def coherer(cle, trouves, la, ht, scene=""):
     """Ecarte les lectures posees loin de leurs voisines de phrase."""
     from itertools import combinations
     pos = {n: (v[0][0], v[0][1]) for n, v in trouves.items()}
     surs = {n: pos[n] for n, v in trouves.items() if v[1] >= 0.95}
-    ph = phrases(cle[1:3])
+    ph = phrases(cle[1:3], scene)
     ref = [np.hypot(surs[a][0] - surs[b][0], surs[a][1] - surs[b][1])
            for g in ph for a, b in combinations([x for x in g if x in surs], 2)]
     if len(ref) < 8:
@@ -477,8 +549,8 @@ def manuali(cle, la, ht, corps):
     if not f.exists():
         return {}
     d = json.loads(f.read_text(encoding="utf-8")).get(cle, {})
-    return {int(n): ((round(v[0] * la), round(v[1] * ht),
-                      round(v[2] * la), round(v[3] * ht)), v[4])
+    return {n: ((round(v[0] * la), round(v[1] * ht),
+                 round(v[2] * la), round(v[3] * ht)), v[4])
             for n, v in d.items()}
 
 
@@ -496,11 +568,15 @@ def verdikti(cle):
     if not f.exists():
         return set()
     d = json.loads(f.read_text(encoding="utf-8"))
-    return set(d.get(cle, []))
+    return {str(x) for x in d.get(cle, [])}
 
 
 def objekti(cle):
-    """Le nom de chaque objet numerote, s'il a ete releve."""
+    """Le nom de chaque objet numerote, s'il a ete releve.
+
+    Les cles suivent celles de numeri.json : « 39 » sur une planche d'une
+    seule scene, « c1:39 » sur une planche qui en porte plusieurs.
+    """
     f = RACINE / "gravuri" / "objekti.json"
     if not f.exists():
         return {}
@@ -535,7 +611,7 @@ def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
     bas = 34
     feuille = Image.new('L', (cols * cell, lig * (cell + bas)), 255)
     d = ImageDraw.Draw(feuille)
-    for k, n in enumerate(sorted(gard)):
+    for k, n in enumerate(sorted(gard, key=lambda q: descle(str(q)))):
         (x, y, w, h), f = gard[n]
         cr = im.crop((x - marge, y - marge, x + w + marge, y + h + marge))
         r, c = divmod(k, cols)
@@ -559,7 +635,11 @@ def main(cles=None):
     fich = RACINE / "gravuri" / "numeri.json"
     if fich.exists():
         cat = json.loads(fich.read_text(encoding="utf-8"))
-    tot_l = tot_a = 0
+    # LE COMPTE SE TIENT PAR TABLEAU, non par planche : le tableau 5 a
+    # deux gravures — la maison et son plan — qui se partagent une seule
+    # numerotation, et compter deux fois ses cent vingt-trois numeros
+    # ferait mentir le total.
+    par_tab = {}
     for f in sorted(KOVRI.glob("*-trako.png")):
         cle = f.name[:-10]
         if not re.fullmatch(r't\d\d-[a-z0-9]+-\d+', cle):
@@ -569,16 +649,48 @@ def main(cles=None):
         att = attendus(cle)
         if not att:
             continue
-        trouves, haut, (ht, la) = lire(f, att)
-        trouves, jetes = coherer(cle, trouves, la, ht)
-        refuses = verdikti(cle) & set(trouves)
+        a = np.asarray(Image.open(f))
+        ht, la = a.shape
+        haut = hauteur((a > 128).astype(np.uint8))
+        # LA LECTURE SE FAIT VIGNETTE PAR VIGNETTE. Sur une planche a
+        # plusieurs scenes, chacune recommence a 1 : chercher « 39 » sur
+        # toute la planche, c'est en trouver deux et n'en garder aucun.
+        formes = ceni(cle) or [("", ["rekt", 0.0, 0.0, 1.0, 1.0])]
+        trouves, jetes = {}, 0
+        for sc, forme in formes:
+            if sc not in att:
+                continue
+            fx0, fy0, fx1, fy1 = boite(forme)
+            x0, y0 = int(fx0 * la), int(fy0 * ht)
+            x1, y1 = min(la, int(fx1 * la) + 1), min(ht, int(fy1 * ht) + 1)
+            lus = lire(a[y0:y1, x0:x1], att[sc], haut)
+            lus = {n: ((b[0] + x0, b[1] + y0, b[2], b[3]), fo)
+                   for n, (b, fo) in lus.items()}
+            # Le cadre englobant deborde sur les vignettes voisines --
+            # celui de l'ovale du tableau 6 les chevauche toutes quatre.
+            # On ne garde que ce qui tombe vraiment dans la forme.
+            lus = {n: v for n, v in lus.items()
+                   if dedans(forme, (v[0][0] + v[0][2] / 2) / la,
+                             (v[0][1] + v[0][3] / 2) / ht)}
+            lus, jt = coherer(cle, lus, la, ht, sc)
+            jetes += jt
+            trouves.update({kl(sc, n): v for n, v in lus.items()})
+        attendu = sum(len(v) for v in att.values())
+        # Un refus ecrit en clair (« 54 ») sur une planche a scenes vaut
+        # pour toutes ses vignettes : le jugement date d'avant qu'on sut
+        # qu'il y en avait plusieurs, et rien ne dit laquelle il visait.
+        ref = verdikti(cle)
+        refuses = {n for n in trouves
+                   if n in ref or str(descle(n)[1]) in ref}
         for n in refuses:
             del trouves[n]
         # Ce que l'oeil a pose l'emporte sur tout le reste.
+        possibles = {kl(sc, n) for sc, ns in att.items() for n in ns}
         mains = manuali(cle, la, ht, haut)
-        trouves.update({n: v for n, v in mains.items() if n in att})
-        tot_l += len(trouves)
-        tot_a += len(att)
+        trouves.update({n: v for n, v in mains.items() if n in possibles})
+        t = par_tab.setdefault(cle[:3], [set(), 0])
+        t[0].update(trouves)
+        t[1] = max(t[1], attendu)
         controle(f, trouves, KONTROLO / f"{cle}.png", haut)
         # LA PLANCHE DES CAS DOUTEUX, decoupee plus large et portant le
         # nom de l'objet : c'est celle qu'on relit pour trancher.
@@ -600,14 +712,17 @@ def main(cles=None):
                     "numeri": {str(n): [round(x / la, 6), round(y / ht, 6),
                                         round(w / la, 6), round(h / ht, 6), f]
                                for n, ((x, y, w, h), f)
-                               in sorted(trouves.items())}}
-        print(f"  {cle}  {len(trouves):3d}/{len(att):3d} numeros lus "
+                               in sorted(trouves.items(),
+                                         key=lambda q: descle(str(q[0])))}}
+        print(f"  {cle}  {len(trouves):3d}/{attendu:3d} numeros lus "
               f"(corps {haut} px), dont {n_d} a verifier"
               + (f", {jetes} ecartes par le voisinage" if jetes else "")
               + (f", {len(refuses)} refuses a l'oeil" if refuses else "")
               + (f", {len(mains)} poses a la main" if mains else ""))
     fich.write_text(json.dumps(cat, ensure_ascii=False, indent=1),
                     encoding="utf-8")
+    tot_l = sum(len(v[0]) for v in par_tab.values())
+    tot_a = sum(v[1] for v in par_tab.values())
     if tot_a:
         print(f"  TOTAL {tot_l}/{tot_a} = {100 * tot_l // tot_a} %")
     print(f"  planches de controle dans {KONTROLO}")
