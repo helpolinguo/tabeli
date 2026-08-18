@@ -457,14 +457,21 @@ def lire(a, att, haut=None):
             prop.append((int(cg + t), (pg[0], y0, x1 - pg[0], y1 - y0)))
         if len(prop) == 1:
             lus.setdefault(prop[0][0], []).append((prop[0][1], force))
-    # UN NOMBRE LU DEUX FOIS. Chaque numero ne parait qu'une fois sur la
-    # planche : deux lectures veulent dire qu'au moins l'une est fausse.
-    # Les jeter toutes les deux coutait cher — le balayage, plus bavard
-    # que les ilots, en faisait perdre de bonnes. On les departage donc
-    # par la force de leur preuve : la ressemblance moyenne des
-    # chiffres, et une prime a la lecture entierement tiree des ilots,
-    # ou le chiffre a ete decoupe et non seulement correle. Si les deux
-    # se valent, on ne tranche pas.
+    # UN NOMBRE LU DEUX FOIS. Chaque numero ne parait qu'une fois par
+    # vignette : deux lectures veulent dire qu'au moins l'une est fausse.
+    # On les departage par la force de leur preuve : la ressemblance
+    # moyenne des chiffres, et une prime a la lecture entierement tiree
+    # des ilots, ou le chiffre a ete decoupe et non seulement correle.
+    #
+    # SI LES DEUX SE VALENT, ON NE TRANCHE PAS. On a essaye le
+    # contraire, une fois les vignettes separees : puisque le numero est
+    # unique DANS SA VIGNETTE, l'une des deux lectures est fausse a coup
+    # sur, et prendre la mieux etayee semblait valoir mieux que perdre
+    # les deux. Cela rend soixante et une lectures de plus -- dont
+    # quatre bonnes. Le reste est du bruit : un « c. » et un « k. » de
+    # la legende du plan, une branche de sapin, un montant de fenetre.
+    # La mesure de la preuve ne sait pas departager deux faux ; on s'en
+    # tient donc a l'abstention.
     gard = {}
     for n, p in lus.items():
         if n not in att:
