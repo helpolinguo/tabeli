@@ -273,16 +273,16 @@
   "detalo": {
    "alteso": 3065,
    "largeur": 4553,
-   "okteti": 1811668
+   "okteti": 1504934
   },
-  "fonto": "t14-apar-1-neta.png",
-  "koloro": false,
+  "fonto": "t14-apar-1-koloro.png",
+  "koloro": true,
   "largeur": 4553,
   "origino": true,
   "vido": {
    "alteso": 808,
    "largeur": 1200,
-   "okteti": 233460
+   "okteti": 204458
   }
  },
  "t15-apar-1": {
@@ -307,16 +307,16 @@
   "detalo": {
    "alteso": 3034,
    "largeur": 4539,
-   "okteti": 2476702
+   "okteti": 2138324
   },
-  "fonto": "t16-apar-1-neta.png",
-  "koloro": false,
+  "fonto": "t16-apar-1-koloro.png",
+  "koloro": true,
   "largeur": 4539,
   "origino": true,
   "vido": {
    "alteso": 802,
    "largeur": 1200,
-   "okteti": 309710
+   "okteti": 271918
   }
  }
 }
