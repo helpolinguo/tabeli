@@ -1,4 +1,29 @@
 {
+ "_": [
+  "LES NUMEROS POSES A L'OEIL, planche par planche, en fraction de la",
+  "planche comme ceux que la machine lit. numeri.py les ajoute a sa",
+  "lecture ; ce fichier est le seul maitre de ce qu'il contient, et",
+  "retirer une ligne d'ici retire le numero de la page.",
+  "",
+  "SIX D'ENTRE EUX NE SE LISENT PAS SUR LE FAC-SIMILE, et sont poses",
+  "sur la seule description de l'editeur, qui a la planche sous les",
+  "yeux :",
+  "",
+  "  t10 84   a droite du cou de l'homme assis, sous le 85",
+  "  t14 22   dans la vitrine, a la hauteur du 46, sous le 21",
+  "  t14 35   a la hauteur du 32, au-dessus du 93",
+  "  t14 40   sur la ligne du 38 et du 39, a la hauteur du 51",
+  "  t14 67   a la hauteur du 76, au-dessus du 89 et du 68",
+  "  t15 11   dans le rebord du plat, au-dessus du 18",
+  "",
+  "A quatre cents points par pouce, la reserve de blanc qui porte ces",
+  "chiffres s'est refermee sur eux : on voit qu'il y a de l'encre, on",
+  "ne voit pas ce qu'elle dessine. Le cadre est donc a la place dite,",
+  "non a la place lue ; il peut manquer de quelques points, et le gros",
+  "plan est assez large pour que cela ne se voie pas. Si l'on numerise",
+  "un jour ces six endroits de plus pres, c'est ici qu'il faudra les",
+  "recaler."
+ ],
  "t01-apar-1": {
   "10": [
    0.117881,
@@ -1165,6 +1190,20 @@
    0.329724,
    0.754044,
    0.010387,
+   0.009904,
+   1.0
+  ],
+  "c2:25": [
+   0.686077,
+   0.693298,
+   0.010829,
+   0.009904,
+   1.0
+  ],
+  "c2:42": [
+   0.977569,
+   0.653681,
+   0.011271,
    0.009904,
    1.0
   ]
@@ -4126,6 +4165,13 @@
    0.005677,
    0.010721,
    1.0
+  ],
+  "84": [
+   0.986681,
+   0.790611,
+   0.011354,
+   0.010721,
+   1.0
   ]
  },
  "t11-apar-1": {
@@ -5436,6 +5482,41 @@
    0.010542,
    0.01044,
    1.0
+  ],
+  "22": [
+   0.059082,
+   0.422512,
+   0.01186,
+   0.01044,
+   1.0
+  ],
+  "35": [
+   0.305842,
+   0.524959,
+   0.010762,
+   0.01044,
+   1.0
+  ],
+  "40": [
+   0.407204,
+   0.423817,
+   0.011421,
+   0.01044,
+   1.0
+  ],
+  "53": [
+   0.562486,
+   0.516476,
+   0.010762,
+   0.01044,
+   1.0
+  ],
+  "67": [
+   0.62058,
+   0.71354,
+   0.010762,
+   0.01044,
+   1.0
   ]
  },
  "t15-apar-1": {
@@ -5891,6 +5972,13 @@
    0.26219,
    0.589109,
    0.005984,
+   0.011221,
+   1.0
+  ],
+  "11": [
+   0.325355,
+   0.60495,
+   0.007092,
    0.011221,
    1.0
   ]
