@@ -101,6 +101,18 @@ def nomo(nm, langue):
     return next((v[0] for v in nm.values() if v), "")
 
 
+# UN PLAN N'EST PAS UNE VUE. Le tableau 5 porte, a cote de la maison en
+# coupe, le plan de ses etages : huit numeros s'y lisent, et tous les
+# huit se lisent aussi sur la maison. Le plan les grave un peu plus net,
+# et il gagnait a ce jeu — de sorte que le cabinet d'aisances (20)
+# s'ouvrait sur un rectangle vide entre deux cloisons, quand la maison
+# en coupe en montre la porte, marquee « W. C. 20 ». La nettete du
+# chiffre n'est pas ce qu'on cherche : on cherche la chose. Le plan ne
+# prend donc que les numeros que la vue n'a pas — et il se trouve qu'il
+# n'y en a aucun.
+PLANOJ = {"t05-apar-2"}
+
+
 def numeri():
     """{tabelo: {numero: (cle de gravure, x, y, l, h, noms)}}.
 
@@ -114,13 +126,19 @@ def numeri():
     o = RACINE / "gravuri" / "objekti.json"
     noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
     out, force = {}, {}
-    for cle, v in json.loads(f.read_text(encoding="utf-8")).items():
-        tab = cle[:3]
+    tout = json.loads(f.read_text(encoding="utf-8"))
+    # LES PLANS EN DERNIER : ils ne prennent que ce qui reste.
+    for cle in sorted(tout, key=lambda c: c in PLANOJ):
+        v = tout[cle]
+        tab, plano = cle[:3], cle in PLANOJ
         for n, b in v["numeri"].items():
             # UN TABLEAU PEUT AVOIR DEUX PLANCHES — le 5 en a deux, le
             # 12 aussi — et le meme numero peut alors etre lu sur les
             # deux. On garde la lecture la mieux etayee, non la
-            # derniere venue.
+            # derniere venue ; mais un plan ne prend que ce que la vue
+            # n'a pas, si bien etaye soit-il.
+            if plano and (tab, n) in force:
+                continue
             if force.get((tab, n), -1) >= b[4]:
                 continue
             force[(tab, n)] = b[4]
@@ -1302,14 +1320,28 @@ def boutons_literi(rangi):
                     continue
                 nm = noms.get(planche[:3], {}).get(prefixo + L, {})
                 titre = nomo(nm, langue).replace('"', "&quot;")
+                nu = "" if len(m.group(2)) == 1 else " nuda"
                 bouts.append(
-                    f'<button class="lupo nuda" data-g="{planche}" '
+                    f'<button class="lupo{nu}" data-g="{planche}" '
                     f'data-c="{v[0]},{v[1]},{v[2]},{v[3]}" data-n="{L}" '
                     f'title="{titre}" aria-expanded="false">{L}</button>')
                 fait += 1
             if not fait:
                 return m.group(0)
             pose += fait
+            # LA PARENTHESE EST DU RENVOI, ET SE CLIQUE AVEC LUI. Un
+            # numero seul prend tout son groupe dans le bouton —
+            # « (7) » —, et la lettre n'avait que sa lettre : il
+            # fallait viser un caractere large de trois points. Quand
+            # la lettre est seule, elle fait donc comme le numero. Un
+            # groupe de deux — le « (ab) » du tableau 1, seul de son
+            # espece — garde ses parentheses hors du bouton : elles
+            # n'appartiennent a aucune des deux lettres.
+            if len(bouts) == 1 and fait == 1:
+                dedans = bouts[0]
+                i = dedans.index(">") + 1
+                return (dedans[:i] + f"<sup>{ita}(" + dedans[i:-len("</button>")]
+                        + ")" + ("</i>" if ita else "") + "</sup></button>")
             return (f"<sup>{ita}(" + "".join(bouts)
                     + ")" + ("</i>" if ita else "") + "</sup>")
 
