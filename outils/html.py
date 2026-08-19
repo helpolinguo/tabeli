@@ -193,6 +193,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "pt", "nomo": "Português", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "bn", "nomo": "বাংলা", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
@@ -678,7 +680,8 @@ def fusionner(blocs):
 #  2. ASSEMBLAGE
 # -------------------------------------------------------------------
 DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
-           "ar": "ar", "hi": "hi", "pt": "pt"}   # langue -> texto/<...>
+           "ar": "ar", "hi": "hi", "pt": "pt",
+           "bn": "bn"}                           # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1611,7 +1614,10 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # titre du volume et non celui d'un tableau. On
                         # exige donc le « सं. » qui suit le mot dans la
                         # seule ligne qui numerote.
-                        r"|तालिका\s+सं")
+                        r"|तालिका\s+सं"
+                        # MEME RAISON POUR LE BENGALI : « সারণি » sans
+                        # son « নং » se lirait dans le titre du volume.
+                        r"|সারণি\s+নং")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1634,7 +1640,8 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
-                   r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला", re.I)
+                   r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
+                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়", re.I)
 
 # LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
@@ -1644,7 +1651,8 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
 CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|cena|сцена)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
-                  r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य", re.I)
+                  r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
+                  r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,

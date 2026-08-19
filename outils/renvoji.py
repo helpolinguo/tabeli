@@ -42,7 +42,7 @@ RACINE = Path(__file__).resolve().parent.parent
 # Le nom que chaque colonne donne a « tableau » dans ses fichiers.
 DOSSIER = {"fr": "tableau", "en": "table", "es": "cuadro", "ru": "tablica",
            "zh": "tubiao", "ar": "lawha", "hi": "talika",
-           "pt": "quadro"}
+           "pt": "quadro", "bn": "sarani"}
 
 # LE FRANCAIS N'EST PAS UNE TRADUCTION. C'est le releve d'une AUTRE
 # edition, et Rochelle ordonne ses phrases comme il l'entend :
