@@ -1,0 +1,122 @@
+{
+ "_": [
+  "LES MOTS DE COULEUR QUI N'EN SONT PAS, ET CEUX QUI NE DISENT RIEN",
+  "DE LA PEINTURE.",
+  "",
+  "kolori.py releve dans les deux livrets tout adjectif de couleur",
+  "attache a un objet numerote, et va voir ce que la couche de couleur",
+  "porte a cet endroit. Deux sortes de mots doivent en sortir, et",
+  "aucune mesure ne peut les reconnaitre : il faut avoir lu la phrase.",
+  "",
+  "LES HOMOGRAPHES. « Roses » est une fleur au tableau 3 -- « ses",
+  "roses (39), qui forment une si belle haie » -- et « rose des vents »",
+  "au tableau 16 est un instrument. « Oranges » au tableau 14 est un",
+  "fruit qu'on achete, non une couleur. Ces mots-la ne parlent pas de",
+  "couleur du tout.",
+  "",
+  "LES NOMS LEXICALISES. « Tableau noir » est le nom de l'objet, comme",
+  "« blackboard » : le livret ne decrit pas sa peinture, il le nomme.",
+  "De meme « papier blanc », « pois verts », « couverts » -- la couleur",
+  "y est dans le nom, et repeindre serait un contresens. Le tableau",
+  "noir du tableau 1 est d'ailleurs peint en vert sombre sur la",
+  "planche, comme il l'etait au mur des classes : la mesure disait",
+  "« NON, clarte 0.53 », et elle avait tort de le dire.",
+  "",
+  "« ecarte » donne, par tableau, les couples (mot, fragment de",
+  "contexte) a ne pas relever. Le fragment est cherche tel quel dans la",
+  "phrase nettoyee ; il doit suffire a lever l'ambiguite et pas",
+  "davantage.",
+  "",
+  "LE RESTE EST DIT PAR LE TEXTE ET SE VERIFIE SUR LA PLANCHE. Ce",
+  "fichier ne dit pas ce qui est juste ; il dit seulement ce qui n'a",
+  "pas a etre compare.",
+  "",
+  "« vidita » EST LE JUGEMENT DE L'ŒIL, LA OU LA MESURE NE TRANCHE PAS.",
+  "La couronne lue autour d'un numero couvre plusieurs choses, et le",
+  "numero lui-meme est souvent pose loin de l'objet qu'il nomme : le",
+  "(65) du tableau 13 est sur la marquise du Grand Hotel, alors qu'il",
+  "designe un paquebot au large. La mesure dit alors « NON » sans",
+  "raison, ou « oui » sans merite. On a donc regarde chaque endroit,",
+  "et l'on note ici ce qu'on y a vu.",
+  "",
+  "Trois verdicts : « planche » quand c'est la planche qui a tort et",
+  "qu'il faudra la reprendre, « mesure » quand c'est la mesure qui a",
+  "tort et que la planche dit deja ce que le livret dit, « akordo »",
+  "quand les deux s'accordent et que l'œil le confirme. Le silence vaut",
+  "« pas encore regarde »."
+ ],
+ "ecarte": {
+  "t01": [
+   ["nigra", "nigra tabelo (1)"],
+   ["noir", "tableau noir(1)"],
+   ["blanka", "blanka paperfolio"],
+   ["blanc", "papier blanc"]
+  ],
+  "t03": [
+   ["roses", "ses roses (39)"]
+  ],
+  "t04": [
+   ["verte", "table recouverte"]
+  ],
+  "t06": [
+   ["verts", "les couverts"]
+  ],
+  "t14": [
+   ["oranges", "des oranges"]
+  ],
+  "t15": [
+   ["verts", "des pois verts"]
+  ],
+  "t16": [
+   ["rose", "rose des vents"]
+  ]
+ },
+ "vidita": {
+  "t03/c1:1": ["akordo",
+   "le ciel est bleu, et le numero est en plein dedans."],
+  "t03/c1:18": ["planche",
+   "les pechers portent la feuille verte de l'ete ; le livret les veut « tote rozea e blanka », en pleine floraison d'avril."],
+  "t03/c1:19": ["planche",
+   "meme cas que le (18) : les abricotiers sont feuillus, non fleuris."],
+  "t03/c1:57": ["mesure",
+   "la redingote de l'oncle est bien sombre ; la couronne y melange la robe rouge de la voisine et remonte la clarte a 0.38."],
+  "t04/c1:30": ["mesure",
+   "le noir est celui de la moustache, trop menue pour qu'une couronne de trois corps de chiffre en dise quoi que ce soit."],
+  "t04/c2:40": ["planche",
+   "l'orpheline est nu-tete, cheveux blonds ; le livret lui met un bonnet blanc."],
+  "t04/c2:41": ["planche",
+   "la pelerine est peinte en vert franc ; le livret la veut bleue, de la meme couleur que la robe (42) qui, elle, l'est."],
+  "t04/c2:42": ["akordo",
+   "la robe est bleue ; c'est la pelerine (41), qui devrait l'etre autant, qui est verte."],
+  "t06/c2:10": ["akordo",
+   "le palmier du cache-pot est vert, comme le veut le livret."],
+  "t07/c1:1": ["mesure",
+   "la fumee de la forge est bien sombre ; le numero est pose dans le ciel clair, au-dessus d'elle."],
+  "t07/c2:2": ["planche",
+   "le lever de soleil est tout en or et en jaune ; le livret l'inonde de « purpurea radii », et la planche n'a pas un rouge."],
+  "t07/c2:72": ["akordo",
+   "la crete du coq est rouge ; les 35° mesures sont ceux d'une crete peinte au vermillon."],
+  "t08/c1:56": ["mesure",
+   "les gros nuages d'orage sont bien noirs ; le numero tombe sur une trouee claire du ciel."],
+  "t09/c1:57": ["planche",
+   "aucune bruyere rose sur la roche grise ; le brin cueilli n'a pas ete peint."],
+  "t09/c2:25": ["mesure",
+   "la futaie est verte ; le vert-jaune mesure a 62° reste un vert, et la tolerance de 45° est ici trop courte."],
+  "t09/c2:31": ["mesure",
+   "la mousse est verte au pied des arbres ; le numero est pose sur un tronc brun."],
+  "t11/75": ["mesure",
+   "la fumee de l'incendie est noire ; le numero est au bord du panache, sur le ciel bleu."],
+  "t13/65": ["planche",
+   "le numero est sur la marquise du Grand Hotel, et le paquebot qu'il nomme n'est nulle part sur l'horizon."],
+  "t13/67": ["mesure",
+   "les nuages blancs sont bien la, derriere la marquise."],
+  "t14/25": ["mesure",
+   "la lanterne rouge du debit de tabac est minuscule ; la couronne lit la facade autour d'elle."],
+  "t14/91": ["planche",
+   "pas de ramoneurs dans la rue : les deux figures voisines sont en brun, et le livret les veut « tout noirs de suie »."],
+  "t15/9": ["mesure",
+   "les fromages de Hollande sont a l'etal, trop petits pour la couronne, qui lit la boutique."],
+  "t15/76": ["planche",
+   "aucun hussard au dolman bleu sur le marche ; le seul uniforme sombre est celui de l'agent, au premier plan."]
+ }
+}

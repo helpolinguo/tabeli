@@ -21,8 +21,16 @@
 #
 #  CE QUE L'OUTIL NE DIT PAS. Il ne sait pas si la couleur trouvee
 #  appartient a l'objet nomme ou a son voisin : une couronne de trois
-#  corps de chiffre couvre plusieurs choses. Il signale donc, il ne
-#  corrige pas — et c'est a la planche de controle de trancher.
+#  corps de chiffre couvre plusieurs choses. Il ne sait pas davantage
+#  que le « (65) » du tableau 13 est pose sur la marquise d'un hotel et
+#  nomme un paquebot au large. Il signale donc, il ne corrige pas.
+#
+#  CE QUE L'ŒIL A TRANCHE se tient dans gravuri/koloroj.json, sous
+#  « vidita », et l'outil le redit sous chaque ligne : « planche »
+#  quand la peinture dement le livret et qu'il faudra la reprendre,
+#  « mesure » quand la couronne s'est trompee, « akordo » quand les
+#  deux disent la meme chose. Sur les vingt-cinq couleurs que les
+#  livrets attachent a un objet numerote, onze demandent la reprise.
 #
 #  USAGE
 #      python3 outils/kolori.py            # le releve et la comparaison
@@ -78,44 +86,313 @@ NUM = re.compile(r'\((\d+)\)')
 BALISE = re.compile(r'\\[A-Za-z]+\*?(?:\{[^{}]*\})?|[{}]|%.*')
 
 
-def texte(f):
-    t = f.read_text(encoding="utf-8")
+def texte(t):
     t = re.sub(r'%.*', '', t)
     # \textsuperscript{(12)} doit garder son numero.
     t = re.sub(r'\\textsuperscript\{(\([0-9]+\))\}', r'\1', t)
     t = re.sub(r'\\VUgras\{([^{}]*)\}', r'\1', t)
-    t = re.sub(r'\\(?:nl|cc)\b', ' ', t)
+    # \cc RECOLLE, \nl SEPARE. Les deux marquent une fin de ligne du
+    # fac-simile, mais \cc coupe un MOT et \nl coupe une locution.
+    # Traites tous deux en blanc, « recou\cc verte » donnait « recou
+    # verte » et le releve y voyait un vert -- la table du dessert au
+    # tableau 4, les couverts au tableau 6 : deux couleurs qui
+    # n'existent pas.
+    # \ccplein est un \cc qui tombe en fin de PAGE : il faut le
+    # prendre AVANT \cc, sinon on lui arrache sa tete et il reste
+    # « plein » au milieu de la phrase.
+    t = t.replace("\\ccplein\n", "").replace("\\ccplein", "")
+    t = t.replace("\\cc\n", "").replace("\\cc", "")
+    t = re.sub(r'\\nl\b', ' ', t)
     t = BALISE.sub(' ', t)
     return re.sub(r'\s+', ' ', t)
 
 
-# L'ADJECTIF, SON SUBSTANTIF, PUIS LE NUMERO — et rien de plus entre.
-# L'ido place l'adjectif devant le nom, et le numero suit le nom : « la
-# reda lanterno (25) », « nigra fumuro (75) », « blua robo (42) ». Une
-# fenetre large prenait le premier numero venu, et donnait le noir aux
-# nuages : « la nigra silueto salias sur la blanka nubi (67) » — le noir
-# est a la silhouette, le blanc aux nuages. On n'accepte donc qu'un ou
-# deux mots entre l'adjectif et le numero.
-PORTEE = re.compile(r'^\s+[\w\'’-]+(?:\s+[\w\'’-]+)?\s*\((\d+)\)')
+# LES TROIS FACONS DE DIRE LA COULEUR, et il faut les trois.
+#
+#  * L'EPITHETE ANTEPOSEE, celle de l'ido : « blua cielo (1) », « nigra
+#    redingoto (57) ». Au plus deux mots entre l'adjectif et le numero
+#    -- une fenetre plus large prenait le premier numero venu, et
+#    donnait le noir aux nuages dans « la nigra silueto salias sur la
+#    blanka nubi (67) », ou le noir est a la silhouette.
+#
+#  * L'EPITHETE POSTPOSEE, celle du francais : « le ciel (1) bleu »,
+#    « la lanterne (25) rouge », « les fromages de Hollande (9) a la
+#    croute rouge ». Le numero PRECEDE alors l'adjectif. Trois mots au
+#    plus, et l'on remonte la coordination : « la robe (42) et a la
+#    pelerine (41) bleues » donne le bleu aux deux.
+#
+#  * L'ATTRIBUT, dans les deux langues : « Tote rozea e blanka esas ta
+#    persikieri (18) ed abrikotieri (19) », « Ils sont tout roses et
+#    tout blancs ces pechers (18) et ces abricotiers (19) ». La couleur
+#    porte alors sur TOUT ce que la phrase enumere, et l'on lit jusqu'au
+#    point.
+#
+# Le francais n'est pas un doublon de l'ido : il nomme des couleurs que
+# l'ido tait -- « De gros nuages (56) noirs » au tableau 8, « une teinte
+# verte » a la futaie (25) du tableau 9 -- et l'ido en nomme que le
+# francais tait. On releve donc les deux, et l'on dit lequel parle.
+ANTE = re.compile(r"^\s*(?:[\w'\u2019-]+\s+){0,2}[\w'\u2019-]*\s*\((\d+)\)")
+POST = re.compile(r"\((\d+)\)(?:[\s,]*(?:[\w'\u2019-]+[\s,]+){0,3})$")
+COORD = re.compile(r"\((\d+)\)(?:[^.()]{0,40}?\b(?:et|ed?)\b[^.()]{0,40}?)$")
+ETRE = re.compile(r"\b(?:esas|sont|est|semblas|semble)\b")
+# LE PRONOM RELATIF COUPE LA COORDINATION. « seglo-navi (64) ed enorma
+# paketboto (65) DI QUA la nigra silueto » : le noir est a la silhouette
+# du paquebot, et la coordination qui le precede ne le reclame pas. Sans
+# cette barriere, le releve donnait aussi le noir aux voiliers.
+RELATIF = re.compile(r"\b(?:qua|qui|que|quan|dont|donta|kies)\b")
+
+# LE FRANCAIS ANTEPOSE AUSSI, ET SON DETERMINANT LE DIT. « emportait en
+# NOIRS tourbillons la fumee (1) » : l'adjectif regarde devant lui, et
+# la tournure postposee lui donnait l'enseigne (3) qui precede. Un
+# article ou une preposition juste avant la couleur signe l'anteposee ;
+# un substantif -- « a la croute rouge », « nuages (56) noirs » --
+# signe la postposee. « tout » n'est pas de la liste : « deux ramoneurs
+# (91) TOUT noirs de suie » est bien une postposee.
+DEVANT = re.compile(
+    r"\b(?:de|du|des|en|par|avec|sans|au|aux|le|la|les|l|d|un|une|ce|ces"
+    r"|cet|cette|son|sa|ses|leur|leurs|mon|ma|mes|nos|vos|deux|trois"
+    r"|quelques|plusieurs|gros|grosse|petits?|petites?)['\u2019\s]+$",
+    re.I)
+
+RAD = {
+    "io": ["red", "oranje", "flav", "verd", "blu", "viole", "purpure",
+           "roze", "brun", "griz", "nigr", "blank"],
+    "fr": ["rouge", "orang", "jaune", "vert", "bleu", "violet", "pourpre",
+           "ros", "brun", "gris", "noir", "blanc", "blanch"],
+}
+FIN = {"io": r"(?:a|e|i)", "fr": r"(?:e?s?)"}
+VERS_IO = {"rouge": "reda", "orang": "oranjea", "jaune": "flava",
+           "vert": "verda", "bleu": "blua", "violet": "violea",
+           "pourpre": "purpurea", "ros": "rozea", "brun": "bruna",
+           "gris": "griza", "noir": "nigra", "blanc": "blanka",
+           "blanch": "blanka"}
+MOTS = {lg: re.compile(r"(?<![\w-])(" +
+                       "|".join(sorted(r, key=len, reverse=True)) +
+                       r")" + FIN[lg] + r"(?![\w-])",
+                       0 if lg == "io" else re.I)
+        for lg, r in RAD.items()}
+
+SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex")]
+
+
+# LE RENVOI QUE LA PLANCHE NE PORTE PAS. « les plates-bandes (150) »,
+# au tableau 5, sont gravees « 50 » : la couleur doit aller chercher le
+# numero qu'on montrera, non celui qu'on lit. gravuri/korekti.json tient
+# la table, et numeri.py la lit de meme.
+def korekti():
+    f = RACINE / "gravuri" / "korekti.json"
+    if not f.exists():
+        return {}
+    return {k: v for k, v in json.loads(
+        f.read_text(encoding="utf-8")).items() if not k.startswith("_")}
+
+
+KOREKTI = korekti()
+
+
+def korekti_renvojo(tab, cle=""):
+    """{lu: a lire} pour UN BLOC : les corrections qui valent pour tout
+    le tableau, plus celles que ce bloc-ci porte seul.
+    """
+    t = KOREKTI.get(f"t{tab:02d}", {})
+    out = {k: v for k, v in t.items() if isinstance(v, str)}
+    if cle:
+        out.update(t.get(cle, {}))
+    return out
+
+
+# LES PLANCHES A PLUSIEURS SCENES. Six tableaux montrent deux vignettes
+# ou davantage, et chacune recommence sa numerotation a 1 : le « (18) »
+# de la premiere scene et celui de la troisieme ne montrent pas le meme
+# objet. Sans la scene, les vingt-huit couleurs des tableaux 3, 4, 6, 7,
+# 8 et 9 ne trouvaient aucune boite sur la planche, numeri.json les
+# rangeant sous « c1:18 ». gravuri/ceni.json dit quels tableaux sont
+# dans ce cas.
+def a_ceni():
+    f = RACINE / "gravuri" / "ceni.json"
+    if not f.exists():
+        return set()
+    return {c[:3] for c in json.loads(f.read_text(encoding="utf-8"))
+            if not c.startswith("_")}
+
+
+CENI = a_ceni()
+
+# LA PAGE QUI COUPE UN MOT. \ccplein ferme la page sur un mot coupe, et
+# quatre lignes de service s'intercalent avant la suite. On les efface
+# d'abord, sinon le mot reste en deux morceaux -- et un bloc « suite »
+# viendrait couper une phrase que rien ne coupe.
+SAUT = re.compile(
+    r'\\ccplein\s*\n\\end\{VUpage\}.*?'
+    r'^%%K\s+\S+\s+\S+\s+suite\s*\n\\VUcontinue\s*\n',
+    re.S | re.M)
+
+
+def koloroj():
+    f = RACINE / "gravuri" / "koloroj.json"
+    return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+
+
+def ecartes():
+    """{tableau: [(mot, fragment)]} — voir gravuri/koloroj.json."""
+    return koloroj().get("ecarte", {})
+
+
+# CE QUE L'ŒIL A VU PREVAUT SUR CE QUE LA COURONNE MESURE. La mesure ne
+# sait pas que le (65) du tableau 13 est pose sur la marquise d'un hotel
+# et nomme un paquebot au large ; elle dit « NON » et n'a rien vu. Le
+# verdict tenu a la main dans koloroj.json tranche : « planche » quand
+# c'est a la planche d'etre reprise, « mesure » quand la planche dit
+# deja ce que le livret dit.
+VERDIKTO = {"planche": "A REPEINDRE",
+            "mesure": "la mesure a tort",
+            "akordo": "vu, et la planche dit vrai"}
+
+
+def vidita():
+    """{« t13/65 »: (verdict, ce qu'on a vu)}."""
+    return {k: tuple(v) for k, v in koloroj().get("vidita", {}).items()}
+
+
+def anteposee(apres):
+    """Le numero que l'epithete anteposee regarde devant elle."""
+    m = ANTE.match(apres)
+    return [int(m.group(1))] if m else []
+
+
+def postposee(avant, lg="io", mot=""):
+    """Les numeros que l'epithete postposee reclame derriere elle."""
+    m = POST.search(avant)
+    if not m:
+        return []
+    if lg == "fr" and DEVANT.search(avant):
+        return []
+    ns = [int(m.group(1))]
+    # LA COORDINATION REMONTE : « la robe (42) et a la pelerine (41)
+    # bleues » -- l'adjectif s'accorde aux deux, et les deux le veulent.
+    # On regarde apres le NUMERO, non apres la fenetre : POST etant
+    # ancree sur la fin du texte qui precede, m.end() en designait le
+    # bout et la tranche etait toujours vide -- la barriere du relatif
+    # ne se levait jamais, et les voiliers (64) restaient noirs.
+    if RELATIF.search(avant[m.end(1):]):
+        return ns
+    # EN IDO, LA POSTPOSEE N'EXISTE QUE DERRIERE UN RELATIF. La langue
+    # antepose son epithete : quand l'adjectif suit un numero sans
+    # relatif entre les deux, c'est qu'il en qualifie un autre, et cet
+    # autre n'est pas toujours numerote. « nigra redingoto (57) e
+    # blanka jileto » -- le gilet n'a pas de renvoi, et le blanc allait
+    # a la redingote ; « brancho de filiko (55) e bela rozea brancheto
+    # di eriko (57) » -- le rose est a la bruyere, et il allait a la
+    # fougere. On ne garde donc, en ido, que la tournure de la
+    # subordonnee : « paketboto (65) di qua la nigra silueto ».
+    if lg == "io":
+        return []
+    # LA COORDINATION SE LIT AU PLURIEL DE L'ADJECTIF. « la robe (42)
+    # et a la pelerine (41) BLEUES » les prend toutes deux ; « un brin
+    # de fougere (55) tres curieuse et un brin de bruyere (57) ROSE »
+    # n'en prend qu'un, et le rose n'est pas a la fougere. L'accord dit
+    # a lui seul jusqu'ou l'epithete porte -- « gris », invariable, est
+    # le seul mot qui mente, et il ne parait nulle part.
+    if not mot.lower().endswith("s"):
+        return ns
+    reste = avant[:m.start()]
+    while True:
+        c = COORD.search(reste)
+        if not c:
+            break
+        ns.append(int(c.group(1)))
+        reste = reste[:c.start()]
+    return ns
+
+
+def numeros(t, i, j, lg="io"):
+    """Les numeros qu'une couleur atteint depuis la position (i, j)."""
+    avant, apres = t[max(0, i - 90):i], t[j:j + 90]
+    # L'ATTRIBUT D'ABORD : s'il y a un verbe d'etat tout pres, la
+    # couleur porte sur l'enumeration entiere, et non sur le premier
+    # substantif venu.
+    #
+    # ENCORE FAUT-IL QUE LE VERBE SOIT LE SIEN. « l'etalage EST garni de
+    # fromages de Hollande (9) a la croute rouge » a bien un « est »
+    # dans la fenetre, mais il est a l'etalage, non a la croute : un
+    # numero le separe de l'adjectif. Une ponctuation forte les separe
+    # de meme : « De gros nuages (56) NOIRS montent dans le ciel ; ils
+    # SONT sillonnes par les zigzags de l'eclair (55) » -- le verbe est
+    # a la proposition suivante, et le noir allait a l'eclair. On exige
+    # donc que rien ne tombe entre l'adjectif et son verbe, ni renvoi ni
+    # point-virgule -- et « la reda lanterno (25) e la grosa pipo qua
+    # ESAS uzata kom insigno (26) » cesse de peindre l'enseigne.
+    for m in ETRE.finditer(t[max(0, i - 40):j + 40]):
+        d, g = max(0, i - 40) + m.start(), max(0, i - 40) + m.end()
+        entre = t[min(g, i):max(d, j)]
+        if any(c in entre for c in "(;:."):
+            continue
+        phrase = apres.split(".")[0]
+        ns = [int(x) for x in re.findall(r"\((\d+)\)", phrase)]
+        if ns:
+            return ns
+        break
+    # L'ORDRE DES DEUX TOURNURES SUIT LA LANGUE. L'ido antepose son
+    # epithete, le francais la postpose ; essayer l'anteposee d'abord
+    # des deux cotes donnait la croute rouge aux camemberts, « a la
+    # croute rouge, de camemberts (10) » -- l'adjectif regardait devant
+    # lui alors qu'il appartient a ce qui le precede. Chaque langue
+    # commence donc par sa tournure propre, et se rabat sur l'autre :
+    # le francais dit aussi « en noirs tourbillons la fumee (1) ».
+    tour = [lambda: anteposee(apres), lambda: postposee(avant, lg, t[i:j])]
+    if lg == "fr":
+        tour.reverse()
+    for f in tour:
+        ns = f()
+        if ns:
+            return ns
+    return []
 
 
 def relever():
-    """Les couples (tableau, numero, couleur) que le texte ido enonce."""
-    out = []
-    for f in sorted((RACINE / "texto" / "io").glob("*-tabelo-*.tex")):
-        tab = int(re.search(r'-(\d+)\.tex$', f.name).group(1))
-        t = texte(f)
-        for m in MOTS.finditer(t):
-            coul = m.group(1) + "a"
-            n = PORTEE.match(t[m.end():m.end() + 60])
-            if not n:
-                continue
-            out.append({"tabelo": tab, "numero": int(n.group(1)),
-                        "koloro": coul,
-                        "kunteksto": re.sub(r'\s+', ' ',
-                                            t[max(0, m.start() - 40):
-                                              m.end() + 60]).strip()})
-    return out
+    """Les couples (tableau, numero, couleur) que les livrets enoncent.
+
+    ON LIT BLOC PAR BLOC, et non le fichier d'un trait : c'est la cle du
+    bloc qui dit la scene, et sans la scene un numero de tableau 3 ne
+    designe rien. La coupure a un autre merite : une couleur ne
+    reclamera pas un numero de l'alinea voisin.
+    """
+    hors = ecartes()
+    par = {}
+    for lg, motif in SOURCES:
+        for f in sorted((RACINE / "texto" / lg).glob(motif)):
+            tab = int(re.search(r"-(\d+)\.tex$", f.name).group(1))
+            cle = f"t{tab:02d}"
+            brut = SAUT.sub("\\\\cc\\n", f.read_text(encoding="utf-8"))
+            sceno = ""
+            parts = re.split(r"^%%K (\S+)", brut, flags=re.M)
+            for i in range(1, len(parts), 2):
+                mk = re.match(r"t\d\d-(c\d+)-", parts[i])
+                if mk:
+                    sceno = mk.group(1)
+                kor = korekti_renvojo(tab, parts[i])
+                t = texte(parts[i + 1])
+                for m in MOTS[lg].finditer(t):
+                    mot = m.group(0)
+                    kunteksto = re.sub(
+                        r"\s+", " ",
+                        t[max(0, m.start() - 45):m.end() + 55]).strip()
+                    if any(a.lower() == mot.lower() and b in kunteksto
+                           for a, b in hors.get(cle, [])):
+                        continue
+                    coul = (m.group(1) + "a") if lg == "io" \
+                        else VERS_IO[m.group(1).lower()]
+                    for n in numeros(t, m.start(), m.end(), lg):
+                        n = kor.get(str(n), str(n))
+                        k = f"{sceno}:{n}" if cle in CENI and sceno else n
+                        d = par.setdefault((tab, k, coul),
+                                           {"tabelo": tab, "numero": k,
+                                            "koloro": coul, "dit": [],
+                                            "kunteksto": kunteksto})
+                        if lg not in d["dit"]:
+                            d["dit"].append(lg)
+    return sorted(par.values(),
+                  key=lambda r: (r["tabelo"], str(r["numero"])))
 
 
 def teinte(rgb):
@@ -198,6 +475,7 @@ def main(args):
     par_tab = {}
     for cle, v in num.items():
         par_tab.setdefault(cle[:3], []).append((cle, v))
+    vu = vidita()
     caches = {}
     accords = desaccords = sans = 0
     lignes = []
@@ -205,7 +483,7 @@ def main(args):
         tab = f"t{r['tabelo']:02d}"
         trouve = None
         for cle, v in par_tab.get(tab, []):
-            b = v["numeri"].get(str(r["numero"]))
+            b = v["numeri"].get(r["numero"])
             if b:
                 trouve = (cle, v, b)
                 break
@@ -227,15 +505,27 @@ def main(args):
         ok, dit = accord(r["koloro"], m)
         accords += ok
         desaccords += not ok
-        nom = (obj.get(tab, {}).get(str(r["numero"]), {}).get("fr")
-               or obj.get(tab, {}).get(str(r["numero"]), {}).get("io") or ["—"])
-        lignes.append((ok, tab, r["numero"], r["koloro"], nom[0], dit))
-    for ok, tab, n, c, nom, dit in sorted(lignes, key=lambda x: (x[0], x[1])):
-        print(f"  {'  ' if ok else 'NON'}  {tab} ({n:>3})  "
-              f"{FRANCAIS[c]:<8} {nom:<26} {dit}")
+        # UN NUMERO PORTE PARFOIS DEUX NOMS. Le « (19) » du tableau 3
+        # est le presbytere pour un alinea et les abricotiers pour un
+        # autre ; n'en montrer qu'un donnait a lire « rose presbytere ».
+        n_obj = obj.get(tab, {}).get(r["numero"], {})
+        nom = n_obj.get("fr") or n_obj.get("io") or ["—"]
+        v = vu.get(f"{tab}/{r['numero']}")
+        lignes.append((ok, tab, r["numero"], r["koloro"],
+                       " / ".join(nom), dit, v))
+    for ok, tab, n, c, nom, dit, v in sorted(lignes,
+                                             key=lambda x: (x[0], x[1])):
+        print(f"  {'  ' if ok else 'NON'}  {tab} ({str(n):>5})  "
+              f"{FRANCAIS[c]:<8} {nom:<34} {dit}")
+        if v:
+            print(f"        {VERDIKTO[v[0]]} : {v[1]}")
+    a_reprendre = sum(1 for l in lignes if l[6] and l[6][0] == "planche")
     print(f"\n  {accords} accords, {desaccords} desaccords, "
           f"{sans} sans position sur la planche "
           f"(sur {len(releve)} couleurs enoncees)")
+    print(f"  {a_reprendre} endroits ou la planche dement le livret, "
+          f"{len(lignes) - sum(1 for l in lignes if l[6])} pas encore regardes")
+
 
 
 if __name__ == "__main__":
