@@ -191,6 +191,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "hi", "nomo": "हिन्दी", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "pt", "nomo": "Português", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
@@ -676,7 +678,7 @@ def fusionner(blocs):
 #  2. ASSEMBLAGE
 # -------------------------------------------------------------------
 DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
-           "ar": "ar", "hi": "hi"}               # langue -> texto/<...>
+           "ar": "ar", "hi": "hi", "pt": "pt"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1601,7 +1603,7 @@ def est_ceno(x):
 # fac-simile compose ces trois mots en capitales, et « Charts 3 and 4
 # are arranged... » — l'alinea d'ouverture du tableau 3 — ne doit pas
 # passer pour un titre de tableau.
-NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|ТАБЛИЦА"
+NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         r"|图表|لوحة"
                         # LE HINDI N'A PAS DE CAPITALE pour distinguer le
                         # titre de la prose, et « तालिका » se lit aussi
@@ -1616,6 +1618,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
+            r"|primeira|terceira|quarta"
             r"|перва[яй]|втора[яй]|треть[яе]|четв[её]рта[яй])")
 
 # LA SERIE. Le livre en a trois, et le fac-simile l'annonce en tete du
@@ -1638,7 +1641,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|сцена)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|cena|сцена)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य", re.I)
