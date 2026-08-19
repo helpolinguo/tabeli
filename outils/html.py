@@ -94,11 +94,11 @@ def nomo(nm, langue):
     gras devant le renvoi, et une edition l'oublie parfois -- d'ou le
     repli, dans l'ordre : sa langue, l'ido, le francais.
     """
-    for k in (langue, "io", "fr", "en"):
+    for k in (langue, "io", "fr"):
         v = nm.get(k)
         if v:
             return v[0]
-    return ""
+    return next((v[0] for v in nm.values() if v), "")
 
 
 def numeri():
@@ -158,6 +158,8 @@ RENVOI_REND = re.compile(
 LANGUES = [
     {"kodo": "fr", "nomo": "Français", "dir": "ltr", "fonto": "fac-similé"},
     {"kodo": "en", "nomo": "English", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
+    {"kodo": "es", "nomo": "Español", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
 ]
 
@@ -528,7 +530,7 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 #  2. ASSEMBLAGE
 # -------------------------------------------------------------------
-DOSSIER = {"fr": "fr", "en": "en"}   # langue -> sous-dossier de texto/
+DOSSIER = {"fr": "fr", "en": "en", "es": "es"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1393,12 +1395,13 @@ def est_ceno(x):
 # fac-simile compose ces trois mots en capitales, et « Charts 3 and 4
 # are arranged... » — l'alinea d'ouverture du tableau 3 — ne doit pas
 # passer pour un titre de tableau.
-NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART")
+NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
-            r"|first|second|third|fourth)")
+            r"|first|second|third|fourth"
+            r"|primera|segunda|tercera|cuarta)")
 
 # LA SERIE. Le livre en a trois, et le fac-simile l'annonce en tete du
 # tableau qui l'ouvre : « UNESMA SERIO » au 1, « DUESMA SERIO » au 7,
@@ -1412,7 +1415,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series)\b", re.I)
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne)\b", re.I)
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena)\b", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,

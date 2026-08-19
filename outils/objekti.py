@@ -191,7 +191,7 @@ def relever(dossier, motif):
     """{numero de tableau: {cle d'objet: [noms]}} pour une langue."""
     out = {}
     for f in sorted((RACINE / "texto" / dossier).glob(motif)):
-        m = re.search(r'-(?:tabelo|tableau|table)-(\d+)\.tex$', f.name)
+        m = re.search(r'-(?:tabelo|tableau|table|cuadro)-(\d+)\.tex$', f.name)
         if not m:
             continue
         tab = int(m.group(1))
@@ -273,7 +273,7 @@ def rang(k):
 # exactement les memes renvois que les deux autres, se laisse relever
 # par le meme code, au nom de fichier pres.
 SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
-           ("en", "*-table-*.tex")]
+           ("en", "*-table-*.tex"), ("es", "*-cuadro-*.tex")]
 
 
 def construire():
@@ -299,19 +299,17 @@ def main(args):
     if args:
         tab = f"t{int(args[0]):02d}"
         for n, v in sorted(tout[tab].items(), key=lambda kv: rang(kv[0])):
-            print(f"  {n:>6}  {' / '.join(v['io']) or '—':32s}  "
-                  f"{' / '.join(v['fr']) or '—':32s}  "
-                  f"{' / '.join(v.get('en', [])) or '—'}")
+            print("  " + f"{n:>6}  " + "  ".join(
+                f"{' / '.join(v.get(k, [])) or '—':28s}" for k, _ in SOURCES))
         return
     (RACINE / "gravuri" / "objekti.json").write_text(
         json.dumps(tout, ensure_ascii=False, indent=1) + "\n",
         encoding="utf-8")
     for tab, par in sorted(tout.items()):
         att = attendus(int(tab[1:]))
-        tri = sum(1 for v in par.values()
-                  if v["io"] and v["fr"] and v.get("en"))
+        tout_ = sum(1 for v in par.values() if all(v.get(k) for k, _ in SOURCES))
         print(f"  {tab}  {len(par):3d}/{len(att):3d} objets nommes, "
-              f"dont {tri:3d} dans les trois langues")
+              f"dont {tout_:3d} dans les {len(SOURCES)} langues")
     n = sum(len(p) for p in tout.values())
     a = sum(len(attendus(int(t[1:]))) for t in tout)
     print(f"  TOTAL {n}/{a} = {100 * n // a} %")
