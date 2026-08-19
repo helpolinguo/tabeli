@@ -29,6 +29,7 @@ NUMEROTATION D'ALINEA DE L'AUTEUR. Elle est la meme dans les deux
 livrets, et c'est le seul ancrage qu'ils partagent.
 """
 import html as H
+import itertools
 import json
 import re
 from pathlib import Path
@@ -1378,25 +1379,40 @@ def est_ceno(x):
     return bool(re.match(r"\s*<i>", x))
 
 
+# LE ROLE SE LIT SUR LE MOT, ET LE MOT CHANGE DE LANGUE. Trois lignes
+# d'apparat se reconnaissent a leur libelle et non a leur macro : le
+# numero du tableau, la serie, la scene. Tant qu'il n'y avait que l'ido
+# et le francais, deux listes de mots suffisaient ; la colonne anglaise
+# n'y figurait pas, et ses trois lignes retombaient toutes sur le role
+# « sekc » -- « CHART No. 7 » se composait comme un intertitre, en face
+# d'un « TABELO No 7 » en grand et gras, et « First scene. » en petites
+# capitales en face d'une « Unesma ceno. » en italique. Une langue de
+# plus, c'est un mot de plus dans chacune des trois listes.
+#
+# LE NUMERO DU TABLEAU. La comparaison est SENSIBLE A LA CASSE : le
+# fac-simile compose ces trois mots en capitales, et « Charts 3 and 4
+# are arranged... » — l'alinea d'ouverture du tableau 3 — ne doit pas
+# passer pour un titre de tableau.
+NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART")
+
+# Les ordinaux des trois langues, pour la serie et pour la scene.
+ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
+            r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
+            r"|first|second|third|fourth)")
+
 # LA SERIE. Le livre en a trois, et le fac-simile l'annonce en tete du
 # tableau qui l'ouvre : « UNESMA SERIO » au 1, « DUESMA SERIO » au 7,
 # « TRIESMA SERIO » au 11. Le volet n'en portait qu'une, ecrite en dur
 # dans le gabarit, de sorte que les seize tableaux paraissaient tous
 # sous la premiere serie.
-SERIO = re.compile(
-    r"\b(?:unesma|duesma|triesma|quaresma"
-    r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me)\s+"
-    r"(?:serio|s[eé]rie)\b", re.I)
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series)\b", re.I)
 
-# LA SCENE, DANS LES DEUX LANGUES. On la reconnaissait a l'italique du
+# LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(
-    r"\b(?:unesma|duesma|triesma|quaresma"
-    r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me)\s+"
-    r"(?:ceno|sc[eè]ne)\b", re.I)
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne)\b", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
@@ -1461,7 +1477,7 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
 
     role = [None] * len(lignes)
     numero = next((k for k, (_, t) in enumerate(lignes)
-                   if "TABELO" in t or "TABLEAU" in t), None)
+                   if NUMERO_TAB.search(t)), None)
     for k, (_, t) in enumerate(lignes):
         nu = net_tdm(t)
         if k == numero:
@@ -1626,6 +1642,26 @@ def sen_subtitro(t):
 FILET = '<span class="fil"></span>'
 
 
+# LES DEUX COLONNES DOIVENT ANNONCER LA MEME CHOSE DE LA MEME FACON.
+# Le role d'une ligne d'apparat se lit sur son libelle -- « TABELO »,
+# « UNESMA SERIO », « Unesma ceno. » -- et le libelle change de langue.
+# Quand l'anglais est arrive, ses trois mots ne figuraient dans aucune
+# des listes : « CHART No. 7 » se composait comme un intertitre en face
+# d'un « TABELO No 7 » en grand et gras, et personne ne s'en apercevait
+# a la construction. On compare donc, a chaque construction, la SUITE
+# DES ROLES des colonnes.
+#
+# LES REPETITIONS SE REPLIENT AVANT LA COMPARAISON. Un titre casse en
+# deux lignes par un atelier et d'un tenant chez l'autre donne
+# « nom, tit, tit » contre « nom, tit » : c'est la meme annonce, en
+# deux morceaux, et six ouvertures sont dans ce cas. Ce qui compte est
+# l'ENCHAINEMENT des roles, non le compte des lignes.
+def suito_rolo(t):
+    """La suite des roles d'un bloc, repetitions repliees."""
+    return [k for k, _ in itertools.groupby(
+        re.findall(r'data-rolo="([^"]+)"', t or ""))]
+
+
 def uniformiser_filets(rangi):
     """Met le meme filet dans les deux colonnes.
 
@@ -1655,7 +1691,7 @@ def uniformiser_filets(rangi):
         if not pleins:
             continue
         ouverture = r["tipo"] == "apar" and any(
-            "TABELO" in t or "TABLEAU" in t for t in pleins.values())
+            NUMERO_TAB.search(t) for t in pleins.values())
         veut = ouverture or any(t.rstrip().endswith(FILET)
                                 for t in pleins.values())
         if not veut:
@@ -1680,6 +1716,7 @@ def rendre(rangi):
     # qui partira dans lingui/<kodo>.json, et la case reste vide.
     differe = {lg["kodo"]: {"k": {}, "noto": {}}
                for lg in LANGUES if lg.get("differita")}
+    diskordi = []
 
     # La table des matieres se tire des blocs de titre.
     # LA TABLE DES MATIERES A TROIS RANGS, parce que le livre en a
@@ -1716,7 +1753,7 @@ def rendre(rangi):
 
         if r["tipo"] == "apar":
             i = next((k for k, l in enumerate(lignes_ap)
-                      if "TABELO" in l or "TABLEAU" in l), None)
+                      if NUMERO_TAB.search(l)), None)
             if i is None:
                 # PAS UNE OUVERTURE DE TABLEAU, DONC PAS UNE ENTREE.
                 # Trois blocs d'apparat tombent en cours de tableau : la
@@ -1951,6 +1988,13 @@ def rendre(rangi):
                 o = r["tra"].get(lg["kodo"])
                 if o and o["t"]:
                     o["t"] = roles_ap(o["t"], porte, apres_ceno)
+                    # Le controle se fait ICI, la ou les deux colonnes
+                    # sont marquees : le role de l'ido n'est pose que
+                    # dans une variable locale, et ne survit pas au
+                    # rendu.
+                    a, b = suito_rolo(io), suito_rolo(o["t"])
+                    if a and b and a != b:
+                        diskordi.append((r["cle"], lg["kodo"], a, b))
             # Le bloc suivant porte-t-il le titre de cette scene ? Oui si
             # celui-ci s'acheve sur un marqueur de scene. C'est l'ido qui
             # en decide : la colonne de droite le suit.
@@ -2060,6 +2104,8 @@ def rendre(rangi):
             .replace("{{KONTENO}}", "\n".join(lignes))
             .replace("{{LINGUIJSON}}", json.dumps(LANGUES, ensure_ascii=False)))
     (RACINE / "index.html").write_text(page, encoding="utf-8")
+    for cle, lg, a, b in diskordi:
+        print(f"  ROLES DISCORDANTS {cle} : io {a} / {lg} {b}")
     print(f"index.html ecrit : {len(rangi)} bloki, "
           f"{sum(1 for r in rangi if r['tipo'] == 'p')} alinei")
 
