@@ -189,6 +189,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "ar", "nomo": "العربية", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "hi", "nomo": "हिन्दी", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
@@ -673,8 +675,8 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 #  2. ASSEMBLAGE
 # -------------------------------------------------------------------
-DOSSIER = {"fr": "fr", "en": "en", "es": "es",
-           "ru": "ru", "zh": "zh", "ar": "ar"}   # langue -> texto/<...>
+DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
+           "ar": "ar", "hi": "hi"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1600,7 +1602,14 @@ def est_ceno(x):
 # are arranged... » — l'alinea d'ouverture du tableau 3 — ne doit pas
 # passer pour un titre de tableau.
 NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|ТАБЛИЦА"
-                        r"|图表|لوحة")
+                        r"|图表|لوحة"
+                        # LE HINDI N'A PAS DE CAPITALE pour distinguer le
+                        # titre de la prose, et « तालिका » se lit aussi
+                        # dans « देल्मास सहायक तालिकाओं से », qui est le
+                        # titre du volume et non celui d'un tableau. On
+                        # exige donc le « सं. » qui suit le mot dans la
+                        # seule ligne qui numerote.
+                        r"|तालिका\s+सं")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1621,7 +1630,8 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # mot de plus dans la liste commune.
 SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
                    r"|第[一二三四]组"
-                   r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)", re.I)
+                   r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
+                   r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला", re.I)
 
 # LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
@@ -1630,7 +1640,8 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
 # la serie, juste au-dessus.
 CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|сцена)\b"
                   r"|第[一二三四]场"
-                  r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)", re.I)
+                  r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
+                  r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
