@@ -127,6 +127,8 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    igus la du koloni mentiar. */
 .k.tra.vaka::after{content:"—";color:var(--lin);font-size:13px}
 .r.sub .k.tra.vaka::after{content:""}
+/* « dif » : la case attend sa traduction, elle ne manque pas. */
+.k.tra.vaka.dif::after{content:""}
 
 .r.p .k{text-indent:1.3em}
 .r.sub{margin:1.9em 0 .9em}
@@ -480,23 +482,6 @@ document.addEventListener("pointerdown", function(e){
   nav.classList.remove("mont");
 });
 
-/* --- LE CHOIX DE LANGUE. Une seule colonne de droite est visible a la
-   fois ; les autres restent dans la page, cachees. Elles n'y sont pas
-   pour rien : la recherche les traverse, et le passage d'une langue a
-   l'autre est instantane, sans requete. --- */
-var sel = document.getElementById("lg");
-function poserLangue(code){
-  document.querySelectorAll(".k.tra").forEach(function(k){
-    k.style.display = (k.dataset.lg === code) ? "" : "none";
-  });
-  try { localStorage.setItem("tabeli-lg", code); } catch(e){}
-}
-sel.onchange = function(){ poserLangue(sel.value); };
-var memo = null;
-try { memo = localStorage.getItem("tabeli-lg"); } catch(e){}
-if (memo && [].some.call(sel.options, function(o){ return o.value === memo; }))
-  sel.value = memo;
-poserLangue(sel.value);
 
 /* --- LA RECHERCHE. Elle porte sur LES DEUX textes a la fois : un mot
    ido trouve le paragraphe, et sa traduction reste en face, meme si
@@ -607,6 +592,71 @@ function chercher(){
   nulo.classList.toggle("mont", !!terme && rien);
   poserLangue(sel.value);
 }
+
+/* --- LE CHOIX DE LANGUE. Une colonne de droite a la fois ; les
+   autres restent dans la page, cachees. Elles n'y sont pas pour rien :
+   la recherche les traverse, et le passage d'une langue a l'autre est
+   instantane.
+
+   SAUF CELLES QU'ON N'A PAS ENCORE. Le francais est dans la page --
+   c'est un fac-simile transcrit, il fait partie de l'objet. Les
+   traductions, elles, sont marquees « differita » et vivent dans un
+   fichier a part : la page ne porte que leurs cases vides, et l'on ne
+   va chercher le texte qu'au moment ou le menu le demande. Une fois
+   venu il ne repart plus, et la langue redevient une bascule sans
+   requete.
+
+   CE BLOC EST APRES LA RECHERCHE, ET IL LE FAUT : le texte qui arrive
+   doit entrer dans « origine » -- la copie non surlignee dont la
+   recherche repart -- puis relancer chercher(), sans quoi un mot deja
+   tape ne serait pas surligne dans la langue qui vient d'arriver. --- */
+var sel = document.getElementById("lg");
+var venus = {};                      /* kodo -> promesse de chargement */
+
+function verser(code, d){
+  rangi.forEach(function(r, i){
+    var cases = [].slice.call(r.querySelectorAll(".k"));
+    cases.forEach(function(k, j){
+      if (k.dataset.lg !== code) return;
+      var t = d.k[r.dataset.cle];
+      if (t == null) return;
+      k.classList.remove("vaka", "dif");
+      origine[i][j] = t;
+      k.innerHTML = t;
+    });
+  });
+  var tete = "noto-" + code + "-";
+  document.querySelectorAll('.noto[data-lg="' + code + '"]').forEach(function(n){
+    var t = d.noto[n.id.slice(tete.length)];
+    if (t != null) n.innerHTML = t;
+  });
+  chercher();
+}
+
+function chargerLangue(code){
+  if (venus[code]) return venus[code];
+  var lg = LANGUES.filter(function(l){ return l.kodo === code; })[0];
+  if (!lg || !lg.differita || !lg.adreso) return null;
+  venus[code] = fetch(lg.adreso)
+    .then(function(r){ return r.json(); })
+    .then(function(d){ verser(code, d); })
+    .catch(function(){ delete venus[code]; });
+  return venus[code];
+}
+
+function poserLangue(code){
+  chargerLangue(code);
+  document.querySelectorAll(".k.tra").forEach(function(k){
+    k.style.display = (k.dataset.lg === code) ? "" : "none";
+  });
+  try { localStorage.setItem("tabeli-lg", code); } catch(e){}
+}
+sel.onchange = function(){ poserLangue(sel.value); };
+var memo = null;
+try { memo = localStorage.getItem("tabeli-lg"); } catch(e){}
+if (memo && [].some.call(sel.options, function(o){ return o.value === memo; }))
+  sel.value = memo;
+poserLangue(sel.value);
 
 /* --- LE TABLEAU EN PLEIN ECRAN. Au clic, la gravure s'ouvre sur toute
    la fenetre, sans quitter la page. Ce n'est pas la vue d'ensemble qu'on

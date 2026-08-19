@@ -107,10 +107,23 @@ RENVOI_REND = re.compile(
     r'(\s*(?:<i>)?bis(?:</i>)?)?\s*(\)?)</sup>')
 
 # Les langues de la colonne de droite. « fr » est le texte source
-# (releve sur le fac-simile) ; les autres seront des traductions, et
-# porteront la mention qui convient.
+# (releve sur le fac-simile) ; les autres sont des traductions, et
+# portent la mention qui convient.
+#
+# « differita » : LA TRADUCTION NE VOYAGE PAS AVEC LA PAGE. Le francais
+# est un fac-simile transcrit, il fait partie de l'objet ; l'anglais
+# n'est qu'une commodite de lecture. index.html pese deja 1,4 Mo pour
+# ses deux colonnes, et coudre une troisieme langue dedans le ferait
+# grossir d'autant pour un lecteur qui, neuf fois sur dix, ne la
+# demandera pas. Les langues marquees ici sortent donc dans un fichier
+# a part, lingui/<kodo>.json, et le navigateur ne va le chercher qu'au
+# moment ou l'on choisit la langue dans le menu. La page, elle, garde
+# les cases vides a leur place -- ce qui arrive n'a plus qu'a s'y
+# verser.
 LANGUES = [
     {"kodo": "fr", "nomo": "Français", "dir": "ltr", "fonto": "fac-similé"},
+    {"kodo": "en", "nomo": "English", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
@@ -480,7 +493,7 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 #  2. ASSEMBLAGE
 # -------------------------------------------------------------------
-DOSSIER = {"fr": "fr"}      # code de langue -> sous-dossier de texto/
+DOSSIER = {"fr": "fr", "en": "en"}   # langue -> sous-dossier de texto/
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -752,9 +765,23 @@ def lier_notes(rangi):
         # un appel mort, mais qui levait KeyError des qu'une note de
         # traduction se presentait. Aucune ne se presentait jamais,
         # faute de cle appariee ; la premiere l'a fait tomber.
+        # UNE TRADUCTION N'A PAS DE PAGES. Le francais et l'ido sont des
+        # fac-similes transcrits : chaque bloc sait de quel feuillet il
+        # vient, et c'est le feuillet qui rapproche une note de son
+        # appel. L'anglais, lui, ne transcrit rien -- il n'a ni page ni
+        # feuillet, et tous ses blocs portaient donc la meme page vide :
+        # les onze notes se cherchaient un appel dans le livre entier,
+        # et se le disputaient. LE TABLEAU REMPLACE ALORS LA PAGE. Il
+        # est plus large qu'un feuillet, mais il suffit : aucun tableau
+        # ne porte plus de deux notes, et le comptage des rangs, qui
+        # departageait deja deux notes d'une meme page, les departage
+        # de meme.
+        def zono(n):
+            return (n.get("feuillet") or "").strip() or n["cle"][:3]
+
         rang = {}
         for n in notes:
-            cle_page = (n.get("feuillet"), n.get("apelo"))
+            cle_page = (zono(n), n.get("apelo"))
             rang[id(n)] = rang.get(cle_page, 0)
             rang[cle_page] = rang.get(cle_page, 0) + 1
         for n in notes:
@@ -780,11 +807,13 @@ def lier_notes(rangi):
             # « (*) » : chercher sur deux pages a la fois rendait donc
             # deux appels pour une note, et l'outil renoncait a lier ce
             # qui n'etait pas ambigu du tout.
+            reperer = page_de
             try:
                 f = int(n["feuillet"])
                 essais = [{str(f)}, {str(f - 1)}]
             except (TypeError, ValueError):
-                essais = [{n["feuillet"]}]
+                essais = [{zono(n)}]
+                reperer = lambda r: r["cle"][:3]
             cands, total = [], 0
             for pages in essais:
                 cands = [r for r in rangi
@@ -792,7 +821,7 @@ def lier_notes(rangi):
                          # dans le titre meme de la scene, « La Rekolto
                          # (*) », qui tient sur la page d'ouverture.
                          if r["tipo"] in ("p", "sub", "apar")
-                         and page_de(r) in pages
+                         and reperer(r) in pages
                          and lire_texte(r) is not None]
                 total = sum(len(appels_note(lire_texte(r), marque))
                             for r in cands)
@@ -1615,6 +1644,14 @@ def uniformiser_filets(rangi):
 
 
 def rendre(rangi):
+    # LES LANGUES DIFFEREES SE RANGENT ICI PLUTOT QUE DANS LA PAGE.
+    # Tout est calcule comme pour les autres -- roles d'apparat, appels
+    # de note, boutons de renvoi -- et seul le dernier geste change :
+    # au lieu d'ecrire le texte dans la case, on le pose dans ce sac,
+    # qui partira dans lingui/<kodo>.json, et la case reste vide.
+    differe = {lg["kodo"]: {"k": {}, "noto": {}}
+               for lg in LANGUES if lg.get("differita")}
+
     # La table des matieres se tire des blocs de titre.
     # LA TABLE DES MATIERES A TROIS RANGS, parce que le livre en a
     # trois : le tableau, la scene, l'intertitre. Les tableaux a
@@ -1910,18 +1947,27 @@ def rendre(rangi):
                  '<div class="k io vaka"></div>'
         cel = [cel_io]
         for lg in LANGUES:
-            o = r["tra"].get(lg["kodo"])
+            k = lg["kodo"]
+            o = r["tra"].get(k)
             if o:
                 f2 = ""
                 if o["f"]:
-                    pg2 = rang_pdf(lg["kodo"], o["fe"])
+                    pg2 = rang_pdf(k, o["fe"])
                     f2 = (f'<a class="fol fd" href="tableaux.pdf#page={pg2}" '
                           f'title="Folio {o["f"]} dans le PDF">{o["f"]}</a>')
-                cel.append(f'<div class="k tra" data-lg="{lg["kodo"]}">'
-                           f'{f2}{o["t"]}</div>')
+                if k in differe:
+                    # La case est vide dans le fichier ET marquee « dif » :
+                    # c'est a cette marque que le CSS sait ne pas y mettre
+                    # le tiret des vraies lacunes, et que le script sait
+                    # qu'il a quelque chose a y verser.
+                    differe[k]["k"][r["cle"]] = f2 + o["t"]
+                    cel.append(f'<div class="k tra vaka dif" '
+                               f'data-lg="{k}"></div>')
+                else:
+                    cel.append(f'<div class="k tra" data-lg="{k}">'
+                               f'{f2}{o["t"]}</div>')
             else:
-                cel.append(f'<div class="k tra vaka" data-lg="{lg["kodo"]}">'
-                           f'</div>')
+                cel.append(f'<div class="k tra vaka" data-lg="{k}"></div>')
         if r["tipo"] == "noto":
             # La note se rend a part : elle n'est pas un rang a deux
             # colonnes mais un depli attache a l'alinea qui l'appelle.
@@ -1933,7 +1979,16 @@ def rendre(rangi):
             for k, txt in [("io", r["io"])] + [
                     (lg["kodo"], (r["tra"].get(lg["kodo"]) or {}).get("t"))
                     for lg in LANGUES]:
+                # La case de rang a ete construite plus haut, avant qu'on
+                # sache que ce bloc etait une note : elle ne sera pas
+                # rendue, et ce qu'on avait mis de cote pour elle ferait
+                # double emploi avec la note elle-meme.
+                if k in differe:
+                    differe[k]["k"].pop(r["cle"], None)
                 if txt:
+                    if k in differe:
+                        differe[k]["noto"][r["cle"]] = txt
+                        txt = ""
                     lignes.append(
                         f'<div class="noto" id="noto-{k}-{r["cle"]}" '
                         f'data-lg="{k}" hidden>{txt}</div>')
@@ -1948,6 +2003,23 @@ def rendre(rangi):
     opcioni = "".join(
         f'<option value="{lg["kodo"]}">{lg["nomo"]}</option>'
         for lg in LANGUES)
+
+    # L'ADRESSE PORTE LE POIDS DU FICHIER, comme celle des gravures :
+    # le navigateur qui a deja lu une version de la traduction ne doit
+    # pas la resservir quand elle a change.
+    dos = RACINE / "lingui"
+    dos.mkdir(exist_ok=True)
+    for lg in LANGUES:
+        d = differe.get(lg["kodo"])
+        if d is None:
+            continue
+        f = dos / f'{lg["kodo"]}.json'
+        f.write_text(json.dumps(d, ensure_ascii=False,
+                                separators=(",", ":")) + "\n",
+                     encoding="utf-8")
+        lg["adreso"] = f'lingui/{lg["kodo"]}.json?v={f.stat().st_size}'
+        print(f'  {f.relative_to(RACINE)} : {len(d["k"])} bloki, '
+              f'{f.stat().st_size // 1024} Ko')
 
     gabarito = (RACINE / "outils" / "gabarito.html").read_text(encoding="utf-8")
     page = (gabarito
