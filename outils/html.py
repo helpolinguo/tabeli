@@ -1483,7 +1483,12 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|сцена)\b"
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
 # « (Simple leçon d'histoire naturelle). » chez Rochelle -- et un test
 # sur la derniere lettre laissait donc le francais de cote.
-SUBT = re.compile(r"\(.*\)\s*[.,;:!?]?")
+# La parenthese chinoise est pleine chasse -- « （...） » -- et son
+# point aussi : « 。 ». Les garder ne coute qu'un caractere de plus
+# dans chacune des deux classes, et le chinois compose alors comme il
+# se doit ; les remplacer par les signes latins aurait fait, dans une
+# ligne de caracteres pleine chasse, deux trous ou l'oeil bute.
+SUBT = re.compile(r"[(（].*[)）][\s\u3000]*[.,;:!?。、；：！？]?")
 
 
 def korpo_de(attrs):
