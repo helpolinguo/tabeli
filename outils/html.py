@@ -64,8 +64,25 @@ def korekti(tab):
     return _KOREKTI.get(tab, {})
 
 
+def nomo(nm, langue):
+    """Le nom de l'objet DANS LA LANGUE DE LA COLONNE.
+
+    Le gros plan porte le nom de ce qu'il montre, et ce nom se lit dans
+    la langue du texte qui l'a appele : « fumeyo » a gauche, « fumoir »
+    au milieu, « smoking room » a droite. Les 1693 objets ne sont pas
+    tous nommes dans les trois -- il faut que le substantif soit en
+    gras devant le renvoi, et une edition l'oublie parfois -- d'ou le
+    repli, dans l'ordre : sa langue, l'ido, le francais.
+    """
+    for k in (langue, "io", "fr", "en"):
+        v = nm.get(k)
+        if v:
+            return v[0]
+    return ""
+
+
 def numeri():
-    """{tabelo: {numero: (cle de gravure, x, y, l, h, nom)}}.
+    """{tabelo: {numero: (cle de gravure, x, y, l, h, noms)}}.
 
     Les positions sont en FRACTION de la planche : la page sert la meme
     gravure a trois definitions, et le gros plan doit tomber juste sur
@@ -87,11 +104,9 @@ def numeri():
             if force.get((tab, n), -1) >= b[4]:
                 continue
             force[(tab, n)] = b[4]
-            nom = noms.get(tab, {}).get(n, {})
             out.setdefault(tab, {})[n] = (
                 cle, b[0], b[1], b[2], b[3],
-                (nom.get("io") or nom.get("fr") or [""])[0],
-                (nom.get("fr") or nom.get("io") or [""])[0])
+                noms.get(tab, {}).get(n, {}))
     return out
 
 
@@ -948,11 +963,9 @@ def boutons_renvois(rangi):
             v = par.get(f"{scene}:{n}" if scene else str(n))
             if not v:
                 return None
-            cle, x, y, w, h, io, fr = v
-            # LE NOM SUIT SA COLONNE : le lecteur du francais lit
-            # « fumoir », celui de l'ido « fumeyo ».
-            titre = ((io if langue == "io" else fr) or io or fr)
-            titre = titre.replace('"', "&quot;")
+            cle, x, y, w, h, nm = v
+            # LE NOM SUIT SA COLONNE (voir nomo, plus haut).
+            titre = nomo(nm, langue).replace('"', "&quot;")
             return (f'<button class="lupo{chr(32) + "nuda" if nu else ""}" '
                     f'data-g="{cle}" data-c="{x},{y},{w},{h}" data-n="{n}" '
                     f'title="{titre}" aria-expanded="false">')
@@ -1094,10 +1107,7 @@ def boutons_literi(rangi):
                     bouts.append(L)
                     continue
                 nm = noms.get(planche[:3], {}).get(prefixo + L, {})
-                io = (nm.get("io") or nm.get("fr") or [""])[0]
-                fr = (nm.get("fr") or nm.get("io") or [""])[0]
-                titre = ((io if langue == "io" else fr) or io or fr)
-                titre = titre.replace('"', "&quot;")
+                titre = nomo(nm, langue).replace('"', "&quot;")
                 bouts.append(
                     f'<button class="lupo nuda" data-g="{planche}" '
                     f'data-c="{v[0]},{v[1]},{v[2]},{v[3]}" data-n="{L}" '
@@ -1943,8 +1953,8 @@ def rendre(rangi):
             # OUVRE_AP, et non « ln » seul : la table compte aussi les
             # lignes « pk », et les deux numerotations doivent coincider.
             io = OUVRE_AP.sub(ancrer, io)
-        cel_io = f'<div class="k io">{fol}{io}</div>' if io else \
-                 '<div class="k io vaka"></div>'
+        cel_io = f'<div class="k io" lang="io">{fol}{io}</div>' if io else \
+                 '<div class="k io vaka" lang="io"></div>'
         cel = [cel_io]
         for lg in LANGUES:
             k = lg["kodo"]
@@ -1962,12 +1972,13 @@ def rendre(rangi):
                     # qu'il a quelque chose a y verser.
                     differe[k]["k"][r["cle"]] = f2 + o["t"]
                     cel.append(f'<div class="k tra vaka dif" '
-                               f'data-lg="{k}"></div>')
+                               f'data-lg="{k}" lang="{k}"></div>')
                 else:
-                    cel.append(f'<div class="k tra" data-lg="{k}">'
-                               f'{f2}{o["t"]}</div>')
+                    cel.append(f'<div class="k tra" data-lg="{k}" '
+                               f'lang="{k}">{f2}{o["t"]}</div>')
             else:
-                cel.append(f'<div class="k tra vaka" data-lg="{k}"></div>')
+                cel.append(f'<div class="k tra vaka" data-lg="{k}" '
+                           f'lang="{k}"></div>')
         if r["tipo"] == "noto":
             # La note se rend a part : elle n'est pas un rang a deux
             # colonnes mais un depli attache a l'alinea qui l'appelle.
@@ -1991,7 +2002,7 @@ def rendre(rangi):
                         txt = ""
                     lignes.append(
                         f'<div class="noto" id="noto-{k}-{r["cle"]}" '
-                        f'data-lg="{k}" hidden>{txt}</div>')
+                        f'data-lg="{k}" lang="{k}" hidden>{txt}</div>')
             continue
         lignes.append(f'<div class="{" ".join(cl)}"{att}>' +
                       "".join(cel) + "</div>")

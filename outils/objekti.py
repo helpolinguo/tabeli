@@ -172,7 +172,7 @@ def relever(dossier, motif):
     """{numero de tableau: {cle d'objet: [noms]}} pour une langue."""
     out = {}
     for f in sorted((RACINE / "texto" / dossier).glob(motif)):
-        m = re.search(r'-(?:tabelo|tableau)-(\d+)\.tex$', f.name)
+        m = re.search(r'-(?:tabelo|tableau|table)-(\d+)\.tex$', f.name)
         if not m:
             continue
         tab = int(m.group(1))
@@ -246,16 +246,28 @@ def rang(k):
     return (s, int(m.group(1) or 0), m.group(2))
 
 
+# LE NOM DE L'OBJET SUIT LA COLONNE QUI L'APPELLE. Le gros plan porte
+# le nom de ce qu'il montre, et ce nom se lit dans la langue de la
+# colonne : « fumeyo » a gauche, « fumoir » au milieu, « smoking room »
+# a droite. On releve donc les trois de la meme facon -- le substantif
+# en gras qui precede le renvoi -- et la traduction anglaise, qui garde
+# exactement les memes renvois que les deux autres, se laisse relever
+# par le meme code, au nom de fichier pres.
+SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
+           ("en", "*-table-*.tex")]
+
+
 def construire():
-    io = relever("io", "*-tabelo-*.tex")
-    fr = relever("fr", "*-tableau-*.tex")
+    par_langue = {k: (relever(k, m) if (RACINE / "texto" / k).is_dir() else {})
+                  for k, m in SOURCES}
+    tabs = sorted({t for d in par_langue.values() for t in d})
     tout = {}
-    for tab in sorted(set(io) | set(fr)):
-        par = {}
-        for k in sorted(set(io.get(tab, {})) | set(fr.get(tab, {})), key=rang):
-            par[k] = {"io": io.get(tab, {}).get(k, []),
-                      "fr": fr.get(tab, {}).get(k, [])}
-        tout[f"t{tab:02d}"] = par
+    for tab in tabs:
+        cles = sorted({k for d in par_langue.values()
+                       for k in d.get(tab, {})}, key=rang)
+        tout[f"t{tab:02d}"] = {
+            k: {lg: d.get(tab, {}).get(k, []) for lg, d in par_langue.items()}
+            for k in cles}
     return tout
 
 
@@ -268,17 +280,19 @@ def main(args):
     if args:
         tab = f"t{int(args[0]):02d}"
         for n, v in sorted(tout[tab].items(), key=lambda kv: rang(kv[0])):
-            print(f"  {n:>6}  {' / '.join(v['io']) or '—':40s}  "
-                  f"{' / '.join(v['fr']) or '—'}")
+            print(f"  {n:>6}  {' / '.join(v['io']) or '—':32s}  "
+                  f"{' / '.join(v['fr']) or '—':32s}  "
+                  f"{' / '.join(v.get('en', [])) or '—'}")
         return
     (RACINE / "gravuri" / "objekti.json").write_text(
         json.dumps(tout, ensure_ascii=False, indent=1) + "\n",
         encoding="utf-8")
     for tab, par in sorted(tout.items()):
         att = attendus(int(tab[1:]))
-        deux = sum(1 for v in par.values() if v["io"] and v["fr"])
+        tri = sum(1 for v in par.values()
+                  if v["io"] and v["fr"] and v.get("en"))
         print(f"  {tab}  {len(par):3d}/{len(att):3d} objets nommes, "
-              f"dont {deux:3d} dans les deux langues")
+              f"dont {tri:3d} dans les trois langues")
     n = sum(len(p) for p in tout.values())
     a = sum(len(attendus(int(t[1:]))) for t in tout)
     print(f"  TOTAL {n}/{a} = {100 * n // a} %")
