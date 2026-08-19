@@ -130,6 +130,24 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 /* « dif » : la case attend sa traduction, elle ne manque pas. */
 .k.tra.vaka.dif::after{content:""}
 
+/* --- L'ARABE VA DE DROITE A GAUCHE, et c'est la CASE qui le dit, non
+   la page : les six autres colonnes gardent leur sens. L'attribut
+   « dir » suffit au navigateur pour l'ordre des mots et pour la
+   ponctuation -- « (13) » se range du bon cote du substantif tout
+   seul -- mais trois choses de la mise en page restent a retourner.
+   Le folio d'abord : il se pose hors de la colonne, a droite pour une
+   traduction, et il doit passer a gauche quand la colonne se lit a
+   l'envers, sans quoi il tombe SUR le debut des lignes. L'alinea
+   ensuite, qui se rentre a droite. La bordure du mode etroit enfin,
+   qui separe les deux textes et doit rester du cote ou l'arabe
+   commence. Les logical properties auraient tout fait d'un coup ;
+   « left » et « right » sont deja partout ailleurs dans cette
+   feuille, et melanger les deux familles se relit mal. */
+.k.tra[dir=rtl]{text-align:justify}
+.k.tra[dir=rtl] .fol{left:-28px;right:auto}
+.r.p .k.tra[dir=rtl]{text-indent:1.3em}
+.k.tra[dir=rtl] sup{margin-left:0;margin-right:.08em}
+
 .r.p .k{text-indent:1.3em}
 .r.sub{margin:1.9em 0 .9em}
 .r.sub .k{font-variant:small-caps;letter-spacing:.06em;font-weight:600;
@@ -206,7 +224,8 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .k.tra .fol{left:auto;right:-28px}
 @media (max-width:1180px){
  .fol{position:static;float:left;margin:.2em .5em 0 0}
- .k.tra .fol{float:right;margin:.2em 0 0 .5em}}
+ .k.tra .fol{float:right;margin:.2em 0 0 .5em}
+ .k.tra[dir=rtl] .fol{float:left;margin:.2em .5em 0 0}}
 
 /* --- LA NOTE SE REPLIE. Au bas d'une page imprimee la note a sa
    place ; dans une colonne qui defile, posee entre deux alineas, elle
@@ -396,6 +415,8 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
  .r{grid-template-columns:1fr;gap:.35em 0}
  .k.io{padding-right:0;border-right:0}
  .k.tra{padding-left:11px;border-left:2px solid var(--lin);color:var(--sub)}
+ .k.tra[dir=rtl]{padding-left:0;padding-right:11px;
+  border-left:0;border-right:2px solid var(--lin)}
  .r.sub .k.tra,.r.apar .k.tra{border-left:0;padding-left:0}}
 @media (max-width:900px) and (prefers-color-scheme:dark){
  nav{box-shadow:0 0 24px rgba(0,0,0,.6)}}

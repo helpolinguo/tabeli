@@ -204,7 +204,7 @@ def relever(dossier, motif):
     """{numero de tableau: {cle d'objet: [noms]}} pour une langue."""
     out = {}
     for f in sorted((RACINE / "texto" / dossier).glob(motif)):
-        m = re.search(r'-(?:tabelo|tableau|table|cuadro)-(\d+)\.tex$', f.name)
+        m = re.search(r'-(?:tabelo|tableau|table|cuadro|tablica|tubiao|lawha)-(\d+)\.tex$', f.name)
         if not m:
             continue
         tab = int(m.group(1))
@@ -292,7 +292,9 @@ def rang(k):
 # exactement les memes renvois que les deux autres, se laisse relever
 # par le meme code, au nom de fichier pres.
 SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
-           ("en", "*-table-*.tex"), ("es", "*-cuadro-*.tex")]
+           ("en", "*-table-*.tex"), ("es", "*-cuadro-*.tex"),
+           ("ru", "*-tablica-*.tex"), ("zh", "*-tubiao-*.tex"),
+           ("ar", "*-lawha-*.tex")]
 
 
 def construire():

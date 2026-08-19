@@ -155,11 +155,21 @@ RENVOI_REND = re.compile(
 # moment ou l'on choisit la langue dans le menu. La page, elle, garde
 # les cases vides a leur place -- ce qui arrive n'a plus qu'a s'y
 # verser.
+# LES SIX LANGUES OFFICIELLES DE L'ONU, plus l'ido qui est la source.
+# Le francais est du lot par le fac-simile lui-meme ; l'anglais,
+# l'espagnol, le russe, le chinois et l'arabe sont des traductions de
+# 2026, faites sur l'ido et controlees sur le francais.
 LANGUES = [
     {"kodo": "fr", "nomo": "Français", "dir": "ltr", "fonto": "fac-similé"},
     {"kodo": "en", "nomo": "English", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "es", "nomo": "Español", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
+    {"kodo": "ru", "nomo": "Русский", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
+    {"kodo": "zh", "nomo": "中文", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
+    {"kodo": "ar", "nomo": "العربية", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
 ]
 
@@ -560,7 +570,8 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 #  2. ASSEMBLAGE
 # -------------------------------------------------------------------
-DOSSIER = {"fr": "fr", "en": "en", "es": "es"}   # langue -> texto/<...>
+DOSSIER = {"fr": "fr", "en": "en", "es": "es",
+           "ru": "ru", "zh": "zh", "ar": "ar"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1435,27 +1446,38 @@ def est_ceno(x):
 # fac-simile compose ces trois mots en capitales, et « Charts 3 and 4
 # are arranged... » — l'alinea d'ouverture du tableau 3 — ne doit pas
 # passer pour un titre de tableau.
-NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO")
+NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|ТАБЛИЦА"
+                        r"|图表|لوحة")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
-            r"|primera|segunda|tercera|cuarta)")
+            r"|primera|segunda|tercera|cuarta"
+            r"|перва[яй]|втора[яй]|треть[яе]|четв[её]рта[яй])")
 
 # LA SERIE. Le livre en a trois, et le fac-simile l'annonce en tete du
 # tableau qui l'ouvre : « UNESMA SERIO » au 1, « DUESMA SERIO » au 7,
 # « TRIESMA SERIO » au 11. Le volet n'en portait qu'une, ecrite en dur
 # dans le gabarit, de sorte que les seize tableaux paraissaient tous
 # sous la premiere serie.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series)\b", re.I)
+# TROIS LANGUES OU L'ORDINAL NE SE PLACE PAS COMME AILLEURS, et ou
+# « \b...\s+... » ne peut donc pas servir. Le chinois soude l'ordinal au
+# nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
+# nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
+# mot de plus dans la liste commune.
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
+                   r"|第[一二三四]组"
+                   r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)", re.I)
 
 # LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena)\b", re.I)
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|сцена)\b"
+                  r"|第[一二三四]场"
+                  r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
@@ -2064,6 +2086,14 @@ def rendre(rangi):
         cel = [cel_io]
         for lg in LANGUES:
             k = lg["kodo"]
+            # L'ARABE S'ECRIT DE DROITE A GAUCHE, et il faut le dire au
+            # navigateur : sans « dir », les renvois entre parentheses
+            # et la ponctuation finale se rangeaient du mauvais cote de
+            # la ligne — « (13) » passait a gauche du mot qu'il numerote.
+            # La case est marquee, non la page : les autres colonnes
+            # gardent leur sens, et la marque tient sur la seule langue
+            # qui en a besoin.
+            sens = "" if lg["dir"] == "ltr" else f' dir="{lg["dir"]}"'
             o = r["tra"].get(k)
             if o:
                 f2 = ""
@@ -2078,13 +2108,13 @@ def rendre(rangi):
                     # qu'il a quelque chose a y verser.
                     differe[k]["k"][r["cle"]] = f2 + o["t"]
                     cel.append(f'<div class="k tra vaka dif" '
-                               f'data-lg="{k}" lang="{k}"></div>')
+                               f'data-lg="{k}" lang="{k}"{sens}></div>')
                 else:
                     cel.append(f'<div class="k tra" data-lg="{k}" '
-                               f'lang="{k}">{f2}{o["t"]}</div>')
+                               f'lang="{k}"{sens}>{f2}{o["t"]}</div>')
             else:
                 cel.append(f'<div class="k tra vaka" data-lg="{k}" '
-                           f'lang="{k}"></div>')
+                           f'lang="{k}"{sens}></div>')
         if r["tipo"] == "noto":
             # La note se rend a part : elle n'est pas un rang a deux
             # colonnes mais un depli attache a l'alinea qui l'appelle.
