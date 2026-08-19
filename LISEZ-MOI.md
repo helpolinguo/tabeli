@@ -34,7 +34,8 @@ par alinéa.
 | Transcription ido | **les 16 tableaux** (feuillets 7 à 108) ; reste : liminaires et table |
 | Transcription française | **les 16 tableaux** (feuillets 9 à 92) ; reste : l'*Avertissement* et la table |
 | Page de lecture (`index.html`) | faite, complète pour ce qui est transcrit |
-| Traductions (en, es, ru, zh, ar) | à faire, depuis le français |
+| Traduction anglaise (`texto/en/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
+| Traductions (es, ru, zh, ar) | à faire |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`) |
 
@@ -222,6 +223,16 @@ Fichiers dans `texto/io/` et `texto/fr/`. Deux marques portent tout :
 
 On n'utilise jamais `\\` : il annule la justification de la ligne.
 Aucune césure n'est décidée par TeX ; toutes sont relevées sur le scan.
+
+**Une traduction n'est pas un relevé.** `texto/en/` contient les mêmes
+clés `%%K`, le même apparat macro pour macro et les mêmes renvois
+`\textsuperscript{(n)}` — ce sont eux qui ouvrent les gros plans, et un
+numéro déplacé ouvrirait sur autre chose. Mais elle ne porte ni `\nl`
+ni `\cc`, qui n'ont de sens que pour un fac-similé, ni
+`\begin{VUpage}`, puisqu'elle n'a ni feuillet ni folio. Elle traduit
+l'**ido**, que porte la colonne de gauche, en contrôlant sur le
+français ; là où l'ido subdivise et pas le français, elle subdivise
+aussi.
 Les espaces-mots sont rendus insécables : le seul point de coupure légal
 d'une ligne est celui que le relevé a placé, et une ligne trop large
 devient un « Overfull \hbox » que les contrôles inventorient — la faute
@@ -330,11 +341,27 @@ Sous 900 px de largeur, les colonnes s'empilent — l'ido d'abord, la
 traduction dessous avec un filet à gauche — et la table devient un
 tiroir.
 
-Le sélecteur de langue ne recharge rien : toutes les langues sont dans
-la page, une seule est visible. La recherche les traverse toutes, et
-elle porte sur **les deux colonnes à la fois** : un mot ido trouve
-l'alinéa, et sa traduction reste en face même si elle ne contient pas
-le mot.
+Le sélecteur de langue ne recharge rien **une fois la langue venue** :
+elle reste dans la page, et la bascule est instantanée. Le français y
+est d'emblée — c'est un fac-similé transcrit, il fait partie de
+l'objet ; les traductions, marquées `differita` dans `LANGUES`, vivent
+dans `lingui/<kodo>.json` et ne se téléchargent qu'au moment où le
+menu les nomme. La page ne porte que leurs cases vides. Mesuré : zéro
+requête vers `lingui/` tant qu'on n'a pas choisi English, une seule
+ensuite, jamais reprise.
+
+La recherche traverse toutes les langues présentes, et elle porte sur
+**les colonnes à la fois** : un mot ido trouve l'alinéa, et sa
+traduction reste en face même si elle ne contient pas le mot. Ce qui
+arrive en cours de route entre dans la copie non surlignée dont la
+recherche repart, puis la relance — sans quoi un mot déjà tapé ne
+serait pas surligné dans la langue qui vient d'arriver.
+
+L'infobulle d'un renvoi porte le nom de l'objet **dans la langue de sa
+colonne** : « fumeyo » à gauche, « fumoir » au milieu, « smoking
+room » à droite. `outils/objekti.py` les relève des trois sources du
+même geste — le substantif en gras devant le renvoi — et 1610 objets
+sur 1693 sont nommés dans les trois.
 
 Le folio de chaque bloc se pose dans le blanc extérieur de sa colonne
 et renvoie à la page correspondante du PDF. Ce n'est pas une
