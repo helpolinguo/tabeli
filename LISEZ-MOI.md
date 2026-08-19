@@ -35,7 +35,8 @@ par alinéa.
 | Transcription française | **les 16 tableaux** (feuillets 9 à 92) ; reste : l'*Avertissement* et la table |
 | Page de lecture (`index.html`) | faite, complète pour ce qui est transcrit |
 | Traduction anglaise (`texto/en/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
-| Traductions (es, ru, zh, ar) | à faire |
+| Traduction espagnole (`texto/es/`) | **les 16 tableaux**, faite en 2026 d'après l'ido, contrôlée sur le français et l'anglais |
+| Traductions (ru, zh, ar) | à faire |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`) |
 
