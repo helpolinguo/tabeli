@@ -34,14 +34,21 @@
 #      passer. On mesure donc, sur une grille, ou chaque morceau veut
 #      aller, et l'on ajuste la similitude qui les mene tous.
 #
-#   4. LE PLIAGE. Il en reste, et au tableau 16 ils atteignent
-#      soixante-dix points aux angles : la feuille photographiee
-#      n'etait ni plane ni d'aplomb. Cela ne s'ecrit pas en six
-#      coefficients — on a essaye un polynome du second degre, il
-#      laissait vingt points. On pose donc les glissements mesures sur
-#      une grille, on comble les trous par diffusion, on floute, et
-#      l'on remappe. Le champ est doux par construction : il ne peut
-#      pas inventer un pli plus fin que sa maille.
+#   4. L'HOMOGRAPHIE. Il reste des ecarts, et au tableau 16 ils
+#      atteignent soixante-dix points aux angles : l'objectif n'etait
+#      pas d'aplomb sur la feuille. C'est de la perspective, et la
+#      perspective s'ecrit en huit coefficients — une homographie, qui
+#      mene toute droite sur une droite.
+#
+#      ON A ESSAYE UN CHAMP DE GLISSEMENT, et il faut dire pourquoi on
+#      l'a retire : glissements mesures sur une grille au pas de
+#      quarante, trous combles par diffusion, remappage. Le recalage
+#      tombait a moins de dix points — et les facades du tableau 14
+#      sortaient de travers. Un champ n'a aucune raison de respecter
+#      un alignement : il suit ce qu'il mesure, tuile par tuile, et une
+#      tuile qui se trompe de trois points tord tout son voisinage. Une
+#      planche gauchie se voit ; dix points d'ecart sur un gros plan,
+#      non. On garde donc les droites, et l'on rend les ecarts.
 #
 #  LE FLOU DE DOUZE POINTS, aux temps 2 a 4, n'est pas une negligence :
 #  c'est la seule echelle a laquelle les deux tirages se ressemblent.
@@ -89,9 +96,10 @@ KOVRI = RACINE / "originali" / "kovri"
 
 BLANKESO = 0.40   # part du jaune du papier qu'on retire
 VIVECO = 1.15     # ranimation de la teinte
-NETESO = 0.55     # force du masque flou
+NETESO = 0.65     # force du masque flou
 MARGE = O.MARGE_FILET
 FLOU = 12.0       # l'echelle a laquelle les deux tirages se ressemblent
+QUAL_KOLORO = 92  # qualite WebP du detail, plus haute qu'ailleurs
 
 
 def tirar(pdf):
@@ -219,12 +227,10 @@ def afini(T, col, gp, sigma=FLOU, marge=90, cases=(5, 7), R=280, seuil=0.35):
     return T2.astype(np.float32), len(t), co
 
 
-# ON PLIE DEUX FOIS, DU LARGE AU SERRE. Le premier tour se mesure sur
-# de grandes tuiles floutees a douze points : c'est robuste, et cela
-# rattrape la perspective et le gondolement. Il reste vingt points
-# d'ecart en moyenne — mesure faite sur les numeros eux-memes, qui sont
-# le seul juge qui compte. Le second tour, sur des tuiles trois fois
-# plus petites et un flou de cinq points, descend a moins de dix.
+# ON AJUSTE DEUX FOIS, DU LARGE AU SERRE. Le premier tour se mesure
+# sur de grandes tuiles floutees a douze points : c'est robuste, et
+# cela rattrape la perspective. Le second, sur des tuiles trois fois
+# plus petites et un flou de cinq points, resserre.
 #
 # On ne va pas plus fin. Sous cinq points de flou les deux tirages ne
 # se ressemblent plus assez pour se reconnaitre — l'un n'a que le
@@ -233,46 +239,46 @@ PLIADI = ((FLOU, 70, (7, 10), 190, 0.35),
           (5.0, 40, (12, 16), 110, 0.30))
 
 
-def plier(T, col, gp, pas=40, verbeux=True):
-    """Le champ de glissement qui reste, en points de la planche."""
+# UNE DROITE DE LA PIERRE DOIT RESTER DROITE. Premiere version, on
+# posait les glissements mesures sur une grille au pas de quarante, on
+# comblait les trous par diffusion et l'on remappait : le recalage
+# tombait a moins de dix points, et les facades du tableau 14 sortaient
+# de travers. Un champ de glissement n'a aucune raison de respecter
+# l'alignement — il suit ce qu'il mesure, tuile par tuile, et une tuile
+# qui se trompe de trois points tord tout son voisinage.
+#
+# LA PHOTOGRAPHIE D'UNE FEUILLE PLANE EST UNE HOMOGRAPHIE, et rien de
+# plus : l'objectif n'etait pas d'aplomb, voila tout. Huit coefficients
+# suffisent a le dire, et une homographie mene toute droite sur une
+# droite. On ajuste donc les huit sur les memes tuiles, et l'on
+# s'arrete la : ce qui reste apres elle n'est plus de la perspective
+# mais du gondolement du papier, et le redresser couterait plus cher
+# qu'il ne rapporte.
+def projekti(T, col, gp, verbeux=True):
+    """L'homographie qui reste, en points de la planche."""
     HN, LN = gp.shape
-    gh, gw = HN // pas + 2, LN // pas + 2
-    champ = np.zeros((2, gh, gw), np.float32)
+    H = np.eye(3, dtype=np.float32)
     for sigma, marge, cases, R, seuil in PLIADI:
-        pose = rendre(col, T, champ, (LN, HN), 1.0, cv2.INTER_LINEAR)
+        pose = rendre(col, T, H, (LN, HN), 1.0, cv2.INTER_LINEAR)
         t = tuili(pose, gp, sigma, marge, cases, R, seuil)
         if len(t) < 12:
             if verbeux:
                 print(f"  flou {sigma:.0f} : {len(t)} tuiles seulement, "
                       f"on passe")
             continue
-        f = np.zeros((2, gh, gw), np.float32)
-        pn = np.zeros((gh, gw), np.float32)
-        for x, y, dx, dy, _ in t:
-            j, i = int(y / pas), int(x / pas)
-            f[0, j, i] += dx
-            f[1, j, i] += dy
-            pn[j, i] += 1
-        plein = pn > 0
-        f[0][plein] /= pn[plein]
-        f[1][plein] /= pn[plein]
-        # LES TROUS SE COMBLENT PAR DIFFUSION : chaque tour remplace un
-        # point vide par la moyenne de ses voisins. Le champ est doux
-        # par construction — il ne peut pas inventer un pli plus fin que
-        # sa maille — et c'est ce qui l'empeche de suivre une tuile qui
-        # s'est trompee.
-        for _ in range(900):
-            for k in (0, 1):
-                m = cv2.blur(f[k], (3, 3))
-                f[k][~plein] = m[~plein]
-        for k in (0, 1):
-            f[k] = cv2.GaussianBlur(f[k], (0, 0), 1.6)
-        champ += f
+        ici = np.float32([(q[0], q[1]) for q in t])
+        la = np.float32([(q[0] + q[2], q[1] + q[3]) for q in t])
+        M, bon = cv2.findHomography(la, ici, cv2.RANSAC, 8.0)
+        if M is None:
+            continue
+        H = (M @ H).astype(np.float32)
         if verbeux:
             d = np.array([(q[2], q[3]) for q in t], float)
-            print(f"  pliage au flou {sigma:.0f} : {len(t)} tuiles, "
-                  f"reprise de {np.abs(d).max():.0f} points au plus")
-    return champ
+            n = int(bon.sum()) if bon is not None else len(t)
+            print(f"  ajustement au flou {sigma:.0f} : {len(t)} tuiles, "
+                  f"{n} retenues, reprise de {np.abs(d).max():.0f} "
+                  f"points au plus")
+    return H
 
 
 # ON A ESSAYE DE PLIER SUR LES NUMEROS EUX-MEMES, et c'est pire.
@@ -302,13 +308,14 @@ def plier(T, col, gp, pas=40, verbeux=True):
 # il est a un vingtieme du centre. On s'en tient la.
 
 
-def rendre(col, T, champ, taille, echelo, interp=cv2.INTER_CUBIC):
+def rendre(col, T, H, taille, echelo, interp=cv2.INTER_LANCZOS4):
     LT, HT = taille
     ys, xs = np.mgrid[0:HT, 0:LT].astype(np.float32)
-    # de la sortie vers la planche, en defaisant le pliage
+    # de la sortie vers la planche, en defaisant l'ajustement projectif
     px, py = xs / echelo, ys / echelo
-    px -= cv2.resize(champ[0], (LT, HT), interpolation=cv2.INTER_CUBIC)
-    py -= cv2.resize(champ[1], (LT, HT), interpolation=cv2.INTER_CUBIC)
+    w = H[2, 0] * px + H[2, 1] * py + H[2, 2]
+    px, py = ((H[0, 0] * px + H[0, 1] * py + H[0, 2]) / w,
+              (H[1, 0] * px + H[1, 1] * py + H[1, 2]) / w)
     # de la planche vers l'original
     Ti = cv2.invertAffineTransform(T)
     sx = Ti[0, 0] * px + Ti[0, 1] * py + Ti[0, 2]
@@ -352,32 +359,33 @@ def kolorigi(cle, pdf, essai=False, **kw):
     print(f"  {Path(pdf).name} : {col.shape[1]} x {col.shape[0]} points")
     T, gp = poser(cle, col)
     HN, LN = gp.shape
-    champ = plier(T, col, gp)
+    H = projekti(T, col, gp)
     # LA DEFINITION DE SORTIE EST CELLE DE L'ORIGINAL. L'echelle de la
     # similitude dit de combien la photographie a ete grandie pour
     # tomber sur le fac-simile ; on rend l'inverse.
     k = float(np.hypot(T[0, 0], T[1, 0]))
     echelo = 1.0 / k
     LT, HT = round(LN * echelo), round(HN * echelo)
-    out = restaurar(rendre(col, T, champ, (LT, HT), echelo), **kw)
+    out = restaurar(rendre(col, T, H, (LT, HT), echelo), **kw)
     print(f"  rendu {LT} x {HT} points, la planche en faisant {LN} x {HN}")
     KOVRI.mkdir(parents=True, exist_ok=True)
     dest = KOVRI / f"{cle}-koloro.png"
     Image.fromarray(out).save(dest)
     print(f"  ecrit dans {dest}")
     if essai:
-        bande(cle, col, T, champ, out, gp)
+        bande(cle, col, T, H, out, gp)
     return dest
 
 
-def bande(cle, col, T, champ, out, gp, boite=None):
+def bande(cle, col, T, H, out, gp, boite=None):
     """L'original brut, le rendu, le fac-simile : la meme portion."""
     HN, LN = gp.shape
     if boite is None:
         x, y = round(0.72 * LN), round(0.37 * HN)
         boite = (x, y, x + 600, y + 400)
     x0, y0, x1, y1 = boite
-    brut = rendre(col, T, np.zeros_like(champ), (LN, HN), 1.0)
+    brut = rendre(col, T, np.eye(3, dtype=np.float32),
+                  (LN, HN), 1.0)
     o = np.asarray(Image.fromarray(out).resize((LN, HN), Image.LANCZOS))
     trio = [brut[y0:y1, x0:x1], o[y0:y1, x0:x1],
             np.dstack([gp[y0:y1, x0:x1].astype(np.uint8)] * 3)]
@@ -396,7 +404,7 @@ def main(args):
     dest = kolorigi(cle, pdf, essai="--essai" in args)
     if "--essai" in args:
         return
-    O.servir(cle, dest)
+    O.servir(cle, dest, qual_detalo=QUAL_KOLORO)
     cat = RACINE / "gravuri" / "gravuri.json"
     tout = json.loads(cat.read_text(encoding="utf-8"))
     tout[cle]["koloro"] = True

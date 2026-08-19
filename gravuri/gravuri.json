@@ -273,7 +273,7 @@
   "detalo": {
    "alteso": 1506,
    "largeur": 2238,
-   "okteti": 695872
+   "okteti": 1435066
   },
   "fonto": "t14-apar-1-koloro.png",
   "koloro": true,
@@ -282,7 +282,7 @@
   "vido": {
    "alteso": 808,
    "largeur": 1200,
-   "okteti": 245990
+   "okteti": 248522
   }
  },
  "t15-apar-1": {
@@ -307,7 +307,7 @@
   "detalo": {
    "alteso": 1460,
    "largeur": 2184,
-   "okteti": 765654
+   "okteti": 1520500
   },
   "fonto": "t16-apar-1-koloro.png",
   "koloro": true,
@@ -316,7 +316,7 @@
   "vido": {
    "alteso": 802,
    "largeur": 1200,
-   "okteti": 291754
+   "okteti": 297742
   }
  }
 }

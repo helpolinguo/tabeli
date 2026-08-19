@@ -741,13 +741,21 @@ QUAL_VIDO = 74
 QUAL_DETALO = 74
 
 
-def servir(cle, neta, verbeux=True):
+# LA QUALITE DU DETAIL SE REGLE PAR PLANCHE. Le fac-simile a quatre
+# mille cinq cents points de large : a soixante-quatorze, le WebP a de
+# la place et n'y perd rien de visible. L'original en couleur n'en a
+# que deux mille deux cents, et la meme qualite le grumelait — le
+# « PIANOS » du batiment (10) du tableau 14 s'y lisait moins bien que
+# sur le PDF d'origine. Moins de points, plus de qualite : le fichier
+# reste plus leger que celui d'un fac-simile.
+def servir(cle, neta, verbeux=True, qual_detalo=None):
     """Les deux WebP, tires de la planche d'origine nettoyee."""
     im = Image.open(neta).convert("RGB")
     GRAVURI = RACINE / "gravuri"
     taille = {}
     for nom, largeur, qualite in (("vido", LARGE_VIDO, QUAL_VIDO),
-                                  ("detalo", im.width, QUAL_DETALO)):
+                                  ("detalo", im.width,
+                                   qual_detalo or QUAL_DETALO)):
         h = round(largeur * im.height / im.width)
         petite = im if largeur == im.width else im.resize((largeur, h),
                                                           Image.LANCZOS)
