@@ -745,6 +745,30 @@ def apparier_subs(io_blocs, autre_blocs):
     return lien
 
 
+# LES INTERTITRES QUE LE LIVRET FRANCAIS N'A PAS. Rochelle coupe ses
+# tableaux en deux ou trois sections, Guignon en met sept : cent
+# vingt-huit intertitres d'un cote, trente de l'autre, et
+# quatre-vingt-dix-huit rangs ou la colonne francaise restait vide. Les
+# six traductions modernes les ont toutes, traduites de l'ido ; le
+# francais ne pouvait pas les prendre par la meme voie, texto/fr etant
+# un releve et non une traduction — le PDF y reproduit son fac-simile,
+# une ligne pour une ligne, et une ligne de plus le fausserait.
+#
+# ILS SE TIENNENT DONC A COTE, dans texto/fr/intertitroj.json, et la
+# page de lecture seule les affiche. Elle les marque « apud » : meme
+# corps et meme place que les autres, mais le lecteur doit pouvoir
+# distinguer ce que Rochelle a ecrit de ce que nous ajoutons.
+def intertitroj_fr():
+    f = RACINE / "texto" / "fr" / "intertitroj.json"
+    if not f.exists():
+        return {}
+    return {k: v for k, v in json.loads(f.read_text(encoding="utf-8")).items()
+            if not k.startswith("_")}
+
+
+APUD_FR = intertitroj_fr()
+
+
 def paro():
     io = lire_langue("io")
     autres, liens = {}, {}
@@ -776,6 +800,18 @@ def paro():
             cible = (liens[lg["kodo"]].get(b["cle"]) if b["tipo"] == "sub"
                      else b["cle"])
             o = autres[lg["kodo"]].get(cible) if cible else None
+            if o is None and lg["kodo"] == "fr" and b["tipo"] == "sub":
+                # LE CORPS SE PREND SUR L'IDO, pour que les deux
+                # colonnes annoncent la section a la meme force.
+                t = APUD_FR.get(b["cle"])
+                if t:
+                    korpo = re.search(r'data-korpo="([^"]+)"', b["html"])
+                    o = {"html": (f'<span class="apud" data-korpo='
+                                  f'"{korpo.group(1) if korpo else "10.2pt"}" '
+                                  f'title="Intertitre absent du Livret '
+                                  f'français ; traduit de l\u2019ido">'
+                                  f'{t}</span>'),
+                         "folio": "", "feuillet": ""}
             if o:
                 r["tra"][lg["kodo"]] = {"t": o["html"], "f": o["folio"],
                                         "f2": o.get("folio2", ""),

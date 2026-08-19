@@ -202,6 +202,15 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
  letter-spacing:.07em;margin:.45em 0 .25em}
 .k [data-rolo="subt"]{font-style:italic;font-size:.78rem;color:var(--sub);
  letter-spacing:.02em;margin:.1em 0 .35em}
+
+/* L'INTERTITRE QUE LE LIVRET FRANCAIS N'A PAS. Il vient de l'ido, il
+   est de nous, et il doit se voir tel : meme corps et meme place que
+   les autres -- la colonne resterait boiteuse a le composer autrement
+   --, mais un crochet de chaque cote, discret, qui dit l'ajout. C'est
+   la convention des editions diplomatiques, et elle ne coute qu'un
+   caractere. L'infobulle donne le reste. */
+.apud::before{content:"[";color:var(--sub);font-weight:400}
+.apud::after{content:"]";color:var(--sub);font-weight:400}
 .fil{display:block;width:52px;height:1px;background:var(--lin);
  margin:.85em auto}
 .orn{display:block;color:var(--sub);margin:.5em 0;font-size:.9em}
