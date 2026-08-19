@@ -197,6 +197,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "ja", "nomo": "日本語", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "pnb", "nomo": "پنجابی", "dir": "rtl",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
@@ -683,7 +685,7 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
-           "bn": "bn", "ja": "ja"}               # langue -> texto/<...>
+           "bn": "bn", "ja": "ja", "pnb": "pnb"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1623,7 +1625,12 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # LE JAPONAIS ecrit « 図表第 1 号 » comme le
                         # chinois « 图表第 1 号 », mais avec ses propres
                         # caracteres : 図 n'est pas 图.
-                        r"|図表\s*第")
+                        r"|図表\s*第"
+                        # LE PENDJABI CHAHMOUKHI ecrit « نقشہ », qui est
+                        # aussi la carte ordinaire ; on exige le
+                        # « نمبر » qui ne suit le mot que dans la ligne
+                        # qui numerote.
+                        r"|نقشہ\s+نمبر")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1648,7 +1655,8 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
-                   r"|第[一二三四]部", re.I)
+                   r"|第[一二三四]部"
+                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ", re.I)
 
 # LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
@@ -1660,7 +1668,8 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|cena|сцена)\b"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
-                  r"|第[一二三四]場", re.I)
+                  r"|第[一二三四]場"
+                  r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
