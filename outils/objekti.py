@@ -99,6 +99,25 @@ def korekti():
 
 KOREKTI = korekti()
 
+
+def korekti_renvojo(tab, cle=""):
+    """{lu: a lire} pour UN BLOC : les corrections qui valent pour tout
+    le tableau, plus celles que ce bloc-ci porte seul.
+
+    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du
+    tableau 5 est un numero que la planche n'a nulle part : le corriger
+    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la
+    femme de chambre, lui, est un numero qui existe par ailleurs — c'est
+    le savon de l'alinea 2 — et le corriger partout ferait pointer
+    le savon sur la femme de chambre. Une entree dont la cle est celle
+    d'un BLOC ne vaut donc que dans ce bloc.
+    """
+    t = KOREKTI.get(f"t{tab:02d}", {})
+    out = {k: v for k, v in t.items() if isinstance(v, str)}
+    if cle:
+        out.update(t.get(cle, {}))
+    return out
+
 # LE SUBSTANTIF N'EST PAS TOUJOURS EN GRAS DEVANT UNE LETTRE. « la
 # zoologio (a), botaniko (b), geologio (c) » : trois mots nus, alors
 # que la regle du liminaire veut le gras. Les deux ateliers s'y
@@ -229,7 +248,7 @@ def relever(dossier, motif):
                 # « 94 bis » ne nomme pas le 94 : c'est un objet a part.
                 if ns and BIS.search(brut):
                     ns[-1] = f"{ns[-1]}bis"
-                kor = KOREKTI.get(f"t{tab:02d}", {})
+                kor = korekti_renvojo(tab, parts[i])
                 for n in ns:
                     n = kor.get(str(n), n)
                     k = f"{sc}:{n}" if sc else n

@@ -64,6 +64,25 @@ def korekti(tab):
     return _KOREKTI.get(tab, {})
 
 
+def korekti_renvojo(tab, cle=""):
+    """{lu: a lire} pour UN BLOC : les corrections qui valent pour tout
+    le tableau, plus celles que ce bloc-ci porte seul.
+
+    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du
+    tableau 5 est un numero que la planche n'a nulle part : le corriger
+    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la
+    femme de chambre, lui, est un numero qui existe par ailleurs — c'est
+    le savon de l'alinea 2 — et le corriger partout ferait pointer
+    le savon sur la femme de chambre. Une entree dont la cle est celle
+    d'un BLOC ne vaut donc que dans ce bloc.
+    """
+    t = korekti(tab)
+    out = {k: v for k, v in t.items() if isinstance(v, str)}
+    if cle:
+        out.update(t.get(cle, {}))
+    return out
+
+
 def nomo(nm, langue):
     """Le nom de l'objet DANS LA LANGUE DE LA COLONNE.
 
@@ -954,7 +973,7 @@ def boutons_renvois(rangi):
         # Le renvoi que la planche ne porte pas : au tableau 5 le
         # « (150) » des plates-bandes, gravees « 50 ». On lit la
         # correction, on la montre, et la source ne bouge pas.
-        kor = korekti(tab)
+        kor = korekti_renvojo(tab, r["cle"])
 
         def ouvrir(n, langue, nu):
             """Le debut du bouton d'un numero, ou None si l'on ignore

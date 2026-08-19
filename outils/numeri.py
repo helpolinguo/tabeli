@@ -403,7 +403,7 @@ def boite(forme):
 
 
 def blokoj(tab):
-    """Le texte du tabelo, coupe par cle : [(scene, corps)]."""
+    """Le texte du tabelo, coupe par cle : [(cle, scene, corps)]."""
     f = list((RACINE / "texto" / "io").glob(f"*-tabelo-{tab}.tex"))
     if not f:
         return []
@@ -415,7 +415,7 @@ def blokoj(tab):
         if m:
             sc = m.group(1)
         # Une note ou un titre suit la scene ou il se trouve.
-        out.append((sc, parts[i + 1]))
+        out.append((parts[i], sc, parts[i + 1]))
     return out
 
 
@@ -438,6 +438,25 @@ def korekti(tab):
     return _KOREKTI.get(f"t{int(tab):02d}", {})
 
 
+def korekti_renvojo(tab, cle=""):
+    """{lu: a lire} pour UN BLOC : les corrections qui valent pour tout
+    le tableau, plus celles que ce bloc-ci porte seul.
+
+    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du
+    tableau 5 est un numero que la planche n'a nulle part : le corriger
+    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la
+    femme de chambre, lui, est un numero qui existe par ailleurs — c'est
+    le savon de l'alinea 2 — et le corriger partout ferait pointer
+    le savon sur la femme de chambre. Une entree dont la cle est celle
+    d'un BLOC ne vaut donc que dans ce bloc.
+    """
+    t = korekti(tab)
+    out = {k: v for k, v in t.items() if isinstance(v, str)}
+    if cle:
+        out.update(t.get(cle, {}))
+    return out
+
+
 def _lire_renvoji(corps, kor):
     for x in renvoji(corps):
         v = kor.get(str(x), x)
@@ -450,13 +469,13 @@ def attendus(cle):
     bl = blokoj(tab)
     if not bl:
         return {}
-    kor = korekti(tab)
     if not ceni(cle):
-        n = {x for _, c in bl for x in _lire_renvoji(c, kor)}
+        n = {x for k, _, c in bl
+             for x in _lire_renvoji(c, korekti_renvojo(tab, k))}
         return {"": n} if n else {}
     out = {}
-    for sc, corps in bl:
-        for x in _lire_renvoji(corps, kor):
+    for k, sc, corps in bl:
+        for x in _lire_renvoji(corps, korekti_renvojo(tab, k)):
             out.setdefault(sc, set()).add(x)
     return {k: v for k, v in out.items() if k}
 
@@ -649,12 +668,12 @@ def phrases(tab, scene=""):
     bl = blokoj(tab)
     if not bl:
         return []
-    t = "".join(c for sc, c in bl if not scene or sc == scene)
+    t = "".join(c for _, sc, c in bl if not scene or sc == scene)
     t = re.sub(r'%.*', '', t)
     t = re.sub(r'\\(?:nl|cc)\b', ' ', t)
     out = []
     for ph in re.split(r'[.;:!?]\s', t):
-        ns = sorted(set(_lire_renvoji(ph, korekti(tab))),
+        ns = sorted(set(_lire_renvoji(ph, korekti_renvojo(tab))),
                     key=lambda q: ordo(str(q)))
         if len(ns) > 1:
             out.append(ns)

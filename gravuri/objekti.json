@@ -5420,8 +5420,7 @@
   },
   "c1:6": {
    "io": [
-    "sapono",
-    "chambristino"
+    "sapono"
    ],
    "fr": [
     "savon"
@@ -5530,7 +5529,9 @@
    ]
   },
   "c1:16": {
-   "io": [],
+   "io": [
+    "chambristino"
+   ],
    "fr": [
     "femme de chambre"
    ],

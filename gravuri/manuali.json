@@ -22,7 +22,21 @@
   "non a la place lue ; il peut manquer de quelques points, et le gros",
   "plan est assez large pour que cela ne se voie pas. Si l'on numerise",
   "un jour ces six endroits de plus pres, c'est ici qu'il faudra les",
-  "recaler."
+  "recaler.",
+  "",
+  "LE 16 DU TABLEAU 6, ET LE 21 QU'IL A FALLU DEPLACER POUR LUI. Le",
+  "livret ido imprime « la chambristino (6) » la ou le francais imprime",
+  "« la femme de chambre (16) » : la planche porte bien un 16, sur le",
+  "tablier de la femme de chambre, et gravuri/korekti.json dit desormais",
+  "de lire ce renvoi-la (la coquille est de l'atelier ido, la source ne",
+  "bouge pas).",
+  "",
+  "En allant le chercher, on a vu que le 21 pose ici tombait sur le 11",
+  "de l'antichambre, a l'autre bout de la vignette : un meme galbe, deux",
+  "chiffres, et l'oeil s'y etait trompe. Le vrai 21 — le sommier — est",
+  "sur le cadre du lit, entre le 20 dessous et le 16 a droite ; le 24 le",
+  "suit plus loin. Les trois sont maintenant alignes comme la planche",
+  "les aligne : 21, 16, 24."
  ],
  "t01-apar-1": {
   "10": [
@@ -1730,10 +1744,10 @@
    1.0
   ],
   "c1:21": [
-   0.25965,
-   0.237481,
-   0.011005,
-   0.012502,
+   0.052031,
+   0.303513,
+   0.010757,
+   0.012362,
    1.0
   ],
   "c1:12": [
@@ -2573,6 +2587,13 @@
    0.484962,
    0.732271,
    0.005928,
+   0.012362,
+   1.0
+  ],
+  "c1:16": [
+   0.083864,
+   0.306766,
+   0.010538,
    0.012362,
    1.0
   ]

@@ -9,6 +9,21 @@
   "134 de la pompe. Un 1 de trop, du compositeur ou du releveur ; on ne",
   "peut pas le savoir, et cela ne change rien a ce qu'il faut montrer.",
   "",
+  "",
+  "ET LA CORRECTION QUI NE VAUT QUE POUR UN BLOC. Au tableau 6, l'ido",
+  "imprime « la chambristino (6) » la ou le francais imprime « la femme",
+  "de chambre (16) », et c'est le francais qui a raison : le 6 de cette",
+  "vignette est le savon de l'alinea 2, et la planche porte bien un 16,",
+  "entre le 21 et le 24. Mais « (6) » est un renvoi qui SERT AILLEURS",
+  "dans le meme tableau : corrige pour tout le tableau, il ferait",
+  "pointer le savon sur la femme de chambre. Une entree dont la cle est",
+  "celle d'un BLOC ne vaut donc que dans ce bloc.",
+  "",
+  "POURQUOI LA SOURCE NE BOUGE PAS, ici comme ailleurs : la ligne du",
+  "fac-simile est composee pour « (6) ». Mise a « (16) » dans le releve,",
+  "elle deborde de 3,2 pt — pdflatex le dit — et le PDF cesse d'etre la",
+  "transcription de ce que l'imprimeur a compose. La coquille est donc",
+  "de l'atelier ido, non du releve, et c'est la lecture qui se corrige.",
   "LA SOURCE NE BOUGE PAS — les deux PDF restent le fac-simile. Cette",
   "table ne vaut que pour la page de lecture et pour le compte des",
   "numeros attendus : elle dit, tableau par tableau, quel renvoi lire",
@@ -36,6 +51,11 @@
  ],
  "t05": {
   "150": "50"
+ },
+ "t06": {
+  "t06-c1-06-1": {
+   "6": "16"
+  }
  },
  "teksto": {
   "t06-c3-08-2": [
