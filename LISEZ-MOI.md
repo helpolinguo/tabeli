@@ -36,7 +36,9 @@ par alinéa.
 | Page de lecture (`index.html`) | faite, complète pour ce qui est transcrit |
 | Traduction anglaise (`texto/en/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
 | Traduction espagnole (`texto/es/`) | **les 16 tableaux**, faite en 2026 d'après l'ido, contrôlée sur le français et l'anglais |
-| Traductions (ru, zh, ar) | à faire |
+| Traduction russe (`texto/ru/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
+| Traduction chinoise (`texto/zh/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
+| Traduction arabe (`texto/ar/`) | **les 16 tableaux**, faite en 2026 d'après l'ido ; colonne de droite à gauche |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`) |
 

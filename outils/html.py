@@ -401,6 +401,28 @@ def texte_html(t):
     # le tiret court d'un intervalle ne sont touches.
     t = re.sub(r"(?<=[^\s\u2013\u2014-]) - (?=[^\s\u2013\u2014-])", "-", t)
 
+    # UNE LANGUE SANS ESPACES N'EN VEUT PAS DE LA FIN DE LIGNE. Les
+    # fichiers de traduction coupent leurs lignes pour le confort de qui
+    # les edite, et \nl / le retour simple deviennent un blanc -- ce
+    # qu'il faut pour les langues latines, ou le blanc separe les mots.
+    # Le chinois n'en met aucun : « 有八张\n课桌 » sortait « 有八张 课桌 »,
+    # un trou au milieu du groupe, et 848 fois dans la colonne. Un blanc
+    # pose ENTRE DEUX IDEOGRAMMES n'est jamais voulu -- aucune langue
+    # n'en ecrit -- et il s'ote donc partout, quelle que soit la
+    # colonne. La regle se pose sur le HTML et non sur le texte nu :
+    # deux lignes d'apparat voisines sont separees par leurs balises,
+    # et ce blanc-la, lui, doit rester.
+    # ET LE GRAS NE ROMPT PAS LE GROUPE. « 有八张\n\VUgras{课桌} » met
+    # une balise entre les deux ideogrammes, et la premiere version de
+    # la regle ne les voyait plus voisins : il restait 403 trous sur
+    # 848. On saute donc les balises EN LIGNE -- b, i, sup, button --
+    # mais pas « span », qui est celle des lignes d'apparat : deux
+    # lignes de titre voisines sont bien separees par un blanc, et
+    # celui-la doit rester.
+    _EL = r"(?:</?(?:b|i|sup|button)\b[^>]*>)*"
+    _ID = "[\u3000-\u303f\u4e00-\u9fff\uff00-\uffef]"
+    t = re.sub(rf"(?<={_ID})({_EL})[ \t\n]+({_EL})(?={_ID})", r"\1\2", t)
+
     # L'apostrophe des deux fac-similes est la courbe, non la droite :
     # « l'unesma », « L'Ecole ». La droite est une commodite de clavier
     # que l'imprime ne connait pas.
