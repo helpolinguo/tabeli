@@ -55,10 +55,17 @@ BIS = re.compile(r'\bbis\b')
 # n'a de sens que rapportee a lui. gravuri/literi.json dit, bloc par
 # bloc, sous quel prefixe la ranger : le « a » du tableau noir est
 # « 1a », celui de la carte « 10a ».
+# LA LETTRE SE PRESENTE DE TROIS FACONS. Le francais la met en
+# italique — « \textsuperscript{\textit{(a)}} » — l'ido la laisse nue,
+# et six fois dans les deux livrets une des deux parentheses manque :
+# « mi-sferi d) ». On accepte les trois, mais on exige AU MOINS UNE
+# PARENTHESE : sans elle on rangerait sous « o » les « n° » du texte.
 GRAS_LIT = re.compile(
     r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'
     r'(?:\s|\\nl|\\cc|%|\n)*'
-    r'(?:\\textsuperscript\{\(([a-z]{1,2})\)\}|\(([a-z]{1,2})\))')
+    r'(?:\\textsuperscript\{(?:\\textit\{)?'
+    r'(?:\(([a-z]{1,2})\)?|([a-z]{1,2})\))\}?\}'
+    r'|\(([a-z]{1,2})\))')
 
 
 def literi(champo):
@@ -186,7 +193,8 @@ def relever(dossier, motif):
                     nom = nettoyer(g.group(1))
                     if not nom:
                         continue
-                    for L in (g.group(2) or g.group(3) or ""):
+                    for L in (g.group(2) or g.group(3)
+                              or g.group(4) or ""):
                         k = pa[1] + L
                         noms = par.setdefault(k, [])
                         if nom not in noms:

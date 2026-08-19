@@ -854,6 +854,8 @@ def lier_notes(rangi):
 
     uniformiser_notes(rangi)
     uniformiser_renvois(rangi)
+    rapport["fermes"] = fermer_renvois(rangi)
+    rapport["korektiti"] = korekti_teksto(rangi)
     boutons_renvois(rangi)
     boutons_literi(rangi)
     return rapport
@@ -979,7 +981,11 @@ def boutons_renvois(rangi):
 #  gravuri/literi.json dit, bloc par bloc, de quel objet les lettres
 #  dependent — cela ne se devine pas, le texte ne le disant pas toujours
 #  — et ou chacune se trouve sur la planche.
-RENVOI_LIT = re.compile(r'<sup>\(([a-z]{1,2})\)</sup>')
+# LE RENVOI A LETTRE SE COMPOSE EN ITALIQUE DU COTE FRANCAIS, et nu du
+# cote ido. Sans cette italique dans le motif, les six lettres du
+# tableau d'astronomie n'etaient cliquables qu'en ido : le lecteur du
+# francais lisait « les hemispheres (d) » sans rien pouvoir en voir.
+RENVOI_LIT = re.compile(r'<sup>(<i>)?\(([a-z]{1,2})\)(</i>)?</sup>')
 
 
 def literi():
@@ -1052,7 +1058,8 @@ def boutons_literi(rangi):
         def bouton(m, langue="io"):
             nonlocal pose
             bouts, fait = [], 0
-            for L in m.group(1):
+            ita = "<i>" if m.group(1) else ""
+            for L in m.group(2):
                 v = places.get(prefixo + L)
                 if not v:
                     bouts.append(L)
@@ -1070,7 +1077,8 @@ def boutons_literi(rangi):
             if not fait:
                 return m.group(0)
             pose += fait
-            return "<sup>(" + "".join(bouts) + ")</sup>"
+            return (f"<sup>{ita}(" + "".join(bouts)
+                    + ")" + ("</i>" if ita else "") + "</sup>")
 
         for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
@@ -1132,6 +1140,117 @@ def uniformiser_renvois(rangi):
                 r["tra"][k]["t"] = neuf
             n += combien
     return n
+
+
+# UN RENVOI ENTRE PARENTHESES SE FERME. Six fois dans les deux
+# livrets, une parenthese manque : « buvard 41) » et « ballots 61) » du
+# cote francais, « gobleto 13) » et « mi-sferi d) » du cote ido, un
+# « singe (10 » a qui l'on n'a pas ferme, et le renvoi au tableau de
+# l'Hotel, « n° 13) », dont le francais montre bien qu'il devait
+# s'ouvrir. Sorte cassee de l'imprimeur ou distraction du releveur, on
+# ne peut pas le dire — et cela n'a pas d'importance : la source garde
+# ce qu'elle lit, les deux PDF avec elle, et c'est la page de lecture
+# qui compose proprement.
+#
+# LE CONTROLE QUI LES A TOUS TROUVES tient en une ligne : compter les
+# parentheses de chaque alinea et signaler celles qui ne se repondent
+# pas. Six alineas sur six cent quatre-vingt-trois, et pas un de plus ;
+# aucune de ces six n'etait une vraie parenthese depareillee du texte.
+#
+# On ne touche qu'a CE QUI EST DEJA UN RENVOI : un exposant qui ne
+# porte que des chiffres, ou une lettre avec au moins une parenthese.
+# Sans cette derniere condition on ecrirait « (o) » sur les « n° » du
+# texte, qui sont aussi des exposants.
+FERME_NUM = re.compile(
+    r'<sup>\(?\s*(\d{1,3}(?:\s*,\s*\d{1,3})*(?:\s*(?:<i>)?bis(?:</i>)?)?)'
+    r'\s*\)?</sup>')
+FERME_LIT = re.compile(
+    r'<sup>(<i>)?(?:\(([a-z]{1,2})\)?|([a-z]{1,2})\))(</i>)?</sup>')
+
+
+def fermer_renvois(rangi):
+    """Rend a chaque renvoi ses deux parentheses."""
+    n = 0
+
+    def num(m):
+        nonlocal n
+        neuf = f"<sup>({m.group(1)})</sup>"
+        n += neuf != m.group(0)
+        return neuf
+
+    def lit(m):
+        nonlocal n
+        ita = "<i>" if m.group(1) or m.group(4) else ""
+        neuf = (f"<sup>{ita}({m.group(2) or m.group(3)})"
+                + ("</i>" if ita else "") + "</sup>")
+        n += neuf != m.group(0)
+        return neuf
+
+    for r in rangi:
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            neuf = FERME_LIT.sub(lit, FERME_NUM.sub(num, t))
+            if neuf == t:
+                continue
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+    return n
+
+
+# ET CE QUI N'EST PAS UN RENVOI SE CORRIGE A LA MAIN. « La listo esos
+# kompletigata sur la du tabeli « La Hotelo » n° 13) e « La Merkato »
+# (n° 15) » : la seconde parenthese s'ouvre, la premiere non, et le
+# francais de la meme note les ouvre toutes deux. Ce n'est pas un renvoi
+# a un objet de la planche mais a un autre tableau ; aucune regle
+# generale ne l'attrape, et l'on ne va pas en inventer une pour un cas.
+# gravuri/korekti.json le dit en toutes lettres, bloc par bloc.
+def korekti_teksto(rangi):
+    """Les corrections declarees a la main, bloc par bloc."""
+    tab = korekti("teksto")
+    if not tab:
+        return 0
+    n = 0
+    for r in rangi:
+        regles = tab.get(r["cle"])
+        if not regles:
+            continue
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            neuf = t
+            for lg, avant, apres in regles:
+                if lg == k:
+                    neuf = neuf.replace(avant, apres)
+            if neuf == t:
+                continue
+            n += 1
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+    return n
+
+
+# LE CONTROLE QUI A TROUVE LES SIX. Compter les parentheses de chaque
+# alinea et signaler celles qui ne se repondent pas : six alineas sur
+# six cent quatre-vingt-trois, et pas un de plus — aucune n'etait une
+# vraie parenthese depareillee du texte, toutes etaient des renvois
+# estropies. On le laisse tourner a chaque fabrication : le jour ou un
+# relevé en laissera passer une, elle se dira ici.
+def depareillees(rangi):
+    for r in rangi:
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            nu = re.sub(r'<[^>]+>', '', t)
+            if nu.count("(") != nu.count(")"):
+                yield r["cle"], k, re.sub(r'\s+', ' ', nu)[:110]
 
 
 TETE_NOTE = re.compile(r'^((?:<[^>]+>)*)\((?:\*+|\d+)\)')
@@ -1850,5 +1969,10 @@ if __name__ == "__main__":
           f"{uniformiser_filets(r)}")
     rendre(r)
     print(f"  notes reliees a leur appel : {rap['lies']}")
+    if rap.get("fermes") or rap.get("korektiti"):
+        print(f"  parentheses rendues a des renvois : {rap['fermes']}"
+              f", corrections declarees : {rap['korektiti']}")
+    for cle, lg, t in depareillees(r):
+        print(f"  PARENTHESE DEPAREILLEE [{lg}] {cle} : {t}")
     for langue, cle, marque, pourquoi in rap["echecs"]:
         print(f"  NON RELIEE [{langue}] {cle} « ({marque}) » : {pourquoi}")

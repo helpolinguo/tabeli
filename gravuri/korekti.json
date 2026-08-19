@@ -14,9 +14,36 @@
   "numeros attendus : elle dit, tableau par tableau, quel renvoi lire",
   "a la place de quel autre. Elle se tient A LA MAIN, comme",
   "verdikti.json : aucune mesure ne la remplace, il faut avoir compare",
-  "le livret et la planche."
+  "le livret et la planche.",
+  "",
+  "ET LES PARENTHESES QUI MANQUENT. Six renvois des deux livrets n'ont",
+  "qu'une parenthese sur deux : « buvard 41) » et « ballots 61) » du",
+  "cote francais, « gobleto 13) » et « mi-sferi d) » du cote ido, un",
+  "« singe (10 » a qui l'on n'a pas ferme, et le renvoi au tableau de",
+  "l'Hotel — « n° 13) » — dont le francais de la meme note montre bien",
+  "qu'il devait s'ouvrir. Les cinq premiers sont des renvois, et",
+  "html.py les ferme par regle. Le sixieme renvoie a un AUTRE TABLEAU,",
+  "non a un objet de la planche : aucune regle ne l'attrape, et il se",
+  "declare ici.",
+  "",
+  "source ne bouge pas ; seule la page de lecture compose proprement.",
+  "",
+  "« teksto » donne, bloc par bloc, LA LANGUE, ce qu'on remplace et par",
+  "quoi. La langue n'est pas un ornement : la meme note existe des deux",
+  "cotes, et seul l'ido a perdu sa parenthese — appliquer la correction",
+  "aux deux en ajoutait une seconde au francais, qui n'en manquait pas.",
+  "La source ne bouge pas ; seule la page de lecture compose proprement."
  ],
  "t05": {
   "150": "50"
+ },
+ "teksto": {
+  "t06-c3-08-2": [
+   [
+    "io",
+    "n<sup>o</sup> 13)",
+    "(n<sup>o</sup> 13)"
+   ]
+  ]
  }
 }

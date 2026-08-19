@@ -13479,31 +13479,49 @@
    "io": [
     "kometi"
    ],
-   "fr": []
+   "fr": [
+    "comètes"
+   ]
   },
   "85b": {
    "io": [
     "lun-e sun-eklipsi"
    ],
-   "fr": []
+   "fr": [
+    "éclipses"
+   ]
   },
   "85c": {
    "io": [
     "quar punti kardinala"
    ],
-   "fr": []
+   "fr": [
+    "quatre points cardinaux"
+   ]
+  },
+  "85d": {
+   "io": [
+    "mi-sferi"
+   ],
+   "fr": [
+    "hémisphères"
+   ]
   },
   "85e": {
    "io": [
     "planeti"
    ],
-   "fr": []
+   "fr": [
+    "planètes"
+   ]
   },
   "85f": {
    "io": [
     "sun-sistemo"
    ],
-   "fr": []
+   "fr": [
+    "système solaire"
+   ]
   },
   "86": {
    "io": [
