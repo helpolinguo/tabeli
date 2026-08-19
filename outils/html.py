@@ -194,6 +194,11 @@ def accolade(s, i):
     return s[i + 1:], len(s)
 
 
+# La marque d'un mot coupe par une fin de PAGE. Elle voyage dans le
+# HTML rendu jusqu'a fusionner(), qui recolle les deux moities.
+COUPE = "\x02"
+
+
 def texte_html(t):
     """Convertit un fragment LaTeX du releve en HTML."""
     # LES COMMENTAIRES D'ABORD. Un « % » ouvre un commentaire jusqu'a la
@@ -210,6 +215,14 @@ def texte_html(t):
     t = t.replace("\x00", "%")
 
     # Les coupures : elles portent la logique du releve.
+    # \ccplein D'ABORD, ET POUR DEUX RAISONS. C'est \cc et \parplein a
+    # la fois : la page finit sur un mot coupe, et l'alinea reprend au
+    # feuillet suivant. Otee apres \cc, la macro perdait ses deux
+    # premieres lettres et laissait « plein » dans le texte — la page
+    # de lecture donnait « dro plein medaro » pour « dromedaro ». Elle
+    # laisse ici une marque que fusionner() lira : le mot est coupe, la
+    # reprise se recolle SANS blanc.
+    t = t.replace("\\ccplein\n", COUPE).replace("\\ccplein", COUPE)
     t = t.replace("\\cc\n", "").replace("\\cc", "")
     t = t.replace("\\nl\n", " ").replace("\\nl", " ")
     t = t.replace("\\parplein", "").replace("\\VUcontinue", "")
@@ -519,7 +532,24 @@ def fusionner(blocs):
     for b in blocs:
         if b["suite"] and b["cle"] in par_cle:
             a = par_cle[b["cle"]]
-            a["html"] = (a["html"] + " " + b["html"]).strip()
+            # UN MOT COUPE PAR LA PAGE NE PREND PAS DE BLANC. \ccplein
+            # a laisse sa marque en fin de moitie gauche : « dro » et
+            # « medaro » font « dromedaro », non « dro medaro ».
+            if a["html"].rstrip().endswith(COUPE):
+                joint = (a["html"].rstrip()[:-len(COUPE)]
+                         + b["html"].lstrip()).strip()
+                # ET IL RESTE UN SEUL MOT POUR LA RECHERCHE. Les deux
+                # moities sont chacune dans son \VUgras : recollees
+                # telles quelles, elles donnaient « <b>dro</b><b>meda
+                # ro</b> » — « dromedaro » a l'oeil, deux mots pour le
+                # navigateur. texte_html() reunit les balises jointives
+                # a l'interieur d'un bloc ; ici la coupure passe entre
+                # deux blocs, et la reunion se refait apres coup.
+                for q in ("b", "i"):
+                    joint = joint.replace(f"</{q}><{q}>", "")
+                a["html"] = joint
+            else:
+                a["html"] = (a["html"] + " " + b["html"]).strip()
             a["folio2"] = b["folio"]
             continue
         par_cle[b["cle"]] = b
@@ -1118,12 +1148,22 @@ def boutons_literi(rangi):
             continue
         planche, prefixo = pa
         places = tout.get(planche, {})
+        # UNE LETTRE AUSSI PEUT ETRE FAUSSE. Au tableau 1 les deux
+        # livrets echangent l'Europe et l'Asie ; gravuri/korekti.json
+        # le dit pour ce bloc. La lettre corrigee est celle qu'on
+        # cherche sur la planche ET celle qu'on ecrit : la page de
+        # lecture ne repete pas une erreur que la gravure dement.
+        # LA LECTURE SE FAIT EN UN SEUL PASSAGE — chaque lettre est
+        # prise dans la table d'origine — sans quoi l'echange « g se
+        # lit e, e se lit g » se defairait a la seconde.
+        kor = korekti_renvojo(r["cle"][:3], r["cle"])
 
         def bouton(m, langue="io"):
             nonlocal pose
             bouts, fait = [], 0
             ita = "<i>" if m.group(1) else ""
-            for L in m.group(2):
+            for brut in m.group(2):
+                L = kor.get(brut, brut)
                 v = places.get(prefixo + L)
                 if not v:
                     bouts.append(L)

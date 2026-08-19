@@ -47,8 +47,41 @@
   "quoi. La langue n'est pas un ornement : la meme note existe des deux",
   "cotes, et seul l'ido a perdu sa parenthese — appliquer la correction",
   "aux deux en ajoutait une seconde au francais, qui n'en manquait pas.",
-  "La source ne bouge pas ; seule la page de lecture compose proprement."
+  "La source ne bouge pas ; seule la page de lecture compose proprement.",
+  "",
+  "DEUX LETTRES ECHANGEES. Au tableau 1, la carte du monde porte ses",
+  "cinq parties en lettres, et les deux livrets les lisent de travers :",
+  "« Europa (g), Azia (e) » d'un cote, « l'Europe (g), l'Asie (e) » de",
+  "l'autre. Or la planche grave le e SUR l'Europe -- x = 0,162, juste",
+  "au-dessus du f de l'Afrique -- et le g a l'extremite orientale,",
+  "x = 0,210. Les deux ateliers ont fait la meme inversion, ce qui",
+  "n'etonne pas : le livret francais a servi de copie a l'ido. La",
+  "correction vaut donc POUR TOUTES LES LANGUES, et pour ce bloc seul,",
+  "ou chacune des deux lettres ne parait qu'une fois. Elle s'ecrit en",
+  "echange -- g se lit e, e se lit g -- et la lecture des lettres se",
+  "fait en un seul passage, sans quoi l'echange se defairait.",
+  "",
+  "ET LA RUCHE DU TABLEAU 3. L'ido imprime « la abeluyo (21) », le",
+  "francais « la rûche (24) ». C'est l'ido qui a raison : le 24 de",
+  "cette planche est la laitiere de l'alinea 8, que le francais lui-",
+  "meme numerote ainsi trois lignes plus haut. La coquille est du seul",
+  "atelier francais ; l'anglais et l'espagnol, traduits sur l'ido,",
+  "portent deja 21. L'entree est nommee par son BLOC : « (24) » sert",
+  "ailleurs dans le meme tableau -- la laitiere, et les quatre rameurs",
+  "de la yole -- et corrige pour tout le tableau il les ferait pointer",
+  "sur la ruche."
  ],
+ "t01": {
+  "t01-19-5": {
+   "g": "e",
+   "e": "g"
+  }
+ },
+ "t03": {
+  "t03-c1-10-1": {
+   "24": "21"
+  }
+ },
  "t05": {
   "150": "50"
  },

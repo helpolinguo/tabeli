@@ -161,7 +161,20 @@ RECOLLE = [
 ]
 
 
+# UN MOT COUPE PAR LA FIN DE PAGE, lui, a tout l'appareil du feuillet
+# entre ses deux moities : \ccplein, la fermeture de la page, le
+# commentaire du feuillet, l'ouverture de la suivante, la cle « suite »
+# et \VUcontinue. On ramene ce cas au precedent — un simple \cc — et
+# la regle ci-dessus fait le reste : « \VUgras{dro}\ccplein ... \VUgras
+# {medaro} » donne « dromedaro », et non « medaro ».
+SAUT = re.compile(
+    r'\\ccplein\s*\n\\end\{VUpage\}.*?'
+    r'^%%K\s+\S+\s+\S+\s+suite\s*\n\\VUcontinue\s*\n',
+    re.S | re.M)
+
+
 def recoller(texte):
+    texte = SAUT.sub('\\\\cc\n', texte)
     for motif, remplacement in RECOLLE:
         avant = None
         while avant != texte:
@@ -208,19 +221,25 @@ def relever(dossier, motif):
             # Les lettres du bloc, s'il en porte.
             pa = PATRI.get(parts[i])
             if pa:
+                # UNE LETTRE FAUSSE SE CORRIGE COMME UN NUMERO FAUX. Au
+                # tableau 1 les deux livrets echangent l'Europe et
+                # l'Asie ; sans cette lecture, le nom se rangeait sous
+                # la lettre du livret et le gros plan de l'Europe
+                # s'intitulait « Azia ».
+                kl = korekti_renvojo(tab, parts[i])
                 for g in GRAS_LIT.finditer(parts[i + 1]):
                     nom = nettoyer(g.group(1))
                     if not nom:
                         continue
                     for L in (g.group(2) or g.group(3)
                               or g.group(4) or ""):
-                        k = pa[1] + L
+                        k = pa[1] + kl.get(L, L)
                         noms = par.setdefault(k, [])
                         if nom not in noms:
                             noms.append(nom)
                 for g in NUD_LIT.finditer(parts[i + 1]):
                     for L in g.group(2):
-                        k = pa[1] + L
+                        k = pa[1] + kl.get(L, L)
                         if par.get(k):
                             continue
                         nom = nettoyer(g.group(1))

@@ -324,16 +324,16 @@
   },
   "10e": {
    "io": [
-    "Azia"
+    "Europa"
    ],
    "fr": [
-    "Asie"
+    "Europe"
    ],
    "en": [
-    "Asia"
+    "Europe"
    ],
    "es": [
-    "Asia"
+    "Europa"
    ]
   },
   "10f": {
@@ -352,16 +352,16 @@
   },
   "10g": {
    "io": [
-    "Europa"
+    "Azia"
    ],
    "fr": [
-    "Europe"
+    "Asie"
    ],
    "en": [
-    "Europe"
+    "Asia"
    ],
    "es": [
-    "Europa"
+    "Asia"
    ]
   },
   "10h": {
@@ -2148,7 +2148,9 @@
    "io": [
     "abeluyo"
    ],
-   "fr": [],
+   "fr": [
+    "rûche"
+   ],
    "en": [
     "hive"
    ],
@@ -2189,8 +2191,7 @@
     "laktovendistino"
    ],
    "fr": [
-    "laitière",
-    "rûche"
+    "laitière"
    ],
    "en": [
     "milkwoman"
@@ -22742,7 +22743,7 @@
   },
   "23": {
    "io": [
-    "medaro"
+    "dromedaro"
    ],
    "fr": [
     "dromadaire"
