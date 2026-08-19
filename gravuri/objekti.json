@@ -8543,7 +8543,7 @@
   "8": {
    "io": [
     "pordi",
-    "pordo"
+    "eniro-pordo"
    ],
    "fr": [
     "portes",
@@ -8775,7 +8775,7 @@
   },
   "18": {
    "io": [
-    "kareli"
+    "vitro-kareli"
    ],
    "fr": [
     "vitres"
@@ -9322,7 +9322,7 @@
   },
   "43": {
    "io": [
-    "kanali"
+    "pluv-kanali"
    ],
    "fr": [
     "chéneaux"
@@ -10182,7 +10182,7 @@
   },
   "90": {
    "io": [
-    "benko"
+    "labor-benko"
    ],
    "fr": [
     "établi"
@@ -10577,7 +10577,7 @@
     "tapetisto"
    ],
    "fr": [
-    "mortier",
+    "portemortier",
     "tapissier"
    ],
    "en": [
@@ -10672,7 +10672,7 @@
   },
   "111": {
    "io": [
-    "servisto"
+    "mason-servisto"
    ],
    "fr": [
     "aidemaçon"
@@ -11064,7 +11064,7 @@
     "arozilo"
    ],
    "fr": [
-    "soir"
+    "arrosoir"
    ],
    "en": [
     "watering can"
@@ -11693,7 +11693,7 @@
   },
   "c1:22": {
    "io": [
-    "traco"
+    "matraco"
    ],
    "fr": [
     "matelas"
@@ -18010,7 +18010,7 @@
   },
   "c2:46": {
    "io": [
-    "bastono"
+    "(pastor)-bastono"
    ],
    "fr": [
     "houlette"
@@ -18079,7 +18079,7 @@
   },
   "c2:49": {
    "io": [
-    "po"
+    "(muton)-trupo"
    ],
    "fr": [
     "troupeau"
@@ -31646,7 +31646,7 @@
   },
   "63": {
    "io": [
-    "barketi"
+    "pesko-barketi"
    ],
    "fr": [
     "barques"
@@ -32591,7 +32591,7 @@
   },
   "14": {
    "io": [
-    "lad-(if-) isto"
+    "lad-(if-)isto"
    ],
    "fr": [
     "quincaillier"
@@ -34639,7 +34639,7 @@
   },
   "6": {
    "io": [
-    "tripsociseto"
+    "trip-sociseto"
    ],
    "fr": [
     "andouillette"
@@ -34846,7 +34846,7 @@
   },
   "15": {
    "io": [
-    "florkauli"
+    "flor-kauli"
    ],
    "fr": [
     "chouxfleurs"
@@ -35235,7 +35235,7 @@
   },
   "32": {
    "io": [
-    "spicvenderio"
+    "spic-venderio"
    ],
    "fr": [
     "épicerie",
@@ -36545,7 +36545,7 @@
   },
   "90": {
    "io": [
-    "karni, mutonkarno"
+    "karni, muton-karno"
    ],
    "fr": [
     "mouton"

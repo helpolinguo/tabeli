@@ -150,8 +150,31 @@ def nettoyer(brut):
 RECOLLE = [
     (re.compile(r'\\VUgras\{([^{}]*)\}\\cc\s*\n\s*\\VUgras\{([^{}]*)\}'),
      r'\\VUgras{\1\2}'),
+    # UN TRAIT D'UNION EN FIN DE LIGNE NE PREND PAS DE BLANC : le mot
+    # continue. « \VUgras{lad-(if-)}\nl \VUgras{isto} » est le nom du
+    # ferblantier-lampiste, et le gros plan l'intitulait
+    # « lad-(if-) isto ».
+    (re.compile(r'\\VUgras\{([^{}]*-\)?)\}\\nl\s*\n\s*\\VUgras\{([^{}]*)\}'),
+     r'\\VUgras{\1\2}'),
     (re.compile(r'\\VUgras\{([^{}]*)\}\\nl\s*\n\s*\\VUgras\{([^{}]*)\}'),
      r'\\VUgras{\1 \2}'),
+    # UN COMPOSE DONT LA LIGNE COUPE LE TRAIT N'A QUE SA SECONDE MOITIE
+    # EN GRAS. Le compositeur ouvre le gras au debut de la ligne
+    # suivante : « mason-\nl \VUgras{servisto} », « pluv-\nl
+    # \VUgras{kanali} », « vitro-\nl \VUgras{kareli} ». Le mot est un
+    # pourtant, et le fac-simile le prouve lui-meme deux lignes plus
+    # bas, ou « \VUgras{tekto-kanali} » tient sur une ligne et prend
+    # tout le gras. Le gros plan disait « servisto » la ou le francais
+    # dit « aide-macon ».
+    (re.compile(r'(?<![\\{])\b((?:[\w\'\u2019]+-)+)\\nl\s*\n\s*\\VUgras\{'),
+     r'\\VUgras{\1'),
+    # ET SUR UNE SEULE LIGNE AUSSI, quand le fac-simile ouvre le gras
+    # au second membre : « pesko-\VUgras{barketi} », « (muton)-\VUgras
+    # {trupo} », « (pastor)-\VUgras{bastono} ». Le premier membre porte
+    # le sens — le troupeau est de moutons, la houlette est de berger —
+    # et le nom sans lui ne dit plus rien : « po », « bastono ».
+    (re.compile(r'(?<![\\{])((?:\(?[\w\'\u2019]+\)?-)+)\\VUgras\{'),
+     r'\\VUgras{\1'),
     # UN GROUPE COUPE PAR UNE FIN DE LIGNE est compose en deux exposants,
     # « (9, 11, » puis « 12) ». Sans ce recollage, le douze restait
     # orphelin et les tableaux muraux n'avaient que deux noms sur trois.
@@ -167,10 +190,23 @@ RECOLLE = [
 # et \VUcontinue. On ramene ce cas au precedent — un simple \cc — et
 # la regle ci-dessus fait le reste : « \VUgras{dro}\ccplein ... \VUgras
 # {medaro} » donne « dromedaro », et non « medaro ».
+# DEUX ECRITURES POUR LA MEME FIN DE PAGE. \ccplein la dit d'un mot ;
+# le tableau 7 l'ecrit \cc puis \parplein sur deux lignes, et la
+# coupure du feuillet 54 echappait au recollage : le troupeau du
+# berger, « (muton)-\VUgras{tru}\cc ... \VUgras{po} », s'appelait
+# « po » dans le gros plan.
+# LE SAUT SE MESURE, IL NE SE DEVINE PAS. « .*? » entre la fin de page
+# et le bloc « suite » etait sans borne : la ou la page suivante ne
+# continuait pas l'alinea, le motif courait jusqu'au prochain « suite »
+# et emportait deux feuillets entiers du tableau 2 -- le jeu de
+# tonneau y perdait un de ses deux noms. On nomme donc ce qui separe
+# les deux moities : la fermeture de page, un commentaire de feuillet,
+# l'ouverture de la page suivante, et rien d'autre.
 SAUT = re.compile(
-    r'\\ccplein\s*\n\\end\{VUpage\}.*?'
-    r'^%%K\s+\S+\s+\S+\s+suite\s*\n\\VUcontinue\s*\n',
-    re.S | re.M)
+    r'(?:\\ccplein|\\cc\s*\n\\parplein)\s*\n\\end\{VUpage\}[ \t]*\n'
+    r'(?:%[^\n]*\n|[ \t]*\n)*'
+    r'\\begin\{VUpage\}[^\n]*\n'
+    r'%%K\s+\S+\s+\S+\s+suite[ \t]*\n\\VUcontinue[ \t]*\n')
 
 
 def recoller(texte):

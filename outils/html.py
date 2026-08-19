@@ -206,6 +206,45 @@ def accolade(s, i):
 
 # La marque d'un mot coupe par une fin de PAGE. Elle voyage dans le
 # HTML rendu jusqu'a fusionner(), qui recolle les deux moities.
+# LE GRAS MARQUE UN TERME, ET UN MOT-OUTIL N'EN EST PAS UN. Le
+# compositeur l'a parfois pose a cote : « il tenas \VUgras{la} vishilo »
+# met le gras sur l'article et laisse le substantif maigre, « \VUgras
+# {Ica} docisto » sur le demonstratif. On ne deplace pas le gras — le
+# fac-simile ne dit pas jusqu'ou il devrait porter —, on l'ote : la
+# page de lecture n'appuie plus sur « la », « Ica », « ta », « quale »,
+# « e ». Les cinq traductions avaient suivi l'ido mot pour mot, et
+# disaient « \VUgras{This} teacher », « \VUgras{Los} viejos coches »,
+# « \VUgras{Этот} учитель » : la meme liste les corrige.
+#
+# LA REGLE S'APPLIQUE APRES LE RECOLLAGE DES BALISES, et il le faut :
+# « \VUgras{quadra}\cc \VUgras{to} » finit sur un « to » qui est un
+# pronom ido — mais ce n'est pas un mot, c'est la queue de
+# « quadrato », et le recollage l'a deja rendue au sien.
+MOTOJ_VAKA = {
+    # ido
+    "la", "l'", "ica", "ta", "ico", "to", "il", "el", "ol", "li", "lu",
+    "un", "una", "mea", "sua", "lia", "nia", "via", "quale", "e", "ed",
+    "o", "od", "di", "da", "de",
+    # francais
+    "le", "les", "ce", "cet", "cette", "ces", "une", "des", "du", "et",
+    "ou", "son", "sa", "ses", "leur", "leurs", "elle", "on",
+    # anglais
+    "the", "a", "an", "this", "that", "these", "those", "his", "her",
+    "its", "and", "or",
+    # espagnol
+    "el", "los", "las", "este", "esta", "ese", "esa", "su", "sus", "y",
+    "del",
+    # russe
+    "этот", "эта", "это", "эти", "тот", "та", "те", "и", "или", "его",
+    "её", "их",
+    # arabe
+    "هذا", "هذه", "تلك", "ذلك", "و",
+    # chinois : le demonstratif y traine son classificateur, et « 这位 »
+    # est un mot d'un seul tenant.
+    "这", "那", "这位", "那位", "这个", "那个", "这些", "那些", "和", "或",
+}
+PONKTO = " .,;:!?»«\u202f\u2019'\u3001\u3002\uff08\uff09"
+
 COUPE = "\x02"
 
 
@@ -234,7 +273,27 @@ def texte_html(t):
     # reprise se recolle SANS blanc.
     t = t.replace("\\ccplein\n", COUPE).replace("\\ccplein", COUPE)
     t = t.replace("\\cc\n", "").replace("\\cc", "")
+    # UN TRAIT D'UNION EN FIN DE LIGNE NE PREND PAS DE BLANC APRES LUI.
+    # \nl marque une fin de ligne SANS trait d'union compose : le
+    # fac-simile n'en ajoute pas, parce que le mot en porte deja un.
+    # « mason-\nl servisto », « pluv-\nl kanali », « lad-(if-)\nl isto »
+    # sont un seul mot chacun, et l'espace les coupait en deux a
+    # l'ecran : « lad-(if-) isto ». On soude donc quand la ligne finit
+    # sur un trait d'union — le trait, lui, reste : « kroket-partio »
+    # s'ecrit ainsi, et rien ne doit le souder.
+    t = re.sub(r"(?<=\w)(-\)?\}?)[ \t]*\\nl\s*", r"\1", t)
     t = t.replace("\\nl\n", " ").replace("\\nl", " ")
+    # LE COMPOSE PREND TOUT LE GRAS. Le fac-simile n'en met parfois
+    # qu'au second membre — « pesko-\VUgras{barketi} », « (muton)-
+    # \VUgras{trupo} », et « mason-\nl \VUgras{servisto} » quand la
+    # ligne coupe le trait. Le mot est un pourtant : deux lignes plus
+    # bas le meme fac-simile compose « \VUgras{tekto-kanali} » d'un
+    # seul tenant. Le premier membre porte le sens — le troupeau est de
+    # moutons, la houlette est de berger — et l'objet se nommait
+    # « po », « bastono ». On etend donc le gras a gauche, apres avoir
+    # ote les coupures : les deux cas se ramenent alors a un seul.
+    t = re.sub(r"(?<![\\{])((?:\(?[\w'\u2019]+\)?-)+)\\VUgras\{",
+               r"\\VUgras{\1", t)
     t = t.replace("\\parplein", "").replace("\\VUcontinue", "")
     t = re.sub(r"\\VUblancAlinea\b", "", t)
     t = re.sub(r"\\VUsaut\{[^}]*\}", "", t)
@@ -386,6 +445,10 @@ def texte_html(t):
     # L'espace distingue les deux cas : \\cc n'en laisse pas, \\nl si.
     for b in ("b", "i"):
         t = re.sub(rf"</{b}><{b}>", "", t)
+    t = re.sub(r"<b>([^<>]*)</b>",
+               lambda m: (m.group(1)
+                          if m.group(1).strip(PONKTO).lower() in MOTOJ_VAKA
+                          else m.group(0)), t)
     # Les renvois, eux, se reunissent MEME separes : « (9, 11, » et
     # « 12) » sont un seul appel que la ligne a coupe en deux.
     t = re.sub(r"</sup>\s*<sup>", " ", t)
