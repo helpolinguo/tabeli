@@ -201,6 +201,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "pa", "nomo": "ਪੰਜਾਬੀ", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "tr", "nomo": "Türkçe", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
@@ -687,7 +689,8 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
-           "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa"}               # langue -> texto/<...>
+           "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
+           "tr": "tr"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1637,7 +1640,14 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # aussi dans le titre du volume : on exige le
                         # « ਨੰ. » de la ligne qui numerote, comme pour
                         # le hindi et le bengali.
-                        r"|ਸਾਰਣੀ\s+ਨੰ")
+                        r"|ਸਾਰਣੀ\s+ਨੰ"
+                        # LE TURC ecrit « TABLO No 1 », et le mot se
+                        # lit aussi dans le titre du volume ;
+                        # mais celui-ci est compose en bas de casse
+                        # — « Delmas Yardimci Tablolarina » — et la
+                        # comparaison est sensible a la casse, comme
+                        # pour le portugais et l'espagnol.
+                        r"|TABLO")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1668,7 +1678,18 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
                    # « سلسلہ » : meme langue, deux lexiques, et c'est
                    # justement pourquoi les deux colonnes se
                    # traduisent chacune pour elle-meme.
-                   r"|(?:ਪਹਿਲੀ|ਦੂਜੀ|ਤੀਜੀ|ਚੌਥੀ)\s+ਲੜੀ", re.I)
+                   r"|(?:ਪਹਿਲੀ|ਦੂਜੀ|ਤੀਜੀ|ਚੌਥੀ)\s+ਲੜੀ"
+                   # LE TURC NE SE MET PAS EN MINUSCULES SANS DEGAT.
+                   # Le « re.I » de Python replie « İ » sur « i »
+                   # suivi d'un point souscrit combinant, et
+                   # « İKİNCİ » cesse alors d'egaler « ikinci ».
+                   # On ecrit donc les deux casses a la main, dans
+                   # la forme exacte ou les fichiers les composent :
+                   # capitales pour la serie, bas de casse pour la
+                   # scene.
+                   r"|(?:B[İi]R[İi]NC[İi]|[İi]K[İi]NC[İi]"
+                   r"|[ÜüU]Ç[ÜüU]NC[ÜüU]|D[ÖöO]RD[ÜüU]NC[ÜüU])"
+                   r"\s+D[İi]Z[İi]\b", re.I)
 
 # LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
@@ -1682,7 +1703,12 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|cena|сцена)\b"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"
-                  r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼", re.I)
+                  r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
+                  # LE TURC, aux deux casses ecrites a la main, pour
+                  # la raison dite plus haut a la serie.
+                  r"|(?:B[İi]r[İi]nc[İi]|[İi]k[İi]nc[İi]"
+                  r"|[ÜüU]ç[ÜüU]nc[ÜüU]|D[ÖöO]rd[ÜüU]nc[ÜüU])"
+                  r"\s+sahne\b", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
