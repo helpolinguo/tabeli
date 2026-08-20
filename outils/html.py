@@ -211,6 +211,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "sv", "nomo": "Svenska", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "fi", "nomo": "Suomi", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -783,7 +785,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
            "tr": "tr", "eo": "eo", "ia": "ia",
-           "nl": "nl", "sv": "sv"}               # langue -> texto/<...>
+           "nl": "nl", "sv": "sv", "fi": "fi"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1761,7 +1763,14 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # contient le « TABEL » de l'ido — et meme
                         # remede : on exige le « Nr » de la ligne
                         # qui numerote.
-                        r"|TABELL\s+Nr")
+                        r"|TABELL\s+Nr"
+                        # LE FINNOIS ecrit « TAULUKKO N:o 1 ». Le mot
+                        # ne ressemble a aucun autre et n'a besoin
+                        # d'aucune precaution : le titre du volume,
+                        # « Delmas-aputaulukot », est compose en bas
+                        # de casse, et la comparaison est sensible a
+                        # la casse.
+                        r"|TAULUKKO")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1782,6 +1791,11 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # mot de plus dans chacun des deux groupes — « serien »
             # et « scenen », qui portent leur article suffixe.
             r"|f[öo]rsta|andra|tredje|fj[äa]rde"
+            # LE FINNOIS DECLINE SON ORDINAL comme le nom qui suit,
+            # mais la serie et la scene sont au nominatif : une
+            # seule forme suffit donc, et deux mots de plus dans
+            # les groupes — « sarja » et « kohtaus ».
+            r"|ensimm[äa]inen|toinen|kolmas|nelj[äa]s"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1798,7 +1812,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|reeks|serien|серия)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|reeks|serien|sarja|серия)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
@@ -1827,7 +1841,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|reeks|serien|се
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|сцена)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|сцена)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"

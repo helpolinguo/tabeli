@@ -45,7 +45,8 @@ DOSSIER = {"fr": "tableau", "en": "table", "es": "cuadro", "ru": "tablica",
            "pt": "quadro", "bn": "sarani", "ja": "zuhyo",
            "pnb": "naqsha", "pa": "sarni", "tr": "tablo",
            "eo": "tabelo", "ia": "tabella",
-           "nl": "tabel", "sv": "tabell"}
+           "nl": "tabel", "sv": "tabell",
+           "fi": "taulukko"}
 
 # LE FRANCAIS N'EST PAS UNE TRADUCTION. C'est le releve d'une AUTRE
 # edition, et Rochelle ordonne ses phrases comme il l'entend :
