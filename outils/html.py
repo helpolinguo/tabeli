@@ -205,6 +205,53 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
 ]
 
+
+# L'ORDRE DU MENU NE SE TIENT PLUS A LA MAIN. Les langues sortaient
+# jusqu'ici dans l'ordre ou on les avait ecrites, c'est-a-dire dans
+# l'ordre ou elles avaient ete traduites : le lecteur ne pouvait pas
+# deviner ou chercher la sienne, et chaque colonne nouvelle allongeait
+# la liste par le bas. On la trie donc, et selon une regle qui se
+# verifie :
+#
+#   1. LE FRANCAIS D'ABORD, parce qu'il n'est pas une traduction. Le
+#      livret francais est l'autre original ; son fac-simile est dans
+#      ce depot comme celui de l'ido.
+#   2. PUIS LES LANGUES CONSTRUITES, dans l'ordre ou l'usage idiste les
+#      nomme : l'esperanto, puis l'interlingua. Elles n'ont pas de
+#      locuteurs premiers a compter, et ce sont les plus proches
+#      parentes de la langue du livret.
+#   3. PUIS LES AUTRES, PAR NOMBRE DE LOCUTEURS PREMIERS, du plus grand
+#      au plus petit. Le chiffre n'est pas une opinion : il est dans
+#      texto/lingui.json, tire d'Ethnologue, et c'est ce meme fichier
+#      qui sert de registre a la colonne. Une langue sans chiffre passe
+#      en queue plutot qu'en tete.
+#
+# Le tri LIT le registre au lieu de le repeter : ajouter une colonne ne
+# demande donc plus de choisir sa place, et la place ne peut plus
+# mentir sur le chiffre.
+KONSTRUKTITA = ["eo", "ia"]
+
+
+def _rango_lingui():
+    """{kodo: millions de locuteurs premiers}, d'apres le registre."""
+    f = RACINE / "texto" / "lingui.json"
+    if not f.is_file():
+        return {}
+    reg = json.loads(f.read_text(encoding="utf-8"))
+    return {l[0]: l[2] for l in reg.get("lingui", [])}
+
+
+def _ordre(lg, milioni):
+    if lg["kodo"] == "fr":
+        return (0, 0, "")
+    if lg["kodo"] in KONSTRUKTITA:
+        return (1, KONSTRUKTITA.index(lg["kodo"]), "")
+    m = milioni.get(lg["kodo"])
+    return (2, -(m if m is not None else -1), lg["kodo"])
+
+
+LANGUES.sort(key=lambda lg: _ordre(lg, _rango_lingui()))
+
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
 SUBTITRO = ("J. Guignon &middot; Ido-Kontoro, Thaon-les-Vosges, 1926 "
             "&middot; E. Rochelle &middot; G. Delmas, Bordeaux")
@@ -304,6 +351,17 @@ def texte_html(t):
     # laisse ici une marque que fusionner() lira : le mot est coupe, la
     # reprise se recolle SANS blanc.
     t = t.replace("\\ccplein\n", COUPE).replace("\\ccplein", COUPE)
+    # ET « \\cc » SUIVI DE « \\parplein » VAUT « \\ccplein ». Les deux
+    # macros ecrites a la suite font ce que \\ccplein fait d'un coup, et
+    # onze pages des deux livrets sont composees ainsi. Le PDF n'y voit
+    # que du feu ; la page de lecture, elle, ne trouvait pas la marque
+    # de coupure, et fusionner() recollait AVEC un blanc : « klo vagas »
+    # pour « klovagas », « ma traco » pour « matraco », « tran quila »
+    # pour « tranquila », « efekti gas » pour « efektigas », « par
+    # ticioni » pour « particioni », « yuni no » pour « yunino »,
+    # « kon servar » pour « konservar ». Sept mots de l'ido et quatre du
+    # francais, coupes en deux a l'ecran par la seule fin de feuillet.
+    t = re.sub(r"\\cc\n(?=\\parplein\b)", COUPE, t)
     t = t.replace("\\cc\n", "").replace("\\cc", "")
     # UN TRAIT D'UNION EN FIN DE LIGNE NE PREND PAS DE BLANC APRES LUI.
     # \nl marque une fin de ligne SANS trait d'union compose : le
