@@ -340,7 +340,8 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
            ("nl", "*-tabel-*.tex"),
            ("sv", "*-tabell-*.tex"),
            ("fi", "*-taulukko-*.tex"),
-           ("ca", "*-taula-*.tex")]
+           ("ca", "*-taula-*.tex"),
+           ("oc", "*-taula-*.tex")]
 
 
 def construire():

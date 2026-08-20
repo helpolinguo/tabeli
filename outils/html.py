@@ -215,6 +215,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "ca", "nomo": "Català", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "oc", "nomo": "Occitan", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -787,7 +789,8 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
            "tr": "tr", "eo": "eo", "ia": "ia",
-           "nl": "nl", "sv": "sv", "fi": "fi", "ca": "ca"}               # langue -> texto/<...>
+           "nl": "nl", "sv": "sv", "fi": "fi", "ca": "ca",
+           "oc": "oc"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1779,6 +1782,11 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # et le titre du volume, « Taules auxiliars
                         # Delmas », est compose en bas de casse.
                         r"|TAULA")
+# L'OCCITAN ECRIT « TAULA » COMME LE CATALAN, et c'est le meme mot :
+# le membre ci-dessus les attrape tous les deux, et il n'y a rien a
+# ajouter. Les deux colonnes ne se confondent pas pour autant : ce
+# qui les separe est le dossier — texto/ca et texto/oc — et non le
+# titre.
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1810,6 +1818,9 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # l'escena catalane n'a pas besoin mais que la serie
             # emploie.
             r"|segona|primer|segon|tercer|quart"
+            # L'OCCITAN : « primiera » et « segonda » ne sont pas dans
+            # la liste, « tresena » et « quatrena » non plus.
+            r"|primi[eè]ra|segonda|tresena|quatrena"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1826,7 +1837,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]rie|series|reeks|serien|sarja|серия)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|series|reeks|serien|sarja|серия)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
@@ -1855,7 +1866,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]rie|series|reeks|serien|sa
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|сцена)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eè]na|сцена)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
