@@ -209,6 +209,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "nl", "nomo": "Nederlands", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "sv", "nomo": "Svenska", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -781,7 +783,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
            "tr": "tr", "eo": "eo", "ia": "ia",
-           "nl": "nl"}               # langue -> texto/<...>
+           "nl": "nl", "sv": "sv"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1753,7 +1755,13 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # deux. On exige donc le « Nr » qui ne suit
                         # le mot que dans la ligne qui numerote,
                         # comme pour le hindi et le bengali.
-                        r"|TABEL\s+Nr")
+                        r"|TABEL\s+Nr"
+                        # LE SUEDOIS ecrit « TABELL Nr 1 ». Meme
+                        # difficulte que le neerlandais — le mot
+                        # contient le « TABEL » de l'ido — et meme
+                        # remede : on exige le « Nr » de la ligne
+                        # qui numerote.
+                        r"|TABELL\s+Nr")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1770,6 +1778,10 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # commune, et il ne demande qu'un mot de plus dans
             # chacun des deux groupes — « reeks » et « tafereel ».
             r"|eerste|tweede|derde|vierde"
+            # LE SUEDOIS : ordinaux dans la liste commune, et un
+            # mot de plus dans chacun des deux groupes — « serien »
+            # et « scenen », qui portent leur article suffixe.
+            r"|f[öo]rsta|andra|tredje|fj[äa]rde"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1786,7 +1798,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|reeks|серия)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|reeks|serien|серия)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
@@ -1815,7 +1827,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|reeks|серия)
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|sc[eè]ne|escena|cena|tafereel|сцена)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|сцена)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
