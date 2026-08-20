@@ -53,7 +53,7 @@
   ["ja",  "日本語",          124, "ltr", "faite"],
   ["pnb", "پنجابی",           90, "rtl", "faite"],
   ["pa",  "ਪੰਜਾਬੀ",            90, "ltr", "faite"],
-  ["tr",  "Türkçe",          86, "ltr", "a faire"],
+  ["tr",  "Türkçe",          86, "ltr", "faite"],
   ["vi",  "Tiếng Việt",      86, "ltr", "a faire"],
   ["yue", "粵語",             85, "ltr", "a faire"],
   ["arz", "مصرى",            83, "rtl", "a faire"],
