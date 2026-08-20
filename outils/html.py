@@ -205,6 +205,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "eo", "nomo": "Esperanto", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "ia", "nomo": "Interlingua", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -750,7 +752,7 @@ def fusionner(blocs):
 DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
-           "tr": "tr", "eo": "eo"}               # langue -> texto/<...>
+           "tr": "tr", "eo": "eo", "ia": "ia"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1707,7 +1709,15 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # — « Delmas Yardimci Tablolarina » — et la
                         # comparaison est sensible a la casse, comme
                         # pour le portugais et l'espagnol.
-                        r"|TABLO")
+                        r"|TABLO"
+                        # L'INTERLINGUA ecrit « TABELLA N-o 1 ». Le
+                        # mot ressemble au « TABELO » de l'ido sans
+                        # l'egaler — deux l, un a — et il lui faut
+                        # donc son propre membre. Meme parti que
+                        # pour le portugais : le titre du volume,
+                        # « Tabellas Auxiliar Delmas », est compose
+                        # en bas de casse et ne passe pas.
+                        r"|TABELLA")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1716,6 +1726,10 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # commune, et « serio » comme « sceno » ne demandent qu'un
             # mot de plus dans les deux groupes ci-dessous.
             r"|unua|dua|tria|kvara"
+            # L'INTERLINGUA, de meme : ses ordinaux sont assez
+            # proches du francais pour entrer dans la liste
+            # commune, et « serie » y est deja par « s[eé]rie ».
+            r"|prime|secunde|tertie|quarte"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1761,7 +1775,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|sc[eè]ne|escena|cena|сцена)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|sc[eè]ne|escena|cena|сцена)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"

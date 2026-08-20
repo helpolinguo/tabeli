@@ -240,7 +240,7 @@ def relever(dossier, motif):
     """{numero de tableau: {cle d'objet: [noms]}} pour une langue."""
     out = {}
     for f in sorted((RACINE / "texto" / dossier).glob(motif)):
-        m = re.search(r'-(?:tabelo|tableau|table|cuadro|tablica|tubiao|lawha|talika|quadro|sarani|zuhyo|naqsha|sarni|tablo)-(\d+)\.tex$', f.name)
+        m = re.search(r'-(?:tabelo|tableau|table|cuadro|tablica|tubiao|lawha|talika|quadro|sarani|zuhyo|naqsha|sarni|tablo|tabella)-(\d+)\.tex$', f.name)
         if not m:
             continue
         tab = int(m.group(1))
@@ -335,7 +335,8 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
            ("ja", "*-zuhyo-*.tex"), ("pnb", "*-naqsha-*.tex"),
            ("pa", "*-sarni-*.tex"),
            ("tr", "*-tablo-*.tex"),
-           ("eo", "*-tabelo-*.tex")]
+           ("eo", "*-tabelo-*.tex"),
+           ("ia", "*-tabella-*.tex")]
 
 
 def construire():
