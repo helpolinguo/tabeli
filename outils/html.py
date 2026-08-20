@@ -213,6 +213,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "fi", "nomo": "Suomi", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "ca", "nomo": "Català", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -785,7 +787,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
            "tr": "tr", "eo": "eo", "ia": "ia",
-           "nl": "nl", "sv": "sv", "fi": "fi"}               # langue -> texto/<...>
+           "nl": "nl", "sv": "sv", "fi": "fi", "ca": "ca"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1770,7 +1772,13 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # « Delmas-aputaulukot », est compose en bas
                         # de casse, et la comparaison est sensible a
                         # la casse.
-                        r"|TAULUKKO")
+                        r"|TAULUKKO"
+                        # LE CATALAN ecrit « TAULA n.\u00ba 1 ». Le mot ne
+                        # se confond avec aucun autre — le finnois
+                        # « TAULUKKO » a un U la ou celui-ci a un A —
+                        # et le titre du volume, « Taules auxiliars
+                        # Delmas », est compose en bas de casse.
+                        r"|TAULA")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1796,6 +1804,12 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # seule forme suffit donc, et deux mots de plus dans
             # les groupes — « sarja » et « kohtaus ».
             r"|ensimm[äa]inen|toinen|kolmas|nelj[äa]s"
+            # LE CATALAN : « primera », « tercera » et « quarta » sont
+            # deja dans la liste par l'espagnol ; il ne manque que
+            # « segona » et les quatre formes masculines, dont
+            # l'escena catalane n'a pas besoin mais que la serie
+            # emploie.
+            r"|segona|primer|segon|tercer|quart"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1812,7 +1826,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|reeks|serien|sarja|серия)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]rie|series|reeks|serien|sarja|серия)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
