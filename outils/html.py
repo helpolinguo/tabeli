@@ -199,6 +199,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "pnb", "nomo": "پنجابی", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "pa", "nomo": "ਪੰਜਾਬੀ", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
@@ -685,7 +687,7 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
-           "bn": "bn", "ja": "ja", "pnb": "pnb"}               # langue -> texto/<...>
+           "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1630,7 +1632,12 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # aussi la carte ordinaire ; on exige le
                         # « نمبر » qui ne suit le mot que dans la ligne
                         # qui numerote.
-                        r"|نقشہ\s+نمبر")
+                        r"|نقشہ\s+نمبر"
+                        # LE GOURMOUKHI ecrit « ਸਾਰਣੀ », qui se lit
+                        # aussi dans le titre du volume : on exige le
+                        # « ਨੰ. » de la ligne qui numerote, comme pour
+                        # le hindi et le bengali.
+                        r"|ਸਾਰਣੀ\s+ਨੰ")
 
 # Les ordinaux des trois langues, pour la serie et pour la scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
@@ -1656,7 +1663,12 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eé]rie|series|серия)\b"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
-                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ", re.I)
+                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ"
+                   # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
+                   # « سلسلہ » : meme langue, deux lexiques, et c'est
+                   # justement pourquoi les deux colonnes se
+                   # traduisent chacune pour elle-meme.
+                   r"|(?:ਪਹਿਲੀ|ਦੂਜੀ|ਤੀਜੀ|ਚੌਥੀ)\s+ਲੜੀ", re.I)
 
 # LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
@@ -1669,7 +1681,8 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sc[eè]ne|escena|cena|сцена)\b"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
-                  r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر", re.I)
+                  r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"
+                  r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
