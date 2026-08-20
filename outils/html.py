@@ -348,6 +348,32 @@ def texte_html(t):
     t = re.sub(r"%.*?(?:\n|$)", "\n", t)
     t = t.replace("\x00", "%")
 
+    # LE FAC-SIMILE NE GRASSE QUE LA SECONDE MOITIE D'UN MOT QUE LA
+    # LIGNE A COUPE. « ...e ban\cc \VUgras{doliera vildo-sako} » : le
+    # composeur ouvre son gras a la REPRISE, parce que le mot commence
+    # sur la ligne d'avant et que la ligne d'avant est deja composee.
+    # Le mot est un pourtant, et la page de lecture, qui ne coupe pas
+    # au meme endroit, donnait « ban<b>doliera vildo-sako</b> ».
+    # C'est le meme accident que « pesko-\VUgras{barketi} », traite
+    # plus bas, a ceci pres que la soudure ne se fait pas sur un trait
+    # d'union mais sur une fin de ligne : le morceau de gauche n'a
+    # aucune marque, et il faut donc le reconnaitre a ce qu'il TOUCHE
+    # le \VUgras qui suit, sans blanc entre eux.
+    #
+    # DIX ENDROITS, ET TOUS DANS LES DEUX RELEVES. « bandoliera »,
+    # « damzelo », « portreto », « kulbutas », « buketo », « kabini »,
+    # « dolorigas », « generalo » cote ido ; « precedent » et
+    # « baigneurs » cote francais. La regle ne peut pas s'egarer dans
+    # une traduction : « \cc » n'existe que la ou l'on transcrit une
+    # ligne imprimee, et les seize colonnes traduites n'en ont pas un.
+    #
+    # ON EXIGE UN BLANC AVANT LE MORCEAU, faute de quoi la regle
+    # mordrait sur le « \VUgras{chas}\cc \VUgras{gardisto} » du meme
+    # tableau, ou les DEUX moities portent deja leur gras et ou c'est
+    # la reunion des balises, plus bas, qui fait le travail.
+    t = re.sub(r"(?<=\s)([^\s{}\\]{1,20})\\cc\n\\VUgras\{",
+               r"\\VUgras{\1", t)
+
     # Les coupures : elles portent la logique du releve.
     # \ccplein D'ABORD, ET POUR DEUX RAISONS. C'est \cc et \parplein a
     # la fois : la page finit sur un mot coupe, et l'alinea reprend au
