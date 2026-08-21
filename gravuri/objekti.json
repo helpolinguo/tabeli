@@ -102867,7 +102867,9 @@
    "eu": [
     "behatokia"
    ],
-   "ro": []
+   "ro": [
+    "observatorul"
+   ]
   },
   "2": {
    "io": [
@@ -102939,7 +102941,9 @@
    "eu": [
     "turkiar bainuak"
    ],
-   "ro": []
+   "ro": [
+    "băile turcești"
+   ]
   },
   "3": {
    "io": [
@@ -103011,7 +103015,9 @@
    "eu": [
     "kaletik"
    ],
-   "ro": []
+   "ro": [
+    "strada"
+   ]
   },
   "4": {
    "io": [
@@ -103081,7 +103087,9 @@
     "похорон"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "înmormântare"
+   ]
   },
   "5": {
    "io": [
@@ -103293,7 +103301,9 @@
    "eu": [
     "ardo eta pattar saltzailearen"
    ],
-   "ro": []
+   "ro": [
+    "negustorului de vinuri și rachiuri"
+   ]
   },
   "8": {
    "io": [
@@ -103437,7 +103447,9 @@
    "eu": [
     "kontsula"
    ],
-   "ro": []
+   "ro": [
+    "consul"
+   ]
   },
   "10": {
    "io": [
@@ -103509,7 +103521,9 @@
    "eu": [
     "partitura-saltzailearen"
    ],
-   "ro": []
+   "ro": [
+    "vânzătorului de note"
+   ]
   },
   "11": {
    "io": [
@@ -103581,7 +103595,9 @@
    "eu": [
     "Kale-garbitzaileek"
    ],
-   "ro": []
+   "ro": [
+    "măturători"
+   ]
   },
   "12": {
    "io": [
@@ -103653,7 +103669,9 @@
    "eu": [
     "eskuila-makinak"
    ],
-   "ro": []
+   "ro": [
+    "mașina de măturat"
+   ]
   },
   "13": {
    "io": [
@@ -103725,7 +103743,9 @@
    "eu": [
     "altzarigilearen"
    ],
-   "ro": []
+   "ro": [
+    "tâmplarul de mobilă"
+   ]
   },
   "14": {
    "io": [
@@ -103797,7 +103817,9 @@
    "eu": [
     "burdindegiko"
    ],
-   "ro": []
+   "ro": [
+    "fierărie"
+   ]
   },
   "15": {
    "io": [
@@ -103941,7 +103963,9 @@
    "eu": [
     "altzari-furgoitik"
    ],
-   "ro": []
+   "ro": [
+    "furgonul de mobilă"
+   ]
   },
   "17": {
    "io": [
@@ -104013,7 +104037,9 @@
    "eu": [
     "kotxegilearenean"
    ],
-   "ro": []
+   "ro": [
+    "caretaș"
+   ]
   },
   "18": {
    "io": [
@@ -104085,7 +104111,9 @@
    "eu": [
     "bizikleta eta automobil saltzailearentzat"
    ],
-   "ro": []
+   "ro": [
+    "negustorul de biciclete și automobile"
+   ]
   },
   "19": {
    "io": [
@@ -104157,7 +104185,9 @@
    "eu": [
     "paketatzaileak"
    ],
-   "ro": []
+   "ro": [
+    "ambalatorul"
+   ]
   },
   "20": {
    "io": [
@@ -104229,7 +104259,9 @@
    "eu": [
     "argazkilariarengana"
    ],
-   "ro": []
+   "ro": [
+    "fotograf"
+   ]
   },
   "21": {
    "io": [
@@ -104299,7 +104331,9 @@
    "eu": [
     "makinaren"
    ],
-   "ro": []
+   "ro": [
+    "aparatului"
+   ]
   },
   "22": {
    "io": [
@@ -104371,7 +104405,9 @@
    "eu": [
     "erretratuak"
    ],
-   "ro": []
+   "ro": [
+    "portretele"
+   ]
   },
   "23": {
    "io": [
@@ -104443,7 +104479,9 @@
    "eu": [
     "ile-apaindegiaren"
    ],
-   "ro": []
+   "ro": [
+    "frizeriei"
+   ]
   },
   "24": {
    "io": [
@@ -104516,7 +104554,9 @@
    "eu": [
     "tabako-dendaren"
    ],
-   "ro": []
+   "ro": [
+    "tutungerie"
+   ]
   },
   "25": {
    "io": [
@@ -104658,7 +104698,9 @@
    "eu": [
     "iragarki"
    ],
-   "ro": []
+   "ro": [
+    "firmă"
+   ]
   },
   "27": {
    "io": [
@@ -104730,7 +104772,9 @@
    "eu": [
     "tabako-hautsezko"
    ],
-   "ro": []
+   "ro": [
+    "priză de tutun"
+   ]
   },
   "29": {
    "io": [
@@ -104802,7 +104846,9 @@
    "eu": [
     "Diru-trukatzailearen"
    ],
-   "ro": []
+   "ro": [
+    "zarafului"
+   ]
   },
   "30": {
    "io": [
@@ -104874,7 +104920,9 @@
    "eu": [
     "hortz-medikuarengana"
    ],
-   "ro": []
+   "ro": [
+    "dentist"
+   ]
   },
   "31": {
    "io": [
@@ -104946,7 +104994,9 @@
    "eu": [
     "gozotegian"
    ],
-   "ro": []
+   "ro": [
+    "cofetărie"
+   ]
   },
   "32": {
    "io": [
@@ -105016,7 +105066,9 @@
     "контори"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "biroul"
+   ]
   },
   "33": {
    "io": [
@@ -105088,7 +105140,9 @@
    "eu": [
     "kopiatzaileak"
    ],
-   "ro": []
+   "ro": [
+    "copistul"
+   ]
   },
   "34": {
    "io": [
@@ -105304,7 +105358,9 @@
    "eu": [
     "plaka"
    ],
-   "ro": []
+   "ro": [
+    "tăblița"
+   ]
   },
   "37": {
    "io": [
@@ -105374,7 +105430,9 @@
     "годинникар і ювелір"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "ceasornicar și bijutier"
+   ]
   },
   "38": {
    "io": [
@@ -105446,7 +105504,9 @@
    "eu": [
     "optikariaren"
    ],
-   "ro": []
+   "ro": [
+    "opticianului"
+   ]
   },
   "39": {
    "io": [
@@ -105518,7 +105578,9 @@
    "eu": [
     "kapelagilearen"
    ],
-   "ro": []
+   "ro": [
+    "pălărierului"
+   ]
   },
   "40": {
    "io": [
@@ -105590,7 +105652,9 @@
    "eu": [
     "eskularrugilearen"
    ],
-   "ro": []
+   "ro": [
+    "mănușarului"
+   ]
   },
   "41": {
    "io": [
@@ -105662,7 +105726,9 @@
    "eu": [
     "Erregimentuaren"
    ],
-   "ro": []
+   "ro": [
+    "regimentului"
+   ]
   },
   "42": {
    "io": [
@@ -105734,7 +105800,9 @@
    "eu": [
     "danbor-nagusia"
    ],
-   "ro": []
+   "ro": [
+    "toboșarul-șef"
+   ]
   },
   "43": {
    "io": [
@@ -105806,7 +105874,9 @@
    "eu": [
     "danborrariak"
    ],
-   "ro": []
+   "ro": [
+    "toboșarii"
+   ]
   },
   "44": {
    "io": [
@@ -105878,7 +105948,9 @@
    "eu": [
     "turutariak"
    ],
-   "ro": []
+   "ro": [
+    "goarnele"
+   ]
   },
   "45": {
    "io": [
@@ -105950,7 +106022,9 @@
    "eu": [
     "Jenerala"
    ],
-   "ro": []
+   "ro": [
+    "Generalul"
+   ]
   },
   "46": {
    "io": [
@@ -106022,7 +106096,9 @@
    "eu": [
     "Estatu Nagusiko ofizialek"
    ],
-   "ro": []
+   "ro": [
+    "Ofițerii de stat-major"
+   ]
   },
   "47": {
    "io": [
@@ -106166,7 +106242,9 @@
    "eu": [
     "iturrikoaren"
    ],
-   "ro": []
+   "ro": [
+    "fântânii"
+   ]
   },
   "49": {
    "io": [
@@ -106238,7 +106316,9 @@
    "eu": [
     "ur-zorrotadaren"
    ],
-   "ro": []
+   "ro": [
+    "șuvoiul"
+   ]
   },
   "50": {
    "io": [
@@ -106310,7 +106390,9 @@
    "eu": [
     "bidegurutzean"
    ],
-   "ro": []
+   "ro": [
+    "răspântie"
+   ]
   },
   "51": {
    "io": [
@@ -106382,7 +106464,9 @@
    "eu": [
     "aterki-saltzailea"
    ],
-   "ro": []
+   "ro": [
+    "umbrelarul"
+   ]
   },
   "52": {
    "io": [
@@ -106454,7 +106538,9 @@
    "eu": [
     "alokairuko kotxeak"
    ],
-   "ro": []
+   "ro": [
+    "birjele"
+   ]
   },
   "53": {
    "io": [
@@ -106526,7 +106612,9 @@
    "eu": [
     "tindatzailea"
    ],
-   "ro": []
+   "ro": [
+    "vopsitorul"
+   ]
   },
   "54": {
    "io": [
@@ -106598,7 +106686,9 @@
    "eu": [
     "arma-saltzailea"
    ],
-   "ro": []
+   "ro": [
+    "armurierul"
+   ]
   },
   "55": {
    "io": [
@@ -106670,7 +106760,9 @@
    "eu": [
     "Bidaiari-agenteak"
    ],
-   "ro": []
+   "ro": [
+    "Comis-voiajorul"
+   ]
   },
   "56": {
    "io": [
@@ -106742,7 +106834,9 @@
    "eu": [
     "ureztatzeko upela"
    ],
-   "ro": []
+   "ro": [
+    "stropitoarea"
+   ]
   },
   "57": {
    "io": [
@@ -106814,7 +106908,9 @@
    "eu": [
     "kotxe partikularrak"
    ],
-   "ro": []
+   "ro": [
+    "trăsurile particulare"
+   ]
   },
   "58": {
    "io": [
@@ -106886,7 +106982,9 @@
    "eu": [
     "omnibusekoan"
    ],
-   "ro": []
+   "ro": [
+    "omnibuzului"
+   ]
   },
   "59": {
    "io": [
@@ -106958,7 +107056,9 @@
    "eu": [
     "inperialean"
    ],
-   "ro": []
+   "ro": [
+    "imperiala"
+   ]
   },
   "60": {
    "io": [
@@ -107028,7 +107128,9 @@
     "вуличний співак"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "cântăreț de stradă"
+   ]
   },
   "61": {
    "io": [
@@ -107172,7 +107274,9 @@
    "eu": [
     "jantzigileek"
    ],
-   "ro": []
+   "ro": [
+    "croitorii"
+   ]
   },
   "63": {
    "io": [
@@ -107244,7 +107348,9 @@
    "eu": [
     "jostunek"
    ],
-   "ro": []
+   "ro": [
+    "croitoresele"
+   ]
   },
   "64": {
    "io": [
@@ -107316,7 +107422,9 @@
    "eu": [
     "oihal-dendaren"
    ],
-   "ro": []
+   "ro": [
+    "prăvăliei de postavuri"
+   ]
   },
   "65": {
    "io": [
@@ -107388,7 +107496,9 @@
    "eu": [
     "Dendariak"
    ],
-   "ro": []
+   "ro": [
+    "Prăvăliașul"
+   ]
   },
   "66": {
    "io": [
@@ -107530,7 +107640,9 @@
    "eu": [
     "oihal"
    ],
-   "ro": []
+   "ro": [
+    "postav"
+   ]
   },
   "68": {
    "io": [
@@ -107602,7 +107714,9 @@
    "eu": [
     "ur-hobiaren"
    ],
-   "ro": []
+   "ro": [
+    "rigolă"
+   ]
   },
   "69": {
    "io": [
@@ -107672,7 +107786,9 @@
     "рознощикові"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "negustor ambulant"
+   ]
   },
   "70": {
    "io": [
@@ -107742,7 +107858,9 @@
     "книгар"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "librar"
+   ]
   },
   "71": {
    "io": [
@@ -107814,7 +107932,9 @@
    "eu": [
     "erredakzioa"
    ],
-   "ro": []
+   "ro": [
+    "redacția"
+   ]
   },
   "72": {
    "io": [
@@ -107886,7 +108006,9 @@
    "eu": [
     "litografoek"
    ],
-   "ro": []
+   "ro": [
+    "litografii"
+   ]
   },
   "73": {
    "io": [
@@ -107958,7 +108080,9 @@
    "eu": [
     "kobre-grabatzaileek"
    ],
-   "ro": []
+   "ro": [
+    "gravorii în aramă"
+   ]
   },
   "74": {
    "io": [
@@ -108030,7 +108154,9 @@
    "eu": [
     "konposatzaileak"
    ],
-   "ro": []
+   "ro": [
+    "culegătorii"
+   ]
   },
   "75": {
    "io": [
@@ -108102,7 +108228,9 @@
    "eu": [
     "Makina-aretoa"
    ],
-   "ro": []
+   "ro": [
+    "Sala mașinilor"
+   ]
   },
   "76": {
    "io": [
@@ -108174,7 +108302,9 @@
    "eu": [
     "sute-abisagailua"
    ],
-   "ro": []
+   "ro": [
+    "avertizorul de incendiu"
+   ]
   },
   "77": {
    "io": [
@@ -108246,7 +108376,9 @@
    "eu": [
     "mertzeria-dendaren"
    ],
-   "ro": []
+   "ro": [
+    "galanteriei"
+   ]
   },
   "78": {
    "io": [
@@ -108316,7 +108448,9 @@
     "питний фонтанчик"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "cișmea"
+   ]
   },
   "79": {
    "io": [
@@ -108386,7 +108520,9 @@
     "посильний"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "comisionar"
+   ]
   },
   "80": {
    "io": [
@@ -108528,7 +108664,9 @@
    "eu": [
     "posta-furgoia"
    ],
-   "ro": []
+   "ro": [
+    "furgonul poștal"
+   ]
   },
   "82": {
    "io": [
@@ -108600,7 +108738,9 @@
    "eu": [
     "abokatuarekin"
    ],
-   "ro": []
+   "ro": [
+    "avocatul"
+   ]
   },
   "83": {
    "io": [
@@ -108672,7 +108812,9 @@
    "eu": [
     "zerga-biltzailearekin"
    ],
-   "ro": []
+   "ro": [
+    "perceptorul"
+   ]
   },
   "84": {
    "io": [
@@ -108744,7 +108886,9 @@
    "eu": [
     "notarioarekin"
    ],
-   "ro": []
+   "ro": [
+    "notarul"
+   ]
   },
   "85": {
    "io": [
@@ -108816,7 +108960,9 @@
    "eu": [
     "gozotegiko mutila"
    ],
-   "ro": []
+   "ro": [
+    "băiatul de la cofetărie"
+   ]
   },
   "86": {
    "io": [
@@ -108888,7 +109034,9 @@
    "eu": [
     "trapu-biltzailearen"
    ],
-   "ro": []
+   "ro": [
+    "telalul"
+   ]
   },
   "87": {
    "io": [
@@ -108960,7 +109108,9 @@
    "eu": [
     "farolzaina"
    ],
-   "ro": []
+   "ro": [
+    "lampagiul"
+   ]
   },
   "88": {
    "io": [
@@ -109032,7 +109182,9 @@
    "eu": [
     "gas-langilearekin"
    ],
-   "ro": []
+   "ro": [
+    "lucrătorul de la gaz"
+   ]
   },
   "89": {
    "io": [
@@ -109102,7 +109254,9 @@
     "черниця"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "călugăriță"
+   ]
   },
   "91": {
    "io": [
@@ -109174,7 +109328,9 @@
    "eu": [
     "tximini-garbitzaileren"
    ],
-   "ro": []
+   "ro": [
+    "coșari"
+   ]
   },
   "92": {
    "io": [
@@ -109246,7 +109402,9 @@
    "eu": [
     "lore-saltzailearenean"
    ],
-   "ro": []
+   "ro": [
+    "florăreasă"
+   ]
   },
   "93": {
    "io": [
@@ -109318,7 +109476,9 @@
    "eu": [
     "gobernantak"
    ],
-   "ro": []
+   "ro": [
+    "guvernanta"
+   ]
   },
   "94": {
    "io": [
@@ -109390,7 +109550,9 @@
    "eu": [
     "Kale-saltzailearengana"
    ],
-   "ro": []
+   "ro": [
+    "precupeața"
+   ]
   },
   "95": {
    "io": [
@@ -109462,7 +109624,9 @@
    "eu": [
     "lagunaren"
    ],
-   "ro": []
+   "ro": [
+    "doamnei ei de companie"
+   ]
   },
   "96": {
    "io": [
@@ -109532,7 +109696,9 @@
     "інженера"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "inginer"
+   ]
   },
   "97": {
    "io": [
@@ -109604,7 +109770,9 @@
    "eu": [
     "apainzalearen"
    ],
-   "ro": []
+   "ro": [
+    "modista"
+   ]
   },
   "98": {
    "io": [
@@ -109748,7 +109916,9 @@
    "eu": [
     "fraideren"
    ],
-   "ro": []
+   "ro": [
+    "călugări"
+   ]
   }
  },
  "t15": {
@@ -109822,7 +109992,9 @@
    "eu": [
     "teilapean"
    ],
-   "ro": []
+   "ro": [
+    "șopronul"
+   ]
   },
   "2": {
    "io": [
@@ -109894,7 +110066,9 @@
    "eu": [
     "Hestebete-saltzailea"
    ],
-   "ro": []
+   "ro": [
+    "Mezelarul"
+   ]
   },
   "3": {
    "io": [
@@ -109966,7 +110140,9 @@
    "eu": [
     "urdaiazpikoa"
    ],
-   "ro": []
+   "ro": [
+    "șuncă"
+   ]
   },
   "4": {
    "io": [
@@ -110038,7 +110214,9 @@
    "eu": [
     "odolkia"
    ],
-   "ro": []
+   "ro": [
+    "sângerete"
+   ]
   },
   "5": {
    "io": [
@@ -110110,7 +110288,9 @@
    "eu": [
     "lukainka"
    ],
-   "ro": []
+   "ro": [
+    "cârnați"
+   ]
   },
   "6": {
    "io": [
@@ -110182,7 +110362,9 @@
    "eu": [
     "saltxitxak"
    ],
-   "ro": []
+   "ro": [
+    "crenvurști"
+   ]
   },
   "7": {
    "io": [
@@ -110254,7 +110436,9 @@
    "eu": [
     "urdaia"
    ],
-   "ro": []
+   "ro": [
+    "slănină"
+   ]
   },
   "8": {
    "io": [
@@ -110326,7 +110510,9 @@
    "eu": [
     "gurin eta gazta saltzailearen"
    ],
-   "ro": []
+   "ro": [
+    "negustoreasa de unt și brânză"
+   ]
   },
   "9": {
    "io": [
@@ -110398,7 +110584,9 @@
    "eu": [
     "gazta holandarrez"
    ],
-   "ro": []
+   "ro": [
+    "brânzeturi olandeze"
+   ]
   },
   "10": {
    "io": [
@@ -110470,7 +110658,9 @@
    "eu": [
     "camembertez"
    ],
-   "ro": []
+   "ro": [
+    "camemberturi"
+   ]
   },
   "11": {
    "io": [
@@ -110682,7 +110872,9 @@
    "eu": [
     "barazki-saltzaileak"
    ],
-   "ro": []
+   "ro": [
+    "zarzavagioaica"
+   ]
   },
   "14": {
    "io": [
@@ -110824,7 +111016,9 @@
    "eu": [
     "azalorea"
    ],
-   "ro": []
+   "ro": [
+    "conopidă"
+   ]
   },
   "16": {
    "io": [
@@ -110896,7 +111090,9 @@
    "eu": [
     "uraza"
    ],
-   "ro": []
+   "ro": [
+    "salată"
+   ]
   },
   "17": {
    "io": [
@@ -110968,7 +111164,9 @@
    "eu": [
     "aza"
    ],
-   "ro": []
+   "ro": [
+    "varză"
+   ]
   },
   "18": {
    "io": [
@@ -111040,7 +111238,9 @@
    "eu": [
     "meloiak"
    ],
-   "ro": []
+   "ro": [
+    "pepeni"
+   ]
   },
   "19": {
    "io": [
@@ -111112,7 +111312,9 @@
    "eu": [
     "kalabazak"
    ],
-   "ro": []
+   "ro": [
+    "dovleci"
+   ]
   },
   "20": {
    "io": [
@@ -111184,7 +111386,9 @@
    "eu": [
     "perretxikoak"
    ],
-   "ro": []
+   "ro": [
+    "ciuperci"
+   ]
   },
   "21": {
    "io": [
@@ -111256,7 +111460,9 @@
    "eu": [
     "banaketa-gurdia"
    ],
-   "ro": []
+   "ro": [
+    "căruța de livrare"
+   ]
   },
   "22": {
    "io": [
@@ -111328,7 +111534,9 @@
    "eu": [
     "garagardo-barrikaz"
    ],
-   "ro": []
+   "ro": [
+    "butoiașe de bere"
+   ]
   },
   "23": {
    "io": [
@@ -111398,7 +111606,9 @@
     "артишоків"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "anghinare"
+   ]
   },
   "24": {
    "io": [
@@ -111470,7 +111680,9 @@
    "eu": [
     "salerosketaren"
    ],
-   "ro": []
+   "ro": [
+    "tocmelii"
+   ]
   },
   "25": {
    "io": [
@@ -111542,7 +111754,9 @@
    "eu": [
     "hestebete-saltzailearen"
    ],
-   "ro": []
+   "ro": [
+    "negustoresei de măruntaie"
+   ]
   },
   "26": {
    "io": [
@@ -111612,7 +111826,9 @@
    "eu": [
     "Etxekoandreek"
    ],
-   "ro": []
+   "ro": [
+    "Gospodinele"
+   ]
   },
   "27": {
    "io": [
@@ -111754,7 +111970,9 @@
    "eu": [
     "arrain-saltzailearekin"
    ],
-   "ro": []
+   "ro": [
+    "peștăreasa"
+   ]
   },
   "29": {
    "io": [
@@ -111826,7 +112044,9 @@
    "eu": [
     "Hegazti-saltzailea"
    ],
-   "ro": []
+   "ro": [
+    "Negustoreasa de păsări"
+   ]
   },
   "30": {
    "io": [
@@ -111896,7 +112116,9 @@
     "білизняниця"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "lenjereasă"
+   ]
   },
   "31": {
    "io": [
@@ -111968,7 +112190,9 @@
    "eu": [
     "labangileak"
    ],
-   "ro": []
+   "ro": [
+    "cuțitarul"
+   ]
   },
   "32": {
    "io": [
@@ -112041,7 +112265,9 @@
    "eu": [
     "janari-dendatxo"
    ],
-   "ro": []
+   "ro": [
+    "băcănie"
+   ]
   },
   "33": {
    "io": [
@@ -112113,7 +112339,9 @@
    "eu": [
     "tea"
    ],
-   "ro": []
+   "ro": [
+    "ceai"
+   ]
   },
   "34": {
    "io": [
@@ -112185,7 +112413,9 @@
    "eu": [
     "txokolatea"
    ],
-   "ro": []
+   "ro": [
+    "ciocolată"
+   ]
   },
   "35": {
    "io": [
@@ -112257,7 +112487,9 @@
    "eu": [
     "kontserbak"
    ],
-   "ro": []
+   "ro": [
+    "conserve"
+   ]
   },
   "36": {
    "io": [
@@ -112329,7 +112561,9 @@
    "eu": [
     "likoreak"
    ],
-   "ro": []
+   "ro": [
+    "lichioruri"
+   ]
   },
   "37": {
    "io": [
@@ -112401,7 +112635,9 @@
    "eu": [
     "azukre-koskorra"
    ],
-   "ro": []
+   "ro": [
+    "căpățână de zahăr"
+   ]
   },
   "38": {
    "io": [
@@ -112473,7 +112709,9 @@
    "eu": [
     "xaboia"
    ],
-   "ro": []
+   "ro": [
+    "săpun"
+   ]
   },
   "39": {
    "io": [
@@ -112545,7 +112783,9 @@
    "eu": [
     "erbia"
    ],
-   "ro": []
+   "ro": [
+    "iepure"
+   ]
   },
   "40": {
    "io": [
@@ -112617,7 +112857,9 @@
    "eu": [
     "birigarroak"
    ],
-   "ro": []
+   "ro": [
+    "sturzi"
+   ]
   },
   "41": {
    "io": [
@@ -112689,7 +112931,9 @@
    "eu": [
     "eperrak"
    ],
-   "ro": []
+   "ro": [
+    "potârnichi"
+   ]
   },
   "42": {
    "io": [
@@ -112761,7 +113005,9 @@
    "eu": [
     "galeperrak"
    ],
-   "ro": []
+   "ro": [
+    "prepelițe"
+   ]
   },
   "43": {
    "io": [
@@ -112833,7 +113079,9 @@
    "eu": [
     "basahatea"
    ],
-   "ro": []
+   "ro": [
+    "rață sălbatică"
+   ]
   },
   "44": {
    "io": [
@@ -112905,7 +113153,9 @@
    "eu": [
     "faisaia"
    ],
-   "ro": []
+   "ro": [
+    "fazan"
+   ]
   },
   "45": {
    "io": [
@@ -113047,7 +113297,9 @@
    "eu": [
     "bananak"
    ],
-   "ro": []
+   "ro": [
+    "bananele"
+   ]
   },
   "47": {
    "io": [
@@ -113119,7 +113371,9 @@
    "eu": [
     "marmelada"
    ],
-   "ro": []
+   "ro": [
+    "dulceață"
+   ]
   },
   "48": {
    "io": [
@@ -113191,7 +113445,9 @@
    "eu": [
     "txerri-gantza"
    ],
-   "ro": []
+   "ro": [
+    "untură"
+   ]
   },
   "49": {
    "io": [
@@ -113263,7 +113519,9 @@
    "eu": [
     "ozpin-luzokerrak"
    ],
-   "ro": []
+   "ro": [
+    "castraveciori"
+   ]
   },
   "50": {
    "io": [
@@ -113405,7 +113663,9 @@
    "eu": [
     "erosleentzat"
    ],
-   "ro": []
+   "ro": [
+    "cumpărătoare"
+   ]
   },
   "52": {
    "io": [
@@ -113547,7 +113807,9 @@
    "eu": [
     "arana"
    ],
-   "ro": []
+   "ro": [
+    "prune"
+   ]
   },
   "54": {
    "io": [
@@ -113619,7 +113881,9 @@
    "eu": [
     "mahatsa"
    ],
-   "ro": []
+   "ro": [
+    "struguri"
+   ]
   },
   "55": {
    "io": [
@@ -113691,7 +113955,9 @@
    "eu": [
     "mertxikak"
    ],
-   "ro": []
+   "ro": [
+    "piersici"
+   ]
   },
   "56": {
    "io": [
@@ -113763,7 +114029,9 @@
    "eu": [
     "arbendola"
    ],
-   "ro": []
+   "ro": [
+    "migdale"
+   ]
   },
   "57": {
    "io": [
@@ -113835,7 +114103,9 @@
    "eu": [
     "intxaurrak"
    ],
-   "ro": []
+   "ro": [
+    "nuci"
+   ]
   },
   "58": {
    "io": [
@@ -113907,7 +114177,9 @@
    "eu": [
     "Arroza"
    ],
-   "ro": []
+   "ro": [
+    "Orezul"
+   ]
   },
   "59": {
    "io": [
@@ -113979,7 +114251,9 @@
    "eu": [
     "dilista"
    ],
-   "ro": []
+   "ro": [
+    "lintea"
+   ]
   },
   "60": {
    "io": [
@@ -114121,7 +114395,9 @@
    "eu": [
     "patata"
    ],
-   "ro": []
+   "ro": [
+    "cartofii"
+   ]
   },
   "62": {
    "io": [
@@ -114193,7 +114469,9 @@
    "eu": [
     "sagarren"
    ],
-   "ro": []
+   "ro": [
+    "merele"
+   ]
   },
   "63": {
    "io": [
@@ -114265,7 +114543,9 @@
    "eu": [
     "indaba"
    ],
-   "ro": []
+   "ro": [
+    "fasolea"
+   ]
   },
   "64": {
    "io": [
@@ -114337,7 +114617,9 @@
    "eu": [
     "pikuen"
    ],
-   "ro": []
+   "ro": [
+    "smochinele"
+   ]
   },
   "65": {
    "io": [
@@ -114409,7 +114691,9 @@
    "eu": [
     "aran lehorren"
    ],
-   "ro": []
+   "ro": [
+    "prunele uscate"
+   ]
   },
   "66": {
    "io": [
@@ -114481,7 +114765,9 @@
    "eu": [
     "hurren"
    ],
-   "ro": []
+   "ro": [
+    "alunele"
+   ]
   },
   "67": {
    "io": [
@@ -114623,7 +114909,9 @@
    "eu": [
     "olibak"
    ],
-   "ro": []
+   "ro": [
+    "măsline"
+   ]
   },
   "69": {
    "io": [
@@ -114695,7 +114983,9 @@
    "eu": [
     "neskameen"
    ],
-   "ro": []
+   "ro": [
+    "slujnice"
+   ]
   },
   "70": {
    "io": [
@@ -114767,7 +115057,9 @@
    "eu": [
     "saskiak"
    ],
-   "ro": []
+   "ro": [
+    "coșurile"
+   ]
   },
   "71": {
    "io": [
@@ -114837,7 +115129,9 @@
     "бакалійник"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "băcan"
+   ]
   },
   "72": {
    "io": [
@@ -114909,7 +115203,9 @@
    "eu": [
     "kafea"
    ],
-   "ro": []
+   "ro": [
+    "Cafeaua"
+   ]
   },
   "73": {
    "io": [
@@ -114981,7 +115277,9 @@
    "eu": [
     "sareak"
    ],
-   "ro": []
+   "ro": [
+    "plasele"
+   ]
   },
   "74": {
    "io": [
@@ -115051,7 +115349,9 @@
     "тачку"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "roabă"
+   ]
   },
   "75": {
    "io": [
@@ -115193,7 +115493,9 @@
    "eu": [
     "husarra"
    ],
-   "ro": []
+   "ro": [
+    "husar"
+   ]
   },
   "78": {
    "io": [
@@ -115265,7 +115567,9 @@
    "eu": [
     "okindegiaren"
    ],
-   "ro": []
+   "ro": [
+    "brutăriei"
+   ]
   },
   "79": {
    "io": [
@@ -115409,7 +115713,9 @@
    "eu": [
     "Okinak"
    ],
-   "ro": []
+   "ro": [
+    "Brutarul"
+   ]
   },
   "81": {
    "io": [
@@ -115481,7 +115787,9 @@
    "eu": [
     "opilak"
    ],
-   "ro": []
+   "ro": [
+    "cornuri"
+   ]
   },
   "82": {
    "io": [
@@ -115551,7 +115859,9 @@
    "eu": [
     "txigortxoak"
    ],
-   "ro": []
+   "ro": [
+    "chifle"
+   ]
   },
   "83": {
    "io": [
@@ -115623,7 +115933,9 @@
    "eu": [
     "ogi biribilak"
    ],
-   "ro": []
+   "ro": [
+    "pâini rotunde"
+   ]
   },
   "84": {
    "io": [
@@ -115763,7 +116075,9 @@
     "вишивальниць"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "brodeze"
+   ]
   },
   "86": {
    "io": [
@@ -115833,7 +116147,9 @@
     "пралька і прасувальниця"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "spălătoreasă și călcătoreasă"
+   ]
   },
   "87": {
    "io": [
@@ -115905,7 +116221,9 @@
    "eu": [
     "lisaburdinaz"
    ],
-   "ro": []
+   "ro": [
+    "fierul de călcat"
+   ]
   },
   "88": {
    "io": [
@@ -115977,7 +116295,9 @@
    "eu": [
     "oihalak"
    ],
-   "ro": []
+   "ro": [
+    "rufele"
+   ]
   },
   "89": {
    "io": [
@@ -116049,7 +116369,9 @@
    "eu": [
     "harategian"
    ],
-   "ro": []
+   "ro": [
+    "măcelăria"
+   ]
   },
   "90": {
    "io": [
@@ -116121,7 +116443,9 @@
    "eu": [
     "arkume-haragia"
    ],
-   "ro": []
+   "ro": [
+    "carne de miel"
+   ]
   },
   "92": {
    "io": [
@@ -116193,7 +116517,9 @@
    "eu": [
     "txahal-haragia"
    ],
-   "ro": []
+   "ro": [
+    "carne de vițel"
+   ]
   },
   "93": {
    "io": [
@@ -116265,7 +116591,9 @@
    "eu": [
     "Harakinaren morroiak"
    ],
-   "ro": []
+   "ro": [
+    "Ajutorul măcelarului"
+   ]
   },
   "94": {
    "io": [
@@ -116337,7 +116665,9 @@
    "eu": [
     "behi-haragia"
    ],
-   "ro": []
+   "ro": [
+    "carne de vită"
+   ]
   },
   "96": {
    "io": [
@@ -116409,7 +116739,9 @@
    "eu": [
     "hezur-muina"
    ],
-   "ro": []
+   "ro": [
+    "oasele cu măduvă"
+   ]
   },
   "97": {
    "io": [
@@ -116481,7 +116813,9 @@
    "eu": [
     "ostra-saltzailea"
    ],
-   "ro": []
+   "ro": [
+    "negustoreasa de stridii"
+   ]
   },
   "98": {
    "io": [
@@ -116553,7 +116887,9 @@
    "eu": [
     "ostrak"
    ],
-   "ro": []
+   "ro": [
+    "stridii"
+   ]
   },
   "99": {
    "io": [
@@ -116623,7 +116959,9 @@
     "рознощиць городини"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "precupețe de zarzavat"
+   ]
   },
   "100": {
    "io": [
@@ -116695,7 +117033,9 @@
    "eu": [
     "udaltzainak"
    ],
-   "ro": []
+   "ro": [
+    "sergentul de stradă"
+   ]
   },
   "101": {
    "io": [
@@ -116767,7 +117107,9 @@
    "eu": [
     "Baratxuria"
    ],
-   "ro": []
+   "ro": [
+    "usturoi"
+   ]
   },
   "102": {
    "io": [
@@ -116837,7 +117179,9 @@
     "торговці"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "negustoresei"
+   ]
   },
   "103": {
    "io": [
@@ -116979,7 +117323,9 @@
    "eu": [
     "ikatz-saltzailearen"
    ],
-   "ro": []
+   "ro": [
+    "cărbunarului"
+   ]
   },
   "105": {
    "io": [
@@ -117049,7 +117395,9 @@
     "мішок вугілля"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "sac de cărbuni"
+   ]
   }
  },
  "t16": {
