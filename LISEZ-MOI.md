@@ -40,6 +40,7 @@ par alinéa.
 | Traduction chinoise (`texto/zh/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
 | Traduction arabe (`texto/ar/`) | **les 16 tableaux**, faite en 2026 d'après l'ido ; colonne de droite à gauche |
 | Traduction québécoise (`texto/fr-CA/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — non calquée sur le fac-similé français (§ 8) |
+| Traduction vietnamienne (`texto/vi/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`) |
 
