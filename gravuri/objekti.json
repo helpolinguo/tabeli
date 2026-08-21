@@ -8665,7 +8665,9 @@
    "lb": [
     "Turngeräter"
    ],
-   "rm": []
+   "rm": [
+    "apparats da gimnastica"
+   ]
   },
   "2": {
    "io": [
@@ -8755,7 +8757,9 @@
    "lb": [
     "Leeder"
    ],
-   "rm": []
+   "rm": [
+    "stgala"
+   ]
   },
   "3": {
    "io": [
@@ -8845,7 +8849,9 @@
    "lb": [
     "Ringen"
    ],
-   "rm": []
+   "rm": [
+    "rintgs"
+   ]
   },
   "4": {
    "io": [
@@ -8935,7 +8941,9 @@
    "lb": [
     "Trapez"
    ],
-   "rm": []
+   "rm": [
+    "trapez"
+   ]
   },
   "5": {
    "io": [
@@ -9025,7 +9033,9 @@
    "lb": [
     "Strackleeder"
    ],
-   "rm": []
+   "rm": [
+    "stgala da corda"
+   ]
   },
   "6": {
    "io": [
@@ -9115,7 +9125,9 @@
    "lb": [
     "Knuetesäel"
    ],
-   "rm": []
+   "rm": [
+    "corda cun nuds"
+   ]
   },
   "7": {
    "io": [
@@ -9205,7 +9217,9 @@
    "lb": [
     "Holzpäerd"
    ],
-   "rm": []
+   "rm": [
+    "chaval da lain"
+   ]
   },
   "8": {
    "io": [
@@ -9295,7 +9309,9 @@
    "lb": [
     "boxen"
    ],
-   "rm": []
+   "rm": [
+    "boxeschan"
+   ]
   },
   "9": {
    "io": [
@@ -9385,7 +9401,9 @@
    "lb": [
     "fechten"
    ],
-   "rm": []
+   "rm": [
+    "schermeschan"
+   ]
   },
   "10": {
    "io": [
@@ -9475,7 +9493,9 @@
    "lb": [
     "hiewen Hantelen"
    ],
-   "rm": []
+   "rm": [
+    "halteras"
+   ]
   },
   "11": {
    "io": [
@@ -9565,7 +9585,9 @@
    "lb": [
     "Barren"
    ],
-   "rm": []
+   "rm": [
+    "barras parallelas"
+   ]
   },
   "12": {
    "io": [
@@ -9655,7 +9677,9 @@
    "lb": [
     "Gymnastiksléierer"
    ],
-   "rm": []
+   "rm": [
+    "magister da gimnastica"
+   ]
   },
   "13": {
    "io": [
@@ -9745,7 +9769,9 @@
    "lb": [
     "Sprangsäel"
    ],
-   "rm": []
+   "rm": [
+    "corda"
+   ]
   },
   "14": {
    "io": [
@@ -9833,7 +9859,9 @@
    "lb": [
     "Rëf"
    ],
-   "rm": []
+   "rm": [
+    "riev"
+   ]
   },
   "15": {
    "io": [
@@ -9919,7 +9947,9 @@
     "kroketo"
    ],
    "lb": [],
-   "rm": []
+   "rm": [
+    "croquet"
+   ]
   },
   "16": {
    "io": [
@@ -10007,7 +10037,9 @@
    "lb": [
     "Keelen"
    ],
-   "rm": []
+   "rm": [
+    "chegls"
+   ]
   },
   "17": {
    "io": [
@@ -10097,7 +10129,9 @@
    "lb": [
     "Kugel"
    ],
-   "rm": []
+   "rm": [
+    "bola"
+   ]
   },
   "18": {
    "io": [
@@ -10187,7 +10221,9 @@
    "lb": [
     "Kräisel"
    ],
-   "rm": []
+   "rm": [
+    "trombla"
+   ]
   },
   "19": {
    "io": [
@@ -10277,7 +10313,9 @@
    "lb": [
     "Bilboquet"
    ],
-   "rm": []
+   "rm": [
+    "bilboquet"
+   ]
   },
   "20": {
    "io": [
@@ -10380,7 +10418,9 @@
    "lb": [
     "Fräschespill"
    ],
-   "rm": []
+   "rm": [
+    "gieu da la rana"
+   ]
   },
   "21": {
    "io": [
@@ -10470,7 +10510,9 @@
    "lb": [
     "Murmelen"
    ],
-   "rm": []
+   "rm": [
+    "billas"
+   ]
   },
   "22": {
    "io": [
@@ -10560,7 +10602,9 @@
    "lb": [
     "Mauerball"
    ],
-   "rm": []
+   "rm": [
+    "balla cunter il mir"
+   ]
   },
   "24": {
    "io": [
@@ -10648,7 +10692,9 @@
    "lb": [
     "Stëlzen"
    ],
-   "rm": []
+   "rm": [
+    "stelzas"
+   ]
   },
   "25": {
    "io": [
@@ -10738,7 +10784,9 @@
    "lb": [
     "Verstoppes"
    ],
-   "rm": []
+   "rm": [
+    "zuppar e tschertgar"
+   ]
   },
   "26": {
    "io": [
@@ -10828,7 +10876,9 @@
    "lb": [
     "Serre"
    ],
-   "rm": []
+   "rm": [
+    "serra"
+   ]
   },
   "28": {
    "io": [
@@ -10918,7 +10968,9 @@
    "lb": [
     "Waarmhand"
    ],
-   "rm": []
+   "rm": [
+    "indivinar dal culp"
+   ]
   },
   "29": {
    "io": [
@@ -11008,7 +11060,9 @@
    "lb": [
     "Volant"
    ],
-   "rm": []
+   "rm": [
+    "volan"
+   ]
   },
   "30": {
    "io": [
@@ -11109,7 +11163,9 @@
    "lb": [
     "Schëllersprong"
    ],
-   "rm": []
+   "rm": [
+    "sigl sur las spatlas"
+   ]
   },
   "31": {
    "io": [
@@ -11199,7 +11255,9 @@
    "lb": [
     "Blannemann"
    ],
-   "rm": []
+   "rm": [
+    "gieu dal tschorv"
+   ]
   },
   "32": {
    "io": [
@@ -11289,7 +11347,9 @@
    "lb": [
     "Bierespill"
    ],
-   "rm": []
+   "rm": [
+    "urs"
+   ]
   },
   "33": {
    "io": [
@@ -11379,7 +11439,9 @@
    "lb": [
     "Draach"
    ],
-   "rm": []
+   "rm": [
+    "dracun"
+   ]
   },
   "34": {
    "io": [
@@ -11469,7 +11531,9 @@
    "lb": [
     "Tennis"
    ],
-   "rm": []
+   "rm": [
+    "tennis"
+   ]
   },
   "35": {
    "io": [
@@ -11559,7 +11623,9 @@
    "lb": [
     "Schaukel"
    ],
-   "rm": []
+   "rm": [
+    "balantschina"
+   ]
   },
   "36": {
    "io": [
@@ -11649,7 +11715,9 @@
    "lb": [
     "Foussball"
    ],
-   "rm": []
+   "rm": [
+    "ballape"
+   ]
   },
   "37": {
    "io": [
@@ -11739,7 +11807,9 @@
    "lb": [
     "Vëlo"
    ],
-   "rm": []
+   "rm": [
+    "velo"
+   ]
   },
   "38": {
    "io": [
@@ -11829,7 +11899,9 @@
    "lb": [
     "Barrespill"
    ],
-   "rm": []
+   "rm": [
+    "gieu da las barras"
+   ]
   },
   "39": {
    "io": [
@@ -11919,7 +11991,9 @@
    "lb": [
     "Reiden"
    ],
-   "rm": []
+   "rm": [
+    "chavaltgar"
+   ]
   },
   "40": {
    "io": [
@@ -12009,7 +12083,9 @@
    "lb": [
     "Schwammen"
    ],
-   "rm": []
+   "rm": [
+    "art dal nudar"
+   ]
   },
   "41": {
    "io": [
@@ -12089,7 +12165,9 @@
    "lb": [
     "Ballon"
    ],
-   "rm": []
+   "rm": [
+    "ballun"
+   ]
   }
  },
  "t03": {
