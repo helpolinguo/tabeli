@@ -221,6 +221,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "eu", "nomo": "Euskara", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "ro", "nomo": "Română", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -795,7 +797,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "tr": "tr", "eo": "eo", "ia": "ia",
            "nl": "nl", "sv": "sv", "fi": "fi", "ca": "ca",
            "oc": "oc", "uk": "uk",
-           "eu": "eu"}               # langue -> texto/<...>
+           "eu": "eu", "ro": "ro"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1793,7 +1795,18 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # donc son propre membre. Aucune precaution a
                         # prendre : le titre du volume, « Допоміжні
                         # таблиці Дельма », est compose en bas de casse.
-                        r"|ТАБЛИЦЯ")
+                        r"|ТАБЛИЦЯ"
+                        # LE ROUMAIN ecrit « TABELUL Nr. 1 », l'article
+                        # defini soude au nom comme il le fait partout.
+                        # Le mot ressemble au « TABEL » neerlandais sans
+                        # l'egaler, et le membre neerlandais exige un
+                        # « Nr » separe par un blanc, que le roumain
+                        # place aussi : on aurait donc pu s'en passer.
+                        # On lui donne pourtant son membre, parce que
+                        # « TABELUL » se suffit et n'a besoin d'aucune
+                        # precaution — le titre du volume, « Tabelele
+                        # auxiliare Delmas », est en bas de casse.
+                        r"|TABELUL")
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
 # le membre « TAULA » l'attrape deja : rien a ajouter. Ce qui separe
@@ -1853,6 +1866,13 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # a part. Deux mots de plus dans les groupes ci-dessous —
             # « saila » et « agerraldia ».
             r"|lehen|bigarren|hirugarren|laugarren"
+            # LE ROUMAIN accorde son ordinal en genre et le fait
+            # preceder de l'article « a » ou « al » : « prima serie »,
+            # « a doua scena ». Seules les formes feminines servent
+            # ici, la serie et la scene etant feminines toutes deux ;
+            # « prima » manque a la liste, « doua », « treia » et
+            # « patra » aussi.
+            r"|prima|doua|treia|patra"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1898,7 +1918,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|series|reeks|serien
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eè]na|сцена|agerraldia)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eè]n[aă]|сцена|agerraldia)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
