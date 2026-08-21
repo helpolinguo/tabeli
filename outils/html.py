@@ -237,6 +237,13 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "et", "nomo": "Eesti", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LES DIX-SEPT LANGUES DE LA COMMUNAUTE IDISTE SONT CLOSES. Ce qui
+    # suit reprend le programme des vingt-neuf langues d'Ethnologue,
+    # dans l'ordre des locuteurs premiers, la ou il s'etait arrete —
+    # apres le turc, et sans le wu, ecarte pour la raison inscrite
+    # dans « ecartita » de texto/lingui.json.
+    {"kodo": "vi", "nomo": "Tiếng Việt", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -815,7 +822,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ga": "ga", "gl": "gl",
            "cs": "cs", "lt": "lt",
            "lb": "lb", "rm": "rm",
-           "et": "et"}   # langue -> texto/<...>
+           "et": "et", "vi": "vi"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1876,6 +1883,18 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # pour mot. Deux langues germaniques, deux pays
                         # sans frontiere commune, et la meme ligne de
                         # titre.
+                        # LE VIETNAMIEN ecrit « BẢNG Số 1 ». Le mot ne
+                        # se confond avec aucun autre membre de cette
+                        # liste — aucune autre colonne n'ecrit un A a
+                        # crochet — mais il a chez lui un autre
+                        # emploi : « bảng » est aussi LE TABLEAU NOIR
+                        # de la classe, celui du tableau 1, et le
+                        # titre du volume dit « Bảng trợ giúp
+                        # Delmas ». Ni l'un ni l'autre ne passe : la
+                        # comparaison est sensible a la casse, et
+                        # seuls les titres d'apparat sont composes en
+                        # capitales.
+                        r"|BẢNG"
                         )
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
@@ -2033,7 +2052,17 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # scene.
                    r"|(?:B[İi]R[İi]NC[İi]|[İi]K[İi]NC[İi]"
                    r"|[ÜüU]Ç[ÜüU]NC[ÜüU]|D[ÖöO]RD[ÜüU]NC[ÜüU])"
-                   r"\s+D[İi]Z[İi]\b", re.I)
+                   r"\s+D[İi]Z[İi]\b"
+                   # LE VIETNAMIEN MET SON ORDINAL APRES LE NOM —
+                   # « LOẠT THỨ NHẤT », la serie ordre premier — et
+                   # ne peut donc pas entrer dans le groupe commun,
+                   # qui attend l'ordinal devant. Il lui faut un
+                   # membre a lui, comme au hindi, au bengali et au
+                   # pendjabi, qui font de meme. Le « re.I » ci-
+                   # dessus le prend aux deux casses : l'apparat
+                   # compose en capitales, ce commentaire en bas de
+                   # casse.
+                   r"|loạt\s+thứ\s+(?:nhất|hai|ba|tư)", re.I)
 
 # LE TCHEQUE ECRIT « scéna » AVEC UN E LONG, et le groupe ne prevoyait
 # que « e » et « è ». Un accent de plus dans la classe, et le roumain
@@ -2058,7 +2087,10 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # la raison dite plus haut a la serie.
                   r"|(?:B[İi]r[İi]nc[İi]|[İi]k[İi]nc[İi]"
                   r"|[ÜüU]ç[ÜüU]nc[ÜüU]|D[ÖöO]rd[ÜüU]nc[ÜüU])"
-                  r"\s+sahne\b", re.I)
+                  r"\s+sahne\b"
+                  # LE VIETNAMIEN, meme ordre inverse qu'a la serie :
+                  # « Cảnh thứ nhất », scene ordre premier.
+                  r"|cảnh\s+thứ\s+(?:nhất|hai|ba|tư)", re.I)
 
 # LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
 # volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,

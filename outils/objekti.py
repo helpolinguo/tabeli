@@ -366,7 +366,14 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     # et dernier jeton partage de la serie des dix-sept ; le glob
     # restant enracine dans texto/<langue>/, texto/nl et texto/et ne
     # se melangent pas.
-    ("et", "*-tabel-*.tex")]
+    ("et", "*-tabel-*.tex"),
+    # LE VIETNAMIEN OUVRE LE RESTE DU PROGRAMME D'ETHNOLOGUE. Son
+    # jeton, « bang », est le mot « bảng » depouille de ses signes,
+    # comme « talika » l'est de « तालिका » et « naqsha » de « نقشہ » :
+    # les noms de fichiers restent en ASCII, et c'est le dossier —
+    # texto/vi — qui porte la langue. Le jeton est neuf ; aucun des
+    # dix-sept precedents ne s'en approche.
+    ("vi", "*-bang-*.tex")]
 
 
 def construire():
