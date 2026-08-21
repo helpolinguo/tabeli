@@ -94,7 +94,12 @@ def nomo(nm, langue):
     gras devant le renvoi, et une edition l'oublie parfois -- d'ou le
     repli, dans l'ordre : sa langue, l'ido, le francais.
     """
-    for k in (langue, "io", "fr"):
+    # ET LA VARIANTE LIT LE NOM DE SA COLONNE. gravuri/objekti.json nomme
+    # les objets par colonne — « en », non « en-GB » : les deux editions
+    # anglaises y puisent le meme nom, que le calque regional retouche
+    # ensuite s'il le faut. Sans ce detour, la variante ne trouvait rien
+    # a son code et retombait sur l'ido.
+    for k in (TABLO.get(langue, langue), "io", "fr"):
         v = nm.get(k)
         if v:
             return v[0]
@@ -177,6 +182,31 @@ RENVOI_REND = re.compile(
 # Le francais est du lot par le fac-simile lui-meme ; l'anglais,
 # l'espagnol, le russe, le chinois et l'arabe sont des traductions de
 # 2026, faites sur l'ido et controlees sur le francais.
+# -------------------------------------------------------------------
+# LES VARIANTES REGIONALES : UN CALQUE, NON UNE COLONNE DE PLUS.
+# -------------------------------------------------------------------
+# Deux editions d'une meme langue ne different, dans ce livret, que par
+# quelques dizaines de mots. En faire deux colonnes de seize fichiers
+# reviendrait a recopier trente mille mots pour en changer trente, et
+# surtout a devoir corriger DEUX FOIS chaque coquille trouvee plus tard.
+# La colonne de base ne bouge donc pas, et texto/varianti.json dit ce
+# que l'autre edition ecrit a la place.
+#
+# ET AUCUNE DES DEUX N'EST PRIVILEGIEE AU MENU. Celle qui porte les
+# fichiers n'y parait pas sous son nom de dossier : « English (UK) » est
+# texto/en telle quelle, « English (US) » est la meme passee par la
+# table, et le lecteur n'a pas a savoir laquelle est laquelle.
+def varianti():
+    f = RACINE / "texto" / "varianti.json"
+    if not f.exists():
+        return {}
+    d = json.loads(f.read_text(encoding="utf-8"))
+    return {k: v for k, v in d.items() if k != "_"}
+
+
+VARIANTI = varianti()
+
+
 LANGUES = [
     {"kodo": "fr", "nomo": "Français", "dir": "ltr", "fonto": "fac-similé"},
     {"kodo": "en", "nomo": "English", "dir": "ltr",
@@ -249,6 +279,37 @@ LANGUES = [
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
 ]
+
+
+# LA VARIANTE PREND SA PLACE DANS LA LISTE, JUSTE APRES SA BASE : au
+# menu les deux editions d'une langue se suivent, et la base y parait
+# sous son nom regional. Tout le reste de la page les traite comme
+# n'importe quelle autre colonne — meme sac « differita », meme
+# lingui/<kodo>.json, meme compte de blocs.
+def poser_varianti(langues):
+    out = []
+    for lg in langues:
+        v = VARIANTI.get(lg["kodo"])
+        if not v:
+            out.append(lg)
+            continue
+        lg = dict(lg, kodo=v["bazo"]["kodo"], nomo=v["bazo"]["nomo"],
+                  dosiero=lg["kodo"])
+        out.append(lg)
+        out.append(dict(lg, kodo=v["kalko"]["kodo"], nomo=v["kalko"]["nomo"],
+                        kalko=lg["kodo"]))
+    return out
+
+
+LANGUES = poser_varianti(LANGUES)
+
+# LES TABLES TENUES A LA MAIN CONNAISSENT LA COLONNE, NON LA VARIANTE.
+# gravuri/korekti.json corrige « en » : la correction porte sur ce que le
+# releve a ecrit, et les deux editions anglaises la veulent toutes deux.
+# On traduit donc le code de la variante en code de colonne avant toute
+# consultation de table.
+TABLO = {lg["kodo"]: lg.get("dosiero", lg["kodo"]) for lg in LANGUES}
+TABLO["io"] = "io"
 
 
 # L'ORDRE DU MENU NE SE TIENT PLUS A LA MAIN. Les langues sortaient
@@ -944,7 +1005,10 @@ def paro():
     io = lire_langue("io")
     autres, liens = {}, {}
     for lg in LANGUES:
-        sd = DOSSIER.get(lg["kodo"])
+        # LA VARIANTE N'A PAS DE DOSSIER : elle se tire de sa base, plus
+        # bas, une fois les blocs faits. « dosiero » dit ou la colonne
+        # de base ecrit ses fichiers, son code ayant pris un suffixe.
+        sd = DOSSIER.get(lg.get("dosiero", lg["kodo"]))
         if sd and (RACINE / "texto" / sd).is_dir():
             bl = lire_langue(sd)
             autres[lg["kodo"]] = {b["cle"]: b for b in bl}
@@ -1261,6 +1325,12 @@ def lier_notes(rangi):
     # dans le « title » du bouton, et il portait le mot recolle.
     rapport["tratiti"] = retablir_trati(rangi)
     rapport["korektiti"] += korekti_nomi(rangi)
+    # EN DERNIER, ET C'EST VOULU : la variante se tire du texte FINI, une
+    # fois les renvois fermes, les corrections posees, les traits d'union
+    # retablis et les boutons composes. Elle herite donc de tout, et le
+    # nom du gros plan suit le mot de son edition — « vest » et non
+    # « waistcoat » quand on lit l'anglais des Etats-Unis.
+    rapport["kalkiti"] = deriver_varianti(rangi)
     return rapport
 
 
@@ -1646,7 +1716,7 @@ def korekti_teksto(rangi):
                 continue
             neuf = t
             for lg, avant, apres in regles:
-                if lg == k:
+                if lg == TABLO.get(k, k):
                     neuf = neuf.replace(avant, apres)
             if neuf == t:
                 continue
@@ -1705,7 +1775,7 @@ def korekti_nomi(rangi):
                 continue
             neuf = t
             for lg, avant, apres in regles:
-                if lg == k and avant not in apres:
+                if lg == TABLO.get(k, k) and avant not in apres:
                     neuf = neuf.replace(avant, apres)
             if neuf == t:
                 continue
@@ -1717,6 +1787,49 @@ def korekti_nomi(rangi):
     return n
 
 
+# ET LA VARIANTE REGIONALE SE TIRE DE SA BASE. texto/varianti.json dit,
+# colonne par colonne, ce que l'autre edition ecrit a la place : une
+# soixantaine de mots pour l'anglais, la ou une colonne jumelle en aurait
+# recopie trente mille.
+#
+# DEUX SORTES DE REGLES, et la seconde est indispensable. « [avant,
+# apres] » vaut pour toute la colonne ; « [cle, avant, apres] » ne vaut
+# que dans ce bloc-la, parce qu'un mot peut avoir deux sens :
+# « biscuits » se dit « crackers » a cote du fromage et « cookies » a
+# cote du pain d'epice, « carriage » est une voiture a chevaux au
+# tableau 3 et un wagon au tableau 12. Une regle globale trancherait
+# pour les deux, et se tromperait pour l'un.
+#
+# L'ORDRE DES REGLES EST CELUI DU FICHIER : « luggage van » se traite
+# avant « luggage », sans quoi la premiere ne trouve plus rien.
+def deriver_varianti(rangi):
+    """Chaque variante, calquee sur sa base."""
+    if not VARIANTI:
+        return 0
+    paroj = [(lg["kodo"], lg["kalko"],
+              VARIANTI[lg["dosiero"]]["remplaci"])
+             for lg in LANGUES if lg.get("kalko")]
+    n = 0
+    for r in rangi:
+        for kalko, bazo, regles in paroj:
+            o = r["tra"].get(bazo)
+            if not o or not o.get("t"):
+                continue
+            t = o["t"]
+            for regle in regles:
+                if len(regle) == 3:
+                    cle, avant, apres = regle
+                    if cle != r["cle"]:
+                        continue
+                else:
+                    avant, apres = regle
+                t = t.replace(avant, apres)
+            r["tra"][kalko] = dict(o, t=t)
+            if t != o["t"]:
+                n += 1
+    return n
+
+
 def retablir_trati(rangi):
     """Les traits d'union lexicaux que la fin de ligne avait manges."""
     tab = korekti("trati")
@@ -1725,7 +1838,7 @@ def retablir_trati(rangi):
     n = 0
     for r in rangi:
         for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
-            regles = tab.get(k)
+            regles = tab.get(TABLO.get(k, k))
             if not regles:
                 continue
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")

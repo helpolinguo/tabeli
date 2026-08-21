@@ -1,0 +1,307 @@
+{
+ "_": [
+  "LES VARIANTES REGIONALES, ET POURQUOI CE N'EST PAS UNE COLONNE DE PLUS.",
+  "",
+  "Deux editions d'une meme langue ne different, dans ce livret, que par",
+  "quelques dizaines de mots. En faire deux colonnes de seize fichiers",
+  "reviendrait a recopier trente mille mots pour en changer trente, et",
+  "surtout a devoir corriger deux fois chaque coquille trouvee plus tard.",
+  "La variante est donc un CALQUE : la colonne de base ne bouge pas, et",
+  "cette table dit ce que l'autre edition ecrit a la place.",
+  "",
+  "ON NE CHOISIT PAS UNE VARIANTE CONTRE L'AUTRE : les deux paraissent au",
+  "menu, et celle qui porte les fichiers n'a aucun privilege. « English",
+  "(UK) » est la colonne texto/en telle quelle ; « English (US) » est la",
+  "meme, passee par cette table.",
+  "",
+  "QUELLE EST LA BASE ? Celle que le releve a ecrite, et cela se mesure,",
+  "cela ne se decide pas. La colonne anglaise porte 26 marques",
+  "britanniques — neighbour, harbour, centre, theatre, metre, litre,",
+  "plough, pavement, railway, autumn, tram, chemist, luggage, biscuits,",
+  "sweets, waistcoat — et zero marque americaine : elle est donc en-GB.",
+  "",
+  "DEUX SORTES DE REGLES. « [avant, apres] » vaut pour toute la colonne ;",
+  "« [cle, avant, apres] » ne vaut que dans ce bloc-la. La seconde est",
+  "indispensable des qu'un mot a deux sens : « biscuits » se dit",
+  "« crackers » a cote du fromage et « cookies » a cote du pain d'epice,",
+  "et « carriage » est une voiture a chevaux au tableau 3 mais un wagon",
+  "au tableau 12.",
+  "",
+  "L'ORDRE COMPTE, et les regles s'appliquent dans l'ordre ecrit : il",
+  "faut traiter « luggage van » avant « luggage », sans quoi la premiere",
+  "regle ne trouve plus rien a mordre.",
+  "",
+  "LA SUBSTITUTION PORTE SUR LE TEXTE RENDU, non sur le .tex : le terme",
+  "gras et le nom du gros plan sont alors touches du meme coup, et le",
+  "bouton du « waistcoat » s'intitule bien « vest »."
+ ],
+ "en": {
+  "bazo": {
+   "kodo": "en-GB",
+   "nomo": "English (UK)"
+  },
+  "kalko": {
+   "kodo": "en-US",
+   "nomo": "English (US)"
+  },
+  "remplaci": [
+   [
+    "cattle trucks",
+    "stock cars"
+   ],
+   [
+    "flat wagons",
+    "flatcars"
+   ],
+   [
+    "goods station",
+    "freight yard"
+   ],
+   [
+    "goods train",
+    "freight train"
+   ],
+   [
+    "removal van",
+    "moving van"
+   ],
+   [
+    "restaurant car",
+    "dining car"
+   ],
+   [
+    "left luggage office",
+    "baggage room"
+   ],
+   [
+    "luggage trolley",
+    "baggage cart"
+   ],
+   [
+    "luggage van",
+    "baggage car"
+   ],
+   [
+    "luggage delivery",
+    "baggage claim"
+   ],
+   [
+    "luggage window",
+    "baggage window"
+   ],
+   [
+    "luggage rack",
+    "baggage rack"
+   ],
+   [
+    "luggage",
+    "baggage"
+   ],
+   [
+    "chemist's shop",
+    "drugstore"
+   ],
+   [
+    "ironmonger's",
+    "hardware store"
+   ],
+   [
+    "haberdasher's",
+    "notions store"
+   ],
+   [
+    "draper's shop",
+    "dry goods store"
+   ],
+   [
+    "linen draper",
+    "linen merchant"
+   ],
+   [
+    "bookstall",
+    "newsstand"
+   ],
+   [
+    "electric tram",
+    "electric streetcar"
+   ],
+   [
+    "tram driver",
+    "streetcar driver"
+   ],
+   [
+    "his tram",
+    "his streetcar"
+   ],
+   [
+    "postmen",
+    "mail carriers"
+   ],
+   [
+    "postman",
+    "mail carrier"
+   ],
+   [
+    "waistcoat",
+    "vest"
+   ],
+   [
+    "braces",
+    "suspenders"
+   ],
+   [
+    "skittles",
+    "ninepins"
+   ],
+   [
+    "draughts",
+    "checkers"
+   ],
+   [
+    "sweets",
+    "candy"
+   ],
+   [
+    "pavement",
+    "sidewalk"
+   ],
+   [
+    "railway",
+    "railroad"
+   ],
+   [
+    "Autumn",
+    "Fall"
+   ],
+   [
+    "autumn",
+    "fall"
+   ],
+   [
+    "neighbours",
+    "neighbors"
+   ],
+   [
+    "neighbour",
+    "neighbor"
+   ],
+   [
+    "harbour",
+    "harbor"
+   ],
+   [
+    "armour",
+    "armor"
+   ],
+   [
+    "vigour",
+    "vigor"
+   ],
+   [
+    "centre",
+    "center"
+   ],
+   [
+    "theatre",
+    "theater"
+   ],
+   [
+    "Theatre",
+    "Theater"
+   ],
+   [
+    "metres",
+    "meters"
+   ],
+   [
+    "metre",
+    "meter"
+   ],
+   [
+    "litres",
+    "liters"
+   ],
+   [
+    "litre",
+    "liter"
+   ],
+   [
+    "sabre",
+    "saber"
+   ],
+   [
+    "ploughs",
+    "plows"
+   ],
+   [
+    "ploughing",
+    "plowing"
+   ],
+   [
+    "plough",
+    "plow"
+   ],
+   [
+    "marvellous",
+    "marvelous"
+   ],
+   [
+    "jewellery",
+    "jewelry"
+   ],
+   [
+    "jeweller",
+    "jeweler"
+   ],
+   [
+    "travelling",
+    "traveling"
+   ],
+   [
+    "traveller",
+    "traveler"
+   ],
+   [
+    "woollen",
+    "woolen"
+   ],
+   [
+    "moustache",
+    "mustache"
+   ],
+   [
+    "licence",
+    "license"
+   ],
+   [
+    "practise",
+    "practice"
+   ],
+   [
+    "t22-01-2",
+    "the <b>lift</b>",
+    "the <b>elevator</b>"
+   ],
+   [
+    "t13-c1-17-1",
+    "biscuits",
+    "crackers"
+   ],
+   [
+    "t16-c1-08-1",
+    "biscuits",
+    "cookies"
+   ],
+   [
+    "t15-c1-04-1",
+    "crisp biscuits",
+    "crackers"
+   ],
+   [
+    "t12-20-1",
+    "my carriage",
+    "my car"
+   ]
+  ]
+ }
+}
