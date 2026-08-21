@@ -601,6 +601,49 @@ jamais du papier. Trancher ces six pages demande le fac-similé du livret,
 que ce dépôt ne contient pas : `outils/notoj.py` les **nomme** à chaque
 construction, et `make -f tab.mk controles` l'appelle.
 
+### Les variantes régionales
+
+**Deux éditions d'une même langue ne diffèrent, dans ce livret, que par
+quelques dizaines de mots.** En faire deux colonnes de seize fichiers
+reviendrait à recopier trente mille mots pour en changer soixante — et à
+devoir corriger deux fois chaque coquille trouvée plus tard. La colonne
+de base ne bouge donc pas, et `texto/varianti.json` dit ce que l'autre
+édition écrit à la place. **Aucune des deux n'est privilégiée au menu** :
+« English (UK) » est `texto/en` telle quelle, « English (US) » est la
+même passée par la table.
+
+| paire | règles | ce que le chiffre dit |
+| --- | --- | --- |
+| en-GB / en-US | 63 | la colonne portait 26 marques britanniques et zéro américaine |
+| es-ES / es-419 | 29 | dont 12 pour le seul verbe `coger` |
+| de-DE / de-AT | 29 | les en-têtes des tableaux 5, 12 et 15 l'annonçaient depuis la traduction |
+| pt-PT / pt-BR | 46 | et l'en-tête portugais annonçait le Brésil : il se trompait sur sa propre colonne |
+| nl-NL / nl-BE | 8 | sur 34 oppositions courantes, 8 se présentent : les deux normes disent presque la même chose dans ce registre concret |
+| zh-Hans / zh-Hant | 1154 | ce n'est pas un lexique, c'est une écriture |
+
+**Trois choses que ces tables ont apprises.** D'abord qu'une règle doit
+parfois être **liée à un bloc** : `biscuits` se dit *crackers* à côté du
+fromage et *cookies* à côté du pain d'épice, `carriage` est une voiture à
+chevaux au tableau 3 et un wagon au tableau 12. Ensuite que **l'ordre
+compte** — `luggage van` avant `luggage` — et qu'un **échange** doit
+tourner dans le bon sens : `Sessel` devient *Fauteuil* **puis** `Stuhl`
+devient *Sessel*, sinon les deux chaises finissent en fauteuils. Enfin
+qu'une conversion d'**écriture** ne se fait pas par remplacements
+successifs : quarante-cinq suites chinoises ne changent pas et ne sont là
+que pour **protéger** — 里 vaut 裏 dans 屋里 et reste 里 dans 莫里斯 — ce
+qu'un remplacement successif ne sait pas exprimer. D'où le mode
+`unpase`, qui compile les règles en une expression unique, la plus longue
+d'abord.
+
+**Et la septième paire ne se fait pas ici.** Les six colonnes de base
+sont des *traductions* de 2026 ; la colonne française est la
+**transcription d'un fac-similé de 1926**, et la source ne bouge pas. Un
+calque « fr-CA » posé sur elle donnerait un livret de 1926 écrit avec les
+mots du Québec d'aujourd'hui : un objet qui n'a jamais existé, et qui
+mentirait sur les deux. Ce qui se fait, en revanche, c'est une colonne
+`fr-CA` **traduite de l'ido** comme les trente autres — une traduction de
+plus, pas une variante du fac-similé.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
