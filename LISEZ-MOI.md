@@ -41,6 +41,7 @@ par alinéa.
 | Traduction arabe (`texto/ar/`) | **les 16 tableaux**, faite en 2026 d'après l'ido ; colonne de droite à gauche |
 | Traduction québécoise (`texto/fr-CA/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — non calquée sur le fac-similé français (§ 8) |
 | Traduction vietnamienne (`texto/vi/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
+| Traduction cantonaise (`texto/yue/`) | **les 16 tableaux**, faite en 2026 d'après l'ido, en caractères traditionnels — écrite en cantonais et non en chinois standard (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`) |
 
@@ -560,6 +561,8 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/io/10-tabelo-01.tex … 25-tabelo-16.tex
     texto/fr/10-tableau-01.tex … 25-tableau-16.tex
     texto/fr-CA/10-tableau-01.tex … 25-tableau-16.tex   (traduction)
+    texto/vi/10-bang-01.tex … 25-bang-16.tex           (traduction)
+    texto/yue/10-toubiu-01.tex … 25-toubiu-16.tex     (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -738,6 +741,89 @@ une soutane, le mât de cocagne un mât de cocagne. La préfecture, le
 préfet, les gendarmes et l'école communale sont des institutions
 *françaises* que le Québec n'a jamais eues : les traduire en institutions
 d'ici aurait déplacé la ville entière.
+
+### La colonne cantonaise : une langue, pas une prononciation
+
+Le cantonais est la seule colonne dont il fallait justifier l'existence
+avant de l'écrire. Le chinois est déjà là (`texto/zh/`), et si la colonne
+`yue` s'était contentée de transcrire les mêmes phrases en caractères
+traditionnels, elle aurait fait double emploi — exactement le motif pour
+lequel **le wu a été écarté** (`texto/lingui.json`, champ `ecartita`).
+
+Elle existe parce que le cantonais écrit n'est pas du chinois standard lu
+à voix haute. Il a sa grammaire, et Hong Kong l'imprime tous les jours.
+Les quatorze marqueurs qui la portent sont posés en tête du tableau 1 :
+
+| cantonais | mandarin | sens |
+| --- | --- | --- |
+| 係 | 是 | être |
+| 喺 | 在 | à, dans |
+| 嘅 | 的 | de, attributif |
+| 唔 | 不 | ne pas |
+| 咗 | 了 | accompli |
+| 佢 | 他 | il, elle |
+| 哋 | 们 | pluriel (我哋, 佢哋) |
+| 冇 | 沒有 | ne pas avoir |
+| 睇 | 看 | regarder |
+| 攞 | 拿 | prendre |
+| 畀 | 給 | donner |
+| 好 | 很 | très |
+| 呢 / 嗰 | 這 / 那 | ce-ci / ce-là |
+| 啲 | 些 | les, du |
+
+**Quatre choses que le cantonais fait et que le nord ne fait pas.**
+
+*Il postpose le genre et l'âge des bêtes, comme l'ido.* L'ido dit
+`mutonulo`, `mutonino`, `mutonyuno` ; le mandarin doit antéposer 公鸡,
+母鸡, 小鸡 ; le cantonais écrit 雞公, 雞乸, 雞仔 — même ordre que la
+source. Le tableau 7 en aligne vingt, et le caractère 乸, qui fait toutes
+les femelles, ne s'écrit pas au nord.
+
+*Il transcrit là où le nord traduit.* 芝士 le fromage (7), 車厘子 la
+cerise (8), 士多啤梨 la fraise (9), 忌廉 la crème, 批 la tourte, 撻 la
+tarte, 貼士 le pourboire, 啤牌 les cartes (13), 車卡 la voiture de train
+(12). Le cas extrême est 飛 (12), le billet : une syllabe pour *fare*,
+un caractère qui veut dire « voler » et ne sert plus qu'à porter le son.
+Et 𨋢 (13), l'ascenseur, n'est même pas un mot habillé : c'est un
+caractère **forgé** pour *lift*, absent du répertoire de base d'Unicode.
+
+*Il a des mots que le nord n'a pas du tout.* 走鬼 (15) — « courir au
+fantôme » — est ce que crie le colporteur sans patente quand la police
+arrive, et par extension le colporteur lui-même : c'est mot pour mot la
+scène du bloc 16 du tableau 15. 師奶 est la ménagère qui fait son marché.
+夾萬 (16), « qui serre dix mille », est le coffre-fort. 公仔 (16) est
+tout ce qui est figuré, et fait souche : 公仔麵, 公仔書, 公仔箱.
+
+*Et il réordonne.* Le meilleur argument de la colonne ne doit rien à
+l'anglais : le trottoir (11) est 行人路 au sud et 人行道 au nord. Les
+**mêmes trois caractères** — homme, marcher, voie — dans un autre ordre.
+
+**Le suffixe de métier 佬**, relevé pour la première fois au bâtiment du
+tableau 6 (泥水佬, 油漆佬, 玻璃佬), court ensuite d'un bout à l'autre du
+livret : 打鐵佬, 補鞋佬, 飛髮佬 (7), 收割佬, 箍桶佬 (8), 伐木佬,
+燒炭佬 (9), 白鐵佬, 影相佬, 掃街佬 (14). Le vietnamien faisait la même
+chose avec `thợ`.
+
+**L'obstacle unique, et la manière de le lever.** Le chinois place le
+déterminant devant le déterminé ; l'ido l'inverse ; et le renvoi suit son
+mot. Chaque « X de Y » sort donc les renvois à l'envers. Trente-cinq
+divergences ont été relevées d'un coup aux tableaux 3 à 6, aucune à
+l'œil, toutes par `outils/renvoji.py`. Le remède, repris de la colonne
+chinoise, n'a plus changé : **nommer d'abord ce que l'ido nomme
+d'abord**, puis qualifier par une seconde proposition — un tiret, 即係,
+連, ou 嗰個係…嘅. Écrite ainsi dès le premier jet, la fin de la colonne
+sort juste. Le tableau 15 n'a demandé aucune reprise : il énumère, et une
+énumération n'a pas de possesseur à placer.
+
+**Un contrôle nouveau, né d'une faute que rien ne voyait.** Le tableau 11
+portait `\textuperscript{(74)}` — un s manquant. `renvoji.py` relève
+*aussi* les renvois composés « (74) » à plein corps, parce que le relevé
+ido en compose ainsi au tableau 5 : la parenthèse nue rattrapait donc la
+macro cassée, et le contrôle des renvois sortait à zéro divergence sur un
+fichier qui n'aurait pas composé. Le relevé des **macros** la prend, et a
+pris du même coup quatre `\nl` restés dans trois autres colonnes (tchèque,
+irlandais, galicien) — une traduction n'a pas de fins de ligne du
+fac-similé à reproduire.
 
 ## 9. Les huit contrôles
 
