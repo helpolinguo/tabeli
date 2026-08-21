@@ -278,6 +278,14 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE FRANCAIS DU CANADA EST UNE TRADUCTION, NON UNE VARIANTE. La
+    # colonne « fr » est la transcription d'un fac-simile de 1926 et la
+    # source ne bouge pas : un calque regional pose sur elle donnerait un
+    # livret de 1926 ecrit avec les mots du Quebec d'aujourd'hui, un
+    # objet qui n'a jamais existe. Celle-ci se traduit donc de l'ido,
+    # comme les trente autres, et se range avec elles.
+    {"kodo": "fr-CA", "nomo": "Français (CA)", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -877,7 +885,8 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 #  2. ASSEMBLAGE
 # -------------------------------------------------------------------
-DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
+DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
+           "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
            "tr": "tr", "eo": "eo", "ia": "ia",

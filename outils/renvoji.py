@@ -40,7 +40,12 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parent.parent
 
 # Le nom que chaque colonne donne a « tableau » dans ses fichiers.
-DOSSIER = {"fr": "tableau", "en": "table", "es": "cuadro", "ru": "tablica",
+DOSSIER = {"fr": "tableau",
+           # LE MEME JETON QUE LE FRANCAIS : le mot est le meme des deux
+           # cotes de l'Atlantique, et le glob se fait DANS le dossier de
+           # la langue — texto/fr et texto/fr-CA ne se melent pas.
+           "fr-CA": "tableau",
+           "en": "table", "es": "cuadro", "ru": "tablica",
            "zh": "tubiao", "ar": "lawha", "hi": "talika",
            "pt": "quadro", "bn": "sarani", "ja": "zuhyo",
            "pnb": "naqsha", "pa": "sarni", "tr": "tablo",

@@ -328,6 +328,8 @@ def rang(k):
 # exactement les memes renvois que les deux autres, se laisse relever
 # par le meme code, au nom de fichier pres.
 SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
+           # Meme jeton que le francais, autre dossier : voir renvoji.py.
+           ("fr-CA", "*-tableau-*.tex"),
            ("en", "*-table-*.tex"), ("es", "*-cuadro-*.tex"),
            ("ru", "*-tablica-*.tex"), ("zh", "*-tubiao-*.tex"),
            ("ar", "*-lawha-*.tex"), ("hi", "*-talika-*.tex"),
