@@ -355,7 +355,13 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     # partagent deja « taula » — le catalan, l'occitan et le basque —
     # et le glob est enracine dans texto/<langue>/ : deux dossiers
     # differents ne se melangent pas.
-    ("lb", "*-tabell-*.tex")]
+    ("lb", "*-tabell-*.tex"),
+    # LE ROMANCHE REPREND LE JETON DE L'INTERLINGUA, « tabella ». Le
+    # motif de nom de fichier le connait donc deja, comme il
+    # connaissait « tabell » quand le luxembourgeois est arrive.
+    # Quatrieme jeton partage de la serie ; le glob restant enracine
+    # dans texto/<langue>/, deux dossiers ne se melangent pas.
+    ("rm", "*-tabella-*.tex")]
 
 
 def construire():

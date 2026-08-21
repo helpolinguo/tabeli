@@ -233,6 +233,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "lb", "nomo": "Lëtzebuergesch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "rm", "nomo": "Rumantsch", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -810,7 +812,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "eu": "eu", "ro": "ro",
            "ga": "ga", "gl": "gl",
            "cs": "cs", "lt": "lt",
-           "lb": "lb"}   # langue -> texto/<...>
+           "lb": "lb", "rm": "rm"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1844,6 +1846,13 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # colonne n'emploie, et ne se confond donc avec
                         # rien. Le titre du volume est en bas de casse.
                         r"|LENTELĖ"
+                        # LE ROMANCHE N'AJOUTE RIEN NON PLUS. Il ecrit
+                        # « TABELLA nr. 1 », mot pour mot le membre de
+                        # l'interlingua ci-dessus. Troisieme cas de la
+                        # serie apres le galicien et le luxembourgeois :
+                        # une langue qui entre sans qu'on touche au
+                        # motif. On le note ici pour que personne ne
+                        # cherche plus tard le membre manquant.
                         # LE LUXEMBOURGEOIS N'AJOUTE RIEN A CETTE LISTE, et
                         # c'est le second cas du genre apres le galicien.
                         # Il ecrit « TABELL Nr. 1 », c'est-a-dire
@@ -1898,6 +1907,13 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # L'OCCITAN : « primiera » et « segonda » ne sont pas dans
             # la liste, « tresena » et « quatrena » non plus.
             r"|primi[eè]ra|segonda|tresena|quatrena"
+            # LE ROMANCHE (rumantsch grischun) : « quart » est deja
+            # dans la liste par le catalan, et « emprim », « segund »
+            # et « terz » n'y sont pas. Chacun prend son a final au
+            # feminin — la seria et la scena sont feminines — mais on
+            # laisse la forme masculine ouverte, comme pour le
+            # catalan, parce que le motif sert aussi ailleurs.
+            r"|emprim[ao]?|segund[ao]?|terz[ao]?"
             # L'UKRAINIEN : aucun de ses quatre ordinaux n'entre dans
             # la liste russe. « перша » n'est pas « первая »,
             # « третя » n'est pas « третья », et « четверта » n'a pas
