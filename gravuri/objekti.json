@@ -119203,7 +119203,9 @@
    "cs": [
     "hvězdárnu"
    ],
-   "lt": []
+   "lt": [
+    "observatorijos"
+   ]
   },
   "2": {
    "io": [
@@ -119287,7 +119289,9 @@
    "cs": [
     "turecké lázně"
    ],
-   "lt": []
+   "lt": [
+    "Turkiška pirtis"
+   ]
   },
   "3": {
    "io": [
@@ -119371,7 +119375,9 @@
    "cs": [
     "ulicí"
    ],
-   "lt": []
+   "lt": [
+    "gatvę"
+   ]
   },
   "4": {
    "io": [
@@ -119453,7 +119459,9 @@
    "cs": [
     "pohřeb"
    ],
-   "lt": []
+   "lt": [
+    "laidotuves"
+   ]
   },
   "5": {
    "io": [
@@ -119531,7 +119539,9 @@
    "cs": [
     "pivovarským hostincem"
    ],
-   "lt": []
+   "lt": [
+    "alinę"
+   ]
   },
   "6": {
    "io": [
@@ -119609,7 +119619,9 @@
    "cs": [
     "markýzou"
    ],
-   "lt": []
+   "lt": [
+    "markize"
+   ]
   },
   "7": {
    "io": [
@@ -119693,7 +119705,9 @@
    "cs": [
     "lihovarníka"
    ],
-   "lt": []
+   "lt": [
+    "likerių pardavėjo"
+   ]
   },
   "8": {
    "io": [
@@ -119775,7 +119789,9 @@
    "cs": [
     "konzulát"
    ],
-   "lt": []
+   "lt": [
+    "konsulatą"
+   ]
   },
   "9": {
    "io": [
@@ -119859,7 +119875,9 @@
    "cs": [
     "konzula"
    ],
-   "lt": []
+   "lt": [
+    "konsulą"
+   ]
   },
   "10": {
    "io": [
@@ -119943,7 +119961,9 @@
    "cs": [
     "prodavače hudebnin"
    ],
-   "lt": []
+   "lt": [
+    "muzikos pardavėjo"
+   ]
   },
   "11": {
    "io": [
@@ -120027,7 +120047,9 @@
    "cs": [
     "zametači"
    ],
-   "lt": []
+   "lt": [
+    "šlavėjų"
+   ]
   },
   "12": {
    "io": [
@@ -120111,7 +120133,9 @@
    "cs": [
     "zametací vůz"
    ],
-   "lt": []
+   "lt": [
+    "šlavimo vežimo"
+   ]
   },
   "13": {
    "io": [
@@ -120195,7 +120219,9 @@
    "cs": [
     "obchodníka s nábytkem"
    ],
-   "lt": []
+   "lt": [
+    "baldų pardavėjo"
+   ]
   },
   "14": {
    "io": [
@@ -120279,7 +120305,9 @@
    "cs": [
     "klempíře"
    ],
-   "lt": []
+   "lt": [
+    "skardininko"
+   ]
   },
   "15": {
    "io": [
@@ -120361,7 +120389,9 @@
    "cs": [
     "obchodu"
    ],
-   "lt": []
+   "lt": [
+    "sandėlį"
+   ]
   },
   "16": {
    "io": [
@@ -120445,7 +120475,9 @@
    "cs": [
     "dopravního vozu"
    ],
-   "lt": []
+   "lt": [
+    "pervežimo vežimo"
+   ]
   },
   "17": {
    "io": [
@@ -120529,7 +120561,9 @@
    "cs": [
     "kočárníka"
    ],
-   "lt": []
+   "lt": [
+    "ekipažų dirbėjo"
+   ]
   },
   "18": {
    "io": [
@@ -120613,7 +120647,9 @@
    "cs": [
     "obchodníka s koly a automobily"
    ],
-   "lt": []
+   "lt": [
+    "dviračių ir automobilių pardavėjui"
+   ]
   },
   "19": {
    "io": [
@@ -120697,7 +120733,9 @@
    "cs": [
     "balírníka"
    ],
-   "lt": []
+   "lt": [
+    "pakuotoją"
+   ]
   },
   "20": {
    "io": [
@@ -120781,7 +120819,9 @@
    "cs": [
     "fotografovi"
    ],
-   "lt": []
+   "lt": [
+    "fotografą"
+   ]
   },
   "21": {
    "io": [
@@ -120863,7 +120903,9 @@
    "cs": [
     "fotografickým přístrojem"
    ],
-   "lt": []
+   "lt": [
+    "fotoaparatą"
+   ]
   },
   "22": {
    "io": [
@@ -120947,7 +120989,9 @@
    "cs": [
     "podobizny"
    ],
-   "lt": []
+   "lt": [
+    "portretus"
+   ]
   },
   "23": {
    "io": [
@@ -121031,7 +121075,9 @@
    "cs": [
     "holiče"
    ],
-   "lt": []
+   "lt": [
+    "kirpėjo"
+   ]
   },
   "24": {
    "io": [
@@ -121116,7 +121162,9 @@
    "cs": [
     "trafikou"
    ],
-   "lt": []
+   "lt": [
+    "tabako krautuvę"
+   ]
   },
   "25": {
    "io": [
@@ -121192,7 +121240,9 @@
    "cs": [
     "lucerna"
    ],
-   "lt": []
+   "lt": [
+    "žibintas"
+   ]
   },
   "26": {
    "io": [
@@ -121276,7 +121326,9 @@
    "cs": [
     "štítu"
    ],
-   "lt": []
+   "lt": [
+    "iškaba"
+   ]
   },
   "27": {
    "io": [
@@ -121360,7 +121412,9 @@
    "cs": [
     "šňupajíce tabák"
    ],
-   "lt": []
+   "lt": [
+    "uostydami tabaką"
+   ]
   },
   "29": {
    "io": [
@@ -121444,7 +121498,9 @@
    "cs": [
     "směnárníka"
    ],
-   "lt": []
+   "lt": [
+    "keitėjo"
+   ]
   },
   "30": {
    "io": [
@@ -121528,7 +121584,9 @@
    "cs": [
     "zubaři"
    ],
-   "lt": []
+   "lt": [
+    "odontologą"
+   ]
   },
   "31": {
    "io": [
@@ -121612,7 +121670,9 @@
    "cs": [
     "cukráři"
    ],
-   "lt": []
+   "lt": [
+    "konditerį"
+   ]
   },
   "32": {
    "io": [
@@ -121694,7 +121754,9 @@
    "cs": [
     "kanceláře"
    ],
-   "lt": []
+   "lt": [
+    "kontorą"
+   ]
   },
   "33": {
    "io": [
@@ -121778,7 +121840,9 @@
    "cs": [
     "písař na stroji"
    ],
-   "lt": []
+   "lt": [
+    "mašininkė"
+   ]
   },
   "34": {
    "io": [
@@ -121860,7 +121924,9 @@
    "cs": [
     "bratrance"
    ],
-   "lt": []
+   "lt": [
+    "pusbroliui"
+   ]
   },
   "35": {
    "io": [
@@ -121942,7 +122008,9 @@
    "cs": [
     "tajemníkovi"
    ],
-   "lt": []
+   "lt": [
+    "sekretoriui"
+   ]
   },
   "36": {
    "io": [
@@ -122026,7 +122094,9 @@
    "cs": [
     "tabulku"
    ],
-   "lt": []
+   "lt": [
+    "lentelė"
+   ]
   },
   "37": {
    "io": [
@@ -122106,7 +122176,9 @@
    "cs": [
     "hodinář-klenotník"
    ],
-   "lt": []
+   "lt": [
+    "laikrodininkas-juvelyras"
+   ]
   },
   "38": {
    "io": [
@@ -122190,7 +122262,9 @@
    "cs": [
     "optika"
    ],
-   "lt": []
+   "lt": [
+    "optiko"
+   ]
   },
   "39": {
    "io": [
@@ -122274,7 +122348,9 @@
    "cs": [
     "kloboučníka"
    ],
-   "lt": []
+   "lt": [
+    "skrybėlininko"
+   ]
   },
   "40": {
    "io": [
@@ -122358,7 +122434,9 @@
    "cs": [
     "rukavičkáře"
    ],
-   "lt": []
+   "lt": [
+    "pirštininko"
+   ]
   },
   "41": {
    "io": [
@@ -122442,7 +122520,9 @@
    "cs": [
     "plukem"
    ],
-   "lt": []
+   "lt": [
+    "pulką"
+   ]
   },
   "42": {
    "io": [
@@ -122526,7 +122606,9 @@
    "cs": [
     "tambormajor"
    ],
-   "lt": []
+   "lt": [
+    "būgnininkų vadas"
+   ]
   },
   "43": {
    "io": [
@@ -122610,7 +122692,9 @@
    "cs": [
     "bubeníky"
    ],
-   "lt": []
+   "lt": [
+    "būgnininkų"
+   ]
   },
   "44": {
    "io": [
@@ -122694,7 +122778,9 @@
    "cs": [
     "trubači"
    ],
-   "lt": []
+   "lt": [
+    "trimitininkų"
+   ]
   },
   "45": {
    "io": [
@@ -122778,7 +122864,9 @@
    "cs": [
     "Generál"
    ],
-   "lt": []
+   "lt": [
+    "Generolas"
+   ]
   },
   "46": {
    "io": [
@@ -122862,7 +122950,9 @@
    "cs": [
     "Štábní důstojníci"
    ],
-   "lt": []
+   "lt": [
+    "Štabo karininkai"
+   ]
   },
   "47": {
    "io": [
@@ -122944,7 +123034,9 @@
    "cs": [
     "prapory"
    ],
-   "lt": []
+   "lt": [
+    "batalionus"
+   ]
   },
   "48": {
    "io": [
@@ -123028,7 +123120,9 @@
    "cs": [
     "kašny"
    ],
-   "lt": []
+   "lt": [
+    "fontano"
+   ]
   },
   "49": {
    "io": [
@@ -123112,7 +123206,9 @@
    "cs": [
     "vodotrysku"
    ],
-   "lt": []
+   "lt": [
+    "vandens čiurkšlės"
+   ]
   },
   "50": {
    "io": [
@@ -123196,7 +123292,9 @@
    "cs": [
     "křižovatce"
    ],
-   "lt": []
+   "lt": [
+    "sankryžoje"
+   ]
   },
   "51": {
    "io": [
@@ -123280,7 +123378,9 @@
    "cs": [
     "deštníkář"
    ],
-   "lt": []
+   "lt": [
+    "skėtininkas"
+   ]
   },
   "52": {
    "io": [
@@ -123364,7 +123464,9 @@
    "cs": [
     "fiakry"
    ],
-   "lt": []
+   "lt": [
+    "fiakrai"
+   ]
   },
   "53": {
    "io": [
@@ -123448,7 +123550,9 @@
    "cs": [
     "cínař"
    ],
-   "lt": []
+   "lt": [
+    "audinių dažytojas"
+   ]
   },
   "54": {
    "io": [
@@ -123532,7 +123636,9 @@
    "cs": [
     "puškař"
    ],
-   "lt": []
+   "lt": [
+    "ginklininkas"
+   ]
   },
   "55": {
    "io": [
@@ -123616,7 +123722,9 @@
    "cs": [
     "Obchodní cestující"
    ],
-   "lt": []
+   "lt": [
+    "Prekybos keliauninkas"
+   ]
   },
   "56": {
    "io": [
@@ -123700,7 +123808,9 @@
    "cs": [
     "kropicí vůz"
    ],
-   "lt": []
+   "lt": [
+    "laistymo statinė"
+   ]
   },
   "57": {
    "io": [
@@ -123784,7 +123894,9 @@
    "cs": [
     "stěhovací vozy"
    ],
-   "lt": []
+   "lt": [
+    "ponų ekipažai"
+   ]
   },
   "58": {
    "io": [
@@ -123868,7 +123980,9 @@
    "cs": [
     "omnibusu"
    ],
-   "lt": []
+   "lt": [
+    "omnibuso"
+   ]
   },
   "59": {
    "io": [
@@ -123952,7 +124066,9 @@
    "cs": [
     "imperiálu"
    ],
-   "lt": []
+   "lt": [
+    "imperialo"
+   ]
   },
   "60": {
    "io": [
@@ -124032,7 +124148,9 @@
    "cs": [
     "potulný zpěvák"
    ],
-   "lt": []
+   "lt": [
+    "klajojantis dainininkas"
+   ]
   },
   "61": {
    "io": [
@@ -124114,7 +124232,9 @@
    "cs": [
     "flašinetem"
    ],
-   "lt": []
+   "lt": [
+    "ryla"
+   ]
   },
   "62": {
    "io": [
@@ -124198,7 +124318,9 @@
    "cs": [
     "krejčí"
    ],
-   "lt": []
+   "lt": [
+    "sukirpėjai"
+   ]
   },
   "63": {
    "io": [
@@ -124282,7 +124404,9 @@
    "cs": [
     "švadleny"
    ],
-   "lt": []
+   "lt": [
+    "siuvėjos"
+   ]
   },
   "64": {
    "io": [
@@ -124366,7 +124490,9 @@
    "cs": [
     "obchod s látkami"
    ],
-   "lt": []
+   "lt": [
+    "audinių krautuvę"
+   ]
   },
   "65": {
    "io": [
@@ -124450,7 +124576,9 @@
    "cs": [
     "Obchodník"
    ],
-   "lt": []
+   "lt": [
+    "Prekybininkas"
+   ]
   },
   "66": {
    "io": [
@@ -124526,7 +124654,9 @@
    "cs": [
     "obleky"
    ],
-   "lt": []
+   "lt": [
+    "kostiumus"
+   ]
   },
   "67": {
    "io": [
@@ -124610,7 +124740,9 @@
    "cs": [
     "sukna"
    ],
-   "lt": []
+   "lt": [
+    "gelumbes"
+   ]
   },
   "68": {
    "io": [
@@ -124694,7 +124826,9 @@
    "cs": [
     "kanálového otvoru"
    ],
-   "lt": []
+   "lt": [
+    "kanalizacijos angos"
+   ]
   },
   "69": {
    "io": [
@@ -124776,7 +124910,9 @@
    "cs": [
     "podomní obchodník"
    ],
-   "lt": []
+   "lt": [
+    "prekiautojas iš rankų"
+   ]
   },
   "70": {
    "io": [
@@ -124858,7 +124994,9 @@
    "cs": [
     "knihkupec"
    ],
-   "lt": []
+   "lt": [
+    "knygininkas"
+   ]
   },
   "71": {
    "io": [
@@ -124942,7 +125080,9 @@
    "cs": [
     "redakci"
    ],
-   "lt": []
+   "lt": [
+    "redakciją"
+   ]
   },
   "72": {
    "io": [
@@ -125026,7 +125166,9 @@
    "cs": [
     "litografové"
    ],
-   "lt": []
+   "lt": [
+    "litografai"
+   ]
   },
   "73": {
    "io": [
@@ -125110,7 +125252,9 @@
    "cs": [
     "rytci do mědi"
    ],
-   "lt": []
+   "lt": [
+    "vario raižytojai"
+   ]
   },
   "74": {
    "io": [
@@ -125194,7 +125338,9 @@
    "cs": [
     "tiskařští dělníci"
    ],
-   "lt": []
+   "lt": [
+    "spaustuvės darbininkai"
+   ]
   },
   "75": {
    "io": [
@@ -125274,7 +125420,9 @@
    "cs": [
     "tiskárna"
    ],
-   "lt": []
+   "lt": [
+    "spausdinimo salė"
+   ]
   },
   "76": {
    "io": [
@@ -125358,7 +125506,9 @@
    "cs": [
     "požární hlásič"
    ],
-   "lt": []
+   "lt": [
+    "gaisro pranešiklis"
+   ]
   },
   "77": {
    "io": [
@@ -125442,7 +125592,9 @@
    "cs": [
     "obchodu s galanterií"
    ],
-   "lt": []
+   "lt": [
+    "galanterijos krautuvės"
+   ]
   },
   "78": {
    "io": [
@@ -125522,7 +125674,9 @@
    "cs": [
     "kamenné kašny"
    ],
-   "lt": []
+   "lt": [
+    "akmeninio fontano"
+   ]
   },
   "79": {
    "io": [
@@ -125604,7 +125758,9 @@
    "cs": [
     "poslíčkem"
    ],
-   "lt": []
+   "lt": [
+    "pasiuntinukas"
+   ]
   },
   "80": {
    "io": [
@@ -125682,7 +125838,9 @@
    "cs": [
     "nákladní tříkolky"
    ],
-   "lt": []
+   "lt": [
+    "krovininio triračio"
+   ]
   },
   "81": {
    "io": [
@@ -125766,7 +125924,9 @@
    "cs": [
     "poštovní vůz"
    ],
-   "lt": []
+   "lt": [
+    "pašto vežimo"
+   ]
   },
   "82": {
    "io": [
@@ -125850,7 +126010,9 @@
    "cs": [
     "advokátem"
    ],
-   "lt": []
+   "lt": [
+    "advokatu"
+   ]
   },
   "83": {
    "io": [
@@ -125934,7 +126096,9 @@
    "cs": [
     "výběrčím daní"
    ],
-   "lt": []
+   "lt": [
+    "mokesčių rinkėju"
+   ]
   },
   "84": {
    "io": [
@@ -126018,7 +126182,9 @@
    "cs": [
     "notářem"
    ],
-   "lt": []
+   "lt": [
+    "notaru"
+   ]
   },
   "85": {
    "io": [
@@ -126102,7 +126268,9 @@
    "cs": [
     "cukrářský pomocník"
    ],
-   "lt": []
+   "lt": [
+    "konditerio pameistrys"
+   ]
   },
   "86": {
    "io": [
@@ -126186,7 +126354,9 @@
    "cs": [
     "obchodníkem s oděvy"
    ],
-   "lt": []
+   "lt": [
+    "drabužių pardavėją"
+   ]
   },
   "87": {
    "io": [
@@ -126270,7 +126440,9 @@
    "cs": [
     "lampář"
    ],
-   "lt": []
+   "lt": [
+    "žibintų uždegėjas"
+   ]
   },
   "88": {
    "io": [
@@ -126354,7 +126526,9 @@
    "cs": [
     "plynařem"
    ],
-   "lt": []
+   "lt": [
+    "dujininku"
+   ]
   },
   "89": {
    "io": [
@@ -126436,7 +126610,9 @@
    "cs": [
     "řeholnice"
    ],
-   "lt": []
+   "lt": [
+    "vienuolė"
+   ]
   },
   "91": {
    "io": [
@@ -126520,7 +126696,9 @@
    "cs": [
     "kominíků"
    ],
-   "lt": []
+   "lt": [
+    "kaminkrėčių"
+   ]
   },
   "92": {
    "io": [
@@ -126604,7 +126782,9 @@
    "cs": [
     "květinářky"
    ],
-   "lt": []
+   "lt": [
+    "gėlininkės"
+   ]
   },
   "93": {
    "io": [
@@ -126688,7 +126868,9 @@
    "cs": [
     "vychovatelka"
    ],
-   "lt": []
+   "lt": [
+    "auklė"
+   ]
   },
   "94": {
    "io": [
@@ -126772,7 +126954,9 @@
    "cs": [
     "prodavačce"
    ],
-   "lt": []
+   "lt": [
+    "pardavėjos"
+   ]
   },
   "95": {
    "io": [
@@ -126856,7 +127040,9 @@
    "cs": [
     "společnici"
    ],
-   "lt": []
+   "lt": [
+    "palydovę"
+   ]
   },
   "96": {
    "io": [
@@ -126938,7 +127124,9 @@
    "cs": [
     "inženýra"
    ],
-   "lt": []
+   "lt": [
+    "inžinierių"
+   ]
   },
   "97": {
    "io": [
@@ -127022,7 +127210,9 @@
    "cs": [
     "modistku"
    ],
-   "lt": []
+   "lt": [
+    "skrybėlininkę"
+   ]
   },
   "98": {
    "io": [
@@ -127104,7 +127294,9 @@
    "cs": [
     "chůvou"
    ],
-   "lt": []
+   "lt": [
+    "vaikų aukle"
+   ]
   },
   "99": {
    "io": [
@@ -127188,7 +127380,9 @@
    "cs": [
     "mnichy"
    ],
-   "lt": []
+   "lt": [
+    "vienuolius"
+   ]
   }
  },
  "t15": {
