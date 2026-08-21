@@ -58,7 +58,13 @@ DOSSIER = {"fr": "tableau",
            "cs": "tabulka", "lt": "lentele",
            "lb": "tabell", "rm": "tabella",
            "et": "tabel",
-           "vi": "bang", "de": "tafel",
+           "vi": "bang",
+           # LE CANTONAIS prend « toubiu », qui est « 圖表 » en
+           # jyutping depouille de ses tons — tou4 biu2. Il ne se
+           # confond pas avec le « tubiao » du mandarin : ce sont
+           # les deux lectures du meme mot, et deux colonnes.
+           "yue": "toubiu",
+           "de": "tafel",
            "it": "tavola"}
 
 # LE FRANCAIS N'EST PAS UNE TRADUCTION. C'est le releve d'une AUTRE

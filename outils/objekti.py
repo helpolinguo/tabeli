@@ -376,6 +376,10 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     # texto/vi — qui porte la langue. Le jeton est neuf ; aucun des
     # dix-sept precedents ne s'en approche.
     ("vi", "*-bang-*.tex"),
+    # LE CANTONAIS prend « toubiu », le jyutping de « 圖表 » sans
+    # ses tons. Le mandarin a « tubiao » : meme mot, deux lectures,
+    # deux colonnes.
+    ("yue", "*-toubiu-*.tex"),
     # L'ALLEMAND prend « tafel », qui n'est le jeton de personne : il
     # ressemble au « tabel » neerlandais et au « tabell » suedois sans
     # les egaler — un F la ou ils ont un B.

@@ -274,6 +274,16 @@ LANGUES = [
     # dans « ecartita » de texto/lingui.json.
     {"kodo": "vi", "nomo": "Tiếng Việt", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE CANTONAIS S'ECRIT, ET C'EST POUR CELA QU'IL EST LA. Il n'a
+    # pas d'academie, mais il a ses caracteres — 嘅, 喺, 唔, 咗, 佢,
+    # 睇 — et Hong Kong les imprime tous les jours, dans ses journaux,
+    # ses romans et ses sous-titres. La colonne s'ecrit donc en
+    # cantonais ECRIT, non en chinois standard lu a la cantonaise :
+    # sans quoi elle ferait double emploi avec « zh » a la graphie
+    # pres, ce qui est exactement le motif pour lequel le WU a ete
+    # ecarte.
+    {"kodo": "yue", "nomo": "粵語", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -896,7 +906,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "ga": "ga", "gl": "gl",
            "cs": "cs", "lt": "lt",
            "lb": "lb", "rm": "rm",
-           "et": "et", "vi": "vi",
+           "et": "et", "vi": "vi", "yue": "yue",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2009,6 +2019,12 @@ def est_ceno(x):
 # passer pour un titre de tableau.
 NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         r"|图表|لوحة"
+                        # LE CANTONAIS ECRIT EN CARACTERES
+                        # TRADITIONNELS : « 圖表 » est le meme mot que
+                        # le « 图表 » du chinois, dans l'autre graphie.
+                        # Les deux membres sont necessaires, car la
+                        # comparaison se fait sur le caractere.
+                        r"|圖表"
                         # LE HINDI N'A PAS DE CAPITALE pour distinguer le
                         # titre de la prose, et « तालिका » se lit aussi
                         # dans « देल्मास सहायक तालिकाओं से », qui est le
@@ -2325,6 +2341,8 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # mot de plus dans la liste commune.
 SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|seeria|reihe|серия|серія|saila|sh?raith)\b"
                    r"|第[一二三四]组"
+                   # LE CANTONAIS, meme mot, autre graphie.
+                   r"|第[一二三四]組"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
@@ -2370,6 +2388,9 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
 # roman. Un membre de plus, donc, et non une classe elargie.
 CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|stseen|szene|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
                   r"|第[一二三四]场"
+                  # LE CANTONAIS ecrit « 第一場 », que le japonais
+                  # ecrit deja plus bas : le membre existe, on ne le
+                  # double pas.
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
