@@ -115002,7 +115002,9 @@
    "gl": [
     "observatorio"
    ],
-   "cs": []
+   "cs": [
+    "hvězdárnu"
+   ]
   },
   "2": {
    "io": [
@@ -115083,7 +115085,9 @@
    "gl": [
     "baños turcos"
    ],
-   "cs": []
+   "cs": [
+    "turecké lázně"
+   ]
   },
   "3": {
    "io": [
@@ -115164,7 +115168,9 @@
    "gl": [
     "rúa"
    ],
-   "cs": []
+   "cs": [
+    "ulicí"
+   ]
   },
   "4": {
    "io": [
@@ -115243,7 +115249,9 @@
    "gl": [
     "enterro"
    ],
-   "cs": []
+   "cs": [
+    "pohřeb"
+   ]
   },
   "5": {
    "io": [
@@ -115318,7 +115326,9 @@
    "gl": [
     "cervexaría"
    ],
-   "cs": []
+   "cs": [
+    "pivovarským hostincem"
+   ]
   },
   "6": {
    "io": [
@@ -115393,7 +115403,9 @@
     "scáthláin ghloine"
    ],
    "gl": [],
-   "cs": []
+   "cs": [
+    "markýzou"
+   ]
   },
   "7": {
    "io": [
@@ -115474,7 +115486,9 @@
    "gl": [
     "licoreiro"
    ],
-   "cs": []
+   "cs": [
+    "lihovarníka"
+   ]
   },
   "8": {
    "io": [
@@ -115553,7 +115567,9 @@
    "gl": [
     "consulado"
    ],
-   "cs": []
+   "cs": [
+    "konzulát"
+   ]
   },
   "9": {
    "io": [
@@ -115634,7 +115650,9 @@
    "gl": [
     "cónsul"
    ],
-   "cs": []
+   "cs": [
+    "konzula"
+   ]
   },
   "10": {
    "io": [
@@ -115715,7 +115733,9 @@
    "gl": [
     "vendedor de música"
    ],
-   "cs": []
+   "cs": [
+    "prodavače hudebnin"
+   ]
   },
   "11": {
    "io": [
@@ -115796,7 +115816,9 @@
    "gl": [
     "varredores"
    ],
-   "cs": []
+   "cs": [
+    "zametači"
+   ]
   },
   "12": {
    "io": [
@@ -115877,7 +115899,9 @@
    "gl": [
     "carro de varrer"
    ],
-   "cs": []
+   "cs": [
+    "zametací vůz"
+   ]
   },
   "13": {
    "io": [
@@ -115958,7 +115982,9 @@
    "gl": [
     "vendedor de mobles"
    ],
-   "cs": []
+   "cs": [
+    "obchodníka s nábytkem"
+   ]
   },
   "14": {
    "io": [
@@ -116039,7 +116065,9 @@
    "gl": [
     "folleiro"
    ],
-   "cs": []
+   "cs": [
+    "klempíře"
+   ]
   },
   "15": {
    "io": [
@@ -116118,7 +116146,9 @@
    "gl": [
     "almacén"
    ],
-   "cs": []
+   "cs": [
+    "obchodu"
+   ]
   },
   "16": {
    "io": [
@@ -116199,7 +116229,9 @@
    "gl": [
     "carro de transporte"
    ],
-   "cs": []
+   "cs": [
+    "dopravního vozu"
+   ]
   },
   "17": {
    "io": [
@@ -116280,7 +116312,9 @@
    "gl": [
     "carroceiro"
    ],
-   "cs": []
+   "cs": [
+    "kočárníka"
+   ]
   },
   "18": {
    "io": [
@@ -116361,7 +116395,9 @@
    "gl": [
     "vendedor de bicicletas e automóbiles"
    ],
-   "cs": []
+   "cs": [
+    "obchodníka s koly a automobily"
+   ]
   },
   "19": {
    "io": [
@@ -116442,7 +116478,9 @@
    "gl": [
     "embalador"
    ],
-   "cs": []
+   "cs": [
+    "balírníka"
+   ]
   },
   "20": {
    "io": [
@@ -116523,7 +116561,9 @@
    "gl": [
     "fotógrafo"
    ],
-   "cs": []
+   "cs": [
+    "fotografovi"
+   ]
   },
   "21": {
    "io": [
@@ -116602,7 +116642,9 @@
    "gl": [
     "cámara"
    ],
-   "cs": []
+   "cs": [
+    "fotografickým přístrojem"
+   ]
   },
   "22": {
    "io": [
@@ -116683,7 +116725,9 @@
    "gl": [
     "retratos"
    ],
-   "cs": []
+   "cs": [
+    "podobizny"
+   ]
   },
   "23": {
    "io": [
@@ -116764,7 +116808,9 @@
    "gl": [
     "peiteeiro"
    ],
-   "cs": []
+   "cs": [
+    "holiče"
+   ]
   },
   "24": {
    "io": [
@@ -116846,7 +116892,9 @@
    "gl": [
     "estanco"
    ],
-   "cs": []
+   "cs": [
+    "trafikou"
+   ]
   },
   "25": {
    "io": [
@@ -116919,7 +116967,9 @@
    "ro": [],
    "ga": [],
    "gl": [],
-   "cs": []
+   "cs": [
+    "lucerna"
+   ]
   },
   "26": {
    "io": [
@@ -117000,7 +117050,9 @@
    "gl": [
     "letreiro"
    ],
-   "cs": []
+   "cs": [
+    "štítu"
+   ]
   },
   "27": {
    "io": [
@@ -117081,7 +117133,9 @@
    "gl": [
     "tomando rapé"
    ],
-   "cs": []
+   "cs": [
+    "šňupajíce tabák"
+   ]
   },
   "29": {
    "io": [
@@ -117162,7 +117216,9 @@
    "gl": [
     "cambista"
    ],
-   "cs": []
+   "cs": [
+    "směnárníka"
+   ]
   },
   "30": {
    "io": [
@@ -117243,7 +117299,9 @@
    "gl": [
     "dentista"
    ],
-   "cs": []
+   "cs": [
+    "zubaři"
+   ]
   },
   "31": {
    "io": [
@@ -117324,7 +117382,9 @@
    "gl": [
     "pasteleiro"
    ],
-   "cs": []
+   "cs": [
+    "cukráři"
+   ]
   },
   "32": {
    "io": [
@@ -117403,7 +117463,9 @@
    "gl": [
     "despacho"
    ],
-   "cs": []
+   "cs": [
+    "kanceláře"
+   ]
   },
   "33": {
    "io": [
@@ -117484,7 +117546,9 @@
    "gl": [
     "mecanógrafo"
    ],
-   "cs": []
+   "cs": [
+    "písař na stroji"
+   ]
   },
   "34": {
    "io": [
@@ -117563,7 +117627,9 @@
    "gl": [
     "curmán"
    ],
-   "cs": []
+   "cs": [
+    "bratrance"
+   ]
   },
   "35": {
    "io": [
@@ -117642,7 +117708,9 @@
    "gl": [
     "secretario"
    ],
-   "cs": []
+   "cs": [
+    "tajemníkovi"
+   ]
   },
   "36": {
    "io": [
@@ -117723,7 +117791,9 @@
    "gl": [
     "placa"
    ],
-   "cs": []
+   "cs": [
+    "tabulku"
+   ]
   },
   "37": {
    "io": [
@@ -117800,7 +117870,9 @@
    "gl": [
     "reloxeiro-xoieiro"
    ],
-   "cs": []
+   "cs": [
+    "hodinář-klenotník"
+   ]
   },
   "38": {
    "io": [
@@ -117881,7 +117953,9 @@
    "gl": [
     "óptico"
    ],
-   "cs": []
+   "cs": [
+    "optika"
+   ]
   },
   "39": {
    "io": [
@@ -117962,7 +118036,9 @@
    "gl": [
     "sombreireiro"
    ],
-   "cs": []
+   "cs": [
+    "kloboučníka"
+   ]
   },
   "40": {
    "io": [
@@ -118043,7 +118119,9 @@
    "gl": [
     "luveiro"
    ],
-   "cs": []
+   "cs": [
+    "rukavičkáře"
+   ]
   },
   "41": {
    "io": [
@@ -118124,7 +118202,9 @@
    "gl": [
     "rexemento"
    ],
-   "cs": []
+   "cs": [
+    "plukem"
+   ]
   },
   "42": {
    "io": [
@@ -118205,7 +118285,9 @@
    "gl": [
     "tambor maior"
    ],
-   "cs": []
+   "cs": [
+    "tambormajor"
+   ]
   },
   "43": {
    "io": [
@@ -118286,7 +118368,9 @@
    "gl": [
     "tambores"
    ],
-   "cs": []
+   "cs": [
+    "bubeníky"
+   ]
   },
   "44": {
    "io": [
@@ -118367,7 +118451,9 @@
    "gl": [
     "corneteiros"
    ],
-   "cs": []
+   "cs": [
+    "trubači"
+   ]
   },
   "45": {
    "io": [
@@ -118448,7 +118534,9 @@
    "gl": [
     "xeneral"
    ],
-   "cs": []
+   "cs": [
+    "Generál"
+   ]
   },
   "46": {
    "io": [
@@ -118529,7 +118617,9 @@
    "gl": [
     "Os oficiais do estado maior"
    ],
-   "cs": []
+   "cs": [
+    "Štábní důstojníci"
+   ]
   },
   "47": {
    "io": [
@@ -118608,7 +118698,9 @@
    "gl": [
     "batallóns"
    ],
-   "cs": []
+   "cs": [
+    "prapory"
+   ]
   },
   "48": {
    "io": [
@@ -118689,7 +118781,9 @@
    "gl": [
     "fonte"
    ],
-   "cs": []
+   "cs": [
+    "kašny"
+   ]
   },
   "49": {
    "io": [
@@ -118770,7 +118864,9 @@
    "gl": [
     "chorro de auga"
    ],
-   "cs": []
+   "cs": [
+    "vodotrysku"
+   ]
   },
   "50": {
    "io": [
@@ -118851,7 +118947,9 @@
    "gl": [
     "cruzamento"
    ],
-   "cs": []
+   "cs": [
+    "křižovatce"
+   ]
   },
   "51": {
    "io": [
@@ -118932,7 +119030,9 @@
    "gl": [
     "paraugueiro"
    ],
-   "cs": []
+   "cs": [
+    "deštníkář"
+   ]
   },
   "52": {
    "io": [
@@ -119013,7 +119113,9 @@
    "gl": [
     "coches de aluguer"
    ],
-   "cs": []
+   "cs": [
+    "fiakry"
+   ]
   },
   "53": {
    "io": [
@@ -119094,7 +119196,9 @@
    "gl": [
     "estañador"
    ],
-   "cs": []
+   "cs": [
+    "cínař"
+   ]
   },
   "54": {
    "io": [
@@ -119175,7 +119279,9 @@
    "gl": [
     "armeiro"
    ],
-   "cs": []
+   "cs": [
+    "puškař"
+   ]
   },
   "55": {
    "io": [
@@ -119256,7 +119362,9 @@
    "gl": [
     "viaxante de comercio"
    ],
-   "cs": []
+   "cs": [
+    "Obchodní cestující"
+   ]
   },
   "56": {
    "io": [
@@ -119337,7 +119445,9 @@
    "gl": [
     "cuba de rega"
    ],
-   "cs": []
+   "cs": [
+    "kropicí vůz"
+   ]
   },
   "57": {
    "io": [
@@ -119418,7 +119528,9 @@
    "gl": [
     "carros de mudanzas"
    ],
-   "cs": []
+   "cs": [
+    "stěhovací vozy"
+   ]
   },
   "58": {
    "io": [
@@ -119499,7 +119611,9 @@
    "gl": [
     "ómnibus"
    ],
-   "cs": []
+   "cs": [
+    "omnibusu"
+   ]
   },
   "59": {
    "io": [
@@ -119580,7 +119694,9 @@
    "gl": [
     "imperial"
    ],
-   "cs": []
+   "cs": [
+    "imperiálu"
+   ]
   },
   "60": {
    "io": [
@@ -119657,7 +119773,9 @@
    "gl": [
     "cantor ambulante"
    ],
-   "cs": []
+   "cs": [
+    "potulný zpěvák"
+   ]
   },
   "61": {
    "io": [
@@ -119736,7 +119854,9 @@
    "gl": [
     "organiño"
    ],
-   "cs": []
+   "cs": [
+    "flašinetem"
+   ]
   },
   "62": {
    "io": [
@@ -119817,7 +119937,9 @@
    "gl": [
     "xastres"
    ],
-   "cs": []
+   "cs": [
+    "krejčí"
+   ]
   },
   "63": {
    "io": [
@@ -119898,7 +120020,9 @@
    "gl": [
     "costureiras"
    ],
-   "cs": []
+   "cs": [
+    "švadleny"
+   ]
   },
   "64": {
    "io": [
@@ -119979,7 +120103,9 @@
    "gl": [
     "comercio de tecidos"
    ],
-   "cs": []
+   "cs": [
+    "obchod s látkami"
+   ]
   },
   "65": {
    "io": [
@@ -120060,7 +120186,9 @@
    "gl": [
     "O comerciante"
    ],
-   "cs": []
+   "cs": [
+    "Obchodník"
+   ]
   },
   "66": {
    "io": [
@@ -120133,7 +120261,9 @@
    "ro": [],
    "ga": [],
    "gl": [],
-   "cs": []
+   "cs": [
+    "obleky"
+   ]
   },
   "67": {
    "io": [
@@ -120214,7 +120344,9 @@
    "gl": [
     "panos"
    ],
-   "cs": []
+   "cs": [
+    "sukna"
+   ]
   },
   "68": {
    "io": [
@@ -120295,7 +120427,9 @@
    "gl": [
     "sumidoiro"
    ],
-   "cs": []
+   "cs": [
+    "kanálového otvoru"
+   ]
   },
   "69": {
    "io": [
@@ -120374,7 +120508,9 @@
    "gl": [
     "vendedor ambulante"
    ],
-   "cs": []
+   "cs": [
+    "podomní obchodník"
+   ]
   },
   "70": {
    "io": [
@@ -120453,7 +120589,9 @@
    "gl": [
     "libreiro"
    ],
-   "cs": []
+   "cs": [
+    "knihkupec"
+   ]
   },
   "71": {
    "io": [
@@ -120534,7 +120672,9 @@
    "gl": [
     "redacción"
    ],
-   "cs": []
+   "cs": [
+    "redakci"
+   ]
   },
   "72": {
    "io": [
@@ -120615,7 +120755,9 @@
    "gl": [
     "litógrafos"
    ],
-   "cs": []
+   "cs": [
+    "litografové"
+   ]
   },
   "73": {
    "io": [
@@ -120696,7 +120838,9 @@
    "gl": [
     "gravadores en cobre"
    ],
-   "cs": []
+   "cs": [
+    "rytci do mědi"
+   ]
   },
   "74": {
    "io": [
@@ -120777,7 +120921,9 @@
    "gl": [
     "obreiros impresores"
    ],
-   "cs": []
+   "cs": [
+    "tiskařští dělníci"
+   ]
   },
   "75": {
    "io": [
@@ -120854,7 +121000,9 @@
    ],
    "ga": [],
    "gl": [],
-   "cs": []
+   "cs": [
+    "tiskárna"
+   ]
   },
   "76": {
    "io": [
@@ -120935,7 +121083,9 @@
    "gl": [
     "avisador de incendios"
    ],
-   "cs": []
+   "cs": [
+    "požární hlásič"
+   ]
   },
   "77": {
    "io": [
@@ -121016,7 +121166,9 @@
    "gl": [
     "mercería"
    ],
-   "cs": []
+   "cs": [
+    "obchodu s galanterií"
+   ]
   },
   "78": {
    "io": [
@@ -121093,7 +121245,9 @@
    "gl": [
     "fonte de pedra"
    ],
-   "cs": []
+   "cs": [
+    "kamenné kašny"
+   ]
   },
   "79": {
    "io": [
@@ -121172,7 +121326,9 @@
    "gl": [
     "botones"
    ],
-   "cs": []
+   "cs": [
+    "poslíčkem"
+   ]
   },
   "80": {
    "io": [
@@ -121247,7 +121403,9 @@
    "gl": [
     "triciclo de reparto"
    ],
-   "cs": []
+   "cs": [
+    "nákladní tříkolky"
+   ]
   },
   "81": {
    "io": [
@@ -121328,7 +121486,9 @@
    "gl": [
     "coche de correos"
    ],
-   "cs": []
+   "cs": [
+    "poštovní vůz"
+   ]
   },
   "82": {
    "io": [
@@ -121409,7 +121569,9 @@
    "gl": [
     "avogado"
    ],
-   "cs": []
+   "cs": [
+    "advokátem"
+   ]
   },
   "83": {
    "io": [
@@ -121490,7 +121652,9 @@
    "gl": [
     "recadador de impostos"
    ],
-   "cs": []
+   "cs": [
+    "výběrčím daní"
+   ]
   },
   "84": {
    "io": [
@@ -121571,7 +121735,9 @@
    "gl": [
     "notario"
    ],
-   "cs": []
+   "cs": [
+    "notářem"
+   ]
   },
   "85": {
    "io": [
@@ -121652,7 +121818,9 @@
    "gl": [
     "oficial de pasteleiro"
    ],
-   "cs": []
+   "cs": [
+    "cukrářský pomocník"
+   ]
   },
   "86": {
    "io": [
@@ -121733,7 +121901,9 @@
    "gl": [
     "vendedor de roupa"
    ],
-   "cs": []
+   "cs": [
+    "obchodníkem s oděvy"
+   ]
   },
   "87": {
    "io": [
@@ -121814,7 +121984,9 @@
    "gl": [
     "acendedor de farois"
    ],
-   "cs": []
+   "cs": [
+    "lampář"
+   ]
   },
   "88": {
    "io": [
@@ -121895,7 +122067,9 @@
    "gl": [
     "gasista"
    ],
-   "cs": []
+   "cs": [
+    "plynařem"
+   ]
   },
   "89": {
    "io": [
@@ -121974,7 +122148,9 @@
    "gl": [
     "relixiosa"
    ],
-   "cs": []
+   "cs": [
+    "řeholnice"
+   ]
   },
   "91": {
    "io": [
@@ -122055,7 +122231,9 @@
    "gl": [
     "limpachemineas"
    ],
-   "cs": []
+   "cs": [
+    "kominíků"
+   ]
   },
   "92": {
    "io": [
@@ -122136,7 +122314,9 @@
    "gl": [
     "florista"
    ],
-   "cs": []
+   "cs": [
+    "květinářky"
+   ]
   },
   "93": {
    "io": [
@@ -122217,7 +122397,9 @@
    "gl": [
     "institutriz"
    ],
-   "cs": []
+   "cs": [
+    "vychovatelka"
+   ]
   },
   "94": {
    "io": [
@@ -122298,7 +122480,9 @@
    "gl": [
     "vendedora"
    ],
-   "cs": []
+   "cs": [
+    "prodavačce"
+   ]
   },
   "95": {
    "io": [
@@ -122379,7 +122563,9 @@
    "gl": [
     "dama de compaña"
    ],
-   "cs": []
+   "cs": [
+    "společnici"
+   ]
   },
   "96": {
    "io": [
@@ -122458,7 +122644,9 @@
    "gl": [
     "enxeñeiro"
    ],
-   "cs": []
+   "cs": [
+    "inženýra"
+   ]
   },
   "97": {
    "io": [
@@ -122539,7 +122727,9 @@
    "gl": [
     "modista"
    ],
-   "cs": []
+   "cs": [
+    "modistku"
+   ]
   },
   "98": {
    "io": [
@@ -122618,7 +122808,9 @@
    "gl": [
     "neneira"
    ],
-   "cs": []
+   "cs": [
+    "chůvou"
+   ]
   },
   "99": {
    "io": [
@@ -122699,7 +122891,9 @@
    "gl": [
     "monxes"
    ],
-   "cs": []
+   "cs": [
+    "mnichy"
+   ]
   }
  },
  "t15": {
