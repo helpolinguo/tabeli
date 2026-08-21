@@ -32053,7 +32053,9 @@
    "lb": [
     "Corridor"
    ],
-   "rm": []
+   "rm": [
+    "corridor"
+   ]
   },
   "b": {
    "io": [
@@ -32143,7 +32145,9 @@
    "lb": [
     "Salon"
    ],
-   "rm": []
+   "rm": [
+    "salun"
+   ]
   },
   "c": {
    "io": [
@@ -32233,7 +32237,9 @@
    "lb": [
     "Iesszëmmer"
    ],
-   "rm": []
+   "rm": [
+    "stanza da magliar"
+   ]
   },
   "d": {
    "io": [
@@ -32323,7 +32329,9 @@
    "lb": [
     "Kichen"
    ],
-   "rm": []
+   "rm": [
+    "cuschina"
+   ]
   },
   "e": {
    "io": [
@@ -32413,7 +32421,9 @@
    "lb": [
     "Office"
    ],
-   "rm": []
+   "rm": [
+    "stanza dals servents"
+   ]
   },
   "f": {
    "io": [
@@ -32503,7 +32513,9 @@
    "lb": [
     "Bureau"
    ],
-   "rm": []
+   "rm": [
+    "biro"
+   ]
   },
   "g": {
    "io": [
@@ -32593,7 +32605,9 @@
    "lb": [
     "Schlofzëmmer"
    ],
-   "rm": []
+   "rm": [
+    "stanza da durmir"
+   ]
   },
   "h": {
    "io": [
@@ -32683,7 +32697,9 @@
    "lb": [
     "Alkove"
    ],
-   "rm": []
+   "rm": [
+    "alcova"
+   ]
   },
   "i": {
    "io": [
@@ -32773,7 +32789,9 @@
    "lb": [
     "Frëndenzëmmer"
    ],
-   "rm": []
+   "rm": [
+    "stanza per ils amis"
+   ]
   },
   "j": {
    "io": [
@@ -32863,7 +32881,9 @@
    "lb": [
     "Kabinett"
    ],
-   "rm": []
+   "rm": [
+    "toaletta"
+   ]
   },
   "k": {
    "io": [
@@ -32953,7 +32973,9 @@
    "lb": [
     "Kannerzëmmer"
    ],
-   "rm": []
+   "rm": [
+    "stanza dals uffants"
+   ]
   },
   "l": {
    "io": [
@@ -33079,7 +33101,9 @@
    "lb": [
     "Palier"
    ],
-   "rm": []
+   "rm": [
+    "sulèr"
+   ]
   },
   "1": {
    "io": [
@@ -33196,7 +33220,10 @@
     "Fassad",
     "Buedzëmmer"
    ],
-   "rm": []
+   "rm": [
+    "fatschada",
+    "stanza da bogn"
+   ]
   },
   "2": {
    "io": [
@@ -33284,7 +33311,9 @@
    "lb": [
     "Fundamenter"
    ],
-   "rm": []
+   "rm": [
+    "fundaments"
+   ]
   },
   "3": {
    "io": [
@@ -33372,7 +33401,9 @@
    "lb": [
     "Keller"
    ],
-   "rm": []
+   "rm": [
+    "chaler"
+   ]
   },
   "4": {
    "io": [
@@ -33460,7 +33491,9 @@
    "lb": [
     "Dier"
    ],
-   "rm": []
+   "rm": [
+    "porta"
+   ]
   },
   "5": {
    "io": [
@@ -33550,7 +33583,9 @@
    "lb": [
     "Kellerfënster"
    ],
-   "rm": []
+   "rm": [
+    "fanestrin dal chaler"
+   ]
   },
   "6": {
    "io": [
@@ -33640,7 +33675,9 @@
    "lb": [
     "Schlass"
    ],
-   "rm": []
+   "rm": [
+    "sarralia"
+   ]
   },
   "7": {
    "io": [
@@ -33730,7 +33767,9 @@
    "lb": [
     "Parterre"
    ],
-   "rm": []
+   "rm": [
+    "plaunterren"
+   ]
   },
   "8": {
    "io": [
@@ -33849,7 +33888,10 @@
     "Dieren",
     "Entrée-Dier"
    ],
-   "rm": []
+   "rm": [
+    "portas",
+    "porta d'entrada"
+   ]
   },
   "9": {
    "io": [
@@ -33939,7 +33981,9 @@
    "lb": [
     "Perron"
    ],
-   "rm": []
+   "rm": [
+    "perrun"
+   ]
   },
   "10": {
    "io": [
@@ -34029,7 +34073,9 @@
    "lb": [
     "Schwell"
    ],
-   "rm": []
+   "rm": [
+    "sogl"
+   ]
   },
   "11": {
    "io": [
@@ -34103,7 +34149,9 @@
    "lb": [
     "Schell"
    ],
-   "rm": []
+   "rm": [
+    "campanella"
+   ]
   },
   "12": {
    "io": [
@@ -34193,7 +34241,9 @@
    "lb": [
     "Vestibule"
    ],
-   "rm": []
+   "rm": [
+    "vestibul"
+   ]
   },
   "13": {
    "io": [
@@ -34283,7 +34333,9 @@
    "lb": [
     "Trap"
    ],
-   "rm": []
+   "rm": [
+    "stgala"
+   ]
   },
   "14": {
    "io": [
@@ -34373,7 +34425,9 @@
    "lb": [
     "Stufen"
    ],
-   "rm": []
+   "rm": [
+    "stgalims"
+   ]
   },
   "15": {
    "io": [
@@ -34463,7 +34517,9 @@
    "lb": [
     "Handleef"
    ],
-   "rm": []
+   "rm": [
+    "sustegn da maun"
+   ]
   },
   "16": {
    "io": [
@@ -34553,7 +34609,9 @@
    "lb": [
     "Parquet"
    ],
-   "rm": []
+   "rm": [
+    "parquets"
+   ]
   },
   "17": {
    "io": [
@@ -34643,7 +34701,9 @@
    "lb": [
     "Fënsteren"
    ],
-   "rm": []
+   "rm": [
+    "fanestras"
+   ]
   },
   "18": {
    "io": [
@@ -34733,7 +34793,9 @@
    "lb": [
     "Fënsterschäiwen"
    ],
-   "rm": []
+   "rm": [
+    "vaiders"
+   ]
   },
   "19": {
    "io": [
@@ -34823,7 +34885,9 @@
    "lb": [
     "Fënsterlueden"
    ],
-   "rm": []
+   "rm": [
+    "scurets"
+   ]
   },
   "20": {
    "io": [
@@ -34913,7 +34977,9 @@
    "lb": [
     "Toilette"
    ],
-   "rm": []
+   "rm": [
+    "necessari"
+   ]
   },
   "21": {
    "io": [
@@ -34999,7 +35065,9 @@
    "lb": [
     "Terrass"
    ],
-   "rm": []
+   "rm": [
+    "terrassa"
+   ]
   },
   "22": {
    "io": [
@@ -35089,7 +35157,9 @@
    "lb": [
     "Klack"
    ],
-   "rm": []
+   "rm": [
+    "campana"
+   ]
   },
   "23": {
    "io": [
@@ -35179,7 +35249,9 @@
    "lb": [
     "Veranda"
    ],
-   "rm": []
+   "rm": [
+    "veranda"
+   ]
   },
   "24": {
    "io": [
@@ -35269,7 +35341,9 @@
    "lb": [
     "Zink"
    ],
-   "rm": []
+   "rm": [
+    "da zinc"
+   ]
   },
   "25": {
    "io": [
@@ -35359,7 +35433,9 @@
    "lb": [
     "Glasdier"
    ],
-   "rm": []
+   "rm": [
+    "porta da vaider"
+   ]
   },
   "26": {
    "io": [
@@ -35449,7 +35525,9 @@
    "lb": [
     "Plafongen"
    ],
-   "rm": []
+   "rm": [
+    "plafuns"
+   ]
   },
   "27": {
    "io": [
@@ -35537,7 +35615,9 @@
    "lb": [
     "Stack"
    ],
-   "rm": []
+   "rm": [
+    "plaun"
+   ]
   },
   "28": {
    "io": [
@@ -35627,7 +35707,9 @@
    "lb": [
     "Balkon"
    ],
-   "rm": []
+   "rm": [
+    "balcun"
+   ]
   },
   "29": {
    "io": [
@@ -35717,7 +35799,9 @@
    "lb": [
     "Store"
    ],
-   "rm": []
+   "rm": [
+    "storen"
+   ]
   },
   "31": {
    "io": [
@@ -35807,7 +35891,9 @@
    "lb": [
     "Daach"
    ],
-   "rm": []
+   "rm": [
+    "tetg"
+   ]
   },
   "32": {
    "io": [
@@ -35897,7 +35983,9 @@
    "lb": [
     "mat Schiefer gedeckt"
    ],
-   "rm": []
+   "rm": [
+    "cuvert cun ardesias"
+   ]
   },
   "33": {
    "io": [
@@ -36016,7 +36104,10 @@
     "Veranda",
     "Mansarden"
    ],
-   "rm": []
+   "rm": [
+    "veranda",
+    "mansardas"
+   ]
   },
   "34": {
    "io": [],
@@ -36140,7 +36231,9 @@
    "lb": [
     "Dachstull"
    ],
-   "rm": []
+   "rm": [
+    "ovra da lain"
+   ]
   },
   "36": {
    "io": [
@@ -36230,7 +36323,9 @@
    "lb": [
     "Giewel"
    ],
-   "rm": []
+   "rm": [
+    "frontispizi"
+   ]
   },
   "37": {
    "io": [
@@ -36320,7 +36415,9 @@
    "lb": [
     "Balken"
    ],
-   "rm": []
+   "rm": [
+    "travs"
+   ]
   },
   "38": {
    "io": [
@@ -36410,7 +36507,9 @@
    "lb": [
     "Dachfënster"
    ],
-   "rm": []
+   "rm": [
+    "fanestra da tetg"
+   ]
   },
   "39": {
    "io": [
@@ -36500,7 +36599,9 @@
    "lb": [
     "Wiederhunn"
    ],
-   "rm": []
+   "rm": [
+    "frizza da vent"
+   ]
   },
   "40": {
    "io": [
@@ -36590,7 +36691,9 @@
    "lb": [
     "Blëtzofleeder"
    ],
-   "rm": []
+   "rm": [
+    "parafulmin"
+   ]
   },
   "41": {
    "io": [
@@ -36680,7 +36783,9 @@
    "lb": [
     "Kamäin"
    ],
-   "rm": []
+   "rm": [
+    "chamin"
+   ]
   },
   "42": {
    "io": [
@@ -36770,7 +36875,9 @@
    "lb": [
     "Dachrënnen"
    ],
-   "rm": []
+   "rm": [
+    "channals dal tetg"
+   ]
   },
   "43": {
    "io": [
@@ -36860,7 +36967,9 @@
    "lb": [
     "Reenoflafrouer"
    ],
-   "rm": []
+   "rm": [
+    "tubs da plievgia"
+   ]
   },
   "44": {
    "io": [
@@ -36950,7 +37059,9 @@
    "lb": [
     "koperen"
    ],
-   "rm": []
+   "rm": [
+    "da rom"
+   ]
   },
   "45": {
    "io": [
@@ -37040,7 +37151,9 @@
    "lb": [
     "Haff"
    ],
-   "rm": []
+   "rm": [
+    "curt"
+   ]
   },
   "46": {
    "io": [
@@ -37130,7 +37243,9 @@
    "lb": [
     "Grouf"
    ],
-   "rm": []
+   "rm": [
+    "fossa"
+   ]
   },
   "47": {
    "io": [
@@ -37220,7 +37335,9 @@
    "lb": [
     "Gitter"
    ],
-   "rm": []
+   "rm": [
+    "grigl"
+   ]
   },
   "48": {
    "io": [
@@ -37310,7 +37427,9 @@
    "lb": [
     "Portal"
    ],
-   "rm": []
+   "rm": [
+    "portun"
+   ]
   },
   "49": {
    "io": [
@@ -37394,7 +37513,9 @@
    "lb": [
     "Gäertchen"
    ],
-   "rm": []
+   "rm": [
+    "iertin"
+   ]
   },
   "50": {
    "io": [
@@ -37484,7 +37605,9 @@
    "lb": [
     "Bieder"
    ],
-   "rm": []
+   "rm": [
+    "quartins"
+   ]
   },
   "51": {
    "io": [
@@ -37574,7 +37697,9 @@
    "lb": [
     "Remise"
    ],
-   "rm": []
+   "rm": [
+    "remisa"
+   ]
   },
   "52": {
    "io": [
@@ -37664,7 +37789,9 @@
    "lb": [
     "Kutsch"
    ],
-   "rm": []
+   "rm": [
+    "chalesch"
+   ]
   },
   "53": {
    "io": [
@@ -37748,7 +37875,9 @@
    "lb": [
     "Rigel"
    ],
-   "rm": []
+   "rm": [
+    "sbarr"
+   ]
   },
   "54": {
    "io": [
@@ -37838,7 +37967,9 @@
    "lb": [
     "Päerdsstall"
    ],
-   "rm": []
+   "rm": [
+    "stalla"
+   ]
   },
   "55": {
    "io": [
@@ -37928,7 +38059,9 @@
    "lb": [
     "mat Zille gedeckt"
    ],
-   "rm": []
+   "rm": [
+    "cuvert cun tegels"
+   ]
   },
   "56": {
    "io": [
@@ -38018,7 +38151,9 @@
    "lb": [
     "Wäscherei"
    ],
-   "rm": []
+   "rm": [
+    "lavandaria"
+   ]
   },
   "58": {
    "io": [],
@@ -38142,7 +38277,9 @@
    "lb": [
     "Quadersteng"
    ],
-   "rm": []
+   "rm": [
+    "crappa da taglia"
+   ]
   },
   "60": {
    "io": [
@@ -38232,7 +38369,9 @@
    "lb": [
     "Steeblöck"
    ],
-   "rm": []
+   "rm": [
+    "blocs da crappa"
+   ]
   },
   "61": {
    "io": [
@@ -38322,7 +38461,9 @@
    "lb": [
     "Zillen"
    ],
-   "rm": []
+   "rm": [
+    "matuns"
+   ]
   },
   "62": {
    "io": [
@@ -38412,7 +38553,9 @@
    "lb": [
     "Sand"
    ],
-   "rm": []
+   "rm": [
+    "sablun"
+   ]
   },
   "63": {
    "io": [
@@ -38502,7 +38645,9 @@
    "lb": [
     "Kallek"
    ],
-   "rm": []
+   "rm": [
+    "chaltschina"
+   ]
   },
   "64": {
    "io": [
@@ -38592,7 +38737,9 @@
    "lb": [
     "Waasser"
    ],
-   "rm": []
+   "rm": [
+    "aua"
+   ]
   },
   "65": {
    "io": [
@@ -38682,7 +38829,9 @@
    "lb": [
     "Mierdel"
    ],
-   "rm": []
+   "rm": [
+    "malta"
+   ]
   },
   "66": {
    "io": [
@@ -38772,7 +38921,9 @@
    "lb": [
     "Schifer"
    ],
-   "rm": []
+   "rm": [
+    "ardesias"
+   ]
   },
   "67": {
    "io": [
@@ -38862,7 +39013,9 @@
    "lb": [
     "Eisen"
    ],
-   "rm": []
+   "rm": [
+    "ferramenta"
+   ]
   },
   "69": {
    "io": [],
@@ -39022,7 +39175,9 @@
    "lb": [
     "Gips"
    ],
-   "rm": []
+   "rm": [
+    "gips"
+   ]
   },
   "71": {
    "io": [
@@ -39110,7 +39265,9 @@
    "lb": [
     "Sak"
    ],
-   "rm": []
+   "rm": [
+    "satg"
+   ]
   },
   "73": {
    "io": [
@@ -39200,7 +39357,9 @@
    "lb": [
     "Kitt"
    ],
-   "rm": []
+   "rm": [
+    "mastic"
+   ]
   },
   "75": {
    "io": [
@@ -39290,7 +39449,9 @@
    "lb": [
     "Architekt"
    ],
-   "rm": []
+   "rm": [
+    "architect"
+   ]
   },
   "76": {
    "io": [
@@ -39380,7 +39541,9 @@
    "lb": [
     "Plang"
    ],
-   "rm": []
+   "rm": [
+    "plan"
+   ]
   },
   "77": {
    "io": [
@@ -39470,7 +39633,9 @@
    "lb": [
     "Entrepreneur"
    ],
-   "rm": []
+   "rm": [
+    "impressari"
+   ]
   },
   "78": {
    "io": [
@@ -39558,7 +39723,9 @@
    "lb": [
     "Lineal"
    ],
-   "rm": []
+   "rm": [
+    "regla"
+   ]
   },
   "81": {
    "io": [
@@ -39648,7 +39815,9 @@
    "lb": [
     "Äerdaarbechter"
    ],
-   "rm": []
+   "rm": [
+    "terraglier"
+   ]
   },
   "82": {
    "io": [
@@ -39738,7 +39907,9 @@
    "lb": [
     "Schëpp"
    ],
-   "rm": []
+   "rm": [
+    "pala"
+   ]
   },
   "83": {
    "io": [
@@ -39828,7 +39999,9 @@
    "lb": [
     "Steemetzer"
    ],
-   "rm": []
+   "rm": [
+    "tagliacrappa"
+   ]
   },
   "84": {
    "io": [
@@ -39918,7 +40091,9 @@
    "lb": [
     "Hummer"
    ],
-   "rm": []
+   "rm": [
+    "martè"
+   ]
   },
   "85": {
    "io": [
@@ -40008,7 +40183,9 @@
    "lb": [
     "Steesäg"
    ],
-   "rm": []
+   "rm": [
+    "resgia da crappa"
+   ]
   },
   "87": {
    "io": [
@@ -40098,7 +40275,9 @@
    "lb": [
     "Mierdelmaacher"
    ],
-   "rm": []
+   "rm": [
+    "malteder"
+   ]
   },
   "90": {
    "io": [
@@ -40184,7 +40363,9 @@
    "lb": [
     "Wierkbänk"
    ],
-   "rm": []
+   "rm": [
+    "banc da lavur"
+   ]
   },
   "91": {
    "io": [
@@ -40274,7 +40455,9 @@
    "lb": [
     "Hiwwel"
    ],
-   "rm": []
+   "rm": [
+    "plana"
+   ]
   },
   "92": {
    "io": [
@@ -40364,7 +40547,9 @@
    "lb": [
     "Schrauwstack"
    ],
-   "rm": []
+   "rm": [
+    "morsa"
+   ]
   },
   "94": {
    "io": [
@@ -40450,7 +40635,9 @@
    "lb": [
     "Säg"
    ],
-   "rm": []
+   "rm": [
+    "resgia"
+   ]
   },
   "94bis": {
    "io": [
@@ -40540,7 +40727,9 @@
    "lb": [
     "Beitel"
    ],
-   "rm": []
+   "rm": [
+    "stgalpel"
+   ]
   },
   "95": {
    "io": [
@@ -40630,7 +40819,9 @@
    "lb": [
     "Zirkel"
    ],
-   "rm": []
+   "rm": [
+    "cumpass"
+   ]
   },
   "95bis": {
    "io": [
@@ -40802,7 +40993,9 @@
    "lb": [
     "Glaser"
    ],
-   "rm": []
+   "rm": [
+    "vaidrer"
+   ]
   },
   "97": {
    "io": [
@@ -40892,7 +41085,9 @@
    "lb": [
     "Schlässer"
    ],
-   "rm": []
+   "rm": [
+    "sarrader"
+   ]
   },
   "98": {
    "io": [
@@ -40982,7 +41177,9 @@
    "lb": [
     "Feil"
    ],
-   "rm": []
+   "rm": [
+    "lima"
+   ]
   },
   "99": {
    "io": [
@@ -41072,7 +41269,9 @@
    "lb": [
     "Gipser"
    ],
-   "rm": []
+   "rm": [
+    "gipsader"
+   ]
   },
   "100": {
    "io": [
@@ -41162,7 +41361,9 @@
    "lb": [
     "Kell"
    ],
-   "rm": []
+   "rm": [
+    "cazzola"
+   ]
   },
   "101": {
    "io": [
@@ -41252,7 +41453,9 @@
    "lb": [
     "Mierdelkëscht"
    ],
-   "rm": []
+   "rm": [
+    "trog"
+   ]
   },
   "102": {
    "io": [
@@ -41342,7 +41545,9 @@
    "lb": [
     "Moler"
    ],
-   "rm": []
+   "rm": [
+    "pictur"
+   ]
   },
   "103": {
    "io": [
@@ -41430,7 +41635,9 @@
    "lb": [
     "Faarf"
    ],
-   "rm": []
+   "rm": [
+    "colur"
+   ]
   },
   "104": {
    "io": [
@@ -41518,7 +41725,9 @@
    "lb": [
     "Pinsel"
    ],
-   "rm": []
+   "rm": [
+    "penel"
+   ]
   },
   "106": {
    "io": [
@@ -41608,7 +41817,9 @@
    "lb": [
     "Leeder"
    ],
-   "rm": []
+   "rm": [
+    "stgala"
+   ]
   },
   "107": {
    "io": [
@@ -41727,7 +41938,10 @@
     "Mierdeldréier",
     "Tapisséier"
    ],
-   "rm": []
+   "rm": [
+    "purtader da malta",
+    "tapezier"
+   ]
   },
   "108": {
    "io": [
@@ -41817,7 +42031,9 @@
    "lb": [
     "Maurer"
    ],
-   "rm": []
+   "rm": [
+    "murader"
+   ]
   },
   "109": {
    "io": [
@@ -41905,7 +42121,9 @@
    "lb": [
     "Bläilot"
    ],
-   "rm": []
+   "rm": [
+    "plumb"
+   ]
   },
   "110": {
    "io": [
@@ -41993,7 +42211,9 @@
    "lb": [
     "Gerüst"
    ],
-   "rm": []
+   "rm": [
+    "impalcadi"
+   ]
   },
   "111": {
    "io": [
@@ -42083,7 +42303,9 @@
    "lb": [
     "Maurergesell"
    ],
-   "rm": []
+   "rm": [
+    "servent dal murader"
+   ]
   },
   "112": {
    "io": [
@@ -42173,7 +42395,9 @@
    "lb": [
     "Schubkar"
    ],
-   "rm": []
+   "rm": [
+    "carriola"
+   ]
   },
   "113": {
    "io": [
@@ -42263,7 +42487,9 @@
    "lb": [
     "Léierbouf"
    ],
-   "rm": []
+   "rm": [
+    "emprendist"
+   ]
   },
   "114": {
    "io": [
@@ -42353,7 +42579,9 @@
    "lb": [
     "Eemer"
    ],
-   "rm": []
+   "rm": [
+    "sadella"
+   ]
   },
   "115": {
    "io": [
@@ -42443,7 +42671,9 @@
    "lb": [
     "Zimmermann"
    ],
-   "rm": []
+   "rm": [
+    "lennari"
+   ]
   },
   "116": {
    "io": [
@@ -42531,7 +42761,9 @@
    "lb": [
     "Aaxt"
    ],
-   "rm": []
+   "rm": [
+    "ascha"
+   ]
   },
   "117": {
    "io": [
@@ -42621,7 +42853,9 @@
    "lb": [
     "Zapfen"
    ],
-   "rm": []
+   "rm": [
+    "chavigls"
+   ]
   },
   "118": {
    "io": [
@@ -42711,7 +42945,9 @@
    "lb": [
     "Dachdecker"
    ],
-   "rm": []
+   "rm": [
+    "cuvrider"
+   ]
   },
   "121": {
    "io": [
@@ -42801,7 +43037,9 @@
    "lb": [
     "Spengler"
    ],
-   "rm": []
+   "rm": [
+    "lavurant da zinc"
+   ]
   },
   "124": {
    "io": [
@@ -42891,7 +43129,9 @@
    "lb": [
     "Elektriker"
    ],
-   "rm": []
+   "rm": [
+    "electricist"
+   ]
   },
   "125": {
    "io": [],
@@ -43051,7 +43291,9 @@
    "lb": [
     "Schmiddefeier"
    ],
-   "rm": []
+   "rm": [
+    "fusina"
+   ]
   },
   "127": {
    "io": [
@@ -43141,7 +43383,9 @@
    "lb": [
     "Amboss"
    ],
-   "rm": []
+   "rm": [
+    "ancugn"
+   ]
   },
   "128": {
    "io": [
@@ -43231,7 +43475,9 @@
    "lb": [
     "Zaang"
    ],
-   "rm": []
+   "rm": [
+    "tanaglia"
+   ]
   },
   "129": {
    "io": [
@@ -43321,7 +43567,9 @@
    "lb": [
     "Gäertner"
    ],
-   "rm": []
+   "rm": [
+    "giardinier"
+   ]
   },
   "130": {
    "io": [
@@ -43411,7 +43659,9 @@
    "lb": [
     "Rechen"
    ],
-   "rm": []
+   "rm": [
+    "rastè"
+   ]
   },
   "131": {
    "io": [
@@ -43499,7 +43749,9 @@
    "lb": [
     "Spuet"
    ],
-   "rm": []
+   "rm": [
+    "bade"
+   ]
   },
   "132": {
    "io": [
@@ -43587,7 +43839,9 @@
    "lb": [
     "Waasserkan"
    ],
-   "rm": []
+   "rm": [
+    "canna d'arusar"
+   ]
   },
   "133": {
    "io": [
@@ -43677,7 +43931,9 @@
    "lb": [
     "Päerdsknecht"
    ],
-   "rm": []
+   "rm": [
+    "servent dals chavals"
+   ]
   },
   "134": {
    "io": [
@@ -43767,7 +44023,9 @@
    "lb": [
     "Handpomp"
    ],
-   "rm": []
+   "rm": [
+    "pumpa da maun"
+   ]
   },
   "135": {
    "io": [
@@ -43857,7 +44115,9 @@
    "lb": [
     "Fuhrmann"
    ],
-   "rm": []
+   "rm": [
+    "charrader"
+   ]
   },
   "136": {
    "io": [
@@ -43945,7 +44205,9 @@
    "lb": [
     "Kärchen"
    ],
-   "rm": []
+   "rm": [
+    "char"
+   ]
   },
   "140": {
    "io": [],
@@ -44067,7 +44329,9 @@
    "lb": [
     "Handlanger"
    ],
-   "rm": []
+   "rm": [
+    "maunaval"
+   ]
   }
  },
  "t06": {
