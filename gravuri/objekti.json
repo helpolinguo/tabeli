@@ -93636,7 +93636,9 @@
    "gl": [
     "porto"
    ],
-   "cs": []
+   "cs": [
+    "přístavem"
+   ]
   },
   "2": {
    "io": [
@@ -93717,7 +93719,9 @@
    "gl": [
     "cais"
    ],
-   "cs": []
+   "cs": [
+    "nábřežích"
+   ]
   },
   "3": {
    "io": [
@@ -93796,7 +93800,9 @@
    "gl": [
     "arrabalde"
    ],
-   "cs": []
+   "cs": [
+    "předměstí"
+   ]
   },
   "4": {
    "io": [
@@ -93877,7 +93883,9 @@
    "gl": [
     "fábricas"
    ],
-   "cs": []
+   "cs": [
+    "továrnách"
+   ]
   },
   "5": {
    "io": [
@@ -93958,7 +93966,9 @@
    "gl": [
     "fábrica de gas"
    ],
-   "cs": []
+   "cs": [
+    "plynárně"
+   ]
   },
   "6": {
    "io": [
@@ -94033,7 +94043,9 @@
    "gl": [
     "cheminea"
    ],
-   "cs": []
+   "cs": [
+    "komín"
+   ]
   },
   "7": {
    "io": [
@@ -94114,7 +94126,9 @@
    "gl": [
     "castelo fortificado"
    ],
-   "cs": []
+   "cs": [
+    "opevněného hradu"
+   ]
   },
   "8": {
    "io": [
@@ -94195,7 +94209,9 @@
    "gl": [
     "porta"
    ],
-   "cs": []
+   "cs": [
+    "brána"
+   ]
   },
   "9": {
    "io": [
@@ -94276,7 +94292,9 @@
    "gl": [
     "torres"
    ],
-   "cs": []
+   "cs": [
+    "věžemi"
+   ]
   },
   "10": {
    "io": [
@@ -94357,7 +94375,9 @@
    "gl": [
     "aduana"
    ],
-   "cs": []
+   "cs": [
+    "celnice"
+   ]
   },
   "11": {
    "io": [
@@ -94434,7 +94454,9 @@
    "gl": [
     "rúa pequena"
    ],
-   "cs": []
+   "cs": [
+    "uličkou"
+   ]
   },
   "12": {
    "io": [
@@ -94513,7 +94535,9 @@
    "gl": [
     "casa do concello"
    ],
-   "cs": []
+   "cs": [
+    "radnici"
+   ]
   },
   "13": {
    "io": [
@@ -94588,7 +94612,9 @@
    "gl": [
     "campanario"
    ],
-   "cs": []
+   "cs": [
+    "zvonice"
+   ]
   },
   "14": {
    "io": [
@@ -94669,7 +94695,9 @@
    "gl": [
     "Bolsa"
    ],
-   "cs": []
+   "cs": [
+    "burza"
+   ]
   },
   "15": {
    "io": [
@@ -94748,7 +94776,9 @@
    "gl": [
     "prefectura"
    ],
-   "cs": []
+   "cs": [
+    "prefektura"
+   ]
   },
   "16": {
    "io": [
@@ -94825,7 +94855,9 @@
    "gl": [
     "cuarteis"
    ],
-   "cs": []
+   "cs": [
+    "kasárnách"
+   ]
   },
   "17": {
    "io": [
@@ -94906,7 +94938,9 @@
    "gl": [
     "parque municipal"
    ],
-   "cs": []
+   "cs": [
+    "městského parku"
+   ]
   },
   "18": {
    "io": [
@@ -94987,7 +95021,9 @@
    "gl": [
     "caixa de aforros"
    ],
-   "cs": []
+   "cs": [
+    "spořitelnou"
+   ]
   },
   "19": {
    "io": [
@@ -95068,7 +95104,9 @@
    "gl": [
     "bulevar"
    ],
-   "cs": []
+   "cs": [
+    "Bulvár"
+   ]
   },
   "20": {
    "io": [
@@ -95149,7 +95187,9 @@
    "gl": [
     "catedral"
    ],
-   "cs": []
+   "cs": [
+    "katedrály"
+   ]
   },
   "21": {
    "io": [
@@ -95226,7 +95266,9 @@
    "gl": [
     "instituto"
    ],
-   "cs": []
+   "cs": [
+    "lyceum"
+   ]
   },
   "22": {
    "io": [
@@ -95307,7 +95349,9 @@
    "gl": [
     "Palacio de Xustiza"
    ],
-   "cs": []
+   "cs": [
+    "soudu"
+   ]
   },
   "25": {
    "io": [
@@ -95388,7 +95432,9 @@
    "gl": [
     "café"
    ],
-   "cs": []
+   "cs": [
+    "kavárny"
+   ]
   },
   "26": {
    "io": [
@@ -95463,7 +95509,9 @@
    "gl": [
     "xardín público"
    ],
-   "cs": []
+   "cs": [
+    "veřejný sad"
+   ]
   },
   "27": {
    "io": [
@@ -95544,7 +95592,9 @@
    "gl": [
     "quiosco"
    ],
-   "cs": []
+   "cs": [
+    "altánu"
+   ]
   },
   "28": {
    "io": [
@@ -95619,7 +95669,9 @@
    "gl": [
     "estatua"
    ],
-   "cs": []
+   "cs": [
+    "socha"
+   ]
   },
   "29": {
    "io": [
@@ -95700,7 +95752,9 @@
    "gl": [
     "lámpadas de gas"
    ],
-   "cs": []
+   "cs": [
+    "plynové lampy"
+   ]
   },
   "31": {
    "io": [
@@ -95777,7 +95831,9 @@
    "gl": [
     "tranvías eléctricos"
    ],
-   "cs": []
+   "cs": [
+    "elektrickými tramvajemi"
+   ]
   },
   "32": {
    "io": [
@@ -95856,7 +95912,9 @@
    "gl": [
     "Banco"
    ],
-   "cs": []
+   "cs": [
+    "banka"
+   ]
   },
   "33": {
    "io": [
@@ -95937,7 +95995,9 @@
    "gl": [
     "ordenanzas do banco"
    ],
-   "cs": []
+   "cs": [
+    "Bankovní poslové"
+   ]
   },
   "34": {
    "io": [
@@ -96016,7 +96076,9 @@
    "gl": [
     "biblioteca"
    ],
-   "cs": []
+   "cs": [
+    "knihovnu"
+   ]
   },
   "35": {
    "io": [
@@ -96095,7 +96157,9 @@
    "gl": [
     "coleccións de ciencias naturais"
    ],
-   "cs": []
+   "cs": [
+    "přírodovědné sbírky"
+   ]
   },
   "36": {
    "io": [
@@ -96172,7 +96236,9 @@
    "gl": [
     "galería de pintura"
    ],
-   "cs": []
+   "cs": [
+    "obrazárnu"
+   ]
   },
   "37": {
    "io": [
@@ -96253,7 +96319,9 @@
    "gl": [
     "garda"
    ],
-   "cs": []
+   "cs": [
+    "hlídači"
+   ]
   },
   "38": {
    "io": [
@@ -96334,7 +96402,9 @@
    "gl": [
     "pintores"
    ],
-   "cs": []
+   "cs": [
+    "Malíři"
+   ]
   },
   "39": {
    "io": [
@@ -96415,7 +96485,9 @@
    "gl": [
     "hospital"
    ],
-   "cs": []
+   "cs": [
+    "nemocnice"
+   ]
   },
   "40": {
    "io": [
@@ -96496,7 +96568,9 @@
    "gl": [
     "cúpula"
    ],
-   "cs": []
+   "cs": [
+    "kupole"
+   ]
   },
   "41": {
    "io": [
@@ -96577,7 +96651,9 @@
    "gl": [
     "escola normal"
    ],
-   "cs": []
+   "cs": [
+    "učitelského ústavu"
+   ]
   },
   "42": {
    "io": [
@@ -96656,7 +96732,9 @@
    "gl": [
     "casa particular"
    ],
-   "cs": []
+   "cs": [
+    "soukromém domě"
+   ]
   },
   "43": {
    "io": [
@@ -96737,7 +96815,9 @@
    "gl": [
     "oficina de correos"
    ],
-   "cs": []
+   "cs": [
+    "poštovní úřad"
+   ]
   },
   "44": {
    "io": [
@@ -96818,7 +96898,9 @@
    "gl": [
     "empregados de correos"
    ],
-   "cs": []
+   "cs": [
+    "Poštovní zřízenci"
+   ]
   },
   "45": {
    "io": [
@@ -96899,7 +96981,9 @@
    "gl": [
     "carteiros"
    ],
-   "cs": []
+   "cs": [
+    "listonoši"
+   ]
   },
   "46": {
    "io": [
@@ -96980,7 +97064,9 @@
    "gl": [
     "beirarrúa"
    ],
-   "cs": []
+   "cs": [
+    "chodníku"
+   ]
   },
   "47": {
    "io": [
@@ -97061,7 +97147,9 @@
    "gl": [
     "calzada"
    ],
-   "cs": []
+   "cs": [
+    "vozovce"
+   ]
   },
   "48": {
    "io": [
@@ -97142,7 +97230,9 @@
    "gl": [
     "condutor de tranvía"
    ],
-   "cs": []
+   "cs": [
+    "Řidič tramvaje"
+   ]
   },
   "50": {
    "io": [
@@ -97217,7 +97307,9 @@
    "ro": [],
    "ga": [],
    "gl": [],
-   "cs": []
+   "cs": [
+    "sanitní vůz"
+   ]
   },
   "51": {
    "io": [
@@ -97298,7 +97390,9 @@
    "gl": [
     "enfermeiro"
    ],
-   "cs": []
+   "cs": [
+    "ošetřovatelem"
+   ]
   },
   "52": {
    "io": [
@@ -97379,7 +97473,9 @@
    "gl": [
     "cirurxián"
    ],
-   "cs": []
+   "cs": [
+    "chirurgem"
+   ]
   },
   "53": {
    "io": [
@@ -97460,7 +97556,9 @@
    "gl": [
     "ferido"
    ],
-   "cs": []
+   "cs": [
+    "raněného"
+   ]
   },
   "54": {
    "io": [
@@ -97541,7 +97639,9 @@
    "gl": [
     "padiola"
    ],
-   "cs": []
+   "cs": [
+    "nosítkách"
+   ]
   },
   "55": {
    "io": [
@@ -97622,7 +97722,9 @@
    "gl": [
     "quiosco de xornais"
    ],
-   "cs": []
+   "cs": [
+    "novinového stánku"
+   ]
   },
   "56": {
    "io": [
@@ -97703,7 +97805,9 @@
    "gl": [
     "curiosos"
    ],
-   "cs": []
+   "cs": [
+    "zvědavce"
+   ]
   },
   "57": {
    "io": [
@@ -97784,7 +97888,9 @@
    "gl": [
     "soldados"
    ],
-   "cs": []
+   "cs": [
+    "vojáci"
+   ]
   },
   "61": {
    "io": [
@@ -97865,7 +97971,9 @@
    "gl": [
     "gardas municipais a cabalo"
    ],
-   "cs": []
+   "cs": [
+    "městskými strážníky na koních"
+   ]
   },
   "63": {
    "io": [
@@ -97946,7 +98054,9 @@
    "gl": [
     "gardas"
    ],
-   "cs": []
+   "cs": [
+    "četníci"
+   ]
   },
   "64": {
    "io": [
@@ -98027,7 +98137,9 @@
    "gl": [
     "axentes de policía"
    ],
-   "cs": []
+   "cs": [
+    "policistům"
+   ]
   },
   "65": {
    "io": [
@@ -98106,7 +98218,9 @@
    "gl": [
     "vítima"
    ],
-   "cs": []
+   "cs": [
+    "oběť"
+   ]
   },
   "66": {
    "io": [
@@ -98187,7 +98301,9 @@
    "gl": [
     "O oficial"
    ],
-   "cs": []
+   "cs": [
+    "Důstojník"
+   ]
   },
   "67": {
    "io": [
@@ -98268,7 +98384,9 @@
    "gl": [
     "bomba de vapor"
    ],
-   "cs": []
+   "cs": [
+    "parní stříkačka"
+   ]
   },
   "68": {
    "io": [
@@ -98349,7 +98467,9 @@
    "gl": [
     "bomba de man"
    ],
-   "cs": []
+   "cs": [
+    "ruční stříkačku"
+   ]
   },
   "69": {
    "io": [
@@ -98424,7 +98544,9 @@
    "gl": [
     "tubo"
    ],
-   "cs": []
+   "cs": [
+    "hadice"
+   ]
   },
   "70": {
    "io": [
@@ -98505,7 +98627,9 @@
    "gl": [
     "lanza"
    ],
-   "cs": []
+   "cs": [
+    "proudnici"
+   ]
   },
   "71": {
    "io": [
@@ -98586,7 +98710,9 @@
    "gl": [
     "chorro"
    ],
-   "cs": []
+   "cs": [
+    "proud"
+   ]
   },
   "72": {
    "io": [
@@ -98661,7 +98787,9 @@
    "gl": [
     "escaleira"
    ],
-   "cs": []
+   "cs": [
+    "žebřík"
+   ]
   },
   "73": {
    "io": [
@@ -98742,7 +98870,9 @@
    "gl": [
     "teatro"
    ],
-   "cs": []
+   "cs": [
+    "divadla"
+   ]
   },
   "74": {
    "io": [
@@ -98823,7 +98953,9 @@
    "gl": [
     "O incendio"
    ],
-   "cs": []
+   "cs": [
+    "Požár"
+   ]
   },
   "75": {
    "io": [
@@ -98896,7 +99028,9 @@
    "ro": [],
    "ga": [],
    "gl": [],
-   "cs": []
+   "cs": [
+    "dýmu"
+   ]
   },
   "76": {
    "io": [
@@ -98975,7 +99109,9 @@
    "gl": [
     "espectadores"
    ],
-   "cs": []
+   "cs": [
+    "diváků"
+   ]
   },
   "77": {
    "io": [
@@ -99056,7 +99192,9 @@
    "gl": [
     "balcón"
    ],
-   "cs": []
+   "cs": [
+    "balkon"
+   ]
   },
   "78": {
    "io": [
@@ -99137,7 +99275,9 @@
    "gl": [
     "peristilo"
    ],
-   "cs": []
+   "cs": [
+    "peristylem"
+   ]
   },
   "79": {
    "io": [
@@ -99218,7 +99358,9 @@
    "gl": [
     "cartel"
    ],
-   "cs": []
+   "cs": [
+    "plakát"
+   ]
   },
   "80": {
    "io": [
@@ -99299,7 +99441,9 @@
    "gl": [
     "orquestra"
    ],
-   "cs": []
+   "cs": [
+    "orchestru"
+   ]
   },
   "81": {
    "io": [
@@ -99406,7 +99550,10 @@
     "músicos",
     "violín"
    ],
-   "cs": []
+   "cs": [
+    "hudebníky",
+    "housle"
+   ]
   },
   "82": {
    "io": [
@@ -99487,7 +99634,9 @@
    "gl": [
     "frauta"
    ],
-   "cs": []
+   "cs": [
+    "flétnu"
+   ]
   },
   "83": {
    "io": [
@@ -99568,7 +99717,9 @@
    "gl": [
     "violonchelo"
    ],
-   "cs": []
+   "cs": [
+    "violoncello"
+   ]
   },
   "84": {
    "io": [
@@ -99649,7 +99800,9 @@
    "gl": [
     "trombón"
    ],
-   "cs": []
+   "cs": [
+    "trombon"
+   ]
   },
   "85": {
    "io": [
@@ -99730,7 +99883,9 @@
    "gl": [
     "tambor"
    ],
-   "cs": []
+   "cs": [
+    "buben"
+   ]
   },
   "86": {
    "io": [
@@ -99805,7 +99960,9 @@
    "gl": [
     "bombeiros"
    ],
-   "cs": []
+   "cs": [
+    "hasiči"
+   ]
   },
   "87": {
    "io": [
@@ -99886,7 +100043,9 @@
    "gl": [
     "mobiliario"
    ],
-   "cs": []
+   "cs": [
+    "nábytku"
+   ]
   },
   "88": {
    "io": [
@@ -99967,7 +100126,9 @@
    "gl": [
     "as actrices"
    ],
-   "cs": []
+   "cs": [
+    "herečky"
+   ]
   },
   "89": {
    "io": [
@@ -100048,7 +100209,9 @@
    "gl": [
     "Os actores"
    ],
-   "cs": []
+   "cs": [
+    "Herci"
+   ]
   },
   "90": {
    "io": [
@@ -100125,7 +100288,9 @@
    "gl": [
     "traxe"
    ],
-   "cs": []
+   "cs": [
+    "kostýmu"
+   ]
   },
   "91": {
    "io": [
@@ -100206,7 +100371,9 @@
    "gl": [
     "prefecto"
    ],
-   "cs": []
+   "cs": [
+    "prefektem"
+   ]
   },
   "92": {
    "io": [
@@ -100287,7 +100454,9 @@
    "gl": [
     "xornalista"
    ],
-   "cs": []
+   "cs": [
+    "novináři"
+   ]
   },
   "93": {
    "io": [
@@ -100368,7 +100537,9 @@
    "gl": [
     "alcalde"
    ],
-   "cs": []
+   "cs": [
+    "starostou"
+   ]
   },
   "94": {
    "io": [
@@ -100449,7 +100620,9 @@
    "gl": [
     "comisario de policía"
    ],
-   "cs": []
+   "cs": [
+    "policejním komisařem"
+   ]
   },
   "95": {
    "io": [
@@ -100530,7 +100703,9 @@
    "gl": [
     "maxistrado"
    ],
-   "cs": []
+   "cs": [
+    "soudním úředníkem"
+   ]
   },
   "96": {
    "io": [
@@ -100611,7 +100786,9 @@
    "gl": [
     "praza"
    ],
-   "cs": []
+   "cs": [
+    "náměstí"
+   ]
   }
  },
  "t12": {
