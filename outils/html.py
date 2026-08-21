@@ -231,6 +231,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "lt", "nomo": "Lietuvių", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "lb", "nomo": "Lëtzebuergesch", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -807,7 +809,8 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "oc": "oc", "uk": "uk",
            "eu": "eu", "ro": "ro",
            "ga": "ga", "gl": "gl",
-           "cs": "cs", "lt": "lt"}   # langue -> texto/<...>
+           "cs": "cs", "lt": "lt",
+           "lb": "lb"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1840,7 +1843,17 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # porte un E surpointe, lettre que nulle autre
                         # colonne n'emploie, et ne se confond donc avec
                         # rien. Le titre du volume est en bas de casse.
-                        r"|LENTELĖ")
+                        r"|LENTELĖ"
+                        # LE LUXEMBOURGEOIS N'AJOUTE RIEN A CETTE LISTE, et
+                        # c'est le second cas du genre apres le galicien.
+                        # Il ecrit « TABELL Nr. 1 », c'est-a-dire
+                        # exactement ce que le suedois ecrit, et le membre
+                        # suedois — qui exige le « Nr » pour ne pas
+                        # attraper le « TABELO » de l'ido — le couvre mot
+                        # pour mot. Deux langues germaniques, deux pays
+                        # sans frontiere commune, et la meme ligne de
+                        # titre.
+                        )
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
 # le membre « TAULA » l'attrape deja : rien a ajouter. Ce qui separe
@@ -1940,6 +1953,13 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # passer la TREČIOJI SERIJA du tableau 11 : le controle des
             # roles l'a signalee, et c'est lui qui a rattrape la faute.
             r"|pirm(?:a|oji)|antr(?:a|oji)|treči(?:a|oji)|ketvirt(?:a|oji)"
+            # LE LUXEMBOURGEOIS decline son ordinal comme l'allemand,
+            # mais l'ecrit comme lui-meme : « éischt », « zweet »,
+            # « drëtt », « véiert », avec l'accent aigu et le trema-e
+            # qui sont a lui seul. On accepte l'accent absent pour le
+            # premier et le quatrieme, que l'usage ecrit des deux
+            # facons, et le E ordinaire pour le troisieme.
+            r"|[eé]ischt|zweet|dr[ëe]tt|v[ée]iert"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1988,7 +2008,10 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eèé]n[aă]|сцена|agerraldia|radharc)\b"
+# LE LUXEMBOURGEOIS DIT « Zeen », qui ne ressemble a aucun des mots de
+# ce groupe : ni au « Szene » allemand dont il vient, ni au « scena »
+# roman. Un membre de plus, donc, et non une classe elargie.
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"

@@ -348,7 +348,14 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     ("ga", "*-tabla-*.tex"),
     ("gl", "*-cadro-*.tex"),
     ("cs", "*-tabulka-*.tex"),
-    ("lt", "*-lentele-*.tex")]
+    ("lt", "*-lentele-*.tex"),
+    # LE LUXEMBOURGEOIS REPREND LE JETON DU SUEDOIS, « tabell », parce
+    # qu'il ecrit le mot de la meme facon. Le motif de nom de fichier
+    # le connait donc deja ; seul ce couple manquait. Trois langues
+    # partagent deja « taula » — le catalan, l'occitan et le basque —
+    # et le glob est enracine dans texto/<langue>/ : deux dossiers
+    # differents ne se melangent pas.
+    ("lb", "*-tabell-*.tex")]
 
 
 def construire():
