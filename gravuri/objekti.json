@@ -100472,7 +100472,9 @@
    "lt": [
     "uostu"
    ],
-   "lb": []
+   "lb": [
+    "Hafen"
+   ]
   },
   "2": {
    "io": [
@@ -100559,7 +100561,9 @@
    "lt": [
     "krantinių"
    ],
-   "lb": []
+   "lb": [
+    "Kaien"
+   ]
   },
   "3": {
    "io": [
@@ -100644,7 +100648,9 @@
    "lt": [
     "priemiestį"
    ],
-   "lb": []
+   "lb": [
+    "Virstad"
+   ]
   },
   "4": {
    "io": [
@@ -100731,7 +100737,9 @@
    "lt": [
     "fabrikuose"
    ],
-   "lb": []
+   "lb": [
+    "Fabriken"
+   ]
   },
   "5": {
    "io": [
@@ -100818,7 +100826,9 @@
    "lt": [
     "dujų fabrike"
    ],
-   "lb": []
+   "lb": [
+    "Gaswierk"
+   ]
   },
   "6": {
    "io": [
@@ -100899,7 +100909,9 @@
    "lt": [
     "kaminas"
    ],
-   "lb": []
+   "lb": [
+    "Kamäin"
+   ]
   },
   "7": {
    "io": [
@@ -100986,7 +100998,9 @@
    "lt": [
     "įtvirtintos pilies"
    ],
-   "lb": []
+   "lb": [
+    "befestegte Schlass"
+   ]
   },
   "8": {
    "io": [
@@ -101073,7 +101087,9 @@
    "lt": [
     "vartai"
    ],
-   "lb": []
+   "lb": [
+    "Paart"
+   ]
   },
   "9": {
    "io": [
@@ -101160,7 +101176,9 @@
    "lt": [
     "bokštų"
    ],
-   "lb": []
+   "lb": [
+    "Tierm"
+   ]
   },
   "10": {
    "io": [
@@ -101247,7 +101265,9 @@
    "lt": [
     "muitinė"
    ],
-   "lb": []
+   "lb": [
+    "Zollamt"
+   ]
   },
   "11": {
    "io": [
@@ -101330,7 +101350,9 @@
    "lt": [
     "gatvelės"
    ],
-   "lb": []
+   "lb": [
+    "Gaass"
+   ]
   },
   "12": {
    "io": [
@@ -101415,7 +101437,9 @@
    "lt": [
     "rotušės"
    ],
-   "lb": []
+   "lb": [
+    "Gemengenhaus"
+   ]
   },
   "13": {
    "io": [
@@ -101496,7 +101520,9 @@
    "lt": [
     "varpinės"
    ],
-   "lb": []
+   "lb": [
+    "Klackentuerm"
+   ]
   },
   "14": {
    "io": [
@@ -101583,7 +101609,9 @@
    "lt": [
     "Birža"
    ],
-   "lb": []
+   "lb": [
+    "Bourse"
+   ]
   },
   "15": {
    "io": [
@@ -101668,7 +101696,9 @@
    "lt": [
     "apskrities valdyba"
    ],
-   "lb": []
+   "lb": [
+    "Distriktskommissariat"
+   ]
   },
   "16": {
    "io": [
@@ -101751,7 +101781,9 @@
    "lt": [
     "kareivinėse"
    ],
-   "lb": []
+   "lb": [
+    "Kasären"
+   ]
   },
   "17": {
    "io": [
@@ -101838,7 +101870,9 @@
    "lt": [
     "miesto parko"
    ],
-   "lb": []
+   "lb": [
+    "Gemengepark"
+   ]
   },
   "18": {
    "io": [
@@ -101925,7 +101959,9 @@
    "lt": [
     "taupomosios kasos"
    ],
-   "lb": []
+   "lb": [
+    "Spuerkeess"
+   ]
   },
   "19": {
    "io": [
@@ -102012,7 +102048,9 @@
    "lt": [
     "Bulvaras"
    ],
-   "lb": []
+   "lb": [
+    "Boulevard"
+   ]
   },
   "20": {
    "io": [
@@ -102099,7 +102137,9 @@
    "lt": [
     "katedros"
    ],
-   "lb": []
+   "lb": [
+    "Kathedral"
+   ]
   },
   "21": {
    "io": [
@@ -102182,7 +102222,9 @@
    "lt": [
     "licėjus"
    ],
-   "lb": []
+   "lb": [
+    "Lycée"
+   ]
   },
   "22": {
    "io": [
@@ -102269,7 +102311,9 @@
    "lt": [
     "Teismą"
    ],
-   "lb": []
+   "lb": [
+    "Geriicht"
+   ]
   },
   "25": {
    "io": [
@@ -102356,7 +102400,9 @@
    "lt": [
     "kavinės"
    ],
-   "lb": []
+   "lb": [
+    "Café"
+   ]
   },
   "26": {
    "io": [
@@ -102437,7 +102483,9 @@
    "lt": [
     "viešasis sodas"
    ],
-   "lb": []
+   "lb": [
+    "ëffentleche Gaart"
+   ]
   },
   "27": {
    "io": [
@@ -102524,7 +102572,9 @@
    "lt": [
     "paviljone"
    ],
-   "lb": []
+   "lb": [
+    "Kiosk"
+   ]
   },
   "28": {
    "io": [
@@ -102605,7 +102655,9 @@
    "lt": [
     "statula"
    ],
-   "lb": []
+   "lb": [
+    "Statu"
+   ]
   },
   "29": {
    "io": [
@@ -102692,7 +102744,9 @@
    "lt": [
     "dujų degiklius"
    ],
-   "lb": []
+   "lb": [
+    "Gaslampen"
+   ]
   },
   "31": {
    "io": [
@@ -102775,7 +102829,9 @@
    "lt": [
     "elektriniais tramvajais"
    ],
-   "lb": []
+   "lb": [
+    "elektresch Tramen"
+   ]
   },
   "32": {
    "io": [
@@ -102860,7 +102916,9 @@
    "lt": [
     "Bankas"
    ],
-   "lb": []
+   "lb": [
+    "Bank"
+   ]
   },
   "33": {
    "io": [
@@ -102947,7 +103005,9 @@
    "lt": [
     "Banko pasiuntiniai"
    ],
-   "lb": []
+   "lb": [
+    "Bankboten"
+   ]
   },
   "34": {
    "io": [
@@ -103032,7 +103092,9 @@
    "lt": [
     "biblioteka"
    ],
-   "lb": []
+   "lb": [
+    "Bibliothéik"
+   ]
   },
   "35": {
    "io": [
@@ -103117,7 +103179,9 @@
    "lt": [
     "gamtos mokslų rinkiniai"
    ],
-   "lb": []
+   "lb": [
+    "Naturwëssenschaftssammlungen"
+   ]
   },
   "36": {
    "io": [
@@ -103200,7 +103264,9 @@
    "lt": [
     "paveikslų muziejus"
    ],
-   "lb": []
+   "lb": [
+    "Biller-Musée"
+   ]
   },
   "37": {
    "io": [
@@ -103287,7 +103353,9 @@
    "lt": [
     "sargui"
    ],
-   "lb": []
+   "lb": [
+    "Wiechter"
+   ]
   },
   "38": {
    "io": [
@@ -103374,7 +103442,9 @@
    "lt": [
     "Dailininkai"
    ],
-   "lb": []
+   "lb": [
+    "Moler"
+   ]
   },
   "39": {
    "io": [
@@ -103461,7 +103531,9 @@
    "lt": [
     "ligoninę"
    ],
-   "lb": []
+   "lb": [
+    "Spidol"
+   ]
   },
   "40": {
    "io": [
@@ -103548,7 +103620,9 @@
    "lt": [
     "kupolą"
    ],
-   "lb": []
+   "lb": [
+    "Kuppel"
+   ]
   },
   "41": {
    "io": [
@@ -103635,7 +103709,9 @@
    "lt": [
     "mokytojų seminarijos"
    ],
-   "lb": []
+   "lb": [
+    "Normalschoul"
+   ]
   },
   "42": {
    "io": [
@@ -103720,7 +103796,9 @@
    "lt": [
     "privačiame name"
    ],
-   "lb": []
+   "lb": [
+    "Privathaus"
+   ]
   },
   "43": {
    "io": [
@@ -103807,7 +103885,9 @@
    "lt": [
     "pašto kontora"
    ],
-   "lb": []
+   "lb": [
+    "Postbüro"
+   ]
   },
   "44": {
    "io": [
@@ -103894,7 +103974,9 @@
    "lt": [
     "Paštininkai"
    ],
-   "lb": []
+   "lb": [
+    "Postbeamten"
+   ]
   },
   "45": {
    "io": [
@@ -103981,7 +104063,9 @@
    "lt": [
     "laiškininkai"
    ],
-   "lb": []
+   "lb": [
+    "Bréifdréier"
+   ]
   },
   "46": {
    "io": [
@@ -104068,7 +104152,9 @@
    "lt": [
     "šaligatvio"
    ],
-   "lb": []
+   "lb": [
+    "Trottoir"
+   ]
   },
   "47": {
    "io": [
@@ -104155,7 +104241,9 @@
    "lt": [
     "grindinio"
    ],
-   "lb": []
+   "lb": [
+    "Chaussée"
+   ]
   },
   "48": {
    "io": [
@@ -104242,7 +104330,9 @@
    "lt": [
     "Tramvajaus vairuotojas"
    ],
-   "lb": []
+   "lb": [
+    "Tramkutscher"
+   ]
   },
   "50": {
    "io": [
@@ -104323,7 +104413,9 @@
    "lt": [
     "greitosios pagalbos vežimą"
    ],
-   "lb": []
+   "lb": [
+    "Ambulanzwon"
+   ]
   },
   "51": {
    "io": [
@@ -104410,7 +104502,9 @@
    "lt": [
     "slaugytoju"
    ],
-   "lb": []
+   "lb": [
+    "Infirmier"
+   ]
   },
   "52": {
    "io": [
@@ -104497,7 +104591,9 @@
    "lt": [
     "chirurgu"
    ],
-   "lb": []
+   "lb": [
+    "Chirurg"
+   ]
   },
   "53": {
    "io": [
@@ -104584,7 +104680,9 @@
    "lt": [
     "sužeistojo"
    ],
-   "lb": []
+   "lb": [
+    "Blesséierten"
+   ]
   },
   "54": {
    "io": [
@@ -104671,7 +104769,9 @@
    "lt": [
     "neštuvais"
    ],
-   "lb": []
+   "lb": [
+    "Bahre"
+   ]
   },
   "55": {
    "io": [
@@ -104758,7 +104858,9 @@
    "lt": [
     "laikraščių kiosko"
    ],
-   "lb": []
+   "lb": [
+    "Zeitungskiosk"
+   ]
   },
   "56": {
    "io": [
@@ -104845,7 +104947,9 @@
    "lt": [
     "smalsuolius"
    ],
-   "lb": []
+   "lb": [
+    "Neigiereg"
+   ]
   },
   "57": {
    "io": [
@@ -104932,7 +105036,9 @@
    "lt": [
     "kareiviai"
    ],
-   "lb": []
+   "lb": [
+    "Zaldoten"
+   ]
   },
   "61": {
    "io": [
@@ -105019,7 +105125,9 @@
    "lt": [
     "raitaisiais miesto žandarais"
    ],
-   "lb": []
+   "lb": [
+    "beridden Stadgendaarmen"
+   ]
   },
   "63": {
    "io": [
@@ -105106,7 +105214,9 @@
    "lt": [
     "žandarai"
    ],
-   "lb": []
+   "lb": [
+    "Gendaarmen"
+   ]
   },
   "64": {
    "io": [
@@ -105193,7 +105303,9 @@
    "lt": [
     "policininkams"
    ],
-   "lb": []
+   "lb": [
+    "Polizisten"
+   ]
   },
   "65": {
    "io": [
@@ -105278,7 +105390,9 @@
    "lt": [
     "nukentėjusįjį"
    ],
-   "lb": []
+   "lb": [
+    "Verletzten"
+   ]
   },
   "66": {
    "io": [
@@ -105365,7 +105479,9 @@
    "lt": [
     "Karininkas"
    ],
-   "lb": []
+   "lb": [
+    "Offizéier"
+   ]
   },
   "67": {
    "io": [
@@ -105452,7 +105568,9 @@
    "lt": [
     "garinį siurblį"
    ],
-   "lb": []
+   "lb": [
+    "Dampspritz"
+   ]
   },
   "68": {
    "io": [
@@ -105539,7 +105657,9 @@
    "lt": [
     "rankinį siurblį"
    ],
-   "lb": []
+   "lb": [
+    "Handspritz"
+   ]
   },
   "69": {
    "io": [
@@ -105620,7 +105740,9 @@
    "lt": [
     "žarna"
    ],
-   "lb": []
+   "lb": [
+    "Schlauch"
+   ]
   },
   "70": {
    "io": [
@@ -105707,7 +105829,9 @@
    "lt": [
     "švirkštą"
    ],
-   "lb": []
+   "lb": [
+    "Spritz"
+   ]
   },
   "71": {
    "io": [
@@ -105794,7 +105918,9 @@
    "lt": [
     "čiurkšlę"
    ],
-   "lb": []
+   "lb": [
+    "Strahl"
+   ]
   },
   "72": {
    "io": [
@@ -105875,7 +106001,9 @@
    "lt": [
     "kopėčios"
    ],
-   "lb": []
+   "lb": [
+    "Leeder"
+   ]
   },
   "73": {
    "io": [
@@ -105962,7 +106090,9 @@
    "lt": [
     "teatro"
    ],
-   "lb": []
+   "lb": [
+    "Theater"
+   ]
   },
   "74": {
    "io": [
@@ -106049,7 +106179,9 @@
    "lt": [
     "Gaisras"
    ],
-   "lb": []
+   "lb": [
+    "Brand"
+   ]
   },
   "75": {
    "io": [
@@ -106128,7 +106260,9 @@
    "lt": [
     "dūmų"
    ],
-   "lb": []
+   "lb": [
+    "Rauch"
+   ]
   },
   "76": {
    "io": [
@@ -106213,7 +106347,9 @@
    "lt": [
     "žiūrovų"
    ],
-   "lb": []
+   "lb": [
+    "Zuschauer"
+   ]
   },
   "77": {
    "io": [
@@ -106300,7 +106436,9 @@
    "lt": [
     "balkono"
    ],
-   "lb": []
+   "lb": [
+    "Balkon"
+   ]
   },
   "78": {
    "io": [
@@ -106387,7 +106525,9 @@
    "lt": [
     "peristiliu"
    ],
-   "lb": []
+   "lb": [
+    "Peristyl"
+   ]
   },
   "79": {
    "io": [
@@ -106474,7 +106614,9 @@
    "lt": [
     "afiša"
    ],
-   "lb": []
+   "lb": [
+    "Affiche"
+   ]
   },
   "80": {
    "io": [
@@ -106561,7 +106703,9 @@
    "lt": [
     "orkestro"
    ],
-   "lb": []
+   "lb": [
+    "Orchester"
+   ]
   },
   "81": {
    "io": [
@@ -106676,7 +106820,10 @@
     "muzikantus",
     "smuiką"
    ],
-   "lb": []
+   "lb": [
+    "Museker",
+    "Gei"
+   ]
   },
   "82": {
    "io": [
@@ -106763,7 +106910,9 @@
    "lt": [
     "fleitą"
    ],
-   "lb": []
+   "lb": [
+    "Flütt"
+   ]
   },
   "83": {
    "io": [
@@ -106850,7 +106999,9 @@
    "lt": [
     "violončelę"
    ],
-   "lb": []
+   "lb": [
+    "Cello"
+   ]
   },
   "84": {
    "io": [
@@ -106937,7 +107088,9 @@
    "lt": [
     "trombonu"
    ],
-   "lb": []
+   "lb": [
+    "Posaun"
+   ]
   },
   "85": {
    "io": [
@@ -107024,7 +107177,9 @@
    "lt": [
     "būgną"
    ],
-   "lb": []
+   "lb": [
+    "Trommel"
+   ]
   },
   "86": {
    "io": [
@@ -107105,7 +107260,9 @@
    "lt": [
     "ugniagesiai"
    ],
-   "lb": []
+   "lb": [
+    "Pompjeeën"
+   ]
   },
   "87": {
    "io": [
@@ -107192,7 +107349,9 @@
    "lt": [
     "baldų"
    ],
-   "lb": []
+   "lb": [
+    "Miwwelen"
+   ]
   },
   "88": {
    "io": [
@@ -107279,7 +107438,9 @@
    "lt": [
     "aktorės"
    ],
-   "lb": []
+   "lb": [
+    "Schauspillerinnen"
+   ]
   },
   "89": {
    "io": [
@@ -107366,7 +107527,9 @@
    "lt": [
     "Aktoriai"
    ],
-   "lb": []
+   "lb": [
+    "Schauspiller"
+   ]
   },
   "90": {
    "io": [
@@ -107449,7 +107612,9 @@
    "lt": [
     "kostiumais"
    ],
-   "lb": []
+   "lb": [
+    "Theater-Kostüm"
+   ]
   },
   "91": {
    "io": [
@@ -107536,7 +107701,9 @@
    "lt": [
     "apskrities viršininku"
    ],
-   "lb": []
+   "lb": [
+    "Distriktskommissär"
+   ]
   },
   "92": {
    "io": [
@@ -107623,7 +107790,9 @@
    "lt": [
     "žurnalistui"
    ],
-   "lb": []
+   "lb": [
+    "Journalist"
+   ]
   },
   "93": {
    "io": [
@@ -107710,7 +107879,9 @@
    "lt": [
     "burmistru"
    ],
-   "lb": []
+   "lb": [
+    "Buergermeeschter"
+   ]
   },
   "94": {
    "io": [
@@ -107797,7 +107968,9 @@
    "lt": [
     "policijos komisaru"
    ],
-   "lb": []
+   "lb": [
+    "Policekommissär"
+   ]
   },
   "95": {
    "io": [
@@ -107884,7 +108057,9 @@
    "lt": [
     "teismo pareigūnu"
    ],
-   "lb": []
+   "lb": [
+    "Untersuchungsriichter"
+   ]
   },
   "96": {
    "io": [
@@ -107971,7 +108146,9 @@
    "lt": [
     "aikštę"
    ],
-   "lb": []
+   "lb": [
+    "Plaz"
+   ]
   }
  },
  "t12": {
