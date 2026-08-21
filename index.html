@@ -120,6 +120,16 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .k.io{padding-right:17px;border-right:1px solid var(--lin)}
 .k.tra{padding-left:0}
 .r.sub .k,.r.apar .k{text-align:center}
+/* LE TITRE SE CENTRE SUR LA COLONNE, NON SUR CE QUI RESTE DE LA COLONNE.
+   La case ido porte 17px de marge et 1px de filet A DROITE, pour poser la
+   ligne de partage ; sa boite de contenu est donc de 18px plus etroite que
+   la case francaise, et « text-align:center » centrait dans cette boite-la.
+   Les deux titres d'un meme rang tombaient ainsi a 9px l'un de l'autre --
+   toujours 9, a toute largeur, et que le folio paraisse ou non : ce n'est
+   pas lui qui decalait, c'est le filet. On rend a la case ido, pour les
+   seuls rangs centres, un blanc egal a gauche : le titre retrouve l'axe de
+   sa colonne, et le filet ne bouge pas. */
+.r.sub .k.io,.r.apar .k.io{padding-left:18px}
 .vaka{}
 /* La celo vakua ne esas eroro : ol dicas ke ta alineo ne existas en
    l'altra edituro. Guignon dividis per intertitli un texto quan
@@ -426,7 +436,8 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
  .k.tra{padding-left:11px;border-left:2px solid var(--lin);color:var(--sub)}
  .k.tra[dir=rtl]{padding-left:0;padding-right:11px;
   border-left:0;border-right:2px solid var(--lin)}
- .r.sub .k.tra,.r.apar .k.tra{border-left:0;padding-left:0}}
+ .r.sub .k.tra,.r.apar .k.tra{border-left:0;padding-left:0}
+ .r.sub .k.io,.r.apar .k.io{padding-left:0}}
 @media (max-width:900px) and (prefers-color-scheme:dark){
  nav{box-shadow:0 0 24px rgba(0,0,0,.6)}}
 

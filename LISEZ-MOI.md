@@ -479,6 +479,19 @@ Sous 900 px de largeur, les colonnes s'empilent — l'ido d'abord, la
 traduction dessous avec un filet à gauche — et la table devient un
 tiroir.
 
+**Le titre se centre sur la colonne, non sur ce qui reste de la
+colonne.** La case ido porte 17 px de marge et 1 px de filet **à
+droite**, pour poser la ligne de partage ; sa boîte de contenu est donc
+de 18 px plus étroite que la case française, et `text-align:center`
+centrait dans cette boîte-là. Les deux titres d'un même rang tombaient
+à 9 px l'un de l'autre — toujours 9, à toute largeur, **et que le folio
+paraisse ou non** : le folio est en `position:absolute` hors de la
+colonne et n'y était pour rien. On rend à la case ido, pour les seuls
+rangs centrés, un blanc égal à gauche. Sous 900 px la case perd sa
+marge et son filet, et le blanc de compensation se retire avec eux.
+Mesuré au navigateur sur les 40 rangs centrés, à 1400, 1100, 950 et
+800 px : −9 px avant, 0 après.
+
 Le sélecteur de langue ne recharge rien **une fois la langue venue** :
 elle reste dans la page, et la bascule est instantanée. Le français y
 est d'emblée — c'est un fac-similé transcrit, il fait partie de
