@@ -8381,7 +8381,9 @@
    "lt": [
     "gimnastikos įrenginiai"
    ],
-   "lb": []
+   "lb": [
+    "Turngeräter"
+   ]
   },
   "2": {
    "io": [
@@ -8468,7 +8470,9 @@
    "lt": [
     "kopėčiomis"
    ],
-   "lb": []
+   "lb": [
+    "Leeder"
+   ]
   },
   "3": {
    "io": [
@@ -8555,7 +8559,9 @@
    "lt": [
     "žiedų"
    ],
-   "lb": []
+   "lb": [
+    "Ringen"
+   ]
   },
   "4": {
    "io": [
@@ -8642,7 +8648,9 @@
    "lt": [
     "trapecijos"
    ],
-   "lb": []
+   "lb": [
+    "Trapez"
+   ]
   },
   "5": {
    "io": [
@@ -8729,7 +8737,9 @@
    "lt": [
     "virvinių kopėčių"
    ],
-   "lb": []
+   "lb": [
+    "Strackleeder"
+   ]
   },
   "6": {
    "io": [
@@ -8816,7 +8826,9 @@
    "lt": [
     "mazgotos virvės"
    ],
-   "lb": []
+   "lb": [
+    "Knuetesäel"
+   ]
   },
   "7": {
    "io": [
@@ -8903,7 +8915,9 @@
    "lt": [
     "medinį arklį"
    ],
-   "lb": []
+   "lb": [
+    "Holzpäerd"
+   ]
   },
   "8": {
    "io": [
@@ -8990,7 +9004,9 @@
    "lt": [
     "boksuojasi"
    ],
-   "lb": []
+   "lb": [
+    "boxen"
+   ]
   },
   "9": {
    "io": [
@@ -9077,7 +9093,9 @@
    "lt": [
     "fechtuojasi"
    ],
-   "lb": []
+   "lb": [
+    "fechten"
+   ]
   },
   "10": {
    "io": [
@@ -9164,7 +9182,9 @@
    "lt": [
     "kilnoja svarmenis"
    ],
-   "lb": []
+   "lb": [
+    "hiewen Hantelen"
+   ]
   },
   "11": {
    "io": [
@@ -9251,7 +9271,9 @@
    "lt": [
     "lygiagretes"
    ],
-   "lb": []
+   "lb": [
+    "Barren"
+   ]
   },
   "12": {
    "io": [
@@ -9338,7 +9360,9 @@
    "lt": [
     "gimnastikos mokytojas"
    ],
-   "lb": []
+   "lb": [
+    "Gymnastiksléierer"
+   ]
   },
   "13": {
    "io": [
@@ -9425,7 +9449,9 @@
    "lt": [
     "šokdynę"
    ],
-   "lb": []
+   "lb": [
+    "Sprangsäel"
+   ]
   },
   "14": {
    "io": [
@@ -9510,7 +9536,9 @@
    "lt": [
     "lanku"
    ],
-   "lb": []
+   "lb": [
+    "Rëf"
+   ]
   },
   "15": {
    "io": [
@@ -9680,7 +9708,9 @@
    "lt": [
     "kėgliais"
    ],
-   "lb": []
+   "lb": [
+    "Keelen"
+   ]
   },
   "17": {
    "io": [
@@ -9767,7 +9797,9 @@
    "lt": [
     "rutuliu"
    ],
-   "lb": []
+   "lb": [
+    "Kugel"
+   ]
   },
   "18": {
    "io": [
@@ -9854,7 +9886,9 @@
    "lt": [
     "vilkelio"
    ],
-   "lb": []
+   "lb": [
+    "Kräisel"
+   ]
   },
   "19": {
    "io": [
@@ -9941,7 +9975,9 @@
    "lt": [
     "bilbokės"
    ],
-   "lb": []
+   "lb": [
+    "Bilboquet"
+   ]
   },
   "20": {
    "io": [
@@ -10041,7 +10077,9 @@
     "varlės žaidimo",
     "varlės žaidimas"
    ],
-   "lb": []
+   "lb": [
+    "Fräschespill"
+   ]
   },
   "21": {
    "io": [
@@ -10128,7 +10166,9 @@
    "lt": [
     "rutuliukai"
    ],
-   "lb": []
+   "lb": [
+    "Murmelen"
+   ]
   },
   "22": {
    "io": [
@@ -10215,7 +10255,9 @@
    "lt": [
     "sieninis kamuoliukas"
    ],
-   "lb": []
+   "lb": [
+    "Mauerball"
+   ]
   },
   "24": {
    "io": [
@@ -10300,7 +10342,9 @@
    "lt": [
     "kojūkais"
    ],
-   "lb": []
+   "lb": [
+    "Stëlzen"
+   ]
   },
   "25": {
    "io": [
@@ -10387,7 +10431,9 @@
    "lt": [
     "slėpynių"
    ],
-   "lb": []
+   "lb": [
+    "Verstoppes"
+   ]
   },
   "26": {
    "io": [
@@ -10474,7 +10520,9 @@
    "lt": [
     "šiltnamio"
    ],
-   "lb": []
+   "lb": [
+    "Serre"
+   ]
   },
   "28": {
    "io": [
@@ -10561,7 +10609,9 @@
    "lt": [
     "smūgio spėliones"
    ],
-   "lb": []
+   "lb": [
+    "Waarmhand"
+   ]
   },
   "29": {
    "io": [
@@ -10648,7 +10698,9 @@
    "lt": [
     "skrajuką"
    ],
-   "lb": []
+   "lb": [
+    "Volant"
+   ]
   },
   "30": {
    "io": [
@@ -10746,7 +10798,9 @@
     "Pečių šuolis",
     "pečių šuolio"
    ],
-   "lb": []
+   "lb": [
+    "Schëllersprong"
+   ]
   },
   "31": {
    "io": [
@@ -10833,7 +10887,9 @@
    "lt": [
     "Akluko žaidimas"
    ],
-   "lb": []
+   "lb": [
+    "Blannemann"
+   ]
   },
   "32": {
    "io": [
@@ -10920,7 +10976,9 @@
    "lt": [
     "meškos žaidimas"
    ],
-   "lb": []
+   "lb": [
+    "Bierespill"
+   ]
   },
   "33": {
    "io": [
@@ -11007,7 +11065,9 @@
    "lt": [
     "aitvaro"
    ],
-   "lb": []
+   "lb": [
+    "Draach"
+   ]
   },
   "34": {
    "io": [
@@ -11094,7 +11154,9 @@
    "lt": [
     "tenisą"
    ],
-   "lb": []
+   "lb": [
+    "Tennis"
+   ]
   },
   "35": {
    "io": [
@@ -11181,7 +11243,9 @@
    "lt": [
     "Sūpynių"
    ],
-   "lb": []
+   "lb": [
+    "Schaukel"
+   ]
   },
   "36": {
    "io": [
@@ -11268,7 +11332,9 @@
    "lt": [
     "futbolą"
    ],
-   "lb": []
+   "lb": [
+    "Foussball"
+   ]
   },
   "37": {
    "io": [
@@ -11355,7 +11421,9 @@
    "lt": [
     "dviračiu"
    ],
-   "lb": []
+   "lb": [
+    "Vëlo"
+   ]
   },
   "38": {
    "io": [
@@ -11442,7 +11510,9 @@
    "lt": [
     "vytynės"
    ],
-   "lb": []
+   "lb": [
+    "Barrespill"
+   ]
   },
   "39": {
    "io": [
@@ -11529,7 +11599,9 @@
    "lt": [
     "jodinėjimo"
    ],
-   "lb": []
+   "lb": [
+    "Reiden"
+   ]
   },
   "40": {
    "io": [
@@ -11616,7 +11688,9 @@
    "lt": [
     "plaukimo"
    ],
-   "lb": []
+   "lb": [
+    "Schwammen"
+   ]
   },
   "41": {
    "io": [
@@ -11693,7 +11767,9 @@
    "lt": [
     "balioną"
    ],
-   "lb": []
+   "lb": [
+    "Ballon"
+   ]
   }
  },
  "t03": {
