@@ -39,6 +39,7 @@ par alinéa.
 | Traduction russe (`texto/ru/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
 | Traduction chinoise (`texto/zh/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
 | Traduction arabe (`texto/ar/`) | **les 16 tableaux**, faite en 2026 d'après l'ido ; colonne de droite à gauche |
+| Traduction québécoise (`texto/fr-CA/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — non calquée sur le fac-similé français (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`) |
 
@@ -557,6 +558,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     index.html                page de lecture                (PRODUIT)
     texto/io/10-tabelo-01.tex … 25-tabelo-16.tex
     texto/fr/10-tableau-01.tex … 25-tableau-16.tex
+    texto/fr-CA/10-tableau-01.tex … 25-tableau-16.tex   (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -635,14 +637,106 @@ qu'un remplacement successif ne sait pas exprimer. D'où le mode
 `unpase`, qui compile les règles en une expression unique, la plus longue
 d'abord.
 
-**Et la septième paire ne se fait pas ici.** Les six colonnes de base
+**Et la septième paire ne s'est pas faite ici.** Les six colonnes de base
 sont des *traductions* de 2026 ; la colonne française est la
 **transcription d'un fac-similé de 1926**, et la source ne bouge pas. Un
 calque « fr-CA » posé sur elle donnerait un livret de 1926 écrit avec les
 mots du Québec d'aujourd'hui : un objet qui n'a jamais existé, et qui
-mentirait sur les deux. Ce qui se fait, en revanche, c'est une colonne
-`fr-CA` **traduite de l'ido** comme les trente autres — une traduction de
-plus, pas une variante du fac-similé.
+mentirait sur les deux. C'est donc une colonne à part entière, traduite
+de l'ido comme les trente autres — voir ci-dessous.
+
+### La trente et unième colonne : le français du Canada
+
+**Deux colonnes françaises, et ce qui les sépare se compte.** `texto/fr`
+transcrit le fac-similé de 1926 ; `texto/fr-CA` traduit **l'ido**, en
+français standard du Québec de 2026, dans ses seize fichiers
+`*-tableau-*.tex`. Elles se ressemblent forcément — c'est la même langue
+qui traduit le même titre, et l'apparat du volume y est mot pour mot le
+même. La différence tient en **117 choix lexicaux** et une convention
+typographique.
+
+| tableau | choix | tableau | choix | tableau | choix | tableau | choix |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 9 | 5 | 8 | 9 | 4 | 13 | 9 |
+| 2 | 7 | 6 | **14** | 10 | **3** | 14 | 9 |
+| 3 | 6 | 7 | 6 | 11 | 8 | 15 | 9 |
+| 4 | 8 | 8 | 6 | 12 | 6 | 16 | 5 |
+
+**Les deux extrêmes disent la même chose.** Le tableau 6 — l'intérieur de
+la maison — en compte quatorze : c'est dans la maison que le vocabulaire
+des deux rives a le plus divergé. Le tableau 10 — la mer et le port — n'en
+compte que trois, et il faut le dire plutôt que de meubler la liste : le
+vocabulaire de la marine est un vocabulaire de **métier**, fixé par la
+même école et les mêmes manuels des deux côtés de l'Atlantique. Entre les
+deux, le tableau 11, celui des métiers de la ville, en compte huit —
+parce que les noms de fonction sont ce qui vieillit le plus vite.
+
+**Neuf faux amis, et c'est le vrai travail.** Ce ne sont pas des mots que
+le Québec ignore : ce sont des mots qu'il connaît et qui y désignent
+**autre chose**. Aucun ne se voit à la lecture, et chacun aurait fait dire
+au texte le contraire de ce que la gravure montre.
+
+| le fac-similé écrit | au Québec, ce mot nomme | on écrit donc |
+| --- | --- | --- |
+| cartable (57) | un classeur à anneaux | sac d'école |
+| veste (10) | le vêtement sans manches | veston |
+| pupitre (18) | le bureau de l'élève | tables |
+| liqueur (48, 7, 36) | une boisson gazeuse | alcool, spiritueux |
+| jaquette (11) | une chemise de nuit | veston |
+| **bluet (1)** | **un petit fruit** | **centaurée** |
+| balayeuse (12) | un aspirateur | voiture de balayage |
+| borne-fontaine (78) | une bouche d'incendie | fontaine de pierre |
+| torchon | le chiffon à plancher | linge à vaisselle |
+
+Le plus sérieux est le sixième, parce qu'il est le plus discret : « Bluets,
+coquelicots et digitales » sont les fleurs des champs du tableau 8, et le
+lecteur d'ici aurait lu des petits fruits mêlés à des coquelicots au
+milieu d'un champ de blé.
+
+**Vingt-trois mots du fac-similé restent, et c'est un résultat.**
+Souliers, plumier, poêle, corset, redingote, chevaux de bois, chandelle,
+réveille-matin, évier, chaudron, essuie-mains, billot, corridor, perron,
+remise, buanderie, barbier, glissoire, traîneau, bonhomme de neige,
+marrons, bas, table d'hôte. La France leur préférerait volontiers
+chaussures, gomme, couloir, réveil, torchon ; **le Québec dit les
+premiers, en 2026 comme en 1926**. On ne remplace pas un mot pour la
+seule raison qu'il est ancien.
+
+**Trois mots que le fac-similé coupe en deux, et qu'on recolle.** L'ido
+écrit un seul mot là où le livret français en emploie deux, et c'est
+chaque fois le même enseignement : la source est plus cohérente que sa
+traduction de 1926.
+
+| ido | le fac-similé | on écrit |
+| --- | --- | --- |
+| `robineto` (48, 52) | robinet / cannelle | robinet, deux fois |
+| `trotuaro` (53, 65) | quai / trottoirs | quai, deux fois |
+| `grumo` (19, 54) | chasseur / groom | groom, deux fois |
+
+**Les trois repas changent de nom, et c'est le décalage le plus
+régulier.** Le Québec dit *déjeuner* le matin, *dîner* le midi, *souper*
+le soir ; la France de 1926 disait *déjeuner* le midi et *dîner* le soir.
+Le repas de noces du tableau 4, qui se prend « le soir » sous la véranda,
+est donc un souper. Le tableau 13 en donne la meilleure preuve, parce que
+**l'ido y distingue lui-même les deux** là où le français les appelle tous
+deux « déjeuner » : `dejuneto` est le petit repas monté à la chambre —
+c'est le déjeuner ; `dejuno` est le repas de la table d'hôte, celui du
+menu, des tripes et du gigot — c'est le dîner.
+
+**La convention typographique** : pas d'espace devant « ; », « ! » et
+« ? », espace devant « : ». C'est l'usage courant du Québec, où l'espace
+fine insécable recommandée devant les trois premiers est, faute d'être
+disponible, ordinairement omise plutôt que remplacée par une espace
+pleine. Le fac-similé, lui, la pose pleine (« langues vivantes ? ») :
+c'est, en une marque, la différence qui se voit le plus vite entre les
+deux colonnes françaises.
+
+**Et la règle qui gouverne tout le reste : on modernise la langue, jamais
+les choses.** Le lycée reste un lycée, l'encrier un encrier, la soutane
+une soutane, le mât de cocagne un mât de cocagne. La préfecture, le
+préfet, les gendarmes et l'école communale sont des institutions
+*françaises* que le Québec n'a jamais eues : les traduire en institutions
+d'ici aurait déplacé la ville entière.
 
 ## 9. Les huit contrôles
 
