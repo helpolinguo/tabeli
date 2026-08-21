@@ -42,6 +42,7 @@ par alinéa.
 | Traduction québécoise (`texto/fr-CA/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — non calquée sur le fac-similé français (§ 8) |
 | Traduction vietnamienne (`texto/vi/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
 | Traduction cantonaise (`texto/yue/`) | **les 16 tableaux**, faite en 2026 d'après l'ido, en caractères traditionnels — écrite en cantonais et non en chinois standard (§ 8) |
+| Traduction en arabe égyptien (`texto/arz/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — écrite en égyptien et non en arabe standard ; colonne de droite à gauche (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`) |
 
@@ -563,6 +564,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/fr-CA/10-tableau-01.tex … 25-tableau-16.tex   (traduction)
     texto/vi/10-bang-01.tex … 25-bang-16.tex           (traduction)
     texto/yue/10-toubiu-01.tex … 25-toubiu-16.tex     (traduction)
+    texto/arz/10-lawha-01.tex … 25-lawha-16.tex       (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -824,6 +826,129 @@ fichier qui n'aurait pas composé. Le relevé des **macros** la prend, et a
 pris du même coup quatre `\nl` restés dans trois autres colonnes (tchèque,
 irlandais, galicien) — une traduction n'a pas de fins de ligne du
 fac-similé à reproduire.
+
+### La colonne égyptienne : une grammaire, pas un accent
+
+La colonne `arz` a dû se justifier avant d'être écrite, exactement comme
+la cantonaise : l'arabe standard est déjà là (`texto/ar/`), et une
+colonne qui se serait contentée de le transcrire au Caire aurait fait
+double emploi à la prononciation près — le motif exact pour lequel **le
+wu a été écarté**.
+
+Elle existe parce que l'égyptien écrit a une grammaire que l'arabe
+standard n'a pas. Les quatorze marqueurs qui la portent sont posés en
+tête du tableau 1 :
+
+| égyptien | standard | sens |
+| --- | --- | --- |
+| ده / دي / دول | هذا / هذه / هؤلاء | ce, cette, ces |
+| مش | ليس | ne… pas (nom, adjectif) |
+| ما…ش | لا / لم | ne… pas (verbe) : مايعرفش |
+| بـ + inaccompli | يكتب | le présent : بيكتب |
+| حـ / هـ | سوف / سـ | le futur : هيكتب |
+| بتاع / بتاعة / بتوع | l'annexion seule | la possession |
+| اللي | الذي / التي / الذين | invariable |
+| أوي | جدًا | très |
+| كمان | أيضًا | aussi |
+| بس | لكن / فقط | mais, seulement |
+| لسه | ما زال | encore |
+| زي | مثل | comme |
+| علشان | لأن / لكي | parce que, pour que |
+| كام | كم / بضعة | combien, quelques |
+
+**Et une phonologie qui s'écrit.** Le ث passe à ت, le ذ à د, le ظ à ض.
+Ce ne sont pas des fautes d'orthographe : c'est ainsi que l'égyptien
+s'imprime, en romans, au théâtre et en sous-titres.
+
+| égyptien | standard | |
+| --- | --- | --- |
+| تلاتة, تمن, تالت, كتير | ثلاثة, ثمانية, ثالث, كثير | ث → ت |
+| تلج, توم, تعبان, تعلب | ثلج, ثوم, ثعبان, ثعلب | |
+| دقن, دراع, ده, ديل, ديب | ذقن, ذراع, ذاك, ذيل, ذئب | ذ → د |
+| ضهر, عضم, ضلمة | ظهر, عظم, ظلمة | ظ → ض |
+
+**La règle atteint jusqu'à l'apparat**, et c'est la première fois qu'une
+prononciation oblige à toucher au marquage des rôles : « المشهد التاني »
+n'était pas reconnu par le motif `CENO` de `outils/html.py`, qui
+n'attendait que « الثاني ». Deux membres ajoutés à `CENO` et à `SERIO`.
+
+**Le corps humain fait la démonstration en un seul tableau.** Vingt-deux
+mots du tableau 2, et pas un emprunt : وش le visage, مناخير le nez, ودان
+les oreilles, راس, دقن, شنب, سوالف, شفايف, سنان, رقبة, زور, قفا, ضهر,
+كتاف, مصارين, دراع, إيد, صوابع, ضوافر, كوع, بطة الرجل, عضم. Ce sont ceux
+que tout le monde emploie ; l'arabe standard en emploie d'autres.
+
+**Trois procédés de formation des noms de métier**, relevés au fil des
+tableaux — onze en tout :
+
+| suffixe | origine | exemples |
+| --- | --- | --- |
+| **-جي** | turc | صفرجي (t4), عربجي et كهربجي (t5), جزمجي (t7), بوسطجي (t11), تحويلجي (t12), تلغرافجي (t13), صندوقجي et كوميسيونجي (t14), مكوجيّة (t15) |
+| **-اتي** | | مصوّراتي, ساعاتي, نضّاراتي (t14), مسنّاتي (t15) |
+| **-ّان / -ّاي** | arabe | البنّا, النقّاش, القزّاز, السمكري, الجنايني, الحطّاب, الفحّام, الفرّان, البقّال |
+
+Le premier se pose sur l'objet qu'on manie, le deuxième sur ce qu'on
+fabrique ou répare. C'est l'exact pendant du suffixe **佬** de la colonne
+cantonaise, et le tableau 5 — les métiers du bâtiment — est le même des
+deux côtés.
+
+**Deux couches d'emprunt se lisent tableau par tableau.** Le turc a
+laissé l'armée, l'atelier et l'administration ; l'italien et le français
+la maison, le vêtement et la table.
+
+| turc | | italien / français | |
+| --- | --- | --- | --- |
+| أوضة | la chambre | كوميدينو | la table de nuit |
+| قشلاق | la caserne | سكرتير | le secrétaire |
+| كوريك | la pelle | كنبة, برواز, نجفة | canapé, cadre, lustre |
+| بوية | la peinture | فاترينة, تنده | devanture, marquise |
+| أجزخانة | la pharmacie | كاسّة, بوستة | caisse, poste |
+| أورطة, يوزباشي, بكباشي, صاغ, شاويش, باشجاويش | les grades | بانيو, دُش, أسانسير | baignoire, douche, ascenseur |
+| أبلة | la maîtresse d'école | روشتّة, بلكونة, أباجورة | ordonnance, balcon, abat-jour |
+
+**Les institutions tombent juste, une à une.** Ce n'est pas une
+correspondance approchée : la مديرية *est* la circonscription d'un
+chef-lieu, le مدير son préfet, le مأمور le chef de police d'un district,
+وكيل النيابة celui qui ouvre l'enquête, le ناظر le proviseur puis le chef
+de gare, le فرّاش le concierge qui porte le registre, la فسحة la
+récréation, l'إشبين et l'إشبينة le parrain et la marraine, le ملبّس les
+dragées du baptême, le مولد la fête foraine entière, la عمدة le maire du
+village. Le tableau 11 les aligne, et le dernier bloc se lit sans une
+glose.
+
+**Cinq noms formés par ressemblance**, qui ont cessé d'être des images :
+عين الجمل le noyer (« l'œil du chameau »), أبو فروة le marron, عيش
+الغراب le champignon (« le pain du corbeau »), سمك موسى la sole, بلح
+البحر les moules. Et le pain lui-même est **عيش**, qui veut dire « la
+vie » ; le ciel de lit est **ناموسية**, de ناموس le moustique — la
+planche française y voit un ornement, l'égyptien ce à quoi ça sert.
+
+**Le seul trou de la colonne, et il est instructif.** Le fléau du tableau
+8 n'a pas de nom égyptien, parce que l'Égypte bat au **نورج**, le
+traîneau à rouleaux. Le nommer نورج aurait changé la *chose*, ce que la
+règle interdit — « on modernise la langue, jamais les choses » — et il a
+donc fallu le **décrire**, `عصي الدراس`, plutôt que le nommer. Sept
+tableaux où l'égyptien avait le mot d'avance ; celui-là ne l'a pas, et il
+fallait le dire aussi.
+
+**L'annexion arabe suit l'ido pas à pas**, et c'est le résultat le plus
+net de la colonne : **aucune inversion de renvoi n'est due à la langue**
+sur 683 blocs. L'arabe place le possédé avant le possesseur —
+`منشار الحطّاب`, la scie du bûcheron — exactement comme l'ido. Les
+quinze reprises qu'il a fallu étaient des maladresses de rédaction, pas
+des contraintes de syntaxe. Le chinois, qui range dans l'autre sens,
+avait coûté **trente-cinq** inversions aux seuls tableaux 3 à 6.
+
+**Le contrôle de cette colonne relève aussi la langue.** Celui du
+cantonais vérifiait la forme ; celui-ci y ajoute la liste des mots que
+l'égyptien *ne dit pas* — هذا, ليس, الذي, سوف, ماذا, جدًا, ثلاثة, سيارة,
+غرفة, نافذة, حقيبة, جدار, ملابس — parce que la raison d'être de la
+colonne est justement de ne pas les écrire. Il a signalé deux fois un mot
+savant qu'il fallait **garder** : `صانع أحذية` au tableau 7, où le vieux
+cordonnier oppose lui-même les deux registres, et `طاولة` au tableau 13,
+qui en égyptien n'est pas une table mais le trictrac. Les deux sont
+exemptés par leur forme exacte, jamais par le mot : un contrôle qu'on
+désarme en bloc ne contrôle plus rien.
 
 ## 9. Les huit contrôles
 
