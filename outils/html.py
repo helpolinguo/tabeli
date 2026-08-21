@@ -217,6 +217,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "oc", "nomo": "Occitan", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "uk", "nomo": "Українська", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -790,7 +792,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
            "tr": "tr", "eo": "eo", "ia": "ia",
            "nl": "nl", "sv": "sv", "fi": "fi", "ca": "ca",
-           "oc": "oc"}               # langue -> texto/<...>
+           "oc": "oc", "uk": "uk"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1781,7 +1783,14 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # « TAULUKKO » a un U la ou celui-ci a un A —
                         # et le titre du volume, « Taules auxiliars
                         # Delmas », est compose en bas de casse.
-                        r"|TAULA")
+                        r"|TAULA"
+                        # L'UKRAINIEN ecrit « ТАБЛИЦЯ № 1 ». Le mot ne
+                        # differe du russe « ТАБЛИЦА » que par sa
+                        # derniere lettre — Я contre А — et il lui faut
+                        # donc son propre membre. Aucune precaution a
+                        # prendre : le titre du volume, « Допоміжні
+                        # таблиці Дельма », est compose en bas de casse.
+                        r"|ТАБЛИЦЯ")
 # L'OCCITAN ECRIT « TAULA » COMME LE CATALAN, et c'est le meme mot :
 # le membre ci-dessus les attrape tous les deux, et il n'y a rien a
 # ajouter. Les deux colonnes ne se confondent pas pour autant : ce
@@ -1821,6 +1830,13 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # L'OCCITAN : « primiera » et « segonda » ne sont pas dans
             # la liste, « tresena » et « quatrena » non plus.
             r"|primi[eè]ra|segonda|tresena|quatrena"
+            # L'UKRAINIEN : aucun de ses quatre ordinaux n'entre dans
+            # la liste russe. « перша » n'est pas « первая »,
+            # « третя » n'est pas « третья », et « четверта » n'a pas
+            # le Я final de « четвёртая ». Les quatre sont a ajouter,
+            # avec « серія » dans le groupe de la serie ; la scene
+            # s'ecrit « сцена » comme en russe et y est deja.
+            r"|перша|друга|третя|четверта"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1837,7 +1853,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|series|reeks|serien|sarja|серия)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|series|reeks|serien|sarja|серия|серія)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
