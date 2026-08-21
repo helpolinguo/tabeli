@@ -1932,7 +1932,14 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # et l'usage prefere la seconde devant un nom precis. On
             # ecrit les deux etats, comme on avait ecrit les deux
             # etats du premier ordinal irlandais.
-            r"|pirm(?:a|oji)|antr(?:a|oji)|trečia(?:ji)?|ketvirt(?:a|oji)"
+            # LE TROISIEME ORDINAL LITUANIEN NE SE FORME PAS COMME LES
+            # TROIS AUTRES : « pirma / pirmoji », « antra / antroji »,
+            # « ketvirta / ketvirtoji » gardent leur radical, mais
+            # « trečia » fait « trečioji » et non « trečiaji ». Ecrit
+            # d'abord sur le modele des voisins, le motif a laisse
+            # passer la TREČIOJI SERIJA du tableau 11 : le controle des
+            # roles l'a signalee, et c'est lui qui a rattrape la faute.
+            r"|pirm(?:a|oji)|antr(?:a|oji)|treči(?:a|oji)|ketvirt(?:a|oji)"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
