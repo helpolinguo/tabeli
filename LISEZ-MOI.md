@@ -574,6 +574,33 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
 
 ---
 
+### La note se pose au pied, et le texte lui cède la place
+
+`\VUnotes` posait sa note **absolument**, dans une boîte de hauteur nulle
+calée sur le pied du bloc : elle tombait juste, et elle ne poussait rien.
+Sur une page dont le texte descend jusqu'au pied, les deux s'imprimaient
+l'un **sur** l'autre — sept pages du livret ido, une du français. La note
+se **diffère** maintenant jusqu'à la fermeture de la page et entre dans le
+flux après le dernier alinéa : le chevauchement est impossible par
+construction. Les quatorze blocs `noto` du relevé ne bougent pas.
+
+Trois pièges, dans l'ordre où ils se sont payés : le ressort du bas de la
+minipage, qu'il faut battre d'un ordre (`fill` et non `fil`), sans quoi la
+note se pose au milieu du blanc ; **`\vtop` et non `\vbox`**, dont le point
+de référence est la *dernière* ligne de base, si bien qu'ajouté après le
+texte il remonte de toute sa hauteur et se repose par-dessus ; et
+`\VUnotoBas`, qui partait de `\VUfolioY` — la ligne de base du folio, non
+le sommet du bloc — et posait donc la note 4 mm trop haut.
+
+**Et la correction a mis au jour ce qu'elle cachait.** Six feuillets
+portent, au relevé, plus de matière que la feuille n'en tient : le texte y
+remplit déjà le bloc, et la note n'a plus que la marge du bas, qui ne
+suffit pas de 1,7 à 2,7 mm — `tabeli` f9 et f35, `tableaux` f45, f75, f76
+et f91. Tant que la note s'imprimait *dans* le texte, elle ne sortait
+jamais du papier. Trancher ces six pages demande le fac-similé du livret,
+que ce dépôt ne contient pas : `outils/notoj.py` les **nomme** à chaque
+construction, et `make -f tab.mk controles` l'appelle.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
