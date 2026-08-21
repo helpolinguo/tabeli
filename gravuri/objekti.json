@@ -79407,7 +79407,9 @@
    "ro": [
     "oceanul"
    ],
-   "ga": []
+   "ga": [
+    "an tAigéan"
+   ]
   },
   "2": {
    "io": [
@@ -79482,7 +79484,9 @@
    "ro": [
     "zare"
    ],
-   "ga": []
+   "ga": [
+    "bun na spéire"
+   ]
   },
   "3": {
    "io": [
@@ -79705,7 +79709,9 @@
    "ro": [
     "rada militară"
    ],
-   "ga": []
+   "ga": [
+    "calafort cogaidh"
+   ]
   },
   "6": {
    "io": [
@@ -79851,7 +79857,9 @@
    "ro": [
     "canoniere"
    ],
-   "ga": []
+   "ga": [
+    "bhád gunnaí"
+   ]
   },
   "8": {
    "io": [
@@ -79926,7 +79934,9 @@
    "ro": [
     "torpilorului"
    ],
-   "ga": []
+   "ga": [
+    "bháid toirpéad"
+   ]
   },
   "9": {
    "io": [
@@ -80147,7 +80157,9 @@
    "ro": [
     "fregata"
    ],
-   "ga": []
+   "ga": [
+    "frigéad"
+   ]
   },
   "12": {
    "io": [
@@ -80220,7 +80232,9 @@
    "ro": [
     "transportoare"
    ],
-   "ga": []
+   "ga": [
+    "long iompair"
+   ]
   },
   "13": {
    "io": [
@@ -80366,7 +80380,9 @@
    "ro": [
     "dig"
    ],
-   "ga": []
+   "ga": [
+    "lamairne"
+   ]
   },
   "15": {
    "io": [
@@ -80441,7 +80457,9 @@
    "ro": [
     "metereze"
    ],
-   "ga": []
+   "ga": [
+    "rampair"
+   ]
   },
   "16": {
    "io": [
@@ -80516,7 +80534,9 @@
    "ro": [
     "remorcher"
    ],
-   "ga": []
+   "ga": [
+    "tuga"
+   ]
   },
   "17": {
    "io": [
@@ -80664,7 +80684,9 @@
    "ro": [
     "șantierele navale"
    ],
-   "ga": []
+   "ga": [
+    "longchlóis"
+   ]
   },
   "19": {
    "io": [
@@ -80739,7 +80761,9 @@
    "ro": [
     "piața de arme"
    ],
-   "ga": []
+   "ga": [
+    "machaire cleachtaí"
+   ]
   },
   "20": {
    "io": [
@@ -80887,7 +80911,9 @@
    "ro": [
     "arsenal"
    ],
-   "ga": []
+   "ga": [
+    "armlann"
+   ]
   },
   "22": {
    "io": [
@@ -80962,7 +80988,9 @@
    "ro": [
     "tunuri"
    ],
-   "ga": []
+   "ga": [
+    "ghunnaí móra"
+   ]
   },
   "23": {
    "io": [
@@ -81037,7 +81065,9 @@
    "ro": [
     "ghiulele"
    ],
-   "ga": []
+   "ga": [
+    "urchair mhóra"
+   ]
   },
   "24": {
    "io": [
@@ -81110,7 +81140,9 @@
    "ro": [
     "cazangeria"
    ],
-   "ga": []
+   "ga": [
+    "mhonarcha mhiotail"
+   ]
   },
   "25": {
    "io": [
@@ -81185,7 +81217,9 @@
    "ro": [
     "cazanele"
    ],
-   "ga": []
+   "ga": [
+    "coirí"
+   ]
   },
   "26": {
    "io": [
@@ -81258,7 +81292,9 @@
    "ro": [
     "docurile"
    ],
-   "ga": []
+   "ga": [
+    "dugaí"
+   ]
   },
   "27": {
    "io": [
@@ -81333,7 +81369,9 @@
    "ro": [
     "docuri plutitoare"
    ],
-   "ga": []
+   "ga": [
+    "dugaí ar snámh"
+   ]
   },
   "28": {
    "io": [
@@ -81408,7 +81446,9 @@
    "ro": [
     "elicea"
    ],
-   "ga": []
+   "ga": [
+    "lián"
+   ]
   },
   "29": {
    "io": [
@@ -81483,7 +81523,9 @@
    "ro": [
     "chila"
    ],
-   "ga": []
+   "ga": [
+    "chíle"
+   ]
   },
   "30": {
    "io": [
@@ -81558,7 +81600,9 @@
    "ro": [
     "cârma"
    ],
-   "ga": []
+   "ga": [
+    "stiúir"
+   ]
   },
   "31": {
    "io": [
@@ -81633,7 +81677,9 @@
    "ro": [
     "vapoarele cu zbaturi"
    ],
-   "ga": []
+   "ga": [
+    "báid rothacha"
+   ]
   },
   "32": {
    "io": [
@@ -81706,7 +81752,9 @@
    "ro": [
     "macaraua rotitoare"
    ],
-   "ga": []
+   "ga": [
+    "gcraein chrannaithe"
+   ]
   },
   "34": {
    "io": [
@@ -81781,7 +81829,9 @@
    "ro": [
     "transatlanticele"
    ],
-   "ga": []
+   "ga": [
+    "longa trasatlantacha"
+   ]
   },
   "35": {
    "io": [
@@ -81854,7 +81904,9 @@
     "bandera"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "mbratacha"
+   ]
   },
   "36": {
    "io": [
@@ -82000,7 +82052,9 @@
    "ro": [
     "proră"
    ],
-   "ga": []
+   "ga": [
+    "gcuid tosaigh"
+   ]
   },
   "38": {
    "io": [
@@ -82075,7 +82129,9 @@
    "ro": [
     "pupă"
    ],
-   "ga": []
+   "ga": [
+    "gcuid deiridh"
+   ]
   },
   "39": {
    "io": [
@@ -82150,7 +82206,9 @@
    "ro": [
     "cabinele"
    ],
-   "ga": []
+   "ga": [
+    "cábáin"
+   ]
   },
   "40": {
    "io": [
@@ -82225,7 +82283,9 @@
    "ro": [
     "geamanduri"
    ],
-   "ga": []
+   "ga": [
+    "baoithe"
+   ]
   },
   "41": {
    "io": [
@@ -82300,7 +82360,9 @@
    "ro": [
     "barjele"
    ],
-   "ga": []
+   "ga": [
+    "ngeabaraí"
+   ]
   },
   "42": {
    "io": [
@@ -82375,7 +82437,9 @@
    "ro": [
     "cargobot"
    ],
-   "ga": []
+   "ga": [
+    "loinge lasta"
+   ]
   },
   "43": {
    "io": [
@@ -82450,7 +82514,9 @@
    "ro": [
     "depozit"
    ],
-   "ga": []
+   "ga": [
+    "stórais"
+   ]
   },
   "44": {
    "io": [
@@ -82525,7 +82591,9 @@
    "ro": [
     "gara portului"
    ],
-   "ga": []
+   "ga": [
+    "stáisiúin mhara"
+   ]
   },
   "45": {
    "io": [
@@ -82600,7 +82668,9 @@
    "ro": [
     "liniei de chei"
    ],
-   "ga": []
+   "ga": [
+    "líne na gcéanna"
+   ]
   },
   "46": {
    "io": [
@@ -82671,7 +82741,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "báid bheaga"
+   ]
   },
   "47": {
    "io": [
@@ -82744,7 +82816,9 @@
    "ro": [
     "vâslă"
    ],
-   "ga": []
+   "ga": [
+    "rámha"
+   ]
   },
   "48": {
    "io": [
@@ -82819,7 +82893,9 @@
    "ro": [
     "puntea"
    ],
-   "ga": []
+   "ga": [
+    "dheic"
+   ]
   },
   "49": {
    "io": [
@@ -82894,7 +82970,9 @@
    "ro": [
     "bărcii cu pânze"
    ],
-   "ga": []
+   "ga": [
+    "bháid seoil"
+   ]
   },
   "50": {
    "io": [
@@ -82969,7 +83047,9 @@
    "ro": [
     "vergi"
    ],
-   "ga": []
+   "ga": [
+    "slata seoil"
+   ]
   },
   "51": {
    "io": [
@@ -83044,7 +83124,9 @@
    "ro": [
     "catarg"
    ],
-   "ga": []
+   "ga": [
+    "crann"
+   ]
   },
   "52": {
    "io": [
@@ -83119,7 +83201,9 @@
    "ro": [
     "parâme"
    ],
-   "ga": []
+   "ga": [
+    "téada"
+   ]
   },
   "53": {
    "io": [
@@ -83194,7 +83278,9 @@
    "ro": [
     "docul închis"
    ],
-   "ga": []
+   "ga": [
+    "duga snámha"
+   ]
   },
   "54": {
    "io": [
@@ -83269,7 +83355,9 @@
    "ro": [
     "șalupă"
    ],
-   "ga": []
+   "ga": [
+    "i yóla"
+   ]
   },
   "55": {
    "io": [
@@ -83415,7 +83503,9 @@
     "sareak"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "líonta"
+   ]
   },
   "58": {
    "io": [
@@ -83490,7 +83580,9 @@
    "ro": [
     "chei"
    ],
-   "ga": []
+   "ga": [
+    "ché"
+   ]
   },
   "59": {
    "io": [
@@ -83563,7 +83655,9 @@
    "ro": [
     "mărfuri"
    ],
-   "ga": []
+   "ga": [
+    "hearraí"
+   ]
   },
   "60": {
    "io": [
@@ -83638,7 +83732,9 @@
    "ro": [
     "lăzi"
    ],
-   "ga": []
+   "ga": [
+    "gcistí"
+   ]
   },
   "61": {
    "io": [
@@ -83713,7 +83809,9 @@
    "ro": [
     "baloturi"
    ],
-   "ga": []
+   "ga": [
+    "mburlaí"
+   ]
   },
   "62": {
    "io": [
@@ -83859,7 +83957,9 @@
    "ro": [
     "încărcătura"
    ],
-   "ga": []
+   "ga": [
+    "lasta"
+   ]
   },
   "64": {
    "io": [
@@ -83934,7 +84034,9 @@
    "ro": [
     "camioane"
    ],
-   "ga": []
+   "ga": [
+    "thrucailí"
+   ]
   },
   "65": {
    "io": [
@@ -84009,7 +84111,9 @@
    "ro": [
     "vamă"
    ],
-   "ga": []
+   "ga": [
+    "dteach an chustaim"
+   ]
   },
   "66": {
    "io": [
@@ -84084,7 +84188,9 @@
    "ro": [
     "podul mobil"
    ],
-   "ga": []
+   "ga": [
+    "droichead casta"
+   ]
   },
   "67": {
    "io": [
@@ -84159,7 +84265,9 @@
    "ro": [
     "canalul"
    ],
-   "ga": []
+   "ga": [
+    "chanáil"
+   ]
   },
   "68": {
    "io": [
@@ -84234,7 +84342,9 @@
    "ro": [
     "draga"
    ],
-   "ga": []
+   "ga": [
+    "dreidire"
+   ]
   },
   "69": {
    "io": [
@@ -84309,7 +84419,9 @@
    "ro": [
     "ecluză"
    ],
-   "ga": []
+   "ga": [
+    "loc"
+   ]
   },
   "70": {
    "io": [
@@ -84384,7 +84496,9 @@
    "ro": [
     "catargul de semnale"
    ],
-   "ga": []
+   "ga": [
+    "seamafór"
+   ]
   },
   "71": {
    "io": [
@@ -84459,7 +84573,9 @@
    "ro": [
     "șalupele"
    ],
-   "ga": []
+   "ga": [
+    "báid fhada"
+   ]
   },
   "72": {
    "io": [
@@ -84534,7 +84650,9 @@
    "ro": [
     "val"
    ],
-   "ga": []
+   "ga": [
+    "tonn"
+   ]
   },
   "73": {
    "io": [
@@ -84609,7 +84727,9 @@
    "ro": [
     "plajă"
    ],
-   "ga": []
+   "ga": [
+    "trá"
+   ]
   },
   "74": {
    "io": [
@@ -84684,7 +84804,9 @@
    "ro": [
     "tramvaiul electric"
    ],
-   "ga": []
+   "ga": [
+    "tram leictreach"
+   ]
   },
   "75": {
    "io": [
@@ -84759,7 +84881,9 @@
    "ro": [
     "stație"
    ],
-   "ga": []
+   "ga": [
+    "stad"
+   ]
   },
   "76": {
    "io": [
@@ -84834,7 +84958,9 @@
    "ro": [
     "balconul"
    ],
-   "ga": []
+   "ga": [
+    "bhalcóin"
+   ]
   },
   "77": {
    "io": [
@@ -84909,7 +85035,9 @@
    "ro": [
     "ancore"
    ],
-   "ga": []
+   "ga": [
+    "hancairí"
+   ]
   },
   "78": {
    "io": [
@@ -84984,7 +85112,9 @@
    "ro": [
     "locotenenți"
    ],
-   "ga": []
+   "ga": [
+    "leifteanaint loinge"
+   ]
   },
   "79": {
    "io": [
@@ -85059,7 +85189,9 @@
    "ro": [
     "căpitani de artilerie"
    ],
-   "ga": []
+   "ga": [
+    "captaein airtléire"
+   ]
   },
   "80": {
    "io": [
@@ -85134,7 +85266,9 @@
    "ro": [
     "infanterie"
    ],
-   "ga": []
+   "ga": [
+    "coisithe"
+   ]
   },
   "81": {
    "io": [
@@ -85207,7 +85341,9 @@
    "ro": [
     "marinar"
    ],
-   "ga": []
+   "ga": [
+    "mairnéalach"
+   ]
   },
   "82": {
    "io": [
@@ -85353,7 +85489,9 @@
     "komandantearengandik"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "gceannasaí loinge"
+   ]
   },
   "84": {
    "io": [
@@ -85428,7 +85566,9 @@
    "ro": [
     "amiral"
    ],
-   "ga": []
+   "ga": [
+    "aimiréal"
+   ]
   },
   "85": {
    "io": [
@@ -85503,7 +85643,9 @@
    "ro": [
     "cartierul-maistru"
    ],
-   "ga": []
+   "ga": [
+    "ceathrúshaoiste"
+   ]
   },
   "86": {
    "io": [
@@ -85576,7 +85718,9 @@
     "denda"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "pubaill"
+   ]
   },
   "87": {
    "io": [
@@ -85651,7 +85795,9 @@
    "ro": [
     "cabinele de baie"
    ],
-   "ga": []
+   "ga": [
+    "bothanna"
+   ]
   },
   "88": {
    "io": [
@@ -85726,7 +85872,9 @@
    "ro": [
     "scăldătorii"
    ],
-   "ga": []
+   "ga": [
+    "folcadóirí"
+   ]
   },
   "89": {
    "io": [
@@ -85801,7 +85949,9 @@
    "ro": [
     "cazinoului"
    ],
-   "ga": []
+   "ga": [
+    "chasaíno"
+   ]
   },
   "90": {
    "io": [],
@@ -86012,7 +86162,9 @@
    "ro": [
     "talazurile"
    ],
-   "ga": []
+   "ga": [
+    "tonn mhór"
+   ]
   },
   "93": {
    "io": [
@@ -86087,7 +86239,9 @@
    "ro": [
     "farul"
    ],
-   "ga": []
+   "ga": [
+    "teach solais"
+   ]
   },
   "94": {
    "io": [
@@ -86162,7 +86316,9 @@
    "ro": [
     "Faleza"
    ],
-   "ga": []
+   "ga": [
+    "aill"
+   ]
   },
   "95": {
    "io": [
@@ -86237,7 +86393,9 @@
    "ro": [
     "golfuri"
    ],
-   "ga": []
+   "ga": [
+    "bánna"
+   ]
   },
   "96": {
    "io": [
@@ -86312,7 +86470,9 @@
    "ro": [
     "podișul"
    ],
-   "ga": []
+   "ga": [
+    "ardchlár"
+   ]
   },
   "97": {
    "io": [
@@ -86383,7 +86543,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "dún"
+   ]
   },
   "98": {
    "io": [
@@ -86458,7 +86620,9 @@
    "ro": [
     "strâmtoarea"
    ],
-   "ga": []
+   "ga": [
+    "gcaolas"
+   ]
   },
   "99": {
    "io": [
@@ -86529,7 +86693,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "oileán"
+   ]
   },
   "100": {
    "io": [
@@ -86604,7 +86770,9 @@
    "ro": [
     "stânci"
    ],
-   "ga": []
+   "ga": [
+    "sceireacha"
+   ]
   }
  },
  "t11": {
@@ -86752,7 +86920,9 @@
    "ro": [
     "cheiurilor"
    ],
-   "ga": []
+   "ga": [
+    "céanna"
+   ]
   },
   "3": {
    "io": [
@@ -86825,7 +86995,9 @@
    "ro": [
     "mahala"
    ],
-   "ga": []
+   "ga": [
+    "bruachbhaile"
+   ]
   },
   "4": {
    "io": [
@@ -86900,7 +87072,9 @@
    "ro": [
     "uzine"
    ],
-   "ga": []
+   "ga": [
+    "monarchana"
+   ]
   },
   "5": {
    "io": [
@@ -86975,7 +87149,9 @@
    "ro": [
     "fabrica de gaz"
    ],
-   "ga": []
+   "ga": [
+    "gasoibreacha"
+   ]
   },
   "6": {
    "io": [
@@ -87121,7 +87297,9 @@
    "ro": [
     "castel întărit"
    ],
-   "ga": []
+   "ga": [
+    "tseanchaisleáin dhaingnithe"
+   ]
   },
   "8": {
    "io": [
@@ -87196,7 +87374,9 @@
    "ro": [
     "poarta"
    ],
-   "ga": []
+   "ga": [
+    "geata"
+   ]
   },
   "9": {
    "io": [
@@ -87271,7 +87451,9 @@
    "ro": [
     "turnuri"
    ],
-   "ga": []
+   "ga": [
+    "thúr"
+   ]
   },
   "10": {
    "io": [
@@ -87346,7 +87528,9 @@
    "ro": [
     "vama"
    ],
-   "ga": []
+   "ga": [
+    "teach an chustaim"
+   ]
   },
   "11": {
    "io": [
@@ -87417,7 +87601,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "sráidín"
+   ]
   },
   "12": {
    "io": [
@@ -87490,7 +87676,9 @@
    "ro": [
     "primărie"
    ],
-   "ga": []
+   "ga": [
+    "sean-halla na cathrach"
+   ]
   },
   "13": {
    "io": [
@@ -87636,7 +87824,9 @@
    "ro": [
     "bursa"
    ],
-   "ga": []
+   "ga": [
+    "Mhalartlann"
+   ]
   },
   "15": {
    "io": [
@@ -87709,7 +87899,9 @@
    "ro": [
     "prefectura"
    ],
-   "ga": []
+   "ga": [
+    "teach an phréifeachta"
+   ]
   },
   "16": {
    "io": [
@@ -87780,7 +87972,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "mbeairicí"
+   ]
   },
   "17": {
    "io": [
@@ -87855,7 +88049,9 @@
    "ro": [
     "parcului orășenesc"
    ],
-   "ga": []
+   "ga": [
+    "pháirc na cathrach"
+   ]
   },
   "18": {
    "io": [
@@ -87930,7 +88126,9 @@
    "ro": [
     "casei de economii"
    ],
-   "ga": []
+   "ga": [
+    "bhanc taisce"
+   ]
   },
   "19": {
    "io": [
@@ -88005,7 +88203,9 @@
    "ro": [
     "Bulevardul"
    ],
-   "ga": []
+   "ga": [
+    "bulbhard"
+   ]
   },
   "20": {
    "io": [
@@ -88080,7 +88280,9 @@
    "ro": [
     "catedralei"
    ],
-   "ga": []
+   "ga": [
+    "hardeaglaise"
+   ]
   },
   "21": {
    "io": [
@@ -88228,7 +88430,9 @@
    "ro": [
     "tribunal"
    ],
-   "ga": []
+   "ga": [
+    "teach na cúirte"
+   ]
   },
   "25": {
    "io": [
@@ -88303,7 +88507,9 @@
    "ro": [
     "cafenelei"
    ],
-   "ga": []
+   "ga": [
+    "chaife"
+   ]
   },
   "26": {
    "io": [
@@ -88449,7 +88655,9 @@
    "ro": [
     "chioșcul"
    ],
-   "ga": []
+   "ga": [
+    "bhothán ceoil"
+   ]
   },
   "28": {
    "io": [
@@ -88595,7 +88803,9 @@
    "ro": [
     "felinare cu gaz"
    ],
-   "ga": []
+   "ga": [
+    "lampaí gáis"
+   ]
   },
   "31": {
    "io": [
@@ -88666,7 +88876,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "tramanna leictreacha"
+   ]
   },
   "32": {
    "io": [
@@ -88739,7 +88951,9 @@
    "ro": [
     "banca"
    ],
-   "ga": []
+   "ga": [
+    "Banc"
+   ]
   },
   "33": {
    "io": [
@@ -88814,7 +89028,9 @@
    "ro": [
     "Încasatorii băncii"
    ],
-   "ga": []
+   "ga": [
+    "teachtairí an bhainc"
+   ]
   },
   "34": {
    "io": [
@@ -88887,7 +89103,9 @@
     "liburutegia"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "leabharlann"
+   ]
   },
   "35": {
    "io": [
@@ -88960,7 +89178,9 @@
    "ro": [
     "colecții de științe naturale"
    ],
-   "ga": []
+   "ga": [
+    "bailiúcháin staire nádúrtha"
+   ]
   },
   "36": {
    "io": [
@@ -89108,7 +89328,9 @@
    "ro": [
     "paznicului"
    ],
-   "ga": []
+   "ga": [
+    "choimeádaí"
+   ]
   },
   "38": {
    "io": [
@@ -89183,7 +89405,9 @@
    "ro": [
     "Pictorii"
    ],
-   "ga": []
+   "ga": [
+    "péintéirí"
+   ]
   },
   "39": {
    "io": [
@@ -89258,7 +89482,9 @@
    "ro": [
     "spitalului"
    ],
-   "ga": []
+   "ga": [
+    "ospidéil"
+   ]
   },
   "40": {
    "io": [
@@ -89333,7 +89559,9 @@
    "ro": [
     "cupola"
    ],
-   "ga": []
+   "ga": [
+    "cruinneachán"
+   ]
   },
   "41": {
    "io": [
@@ -89408,7 +89636,9 @@
    "ro": [
     "școlii normale"
    ],
-   "ga": []
+   "ga": [
+    "choláiste oiliúna"
+   ]
   },
   "42": {
    "io": [
@@ -89481,7 +89711,9 @@
    "ro": [
     "casă particulară"
    ],
-   "ga": []
+   "ga": [
+    "dteach príobháideach"
+   ]
   },
   "43": {
    "io": [
@@ -89556,7 +89788,9 @@
    "ro": [
     "poșta"
    ],
-   "ga": []
+   "ga": [
+    "oifig phoist"
+   ]
   },
   "44": {
    "io": [
@@ -89631,7 +89865,9 @@
    "ro": [
     "Funcționarii poștali"
    ],
-   "ga": []
+   "ga": [
+    "oibrithe an phoist"
+   ]
   },
   "45": {
    "io": [
@@ -89706,7 +89942,9 @@
    "ro": [
     "poștașii"
    ],
-   "ga": []
+   "ga": [
+    "fir an phoist"
+   ]
   },
   "46": {
    "io": [
@@ -89781,7 +90019,9 @@
    "ro": [
     "trotuar"
    ],
-   "ga": []
+   "ga": [
+    "gcosán"
+   ]
   },
   "47": {
    "io": [
@@ -89856,7 +90096,9 @@
    "ro": [
     "caldarâm"
    ],
-   "ga": []
+   "ga": [
+    "mbóthar"
+   ]
   },
   "48": {
    "io": [
@@ -89931,7 +90173,9 @@
    "ro": [
     "Vatmanul"
    ],
-   "ga": []
+   "ga": [
+    "thiománaí tram"
+   ]
   },
   "50": {
    "io": [
@@ -90079,7 +90323,9 @@
    "ro": [
     "infirmiera"
    ],
-   "ga": []
+   "ga": [
+    "haltra"
+   ]
   },
   "52": {
    "io": [
@@ -90154,7 +90400,9 @@
    "ro": [
     "chirurgul"
    ],
-   "ga": []
+   "ga": [
+    "máinlia"
+   ]
   },
   "53": {
    "io": [
@@ -90229,7 +90477,9 @@
    "ro": [
     "rănit"
    ],
-   "ga": []
+   "ga": [
+    "dhuine gortaithe"
+   ]
   },
   "54": {
    "io": [
@@ -90304,7 +90554,9 @@
    "ro": [
     "targă"
    ],
-   "ga": []
+   "ga": [
+    "shínteán"
+   ]
   },
   "55": {
    "io": [
@@ -90379,7 +90631,9 @@
    "ro": [
     "chioșcul de ziare"
    ],
-   "ga": []
+   "ga": [
+    "mboth nuachtán"
+   ]
   },
   "56": {
    "io": [
@@ -90454,7 +90708,9 @@
    "ro": [
     "gură-cască"
    ],
-   "ga": []
+   "ga": [
+    "fiosraitheoirí"
+   ]
   },
   "57": {
    "io": [
@@ -90529,7 +90785,9 @@
    "ro": [
     "soldații"
    ],
-   "ga": []
+   "ga": [
+    "saighdiúirí"
+   ]
   },
   "61": {
    "io": [
@@ -90604,7 +90862,9 @@
    "ro": [
     "gardiștii orășenești"
    ],
-   "ga": []
+   "ga": [
+    "ngardaí cathrach ar muin capaill"
+   ]
   },
   "63": {
    "io": [
@@ -90679,7 +90939,9 @@
    "ro": [
     "jandarmii"
    ],
-   "ga": []
+   "ga": [
+    "gardaí"
+   ]
   },
   "64": {
    "io": [
@@ -90754,7 +91016,9 @@
    "ro": [
     "polițiștilor"
    ],
-   "ga": []
+   "ga": [
+    "póilíní"
+   ]
   },
   "65": {
    "io": [
@@ -90904,7 +91168,9 @@
    "ro": [
     "Ofițerul"
    ],
-   "ga": []
+   "ga": [
+    "an t-oifigeach"
+   ]
   },
   "67": {
    "io": [
@@ -90979,7 +91245,9 @@
    "ro": [
     "pompa cu aburi"
    ],
-   "ga": []
+   "ga": [
+    "caidéal gaile"
+   ]
   },
   "68": {
    "io": [
@@ -91054,7 +91322,9 @@
    "ro": [
     "pompa de mână"
    ],
-   "ga": []
+   "ga": [
+    "caidéal láimhe"
+   ]
   },
   "69": {
    "io": [
@@ -91200,7 +91470,9 @@
    "ro": [
     "țeava"
    ],
-   "ga": []
+   "ga": [
+    "soc"
+   ]
   },
   "71": {
    "io": [
@@ -91275,7 +91547,9 @@
    "ro": [
     "șuvoiul"
    ],
-   "ga": []
+   "ga": [
+    "scaird"
+   ]
   },
   "72": {
    "io": [
@@ -91421,7 +91695,9 @@
    "ro": [
     "teatrului"
    ],
-   "ga": []
+   "ga": [
+    "hamharclainne"
+   ]
   },
   "74": {
    "io": [
@@ -91496,7 +91772,9 @@
    "ro": [
     "Focul"
    ],
-   "ga": []
+   "ga": [
+    "an dóiteán"
+   ]
   },
   "75": {
    "io": [
@@ -91640,7 +91918,9 @@
    "ro": [
     "spectatori"
    ],
-   "ga": []
+   "ga": [
+    "lucht féachana"
+   ]
   },
   "77": {
    "io": [
@@ -91715,7 +91995,9 @@
    "ro": [
     "balcon"
    ],
-   "ga": []
+   "ga": [
+    "mbalcóin"
+   ]
   },
   "78": {
    "io": [
@@ -91790,7 +92072,9 @@
    "ro": [
     "portic"
    ],
-   "ga": []
+   "ga": [
+    "gcolúnáid"
+   ]
   },
   "79": {
    "io": [
@@ -91865,7 +92149,9 @@
    "ro": [
     "afișul"
    ],
-   "ga": []
+   "ga": [
+    "fógra"
+   ]
   },
   "80": {
    "io": [
@@ -91940,7 +92226,9 @@
    "ro": [
     "orchestrei"
    ],
-   "ga": []
+   "ga": [
+    "ceolfhoirne"
+   ]
   },
   "81": {
    "io": [
@@ -92039,7 +92327,10 @@
     "muzicanții",
     "vioara"
    ],
-   "ga": []
+   "ga": [
+    "ceoltóirí",
+    "veidhlín"
+   ]
   },
   "82": {
    "io": [
@@ -92114,7 +92405,9 @@
    "ro": [
     "flautul"
    ],
-   "ga": []
+   "ga": [
+    "fliúit"
+   ]
   },
   "83": {
    "io": [
@@ -92189,7 +92482,9 @@
    "ro": [
     "violoncelul"
    ],
-   "ga": []
+   "ga": [
+    "dordveidhil"
+   ]
   },
   "84": {
    "io": [
@@ -92264,7 +92559,9 @@
    "ro": [
     "trombonul"
    ],
-   "ga": []
+   "ga": [
+    "trombón"
+   ]
   },
   "85": {
    "io": [
@@ -92339,7 +92636,9 @@
    "ro": [
     "toba"
    ],
-   "ga": []
+   "ga": [
+    "druma"
+   ]
   },
   "86": {
    "io": [
@@ -92485,7 +92784,9 @@
    "ro": [
     "mobilier"
    ],
-   "ga": []
+   "ga": [
+    "troscán"
+   ]
   },
   "88": {
    "io": [
@@ -92560,7 +92861,9 @@
    "ro": [
     "actrițele"
    ],
-   "ga": []
+   "ga": [
+    "ban-aisteoirí"
+   ]
   },
   "89": {
    "io": [
@@ -92635,7 +92938,9 @@
    "ro": [
     "Actorii"
    ],
-   "ga": []
+   "ga": [
+    "haisteoirí"
+   ]
   },
   "90": {
    "io": [
@@ -92706,7 +93011,9 @@
     "jantziekin"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "gculaith"
+   ]
   },
   "91": {
    "io": [
@@ -92781,7 +93088,9 @@
    "ro": [
     "prefectul"
    ],
-   "ga": []
+   "ga": [
+    "préifeacht"
+   ]
   },
   "92": {
    "io": [
@@ -92856,7 +93165,9 @@
    "ro": [
     "ziaristului"
    ],
-   "ga": []
+   "ga": [
+    "iriseoir"
+   ]
   },
   "93": {
    "io": [
@@ -92931,7 +93242,9 @@
    "ro": [
     "primarul"
    ],
-   "ga": []
+   "ga": [
+    "méara"
+   ]
   },
   "94": {
    "io": [
@@ -93006,7 +93319,9 @@
    "ro": [
     "șeful poliției"
    ],
-   "ga": []
+   "ga": [
+    "coimisinéir na bpóilíní"
+   ]
   },
   "95": {
    "io": [
@@ -93081,7 +93396,9 @@
    "ro": [
     "judecătorul de instrucție"
    ],
-   "ga": []
+   "ga": [
+    "oifigeach breithiúnach"
+   ]
   },
   "96": {
    "io": [
@@ -93156,7 +93473,9 @@
    "ro": [
     "piață"
    ],
-   "ga": []
+   "ga": [
+    "chearnóg"
+   ]
   }
  },
  "t12": {
@@ -93231,7 +93550,9 @@
    "ro": [
     "călători"
    ],
-   "ga": []
+   "ga": [
+    "taistealaithe"
+   ]
   },
   "2": {
    "io": [
@@ -93377,7 +93698,9 @@
    "ro": [
     "sacul de călătorie"
    ],
-   "ga": []
+   "ga": [
+    "mhála taistil"
+   ]
   },
   "4": {
    "io": [
@@ -93452,7 +93775,9 @@
    "ro": [
     "telegraful"
    ],
-   "ga": []
+   "ga": [
+    "oifig an teileagraif"
+   ]
   },
   "5": {
    "io": [
@@ -93525,7 +93850,9 @@
    "ro": [
     "telegramă"
    ],
-   "ga": []
+   "ga": [
+    "teachtaireacht (teileagram)"
+   ]
   },
   "6": {
    "io": [
@@ -93598,7 +93925,9 @@
    "ro": [
     "controlor"
    ],
-   "ga": []
+   "ga": [
+    "cigire"
+   ]
   },
   "7": {
    "io": [
@@ -93673,7 +94002,9 @@
    "ro": [
     "sala de așteptare"
    ],
-   "ga": []
+   "ga": [
+    "seomra feithimh"
+   ]
   },
   "8": {
    "io": [
@@ -93748,7 +94079,9 @@
    "ro": [
     "ghișeu"
    ],
-   "ga": []
+   "ga": [
+    "bhfuinneoigín"
+   ]
   },
   "9": {
    "io": [
@@ -93819,7 +94152,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "ticéid"
+   ]
   },
   "10": {
    "io": [
@@ -93892,7 +94227,9 @@
    "ro": [
     "soldat"
    ],
-   "ga": []
+   "ga": [
+    "saighdiúir"
+   ]
   },
   "11": {
    "io": [
@@ -93965,7 +94302,9 @@
     "jendarmearekin"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "ngarda"
+   ]
   },
   "12": {
    "io": [
@@ -94040,7 +94379,9 @@
    "ro": [
     "comisarul"
    ],
-   "ga": []
+   "ga": [
+    "gcoimisinéir"
+   ]
   },
   "13": {
    "io": [
@@ -94115,7 +94456,9 @@
    "ro": [
     "șeful gării"
    ],
-   "ga": []
+   "ga": [
+    "mháistir an stáisiúin"
+   ]
   },
   "14": {
    "io": [
@@ -94190,7 +94533,9 @@
    "ro": [
     "librărie"
    ],
-   "ga": []
+   "ga": [
+    "leabharlann"
+   ]
   },
   "15": {
    "io": [
@@ -94265,7 +94610,9 @@
    "ro": [
     "mersul trenurilor"
    ],
-   "ga": []
+   "ga": [
+    "clár ama"
+   ]
   },
   "16": {
    "io": [
@@ -94338,7 +94685,9 @@
    "ro": [
     "hamal"
    ],
-   "ga": []
+   "ga": [
+    "póirtéir"
+   ]
   },
   "17": {
    "io": [
@@ -94413,7 +94762,9 @@
    "ro": [
     "bagajul"
    ],
-   "ga": []
+   "ga": [
+    "bagáiste"
+   ]
   },
   "19": {
    "io": [
@@ -94488,7 +94839,9 @@
    "ro": [
     "cărucior de bagaje"
    ],
-   "ga": []
+   "ga": [
+    "thralaí pacáistí"
+   ]
   },
   "21": {
    "io": [
@@ -94563,7 +94916,9 @@
    "ro": [
     "cântar"
    ],
-   "ga": []
+   "ga": [
+    "meá"
+   ]
   },
   "22": {
    "io": [
@@ -94638,7 +94993,9 @@
    "ro": [
     "Funcționarul"
    ],
-   "ga": []
+   "ga": [
+    "an cléireach"
+   ]
   },
   "23": {
    "io": [],
@@ -94778,7 +95135,9 @@
    "ro": [
     "geamantanul"
    ],
-   "ga": []
+   "ga": [
+    "mála"
+   ]
   },
   "25": {
    "io": [
@@ -94853,7 +95212,9 @@
    "ro": [
     "casa de bagaje"
    ],
-   "ga": []
+   "ga": [
+    "taisceadán bagáiste"
+   ]
   },
   "26": {
    "io": [
@@ -94928,7 +95289,9 @@
    "ro": [
     "mersul trenurilor"
    ],
-   "ga": []
+   "ga": [
+    "cláir ama"
+   ]
   },
   "27": {
    "io": [
@@ -95003,7 +95366,9 @@
    "ro": [
     "eliberarea bagajelor"
    ],
-   "ga": []
+   "ga": [
+    "oifig bhagáiste"
+   ]
   },
   "28": {
    "io": [
@@ -95078,7 +95443,9 @@
    "ro": [
     "cutiile"
    ],
-   "ga": []
+   "ga": [
+    "gcistí"
+   ]
   },
   "29": {
    "io": [
@@ -95153,7 +95520,9 @@
    "ro": [
     "recipisa"
    ],
-   "ga": []
+   "ga": [
+    "ticéad"
+   ]
   },
   "30": {
    "io": [
@@ -95228,7 +95597,9 @@
    "ro": [
     "coșurile"
    ],
-   "ga": []
+   "ga": [
+    "gciseáin"
+   ]
   },
   "32": {
    "io": [
@@ -95303,7 +95674,9 @@
    "ro": [
     "ieșire"
    ],
-   "ga": []
+   "ga": [
+    "doras amach"
+   ]
   },
   "33": {
    "io": [
@@ -95378,7 +95751,9 @@
    "ro": [
     "Funcționarii de acciz"
    ],
-   "ga": []
+   "ga": [
+    "oifigigh an mháil"
+   ]
   },
   "34": {
    "io": [
@@ -95453,7 +95828,9 @@
    "ro": [
     "bufet"
    ],
-   "ga": []
+   "ga": [
+    "bhuféidh"
+   ]
   },
   "35": {
    "io": [
@@ -95526,7 +95903,9 @@
    "ro": [
     "chelner"
    ],
-   "ga": []
+   "ga": [
+    "freastalaí"
+   ]
   },
   "36": {
    "io": [
@@ -95601,7 +95980,9 @@
    "ro": [
     "trenul"
    ],
-   "ga": []
+   "ga": [
+    "traein"
+   ]
   },
   "37": {
    "io": [
@@ -95745,7 +96126,9 @@
    "ro": [
     "compartiment"
    ],
-   "ga": []
+   "ga": [
+    "urrann"
+   ]
   },
   "39": {
    "io": [
@@ -95820,7 +96203,9 @@
    "ro": [
     "ușița"
    ],
-   "ga": []
+   "ga": [
+    "doras"
+   ]
   },
   "40": {
    "io": [
@@ -95895,7 +96280,9 @@
    "ro": [
     "scară"
    ],
-   "ga": []
+   "ga": [
+    "gcéim"
+   ]
   },
   "41": {
    "io": [
@@ -95970,7 +96357,9 @@
    "ro": [
     "storul"
    ],
-   "ga": []
+   "ga": [
+    "dallóg"
+   ]
   },
   "42": {
    "io": [
@@ -96045,7 +96434,9 @@
    "ro": [
     "banchetă"
    ],
-   "ga": []
+   "ga": [
+    "mbinse"
+   ]
   },
   "43": {
    "io": [
@@ -96120,7 +96511,9 @@
    "ro": [
     "plasă"
    ],
-   "ga": []
+   "ga": [
+    "líonra"
+   ]
   },
   "44": {
    "io": [
@@ -96195,7 +96588,9 @@
    "ro": [
     "lampagiu"
    ],
-   "ga": []
+   "ga": [
+    "lampadóir"
+   ]
   },
   "45": {
    "io": [
@@ -96270,7 +96665,9 @@
    "ro": [
     "pernelor"
    ],
-   "ga": []
+   "ga": [
+    "gceannadhart"
+   ]
   },
   "46": {
    "io": [
@@ -96345,7 +96742,9 @@
    "ro": [
     "șeful de tren"
    ],
-   "ga": []
+   "ga": [
+    "ceannaire na traenach"
+   ]
   },
   "47": {
    "io": [
@@ -96420,7 +96819,9 @@
    "ro": [
     "vagonul de bagaje"
    ],
-   "ga": []
+   "ga": [
+    "veain"
+   ]
   },
   "48": {
    "io": [],
@@ -96554,7 +96955,9 @@
     "tenderrean"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "thender"
+   ]
   },
   "50": {
    "io": [
@@ -96629,7 +97032,9 @@
    "ro": [
     "fochistul"
    ],
-   "ga": []
+   "ga": [
+    "an tiománaí teallaigh"
+   ]
   },
   "51": {
    "io": [
@@ -96704,7 +97109,9 @@
    "ro": [
     "mecanicul"
    ],
-   "ga": []
+   "ga": [
+    "an t-innealtóir"
+   ]
   },
   "52": {
    "io": [
@@ -96779,7 +97186,9 @@
    "ro": [
     "ajutorului de șef de gară"
    ],
-   "ga": []
+   "ga": [
+    "leas-mháistir an stáisiúin"
+   ]
   },
   "53": {
    "io": [
@@ -96854,7 +97263,9 @@
    "ro": [
     "peron"
    ],
-   "ga": []
+   "ga": [
+    "ardán"
+   ]
   },
   "54": {
    "io": [
@@ -96929,7 +97340,9 @@
    "ro": [
     "locomotivei"
    ],
-   "ga": []
+   "ga": [
+    "an innill"
+   ]
   },
   "55": {
    "io": [
@@ -97004,7 +97417,9 @@
    "ro": [
     "coșul"
    ],
-   "ga": []
+   "ga": [
+    "an simléar"
+   ]
   },
   "56": {
    "io": [
@@ -97079,7 +97494,9 @@
    "ro": [
     "Cazanul"
    ],
-   "ga": []
+   "ga": [
+    "coire"
+   ]
   },
   "57": {
    "io": [
@@ -97154,7 +97571,9 @@
    "ro": [
     "roțile"
    ],
-   "ga": []
+   "ga": [
+    "rothaí"
+   ]
   },
   "58": {
    "io": [
@@ -97229,7 +97648,9 @@
    "ro": [
     "pistoanele"
    ],
-   "ga": []
+   "ga": [
+    "loiní"
+   ]
   },
   "59": {
    "io": [
@@ -97375,7 +97796,9 @@
    "ro": [
     "abur"
    ],
-   "ga": []
+   "ga": [
+    "gal"
+   ]
   },
   "63": {
    "io": [
@@ -97523,7 +97946,9 @@
    "ro": [
     "șine"
    ],
-   "ga": []
+   "ga": [
+    "ráillí"
+   ]
   },
   "65": {
    "io": [
@@ -97598,7 +98023,9 @@
    "ro": [
     "peroanele"
    ],
-   "ga": []
+   "ga": [
+    "hardáin"
+   ]
   },
   "66": {
    "io": [
@@ -97673,7 +98100,9 @@
    "ro": [
     "closete"
    ],
-   "ga": []
+   "ga": [
+    "leithris"
+   ]
   },
   "67": {
    "io": [
@@ -97748,7 +98177,9 @@
    "ro": [
     "vagoane de dormit"
    ],
-   "ga": []
+   "ga": [
+    "carráistí codlata"
+   ]
   },
   "68": {
    "io": [
@@ -97821,7 +98252,9 @@
    "ro": [
     "vagon-restaurant"
    ],
-   "ga": []
+   "ga": [
+    "carráiste bia"
+   ]
   },
   "69": {
    "io": [
@@ -97894,7 +98327,9 @@
    "ro": [
     "vagon poștal"
    ],
-   "ga": []
+   "ga": [
+    "carráiste poist"
+   ]
   },
   "71": {
    "io": [
@@ -97969,7 +98404,9 @@
    "ro": [
     "gara de mărfuri"
    ],
-   "ga": []
+   "ga": [
+    "stáisiún na n-earraí"
+   ]
   },
   "72": {
    "io": [
@@ -98044,7 +98481,9 @@
    "ro": [
     "mărfurile"
    ],
-   "ga": []
+   "ga": [
+    "n-earraí"
+   ]
   },
   "73": {
    "io": [
@@ -98119,7 +98558,9 @@
    "ro": [
     "turnul de apă"
    ],
-   "ga": []
+   "ga": [
+    "umar uisce"
+   ]
   },
   "74": {
    "io": [
@@ -98194,7 +98635,9 @@
    "ro": [
     "pod de fier"
    ],
-   "ga": []
+   "ga": [
+    "droichead iarainn"
+   ]
   },
   "75": {
    "io": [
@@ -98269,7 +98712,9 @@
    "ro": [
     "vagoane de vite"
    ],
-   "ga": []
+   "ga": [
+    "vaigíní ainmhithe"
+   ]
   },
   "76": {
    "io": [
@@ -98344,7 +98789,9 @@
    "ro": [
     "Manevranții"
    ],
-   "ga": []
+   "ga": [
+    "scuad fear"
+   ]
   },
   "78": {
    "io": [
@@ -98494,7 +98941,9 @@
    "ro": [
     "platforme"
    ],
-   "ga": []
+   "ga": [
+    "vaigíní ardáin"
+   ]
   },
   "80": {
    "io": [
@@ -98567,7 +99016,9 @@
    "ro": [
     "tren de marfă"
    ],
-   "ga": []
+   "ga": [
+    "traein earraí"
+   ]
   },
   "81": {
    "io": [
@@ -98642,7 +99093,9 @@
    "ro": [
     "râu"
    ],
-   "ga": []
+   "ga": [
+    "abhainn"
+   ]
   },
   "82": {
    "io": [
@@ -98713,7 +99166,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "tugaí"
+   ]
   },
   "83": {
    "io": [
@@ -98857,7 +99312,9 @@
    "ro": [
     "vapor de călători"
    ],
-   "ga": []
+   "ga": [
+    "bád paisinéirí"
+   ]
   },
   "85": {
    "io": [
@@ -98932,7 +99389,9 @@
    "ro": [
     "ponton"
    ],
-   "ga": []
+   "ga": [
+    "ponntúin"
+   ]
   },
   "86": {
    "io": [
@@ -99007,7 +99466,9 @@
    "ro": [
     "semafor"
    ],
-   "ga": []
+   "ga": [
+    "diosca comhartha"
+   ]
   },
   "87": {
    "io": [
@@ -99080,7 +99541,9 @@
    "ro": [
     "tuneluri"
    ],
-   "ga": []
+   "ga": [
+    "tolláin"
+   ]
   },
   "88": {
    "io": [],
@@ -99222,7 +99685,9 @@
     "erloju handiaren"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "chlog mór"
+   ]
   },
   "90": {
    "io": [
@@ -99297,7 +99762,9 @@
    "ro": [
     "limba mare"
    ],
-   "ga": []
+   "ga": [
+    "an tsnáthaid mhór"
+   ]
   },
   "91": {
    "io": [
@@ -99372,7 +99839,9 @@
    "ro": [
     "cea mică"
    ],
-   "ga": []
+   "ga": [
+    "gceann beag"
+   ]
   },
   "92": {
    "io": [
@@ -99445,7 +99914,9 @@
    "ro": [
     "cadranul"
    ],
-   "ga": []
+   "ga": [
+    "aghaidh an chloig"
+   ]
   },
   "93": {
    "io": [
@@ -99520,7 +99991,9 @@
    "ro": [
     "afișele"
    ],
-   "ga": []
+   "ga": [
+    "fógraí"
+   ]
   },
   "94": {
    "io": [
@@ -99668,7 +100141,9 @@
     "solairuan"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "hurlár"
+   ]
   },
   "2": {
    "io": [
@@ -99814,7 +100289,9 @@
    "ro": [
     "camerista"
    ],
-   "ga": []
+   "ga": [
+    "cailín freastail"
+   ]
   },
   "4": {
    "io": [
@@ -99889,7 +100366,9 @@
    "ro": [
     "sală de lectură"
    ],
-   "ga": []
+   "ga": [
+    "sheomra léitheoireachta"
+   ]
   },
   "5": {
    "io": [
@@ -99964,7 +100443,9 @@
    "ro": [
     "salonul de fumat"
    ],
-   "ga": []
+   "ga": [
+    "seomra tobac"
+   ]
   },
   "6": {
    "io": [
@@ -100039,7 +100520,9 @@
    "ro": [
     "ziarele"
    ],
-   "ga": []
+   "ga": [
+    "nuachtáin"
+   ]
   },
   "8": {
    "io": [
@@ -100112,7 +100595,9 @@
    "ro": [
     "țigară"
    ],
-   "ga": []
+   "ga": [
+    "toitín"
+   ]
   },
   "9": {
    "io": [
@@ -100187,7 +100672,9 @@
    "ro": [
     "ascensorul"
    ],
-   "ga": []
+   "ga": [
+    "ardaitheoir"
+   ]
   },
   "10": {
    "io": [
@@ -100260,7 +100747,9 @@
     "bainugelan"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "seomra folctha"
+   ]
   },
   "11": {
    "io": [
@@ -100335,7 +100824,9 @@
    "ro": [
     "masa comună"
    ],
-   "ga": []
+   "ga": [
+    "mbord coiteann"
+   ]
   },
   "12": {
    "io": [
@@ -100408,7 +100899,9 @@
     "bulego-langileari"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "chléireach"
+   ]
   },
   "13": {
    "io": [
@@ -100483,7 +100976,9 @@
    "ro": [
     "telefonul"
    ],
-   "ga": []
+   "ga": [
+    "teileafón"
+   ]
   },
   "14": {
    "io": [
@@ -100558,7 +101053,9 @@
    "ro": [
     "casierița"
    ],
-   "ga": []
+   "ga": [
+    "bean an airgid"
+   ]
   },
   "15": {
    "io": [
@@ -100633,7 +101130,9 @@
    "ro": [
     "casă"
    ],
-   "ga": []
+   "ga": [
+    "oifig an airgid"
+   ]
   },
   "16": {
    "io": [
@@ -100708,7 +101207,9 @@
    "ro": [
     "registrul călătorilor"
    ],
-   "ga": []
+   "ga": [
+    "chlár na dtaistealaithe"
+   ]
   },
   "17": {
    "io": [
@@ -100781,7 +101282,9 @@
    "ro": [
     "notă"
    ],
-   "ga": []
+   "ga": [
+    "bille"
+   ]
   },
   "18": {
    "io": [
@@ -100856,7 +101359,9 @@
    "ro": [
     "portar"
    ],
-   "ga": []
+   "ga": [
+    "doirseoir"
+   ]
   },
   "19": {
    "io": [
@@ -100929,7 +101434,9 @@
    "ro": [
     "comisionar"
    ],
-   "ga": []
+   "ga": [
+    "gasúr"
+   ]
   },
   "20": {
    "io": [
@@ -101002,7 +101509,9 @@
     "bizikletan"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "ar rothar"
+   ]
   },
   "21": {
    "io": [
@@ -101077,7 +101586,9 @@
    "ro": [
     "Poștașul"
    ],
-   "ga": []
+   "ga": [
+    "fear an phoist"
+   ]
   },
   "22": {
    "io": [
@@ -101150,7 +101661,9 @@
    "ro": [
     "scrisoare"
    ],
-   "ga": []
+   "ga": [
+    "litir"
+   ]
   },
   "23": {
    "io": [
@@ -101225,7 +101738,9 @@
    "ro": [
     "cutia de scrisori"
    ],
-   "ga": []
+   "ga": [
+    "mbosca litreach"
+   ]
   },
   "24": {
    "io": [
@@ -101300,7 +101815,9 @@
    "ro": [
     "hamalului"
    ],
-   "ga": []
+   "ga": [
+    "iompróir"
+   ]
   },
   "25": {
    "io": [
@@ -101373,7 +101890,9 @@
     "esku-organ"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "thralaí láimhe"
+   ]
   },
   "26": {
    "io": [
@@ -101448,7 +101967,9 @@
    "ro": [
     "cutia mea de pălării"
    ],
-   "ga": []
+   "ga": [
+    "bhosca hata"
+   ]
   },
   "27": {
    "io": [
@@ -101523,7 +102044,9 @@
    "ro": [
     "geamantanul meu"
    ],
-   "ga": []
+   "ga": [
+    "mo chás taistil"
+   ]
   },
   "28": {
    "io": [
@@ -101598,7 +102121,9 @@
    "ro": [
     "sacul meu de călătorie"
    ],
-   "ga": []
+   "ga": [
+    "mo mhála taistil"
+   ]
   },
   "29": {
    "io": [
@@ -101673,7 +102198,9 @@
    "ro": [
     "omnibuzului"
    ],
-   "ga": []
+   "ga": [
+    "omnibus"
+   ]
   },
   "30": {
    "io": [
@@ -101748,7 +102275,9 @@
    "ro": [
     "Vizitiul"
    ],
-   "ga": []
+   "ga": [
+    "tiománaí"
+   ]
   },
   "31": {
    "io": [
@@ -101819,7 +102348,9 @@
    "ro": [
     "lada"
    ],
-   "ga": []
+   "ga": [
+    "chófra"
+   ]
   },
   "32": {
    "io": [
@@ -101892,7 +102423,9 @@
    "ro": [
     "călător"
    ],
-   "ga": []
+   "ga": [
+    "taistealaí"
+   ]
   },
   "33": {
    "io": [
@@ -101967,7 +102500,9 @@
    "ro": [
     "stăpânul hotelului"
    ],
-   "ga": []
+   "ga": [
+    "fear an óstáin"
+   ]
   },
   "34": {
    "io": [
@@ -102040,7 +102575,9 @@
    "ro": [
     "depeșă"
    ],
-   "ga": []
+   "ga": [
+    "teileagram"
+   ]
   },
   "35": {
    "io": [
@@ -102186,7 +102723,9 @@
    "ro": [
     "turist"
    ],
-   "ga": []
+   "ga": [
+    "turasóir"
+   ]
   },
   "37": {
    "io": [
@@ -102261,7 +102800,9 @@
    "ro": [
     "ghidul"
    ],
-   "ga": []
+   "ga": [
+    "threoirleabhar"
+   ]
   },
   "38": {
    "io": [
@@ -102336,7 +102877,9 @@
    "ro": [
     "aparatul de fotografiat"
    ],
-   "ga": []
+   "ga": [
+    "cheamara"
+   ]
   },
   "39": {
    "io": [
@@ -102407,7 +102950,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "teachtaire"
+   ]
   },
   "40": {
    "io": [
@@ -102480,7 +103025,9 @@
     "kakoen"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "chrúca iompair"
+   ]
   },
   "41": {
    "io": [
@@ -102555,7 +103102,9 @@
    "ro": [
     "lada de lustruit"
    ],
-   "ga": []
+   "ga": [
+    "bhosca snasáin"
+   ]
   },
   "42": {
    "io": [
@@ -102701,7 +103250,9 @@
    "ro": [
     "coș"
    ],
-   "ga": []
+   "ga": [
+    "ciseáin"
+   ]
   },
   "44": {
    "io": [
@@ -102776,7 +103327,9 @@
    "ro": [
     "șefului de sală"
    ],
-   "ga": []
+   "ga": [
+    "mhaor an bhoird"
+   ]
   },
   "45": {
    "io": [
@@ -102851,7 +103404,9 @@
    "ro": [
     "bucătarului"
    ],
-   "ga": []
+   "ga": [
+    "cócaire"
+   ]
   },
   "46": {
    "io": [
@@ -102924,7 +103479,9 @@
    "ro": [
     "ucenic de bucătărie"
    ],
-   "ga": []
+   "ga": [
+    "buachaill cistine"
+   ]
   },
   "47": {
    "io": [
@@ -102997,7 +103554,9 @@
     "sukaldetik"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "chistin"
+   ]
   },
   "48": {
    "io": [
@@ -103072,7 +103631,9 @@
    "ro": [
     "subsol"
    ],
-   "ga": []
+   "ga": [
+    "íoslach"
+   ]
   },
   "49": {
    "io": [
@@ -103147,7 +103708,9 @@
    "ro": [
     "automobilul"
    ],
-   "ga": []
+   "ga": [
+    "ghluaisteán"
+   ]
   },
   "50": {
    "io": [
@@ -103220,7 +103783,9 @@
    "ro": [
     "automobilist"
    ],
-   "ga": []
+   "ga": [
+    "tiománaí gluaisteáin"
+   ]
   },
   "51": {
    "io": [
@@ -103293,7 +103858,9 @@
    "ro": [
     "triciclu cu benzină"
    ],
-   "ga": []
+   "ga": [
+    "thríchruthach peitril"
+   ]
   },
   "52": {
    "io": [
@@ -103366,7 +103933,9 @@
    "ro": [
     "mecanic"
    ],
-   "ga": []
+   "ga": [
+    "meicneoir"
+   ]
   },
   "53": {
    "io": [
@@ -103441,7 +104010,9 @@
    "ro": [
     "biciclistului"
    ],
-   "ga": []
+   "ga": [
+    "an rothaí"
+   ]
   },
   "54": {
    "io": [
@@ -103589,7 +104160,9 @@
    "ro": [
     "halbe de bere"
    ],
-   "ga": []
+   "ga": [
+    "gloiní beorach"
+   ]
   },
   "57": {
    "io": [
@@ -103664,7 +104237,9 @@
    "ro": [
     "chelnerului"
    ],
-   "ga": []
+   "ga": [
+    "fhreastalaí"
+   ]
   },
   "59": {
    "io": [
@@ -103810,7 +104385,9 @@
    "ro": [
     "directorul"
    ],
-   "ga": []
+   "ga": [
+    "an bainisteoir"
+   ]
   },
   "62": {
    "io": [
@@ -103885,7 +104462,9 @@
    "ro": [
     "oceanului"
    ],
-   "ga": []
+   "ga": [
+    "an Aigéin"
+   ]
   },
   "63": {
    "io": [
@@ -104029,7 +104608,9 @@
    "ro": [
     "veliere"
    ],
-   "ga": []
+   "ga": [
+    "longa seoil"
+   ]
   },
   "65": {
    "io": [
@@ -104175,7 +104756,9 @@
    "ro": [
     "zare"
    ],
-   "ga": []
+   "ga": [
+    "bhun na spéire"
+   ]
   },
   "67": {
    "io": [
@@ -104321,7 +104904,9 @@
    "ro": [
     "holului"
    ],
-   "ga": []
+   "ga": [
+    "halla"
+   ]
   },
   "69": {
    "io": [
@@ -104396,7 +104981,9 @@
    "ro": [
     "firmei"
    ],
-   "ga": []
+   "ga": [
+    "chomhartha"
+   ]
   },
   "70": {
    "io": [
@@ -104471,7 +105058,9 @@
    "ro": [
     "steagul"
    ],
-   "ga": []
+   "ga": [
+    "an bhratach"
+   ]
   },
   "71": {
    "io": [
@@ -104546,7 +105135,9 @@
    "ro": [
     "binoclu de teatru"
    ],
-   "ga": []
+   "ga": [
+    "déghloine"
+   ]
   },
   "72": {
    "io": [
@@ -104621,7 +105212,9 @@
    "ro": [
     "lunetă"
    ],
-   "ga": []
+   "ga": [
+    "gloine fhada"
+   ]
   },
   "73": {
    "io": [
@@ -104696,7 +105289,9 @@
    "ro": [
     "ceva"
    ],
-   "ga": []
+   "ga": [
+    "deoch"
+   ]
   },
   "74": {
    "io": [
@@ -104771,7 +105366,9 @@
    "ro": [
     "sala de biliard"
    ],
-   "ga": []
+   "ga": [
+    "tseomra bhilléardaí"
+   ]
   },
   "75": {
    "io": [
@@ -104844,7 +105441,9 @@
    "ro": [
     "biliard"
    ],
-   "ga": []
+   "ga": [
+    "cluiche billéardaí"
+   ]
   },
   "78": {
    "io": [
@@ -104919,7 +105518,9 @@
    "ro": [
     "șah"
    ],
-   "ga": []
+   "ga": [
+    "ficheall"
+   ]
   },
   "79": {
    "io": [
@@ -104994,7 +105595,9 @@
    "ro": [
     "dame"
    ],
-   "ga": []
+   "ga": [
+    "táiplis"
+   ]
   },
   "80": {
    "io": [
@@ -105069,7 +105672,9 @@
    "ro": [
     "domino"
    ],
-   "ga": []
+   "ga": [
+    "dúradáin"
+   ]
   },
   "81": {
    "io": [
@@ -105144,7 +105749,9 @@
    "ro": [
     "table"
    ],
-   "ga": []
+   "ga": [
+    "táiplis mhór"
+   ]
   },
   "82": {
    "io": [
@@ -105219,7 +105826,9 @@
    "ro": [
     "cărți"
    ],
-   "ga": []
+   "ga": [
+    "cártaí"
+   ]
   },
   "83": {
    "io": [
@@ -105294,7 +105903,9 @@
    "ro": [
     "hârtie"
    ],
-   "ga": []
+   "ga": [
+    "páipéar"
+   ]
   },
   "84": {
    "io": [
@@ -105367,7 +105978,9 @@
    "ro": [
     "plic"
    ],
-   "ga": []
+   "ga": [
+    "clúdach"
+   ]
   },
   "85": {
    "io": [
@@ -105440,7 +106053,9 @@
    "ro": [
     "timbru"
    ],
-   "ga": []
+   "ga": [
+    "stampa poist"
+   ]
   },
   "86": {
    "io": [
@@ -105515,7 +106130,9 @@
    "ro": [
     "cerneală"
    ],
-   "ga": []
+   "ga": [
+    "dúch"
+   ]
   },
   "87": {
    "io": [
@@ -105588,7 +106205,9 @@
    "ro": [
     "peniță"
    ],
-   "ga": []
+   "ga": [
+    "peann"
+   ]
   },
   "88": {
    "io": [
@@ -105663,7 +106282,9 @@
    "ro": [
     "trăsură"
    ],
-   "ga": []
+   "ga": [
+    "charráiste"
+   ]
   },
   "89": {
    "io": [
@@ -105738,7 +106359,9 @@
    "ro": [
     "portiera"
    ],
-   "ga": []
+   "ga": [
+    "doras an charráiste"
+   ]
   },
   "91": {
    "io": [
@@ -105811,7 +106434,9 @@
     "pesketara"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "suíochán"
+   ]
   },
   "92": {
    "io": [
@@ -105884,7 +106509,9 @@
    "ro": [
     "birjar"
    ],
-   "ga": []
+   "ga": [
+    "chóisteoir"
+   ]
   },
   "93": {
    "io": [
@@ -105955,7 +106582,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "bhfuip"
+   ]
   }
  },
  "t14": {
@@ -106032,7 +106661,9 @@
    "ro": [
     "observatorul"
    ],
-   "ga": []
+   "ga": [
+    "réadlann"
+   ]
   },
   "2": {
    "io": [
@@ -106107,7 +106738,9 @@
    "ro": [
     "băile turcești"
    ],
-   "ga": []
+   "ga": [
+    "Folcadáin Thurcacha"
+   ]
   },
   "3": {
    "io": [
@@ -106182,7 +106815,9 @@
    "ro": [
     "strada"
    ],
-   "ga": []
+   "ga": [
+    "tsráid"
+   ]
   },
   "4": {
    "io": [
@@ -106255,7 +106890,9 @@
    "ro": [
     "înmormântare"
    ],
-   "ga": []
+   "ga": [
+    "sochraid"
+   ]
   },
   "5": {
    "io": [
@@ -106397,7 +107034,9 @@
     "beirazko estalkiaren"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "scáthláin ghloine"
+   ]
   },
   "7": {
    "io": [
@@ -106472,7 +107111,9 @@
    "ro": [
     "negustorului de vinuri și rachiuri"
    ],
-   "ga": []
+   "ga": [
+    "díoltóra biotáille"
+   ]
   },
   "8": {
    "io": [
@@ -106545,7 +107186,9 @@
     "kontsulatua"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "consalacht"
+   ]
   },
   "9": {
    "io": [
@@ -106620,7 +107263,9 @@
    "ro": [
     "consul"
    ],
-   "ga": []
+   "ga": [
+    "gconsal"
+   ]
   },
   "10": {
    "io": [
@@ -106695,7 +107340,9 @@
    "ro": [
     "vânzătorului de note"
    ],
-   "ga": []
+   "ga": [
+    "díoltóra ceoil"
+   ]
   },
   "11": {
    "io": [
@@ -106770,7 +107417,9 @@
    "ro": [
     "măturători"
    ],
-   "ga": []
+   "ga": [
+    "scuabadóirí"
+   ]
   },
   "12": {
    "io": [
@@ -106845,7 +107494,9 @@
    "ro": [
     "mașina de măturat"
    ],
-   "ga": []
+   "ga": [
+    "carr scuabtha"
+   ]
   },
   "13": {
    "io": [
@@ -106920,7 +107571,9 @@
    "ro": [
     "tâmplarul de mobilă"
    ],
-   "ga": []
+   "ga": [
+    "díoltóra troscáin"
+   ]
   },
   "14": {
    "io": [
@@ -106995,7 +107648,9 @@
    "ro": [
     "fierărie"
    ],
-   "ga": []
+   "ga": [
+    "stánadóra"
+   ]
   },
   "15": {
    "io": [
@@ -107068,7 +107723,9 @@
     "dendara"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "siopa"
+   ]
   },
   "16": {
    "io": [
@@ -107143,7 +107800,9 @@
    "ro": [
     "furgonul de mobilă"
    ],
-   "ga": []
+   "ga": [
+    "veain iompair"
+   ]
   },
   "17": {
    "io": [
@@ -107218,7 +107877,9 @@
    "ro": [
     "caretaș"
    ],
-   "ga": []
+   "ga": [
+    "déantóra carranna"
+   ]
   },
   "18": {
    "io": [
@@ -107293,7 +107954,9 @@
    "ro": [
     "negustorul de biciclete și automobile"
    ],
-   "ga": []
+   "ga": [
+    "díoltóir rothar agus gluaisteán"
+   ]
   },
   "19": {
    "io": [
@@ -107368,7 +108031,9 @@
    "ro": [
     "ambalatorul"
    ],
-   "ga": []
+   "ga": [
+    "bpacálaí"
+   ]
   },
   "20": {
    "io": [
@@ -107443,7 +108108,9 @@
    "ro": [
     "fotograf"
    ],
-   "ga": []
+   "ga": [
+    "ngrianghrafadóir"
+   ]
   },
   "21": {
    "io": [
@@ -107516,7 +108183,9 @@
    "ro": [
     "aparatului"
    ],
-   "ga": []
+   "ga": [
+    "cheamara"
+   ]
   },
   "22": {
    "io": [
@@ -107591,7 +108260,9 @@
    "ro": [
     "portretele"
    ],
-   "ga": []
+   "ga": [
+    "portráidí"
+   ]
   },
   "23": {
    "io": [
@@ -107666,7 +108337,9 @@
    "ro": [
     "frizeriei"
    ],
-   "ga": []
+   "ga": [
+    "bhearbóra"
+   ]
   },
   "24": {
    "io": [
@@ -107742,7 +108415,9 @@
    "ro": [
     "tutungerie"
    ],
-   "ga": []
+   "ga": [
+    "siopa tobac"
+   ]
   },
   "25": {
    "io": [
@@ -107888,7 +108563,9 @@
    "ro": [
     "firmă"
    ],
-   "ga": []
+   "ga": [
+    "chomhartha"
+   ]
   },
   "27": {
    "io": [
@@ -107963,7 +108640,9 @@
    "ro": [
     "priză de tutun"
    ],
-   "ga": []
+   "ga": [
+    "snaoisín á chaitheamh acu"
+   ]
   },
   "29": {
    "io": [
@@ -108038,7 +108717,9 @@
    "ro": [
     "zarafului"
    ],
-   "ga": []
+   "ga": [
+    "fhir mhalartaithe airgid"
+   ]
   },
   "30": {
    "io": [
@@ -108113,7 +108794,9 @@
    "ro": [
     "dentist"
    ],
-   "ga": []
+   "ga": [
+    "bhfiaclóir"
+   ]
   },
   "31": {
    "io": [
@@ -108188,7 +108871,9 @@
    "ro": [
     "cofetărie"
    ],
-   "ga": []
+   "ga": [
+    "mbáicéir cácaí"
+   ]
   },
   "32": {
    "io": [
@@ -108261,7 +108946,9 @@
    "ro": [
     "biroul"
    ],
-   "ga": []
+   "ga": [
+    "oifig"
+   ]
   },
   "33": {
    "io": [
@@ -108336,7 +109023,9 @@
    "ro": [
     "copistul"
    ],
-   "ga": []
+   "ga": [
+    "clóscríobhaí"
+   ]
   },
   "34": {
    "io": [
@@ -108409,7 +109098,9 @@
     "lehengusuarenera"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "chol ceathrair"
+   ]
   },
   "35": {
    "io": [
@@ -108482,7 +109173,9 @@
     "idazkariari"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "rúnaí"
+   ]
   },
   "36": {
    "io": [
@@ -108557,7 +109250,9 @@
    "ro": [
     "tăblița"
    ],
-   "ga": []
+   "ga": [
+    "pláta"
+   ]
   },
   "37": {
    "io": [
@@ -108705,7 +109400,9 @@
    "ro": [
     "opticianului"
    ],
-   "ga": []
+   "ga": [
+    "radharceolaí"
+   ]
   },
   "39": {
    "io": [
@@ -108780,7 +109477,9 @@
    "ro": [
     "pălărierului"
    ],
-   "ga": []
+   "ga": [
+    "díoltóra hataí"
+   ]
   },
   "40": {
    "io": [
@@ -108855,7 +109554,9 @@
    "ro": [
     "mănușarului"
    ],
-   "ga": []
+   "ga": [
+    "díoltóra lámhainní"
+   ]
   },
   "41": {
    "io": [
@@ -108930,7 +109631,9 @@
    "ro": [
     "regimentului"
    ],
-   "ga": []
+   "ga": [
+    "reisiminte"
+   ]
   },
   "42": {
    "io": [
@@ -109005,7 +109708,9 @@
    "ro": [
     "toboșarul-șef"
    ],
-   "ga": []
+   "ga": [
+    "máistir na ndrumaí"
+   ]
   },
   "43": {
    "io": [
@@ -109080,7 +109785,9 @@
    "ro": [
     "toboșarii"
    ],
-   "ga": []
+   "ga": [
+    "drumadóirí"
+   ]
   },
   "44": {
    "io": [
@@ -109155,7 +109862,9 @@
    "ro": [
     "goarnele"
    ],
-   "ga": []
+   "ga": [
+    "stocairí"
+   ]
   },
   "45": {
    "io": [
@@ -109230,7 +109939,9 @@
    "ro": [
     "Generalul"
    ],
-   "ga": []
+   "ga": [
+    "an ginearál"
+   ]
   },
   "46": {
    "io": [
@@ -109305,7 +110016,9 @@
    "ro": [
     "Ofițerii de stat-major"
    ],
-   "ga": []
+   "ga": [
+    "oifigigh na foirne"
+   ]
   },
   "47": {
    "io": [
@@ -109378,7 +110091,9 @@
     "batailoien"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "cathlán"
+   ]
   },
   "48": {
    "io": [
@@ -109453,7 +110168,9 @@
    "ro": [
     "fântânii"
    ],
-   "ga": []
+   "ga": [
+    "fhuaráin"
+   ]
   },
   "49": {
    "io": [
@@ -109528,7 +110245,9 @@
    "ro": [
     "șuvoiul"
    ],
-   "ga": []
+   "ga": [
+    "scaird uisce"
+   ]
   },
   "50": {
    "io": [
@@ -109603,7 +110322,9 @@
    "ro": [
     "răspântie"
    ],
-   "ga": []
+   "ga": [
+    "gcrosbhóthar"
+   ]
   },
   "51": {
    "io": [
@@ -109678,7 +110399,9 @@
    "ro": [
     "umbrelarul"
    ],
-   "ga": []
+   "ga": [
+    "díoltóir scáthanna báistí"
+   ]
   },
   "52": {
    "io": [
@@ -109753,7 +110476,9 @@
    "ro": [
     "birjele"
    ],
-   "ga": []
+   "ga": [
+    "fiacraí"
+   ]
   },
   "53": {
    "io": [
@@ -109828,7 +110553,9 @@
    "ro": [
     "vopsitorul"
    ],
-   "ga": []
+   "ga": [
+    "fear an stánaithe"
+   ]
   },
   "54": {
    "io": [
@@ -109903,7 +110630,9 @@
    "ro": [
     "armurierul"
    ],
-   "ga": []
+   "ga": [
+    "gunnadóir"
+   ]
   },
   "55": {
    "io": [
@@ -109978,7 +110707,9 @@
    "ro": [
     "Comis-voiajorul"
    ],
-   "ga": []
+   "ga": [
+    "taistealaí tráchtála"
+   ]
   },
   "56": {
    "io": [
@@ -110053,7 +110784,9 @@
    "ro": [
     "stropitoarea"
    ],
-   "ga": []
+   "ga": [
+    "bairille uiscithe"
+   ]
   },
   "57": {
    "io": [
@@ -110128,7 +110861,9 @@
    "ro": [
     "trăsurile particulare"
    ],
-   "ga": []
+   "ga": [
+    "carranna crainn"
+   ]
   },
   "58": {
    "io": [
@@ -110203,7 +110938,9 @@
    "ro": [
     "omnibuzului"
    ],
-   "ga": []
+   "ga": [
+    "omnaibus"
+   ]
   },
   "59": {
    "io": [
@@ -110278,7 +111015,9 @@
    "ro": [
     "imperiala"
    ],
-   "ga": []
+   "ga": [
+    "bharr"
+   ]
   },
   "60": {
    "io": [
@@ -110424,7 +111163,9 @@
     "eskuorganoarekin"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "orgán sráide"
+   ]
   },
   "62": {
    "io": [
@@ -110499,7 +111240,9 @@
    "ro": [
     "croitorii"
    ],
-   "ga": []
+   "ga": [
+    "táilliúirí"
+   ]
   },
   "63": {
    "io": [
@@ -110574,7 +111317,9 @@
    "ro": [
     "croitoresele"
    ],
-   "ga": []
+   "ga": [
+    "mná fuála"
+   ]
   },
   "64": {
    "io": [
@@ -110649,7 +111394,9 @@
    "ro": [
     "prăvăliei de postavuri"
    ],
-   "ga": []
+   "ga": [
+    "siopa éadaigh"
+   ]
   },
   "65": {
    "io": [
@@ -110724,7 +111471,9 @@
    "ro": [
     "Prăvăliașul"
    ],
-   "ga": []
+   "ga": [
+    "cheannaí"
+   ]
   },
   "66": {
    "io": [
@@ -110870,7 +111619,9 @@
    "ro": [
     "postav"
    ],
-   "ga": []
+   "ga": [
+    "brait"
+   ]
   },
   "68": {
    "io": [
@@ -110945,7 +111696,9 @@
    "ro": [
     "rigolă"
    ],
-   "ga": []
+   "ga": [
+    "béal an draenacháin"
+   ]
   },
   "69": {
    "io": [
@@ -111018,7 +111771,9 @@
    "ro": [
     "negustor ambulant"
    ],
-   "ga": []
+   "ga": [
+    "mhangaire"
+   ]
   },
   "70": {
    "io": [
@@ -111091,7 +111846,9 @@
    "ro": [
     "librar"
    ],
-   "ga": []
+   "ga": [
+    "leabharcheannaí"
+   ]
   },
   "71": {
    "io": [
@@ -111166,7 +111923,9 @@
    "ro": [
     "redacția"
    ],
-   "ga": []
+   "ga": [
+    "seomra eagarthóireachta"
+   ]
   },
   "72": {
    "io": [
@@ -111241,7 +112000,9 @@
    "ro": [
     "litografii"
    ],
-   "ga": []
+   "ga": [
+    "liteagrafaithe"
+   ]
   },
   "73": {
    "io": [
@@ -111316,7 +112077,9 @@
    "ro": [
     "gravorii în aramă"
    ],
-   "ga": []
+   "ga": [
+    "greanadóirí copair"
+   ]
   },
   "74": {
    "io": [
@@ -111391,7 +112154,9 @@
    "ro": [
     "culegătorii"
    ],
-   "ga": []
+   "ga": [
+    "hoibrithe cló"
+   ]
   },
   "75": {
    "io": [
@@ -111541,7 +112306,9 @@
    "ro": [
     "avertizorul de incendiu"
    ],
-   "ga": []
+   "ga": [
+    "rabhadán dóiteáin"
+   ]
   },
   "77": {
    "io": [
@@ -111616,7 +112383,9 @@
    "ro": [
     "galanteriei"
    ],
-   "ga": []
+   "ga": [
+    "tsiopa mionearraí"
+   ]
   },
   "78": {
    "io": [
@@ -111762,7 +112531,9 @@
    "ro": [
     "comisionar"
    ],
-   "ga": []
+   "ga": [
+    "gasúr"
+   ]
   },
   "80": {
    "io": [
@@ -111908,7 +112679,9 @@
    "ro": [
     "furgonul poștal"
    ],
-   "ga": []
+   "ga": [
+    "carr an phoist"
+   ]
   },
   "82": {
    "io": [
@@ -111983,7 +112756,9 @@
    "ro": [
     "avocatul"
    ],
-   "ga": []
+   "ga": [
+    "habhcóide"
+   ]
   },
   "83": {
    "io": [
@@ -112058,7 +112833,9 @@
    "ro": [
     "perceptorul"
    ],
-   "ga": []
+   "ga": [
+    "bailitheoir na gcánacha"
+   ]
   },
   "84": {
    "io": [
@@ -112133,7 +112910,9 @@
    "ro": [
     "notarul"
    ],
-   "ga": []
+   "ga": [
+    "nótaire"
+   ]
   },
   "85": {
    "io": [
@@ -112208,7 +112987,9 @@
    "ro": [
     "băiatul de la cofetărie"
    ],
-   "ga": []
+   "ga": [
+    "buachaill an bháicéara"
+   ]
   },
   "86": {
    "io": [
@@ -112283,7 +113064,9 @@
    "ro": [
     "telalul"
    ],
-   "ga": []
+   "ga": [
+    "dhíoltóir éadaí"
+   ]
   },
   "87": {
    "io": [
@@ -112358,7 +113141,9 @@
    "ro": [
     "lampagiul"
    ],
-   "ga": []
+   "ga": [
+    "lasadóir na lampaí"
+   ]
   },
   "88": {
    "io": [
@@ -112433,7 +113218,9 @@
    "ro": [
     "lucrătorul de la gaz"
    ],
-   "ga": []
+   "ga": [
+    "fear an gháis"
+   ]
   },
   "89": {
    "io": [
@@ -112506,7 +113293,9 @@
    "ro": [
     "călugăriță"
    ],
-   "ga": []
+   "ga": [
+    "bean rialta"
+   ]
   },
   "91": {
    "io": [
@@ -112581,7 +113370,9 @@
    "ro": [
     "coșari"
    ],
-   "ga": []
+   "ga": [
+    "ghlantóirí simléar"
+   ]
   },
   "92": {
    "io": [
@@ -112656,7 +113447,9 @@
    "ro": [
     "florăreasă"
    ],
-   "ga": []
+   "ga": [
+    "bhean na mbláth"
+   ]
   },
   "93": {
    "io": [
@@ -112731,7 +113524,9 @@
    "ro": [
     "guvernanta"
    ],
-   "ga": []
+   "ga": [
+    "bhanoide"
+   ]
   },
   "94": {
    "io": [
@@ -112806,7 +113601,9 @@
    "ro": [
     "precupeața"
    ],
-   "ga": []
+   "ga": [
+    "bhean díolta"
+   ]
   },
   "95": {
    "io": [
@@ -112881,7 +113678,9 @@
    "ro": [
     "doamnei ei de companie"
    ],
-   "ga": []
+   "ga": [
+    "bean chompánach"
+   ]
   },
   "96": {
    "io": [
@@ -112954,7 +113753,9 @@
    "ro": [
     "inginer"
    ],
-   "ga": []
+   "ga": [
+    "an t-innealtóir"
+   ]
   },
   "97": {
    "io": [
@@ -113029,7 +113830,9 @@
    "ro": [
     "modista"
    ],
-   "ga": []
+   "ga": [
+    "bean hataí"
+   ]
   },
   "98": {
    "io": [
@@ -113102,7 +113905,9 @@
     "inudearekin"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "buime"
+   ]
   },
   "99": {
    "io": [
@@ -113177,7 +113982,9 @@
    "ro": [
     "călugări"
    ],
-   "ga": []
+   "ga": [
+    "mhanach"
+   ]
   }
  },
  "t15": {
@@ -113254,7 +114061,9 @@
    "ro": [
     "șopronul"
    ],
-   "ga": []
+   "ga": [
+    "halla"
+   ]
   },
   "2": {
    "io": [
@@ -113329,7 +114138,9 @@
    "ro": [
     "Mezelarul"
    ],
-   "ga": []
+   "ga": [
+    "díoltóir muiceola"
+   ]
   },
   "3": {
    "io": [
@@ -113404,7 +114215,9 @@
    "ro": [
     "șuncă"
    ],
-   "ga": []
+   "ga": [
+    "liamhás"
+   ]
   },
   "4": {
    "io": [
@@ -113479,7 +114292,9 @@
    "ro": [
     "sângerete"
    ],
-   "ga": []
+   "ga": [
+    "putóg dhubh"
+   ]
   },
   "5": {
    "io": [
@@ -113554,7 +114369,9 @@
    "ro": [
     "cârnați"
    ],
-   "ga": []
+   "ga": [
+    "ispín mór"
+   ]
   },
   "6": {
    "io": [
@@ -113629,7 +114446,9 @@
    "ro": [
     "crenvurști"
    ],
-   "ga": []
+   "ga": [
+    "ispín putóg"
+   ]
   },
   "7": {
    "io": [
@@ -113704,7 +114523,9 @@
    "ro": [
     "slănină"
    ],
-   "ga": []
+   "ga": [
+    "blonag"
+   ]
   },
   "8": {
    "io": [
@@ -113779,7 +114600,9 @@
    "ro": [
     "negustoreasa de unt și brânză"
    ],
-   "ga": []
+   "ga": [
+    "bean an ime agus na cáise"
+   ]
   },
   "9": {
    "io": [
@@ -113854,7 +114677,9 @@
    "ro": [
     "brânzeturi olandeze"
    ],
-   "ga": []
+   "ga": [
+    "cháiseanna Ollannacha"
+   ]
   },
   "10": {
    "io": [
@@ -113929,7 +114754,9 @@
    "ro": [
     "camemberturi"
    ],
-   "ga": []
+   "ga": [
+    "cháiseanna Camembert"
+   ]
   },
   "11": {
    "io": [
@@ -114000,7 +114827,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "rothaí Gruyère"
+   ]
   },
   "12": {
    "io": [
@@ -114146,7 +114975,9 @@
    "ro": [
     "zarzavagioaica"
    ],
-   "ga": []
+   "ga": [
+    "bean díolta glasraí"
+   ]
   },
   "14": {
    "io": [
@@ -114292,7 +115123,9 @@
    "ro": [
     "conopidă"
    ],
-   "ga": []
+   "ga": [
+    "cóilis"
+   ]
   },
   "16": {
    "io": [
@@ -114367,7 +115200,9 @@
    "ro": [
     "salată"
    ],
-   "ga": []
+   "ga": [
+    "sailéad"
+   ]
   },
   "17": {
    "io": [
@@ -114442,7 +115277,9 @@
    "ro": [
     "varză"
    ],
-   "ga": []
+   "ga": [
+    "cabáiste cinn"
+   ]
   },
   "18": {
    "io": [
@@ -114517,7 +115354,9 @@
    "ro": [
     "pepeni"
    ],
-   "ga": []
+   "ga": [
+    "mealbhacáin"
+   ]
   },
   "19": {
    "io": [
@@ -114592,7 +115431,9 @@
    "ro": [
     "dovleci"
    ],
-   "ga": []
+   "ga": [
+    "cúirséid"
+   ]
   },
   "20": {
    "io": [
@@ -114667,7 +115508,9 @@
    "ro": [
     "ciuperci"
    ],
-   "ga": []
+   "ga": [
+    "beacáin"
+   ]
   },
   "21": {
    "io": [
@@ -114742,7 +115585,9 @@
    "ro": [
     "căruța de livrare"
    ],
-   "ga": []
+   "ga": [
+    "charr seachadta"
+   ]
   },
   "22": {
    "io": [
@@ -114817,7 +115662,9 @@
    "ro": [
     "butoiașe de bere"
    ],
-   "ga": []
+   "ga": [
+    "bairillí beorach"
+   ]
   },
   "23": {
    "io": [
@@ -114890,7 +115737,9 @@
    "ro": [
     "anghinare"
    ],
-   "ga": []
+   "ga": [
+    "bliosán"
+   ]
   },
   "24": {
    "io": [
@@ -114965,7 +115814,9 @@
    "ro": [
     "tocmelii"
    ],
-   "ga": []
+   "ga": [
+    "cheant"
+   ]
   },
   "25": {
    "io": [
@@ -115040,7 +115891,9 @@
    "ro": [
     "negustoresei de măruntaie"
    ],
-   "ga": []
+   "ga": [
+    "bhean na bputóg"
+   ]
   },
   "26": {
    "io": [
@@ -115113,7 +115966,9 @@
    "ro": [
     "Gospodinele"
    ],
-   "ga": []
+   "ga": [
+    "mná tí"
+   ]
   },
   "27": {
    "io": [
@@ -115259,7 +116114,9 @@
    "ro": [
     "peștăreasa"
    ],
-   "ga": []
+   "ga": [
+    "bean an éisc"
+   ]
   },
   "29": {
    "io": [
@@ -115334,7 +116191,9 @@
    "ro": [
     "Negustoreasa de păsări"
    ],
-   "ga": []
+   "ga": [
+    "bhean díolta éanlaithe"
+   ]
   },
   "30": {
    "io": [
@@ -115407,7 +116266,9 @@
    "ro": [
     "lenjereasă"
    ],
-   "ga": []
+   "ga": [
+    "díoltóir línéadaigh"
+   ]
   },
   "31": {
    "io": [
@@ -115482,7 +116343,9 @@
    "ro": [
     "cuțitarul"
    ],
-   "ga": []
+   "ga": [
+    "sceanadóir"
+   ]
   },
   "32": {
    "io": [
@@ -115633,7 +116496,9 @@
    "ro": [
     "ceai"
    ],
-   "ga": []
+   "ga": [
+    "tae"
+   ]
   },
   "34": {
    "io": [
@@ -115708,7 +116573,9 @@
    "ro": [
     "ciocolată"
    ],
-   "ga": []
+   "ga": [
+    "seacláid"
+   ]
   },
   "35": {
    "io": [
@@ -115783,7 +116650,9 @@
    "ro": [
     "conserve"
    ],
-   "ga": []
+   "ga": [
+    "bia stánaithe"
+   ]
   },
   "36": {
    "io": [
@@ -115858,7 +116727,9 @@
    "ro": [
     "lichioruri"
    ],
-   "ga": []
+   "ga": [
+    "licéir"
+   ]
   },
   "37": {
    "io": [
@@ -115933,7 +116804,9 @@
    "ro": [
     "căpățână de zahăr"
    ],
-   "ga": []
+   "ga": [
+    "siúcra bloic"
+   ]
   },
   "38": {
    "io": [
@@ -116008,7 +116881,9 @@
    "ro": [
     "săpun"
    ],
-   "ga": []
+   "ga": [
+    "gallúnach"
+   ]
   },
   "39": {
    "io": [
@@ -116083,7 +116958,9 @@
    "ro": [
     "iepure"
    ],
-   "ga": []
+   "ga": [
+    "giorria"
+   ]
   },
   "40": {
    "io": [
@@ -116158,7 +117035,9 @@
    "ro": [
     "sturzi"
    ],
-   "ga": []
+   "ga": [
+    "smólaigh"
+   ]
   },
   "41": {
    "io": [
@@ -116233,7 +117112,9 @@
    "ro": [
     "potârnichi"
    ],
-   "ga": []
+   "ga": [
+    "patraiscí"
+   ]
   },
   "42": {
    "io": [
@@ -116308,7 +117189,9 @@
    "ro": [
     "prepelițe"
    ],
-   "ga": []
+   "ga": [
+    "gearga"
+   ]
   },
   "43": {
    "io": [
@@ -116383,7 +117266,9 @@
    "ro": [
     "rață sălbatică"
    ],
-   "ga": []
+   "ga": [
+    "lacha fhiáin"
+   ]
   },
   "44": {
    "io": [
@@ -116458,7 +117343,9 @@
    "ro": [
     "fazan"
    ],
-   "ga": []
+   "ga": [
+    "piasún"
+   ]
   },
   "45": {
    "io": [
@@ -116604,7 +117491,9 @@
    "ro": [
     "bananele"
    ],
-   "ga": []
+   "ga": [
+    "bananaí"
+   ]
   },
   "47": {
    "io": [
@@ -116679,7 +117568,9 @@
    "ro": [
     "dulceață"
    ],
-   "ga": []
+   "ga": [
+    "subh"
+   ]
   },
   "48": {
    "io": [
@@ -116754,7 +117645,9 @@
    "ro": [
     "untură"
    ],
-   "ga": []
+   "ga": [
+    "geir"
+   ]
   },
   "49": {
    "io": [
@@ -116829,7 +117722,9 @@
    "ro": [
     "castraveciori"
    ],
-   "ga": []
+   "ga": [
+    "gircíní"
+   ]
   },
   "50": {
    "io": [
@@ -116900,7 +117795,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "sairdíní"
+   ]
   },
   "51": {
    "io": [
@@ -116975,7 +117872,9 @@
    "ro": [
     "cumpărătoare"
    ],
-   "ga": []
+   "ga": [
+    "custaiméirí mná"
+   ]
   },
   "52": {
    "io": [
@@ -117121,7 +118020,9 @@
    "ro": [
     "prune"
    ],
-   "ga": []
+   "ga": [
+    "plumaí"
+   ]
   },
   "54": {
    "io": [
@@ -117196,7 +118097,9 @@
    "ro": [
     "struguri"
    ],
-   "ga": []
+   "ga": [
+    "fíonchaora"
+   ]
   },
   "55": {
    "io": [
@@ -117271,7 +118174,9 @@
    "ro": [
     "piersici"
    ],
-   "ga": []
+   "ga": [
+    "péitseoga"
+   ]
   },
   "56": {
    "io": [
@@ -117346,7 +118251,9 @@
    "ro": [
     "migdale"
    ],
-   "ga": []
+   "ga": [
+    "almóinní"
+   ]
   },
   "57": {
    "io": [
@@ -117421,7 +118328,9 @@
    "ro": [
     "nuci"
    ],
-   "ga": []
+   "ga": [
+    "cnónna"
+   ]
   },
   "58": {
    "io": [
@@ -117496,7 +118405,9 @@
    "ro": [
     "Orezul"
    ],
-   "ga": []
+   "ga": [
+    "rís"
+   ]
   },
   "59": {
    "io": [
@@ -117571,7 +118482,9 @@
    "ro": [
     "lintea"
    ],
-   "ga": []
+   "ga": [
+    "lintilí"
+   ]
   },
   "60": {
    "io": [
@@ -117642,7 +118555,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "scadán deataithe"
+   ]
   },
   "61": {
    "io": [
@@ -117717,7 +118632,9 @@
    "ro": [
     "cartofii"
    ],
-   "ga": []
+   "ga": [
+    "práta"
+   ]
   },
   "62": {
    "io": [
@@ -117792,7 +118709,9 @@
    "ro": [
     "merele"
    ],
-   "ga": []
+   "ga": [
+    "n-úll"
+   ]
   },
   "63": {
    "io": [
@@ -117867,7 +118786,9 @@
    "ro": [
     "fasolea"
    ],
-   "ga": []
+   "ga": [
+    "phónair"
+   ]
   },
   "64": {
    "io": [
@@ -117942,7 +118863,9 @@
    "ro": [
     "smochinele"
    ],
-   "ga": []
+   "ga": [
+    "bhfigí"
+   ]
   },
   "65": {
    "io": [
@@ -118017,7 +118940,9 @@
    "ro": [
     "prunele uscate"
    ],
-   "ga": []
+   "ga": [
+    "bplumaí triomaithe"
+   ]
   },
   "66": {
    "io": [
@@ -118092,7 +119017,9 @@
    "ro": [
     "alunele"
    ],
-   "ga": []
+   "ga": [
+    "gcnónna coill"
+   ]
   },
   "67": {
    "io": [
@@ -118163,7 +119090,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "uibheacha"
+   ]
   },
   "68": {
    "io": [
@@ -118238,7 +119167,9 @@
    "ro": [
     "măsline"
    ],
-   "ga": []
+   "ga": [
+    "ológa"
+   ]
   },
   "69": {
    "io": [
@@ -118313,7 +119244,9 @@
    "ro": [
     "slujnice"
    ],
-   "ga": []
+   "ga": [
+    "gcailíní freastail"
+   ]
   },
   "70": {
    "io": [
@@ -118388,7 +119321,9 @@
    "ro": [
     "coșurile"
    ],
-   "ga": []
+   "ga": [
+    "ciseáin"
+   ]
   },
   "71": {
    "io": [
@@ -118461,7 +119396,9 @@
    "ro": [
     "băcan"
    ],
-   "ga": []
+   "ga": [
+    "an seanshiopadóir spíosraí"
+   ]
   },
   "72": {
    "io": [
@@ -118536,7 +119473,9 @@
    "ro": [
     "Cafeaua"
    ],
-   "ga": []
+   "ga": [
+    "caife"
+   ]
   },
   "73": {
    "io": [
@@ -118611,7 +119550,9 @@
    "ro": [
     "plasele"
    ],
-   "ga": []
+   "ga": [
+    "líonta lóin"
+   ]
   },
   "74": {
    "io": [
@@ -118684,7 +119625,9 @@
    "ro": [
     "roabă"
    ],
-   "ga": []
+   "ga": [
+    "bara rotha"
+   ]
   },
   "75": {
    "io": [
@@ -118755,7 +119698,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "buachaill an bhúistéara"
+   ]
   },
   "76": {
    "io": [
@@ -118830,7 +119775,9 @@
    "ro": [
     "husar"
    ],
-   "ga": []
+   "ga": [
+    "hasár"
+   ]
   },
   "78": {
    "io": [
@@ -118905,7 +119852,9 @@
    "ro": [
     "brutăriei"
    ],
-   "ga": []
+   "ga": [
+    "tsiopa aráin"
+   ]
   },
   "79": {
    "io": [
@@ -118978,7 +119927,9 @@
     "ogiaren"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "aráin"
+   ]
   },
   "80": {
    "io": [
@@ -119053,7 +120004,9 @@
    "ro": [
     "Brutarul"
    ],
-   "ga": []
+   "ga": [
+    "báicéir"
+   ]
   },
   "81": {
    "io": [
@@ -119128,7 +120081,9 @@
    "ro": [
     "cornuri"
    ],
-   "ga": []
+   "ga": [
+    "corráin"
+   ]
   },
   "82": {
    "io": [
@@ -119201,7 +120156,9 @@
    "ro": [
     "chifle"
    ],
-   "ga": []
+   "ga": [
+    "rollóga"
+   ]
   },
   "83": {
    "io": [
@@ -119276,7 +120233,9 @@
    "ro": [
     "pâini rotunde"
    ],
-   "ga": []
+   "ga": [
+    "builíní cruinne"
+   ]
   },
   "84": {
    "io": [
@@ -119420,7 +120379,9 @@
    "ro": [
     "brodeze"
    ],
-   "ga": []
+   "ga": [
+    "bróidnéirí"
+   ]
   },
   "86": {
    "io": [
@@ -119493,7 +120454,9 @@
    "ro": [
     "spălătoreasă și călcătoreasă"
    ],
-   "ga": []
+   "ga": [
+    "bhean níocháin is iarnála"
+   ]
   },
   "87": {
    "io": [
@@ -119568,7 +120531,9 @@
    "ro": [
     "fierul de călcat"
    ],
-   "ga": []
+   "ga": [
+    "iarann"
+   ]
   },
   "88": {
    "io": [
@@ -119643,7 +120608,9 @@
    "ro": [
     "rufele"
    ],
-   "ga": []
+   "ga": [
+    "éadach"
+   ]
   },
   "89": {
    "io": [
@@ -119718,7 +120685,9 @@
    "ro": [
     "măcelăria"
    ],
-   "ga": []
+   "ga": [
+    "siopa an bhúistéara"
+   ]
   },
   "90": {
    "io": [
@@ -119793,7 +120762,9 @@
    "ro": [
     "carne de miel"
    ],
-   "ga": []
+   "ga": [
+    "feola, caoireoil"
+   ]
   },
   "92": {
    "io": [
@@ -119868,7 +120839,9 @@
    "ro": [
     "carne de vițel"
    ],
-   "ga": []
+   "ga": [
+    "laofheoil"
+   ]
   },
   "93": {
    "io": [
@@ -119943,7 +120916,9 @@
    "ro": [
     "Ajutorul măcelarului"
    ],
-   "ga": []
+   "ga": [
+    "buachaill an bhúistéara"
+   ]
   },
   "94": {
    "io": [
@@ -120018,7 +120993,9 @@
    "ro": [
     "carne de vită"
    ],
-   "ga": []
+   "ga": [
+    "mairteoil"
+   ]
   },
   "96": {
    "io": [
@@ -120093,7 +121070,9 @@
    "ro": [
     "oasele cu măduvă"
    ],
-   "ga": []
+   "ga": [
+    "cnámha smeara"
+   ]
   },
   "97": {
    "io": [
@@ -120168,7 +121147,9 @@
    "ro": [
     "negustoreasa de stridii"
    ],
-   "ga": []
+   "ga": [
+    "bean na n-oisrí"
+   ]
   },
   "98": {
    "io": [
@@ -120243,7 +121224,9 @@
    "ro": [
     "stridii"
    ],
-   "ga": []
+   "ga": [
+    "oisrí"
+   ]
   },
   "99": {
    "io": [
@@ -120316,7 +121299,9 @@
    "ro": [
     "precupețe de zarzavat"
    ],
-   "ga": []
+   "ga": [
+    "mná bochta díolta glasraí"
+   ]
   },
   "100": {
    "io": [
@@ -120391,7 +121376,9 @@
    "ro": [
     "sergentul de stradă"
    ],
-   "ga": []
+   "ga": [
+    "an póilín"
+   ]
   },
   "101": {
    "io": [
@@ -120466,7 +121453,9 @@
    "ro": [
     "usturoi"
    ],
-   "ga": []
+   "ga": [
+    "gairleog"
+   ]
   },
   "102": {
    "io": [
@@ -120539,7 +121528,9 @@
    "ro": [
     "negustoresei"
    ],
-   "ga": []
+   "ga": [
+    "an díoltóra"
+   ]
   },
   "103": {
    "io": [
@@ -120610,7 +121601,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "ghloineadóra"
+   ]
   },
   "104": {
    "io": [
@@ -120685,7 +121678,9 @@
    "ro": [
     "cărbunarului"
    ],
-   "ga": []
+   "ga": [
+    "fhear an ghuail"
+   ]
   },
   "105": {
    "io": [
@@ -120758,7 +121753,9 @@
    "ro": [
     "sac de cărbuni"
    ],
-   "ga": []
+   "ga": [
+    "mála guail"
+   ]
   }
  },
  "t16": {
@@ -120835,7 +121832,9 @@
    "ro": [
     "jucării"
    ],
-   "ga": []
+   "ga": [
+    "bréagán"
+   ]
   },
   "2": {
    "io": [
@@ -120910,7 +121909,9 @@
    "ro": [
     "lanternele magice"
    ],
-   "ga": []
+   "ga": [
+    "teilgeoirí solais"
+   ]
   },
   "3": {
    "io": [
@@ -120985,7 +121986,9 @@
    "ro": [
     "platoșă"
    ],
-   "ga": []
+   "ga": [
+    "cathéide"
+   ]
   },
   "4": {
    "io": [
@@ -121060,7 +122063,9 @@
    "ro": [
     "pistol"
    ],
-   "ga": []
+   "ga": [
+    "piostal"
+   ]
   },
   "5": {
    "io": [
@@ -121133,7 +122138,9 @@
    "ro": [
     "santinelă"
    ],
-   "ga": []
+   "ga": [
+    "fear faire"
+   ]
   },
   "6": {
    "io": [
@@ -121208,7 +122215,9 @@
    "ro": [
     "Papagalul"
    ],
-   "ga": []
+   "ga": [
+    "Pearóid"
+   ]
   },
   "7": {
    "io": [
@@ -121283,7 +122292,9 @@
    "ro": [
     "rinocerul"
    ],
-   "ga": []
+   "ga": [
+    "srónbheannach"
+   ]
   },
   "8": {
    "io": [
@@ -121358,7 +122369,9 @@
    "ro": [
     "renul"
    ],
-   "ga": []
+   "ga": [
+    "réinfhia"
+   ]
   },
   "9": {
    "io": [
@@ -121433,7 +122446,9 @@
    "ro": [
     "struțul"
    ],
-   "ga": []
+   "ga": [
+    "strus"
+   ]
   },
   "10": {
    "io": [
@@ -121508,7 +122523,9 @@
    "ro": [
     "maimuța"
    ],
-   "ga": []
+   "ga": [
+    "moncaí"
+   ]
   },
   "11": {
    "io": [
@@ -121583,7 +122600,9 @@
    "ro": [
     "vulpea"
    ],
-   "ga": []
+   "ga": [
+    "sionnach"
+   ]
   },
   "12": {
    "io": [
@@ -121658,7 +122677,9 @@
    "ro": [
     "crocodilul"
    ],
-   "ga": []
+   "ga": [
+    "crogall"
+   ]
   },
   "13": {
    "io": [
@@ -121733,7 +122754,9 @@
    "ro": [
     "cămila"
    ],
-   "ga": []
+   "ga": [
+    "camall"
+   ]
   },
   "14": {
    "io": [
@@ -121879,7 +122902,9 @@
    "ro": [
     "pantera"
    ],
-   "ga": []
+   "ga": [
+    "pantar"
+   ]
   },
   "16": {
    "io": [
@@ -121954,7 +122979,9 @@
    "ro": [
     "nevăstuica"
    ],
-   "ga": []
+   "ga": [
+    "easóg"
+   ]
   },
   "17": {
    "io": [
@@ -122029,7 +123056,9 @@
    "ro": [
     "hiena"
    ],
-   "ga": []
+   "ga": [
+    "hiéna"
+   ]
   },
   "18": {
    "io": [
@@ -122104,7 +123133,9 @@
    "ro": [
     "leopardul"
    ],
-   "ga": []
+   "ga": [
+    "liopard"
+   ]
   },
   "19": {
    "io": [
@@ -122321,7 +123352,9 @@
    "ro": [
     "lupul"
    ],
-   "ga": []
+   "ga": [
+    "mac tíre"
+   ]
   },
   "22": {
    "io": [
@@ -122396,7 +123429,9 @@
    "ro": [
     "hipopotamul"
    ],
-   "ga": []
+   "ga": [
+    "hipapotamas"
+   ]
   },
   "23": {
    "io": [
@@ -122467,7 +123502,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "dromadaire"
+   ]
   },
   "24": {
    "io": [
@@ -122540,7 +123577,9 @@
    "ro": [
     "invalid"
    ],
-   "ga": []
+   "ga": [
+    "easlán"
+   ]
   },
   "25": {
    "io": [
@@ -122615,7 +123654,9 @@
    "ro": [
     "genist"
    ],
-   "ga": []
+   "ga": [
+    "saighdiúir innealtóireachta"
+   ]
   },
   "26": {
    "io": [
@@ -122690,7 +123731,9 @@
    "ro": [
     "vânător de munte"
    ],
-   "ga": []
+   "ga": [
+    "sealgaire Alpach"
+   ]
   },
   "27": {
    "io": [
@@ -122763,7 +123806,9 @@
     "sarjentu nagusia"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "sáirsint mór"
+   ]
   },
   "28": {
    "io": [
@@ -122836,7 +123881,9 @@
     "sarjentua"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "sáirsint airtléire"
+   ]
   },
   "29": {
    "io": [
@@ -122911,7 +123958,9 @@
    "ro": [
     "soldați de plumb"
    ],
-   "ga": []
+   "ga": [
+    "shaighdiúirí luaidhe"
+   ]
   },
   "31": {
    "io": [
@@ -122984,7 +124033,9 @@
     "geziarekin"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "shaighead"
+   ]
   },
   "32": {
    "io": [
@@ -123128,7 +124179,9 @@
    "ro": [
     "arc"
    ],
-   "ga": []
+   "ga": [
+    "bhogha"
+   ]
   },
   "34": {
    "io": [
@@ -123203,7 +124256,9 @@
    "ro": [
     "păsări cântătoare"
    ],
-   "ga": []
+   "ga": [
+    "éan cheoil"
+   ]
   },
   "35": {
    "io": [
@@ -123278,7 +124333,9 @@
    "ro": [
     "liliacul"
    ],
-   "ga": []
+   "ga": [
+    "ialtóg"
+   ]
   },
   "36": {
    "io": [
@@ -123353,7 +124410,9 @@
    "ro": [
     "boa"
    ],
-   "ga": []
+   "ga": [
+    "bóa"
+   ]
   },
   "37": {
    "io": [
@@ -123428,7 +124487,9 @@
    "ro": [
     "broasca țestoasă"
    ],
-   "ga": []
+   "ga": [
+    "turtar"
+   ]
   },
   "38": {
    "io": [
@@ -123503,7 +124564,9 @@
    "ro": [
     "foca"
    ],
-   "ga": []
+   "ga": [
+    "rón"
+   ]
   },
   "39": {
    "io": [
@@ -123578,7 +124641,9 @@
    "ro": [
     "balena"
    ],
-   "ga": []
+   "ga": [
+    "míol mór"
+   ]
   },
   "40": {
    "io": [
@@ -123653,7 +124718,9 @@
    "ro": [
     "rechinul"
    ],
-   "ga": []
+   "ga": [
+    "siorc"
+   ]
   },
   "41": {
    "io": [
@@ -123801,7 +124868,9 @@
    "ro": [
     "Arlechinul"
    ],
-   "ga": []
+   "ga": [
+    "Airlicín"
+   ]
   },
   "43": {
    "io": [
@@ -123876,7 +124945,9 @@
    "ro": [
     "Poliținel"
    ],
-   "ga": []
+   "ga": [
+    "Puinseoinéal"
+   ]
   },
   "44": {
    "io": [
@@ -123951,7 +125022,9 @@
    "ro": [
     "Pierrot"
    ],
-   "ga": []
+   "ga": [
+    "Pierrot"
+   ]
   },
   "45": {
    "io": [
@@ -124026,7 +125099,9 @@
    "ro": [
     "bufnițe"
    ],
-   "ga": []
+   "ga": [
+    "ceanna cait"
+   ]
   },
   "46": {
    "io": [
@@ -124101,7 +125176,9 @@
    "ro": [
     "sturzi"
    ],
-   "ga": []
+   "ga": [
+    "loin dhubha"
+   ]
   },
   "47": {
    "io": [
@@ -124176,7 +125253,9 @@
    "ro": [
     "gramofonul"
    ],
-   "ga": []
+   "ga": [
+    "fónagraf"
+   ]
   },
   "48": {
    "io": [
@@ -124249,7 +125328,9 @@
    "ro": [
     "bătălie navală"
    ],
-   "ga": []
+   "ga": [
+    "cath farraige"
+   ]
   },
   "49": {
    "io": [
@@ -124322,7 +125403,9 @@
    "ro": [
     "dragon"
    ],
-   "ga": []
+   "ga": [
+    "dragún"
+   ]
   },
   "50": {
    "io": [
@@ -124395,7 +125478,9 @@
    "ro": [
     "încasator"
    ],
-   "ga": []
+   "ga": [
+    "bailitheoir"
+   ]
   },
   "51": {
    "io": [
@@ -124464,7 +125549,9 @@
    ],
    "eu": [],
    "ro": [],
-   "ga": []
+   "ga": [
+    "bpríomh-chiste"
+   ]
   },
   "53": {
    "io": [
@@ -124539,7 +125626,9 @@
    "ro": [
     "șeile"
    ],
-   "ga": []
+   "ga": [
+    "diallaití"
+   ]
   },
   "54": {
    "io": [
@@ -124614,7 +125703,9 @@
    "ro": [
     "scările"
    ],
-   "ga": []
+   "ga": [
+    "stíoróipí"
+   ]
   },
   "55": {
    "io": [
@@ -124689,7 +125780,9 @@
    "ro": [
     "frâiele"
    ],
-   "ga": []
+   "ga": [
+    "srianta"
+   ]
   },
   "56": {
    "io": [
@@ -124764,7 +125857,9 @@
    "ro": [
     "zăbalele"
    ],
-   "ga": []
+   "ga": [
+    "béalbhaigh"
+   ]
   },
   "57": {
    "io": [
@@ -124839,7 +125934,9 @@
    "ro": [
     "șeful de raion"
    ],
-   "ga": []
+   "ga": [
+    "ceann na hurrainne"
+   ]
   },
   "58": {
    "io": [
@@ -124914,7 +126011,9 @@
    "ro": [
     "sticlă"
    ],
-   "ga": []
+   "ga": [
+    "gcriostal"
+   ]
   },
   "59": {
    "io": [
@@ -125060,7 +126159,9 @@
    "ro": [
     "corsete"
    ],
-   "ga": []
+   "ga": [
+    "gcorsaí"
+   ]
   },
   "61": {
    "io": [
@@ -125133,7 +126234,9 @@
    "ro": [
     "vânzătoare"
    ],
-   "ga": []
+   "ga": [
+    "cailín siopa"
+   ]
   },
   "62": {
    "io": [
@@ -125206,7 +126309,9 @@
    "ro": [
     "cumpărătoare"
    ],
-   "ga": []
+   "ga": [
+    "cheannaitheoir mná"
+   ]
   },
   "63": {
    "io": [
@@ -125492,7 +126597,9 @@
    "ro": [
     "umbreluțe"
    ],
-   "ga": []
+   "ga": [
+    "parasóil"
+   ]
   },
   "67": {
    "io": [
@@ -125567,7 +126674,9 @@
    "ro": [
     "case de bani"
    ],
-   "ga": []
+   "ga": [
+    "taisceadáin iarainn"
+   ]
   },
   "68": {
    "io": [
@@ -125642,7 +126751,9 @@
    "ro": [
     "scrinuri"
    ],
-   "ga": []
+   "ga": [
+    "cófraí tarraiceán"
+   ]
   },
   "69": {
    "io": [
@@ -125717,7 +126828,9 @@
    "ro": [
     "cărucioare de copii"
    ],
-   "ga": []
+   "ga": [
+    "pramanna"
+   ]
   },
   "70": {
    "io": [
@@ -125863,7 +126976,9 @@
    "ro": [
     "harpe"
    ],
-   "ga": []
+   "ga": [
+    "cláirseacha"
+   ]
   },
   "72": {
    "io": [
@@ -125938,7 +127053,9 @@
    "ro": [
     "chitare"
    ],
-   "ga": []
+   "ga": [
+    "giotáir"
+   ]
   },
   "73": {
    "io": [
@@ -126013,7 +127130,9 @@
    "ro": [
     "mandoline"
    ],
-   "ga": []
+   "ga": [
+    "maindilíní"
+   ]
   },
   "74": {
    "io": [
@@ -126088,7 +127207,9 @@
    "ro": [
     "cornete"
    ],
-   "ga": []
+   "ga": [
+    "coirnéid comhla"
+   ]
   },
   "75": {
    "io": [
@@ -126163,7 +127284,9 @@
    "ro": [
     "clarinete"
    ],
-   "ga": []
+   "ga": [
+    "cláirnéidíní"
+   ]
   },
   "76": {
    "io": [
@@ -126236,7 +127359,9 @@
     "arkuekin"
    ],
    "ro": [],
-   "ga": []
+   "ga": [
+    "mbogha"
+   ]
   },
   "77": {
    "io": [
@@ -126311,7 +127436,9 @@
    "ro": [
     "toba mare"
    ],
-   "ga": []
+   "ga": [
+    "druma mór"
+   ]
   },
   "78": {
    "io": [
@@ -126384,7 +127511,9 @@
    "ro": [
     "student"
    ],
-   "ga": []
+   "ga": [
+    "mac léinn"
+   ]
   },
   "79": {
    "io": [
@@ -126459,7 +127588,9 @@
    "ro": [
     "vânzătorul"
    ],
-   "ga": []
+   "ga": [
+    "cúntóir siopa"
+   ]
   },
   "80": {
    "io": [
@@ -126676,7 +127807,9 @@
    "ro": [
     "căluți de lemn"
    ],
-   "ga": []
+   "ga": [
+    "capaill adhmaid"
+   ]
   },
   "83": {
    "io": [
@@ -126751,7 +127884,9 @@
    "ro": [
     "păpuși"
    ],
-   "ga": []
+   "ga": [
+    "bábóga"
+   ]
   },
   "84": {
    "io": [
@@ -126826,7 +127961,9 @@
    "ro": [
     "Raionul de parfumerie"
    ],
-   "ga": []
+   "ga": [
+    "siopa na gcumhrán"
+   ]
   },
   "85": {
    "io": [
@@ -126901,7 +128038,9 @@
    "ro": [
     "tabelului de astronomie"
    ],
-   "ga": []
+   "ga": [
+    "tábla na réalteolaíochta"
+   ]
   },
   "85a": {
    "io": [
@@ -126976,7 +128115,9 @@
    "ro": [
     "cometele"
    ],
-   "ga": []
+   "ga": [
+    "cóiméid"
+   ]
   },
   "85b": {
    "io": [
@@ -127051,7 +128192,9 @@
    "ro": [
     "eclipsele de lună și de soare"
    ],
-   "ga": []
+   "ga": [
+    "urú gealaí agus urú gréine"
+   ]
   },
   "85c": {
    "io": [
@@ -127126,7 +128269,9 @@
    "ro": [
     "cele patru zări"
    ],
-   "ga": []
+   "ga": [
+    "na ceithre hairde"
+   ]
   },
   "85d": {
    "io": [
@@ -127201,7 +128346,9 @@
    "ro": [
     "emisfere"
    ],
-   "ga": []
+   "ga": [
+    "leathsféar"
+   ]
   },
   "85e": {
    "io": [
@@ -127276,7 +128423,9 @@
    "ro": [
     "planetele"
    ],
-   "ga": []
+   "ga": [
+    "pláinéid"
+   ]
   },
   "85f": {
    "io": [
@@ -127351,7 +128500,9 @@
    "ro": [
     "sistemul solar"
    ],
-   "ga": []
+   "ga": [
+    "grianchóras"
+   ]
   },
   "86": {
    "io": [
@@ -127426,7 +128577,9 @@
    "ro": [
     "comisionarului"
    ],
-   "ga": []
+   "ga": [
+    "bhuachaill seachadta"
+   ]
   },
   "87": {
    "io": [
@@ -127572,7 +128725,9 @@
    "ro": [
     "portmonee"
    ],
-   "ga": []
+   "ga": [
+    "sparán airgid"
+   ]
   },
   "89": {
    "io": [
@@ -127647,7 +128802,9 @@
    "ro": [
     "portofele"
    ],
-   "ga": []
+   "ga": [
+    "vaidhcín"
+   ]
   },
   "90": {
    "io": [
@@ -127722,7 +128879,9 @@
    "ro": [
     "penele"
    ],
-   "ga": []
+   "ga": [
+    "chleití"
+   ]
   },
   "91": {
    "io": [
@@ -127797,7 +128956,9 @@
    "ro": [
     "cataramele de curea"
    ],
-   "ga": []
+   "ga": [
+    "bhúclaí creasa"
+   ]
   },
   "92": {
    "io": [
@@ -127872,7 +129033,9 @@
    "ro": [
     "periuțele de dinți"
    ],
-   "ga": []
+   "ga": [
+    "scuaba fiacla"
+   ]
   },
   "93": {
    "io": [
@@ -127947,7 +129110,9 @@
    "ro": [
     "ace cu gămălie"
    ],
-   "ga": []
+   "ga": [
+    "bioráin ghruaige"
+   ]
   },
   "94": {
    "io": [
@@ -128093,7 +129258,9 @@
    "ro": [
     "zambilele"
    ],
-   "ga": []
+   "ga": [
+    "bú"
+   ]
   },
   "96": {
    "io": [
@@ -128168,7 +129335,9 @@
    "ro": [
     "mușcatele"
    ],
-   "ga": []
+   "ga": [
+    "geiréiniamaí"
+   ]
   },
   "97": {
    "io": [
@@ -128243,7 +129412,9 @@
    "ro": [
     "crinii"
    ],
-   "ga": []
+   "ga": [
+    "lilí"
+   ]
   },
   "98": {
    "io": [
@@ -128318,7 +129489,9 @@
    "ro": [
     "condurii doamnei"
    ],
-   "ga": []
+   "ga": [
+    "caipisíní"
+   ]
   },
   "99": {
    "io": [
@@ -128391,7 +129564,9 @@
    "ro": [
     "cumpărător"
    ],
-   "ga": []
+   "ga": [
+    "chliant"
+   ]
   },
   "100": {
    "io": [
@@ -128608,7 +129783,9 @@
    "ro": [
     "hoț"
    ],
-   "ga": []
+   "ga": [
+    "gadaí"
+   ]
   },
   "103": {
    "io": [
@@ -128683,7 +129860,9 @@
    "ro": [
     "detectivul magazinului"
    ],
-   "ga": []
+   "ga": [
+    "cigire"
+   ]
   }
  }
 }
