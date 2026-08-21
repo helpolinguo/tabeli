@@ -373,7 +373,11 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     # les noms de fichiers restent en ASCII, et c'est le dossier —
     # texto/vi — qui porte la langue. Le jeton est neuf ; aucun des
     # dix-sept precedents ne s'en approche.
-    ("vi", "*-bang-*.tex")]
+    ("vi", "*-bang-*.tex"),
+    # L'ALLEMAND prend « tafel », qui n'est le jeton de personne : il
+    # ressemble au « tabel » neerlandais et au « tabell » suedois sans
+    # les egaler — un F la ou ils ont un B.
+    ("de", "*-tafel-*.tex")]
 
 
 def construire():

@@ -244,6 +244,8 @@ LANGUES = [
     # dans « ecartita » de texto/lingui.json.
     {"kodo": "vi", "nomo": "Tiếng Việt", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -822,7 +824,8 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ga": "ga", "gl": "gl",
            "cs": "cs", "lt": "lt",
            "lb": "lb", "rm": "rm",
-           "et": "et", "vi": "vi"}   # langue -> texto/<...>
+           "et": "et", "vi": "vi",
+           "de": "de"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1895,6 +1898,16 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # seuls les titres d'apparat sont composes en
                         # capitales.
                         r"|BẢNG"
+                        # L'ALLEMAND ecrit « TAFEL Nr. 1 ». « Tabelle »
+                        # existe en allemand, mais c'est le tableau de
+                        # CHIFFRES ; ce que Delmas vend est une image
+                        # murale, et l'allemand l'appelle « Tafel »,
+                        # comme il appelle « Tafel » le tableau noir de
+                        # la classe. Le mot ne se confond avec aucun
+                        # autre membre — aucun ne commence par TAF — et
+                        # le titre du volume, « Delmas-Hilfstafeln »,
+                        # est compose en bas de casse.
+                        r"|TAFEL"
                         )
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
@@ -1952,6 +1965,12 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # et la scene sont au nominatif — et une seule forme
             # suffit donc pour chacun, comme en finnois.
             r"|esimene|teine|kolmas|neljas"
+            # L'ALLEMAND : « erste » ressemble au neerlandais
+            # « eerste » sans l'egaler, et « zweite », « dritte » et
+            # « vierte » n'ont aucun equivalent dans la liste. Les
+            # quatre sont a ajouter, avec « Reihe » dans le groupe de
+            # la serie et « Szene » dans celui de la scene.
+            r"|erste|zweite|dritte|vierte"
             # L'UKRAINIEN : aucun de ses quatre ordinaux n'entre dans
             # la liste russe. « перша » n'est pas « первая »,
             # « третя » n'est pas « третья », et « четверта » n'a pas
@@ -2030,7 +2049,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|seeria|серия|серія|saila|sh?raith)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|seeria|reihe|серия|серія|saila|sh?raith)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
@@ -2075,7 +2094,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
 # LE LUXEMBOURGEOIS DIT « Zeen », qui ne ressemble a aucun des mots de
 # ce groupe : ni au « Szene » allemand dont il vient, ni au « scena »
 # roman. Un membre de plus, donc, et non une classe elargie.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|stseen|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|stseen|szene|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
