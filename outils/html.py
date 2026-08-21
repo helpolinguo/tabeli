@@ -2355,6 +2355,13 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # LE CANTONAIS, meme mot, autre graphie.
                    r"|第[一二三四]組"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
+                   # L'ARABE EGYPTIEN FAIT PASSER SA PHONOLOGIE JUSQUE
+                   # DANS L'APPARAT : le ث devient ت, et « الثانية »
+                   # s'ecrit « التانية », « الثالثة » « التالتة ». Le
+                   # membre standard ne les prend pas — c'est la
+                   # premiere fois qu'une regle de prononciation
+                   # oblige a toucher au marquage des roles.
+                   r"|السلسلة\s+(?:التانية|التالتة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
@@ -2403,6 +2410,9 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # ecrit deja plus bas : le membre existe, on ne le
                   # double pas.
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
+                  # MEME RAISON QU'A LA SERIE : l'egyptien ecrit
+                  # « المشهد التاني » et « المشهد التالت ».
+                  r"|المشهد\s+(?:التاني|التالت)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
