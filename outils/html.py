@@ -227,6 +227,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "gl", "nomo": "Galego", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "cs", "nomo": "Čeština", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -802,7 +804,8 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "nl": "nl", "sv": "sv", "fi": "fi", "ca": "ca",
            "oc": "oc", "uk": "uk",
            "eu": "eu", "ro": "ro",
-           "ga": "ga", "gl": "gl"}   # langue -> texto/<...>
+           "ga": "ga", "gl": "gl",
+           "cs": "cs"}               # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1822,7 +1825,15 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # CUADRO — et ne se confond donc avec aucun
                         # autre membre. Le titre du volume, « Cadros
                         # auxiliares Delmas », est en bas de casse.
-                        r"|CADRO")
+                        r"|CADRO"
+                        # LE TCHEQUE ecrit « TABULKA č. 1 ». Le mot
+                        # commence comme le « TABEL » neerlandais mais
+                        # s'en separe des la quatrieme lettre — TABU
+                        # contre TABE — et ne se confond donc avec
+                        # aucun autre membre. Le titre du volume,
+                        # « Delmasovy pomocné tabulky », est en bas de
+                        # casse.
+                        r"|TABULKA")
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
 # le membre « TAULA » l'attrape deja : rien a ajouter. Ce qui separe
@@ -1903,6 +1914,12 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # par l'espagnol. Il ne demande pas davantage dans les deux
             # groupes ci-dessous : sa serie s'ecrit « serie » et sa
             # scene « escena », l'une et l'autre deja presentes.
+            # LE TCHEQUE decline son ordinal comme le nom qui suit,
+            # mais la serie et la scene sont toutes deux au nominatif
+            # feminin : une seule forme suffit donc pour chacun des
+            # quatre. « první » vaut pour les deux genres, les trois
+            # autres prennent leur -á feminin.
+            r"|prvn[ií]|druh[aá]|tře[tť][ií]|čtvrt[aá]"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1943,12 +1960,15 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|series|reeks|serien
                    r"|[ÜüU]Ç[ÜüU]NC[ÜüU]|D[ÖöO]RD[ÜüU]NC[ÜüU])"
                    r"\s+D[İi]Z[İi]\b", re.I)
 
+# LE TCHEQUE ECRIT « scéna » AVEC UN E LONG, et le groupe ne prevoyait
+# que « e » et « è ». Un accent de plus dans la classe, et le roumain
+# « scena » comme le tcheque « scéna » y entrent tous deux.
 # LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
 # fac-simile ; mais l'italique est justement ce qui differe -- Guignon
 # compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
 # scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
 # la serie, juste au-dessus.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eè]n[aă]|сцена|agerraldia|radharc)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eèé]n[aă]|сцена|agerraldia|radharc)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
