@@ -229,6 +229,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "cs", "nomo": "Čeština", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "lt", "nomo": "Lietuvių", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -805,7 +807,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "oc": "oc", "uk": "uk",
            "eu": "eu", "ro": "ro",
            "ga": "ga", "gl": "gl",
-           "cs": "cs"}               # langue -> texto/<...>
+           "cs": "cs", "lt": "lt"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1833,7 +1835,12 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # aucun autre membre. Le titre du volume,
                         # « Delmasovy pomocné tabulky », est en bas de
                         # casse.
-                        r"|TABULKA")
+                        r"|TABULKA"
+                        # LE LITUANIEN ecrit « LENTELĖ Nr. 1 ». Le mot
+                        # porte un E surpointe, lettre que nulle autre
+                        # colonne n'emploie, et ne se confond donc avec
+                        # rien. Le titre du volume est en bas de casse.
+                        r"|LENTELĖ")
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
 # le membre « TAULA » l'attrape deja : rien a ajouter. Ce qui separe
@@ -1920,6 +1927,12 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # quatre. « první » vaut pour les deux genres, les trois
             # autres prennent leur -á feminin.
             r"|prvn[ií]|druh[aá]|tře[tť][ií]|čtvrt[aá]"
+            # LE LITUANIEN a une forme SIMPLE et une forme DEFINIE de
+            # chaque ordinal — « pirma serija » et « pirmoji serija » —
+            # et l'usage prefere la seconde devant un nom precis. On
+            # ecrit les deux etats, comme on avait ecrit les deux
+            # etats du premier ordinal irlandais.
+            r"|pirm(?:a|oji)|antr(?:a|oji)|trečia(?:ji)?|ketvirt(?:a|oji)"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
@@ -1936,7 +1949,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|series|reeks|serien|sarja|серия|серія|saila|sh?raith)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|серия|серія|saila|sh?raith)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
