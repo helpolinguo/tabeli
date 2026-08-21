@@ -1330,7 +1330,6 @@ def lier_notes(rangi):
     # retablis et les boutons composes. Elle herite donc de tout, et le
     # nom du gros plan suit le mot de son edition — « vest » et non
     # « waistcoat » quand on lit l'anglais des Etats-Unis.
-    rapport["kalkiti"] = deriver_varianti(rangi)
     return rapport
 
 
@@ -1806,24 +1805,68 @@ def deriver_varianti(rangi):
     """Chaque variante, calquee sur sa base."""
     if not VARIANTI:
         return 0
-    paroj = [(lg["kodo"], lg["kalko"],
-              VARIANTI[lg["dosiero"]]["remplaci"])
-             for lg in LANGUES if lg.get("kalko")]
     n = 0
     for r in rangi:
+        n += deriver_rango(r, PAROJ)
+    return n
+
+
+def paroj_varianti():
+    """(variante, base, regles) pour chaque paire declaree.
+
+    LES REGLES SE PREPARENT UNE FOIS. Pour un calque de mots elles
+    restent une liste, appliquee dans l'ordre ; pour un calque
+    d'ECRITURE elles deviennent une expression unique, la plus longue
+    d'abord, parce qu'il faut consommer chaque caractere une seule fois.
+    """
+    out = []
+    for lg in LANGUES:
+        if not lg.get("kalko"):
+            continue
+        v = VARIANTI[lg["dosiero"]]
+        regles = v["remplaci"]
+        if v.get("unpase"):
+            tab = {a: b for a, b in regles}
+            rx = re.compile("|".join(re.escape(a) for a in
+                                     sorted(tab, key=len, reverse=True)))
+            regles = (rx, tab)
+        out.append((lg["kodo"], lg["kalko"], regles))
+    return out
+
+
+PAROJ = paroj_varianti()
+
+
+def deriver_rango(r, paroj):
+    """Un rang, et ses variantes."""
+    n = 0
+    if True:
         for kalko, bazo, regles in paroj:
             o = r["tra"].get(bazo)
             if not o or not o.get("t"):
                 continue
             t = o["t"]
-            for regle in regles:
-                if len(regle) == 3:
-                    cle, avant, apres = regle
-                    if cle != r["cle"]:
-                        continue
-                else:
-                    avant, apres = regle
-                t = t.replace(avant, apres)
+            if isinstance(regles, tuple):
+                # UN SEUL BALAYAGE, LA PLUS LONGUE REGLE D'ABORD. Une
+                # conversion d'ECRITURE n'est pas une liste de mots : le
+                # meme caractere se rend de deux facons selon ce qui
+                # l'entoure — « 里 » vaut 裏 dans « 屋里 » et reste 里 dans
+                # « 莫里斯 » — et il faut donc PROTEGER certaines suites.
+                # Un remplacement successif ne sait pas proteger : la
+                # regle « 莫里斯 » -> « 莫里斯 » ne fait rien, et une regle
+                # plus courte vient mordre dedans. Un balayage unique
+                # consomme chaque caractere une fois.
+                rx, tab = regles
+                t = rx.sub(lambda m: tab[m.group(0)], t)
+            else:
+                for regle in regles:
+                    if len(regle) == 3:
+                        cle, avant, apres = regle
+                        if cle != r["cle"]:
+                            continue
+                    else:
+                        avant, apres = regle
+                    t = t.replace(avant, apres)
             r["tra"][kalko] = dict(o, t=t)
             if t != o["t"]:
                 n += 1
@@ -2902,6 +2945,13 @@ def rendre(rangi):
             pg = rang_pdf("io", r["feuillet"])
             fol = (f'<a class="fol" href="tabeli.pdf#page={pg}" '
                    f'title="Folio {r["folio"]} en la PDF">{r["folio"]}</a>')
+        # ET LA VARIANTE SE TIRE APRES LES ROLES, pour les heriter. Les
+        # roles d'apparat se lisent sur le TEXTE, par des expressions
+        # liees a la langue — « TABELO », « TABLEAU », « 图表 ». Une
+        # variante d'ECRITURE ne les porte plus : le chinois traditionnel
+        # ecrit 圖表, qu'aucune regle ne reconnaissait, et les dix-sept
+        # ouvertures perdaient leur role. La variante ne doit pas etre
+        # relue : elle doit RECEVOIR ce que sa base a compris.
         # LE ROLE SE MARQUE AVANT L'ANCRAGE, et sur les deux colonnes :
         # c'est lui qui les fait se ressembler. Les ouvertures et les
         # intertitres seuls en portent ; le texte suivi n'a pas d'apparat.
@@ -2909,6 +2959,8 @@ def rendre(rangi):
             porte = r["cle"] in empruntes
             io = roles_ap(io, porte, apres_ceno)
             for lg in LANGUES:
+                if lg.get("kalko"):
+                    continue        # la variante herite, elle ne se relit pas
                 o = r["tra"].get(lg["kodo"])
                 if o and o["t"]:
                     o["t"] = roles_ap(o["t"], porte, apres_ceno)
@@ -2926,6 +2978,14 @@ def rendre(rangi):
             apres_ceno = bool(derniers) and derniers[-1] == "ceno"
         elif r["tipo"] == "p":
             apres_ceno = False
+        # ET LA VARIANTE SE TIRE APRES LES ROLES, pour les heriter. Les
+        # roles d'apparat se lisent sur le TEXTE, par des expressions
+        # liees a la langue — « TABELO », « TABLEAU », « 图表 ». Une
+        # variante d'ECRITURE ne les porte plus : le chinois traditionnel
+        # ecrit 圖表, qu'aucune regle ne reconnait, et les dix-sept
+        # ouvertures perdaient leur role. La variante ne doit pas etre
+        # relue : elle doit RECEVOIR ce que sa base a compris.
+        deriver_rango(r, PAROJ)
         # Les lignes d'apparat recoivent une ancre chacune : la table
         # des matieres renvoie a la scene, pas seulement au tableau.
         if r["tipo"] == "apar":
