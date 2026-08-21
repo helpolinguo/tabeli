@@ -76601,7 +76601,9 @@
    "eu": [
     "ozeanoa"
    ],
-   "ro": []
+   "ro": [
+    "oceanul"
+   ]
   },
   "2": {
    "io": [
@@ -76673,7 +76675,9 @@
    "eu": [
     "zeruertzeraino"
    ],
-   "ro": []
+   "ro": [
+    "zare"
+   ]
   },
   "3": {
    "io": [
@@ -76743,7 +76747,9 @@
     "пароплави"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "vapoare"
+   ]
   },
   "4": {
    "io": [
@@ -76815,7 +76821,9 @@
    "eu": [
     "olatu-hausle"
    ],
-   "ro": []
+   "ro": [
+    "dig"
+   ]
   },
   "5": {
    "io": [
@@ -76887,7 +76895,9 @@
    "eu": [
     "gerra-kaia"
    ],
-   "ro": []
+   "ro": [
+    "rada militară"
+   ]
   },
   "6": {
    "io": [
@@ -77029,7 +77039,9 @@
    "eu": [
     "kanoiontzi"
    ],
-   "ro": []
+   "ro": [
+    "canoniere"
+   ]
   },
   "8": {
    "io": [
@@ -77101,7 +77113,9 @@
    "eu": [
     "torpedo-ontziaren"
    ],
-   "ro": []
+   "ro": [
+    "torpilorului"
+   ]
   },
   "9": {
    "io": [
@@ -77171,7 +77185,9 @@
     "броненосця"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "cuirasat"
+   ]
   },
   "10": {
    "io": [
@@ -77241,7 +77257,9 @@
     "підводного човна"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "submarin"
+   ]
   },
   "11": {
    "io": [
@@ -77313,7 +77331,9 @@
    "eu": [
     "fragata"
    ],
-   "ro": []
+   "ro": [
+    "fregata"
+   ]
   },
   "12": {
    "io": [
@@ -77383,7 +77403,9 @@
     "транспортів"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "transportoare"
+   ]
   },
   "13": {
    "io": [
@@ -77453,7 +77475,9 @@
     "вітрильниками"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "veliere"
+   ]
   },
   "14": {
    "io": [
@@ -77523,7 +77547,9 @@
     "молу"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "dig"
+   ]
   },
   "15": {
    "io": [
@@ -77595,7 +77621,9 @@
    "eu": [
     "Harresietan"
    ],
-   "ro": []
+   "ro": [
+    "metereze"
+   ]
   },
   "16": {
    "io": [
@@ -77667,7 +77695,9 @@
    "eu": [
     "atoiontzi"
    ],
-   "ro": []
+   "ro": [
+    "remorcher"
+   ]
   },
   "17": {
    "io": [
@@ -77737,7 +77767,9 @@
     "баржі"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "șlepuri"
+   ]
   },
   "18": {
    "io": [
@@ -77809,7 +77841,9 @@
    "eu": [
     "ontziolan"
    ],
-   "ro": []
+   "ro": [
+    "șantierele navale"
+   ]
   },
   "19": {
    "io": [
@@ -77881,7 +77915,9 @@
    "eu": [
     "arma-plaza"
    ],
-   "ro": []
+   "ro": [
+    "piața de arme"
+   ]
   },
   "20": {
    "io": [
@@ -78025,7 +78061,9 @@
    "eu": [
     "arsenalarekin"
    ],
-   "ro": []
+   "ro": [
+    "arsenal"
+   ]
   },
   "22": {
    "io": [
@@ -78097,7 +78135,9 @@
    "eu": [
     "kanoiz"
    ],
-   "ro": []
+   "ro": [
+    "tunuri"
+   ]
   },
   "23": {
    "io": [
@@ -78169,7 +78209,9 @@
    "eu": [
     "bala biribilez"
    ],
-   "ro": []
+   "ro": [
+    "ghiulele"
+   ]
   },
   "24": {
    "io": [
@@ -78239,7 +78281,9 @@
     "котельню"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "cazangeria"
+   ]
   },
   "25": {
    "io": [
@@ -78311,7 +78355,9 @@
    "eu": [
     "galdarak"
    ],
-   "ro": []
+   "ro": [
+    "cazanele"
+   ]
   },
   "26": {
    "io": [
@@ -78381,7 +78427,9 @@
     "доки"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "docurile"
+   ]
   },
   "27": {
    "io": [
@@ -78453,7 +78501,9 @@
    "eu": [
     "dike flotagarriak"
    ],
-   "ro": []
+   "ro": [
+    "docuri plutitoare"
+   ]
   },
   "28": {
    "io": [
@@ -78525,7 +78575,9 @@
    "eu": [
     "helizea"
    ],
-   "ro": []
+   "ro": [
+    "elicea"
+   ]
   },
   "29": {
    "io": [
@@ -78597,7 +78649,9 @@
    "eu": [
     "gila"
    ],
-   "ro": []
+   "ro": [
+    "chila"
+   ]
   },
   "30": {
    "io": [
@@ -78669,7 +78723,9 @@
    "eu": [
     "lema"
    ],
-   "ro": []
+   "ro": [
+    "cârma"
+   ]
   },
   "31": {
    "io": [
@@ -78741,7 +78797,9 @@
    "eu": [
     "gurpil-ontziak"
    ],
-   "ro": []
+   "ro": [
+    "vapoarele cu zbaturi"
+   ]
   },
   "32": {
    "io": [
@@ -78811,7 +78869,9 @@
     "шеровий кран"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "macaraua rotitoare"
+   ]
   },
   "34": {
    "io": [
@@ -78883,7 +78943,9 @@
    "eu": [
     "Ontzi transatlantikoak"
    ],
-   "ro": []
+   "ro": [
+    "transatlanticele"
+   ]
   },
   "35": {
    "io": [
@@ -79097,7 +79159,9 @@
    "eu": [
     "Brankan"
    ],
-   "ro": []
+   "ro": [
+    "proră"
+   ]
   },
   "38": {
    "io": [
@@ -79169,7 +79233,9 @@
    "eu": [
     "txopan"
    ],
-   "ro": []
+   "ro": [
+    "pupă"
+   ]
   },
   "39": {
    "io": [
@@ -79241,7 +79307,9 @@
    "eu": [
     "kamarotak"
    ],
-   "ro": []
+   "ro": [
+    "cabinele"
+   ]
   },
   "40": {
    "io": [
@@ -79313,7 +79381,9 @@
    "eu": [
     "buiez"
    ],
-   "ro": []
+   "ro": [
+    "geamanduri"
+   ]
   },
   "41": {
    "io": [
@@ -79385,7 +79455,9 @@
    "eu": [
     "txalupa handiak"
    ],
-   "ro": []
+   "ro": [
+    "barjele"
+   ]
   },
   "42": {
    "io": [
@@ -79457,7 +79529,9 @@
    "eu": [
     "zama-ontziaren"
    ],
-   "ro": []
+   "ro": [
+    "cargobot"
+   ]
   },
   "43": {
    "io": [
@@ -79529,7 +79603,9 @@
    "eu": [
     "biltegitik"
    ],
-   "ro": []
+   "ro": [
+    "depozit"
+   ]
   },
   "44": {
    "io": [
@@ -79601,7 +79677,9 @@
    "eu": [
     "portuko geltokitik"
    ],
-   "ro": []
+   "ro": [
+    "gara portului"
+   ]
   },
   "45": {
    "io": [
@@ -79673,7 +79751,9 @@
    "eu": [
     "kaiko trenbideko"
    ],
-   "ro": []
+   "ro": [
+    "liniei de chei"
+   ]
   },
   "46": {
    "io": [
@@ -79813,7 +79893,9 @@
     "весло"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "vâslă"
+   ]
   },
   "48": {
    "io": [
@@ -79885,7 +79967,9 @@
    "eu": [
     "Bizkarrera"
    ],
-   "ro": []
+   "ro": [
+    "puntea"
+   ]
   },
   "49": {
    "io": [
@@ -79957,7 +80041,9 @@
    "eu": [
     "bela-txalupakoa"
    ],
-   "ro": []
+   "ro": [
+    "bărcii cu pânze"
+   ]
   },
   "50": {
    "io": [
@@ -80029,7 +80115,9 @@
    "eu": [
     "berga"
    ],
-   "ro": []
+   "ro": [
+    "vergi"
+   ]
   },
   "51": {
    "io": [
@@ -80101,7 +80189,9 @@
    "eu": [
     "mastara"
    ],
-   "ro": []
+   "ro": [
+    "catarg"
+   ]
   },
   "52": {
    "io": [
@@ -80173,7 +80263,9 @@
    "eu": [
     "soken"
    ],
-   "ro": []
+   "ro": [
+    "parâme"
+   ]
   },
   "53": {
    "io": [
@@ -80245,7 +80337,9 @@
    "eu": [
     "dike itxian"
    ],
-   "ro": []
+   "ro": [
+    "docul închis"
+   ]
   },
   "54": {
    "io": [
@@ -80317,7 +80411,9 @@
    "eu": [
     "txalupatxoan"
    ],
-   "ro": []
+   "ro": [
+    "șalupă"
+   ]
   },
   "55": {
    "io": [
@@ -80387,7 +80483,9 @@
     "рибальських суден"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "vase de pescuit"
+   ]
   },
   "56": {
    "io": [
@@ -80531,7 +80629,9 @@
    "eu": [
     "Kaian"
    ],
-   "ro": []
+   "ro": [
+    "chei"
+   ]
   },
   "59": {
    "io": [
@@ -80601,7 +80701,9 @@
     "товари"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "mărfuri"
+   ]
   },
   "60": {
    "io": [
@@ -80673,7 +80775,9 @@
    "eu": [
     "kutxetan"
    ],
-   "ro": []
+   "ro": [
+    "lăzi"
+   ]
   },
   "61": {
    "io": [
@@ -80745,7 +80849,9 @@
    "eu": [
     "fardeletan"
    ],
-   "ro": []
+   "ro": [
+    "baloturi"
+   ]
   },
   "62": {
    "io": [
@@ -80887,7 +80993,9 @@
    "eu": [
     "zama"
    ],
-   "ro": []
+   "ro": [
+    "încărcătura"
+   ]
   },
   "64": {
    "io": [
@@ -80959,7 +81067,9 @@
    "eu": [
     "kamioietan"
    ],
-   "ro": []
+   "ro": [
+    "camioane"
+   ]
   },
   "65": {
    "io": [
@@ -81031,7 +81141,9 @@
    "eu": [
     "aduanan"
    ],
-   "ro": []
+   "ro": [
+    "vamă"
+   ]
   },
   "66": {
    "io": [
@@ -81103,7 +81215,9 @@
    "eu": [
     "zubi altxagarrira"
    ],
-   "ro": []
+   "ro": [
+    "podul mobil"
+   ]
   },
   "67": {
    "io": [
@@ -81175,7 +81289,9 @@
    "eu": [
     "ubidea"
    ],
-   "ro": []
+   "ro": [
+    "canalul"
+   ]
   },
   "68": {
    "io": [
@@ -81247,7 +81363,9 @@
    "eu": [
     "dragaren"
    ],
-   "ro": []
+   "ro": [
+    "draga"
+   ]
   },
   "69": {
    "io": [
@@ -81319,7 +81437,9 @@
    "eu": [
     "esklusara"
    ],
-   "ro": []
+   "ro": [
+    "ecluză"
+   ]
   },
   "70": {
    "io": [
@@ -81391,7 +81511,9 @@
    "eu": [
     "seinale-mastaren"
    ],
-   "ro": []
+   "ro": [
+    "catargul de semnale"
+   ]
   },
   "71": {
    "io": [
@@ -81463,7 +81585,9 @@
    "eu": [
     "txalupek"
    ],
-   "ro": []
+   "ro": [
+    "șalupele"
+   ]
   },
   "72": {
    "io": [
@@ -81535,7 +81659,9 @@
    "eu": [
     "olatuak"
    ],
-   "ro": []
+   "ro": [
+    "val"
+   ]
   },
   "73": {
    "io": [
@@ -81607,7 +81733,9 @@
    "eu": [
     "hondartzan"
    ],
-   "ro": []
+   "ro": [
+    "plajă"
+   ]
   },
   "74": {
    "io": [
@@ -81679,7 +81807,9 @@
    "eu": [
     "tranbia elektrikoan"
    ],
-   "ro": []
+   "ro": [
+    "tramvaiul electric"
+   ]
   },
   "75": {
    "io": [
@@ -81751,7 +81881,9 @@
    "eu": [
     "geldialdia"
    ],
-   "ro": []
+   "ro": [
+    "stație"
+   ]
   },
   "76": {
    "io": [
@@ -81823,7 +81955,9 @@
    "eu": [
     "balkoitik"
    ],
-   "ro": []
+   "ro": [
+    "balconul"
+   ]
   },
   "77": {
    "io": [
@@ -81895,7 +82029,9 @@
    "eu": [
     "aingurez"
    ],
-   "ro": []
+   "ro": [
+    "ancore"
+   ]
   },
   "78": {
    "io": [
@@ -81967,7 +82103,9 @@
    "eu": [
     "tenienteak"
    ],
-   "ro": []
+   "ro": [
+    "locotenenți"
+   ]
   },
   "79": {
    "io": [
@@ -82039,7 +82177,9 @@
    "eu": [
     "artilleriako"
    ],
-   "ro": []
+   "ro": [
+    "căpitani de artilerie"
+   ]
   },
   "80": {
    "io": [
@@ -82111,7 +82251,9 @@
    "eu": [
     "infanteriako"
    ],
-   "ro": []
+   "ro": [
+    "infanterie"
+   ]
   },
   "81": {
    "io": [
@@ -82181,7 +82323,9 @@
     "матрос"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "marinar"
+   ]
   },
   "82": {
    "io": [
@@ -82251,7 +82395,9 @@
     "мічманів"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "aspiranți"
+   ]
   },
   "83": {
    "io": [
@@ -82395,7 +82541,9 @@
    "eu": [
     "almirantearengandik"
    ],
-   "ro": []
+   "ro": [
+    "amiral"
+   ]
   },
   "85": {
    "io": [
@@ -82467,7 +82615,9 @@
    "eu": [
     "kuartelmaisua"
    ],
-   "ro": []
+   "ro": [
+    "cartierul-maistru"
+   ]
   },
   "86": {
    "io": [
@@ -82611,7 +82761,9 @@
    "eu": [
     "bainu-etxolekin"
    ],
-   "ro": []
+   "ro": [
+    "cabinele de baie"
+   ]
   },
   "88": {
    "io": [
@@ -82683,7 +82835,9 @@
    "eu": [
     "bainulariak"
    ],
-   "ro": []
+   "ro": [
+    "scăldătorii"
+   ]
   },
   "89": {
    "io": [
@@ -82755,7 +82909,9 @@
    "eu": [
     "kasinoaren"
    ],
-   "ro": []
+   "ro": [
+    "cazinoului"
+   ]
   },
   "90": {
    "io": [],
@@ -82961,7 +83117,9 @@
    "eu": [
     "itsasbitsak"
    ],
-   "ro": []
+   "ro": [
+    "talazurile"
+   ]
   },
   "93": {
    "io": [
@@ -83033,7 +83191,9 @@
    "eu": [
     "itsasargia"
    ],
-   "ro": []
+   "ro": [
+    "farul"
+   ]
   },
   "94": {
    "io": [
@@ -83105,7 +83265,9 @@
    "eu": [
     "Itsaslabarra"
    ],
-   "ro": []
+   "ro": [
+    "Faleza"
+   ]
   },
   "95": {
    "io": [
@@ -83177,7 +83339,9 @@
    "eu": [
     "badien"
    ],
-   "ro": []
+   "ro": [
+    "golfuri"
+   ]
   },
   "96": {
    "io": [
@@ -83249,7 +83413,9 @@
    "eu": [
     "Lautadan"
    ],
-   "ro": []
+   "ro": [
+    "podișul"
+   ]
   },
   "97": {
    "io": [
@@ -83391,7 +83557,9 @@
    "eu": [
     "itsasartea"
    ],
-   "ro": []
+   "ro": [
+    "strâmtoarea"
+   ]
   },
   "99": {
    "io": [
@@ -83533,7 +83701,9 @@
    "eu": [
     "harkaitzez"
    ],
-   "ro": []
+   "ro": [
+    "stânci"
+   ]
   }
  },
  "t11": {
@@ -83677,7 +83847,9 @@
    "eu": [
     "Kaien"
    ],
-   "ro": []
+   "ro": [
+    "cheiurilor"
+   ]
   },
   "3": {
    "io": [
@@ -83747,7 +83919,9 @@
     "передмістя"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "mahala"
+   ]
   },
   "4": {
    "io": [
@@ -83819,7 +83993,9 @@
    "eu": [
     "lantegietan"
    ],
-   "ro": []
+   "ro": [
+    "uzine"
+   ]
   },
   "5": {
    "io": [
@@ -83891,7 +84067,9 @@
    "eu": [
     "gas-fabrikan"
    ],
-   "ro": []
+   "ro": [
+    "fabrica de gaz"
+   ]
   },
   "6": {
    "io": [
@@ -84033,7 +84211,9 @@
    "eu": [
     "gaztelu gotortu zaharrarena"
    ],
-   "ro": []
+   "ro": [
+    "castel întărit"
+   ]
   },
   "8": {
    "io": [
@@ -84105,7 +84285,9 @@
    "eu": [
     "atea"
    ],
-   "ro": []
+   "ro": [
+    "poarta"
+   ]
   },
   "9": {
    "io": [
@@ -84177,7 +84359,9 @@
    "eu": [
     "dorrerekin"
    ],
-   "ro": []
+   "ro": [
+    "turnuri"
+   ]
   },
   "10": {
    "io": [
@@ -84249,7 +84433,9 @@
    "eu": [
     "aduana"
    ],
-   "ro": []
+   "ro": [
+    "vama"
+   ]
   },
   "11": {
    "io": [
@@ -84389,7 +84575,9 @@
     "ратуші"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "primărie"
+   ]
   },
   "13": {
    "io": [
@@ -84531,7 +84719,9 @@
    "eu": [
     "burtsa"
    ],
-   "ro": []
+   "ro": [
+    "bursa"
+   ]
   },
   "15": {
    "io": [
@@ -84601,7 +84791,9 @@
     "префектура"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "prefectura"
+   ]
   },
   "16": {
    "io": [
@@ -84743,7 +84935,9 @@
    "eu": [
     "hiriko parkeko"
    ],
-   "ro": []
+   "ro": [
+    "parcului orășenesc"
+   ]
   },
   "18": {
    "io": [
@@ -84815,7 +85009,9 @@
    "eu": [
     "aurrezki kutxaren"
    ],
-   "ro": []
+   "ro": [
+    "casei de economii"
+   ]
   },
   "19": {
    "io": [
@@ -84887,7 +85083,9 @@
    "eu": [
     "ibilbidea"
    ],
-   "ro": []
+   "ro": [
+    "Bulevardul"
+   ]
   },
   "20": {
    "io": [
@@ -84959,7 +85157,9 @@
    "eu": [
     "katedralaren"
    ],
-   "ro": []
+   "ro": [
+    "catedralei"
+   ]
   },
   "21": {
    "io": [
@@ -85029,7 +85229,9 @@
     "ліцей"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "liceu"
+   ]
   },
   "22": {
    "io": [
@@ -85101,7 +85303,9 @@
    "eu": [
     "auzitegira"
    ],
-   "ro": []
+   "ro": [
+    "tribunal"
+   ]
   },
   "25": {
    "io": [
@@ -85173,7 +85377,9 @@
    "eu": [
     "kafetegiaren"
    ],
-   "ro": []
+   "ro": [
+    "cafenelei"
+   ]
   },
   "26": {
    "io": [
@@ -85315,7 +85521,9 @@
    "eu": [
     "kioskoan"
    ],
-   "ro": []
+   "ro": [
+    "chioșcul"
+   ]
   },
   "28": {
    "io": [
@@ -85457,7 +85665,9 @@
    "eu": [
     "gas-farolak"
    ],
-   "ro": []
+   "ro": [
+    "felinare cu gaz"
+   ]
   },
   "31": {
    "io": [
@@ -85597,7 +85807,9 @@
     "банк"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "banca"
+   ]
   },
   "33": {
    "io": [
@@ -85669,7 +85881,9 @@
    "eu": [
     "Bankuko mandatariak"
    ],
-   "ro": []
+   "ro": [
+    "Încasatorii băncii"
+   ]
   },
   "34": {
    "io": [
@@ -85811,7 +86025,9 @@
     "природничі збірки"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "colecții de științe naturale"
+   ]
   },
   "36": {
    "io": [
@@ -85881,7 +86097,9 @@
     "картинна галерея"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "pinacotecă"
+   ]
   },
   "37": {
    "io": [
@@ -85953,7 +86171,9 @@
    "eu": [
     "zaindariari"
    ],
-   "ro": []
+   "ro": [
+    "paznicului"
+   ]
   },
   "38": {
    "io": [
@@ -86025,7 +86245,9 @@
    "eu": [
     "Margolariak"
    ],
-   "ro": []
+   "ro": [
+    "Pictorii"
+   ]
   },
   "39": {
    "io": [
@@ -86097,7 +86319,9 @@
    "eu": [
     "ospitalearena"
    ],
-   "ro": []
+   "ro": [
+    "spitalului"
+   ]
   },
   "40": {
    "io": [
@@ -86169,7 +86393,9 @@
    "eu": [
     "kupula"
    ],
-   "ro": []
+   "ro": [
+    "cupola"
+   ]
   },
   "41": {
    "io": [
@@ -86241,7 +86467,9 @@
    "eu": [
     "irakasle-eskolaren"
    ],
-   "ro": []
+   "ro": [
+    "școlii normale"
+   ]
   },
   "42": {
    "io": [
@@ -86311,7 +86539,9 @@
     "приватному домі"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "casă particulară"
+   ]
   },
   "43": {
    "io": [
@@ -86383,7 +86613,9 @@
    "eu": [
     "posta"
    ],
-   "ro": []
+   "ro": [
+    "poșta"
+   ]
   },
   "44": {
    "io": [
@@ -86455,7 +86687,9 @@
    "eu": [
     "Postako funtzionarioak"
    ],
-   "ro": []
+   "ro": [
+    "Funcționarii poștali"
+   ]
   },
   "45": {
    "io": [
@@ -86527,7 +86761,9 @@
    "eu": [
     "postariak"
    ],
-   "ro": []
+   "ro": [
+    "poștașii"
+   ]
   },
   "46": {
    "io": [
@@ -86599,7 +86835,9 @@
    "eu": [
     "espaloian"
    ],
-   "ro": []
+   "ro": [
+    "trotuar"
+   ]
   },
   "47": {
    "io": [
@@ -86671,7 +86909,9 @@
    "eu": [
     "galtzadan"
    ],
-   "ro": []
+   "ro": [
+    "caldarâm"
+   ]
   },
   "48": {
    "io": [
@@ -86743,7 +86983,9 @@
    "eu": [
     "Tranbia-gidariak"
    ],
-   "ro": []
+   "ro": [
+    "Vatmanul"
+   ]
   },
   "50": {
    "io": [
@@ -86887,7 +87129,9 @@
    "eu": [
     "erizainarekin"
    ],
-   "ro": []
+   "ro": [
+    "infirmiera"
+   ]
   },
   "52": {
    "io": [
@@ -86959,7 +87203,9 @@
    "eu": [
     "kirurgialariarekin"
    ],
-   "ro": []
+   "ro": [
+    "chirurgul"
+   ]
   },
   "53": {
    "io": [
@@ -87031,7 +87277,9 @@
    "eu": [
     "zaurituari"
    ],
-   "ro": []
+   "ro": [
+    "rănit"
+   ]
   },
   "54": {
    "io": [
@@ -87103,7 +87351,9 @@
    "eu": [
     "ohatilan"
    ],
-   "ro": []
+   "ro": [
+    "targă"
+   ]
   },
   "55": {
    "io": [
@@ -87175,7 +87425,9 @@
    "eu": [
     "egunkari-kioskoaren"
    ],
-   "ro": []
+   "ro": [
+    "chioșcul de ziare"
+   ]
   },
   "56": {
    "io": [
@@ -87247,7 +87499,9 @@
    "eu": [
     "begiluzeak"
    ],
-   "ro": []
+   "ro": [
+    "gură-cască"
+   ]
   },
   "57": {
    "io": [
@@ -87319,7 +87573,9 @@
    "eu": [
     "soldaduek"
    ],
-   "ro": []
+   "ro": [
+    "soldații"
+   ]
   },
   "61": {
    "io": [
@@ -87391,7 +87647,9 @@
    "eu": [
     "hiriko zaindari"
    ],
-   "ro": []
+   "ro": [
+    "gardiștii orășenești"
+   ]
   },
   "63": {
    "io": [
@@ -87463,7 +87721,9 @@
    "eu": [
     "jendarmeek"
    ],
-   "ro": []
+   "ro": [
+    "jandarmii"
+   ]
   },
   "64": {
    "io": [
@@ -87535,7 +87795,9 @@
    "eu": [
     "poliziei"
    ],
-   "ro": []
+   "ro": [
+    "polițiștilor"
+   ]
   },
   "65": {
    "io": [
@@ -87607,7 +87869,9 @@
    "eu": [
     "kaltetua"
    ],
-   "ro": []
+   "ro": [
+    "păgubit"
+   ]
   },
   "66": {
    "io": [
@@ -87679,7 +87943,9 @@
    "eu": [
     "Ofizialak"
    ],
-   "ro": []
+   "ro": [
+    "Ofițerul"
+   ]
   },
   "67": {
    "io": [
@@ -87751,7 +88017,9 @@
    "eu": [
     "lurrun-ponpa"
    ],
-   "ro": []
+   "ro": [
+    "pompa cu aburi"
+   ]
   },
   "68": {
    "io": [
@@ -87823,7 +88091,9 @@
    "eu": [
     "esku-ponpa"
    ],
-   "ro": []
+   "ro": [
+    "pompa de mână"
+   ]
   },
   "69": {
    "io": [
@@ -87965,7 +88235,9 @@
    "eu": [
     "turrusta-mutur"
    ],
-   "ro": []
+   "ro": [
+    "țeava"
+   ]
   },
   "71": {
    "io": [
@@ -88037,7 +88309,9 @@
    "eu": [
     "ur-zorrotada"
    ],
-   "ro": []
+   "ro": [
+    "șuvoiul"
+   ]
   },
   "72": {
    "io": [
@@ -88179,7 +88453,9 @@
    "eu": [
     "antzokiaren"
    ],
-   "ro": []
+   "ro": [
+    "teatrului"
+   ]
   },
   "74": {
    "io": [
@@ -88251,7 +88527,9 @@
    "eu": [
     "Sua"
    ],
-   "ro": []
+   "ro": [
+    "Focul"
+   ]
   },
   "75": {
    "io": [
@@ -88391,7 +88669,9 @@
     "глядачів"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "spectatori"
+   ]
   },
   "77": {
    "io": [
@@ -88463,7 +88743,9 @@
    "eu": [
     "balkoian"
    ],
-   "ro": []
+   "ro": [
+    "balcon"
+   ]
   },
   "78": {
    "io": [
@@ -88535,7 +88817,9 @@
    "eu": [
     "Arkupean"
    ],
-   "ro": []
+   "ro": [
+    "portic"
+   ]
   },
   "79": {
    "io": [
@@ -88607,7 +88891,9 @@
    "eu": [
     "kartelak"
    ],
-   "ro": []
+   "ro": [
+    "afișul"
+   ]
   },
   "80": {
    "io": [
@@ -88679,7 +88965,9 @@
    "eu": [
     "orkestrakoak"
    ],
-   "ro": []
+   "ro": [
+    "orchestrei"
+   ]
   },
   "81": {
    "io": [
@@ -88774,7 +89062,10 @@
     "musikariak",
     "biolina"
    ],
-   "ro": []
+   "ro": [
+    "muzicanții",
+    "vioara"
+   ]
   },
   "82": {
    "io": [
@@ -88846,7 +89137,9 @@
    "eu": [
     "txirula"
    ],
-   "ro": []
+   "ro": [
+    "flautul"
+   ]
   },
   "83": {
    "io": [
@@ -88918,7 +89211,9 @@
    "eu": [
     "biolontxeloa"
    ],
-   "ro": []
+   "ro": [
+    "violoncelul"
+   ]
   },
   "84": {
    "io": [
@@ -88990,7 +89285,9 @@
    "eu": [
     "tronboia"
    ],
-   "ro": []
+   "ro": [
+    "trombonul"
+   ]
   },
   "85": {
    "io": [
@@ -89062,7 +89359,9 @@
    "eu": [
     "danborra"
    ],
-   "ro": []
+   "ro": [
+    "toba"
+   ]
   },
   "86": {
    "io": [
@@ -89204,7 +89503,9 @@
    "eu": [
     "Altzarien"
    ],
-   "ro": []
+   "ro": [
+    "mobilier"
+   ]
   },
   "88": {
    "io": [
@@ -89276,7 +89577,9 @@
    "eu": [
     "aktoresek"
    ],
-   "ro": []
+   "ro": [
+    "actrițele"
+   ]
   },
   "89": {
    "io": [
@@ -89348,7 +89651,9 @@
    "eu": [
     "Aktoreek"
    ],
-   "ro": []
+   "ro": [
+    "Actorii"
+   ]
   },
   "90": {
    "io": [
@@ -89490,7 +89795,9 @@
    "eu": [
     "prefetarekin"
    ],
-   "ro": []
+   "ro": [
+    "prefectul"
+   ]
   },
   "92": {
    "io": [
@@ -89562,7 +89869,9 @@
    "eu": [
     "kazetariari"
    ],
-   "ro": []
+   "ro": [
+    "ziaristului"
+   ]
   },
   "93": {
    "io": [
@@ -89634,7 +89943,9 @@
    "eu": [
     "alkatearekin"
    ],
-   "ro": []
+   "ro": [
+    "primarul"
+   ]
   },
   "94": {
    "io": [
@@ -89706,7 +90017,9 @@
    "eu": [
     "polizia-buruarekin"
    ],
-   "ro": []
+   "ro": [
+    "șeful poliției"
+   ]
   },
   "95": {
    "io": [
@@ -89778,7 +90091,9 @@
    "eu": [
     "ikertzailearekin"
    ],
-   "ro": []
+   "ro": [
+    "judecătorul de instrucție"
+   ]
   },
   "96": {
    "io": [
@@ -89850,7 +90165,9 @@
    "eu": [
     "Plazara"
    ],
-   "ro": []
+   "ro": [
+    "piață"
+   ]
   }
  },
  "t12": {
