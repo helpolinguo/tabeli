@@ -236,6 +236,46 @@ ni `\cc`, qui n'ont de sens que pour un fac-similé, ni
 l'**ido**, que porte la colonne de gauche, en contrôlant sur le
 français ; là où l'ido subdivise et pas le français, elle subdivise
 aussi.
+
+**La source est de 1926 ; la traduction est de 2026.** Ce sont deux
+dates, et la seconde n'est pas négociable : une colonne doit se lire
+comme si un être humain l'avait écrite cette année-ci. Le monde décrit,
+lui, reste celui du livret — on ne modernise pas le lycée, le pion ni la
+diligence ; on modernise la **langue**, jamais les choses. Trois fautes
+en découlent, et il faut les traquer une par une :
+
+1. **La tournure vieillie.** Le « for » explicatif anglais — *his
+   satchel is torn, for he is very careless* — que plus personne
+   n'écrit ; le « shall » de futur ; le « one » impersonnel ; « Nor do
+   I care for… » ; « so kind a daughter-in-law » pour « such a kind
+   daughter-in-law ». Elles ne sont pas fausses : elles sont datées, et
+   c'est pire, parce qu'elles font croire que la traduction est
+   d'époque.
+
+2. **Le calque de la source.** « here is the milkwoman » pour *voici la
+   laitière*, « to take advantage of his mother being busy » pour *il
+   profite de ce que sa mère est occupée*, « they serve us to digest »
+   pour *ils nous servent à digérer*. La phrase est grammaticale et
+   n'est d'aucune langue.
+
+3. **La contraction absente.** Dans un dialogue — le tableau 5 en est
+   plein — un enfant de 2026 dit *I can't see him*, non *I cannot see
+   him*. L'absence totale de contractions dans une colonne entière est
+   la marque la plus sûre d'une traduction faite il y a cent ans, ou
+   par une machine.
+
+Le contrôle se fait au balayage, langue par langue, sur une liste de
+marques établie pour cette langue-là : `grep` de la tournure suspecte,
+puis lecture de chaque occurrence — aucune de ces marques n'est fautive
+à tous les coups, et « for instance » n'est pas le « for » explicatif.
+
+**Et une variante régionale est une colonne à part.** Là où deux états
+d'une même langue diffèrent et sont l'un et l'autre bien connus —
+l'anglais britannique et l'américain, le portugais européen et le
+brésilien —, on ne choisit pas : on écrit les deux. Le pendjabi l'a
+déjà fait, mais pour l'alphabet et non pour le lexique ; c'est la même
+décision, prise pour une autre raison.
+
 Les espaces-mots sont rendus insécables : le seul point de coupure légal
 d'une ligne est celui que le relevé a placé, et une ligne trop large
 devient un « Overfull \hbox » que les contrôles inventorient — la faute
