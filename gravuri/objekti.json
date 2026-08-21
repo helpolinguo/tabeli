@@ -108235,7 +108235,9 @@
    "lt": [
     "keleivių"
    ],
-   "lb": []
+   "lb": [
+    "Reesend"
+   ]
   },
   "2": {
    "io": [
@@ -108316,7 +108318,9 @@
    "lt": [
     "kunigo"
    ],
-   "lb": []
+   "lb": [
+    "Duerf-Paschtouer"
+   ]
   },
   "3": {
    "io": [
@@ -108403,7 +108407,9 @@
    "lt": [
     "kelionmaišį"
    ],
-   "lb": []
+   "lb": [
+    "Reesetäsch"
+   ]
   },
   "4": {
    "io": [
@@ -108490,7 +108496,9 @@
    "lt": [
     "telegrafo kontorą"
    ],
-   "lb": []
+   "lb": [
+    "Telegrafenbüro"
+   ]
   },
   "5": {
    "io": [
@@ -108575,7 +108583,9 @@
    "lt": [
     "depešą (telegramą)"
    ],
-   "lb": []
+   "lb": [
+    "Depesch (Telegramm)"
+   ]
   },
   "6": {
    "io": [
@@ -108660,7 +108670,9 @@
    "lt": [
     "kontrolieriaus"
    ],
-   "lb": []
+   "lb": [
+    "Kontrolleur"
+   ]
   },
   "7": {
    "io": [
@@ -108747,7 +108759,9 @@
    "lt": [
     "laukiamąją"
    ],
-   "lb": []
+   "lb": [
+    "Waardesall"
+   ]
   },
   "8": {
    "io": [
@@ -108834,7 +108848,9 @@
    "lt": [
     "langelio"
    ],
-   "lb": []
+   "lb": [
+    "Guichet"
+   ]
   },
   "9": {
    "io": [
@@ -108917,7 +108933,9 @@
    "lt": [
     "bilietu"
    ],
-   "lb": []
+   "lb": [
+    "Billjee"
+   ]
   },
   "10": {
    "io": [
@@ -109002,7 +109020,9 @@
    "lt": [
     "Kareivis"
    ],
-   "lb": []
+   "lb": [
+    "Zaldot"
+   ]
   },
   "11": {
    "io": [
@@ -109087,7 +109107,9 @@
    "lt": [
     "žandaru"
    ],
-   "lb": []
+   "lb": [
+    "Gendaarm"
+   ]
   },
   "12": {
    "io": [
@@ -109174,7 +109196,9 @@
    "lt": [
     "komisaru"
    ],
-   "lb": []
+   "lb": [
+    "Iwwerwaachungs-Kommissär"
+   ]
   },
   "13": {
    "io": [
@@ -109261,7 +109285,9 @@
    "lt": [
     "stoties viršininko"
    ],
-   "lb": []
+   "lb": [
+    "Garechef"
+   ]
   },
   "14": {
    "io": [
@@ -109348,7 +109374,9 @@
    "lt": [
     "knygų kioske"
    ],
-   "lb": []
+   "lb": [
+    "Zeitungskiosk"
+   ]
   },
   "15": {
    "io": [
@@ -109435,7 +109463,9 @@
    "lt": [
     "tvarkaraščio knygelę"
    ],
-   "lb": []
+   "lb": [
+    "Fahrplangsbuch"
+   ]
   },
   "16": {
    "io": [
@@ -109520,7 +109550,9 @@
    "lt": [
     "nešikas"
    ],
-   "lb": []
+   "lb": [
+    "Portier"
+   ]
   },
   "17": {
    "io": [
@@ -109607,7 +109639,9 @@
    "lt": [
     "bagažą"
    ],
-   "lb": []
+   "lb": [
+    "Bagage"
+   ]
   },
   "19": {
    "io": [
@@ -109694,7 +109728,9 @@
    "lt": [
     "bagažo vežimėliu"
    ],
-   "lb": []
+   "lb": [
+    "Bagagekar"
+   ]
   },
   "21": {
    "io": [
@@ -109781,7 +109817,9 @@
    "lt": [
     "svarstyklės"
    ],
-   "lb": []
+   "lb": [
+    "Wo"
+   ]
   },
   "22": {
    "io": [
@@ -109868,7 +109906,9 @@
    "lt": [
     "tarnautojas"
    ],
-   "lb": []
+   "lb": [
+    "Beamten"
+   ]
   },
   "23": {
    "io": [],
@@ -109939,7 +109979,9 @@
    "lt": [
     "bagažo langelio"
    ],
-   "lb": []
+   "lb": [
+    "Bagage-Guichet"
+   ]
   },
   "24": {
    "io": [
@@ -110026,7 +110068,9 @@
    "lt": [
     "lagaminu"
    ],
-   "lb": []
+   "lb": [
+    "Valis"
+   ]
   },
   "25": {
    "io": [
@@ -110113,7 +110157,9 @@
    "lt": [
     "saugykloje"
    ],
-   "lb": []
+   "lb": [
+    "Bagage-Depot"
+   ]
   },
   "26": {
    "io": [
@@ -110200,7 +110246,9 @@
    "lt": [
     "tvarkaraščius"
    ],
-   "lb": []
+   "lb": [
+    "Fahrplang"
+   ]
   },
   "27": {
    "io": [
@@ -110287,7 +110335,9 @@
    "lt": [
     "bagažo išdavimo vietoje"
    ],
-   "lb": []
+   "lb": [
+    "Bagage-Ausgab"
+   ]
   },
   "28": {
    "io": [
@@ -110374,7 +110424,9 @@
    "lt": [
     "dėžes"
    ],
-   "lb": []
+   "lb": [
+    "Këschten"
+   ]
   },
   "29": {
    "io": [
@@ -110461,7 +110513,9 @@
    "lt": [
     "kvitą"
    ],
-   "lb": []
+   "lb": [
+    "Billjee"
+   ]
   },
   "30": {
    "io": [
@@ -110548,7 +110602,9 @@
    "lt": [
     "krepšius"
    ],
-   "lb": []
+   "lb": [
+    "Kierf"
+   ]
   },
   "32": {
    "io": [
@@ -110635,7 +110691,9 @@
    "lt": [
     "išėjimo"
    ],
-   "lb": []
+   "lb": [
+    "Ausgang"
+   ]
   },
   "33": {
    "io": [
@@ -110722,7 +110780,9 @@
    "lt": [
     "Akcizo pareigūnai"
    ],
-   "lb": []
+   "lb": [
+    "Akzisebeamten"
+   ]
   },
   "34": {
    "io": [
@@ -110809,7 +110869,9 @@
    "lt": [
     "bufetą"
    ],
-   "lb": []
+   "lb": [
+    "Buffet"
+   ]
   },
   "35": {
    "io": [
@@ -110894,7 +110956,9 @@
    "lt": [
     "padavėjas"
    ],
-   "lb": []
+   "lb": [
+    "Garçon"
+   ]
   },
   "36": {
    "io": [
@@ -110981,7 +111045,9 @@
    "lt": [
     "traukinys"
    ],
-   "lb": []
+   "lb": [
+    "Zuch"
+   ]
   },
   "37": {
    "io": [
@@ -111062,7 +111128,9 @@
    "lt": [
     "vagono"
    ],
-   "lb": []
+   "lb": [
+    "Wagon"
+   ]
   },
   "38": {
    "io": [
@@ -111147,7 +111215,9 @@
    "lt": [
     "skyrius"
    ],
-   "lb": []
+   "lb": [
+    "Compartiment"
+   ]
   },
   "39": {
    "io": [
@@ -111234,7 +111304,9 @@
    "lt": [
     "dureles"
    ],
-   "lb": []
+   "lb": [
+    "Dier"
+   ]
   },
   "40": {
    "io": [
@@ -111321,7 +111393,9 @@
    "lt": [
     "pakopos"
    ],
-   "lb": []
+   "lb": [
+    "Trëttbrett"
+   ]
   },
   "41": {
    "io": [
@@ -111408,7 +111482,9 @@
    "lt": [
     "užuolaidėlę"
    ],
-   "lb": []
+   "lb": [
+    "Store"
+   ]
   },
   "42": {
    "io": [
@@ -111495,7 +111571,9 @@
    "lt": [
     "suolelio"
    ],
-   "lb": []
+   "lb": [
+    "Bänk"
+   ]
   },
   "43": {
    "io": [
@@ -111582,7 +111660,9 @@
    "lt": [
     "tinklelio"
    ],
-   "lb": []
+   "lb": [
+    "Netz"
+   ]
   },
   "44": {
    "io": [
@@ -111669,7 +111749,9 @@
    "lt": [
     "žibintininką"
    ],
-   "lb": []
+   "lb": [
+    "Luuchtemann"
+   ]
   },
   "45": {
    "io": [
@@ -111756,7 +111838,9 @@
    "lt": [
     "pagalvėles"
    ],
-   "lb": []
+   "lb": [
+    "Këssen"
+   ]
   },
   "46": {
    "io": [
@@ -111843,7 +111927,9 @@
    "lt": [
     "traukinio viršininkas"
    ],
-   "lb": []
+   "lb": [
+    "Zuchchef"
+   ]
   },
   "47": {
    "io": [
@@ -111930,7 +112016,9 @@
    "lt": [
     "furgoną"
    ],
-   "lb": []
+   "lb": [
+    "Fourgon"
+   ]
   },
   "48": {
    "io": [],
@@ -112080,7 +112168,9 @@
    "lt": [
     "tenderio"
    ],
-   "lb": []
+   "lb": [
+    "Tender"
+   ]
   },
   "50": {
    "io": [
@@ -112167,7 +112257,9 @@
    "lt": [
     "kūrikas"
    ],
-   "lb": []
+   "lb": [
+    "Heizer"
+   ]
   },
   "51": {
    "io": [
@@ -112254,7 +112346,9 @@
    "lt": [
     "mašinistas"
    ],
-   "lb": []
+   "lb": [
+    "Mechaniker"
+   ]
   },
   "52": {
    "io": [
@@ -112341,7 +112435,9 @@
    "lt": [
     "stoties viršininko padėjėjo"
    ],
-   "lb": []
+   "lb": [
+    "Ënnerchef vun der Gare"
+   ]
   },
   "53": {
    "io": [
@@ -112428,7 +112524,9 @@
    "lt": [
     "perono"
    ],
-   "lb": []
+   "lb": [
+    "Quai"
+   ]
   },
   "54": {
    "io": [
@@ -112515,7 +112613,9 @@
    "lt": [
     "garvežio"
    ],
-   "lb": []
+   "lb": [
+    "Lokomotiv"
+   ]
   },
   "55": {
    "io": [
@@ -112602,7 +112702,9 @@
    "lt": [
     "kaminas"
    ],
-   "lb": []
+   "lb": [
+    "Kamäin"
+   ]
   },
   "56": {
    "io": [
@@ -112689,7 +112791,9 @@
    "lt": [
     "katilas"
    ],
-   "lb": []
+   "lb": [
+    "Kessel"
+   ]
   },
   "57": {
    "io": [
@@ -112776,7 +112880,9 @@
    "lt": [
     "ratus"
    ],
-   "lb": []
+   "lb": [
+    "Rieder"
+   ]
   },
   "58": {
    "io": [
@@ -112863,7 +112969,9 @@
    "lt": [
     "stūmokliai"
    ],
-   "lb": []
+   "lb": [
+    "Kolben"
+   ]
   },
   "59": {
    "io": [
@@ -112942,7 +113050,9 @@
    "lt": [
     "švilpukas"
    ],
-   "lb": []
+   "lb": [
+    "Päif"
+   ]
   },
   "60": {
    "io": [
@@ -113029,7 +113139,9 @@
    "lt": [
     "garais"
    ],
-   "lb": []
+   "lb": [
+    "Damp"
+   ]
   },
   "63": {
    "io": [
@@ -113112,7 +113224,9 @@
    "lt": [
     "kelio"
    ],
-   "lb": []
+   "lb": [
+    "Gleis"
+   ]
   },
   "64": {
    "io": [
@@ -113199,7 +113313,9 @@
    "lt": [
     "bėgiais"
    ],
-   "lb": []
+   "lb": [
+    "Schinnen"
+   ]
   },
   "65": {
    "io": [
@@ -113286,7 +113402,9 @@
    "lt": [
     "peronai"
    ],
-   "lb": []
+   "lb": [
+    "Quaien"
+   ]
   },
   "66": {
    "io": [
@@ -113373,7 +113491,9 @@
    "lt": [
     "išvietes"
    ],
-   "lb": []
+   "lb": [
+    "Toiletten"
+   ]
   },
   "67": {
    "io": [
@@ -113460,7 +113580,9 @@
    "lt": [
     "miegamuosius vagonus"
    ],
-   "lb": []
+   "lb": [
+    "Schlofwagonen"
+   ]
   },
   "68": {
    "io": [
@@ -113545,7 +113667,9 @@
    "lt": [
     "restorano vagoną"
    ],
-   "lb": []
+   "lb": [
+    "Restaurantswagon"
+   ]
   },
   "69": {
    "io": [
@@ -113630,7 +113754,9 @@
    "lt": [
     "pašto vagoną"
    ],
-   "lb": []
+   "lb": [
+    "Postwagon"
+   ]
   },
   "71": {
    "io": [
@@ -113717,7 +113843,9 @@
    "lt": [
     "prekių stotis"
    ],
-   "lb": []
+   "lb": [
+    "Guttsgare"
+   ]
   },
   "72": {
    "io": [
@@ -113804,7 +113932,9 @@
    "lt": [
     "prekes"
    ],
-   "lb": []
+   "lb": [
+    "Wueren"
+   ]
   },
   "73": {
    "io": [
@@ -113891,7 +114021,9 @@
    "lt": [
     "vandens rezervuaro"
    ],
-   "lb": []
+   "lb": [
+    "Waasserreservoir"
+   ]
   },
   "74": {
    "io": [
@@ -113978,7 +114110,9 @@
    "lt": [
     "geležinį tiltą"
    ],
-   "lb": []
+   "lb": [
+    "Eisebréck"
+   ]
   },
   "75": {
    "io": [
@@ -114065,7 +114199,9 @@
    "lt": [
     "gyvulinius vagonus"
    ],
-   "lb": []
+   "lb": [
+    "Véiwagonen"
+   ]
   },
   "76": {
    "io": [
@@ -114152,7 +114288,9 @@
    "lt": [
     "Brigadininkai"
    ],
-   "lb": []
+   "lb": [
+    "Rangéierer"
+   ]
   },
   "78": {
    "io": [
@@ -114237,7 +114375,9 @@
    "lt": [
     "išsišakojimą"
    ],
-   "lb": []
+   "lb": [
+    "Weiche"
+   ]
   },
   "79": {
    "io": [
@@ -114324,7 +114464,9 @@
    "lt": [
     "platforminius vagonus"
    ],
-   "lb": []
+   "lb": [
+    "Plattformwagonen"
+   ]
   },
   "80": {
    "io": [
@@ -114409,7 +114551,9 @@
    "lt": [
     "prekinį traukinį"
    ],
-   "lb": []
+   "lb": [
+    "Guttszuch"
+   ]
   },
   "81": {
    "io": [
@@ -114496,7 +114640,9 @@
    "lt": [
     "upę"
    ],
-   "lb": []
+   "lb": [
+    "Floss"
+   ]
   },
   "82": {
    "io": [
@@ -114579,7 +114725,9 @@
    "lt": [
     "vilkikai"
    ],
-   "lb": []
+   "lb": [
+    "Schlepper"
+   ]
   },
   "83": {
    "io": [
@@ -114660,7 +114808,9 @@
    "lt": [
     "baržas"
    ],
-   "lb": []
+   "lb": [
+    "Lastbooter"
+   ]
   },
   "84": {
    "io": [
@@ -114745,7 +114895,9 @@
    "lt": [
     "keleivinį laivą"
    ],
-   "lb": []
+   "lb": [
+    "Passagéiersschëff"
+   ]
   },
   "85": {
    "io": [
@@ -114832,7 +114984,9 @@
    "lt": [
     "pontono"
    ],
-   "lb": []
+   "lb": [
+    "Ponton"
+   ]
   },
   "86": {
    "io": [
@@ -114919,7 +115073,9 @@
    "lt": [
     "signalinį diską"
    ],
-   "lb": []
+   "lb": [
+    "Signaldisk"
+   ]
   },
   "87": {
    "io": [
@@ -115004,7 +115160,9 @@
    "lt": [
     "tunelių"
    ],
-   "lb": []
+   "lb": [
+    "Tunnelen"
+   ]
   },
   "88": {
    "io": [],
@@ -115081,7 +115239,9 @@
    "lt": [
     "namelius"
    ],
-   "lb": []
+   "lb": [
+    "Haischer"
+   ]
   },
   "89": {
    "io": [
@@ -115166,7 +115326,9 @@
    "lt": [
     "laikrodžiu"
    ],
-   "lb": []
+   "lb": [
+    "Gareauer"
+   ]
   },
   "90": {
    "io": [
@@ -115253,7 +115415,9 @@
    "lt": [
     "didžiąją rodyklę"
    ],
-   "lb": []
+   "lb": [
+    "grousse Weiser"
+   ]
   },
   "91": {
    "io": [
@@ -115340,7 +115504,9 @@
    "lt": [
     "mažosios"
    ],
-   "lb": []
+   "lb": [
+    "klengen"
+   ]
   },
   "92": {
    "io": [
@@ -115425,7 +115591,9 @@
    "lt": [
     "ciferblatas"
    ],
-   "lb": []
+   "lb": [
+    "Zifferblat"
+   ]
   },
   "93": {
    "io": [
@@ -115512,7 +115680,9 @@
    "lt": [
     "afišas"
    ],
-   "lb": []
+   "lb": [
+    "Affichen"
+   ]
   },
   "94": {
    "io": [
@@ -115595,7 +115765,9 @@
    "lt": [
     "tinklo"
    ],
-   "lb": []
+   "lb": [
+    "Netz"
+   ]
   }
  },
  "t13": {
