@@ -69,7 +69,78 @@
   "portent deja 21. L'entree est nommee par son BLOC : « (24) » sert",
   "ailleurs dans le meme tableau -- la laitiere, et les quatre rameurs",
   "de la yole -- et corrige pour tout le tableau il les ferait pointer",
-  "sur la ruche."
+  "sur la ruche.",
+  "",
+  "LES TRAITS D'UNION QUE LE RECOLLAGE MANGEAIT. La page de lecture",
+  "recolle les mots que la fin de ligne imprimee coupe : « ler- » plus",
+  "« nanti » redonne « lernanti ». Mais quand la ligne se casse SUR le",
+  "trait d'union d'un compose -- « choux- » puis « fleurs » -- le meme",
+  "recollage rend « chouxfleurs ». Quarante-neuf composes etaient dans",
+  "ce cas, quinze en francais et trente-quatre en ido, et le nom du gros",
+  "plan l'etait avec eux : le bouton s'intitulait « chouxfleurs ».",
+  "",
+  "AUCUNE REGLE NE LES DISTINGUE, et il ne faut pas en chercher une : le",
+  "fac-simile compose le meme trait dans les deux cas, et le releve n'a",
+  "pas de quoi les separer. C'est la colonne elle-meme qui tranche, et",
+  "l'on a suivi ce qu'elle dit :",
+  "  -- elle ecrit ailleurs le compose non coupe, avec son trait",
+  "     (« cerf-volant », « dorso-salto ») ; ou",
+  "  -- elle ecrit d'autres composes sur la meme moitie, tous avec le",
+  "     trait (« aquo-krucho », « aquo-tubaro » commandent « aquo-falo » ;",
+  "     « muton-gardisto » commande « chas-gardisto »).",
+  "Quand elle ne dit ni l'un ni l'autre, on ne tranche pas : « vitberi »",
+  "et « teretajo » s'ecrivent des DEUX facons dans le fac-simile, et la",
+  "page de lecture n'a pas a choisir a la place de l'imprimeur. Ces deux",
+  "mots restent donc colles, et c'est volontaire.",
+  "",
+  "« trati » donne, colonne par colonne, la forme collee et la forme a",
+  "retablir. Elle se tient A LA MAIN, comme le reste de cette table.",
+  "",
+  "",
+  "LES COQUILLES QUE LA PAGE DE LECTURE COMPOSE PROPREMENT. Le releve",
+  "garde ce que l'imprimeur a compose ; la page de lecture, non. Six de",
+  "ces coquilles etaient deja decrites en tete des fichiers de texto/fr",
+  "-- « cuisuine » pour « cuisine », « LA SALLE A MANGER, » pour un",
+  "point, « 7 --- » sans son point, « classe. . », « une dinde. une oie.",
+  "un canard » pour des virgules, « 'est tres consciencieuse » ampute de",
+  "son c -- mais decrites seulement : rien ne les corrigeait a la",
+  "lecture. Elles sont ici.",
+  "",
+  "ET CINQ QUE PERSONNE N'AVAIT VUES, trouvees en 2026 :",
+  "  -- « le detail d'un repas » (note du tableau 7) sans son accent,",
+  "     quand les quatre autres « detail » du livret le portent ;",
+  "  -- « Meze dil magasino » (tableau 16), quand le meme tableau ecrit",
+  "     « magazino » deux fois avec un z ;",
+  "  -- « hiké » (note du tableau 6), quand l'ido ecrit « hike » trois",
+  "     fois ailleurs -- et l'ido ne connait pas l'accent aigu ;",
+  "  -- « la tempo , konsultis » (tableau 12) : la seule espace avant",
+  "     une virgule des quarante mille mots des deux livrets ;",
+  "  -- au tableau 7, l'alinea 15 ouvre DEUX guillemets et n'en ferme",
+  "     qu'un. L'ido du meme bloc n'en ouvre qu'un : « --- To esas vera,",
+  "     dicis mea patrulo » sans guillemet, la ou le francais met",
+  "     « --- « C'est vrai, dit mon pere ». C'est le guillemet de trop",
+  "     qu'on ote, et non la fermeture qu'on ajoute, pour que les deux",
+  "     colonnes disent la meme chose.",
+  "",
+  "ON NE SAIT PAS SI CES CINQ SONT DE L'IMPRIMEUR OU DU RELEVEUR : ce",
+  "depot ne contient pas les pages du livret, seulement les seize",
+  "planches. La correction se pose donc ICI, ou elle ne touche pas les",
+  "deux PDF et se defait d'une ligne le jour ou un fac-simile tranchera.",
+  "",
+  "UNE SIXIEME NE SE CORRIGE PAS, faute d'endroit ou la poser. Au",
+  "colophon ido, « les Tabl aux Auxi'iaires Delmas » porte deux lettres",
+  "cassees -- le e de « Tableaux », le l de « Auxiliaires » -- la ou la",
+  "meme ligne se lit correctement trois fois dans le meme feuillet.",
+  "Mais le bloc t99-apar-5 n'est pas rendu dans la page de lecture : la",
+  "coquille ne vit que dans le PDF, ou elle doit rester.",
+  "",
+  "UNE MISE EN GARDE POUR QUI AJOUTERA UNE ENTREE. Les INTERTITRES ne",
+  "s'apparient pas par leur cle mais par leur PLACE : le francais du",
+  "livret fait cinq sections la ou l'ido en fait neuf, et la ligne de",
+  "lecture porte la cle de l'ido. « La Salle a Manger » est le t06-tit-3",
+  "du francais, mais il se compose dans la ligne t06-tit-5. Une entree",
+  "posee sur la cle du fichier francais ne s'appliquerait a rien, et",
+  "sans bruit -- rien ne signale une regle qui ne mord pas."
  ],
  "t01": {
   "t01-19-5": {
@@ -96,6 +167,11 @@
     "io",
     "n<sup>o</sup> 13)",
     "(n<sup>o</sup> 13)"
+   ],
+   [
+    "io",
+    "hiké indikesas",
+    "hike indikesas"
    ]
   ],
   "t03-c2-01-1": [
@@ -263,6 +339,276 @@
     "it",
     "(luglio o",
     "(<b>luglio</b> o"
+   ]
+  ],
+  "t06-c4-04-1": [
+   [
+    "fr",
+    "cuisuine",
+    "cuisine"
+   ]
+  ],
+  "t10-07-1": [
+   [
+    "fr",
+    "7 — Ce qui fait",
+    "7. — Ce qui fait"
+   ]
+  ],
+  "t10-14-1": [
+   [
+    "fr",
+    "première classe. .",
+    "première classe."
+   ]
+  ],
+  "t15-06-1": [
+   [
+    "fr",
+    "’est très consciencieuse",
+    "c’est très consciencieuse"
+   ],
+   [
+    "fr",
+    "une <b>dinde</b>. une <b>oie</b>. un <b>canard</b> ou",
+    "une <b>dinde</b>, une <b>oie</b>, un <b>canard</b> ou"
+   ]
+  ],
+  "t07-noto-1": [
+   [
+    "fr",
+    "le detail d’un repas",
+    "le détail d’un repas"
+   ]
+  ],
+  "t07-c1-15-1": [
+   [
+    "fr",
+    "— « C’est vrai, dit mon père",
+    "— C’est vrai, dit mon père"
+   ]
+  ],
+  "t16-14-2": [
+   [
+    "io",
+    "Meze dil magasino",
+    "Meze dil magazino"
+   ]
+  ],
+  "t12-20-1": [
+   [
+    "io",
+    "la tempo , konsultis",
+    "la tempo, konsultis"
+   ]
+  ],
+  "t06-tit-5": [
+   [
+    "fr",
+    "La Salle à Manger,",
+    "La Salle à Manger."
+   ]
+  ]
+ },
+ "trati": {
+  "io": [
+   [
+    "terglobo",
+    "ter-globo"
+   ],
+   [
+    "dorsosalto",
+    "dorso-salto"
+   ],
+   [
+    "flugbalono",
+    "flug-balono"
+   ],
+   [
+    "buspritomasto",
+    "busprito-masto"
+   ],
+   [
+    "ferioplaco",
+    "ferio-placo"
+   ],
+   [
+    "septembromonato",
+    "septembro-monato"
+   ],
+   [
+    "chasgardisto",
+    "chas-gardisto"
+   ],
+   [
+    "kapvesto",
+    "kap-vesto"
+   ],
+   [
+    "spegularmoro",
+    "spegul-armoro"
+   ],
+   [
+    "littuki",
+    "lit-tuki"
+   ],
+   [
+    "poshkozuyi",
+    "posh-kozuyi"
+   ],
+   [
+    "lignobloko",
+    "ligno-bloko"
+   ],
+   [
+    "boliopoto",
+    "bolio-poto"
+   ],
+   [
+    "gasfurnelo",
+    "gas-furnelo"
+   ],
+   [
+    "gasbrulilo",
+    "gas-brulilo"
+   ],
+   [
+    "dushaparato",
+    "dush-aparato"
+   ],
+   [
+    "frumentagro",
+    "frument-agro"
+   ],
+   [
+    "aquofalo",
+    "aquo-falo"
+   ],
+   [
+    "furtoko",
+    "fur-toko"
+   ],
+   [
+    "furtechasero",
+    "furte-chasero"
+   ],
+   [
+    "kurasnavo",
+    "kuras-navo"
+   ],
+   [
+    "kroznavi",
+    "kroz-navi"
+   ],
+   [
+    "vapornavi",
+    "vapor-navi"
+   ],
+   [
+    "spektosalono",
+    "spekto-salono"
+   ],
+   [
+    "departohalo",
+    "departo-halo"
+   ],
+   [
+    "libertempo",
+    "liber-tempo"
+   ],
+   [
+    "tabakvendeyo",
+    "tabak-vendeyo"
+   ],
+   [
+    "skribomashino",
+    "skribo-mashino"
+   ],
+   [
+    "librovendisto",
+    "libro-vendisto"
+   ],
+   [
+    "imprimlaboristi",
+    "imprim-laboristi"
+   ],
+   [
+    "kalzovendeyo",
+    "kalzo-vendeyo"
+   ],
+   [
+    "granoplena",
+    "grano-plena"
+   ],
+   [
+    "kayolineo",
+    "kayo-lineo"
+   ],
+   [
+    "voyajeroregistro",
+    "voyajero-registro"
+   ]
+  ],
+  "fr": [
+   [
+    "portecrayon",
+    "porte-crayon"
+   ],
+   [
+    "cerfvolant",
+    "cerf-volant"
+   ],
+   [
+    "lawntennis",
+    "lawn-tennis"
+   ],
+   [
+    "gardechasse",
+    "garde-chasse"
+   ],
+   [
+    "petitsfils",
+    "petits-fils"
+   ],
+   [
+    "aidemaçon",
+    "aide-maçon"
+   ],
+   [
+    "portemortier",
+    "porte-mortier"
+   ],
+   [
+    "cachepot",
+    "cache-pot"
+   ],
+   [
+    "ellemême",
+    "elle-même"
+   ],
+   [
+    "souschef",
+    "sous-chef"
+   ],
+   [
+    "wagonslits",
+    "wagons-lits"
+   ],
+   [
+    "SaintÉmilion",
+    "Saint-Émilion"
+   ],
+   [
+    "longuevue",
+    "longue-vue"
+   ],
+   [
+    "chouxfleurs",
+    "choux-fleurs"
+   ],
+   [
+    "chauvesouris",
+    "chauve-souris"
    ]
   ]
  }

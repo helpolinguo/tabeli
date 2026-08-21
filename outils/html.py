@@ -1257,6 +1257,10 @@ def lier_notes(rangi):
     rapport["korektiti"] = korekti_teksto(rangi)
     boutons_renvois(rangi)
     boutons_literi(rangi)
+    # APRES LES BOUTONS, ET NON AVANT : le nom du gros plan se compose
+    # dans le « title » du bouton, et il portait le mot recolle.
+    rapport["tratiti"] = retablir_trati(rangi)
+    rapport["korektiti"] += korekti_nomi(rangi)
     return rapport
 
 
@@ -1644,6 +1648,92 @@ def korekti_teksto(rangi):
             for lg, avant, apres in regles:
                 if lg == k:
                     neuf = neuf.replace(avant, apres)
+            if neuf == t:
+                continue
+            n += 1
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+    return n
+
+
+# ET LE TRAIT D'UNION QUE LE RECOLLAGE MANGEAIT. « \\cc » dit que la ligne
+# imprimee se casse ici avec un trait ; on l'ote et l'on recolle, parce que
+# « ler- » plus « nanti » fait « lernanti ». Mais quand la ligne se casse
+# SUR le trait d'union d'un compose -- « choux- » puis « fleurs » -- le meme
+# recollage rend « chouxfleurs », et le gros plan s'intitule ainsi.
+#
+# AUCUNE REGLE NE SEPARE LES DEUX CAS, et il ne faut pas en chercher une :
+# le fac-simile compose le meme trait des deux cotes, et le releve n'a pas
+# de quoi les distinguer. C'est la colonne qui tranche, et
+# gravuri/korekti.json porte ce qu'elle dit -- soit qu'elle ecrive ailleurs
+# le compose non coupe, soit qu'elle ecrive d'autres composes sur la meme
+# moitie, tous avec le trait. Ou elle hesite, on ne tranche pas :
+# « vitberi » et « teretajo » s'ecrivent des deux facons et restent colles.
+#
+# LE RETABLISSEMENT SE FAIT SUR LE TEXTE RENDU, non sur le LaTeX, et pour
+# une raison : les deux moities sont deux \\VUgras{} que la page a deja
+# fondus en un seul <b>. Pose ici, le trait rentre du meme coup dans le
+# « title » du bouton, donc dans le nom du gros plan.
+# ET LE NOM DU GROS PLAN SUIT LE TEXTE. Le « title » du bouton ne vient
+# pas de l'alinea mais de gravuri/numeri.json, releve sur la planche : la
+# correction posee sur le texte ne l'atteint donc pas, et le bouton du
+# « fourneau de cuisuine » gardait la coquille que la ligne n'avait plus.
+# On repasse la table du texte une fois les boutons composes.
+#
+# MAIS SEULEMENT LES REGLES QU'ON PEUT REPASSER SANS DOMMAGE. « (julio od »
+# devenu « (<b>julio</b> od » ne se retrouve plus : la regle ne mord pas
+# deux fois. « n<sup>o</sup> 13) » devenu « (n<sup>o</sup> 13) » se
+# retrouve LUI-MEME dans son resultat, et un second passage ouvrirait une
+# seconde parenthese. Le depart entre les deux se lit dans la regle : on
+# ne repasse que celles dont le remplacement ne contient pas ce qu'il
+# remplace.
+def korekti_nomi(rangi):
+    """La table du texte, repassee sur les noms des gros plans."""
+    tab = korekti("teksto")
+    if not tab:
+        return 0
+    n = 0
+    for r in rangi:
+        regles = tab.get(r["cle"])
+        if not regles:
+            continue
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            neuf = t
+            for lg, avant, apres in regles:
+                if lg == k and avant not in apres:
+                    neuf = neuf.replace(avant, apres)
+            if neuf == t:
+                continue
+            n += 1
+            if k == "io":
+                r["io"] = neuf
+            else:
+                r["tra"][k]["t"] = neuf
+    return n
+
+
+def retablir_trati(rangi):
+    """Les traits d'union lexicaux que la fin de ligne avait manges."""
+    tab = korekti("trati")
+    if not tab:
+        return 0
+    n = 0
+    for r in rangi:
+        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+            regles = tab.get(k)
+            if not regles:
+                continue
+            t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not t:
+                continue
+            neuf = t
+            for colle, trait in regles:
+                neuf = neuf.replace(colle, trait)
             if neuf == t:
                 continue
             n += 1
@@ -2849,6 +2939,8 @@ if __name__ == "__main__":
     if rap.get("fermes") or rap.get("korektiti"):
         print(f"  parentheses rendues a des renvois : {rap['fermes']}"
               f", corrections declarees : {rap['korektiti']}")
+    if rap.get("tratiti"):
+        print(f"  traits d'union lexicaux retablis : {rap['tratiti']}")
     for cle, lg, t in depareillees(r):
         print(f"  PARENTHESE DEPAREILLEE [{lg}] {cle} : {t}")
     for langue, cle, marque, pourquoi in rap["echecs"]:

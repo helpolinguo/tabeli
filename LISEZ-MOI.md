@@ -286,6 +286,40 @@ autres. Un balayage de registre se fait donc sur les **signes** autant que
 sur les mots : on ne relit pas un blanc, et c'est pour cela qu'il traverse.
 Les deux PDF, eux, gardent la leur : **la source ne bouge pas.**
 
+**Et une coquille se corrige à la lecture, jamais au relevé.** Onze
+coquilles des deux livrets composent maintenant proprement dans la page,
+sans qu'aucun `.tex` bouge. Six étaient déjà décrites en tête des fichiers
+de `texto/fr` — `cuisuine`, `LA SALLE A MANGER,`, `7 ---` sans son point,
+`classe. .`, `une dinde. une oie. un canard`, `'est très consciencieuse` —
+mais décrites seulement : rien ne les corrigeait. Cinq n'avaient jamais
+été vues, et chacune se dénonce par une **comparaison interne**, jamais
+par un dictionnaire :
+
+| trouvaille | ce qui la dénonce |
+| --- | --- |
+| `le detail d'un repas` (t7) | les quatre autres `détail` du livret portent l'accent |
+| `Meze dil magasino` (t16) | le même tableau écrit `magazino` deux fois avec un z |
+| `hiké` (note du t6) | l'ido écrit `hike` trois fois ailleurs, et ne connaît pas l'accent aigu |
+| `la tempo , konsultis` (t12) | la seule espace avant une virgule des 40 000 mots des deux livrets |
+| deux `«` pour un `»` (t7, alinéa 15) | l'ido du même bloc n'en ouvre qu'un |
+
+**On ne sait pas si ces cinq sont de l'imprimeur ou du releveur** : ce
+dépôt ne contient pas les pages du livret, seulement les seize planches.
+La correction se pose donc dans `gravuri/korekti.json`, où elle ne touche
+pas les deux PDF et se défait d'une ligne le jour où un fac-similé
+tranchera. Une sixième ne se corrige pas faute d'endroit où la poser : au
+colophon ido, « les Tabl aux Auxi'iaires Delmas » porte deux lettres
+cassées, mais le bloc `t99-apar-5` n'est pas rendu dans la page.
+
+**Deux pièges pour qui ajoutera une entrée.** Les intertitres s'apparient
+par leur **place**, non par leur clé — le français fait cinq sections là
+où l'ido en fait neuf, et la ligne porte la clé de l'ido : « La Salle à
+Manger » est le `t06-tit-3` du français et se compose dans `t06-tit-5`.
+Et le **nom du gros plan** ne vient pas de l'alinéa mais de
+`gravuri/numeri.json` : une règle posée avant la composition des boutons
+corrige la ligne et laisse la coquille dans le `title`. Dans les deux cas
+rien ne signale une règle qui ne mord pas.
+
 **Une mesure seule ne dit rien ; il faut les trente.** Le balayage de
 registre de 2026 a été mené colonne par colonne, mais chaque chiffre a été
 lu contre les vingt-neuf autres — c'est la comparaison qui désigne la
@@ -377,6 +411,18 @@ sans rien avoir à se dire. Le partage se lit sur le nom du fichier :
   `docochambro` coupé en `doco-chambro` ne se trouverait pas.
 * Un mot coupé au milieu d'un passage gras porte deux `\VUgras` ; les
   balises **jointives** se recollent, celles que sépare une espace non.
+* **Sauf quand la ligne se casse sur le trait d'union d'un composé.**
+  « choux- » puis « fleurs » redonnait `chouxfleurs`, et le gros plan
+  s'intitulait ainsi : 49 composés étaient dans ce cas, 15 en français et
+  34 en ido. Aucune règle ne sépare les deux cas — le fac-similé compose
+  le même trait des deux côtés, et le relevé n'a pas de quoi les
+  distinguer. **C'est la colonne qui tranche** : soit elle écrit ailleurs
+  le composé non coupé (`cerf-volant`, `dorso-salto`), soit elle écrit
+  d'autres composés sur la même moitié, tous avec le trait
+  (`aquo-krucho`, `aquo-tubaro` commandent `aquo-falo`). Quand elle ne dit
+  ni l'un ni l'autre, **on ne tranche pas** : `vitberi` et `teretajo`
+  s'écrivent des deux façons dans le fac-similé et restent collés. La
+  table est dans `gravuri/korekti.json`, section `trati`.
 * Deux appels de renvoi séparés par la coupure — `(9, 11,` et `12)` —
   sont un seul renvoi et se réunissent.
 * Le `%` de fin de ligne LaTeX est retiré. Sans cela le texte des notes
