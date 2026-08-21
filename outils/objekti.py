@@ -361,7 +361,12 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     # connaissait « tabell » quand le luxembourgeois est arrive.
     # Quatrieme jeton partage de la serie ; le glob restant enracine
     # dans texto/<langue>/, deux dossiers ne se melangent pas.
-    ("rm", "*-tabella-*.tex")]
+    ("rm", "*-tabella-*.tex"),
+    # L'ESTONIEN REPREND LE JETON DU NEERLANDAIS, « tabel ». Cinquieme
+    # et dernier jeton partage de la serie des dix-sept ; le glob
+    # restant enracine dans texto/<langue>/, texto/nl et texto/et ne
+    # se melangent pas.
+    ("et", "*-tabel-*.tex")]
 
 
 def construire():

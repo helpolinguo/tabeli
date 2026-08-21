@@ -235,6 +235,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "rm", "nomo": "Rumantsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "et", "nomo": "Eesti", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -812,7 +814,8 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "eu": "eu", "ro": "ro",
            "ga": "ga", "gl": "gl",
            "cs": "cs", "lt": "lt",
-           "lb": "lb", "rm": "rm"}   # langue -> texto/<...>
+           "lb": "lb", "rm": "rm",
+           "et": "et"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1846,6 +1849,17 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # colonne n'emploie, et ne se confond donc avec
                         # rien. Le titre du volume est en bas de casse.
                         r"|LENTELĖ"
+                        # L'ESTONIEN N'AJOUTE RIEN NON PLUS, mais pour
+                        # une raison de composition et non de hasard :
+                        # il ecrit « TABEL », qui est un morceau du
+                        # « TABELO » de l'ido, et il lui faut donc le
+                        # « Nr » du neerlandais et du suedois. La
+                        # colonne compose donc « TABEL Nr. 1 » avec un
+                        # N capital, comme les deux autres, et le
+                        # membre « TABEL\s+Nr » ci-dessous la prend
+                        # sans qu'on y touche. C'est une decision de
+                        # composition, pas une omission : elle est
+                        # ecrite dans l'en-tete de texto/et.
                         # LE ROMANCHE N'AJOUTE RIEN NON PLUS. Il ecrit
                         # « TABELLA nr. 1 », mot pour mot le membre de
                         # l'interlingua ci-dessus. Troisieme cas de la
@@ -1914,6 +1928,11 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # laisse la forme masculine ouverte, comme pour le
             # catalan, parce que le motif sert aussi ailleurs.
             r"|emprim[ao]?|segund[ao]?|terz[ao]?"
+            # L'ESTONIEN : ses quatre ordinaux ne ressemblent a rien
+            # de ce qui precede. Il ne les decline pas ici — la serie
+            # et la scene sont au nominatif — et une seule forme
+            # suffit donc pour chacun, comme en finnois.
+            r"|esimene|teine|kolmas|neljas"
             # L'UKRAINIEN : aucun de ses quatre ordinaux n'entre dans
             # la liste russe. « перша » n'est pas « первая »,
             # « третя » n'est pas « третья », et « четверта » n'a pas
@@ -1992,7 +2011,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
 # nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
 # mot de plus dans la liste commune.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|серия|серія|saila|sh?raith)\b"
+SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|seeria|серия|серія|saila|sh?raith)\b"
                    r"|第[一二三四]组"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
@@ -2027,7 +2046,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
 # LE LUXEMBOURGEOIS DIT « Zeen », qui ne ressemble a aucun des mots de
 # ce groupe : ni au « Szene » allemand dont il vient, ni au « scena »
 # roman. Un membre de plus, donc, et non une classe elargie.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
+CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|stseen|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
                   r"|第[一二三四]场"
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
