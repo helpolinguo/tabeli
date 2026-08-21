@@ -377,7 +377,12 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     # L'ALLEMAND prend « tafel », qui n'est le jeton de personne : il
     # ressemble au « tabel » neerlandais et au « tabell » suedois sans
     # les egaler — un F la ou ils ont un B.
-    ("de", "*-tafel-*.tex")]
+    ("de", "*-tafel-*.tex"),
+    # L'ITALIEN prend « tavola », qui n'est le jeton de personne. Il
+    # ressemble au « taula » que se partagent le catalan, l'occitan et
+    # le basque — un V de plus — et au « tabella » de l'interlingua et
+    # du romanche — un V au lieu d'un B.
+    ("it", "*-tavola-*.tex")]
 
 
 def construire():

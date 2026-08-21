@@ -53,7 +53,8 @@ DOSSIER = {"fr": "tableau", "en": "table", "es": "cuadro", "ru": "tablica",
            "cs": "tabulka", "lt": "lentele",
            "lb": "tabell", "rm": "tabella",
            "et": "tabel",
-           "vi": "bang", "de": "tafel"}
+           "vi": "bang", "de": "tafel",
+           "it": "tavola"}
 
 # LE FRANCAIS N'EST PAS UNE TRADUCTION. C'est le releve d'une AUTRE
 # edition, et Rochelle ordonne ses phrases comme il l'entend :

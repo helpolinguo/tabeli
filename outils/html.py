@@ -246,6 +246,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -825,7 +827,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "cs": "cs", "lt": "lt",
            "lb": "lb", "rm": "rm",
            "et": "et", "vi": "vi",
-           "de": "de"}   # langue -> texto/<...>
+           "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1908,6 +1910,16 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # le titre du volume, « Delmas-Hilfstafeln »,
                         # est compose en bas de casse.
                         r"|TAFEL"
+                        # L'ITALIEN ecrit « TAVOLA N. 1 ». Le mot est
+                        # celui de la table et du tableau a la fois,
+                        # et il ne se confond avec aucun autre membre
+                        # de cette liste : le « TABELLA » de
+                        # l'interlingua et du romanche a un B la ou
+                        # celui-ci a un V. Le titre du volume,
+                        # « Tavole ausiliarie Delmas », est en bas de
+                        # casse, et la comparaison est sensible a la
+                        # casse.
+                        r"|TAVOLA"
                         )
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
@@ -1971,6 +1983,13 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # quatre sont a ajouter, avec « Reihe » dans le groupe de
             # la serie et « Szene » dans celui de la scene.
             r"|erste|zweite|dritte|vierte"
+            # L'ITALIEN : « prima », « seconda », « terza » et
+            # « quarta ». « terza » est deja dans la liste par le
+            # romanche — « terz[ao]? » — et « prima » ne l'est pas :
+            # l'espagnol donne « primera », le catalan « primer ».
+            # Les quatre s'ecrivent donc en entier, au feminin, qui
+            # est le genre de « serie » comme de « scena ».
+            r"|prima|seconda|quarta"
             # L'UKRAINIEN : aucun de ses quatre ordinaux n'entre dans
             # la liste russe. « перша » n'est pas « первая »,
             # « третя » n'est pas « третья », et « четверта » n'a pas
