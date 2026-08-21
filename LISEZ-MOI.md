@@ -643,6 +643,41 @@ qu'un remplacement successif ne sait pas exprimer. D'où le mode
 `unpase`, qui compile les règles en une expression unique, la plus longue
 d'abord.
 
+**Ce que les variantes ont coûté à l'ordre du menu, et comment on l'a
+repris.** Le menu se trie sur `texto/lingui.json` : le français d'abord
+parce qu'il n'est pas une traduction, puis les deux langues construites,
+puis toutes les autres **par nombre de locuteurs premiers**. Or
+`poser_varianti()` remplace le code de la colonne par celui de
+l'affichage — `en` devient `en-GB` et `en-US` — et le registre, lui, ne
+connaît que `en`. La recherche du chiffre échouait donc, les deux
+éditions passaient pour des langues sans locuteurs, et la règle « une
+langue sans chiffre passe en queue » les y envoyait. **Six langues y
+sont tombées d'un coup**, dont les quatre plus parlées du livret :
+
+| langue | locuteurs | rang attendu | rang obtenu |
+| --- | --- | --- | --- |
+| chinois | 988 M | 1<sup>er</sup> | après le romanche |
+| espagnol | 487 M | 2<sup>e</sup> | après le romanche |
+| anglais | 372 M | 3<sup>e</sup> | après le romanche |
+| portugais | 252 M | 5<sup>e</sup> | après le romanche |
+| allemand | 76 M | 16<sup>e</sup> | après le romanche |
+| néerlandais | 25 M | 20<sup>e</sup> | après le romanche |
+
+Le chiffre se cherche maintenant sous le code de la **colonne** — celui
+des fichiers et du registre — puis, à défaut, sous la sous-étiquette de
+langue avant le tiret. Cette dernière règle donne aussi sa place au
+québécois, qui est une colonne régionale sans être une variante et qui
+n'a rien à faire au registre d'Ethnologue : `fr-CA` compte avec le
+français.
+
+**Et un garde, parce que le tri ne peut pas se contrôler lui-même.** Le
+rejouer donnerait le même résultat faux ; on contrôle donc **sa
+matière** : toute colonne doit se retrouver dans le registre. Quatre
+n'ont pas de chiffre et c'est voulu — le français, l'espéranto,
+l'interlingua, et l'arabe standard qui n'a presque pas de locuteurs
+premiers. Toute autre est signalée à la construction. Vérifié en retirant
+l'arabe de la liste des dispenses : le signalement sort.
+
 **Et la septième paire ne s'est pas faite ici.** Les six colonnes de base
 sont des *traductions* de 2026 ; la colonne française est la
 **transcription d'un fac-similé de 1926**, et la source ne bouge pas. Un

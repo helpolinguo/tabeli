@@ -378,16 +378,66 @@ def _rango_lingui():
     return {l[0]: l[2] for l in reg.get("lingui", [])}
 
 
+# LE CHIFFRE SE CHERCHE SOUS LE CODE DE LA COLONNE, NON SOUS CELUI DE
+# L'AFFICHAGE, et c'est la faute qui a defait l'ordre du menu quand les
+# variantes regionales sont arrivees. poser_varianti() remplace le code
+# « en » par « en-GB » et « en-US » ; le registre, lui, ne connait que
+# « en ». La recherche echouait donc, les deux editions anglaises
+# passaient pour des langues sans locuteurs, et la regle « une langue
+# sans chiffre passe en queue » les y envoyait. Six langues sur sept y
+# sont tombees d'un coup — le chinois (988 millions), l'espagnol (487),
+# l'anglais (372), le portugais (252), l'allemand (76), le neerlandais
+# (25) — c'est-a-dire les quatre plus parlees du livret, rangees apres
+# le romanche.
+#
+# On cherche donc dans cet ordre :
+#   1. « dosiero », qui est le code de la COLONNE — celui des fichiers
+#      et du registre — et que poser_varianti() pose sur les deux
+#      editions ;
+#   2. a defaut le code lui-meme ;
+#   3. a defaut la sous-etiquette de langue, avant le tiret : « fr-CA »
+#      compte avec le francais. Une colonne regionale qui n'est pas une
+#      variante — le quebecois en est une — trouve ainsi sa place sans
+#      qu'on ait a l'inscrire au registre d'Ethnologue, ou elle n'a
+#      rien a faire.
+def _milioni(lg, rango):
+    for k in (lg.get("dosiero"), lg["kodo"], lg["kodo"].split("-")[0]):
+        if k in rango:
+            return rango[k]
+    return None
+
+
 def _ordre(lg, milioni):
     if lg["kodo"] == "fr":
         return (0, 0, "")
     if lg["kodo"] in KONSTRUKTITA:
         return (1, KONSTRUKTITA.index(lg["kodo"]), "")
-    m = milioni.get(lg["kodo"])
+    m = _milioni(lg, milioni)
+    # LES DEUX EDITIONS D'UNE LANGUE ONT LE MEME CHIFFRE et se suivent
+    # donc forcement. Entre elles on tranche par le code, qui est
+    # neutre : la colonne qui porte les fichiers n'a aucun privilege,
+    # comme texto/varianti.json le pose en principe.
     return (2, -(m if m is not None else -1), lg["kodo"])
 
 
-LANGUES.sort(key=lambda lg: _ordre(lg, _rango_lingui()))
+_RANGO = _rango_lingui()
+LANGUES.sort(key=lambda lg: _ordre(lg, _RANGO))
+
+# UNE COLONNE SANS CHIFFRE TOMBE EN QUEUE SANS RIEN DIRE, et c'est
+# precisement ce qui s'est produit. Le tri ne peut pas se controler
+# lui-meme — il redonnerait le meme resultat faux — mais on peut
+# controler SA MATIERE : toute colonne doit se retrouver dans le
+# registre. Quatre n'ont pas de chiffre et c'est voulu : le francais,
+# qui passe en tete parce qu'il n'est pas une traduction ; l'esperanto
+# et l'interlingua, qui n'ont pas de locuteurs premiers a compter ;
+# l'arabe standard, qui n'en a presque pas et que texto/lingui.json
+# porte « hors liste ». Toute autre est une faute de branchement.
+SEN_NOMBRO = {"fr", "eo", "ia", "ar"}
+_orfa = [lg["kodo"] for lg in LANGUES
+         if lg["kodo"] not in SEN_NOMBRO and _milioni(lg, _RANGO) is None]
+if _orfa:
+    print("  COLONNES ABSENTES DU REGISTRE, rangees en queue du menu "
+          "faute de chiffre : " + ", ".join(_orfa))
 
 TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
 SUBTITRO = ("J. Guignon &middot; Ido-Kontoro, Thaon-les-Vosges, 1926 "
