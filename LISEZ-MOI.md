@@ -276,6 +276,16 @@ brésilien —, on ne choisit pas : on écrit les deux. Le pendjabi l'a
 déjà fait, mais pour l'alphabet et non pour le lexique ; c'est la même
 décision, prise pour une autre raison.
 
+**Et un calque n'est pas toujours un mot.** Le fac-similé français met une
+espace devant les deux-points, le point-virgule, le point d'exclamation et
+le point d'interrogation. C'est le français ; ce n'est presque aucune autre
+langue. Cette espace était passée, avec le texte, dans dix colonnes —
+néerlandais 51, suédois 51, espéranto 51, finnois 51, interlingua 48,
+hindi 56, pendjabi 56 et 56, turc 57, irlandais 2 — et dans aucune des
+autres. Un balayage de registre se fait donc sur les **signes** autant que
+sur les mots : on ne relit pas un blanc, et c'est pour cela qu'il traverse.
+Les deux PDF, eux, gardent la leur : **la source ne bouge pas.**
+
 Les espaces-mots sont rendus insécables : le seul point de coupure légal
 d'une ligne est celui que le relevé a placé, et une ligne trop large
 devient un « Overfull \hbox » que les contrôles inventorient — la faute
