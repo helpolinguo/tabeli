@@ -33,7 +33,40 @@
   "",
   "LA SUBSTITUTION PORTE SUR LE TEXTE RENDU, non sur le .tex : le terme",
   "gras et le nom du gros plan sont alors touches du meme coup, et le",
-  "bouton du « waistcoat » s'intitule bien « vest »."
+  "bouton du « waistcoat » s'intitule bien « vest ».",
+  "",
+  "L'ALLEMAND ETAIT PREVU. Les en-tetes des tableaux 5, 12 et 15 notaient",
+  "deja, a mesure qu'on traduisait, ce que la colonne autrichienne aurait",
+  "a changer : le zingueur « Klempner » du nord contre le « Spengler » du",
+  "sud, le « Bahnsteig » contre le « Perron », et les douze mots du marche",
+  "— Erdapfel, Paradeiser, Marille, Zwetschke, Semmel, Karfiol. Le partage",
+  "y etait ecrit comme « la matiere de la colonne autrichienne, quand elle",
+  "viendra ». La voici.",
+  "",
+  "ET UN ECHANGE QUI SE FAIT DANS L'ORDRE. « Sessel » est un fauteuil en",
+  "Allemagne et une chaise en Autriche ; « Stuhl » est la chaise en",
+  "Allemagne et ne se dit plus guere en Autriche. Les deux mots ne se",
+  "remplacent donc pas l'un l'autre, ils TOURNENT : Sessel devient",
+  "Fauteuil, puis Stuhl devient Sessel. Dans l'autre ordre, le Stuhl",
+  "devenu Sessel serait repris par la regle suivante et finirait en",
+  "Fauteuil — les deux chaises deviendraient des fauteuils.",
+  "",
+  "LE PORTUGAIS A DEMANDE QU'ON CORRIGE SA CONSIGNE. Son en-tete",
+  "annoncait le vocabulaire du Bresil ; la colonne ecrit « comboio » sept",
+  "fois, « casa de banho » quatre, « res do chao » quatre, « talho »",
+  "trois. Elle est europeenne, et c'est le texte qui est la mesure : la",
+  "base est pt-PT, et pt-BR se calque dessus.",
+  "",
+  "ET UN SECOND ECHANGE, comme les sieges autrichiens. Au Portugal le",
+  "trottoir est le « passeio » et la chaussee la « calcada » ; au Bresil",
+  "la « calcada » EST le trottoir. Les deux mots tournent donc, et dans",
+  "cet ordre : calcada devient rua, puis passeio devient calcada.",
+  "",
+  "MAIS « passeio » VEUT AUSSI DIRE PROMENADE, et il le veut six fois sur",
+  "dix — « o passeio mais agradavel », « dar um passeio pela cidade », et",
+  "jusqu'a un intertitre. La regle est donc posee bloc par bloc, sur les",
+  "quatre seuls endroits ou le mot nomme le trottoir. Une regle globale",
+  "aurait fait sortir les promeneurs sur le pave."
  ],
  "en": {
   "bazo": {
@@ -301,6 +334,339 @@
     "t12-20-1",
     "my carriage",
     "my car"
+   ]
+  ]
+ },
+ "de": {
+  "bazo": {
+   "kodo": "de-DE",
+   "nomo": "Deutsch (DE)"
+  },
+  "kalko": {
+   "kodo": "de-AT",
+   "nomo": "Deutsch (AT)"
+  },
+  "remplaci": [
+   [
+    "Sessel",
+    "Fauteuil"
+   ],
+   [
+    "Stühle",
+    "Sessel"
+   ],
+   [
+    "Stuhl",
+    "Sessel"
+   ],
+   [
+    "Treppenabsatz",
+    "Stiegenabsatz"
+   ],
+   [
+    "Treppengeländer",
+    "Stiegengeländer"
+   ],
+   [
+    "Treppe",
+    "Stiege"
+   ],
+   [
+    "Schränke",
+    "Kästen"
+   ],
+   [
+    "Schrank",
+    "Kasten"
+   ],
+   [
+    "Jungen",
+    "Buben"
+   ],
+   [
+    "Junge",
+    "Bub"
+   ],
+   [
+    "Klempner",
+    "Spengler"
+   ],
+   [
+    "Schreiner",
+    "Tischler"
+   ],
+   [
+    "Fahrkarten",
+    "Billette"
+   ],
+   [
+    "Fahrkarte",
+    "Billett"
+   ],
+   [
+    "Bahnsteig",
+    "Perron"
+   ],
+   [
+    "Kartoffeln",
+    "Erdäpfel"
+   ],
+   [
+    "Kartoffel",
+    "Erdapfel"
+   ],
+   [
+    "Tomaten",
+    "Paradeiser"
+   ],
+   [
+    "Tomate",
+    "Paradeiser"
+   ],
+   [
+    "Aprikosen",
+    "Marillen"
+   ],
+   [
+    "Aprikose",
+    "Marille"
+   ],
+   [
+    "Pflaumen",
+    "Zwetschken"
+   ],
+   [
+    "Pflaume",
+    "Zwetschke"
+   ],
+   [
+    "Brötchen",
+    "Semmel"
+   ],
+   [
+    "Blumenkohl",
+    "Karfiol"
+   ],
+   [
+    "Johannisbeeren",
+    "Ribisel"
+   ],
+   [
+    "Johannisbeere",
+    "Ribisel"
+   ],
+   [
+    "Schlachter",
+    "Fleischhauer"
+   ],
+   [
+    "Metzgerei",
+    "Fleischhauerei"
+   ]
+  ]
+ },
+ "pt": {
+  "bazo": {
+   "kodo": "pt-PT",
+   "nomo": "Português (PT)"
+  },
+  "kalko": {
+   "kodo": "pt-BR",
+   "nomo": "Português (BR)"
+  },
+  "remplaci": [
+   [
+    "carruagens-cama",
+    "vagões-leito"
+   ],
+   [
+    "carruagem-restaurante",
+    "vagão-restaurante"
+   ],
+   [
+    "carruagem-correio",
+    "vagão-postal"
+   ],
+   [
+    "caminho-de-ferro",
+    "estrada de ferro"
+   ],
+   [
+    "caminho de ferro",
+    "estrada de ferro"
+   ],
+   [
+    "marco do correio",
+    "caixa de correio"
+   ],
+   [
+    "A Casa de Banho",
+    "O Banheiro"
+   ],
+   [
+    "casa de banho",
+    "banheiro"
+   ],
+   [
+    "rés do chão",
+    "térreo"
+   ],
+   [
+    "pequeno-almoço",
+    "café da manhã"
+   ],
+   [
+    "criada de quarto",
+    "camareira"
+   ],
+   [
+    "criada",
+    "empregada"
+   ],
+   [
+    "comboios",
+    "trens"
+   ],
+   [
+    "comboio",
+    "trem"
+   ],
+   [
+    "talhos",
+    "açougues"
+   ],
+   [
+    "talho",
+    "açougue"
+   ],
+   [
+    "paragem",
+    "parada"
+   ],
+   [
+    "elétrico",
+    "bonde"
+   ],
+   [
+    "retretes",
+    "privadas"
+   ],
+   [
+    "retrete",
+    "privada"
+   ],
+   [
+    "lavatório",
+    "pia"
+   ],
+   [
+    "estores",
+    "persianas"
+   ],
+   [
+    "estore",
+    "persiana"
+   ],
+   [
+    "sumo",
+    "suco"
+   ],
+   [
+    "gelado",
+    "sorvete"
+   ],
+   [
+    "chávenas",
+    "xícaras"
+   ],
+   [
+    "chávena",
+    "xícara"
+   ],
+   [
+    "guarda-fatos",
+    "guarda-roupa"
+   ],
+   [
+    "fato de caça",
+    "roupa de caça"
+   ],
+   [
+    "fatos",
+    "ternos"
+   ],
+   [
+    "fato",
+    "terno"
+   ],
+   [
+    "camisola",
+    "camiseta"
+   ],
+   [
+    "António",
+    "Antônio"
+   ],
+   [
+    "bebé",
+    "bebê"
+   ],
+   [
+    "ténis",
+    "tênis"
+   ],
+   [
+    "económic",
+    "econômic"
+   ],
+   [
+    "cómodo",
+    "cômodo"
+   ],
+   [
+    "t11-c2-01-1",
+    "calçada",
+    "rua"
+   ],
+   [
+    "t11-c2-01-1",
+    "passeio",
+    "calçada"
+   ],
+   [
+    "t14-06-1",
+    "o passeio",
+    "a calçada"
+   ],
+   [
+    "t14-15-1",
+    "ao passeio",
+    "à calçada"
+   ],
+   [
+    "t14-16-1",
+    "no passeio",
+    "na calçada"
+   ],
+   [
+    "t12-09-1",
+    "carruagem",
+    "vagão"
+   ],
+   [
+    "t12-10-1",
+    "carruagem",
+    "vagão"
+   ],
+   [
+    "t12-14-1",
+    "carruagens",
+    "vagões"
+   ],
+   [
+    "t12-20-1",
+    "carruagem",
+    "vagão"
    ]
   ]
  }
