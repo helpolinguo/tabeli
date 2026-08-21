@@ -230,8 +230,10 @@
      \setlength{\parindent}{\VUalinea}%
      \lineskiplimit=-1000pt \lineskip=0pt
      \VUespacesInsecables
+     \VUnotofalse
      \VUtextePage{#1}\VUmarqueCachee\VUfolio{#2}\ignorespaces}%
-  {\end{minipage}%
+  {\VUnotoPose
+   \end{minipage}%
    \end{lrbox}%
    % HAUTEUR + PROFONDEUR. Une minipage alignee par le haut a son
    % point de reference sur la PREMIERE ligne de base : presque toute
@@ -361,19 +363,66 @@
 % #1 est CONSERVE mais ignore : le supprimer obligerait a retoucher les
 % treize relevés sans rien y gagner, et l'argument garde trace de
 % l'ordonnee que le fac-simile montre, si on veut un jour la verifier.
+% ET LA NOTE NE SE POSE PAS EN HAUTEUR NULLE : ELLE SE DIFFERE.
+%
+% Deuxieme version : la note etait posee ABSOLUMENT, dans un \vbox to
+% 0pt, cale sur le pied du bloc. Elle tombait juste -- et elle ne
+% poussait rien. Sur une page dont le texte descend jusqu'au pied, les
+% deux s'imprimaient donc l'un SUR l'autre : sept pages du livret ido
+% et une du francais, mesurees a mutool en comparant le corps des
+% lignes (la note vaut 0,79 fois le texte, l'exposant d'un renvoi 0,70
+% -- ce sont les corps qui les separent, non la position).
+%
+% Le compositeur ne peut pas faire cela : sa note occupe le bas de la
+% page, et le texte s'arrete au-dessus. On differe donc la note jusqu'a
+% la FERMETURE de la page, ou elle entre dans le flux apres le dernier
+% alinea. Le chevauchement devient impossible par construction, et non
+% par un calcul qu'il faudrait refaire a chaque releve.
+%
+% LE RESSORT EST EN « fill » ET NON EN « fil » : la minipage de
+% \VUpage porte deja un \vss au bas, et deux ressorts de meme ordre se
+% partageraient le blanc -- la note se poserait au MILIEU de ce qui
+% reste. Un ordre au-dessus prend tout, et la note descend au pied.
+%
+% #1 est CONSERVE mais ignore : le supprimer obligerait a retoucher les
+% treize relevés sans rien y gagner, et l'argument garde trace de
+% l'ordonnee que le fac-simile montre, si on veut un jour la verifier.
 \newsavebox{\VUnotoBoxo}
+\newsavebox{\VUnotoUno}
+\newif\ifVUnoto
 % Pied du bloc de texte, compte depuis le bord superieur du papier.
 \newcommand{\VUnotoBas}{\dimexpr\VUfolioY+\VUtexteHauteur\relax}
+% ET « \VUnotoBas » PARTAIT DU FOLIO, QUI EST AU-DESSUS DU BLOC.
+% \VUfolioY donne la ligne de base du numero de feuillet, \VUmargeSup le
+% sommet du bloc de texte : les deux different de 4,11 mm en ido et de
+% 3,75 mm en francais. Caler la note sur \VUfolioY+\VUtexteHauteur la
+% posait donc de cette hauteur-la TROP HAUT, c'est-a-dire dans le texte.
+% Le pied du bloc est \VUmargeSup+\VUtexteHauteur, et c'est le bas de la
+% minipage : la note s'y pose d'elle-meme, sans correction. \VUnotoBas
+% n'est plus utilise que pour memoire.
 \newcommand{\VUnotes}[2]{%
-  \sbox{\VUnotoBoxo}{\vbox{\hsize=\textwidth
+  % \vtop ET NON \vbox : le point de reference d'un \vbox est sa
+  % DERNIERE ligne de base, de sorte qu'ajoute a la suite du texte il
+  % remonte de toute sa hauteur et se pose PAR-DESSUS. Celui d'un \vtop
+  % est sa premiere ligne : la note descend, comme on l'attend.
+  \sbox{\VUnotoUno}{\vtop{\hsize=\textwidth
       \VUfiletnote\vskip\VUblancNote\VUtexteNote
       \setlength{\parindent}{\VUalineaNote}#2\par}}%
-  \vbox to 0pt{%
-    \vskip\dimexpr\VUnotoBas-\VUmargeSup
-              -\ht\VUnotoBoxo-\dp\VUnotoBoxo\relax
-    \hbox to \textwidth{\usebox{\VUnotoBoxo}\hss}%
-    \vss}%
-  \nointerlineskip}
+  % DEUX NOTES SUR UNE PAGE, cela arrive -- feuillet 41 du livret ido :
+  % la seconde s'empile sous la premiere, elles ne se remplacent pas.
+  \ifVUnoto
+    \sbox{\VUnotoBoxo}{\vtop{\hbox{\usebox{\VUnotoBoxo}}\hbox{\usebox{\VUnotoUno}}}}%
+  \else
+    \sbox{\VUnotoBoxo}{\vtop{\hbox{\usebox{\VUnotoUno}}}}%
+    \VUnototrue
+  \fi
+  \ignorespaces}
+% Ce que \VUpage pose au bas de la page, s'il y a une note.
+\newcommand{\VUnotoPose}{%
+  \ifVUnoto
+    \par\nobreak\vskip0pt plus1fill\relax
+    \noindent\hbox to \textwidth{\usebox{\VUnotoBoxo}\hss}%
+  \fi}
 
 % -------------------------------------------------------------------
 % 7 ter. CE QUI NE SE COMPOSE PAS

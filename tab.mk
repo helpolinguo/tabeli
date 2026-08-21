@@ -26,5 +26,6 @@ inventaire:
 
 controles: tabeli.pdf tableaux.pdf
 	python3 outils/controles.py
+	python3 outils/notoj.py
 
 .PHONY: all kalibro inventaire controles
