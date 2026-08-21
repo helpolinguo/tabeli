@@ -441,7 +441,7 @@
     "zatiketa"
    ],
    "ro": [
-    "împărţire"
+    "împărțire"
    ]
   },
   "2": {
@@ -953,7 +953,7 @@
     "horma-irudiak"
    ],
    "ro": [
-    "planşe"
+    "planșe"
    ]
   },
   "9a": {
@@ -1101,7 +1101,7 @@
     "balantza"
    ],
    "ro": [
-    "balanţa"
+    "balanța"
    ]
   },
   "9d": {
@@ -2084,8 +2084,8 @@
     "natur zientziak"
    ],
    "ro": [
-    "planşe",
-    "ştiinţele naturale"
+    "planșe",
+    "științele naturale"
    ]
   },
   "11a": {
@@ -2400,7 +2400,7 @@
     "historia"
    ],
    "ro": [
-    "planşe",
+    "planșe",
     "istoria"
    ]
   },
@@ -3009,7 +3009,7 @@
     "ikasgaia"
    ],
    "ro": [
-    "lecţia"
+    "lecția"
    ]
   },
   "25": {
@@ -3443,7 +3443,7 @@
    ],
    "eu": [],
    "ro": [
-    "dicţionar"
+    "dicționar"
    ]
   },
   "31": {
@@ -3733,7 +3733,7 @@
     "lumaz"
    ],
    "ro": [
-    "peniţa"
+    "penița"
    ]
   },
   "35": {
@@ -4249,7 +4249,7 @@
     "arbeltxoa"
    ],
    "ro": [
-    "tăbliţa"
+    "tăblița"
    ]
   },
   "43": {
@@ -6446,7 +6446,7 @@
     "ikasketaburua"
    ],
    "ro": [
-    "şeful de studii"
+    "șeful de studii"
    ]
   },
   "73": {
@@ -6742,7 +6742,7 @@
     "Jolasaldia"
    ],
    "ro": [
-    "Recreaţia"
+    "Recreația"
    ]
   },
   "77": {
@@ -6965,7 +6965,9 @@
    "eu": [
     "gimnasia-tresnak"
    ],
-   "ro": []
+   "ro": [
+    "aparatele de gimnastică"
+   ]
   },
   "2": {
    "io": [
@@ -7037,7 +7039,9 @@
    "eu": [
     "eskaileratik"
    ],
-   "ro": []
+   "ro": [
+    "scară"
+   ]
   },
   "3": {
    "io": [
@@ -7109,7 +7113,9 @@
    "eu": [
     "eraztunetan"
    ],
-   "ro": []
+   "ro": [
+    "inele"
+   ]
   },
   "4": {
    "io": [
@@ -7181,7 +7187,9 @@
    "eu": [
     "trapezioan"
    ],
-   "ro": []
+   "ro": [
+    "trapez"
+   ]
   },
   "5": {
    "io": [
@@ -7253,7 +7261,9 @@
    "eu": [
     "soka-eskaileraren"
    ],
-   "ro": []
+   "ro": [
+    "scării de frânghie"
+   ]
   },
   "6": {
    "io": [
@@ -7325,7 +7335,9 @@
    "eu": [
     "korapilodun sokaren"
    ],
-   "ro": []
+   "ro": [
+    "frânghiei cu noduri"
+   ]
   },
   "7": {
    "io": [
@@ -7397,7 +7409,9 @@
    "eu": [
     "zurezko zaldiaren"
    ],
-   "ro": []
+   "ro": [
+    "calul de lemn"
+   ]
   },
   "8": {
    "io": [
@@ -7469,7 +7483,9 @@
    "eu": [
     "boxeatzen"
    ],
-   "ro": []
+   "ro": [
+    "boxează"
+   ]
   },
   "9": {
    "io": [
@@ -7541,7 +7557,9 @@
    "eu": [
     "eskriman"
    ],
-   "ro": []
+   "ro": [
+    "scrimă"
+   ]
   },
   "10": {
    "io": [
@@ -7613,7 +7631,9 @@
    "eu": [
     "halterak"
    ],
-   "ro": []
+   "ro": [
+    "halterele"
+   ]
   },
   "11": {
    "io": [
@@ -7685,7 +7705,9 @@
    "eu": [
     "barren"
    ],
-   "ro": []
+   "ro": [
+    "paralele"
+   ]
   },
   "12": {
    "io": [
@@ -7757,7 +7779,9 @@
    "eu": [
     "gimnasia-irakasleak"
    ],
-   "ro": []
+   "ro": [
+    "profesorul de gimnastică"
+   ]
   },
   "13": {
    "io": [
@@ -7829,7 +7853,9 @@
    "eu": [
     "soka-saltoan"
    ],
-   "ro": []
+   "ro": [
+    "coarda"
+   ]
   },
   "14": {
    "io": [
@@ -7971,7 +7997,9 @@
    "eu": [
     "kroket"
    ],
-   "ro": []
+   "ro": [
+    "crochet"
+   ]
   },
   "16": {
    "io": [
@@ -8043,7 +8071,9 @@
    "eu": [
     "boloetara"
    ],
-   "ro": []
+   "ro": [
+    "popicele"
+   ]
   },
   "17": {
    "io": [
@@ -8115,7 +8145,9 @@
    "eu": [
     "bolaz"
    ],
-   "ro": []
+   "ro": [
+    "bila"
+   ]
   },
   "18": {
    "io": [
@@ -8187,7 +8219,9 @@
    "eu": [
     "ziba"
    ],
-   "ro": []
+   "ro": [
+    "titirezul"
+   ]
   },
   "19": {
    "io": [
@@ -8259,7 +8293,9 @@
    "eu": [
     "bilboketa"
    ],
-   "ro": []
+   "ro": [
+    "bilboquet-ul"
+   ]
   },
   "20": {
    "io": [
@@ -8341,7 +8377,9 @@
    "eu": [
     "igela"
    ],
-   "ro": []
+   "ro": [
+    "broasca"
+   ]
   },
   "21": {
    "io": [
@@ -8413,7 +8451,9 @@
    "eu": [
     "kanikak"
    ],
-   "ro": []
+   "ro": [
+    "bilele"
+   ]
   },
   "22": {
    "io": [
@@ -8485,7 +8525,9 @@
    "eu": [
     "pilota hormaren kontra"
    ],
-   "ro": []
+   "ro": [
+    "mingea de perete"
+   ]
   },
   "24": {
    "io": [
@@ -8629,7 +8671,9 @@
    "eu": [
     "ezkutaketan"
    ],
-   "ro": []
+   "ro": [
+    "ascunselea"
+   ]
   },
   "26": {
    "io": [
@@ -8701,7 +8745,9 @@
    "eu": [
     "negutegiaren"
    ],
-   "ro": []
+   "ro": [
+    "serei"
+   ]
   },
   "28": {
    "io": [
@@ -8773,7 +8819,9 @@
    "eu": [
     "itsumandoka eskuz"
    ],
-   "ro": []
+   "ro": [
+    "baba-oarba pe mână"
+   ]
   },
   "29": {
    "io": [
@@ -8845,7 +8893,9 @@
    "eu": [
     "bolantea"
    ],
-   "ro": []
+   "ro": [
+    "fluturașul"
+   ]
   },
   "30": {
    "io": [
@@ -8925,7 +8975,10 @@
     "Sorbalda gaineko jauzia",
     "sorbalda gaineko jauzian"
    ],
-   "ro": []
+   "ro": [
+    "Săritura peste umeri",
+    "săritură peste umeri"
+   ]
   },
   "31": {
    "io": [
@@ -8997,7 +9050,9 @@
    "eu": [
     "Itsumandoka"
    ],
-   "ro": []
+   "ro": [
+    "Baba-oarba"
+   ]
   },
   "32": {
    "io": [
@@ -9069,7 +9124,9 @@
    "eu": [
     "hartza"
    ],
-   "ro": []
+   "ro": [
+    "ursul"
+   ]
   },
   "33": {
    "io": [
@@ -9141,7 +9198,9 @@
    "eu": [
     "kometaren"
    ],
-   "ro": []
+   "ro": [
+    "zmeului"
+   ]
   },
   "34": {
    "io": [
@@ -9213,7 +9272,9 @@
    "eu": [
     "tenis"
    ],
-   "ro": []
+   "ro": [
+    "tenis"
+   ]
   },
   "35": {
    "io": [
@@ -9285,7 +9346,9 @@
    "eu": [
     "Zabua"
    ],
-   "ro": []
+   "ro": [
+    "Leagănul"
+   ]
   },
   "36": {
    "io": [
@@ -9357,7 +9420,9 @@
    "eu": [
     "Futbolaz"
    ],
-   "ro": []
+   "ro": [
+    "fotbal"
+   ]
   },
   "37": {
    "io": [
@@ -9429,7 +9494,9 @@
    "eu": [
     "bizikletan"
    ],
-   "ro": []
+   "ro": [
+    "bicicleta"
+   ]
   },
   "38": {
    "io": [
@@ -9501,7 +9568,9 @@
    "eu": [
     "presoen"
    ],
-   "ro": []
+   "ro": [
+    "prinșii"
+   ]
   },
   "39": {
    "io": [
@@ -9573,7 +9642,9 @@
    "eu": [
     "zaldiz ibiltzen"
    ],
-   "ro": []
+   "ro": [
+    "călăresc"
+   ]
   },
   "40": {
    "io": [
@@ -9645,7 +9716,9 @@
    "eu": [
     "igeri egiten"
    ],
-   "ro": []
+   "ro": [
+    "înotăm"
+   ]
   },
   "41": {
    "io": [
@@ -9997,7 +10070,9 @@
    "eu": [
     "Enarak"
    ],
-   "ro": []
+   "ro": [
+    "Rândunelele"
+   ]
   },
   "c1:5": {
    "io": [
@@ -10069,7 +10144,9 @@
    "eu": [
     "kanpandorrearena"
    ],
-   "ro": []
+   "ro": [
+    "clopotniței"
+   ]
   },
   "c1:6": {
    "io": [
@@ -10213,7 +10290,9 @@
    "eu": [
     "orratzaren"
    ],
-   "ro": []
+   "ro": [
+    "săgeții"
+   ]
   },
   "c1:8": {
    "io": [
@@ -10355,7 +10434,9 @@
    "eu": [
     "Orratz txikia"
    ],
-   "ro": []
+   "ro": [
+    "Limba mică"
+   ]
   },
   "c1:10": {
    "io": [
@@ -10427,7 +10508,9 @@
    "eu": [
     "Handia"
    ],
-   "ro": []
+   "ro": [
+    "Cea mare"
+   ]
   },
   "c1:11": {
    "io": [
@@ -10499,7 +10582,9 @@
    "eu": [
     "kanpaiak"
    ],
-   "ro": []
+   "ro": [
+    "clopotele"
+   ]
   },
   "c1:12": {
    "io": [
@@ -10719,7 +10804,9 @@
    "eu": [
     "sakristiatik"
    ],
-   "ro": []
+   "ro": [
+    "sacristie"
+   ]
   },
   "c1:15": {
    "io": [
@@ -10791,7 +10878,9 @@
    "eu": [
     "apaiza"
    ],
-   "ro": []
+   "ro": [
+    "preotul"
+   ]
   },
   "c1:16": {
    "io": [],
@@ -10983,7 +11072,10 @@
    "eu": [
     "fruta-arbolak"
    ],
-   "ro": []
+   "ro": [
+    "pomii",
+    "piersici"
+   ]
   },
   "c1:19": {
    "io": [
@@ -11077,7 +11169,10 @@
    "eu": [
     "apaiz-etxera"
    ],
-   "ro": []
+   "ro": [
+    "casa preotului",
+    "caiși"
+   ]
   },
   "c1:20": {
    "io": [
@@ -11149,7 +11244,9 @@
    "eu": [
     "lorez"
    ],
-   "ro": []
+   "ro": [
+    "floarea"
+   ]
   },
   "c1:21": {
    "io": [
@@ -11221,7 +11318,9 @@
    "eu": [
     "erlauntzakoak"
    ],
-   "ro": []
+   "ro": [
+    "stup"
+   ]
   },
   "c1:22": {
    "io": [
@@ -11435,7 +11534,9 @@
    "eu": [
     "esnedun emakumea"
    ],
-   "ro": []
+   "ro": [
+    "lăptăreasa"
+   ]
   },
   "c1:25": {
    "io": [
@@ -11649,7 +11750,9 @@
    "eu": [
     "buruko zapia"
    ],
-   "ro": []
+   "ro": [
+    "basmaua"
+   ]
   },
   "c1:29": {
    "io": [
@@ -11721,7 +11824,9 @@
    "eu": [
     "jaka"
    ],
-   "ro": []
+   "ro": [
+    "bluza"
+   ]
   },
   "c1:30": {
    "io": [
@@ -11793,7 +11898,9 @@
    "eu": [
     "mantala"
    ],
-   "ro": []
+   "ro": [
+    "șorțul"
+   ]
   },
   "c1:31": {
    "io": [
@@ -11865,7 +11972,9 @@
    "eu": [
     "gona"
    ],
-   "ro": []
+   "ro": [
+    "fusta"
+   ]
   },
   "c1:32": {
    "io": [
@@ -11937,7 +12046,9 @@
    "eu": [
     "gerruntzea"
    ],
-   "ro": []
+   "ro": [
+    "corsajul"
+   ]
   },
   "c1:33": {
    "io": [
@@ -12009,7 +12120,9 @@
    "eu": [
     "hormaren"
    ],
-   "ro": []
+   "ro": [
+    "zid"
+   ]
   },
   "c1:34": {
    "io": [
@@ -12081,7 +12194,9 @@
    "eu": [
     "krabelinak"
    ],
-   "ro": []
+   "ro": [
+    "garoafele"
+   ]
   },
   "c1:35": {
    "io": [
@@ -12153,7 +12268,9 @@
    "eu": [
     "tximeletak"
    ],
-   "ro": []
+   "ro": [
+    "fluturii"
+   ]
   },
   "c1:36": {
    "io": [
@@ -12225,7 +12342,9 @@
    "eu": [
     "tulipak"
    ],
-   "ro": []
+   "ro": [
+    "lalelele"
+   ]
   },
   "c1:37": {
    "io": [
@@ -12297,7 +12416,9 @@
    "eu": [
     "ezkilaloreak"
    ],
-   "ro": []
+   "ro": [
+    "lăcrămioarele"
+   ]
   },
   "c1:38": {
    "io": [
@@ -12369,7 +12490,9 @@
    "eu": [
     "loreontzietan"
    ],
-   "ro": []
+   "ro": [
+    "ghivece"
+   ]
   },
   "c1:39": {
    "io": [
@@ -12511,7 +12634,9 @@
     "собаці"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "câine"
+   ]
   },
   "c1:43": {
    "io": [
@@ -12583,7 +12708,9 @@
    "eu": [
     "oiloa"
    ],
-   "ro": []
+   "ro": [
+    "găină"
+   ]
   },
   "c1:44": {
    "io": [
@@ -12727,7 +12854,9 @@
    "eu": [
     "inudea"
    ],
-   "ro": []
+   "ro": [
+    "doica"
+   ]
   },
   "c1:46": {
    "io": [
@@ -12867,7 +12996,9 @@
    "eu": [
     "Jaioberria"
    ],
-   "ro": []
+   "ro": [
+    "nou-născut"
+   ]
   },
   "c1:48": {
    "io": [
@@ -12939,7 +13070,9 @@
    "eu": [
     "parpailaz"
    ],
-   "ro": []
+   "ro": [
+    "dantele"
+   ]
   },
   "c1:49": {
    "io": [
@@ -13011,7 +13144,9 @@
    "eu": [
     "aitabitxia"
    ],
-   "ro": []
+   "ro": [
+    "nașul"
+   ]
   },
   "c1:50": {
    "io": [
@@ -13083,7 +13218,9 @@
    "eu": [
     "kapelu garaia"
    ],
-   "ro": []
+   "ro": [
+    "joben"
+   ]
   },
   "c1:51": {
    "io": [
@@ -13155,7 +13292,9 @@
    "eu": [
     "eskularruak"
    ],
-   "ro": []
+   "ro": [
+    "mănuși"
+   ]
   },
   "c1:52": {
    "io": [
@@ -13227,7 +13366,9 @@
    "eu": [
     "txanponak"
    ],
-   "ro": []
+   "ro": [
+    "monede"
+   ]
   },
   "c1:53": {
    "io": [
@@ -13299,7 +13440,9 @@
    "eu": [
     "amabitxia"
    ],
-   "ro": []
+   "ro": [
+    "nașa"
+   ]
   },
   "c1:54": {
    "io": [
@@ -13441,7 +13584,9 @@
    "eu": [
     "gozokiak"
    ],
-   "ro": []
+   "ro": [
+    "bomboane"
+   ]
   },
   "c1:56": {
    "io": [
@@ -13513,7 +13658,9 @@
    "eu": [
     "osaba"
    ],
-   "ro": []
+   "ro": [
+    "unchiul"
+   ]
   },
   "c1:57": {
    "io": [
@@ -13655,7 +13802,9 @@
    "eu": [
     "izeba"
    ],
-   "ro": []
+   "ro": [
+    "mătușa"
+   ]
   },
   "c1:59": {
    "io": [
@@ -13797,7 +13946,9 @@
    "eu": [
     "lehengusua"
    ],
-   "ro": []
+   "ro": [
+    "vărul"
+   ]
   },
   "c1:61": {
    "io": [
@@ -13869,7 +14020,9 @@
    "eu": [
     "lehengusina"
    ],
-   "ro": []
+   "ro": [
+    "verișoara"
+   ]
   },
   "c1:62": {
    "io": [
@@ -13941,7 +14094,9 @@
    "eu": [
     "arreba"
    ],
-   "ro": []
+   "ro": [
+    "sora"
+   ]
   },
   "c1:63": {
    "io": [
@@ -14013,7 +14168,9 @@
    "eu": [
     "neba"
    ],
-   "ro": []
+   "ro": [
+    "frate"
+   ]
   },
   "c1:64": {
    "io": [
@@ -14083,7 +14240,9 @@
     "родичці"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "rude"
+   ]
   },
   "c1:65": {
    "io": [
@@ -14155,7 +14314,9 @@
    "eu": [
     "lagunak"
    ],
-   "ro": []
+   "ro": [
+    "prietenii"
+   ]
   },
   "c1:66": {
    "io": [
@@ -14225,7 +14386,9 @@
     "жебрак"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "cerșetor"
+   ]
   },
   "c1:67": {
    "io": [
@@ -14367,7 +14530,9 @@
     "чемний"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "politicos"
+   ]
   },
   "c1:69": {
    "io": [
@@ -14437,7 +14602,9 @@
     "селянина"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "țăran"
+   ]
   },
   "c1:70": {
    "io": [
@@ -14507,7 +14674,9 @@
     "селянку"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "țărancă"
+   ]
   },
   "c1:71": {
    "io": [
@@ -14577,7 +14746,9 @@
     "стару жінку"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "bătrână"
+   ]
   },
   "c1:72": {
    "io": [
@@ -14721,7 +14892,9 @@
    "eu": [
     "errotaria"
    ],
-   "ro": []
+   "ro": [
+    "morarul"
+   ]
   },
   "c1:74": {
    "io": [
@@ -14863,7 +15036,9 @@
    "eu": [
     "eskalapoiekin"
    ],
-   "ro": []
+   "ro": [
+    "saboți"
+   ]
   },
   "c2:1": {
    "io": [
@@ -14935,7 +15110,9 @@
    "eu": [
     "oinetakoak"
    ],
-   "ro": []
+   "ro": [
+    "ghetele"
+   ]
   },
   "c2:2": {
    "io": [
@@ -15007,7 +15184,9 @@
    "eu": [
     "Elastikoa"
    ],
-   "ro": []
+   "ro": [
+    "maioul"
+   ]
   },
   "c2:3": {
    "io": [
@@ -15079,7 +15258,9 @@
    "eu": [
     "bainu-galtzak"
    ],
-   "ro": []
+   "ro": [
+    "slipul"
+   ]
   },
   "c2:4": {
    "io": [
@@ -15149,7 +15330,9 @@
     "чобіт"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "cizme"
+   ]
   },
   "c2:5": {
    "io": [
@@ -15221,7 +15404,9 @@
    "eu": [
     "zapatilak"
    ],
-   "ro": []
+   "ro": [
+    "papuci"
+   ]
   },
   "c2:6": {
    "io": [
@@ -15293,7 +15478,9 @@
    "eu": [
     "galtzerdiak"
    ],
-   "ro": []
+   "ro": [
+    "ciorapi"
+   ]
   },
   "c2:7": {
    "io": [
@@ -15365,7 +15552,9 @@
    "eu": [
     "feltrozko"
    ],
-   "ro": []
+   "ro": [
+    "pâslă"
+   ]
   },
   "c2:8": {
    "io": [
@@ -15437,7 +15626,9 @@
    "eu": [
     "lastozko"
    ],
-   "ro": []
+   "ro": [
+    "paie"
+   ]
   },
   "c2:9": {
    "io": [
@@ -15507,7 +15698,9 @@
     "краватка"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "cravată"
+   ]
   },
   "c2:10": {
    "io": [
@@ -15579,7 +15772,9 @@
    "eu": [
     "jaka"
    ],
-   "ro": []
+   "ro": [
+    "haina"
+   ]
   },
   "c2:11": {
    "io": [
@@ -15651,7 +15846,9 @@
    "eu": [
     "txapela"
    ],
-   "ro": []
+   "ro": [
+    "șapca"
+   ]
   },
   "c2:12": {
    "io": [
@@ -15723,7 +15920,9 @@
    "eu": [
     "alkandora"
    ],
-   "ro": []
+   "ro": [
+    "cămașa"
+   ]
   },
   "c2:13": {
    "io": [
@@ -15795,7 +15994,9 @@
    "eu": [
     "lepokoa"
    ],
-   "ro": []
+   "ro": [
+    "gulerul"
+   ]
   },
   "c2:14": {
    "io": [
@@ -15867,7 +16068,9 @@
    "eu": [
     "eskumuturrekoak"
    ],
-   "ro": []
+   "ro": [
+    "manșetele"
+   ]
   },
   "c2:15": {
    "io": [
@@ -15939,7 +16142,9 @@
    "eu": [
     "tiranteak"
    ],
-   "ro": []
+   "ro": [
+    "bretele"
+   ]
   },
   "c2:16": {
    "io": [
@@ -16011,7 +16216,9 @@
    "eu": [
     "galtzak"
    ],
-   "ro": []
+   "ro": [
+    "pantaloni"
+   ]
   },
   "c2:17": {
    "io": [
@@ -16083,7 +16290,9 @@
    "eu": [
     "txalekoa"
    ],
-   "ro": []
+   "ro": [
+    "vesta"
+   ]
   },
   "c2:18": {
    "io": [
@@ -16155,7 +16364,9 @@
    "eu": [
     "karduz"
    ],
-   "ro": []
+   "ro": [
+    "ciulini"
+   ]
   },
   "c2:19": {
    "io": [
@@ -16225,7 +16436,9 @@
     "очерету"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "stuf"
+   ]
   },
   "c2:20": {
    "io": [
@@ -16297,7 +16510,9 @@
    "eu": [
     "su artifizialak"
    ],
-   "ro": []
+   "ro": [
+    "focurile de artificii"
+   ]
   },
   "c2:21": {
    "io": [
@@ -16369,7 +16584,9 @@
    "eu": [
     "txalupan"
    ],
-   "ro": []
+   "ro": [
+    "barca"
+   ]
   },
   "c2:22": {
    "io": [
@@ -16439,7 +16656,9 @@
     "гічці"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "șalupă"
+   ]
   },
   "c2:23": {
    "io": [
@@ -16511,7 +16730,9 @@
    "eu": [
     "Arraunek"
    ],
-   "ro": []
+   "ro": [
+    "Vâslele"
+   ]
   },
   "c2:24": {
    "io": [
@@ -16583,7 +16804,9 @@
    "eu": [
     "arraunlarik"
    ],
-   "ro": []
+   "ro": [
+    "vâslași"
+   ]
   },
   "c2:25": {
    "io": [
@@ -16655,7 +16878,9 @@
    "eu": [
     "lema"
    ],
-   "ro": []
+   "ro": [
+    "cârma"
+   ]
   },
   "c2:26": {
    "io": [
@@ -16727,7 +16952,9 @@
    "eu": [
     "lemazainak"
    ],
-   "ro": []
+   "ro": [
+    "cârmaciul"
+   ]
   },
   "c2:27": {
    "io": [
@@ -16799,7 +17026,9 @@
    "eu": [
     "zubiaren"
    ],
-   "ro": []
+   "ro": [
+    "podului"
+   ]
   },
   "c2:28": {
    "io": [
@@ -16871,7 +17100,9 @@
    "eu": [
     "zutoin sarituaren"
    ],
-   "ro": []
+   "ro": [
+    "catargului cu premiu"
+   ]
   },
   "c2:29": {
    "io": [
@@ -16943,7 +17174,9 @@
    "eu": [
     "banderatxoa"
    ],
-   "ro": []
+   "ro": [
+    "stegulețul"
+   ]
   },
   "c2:30": {
    "io": [
@@ -17155,7 +17388,9 @@
    "eu": [
     "ur-borrokan"
    ],
-   "ro": []
+   "ro": [
+    "luptă pe apă"
+   ]
   },
   "c2:33": {
    "io": [
@@ -17227,7 +17462,9 @@
    "eu": [
     "kaiaren"
    ],
-   "ro": []
+   "ro": [
+    "cheiul"
+   ]
   },
   "c2:35": {
    "io": [
@@ -17297,7 +17534,9 @@
     "хлопчаків"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "băiețandri"
+   ]
   },
   "c2:36": {
    "io": [
@@ -17369,7 +17608,9 @@
    "eu": [
     "musikarien"
    ],
-   "ro": []
+   "ro": [
+    "muzicanților"
+   ]
   },
   "c2:37": {
    "io": [
@@ -17441,7 +17682,9 @@
    "eu": [
     "alkatea"
    ],
-   "ro": []
+   "ro": [
+    "primarul"
+   ]
   },
   "c2:38": {
    "io": [
@@ -17513,7 +17756,9 @@
    "eu": [
     "suhiltzaileak"
    ],
-   "ro": []
+   "ro": [
+    "pompierii"
+   ]
   },
   "c2:39": {
    "io": [
@@ -17585,7 +17830,9 @@
    "eu": [
     "Feria-plazan"
    ],
-   "ro": []
+   "ro": [
+    "piața bâlciului"
+   ]
   },
   "c2:40": {
    "io": [
@@ -17657,7 +17904,9 @@
    "eu": [
     "zurezko zaldiak"
    ],
-   "ro": []
+   "ro": [
+    "călușeii"
+   ]
   },
   "c2:41": {
    "io": [
@@ -17729,7 +17978,9 @@
    "eu": [
     "zirkua"
    ],
-   "ro": []
+   "ro": [
+    "circul"
+   ]
   },
   "c2:42": {
    "io": [
@@ -17801,7 +18052,9 @@
    "eu": [
     "herri-dantzaldia"
    ],
-   "ro": []
+   "ro": [
+    "balul popular"
+   ]
   },
   "c2:44": {
    "io": [
@@ -17871,7 +18124,9 @@
     "арену"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "arena"
+   ]
   },
   "c2:45": {
    "io": [
@@ -17965,7 +18220,9 @@
    "eu": [
     "zutoinaren"
    ],
-   "ro": []
+   "ro": [
+    "stâlpul"
+   ]
   },
   "c2:46": {
    "io": [
@@ -18037,7 +18294,9 @@
    "eu": [
     "tiro-lekua"
    ],
-   "ro": []
+   "ro": [
+    "tirul"
+   ]
   },
   "c2:47": {
    "io": [
@@ -18109,7 +18368,9 @@
    "eu": [
     "barraka-antzokia"
    ],
-   "ro": []
+   "ro": [
+    "teatrul de bâlci"
+   ]
   },
   "c2:48": {
    "io": [
@@ -18181,7 +18442,9 @@
    "eu": [
     "erraldoiaren"
    ],
-   "ro": []
+   "ro": [
+    "uriașului"
+   ]
   },
   "c2:49": {
    "io": [
@@ -18253,7 +18516,9 @@
    "eu": [
     "errusiar mendiak"
    ],
-   "ro": []
+   "ro": [
+    "munții ruși"
+   ]
   },
   "c2:50": {
    "io": [
@@ -18323,7 +18588,9 @@
     "звіринець"
    ],
    "eu": [],
-   "ro": []
+   "ro": [
+    "menajerie"
+   ]
   },
   "c2:51": {
    "io": [
@@ -18395,7 +18662,9 @@
    "eu": [
     "tigrearekin"
    ],
-   "ro": []
+   "ro": [
+    "tigrul"
+   ]
   },
   "c2:52": {
    "io": [
@@ -18467,7 +18736,9 @@
    "eu": [
     "lehoiarekin"
    ],
-   "ro": []
+   "ro": [
+    "leul"
+   ]
   },
   "c2:53": {
    "io": [
@@ -18539,7 +18810,9 @@
    "eu": [
     "jirafarekin"
    ],
-   "ro": []
+   "ro": [
+    "girafi"
+   ]
   },
   "c2:54": {
    "io": [
@@ -18611,7 +18884,9 @@
    "eu": [
     "elefantearekin"
    ],
-   "ro": []
+   "ro": [
+    "elefantul"
+   ]
   },
   "c2:55": {
    "io": [
@@ -18683,7 +18958,9 @@
    "eu": [
     "Hezitzailea"
    ],
-   "ro": []
+   "ro": [
+    "Îmblânzitorul"
+   ]
   }
  },
  "t04": {
