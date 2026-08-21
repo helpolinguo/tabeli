@@ -225,6 +225,8 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "ga", "nomo": "Gaeilge", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "gl", "nomo": "Galego", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
 ]
 
 
@@ -800,7 +802,7 @@ DOSSIER = {"fr": "fr", "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "nl": "nl", "sv": "sv", "fi": "fi", "ca": "ca",
            "oc": "oc", "uk": "uk",
            "eu": "eu", "ro": "ro",
-           "ga": "ga"}               # langue -> texto/<...>
+           "ga": "ga", "gl": "gl"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -1814,7 +1816,13 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # porte un accent aigu sur son A, et ne se
                         # confond donc avec aucun autre membre de cette
                         # liste. Le titre du volume est en bas de casse.
-                        r"|TÁBLA")
+                        r"|TÁBLA"
+                        # LE GALICIEN ecrit « CADRO n.º 1 ». Le mot est
+                        # celui de l'espagnol moins son U — CADRO contre
+                        # CUADRO — et ne se confond donc avec aucun
+                        # autre membre. Le titre du volume, « Cadros
+                        # auxiliares Delmas », est en bas de casse.
+                        r"|CADRO")
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
 # le membre « TAULA » l'attrape deja : rien a ajouter. Ce qui separe
@@ -1888,6 +1896,13 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             # etats du premier ordinal, « céad » et « chéad », et on
             # fait de meme pour la serie plus bas.
             r"|ch?[eé]ad|dara|tr[ií][uú]|ceathr[uú]"
+            # LE GALICIEN N'AJOUTE RIEN A CETTE LISTE, et c'est le
+            # premier cas du genre depuis l'esperanto : ses quatre
+            # ordinaux feminins y sont deja, « primeira » et
+            # « terceira » par le portugais, « segunda » et « cuarta »
+            # par l'espagnol. Il ne demande pas davantage dans les deux
+            # groupes ci-dessous : sa serie s'ecrit « serie » et sa
+            # scene « escena », l'une et l'autre deja presentes.
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
             r"|primera|segunda|tercera|cuarta"
