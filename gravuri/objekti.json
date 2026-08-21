@@ -131958,7 +131958,9 @@
    "lt": [
     "halėje"
    ],
-   "lb": []
+   "lb": [
+    "Hal"
+   ]
   },
   "2": {
    "io": [
@@ -132045,7 +132047,9 @@
    "lt": [
     "Kiaulienos mėsininkas"
    ],
-   "lb": []
+   "lb": [
+    "Schwäinsmetzler"
+   ]
   },
   "3": {
    "io": [
@@ -132132,7 +132136,9 @@
    "lt": [
     "kumpį"
    ],
-   "lb": []
+   "lb": [
+    "Ham"
+   ]
   },
   "4": {
    "io": [
@@ -132219,7 +132225,9 @@
    "lt": [
     "kraujinę dešrą"
    ],
-   "lb": []
+   "lb": [
+    "Träipen"
+   ]
   },
   "5": {
    "io": [
@@ -132306,7 +132314,9 @@
    "lt": [
     "dešrelę"
    ],
-   "lb": []
+   "lb": [
+    "Wurscht"
+   ]
   },
   "6": {
    "io": [
@@ -132393,7 +132403,9 @@
    "lt": [
     "vidurių dešrelę"
    ],
-   "lb": []
+   "lb": [
+    "Grillwurscht"
+   ]
   },
   "7": {
    "io": [
@@ -132480,7 +132492,9 @@
    "lt": [
     "lašinius"
    ],
-   "lb": []
+   "lb": [
+    "Speck"
+   ]
   },
   "8": {
    "io": [
@@ -132567,7 +132581,9 @@
    "lt": [
     "sviesto ir sūrio pardavėjos"
    ],
-   "lb": []
+   "lb": [
+    "Bottera Kéisfra"
+   ]
   },
   "9": {
    "io": [
@@ -132654,7 +132670,9 @@
    "lt": [
     "olandiškais sūriais"
    ],
-   "lb": []
+   "lb": [
+    "hollännesche Kéiser"
+   ]
   },
   "10": {
    "io": [
@@ -132741,7 +132759,9 @@
    "lt": [
     "kamambero sūriais"
    ],
-   "lb": []
+   "lb": [
+    "Camembert-Kéiser"
+   ]
   },
   "11": {
    "io": [
@@ -132824,7 +132844,9 @@
    "lt": [
     "griujero ratais"
    ],
-   "lb": []
+   "lb": [
+    "Gruyère-Rieder"
+   ]
   },
   "12": {
    "io": [
@@ -132903,7 +132925,9 @@
    "lt": [
     "sviesto gabalais"
    ],
-   "lb": []
+   "lb": [
+    "Botterstécker"
+   ]
   },
   "13": {
    "io": [
@@ -132990,7 +133014,9 @@
    "lt": [
     "daržovių pardavėja"
    ],
-   "lb": []
+   "lb": [
+    "Geméisfra"
+   ]
   },
   "14": {
    "io": [
@@ -133071,7 +133097,9 @@
    "lt": [
     "pomidorus"
    ],
-   "lb": []
+   "lb": [
+    "Tomaten"
+   ]
   },
   "15": {
    "io": [
@@ -133158,7 +133186,9 @@
    "lt": [
     "žiedinius kopūstus"
    ],
-   "lb": []
+   "lb": [
+    "Blumekabes"
+   ]
   },
   "16": {
    "io": [
@@ -133245,7 +133275,9 @@
    "lt": [
     "salotas"
    ],
-   "lb": []
+   "lb": [
+    "Zalot"
+   ]
   },
   "17": {
    "io": [
@@ -133332,7 +133364,9 @@
    "lt": [
     "gūžinius kopūstus"
    ],
-   "lb": []
+   "lb": [
+    "Kabeskäpp"
+   ]
   },
   "18": {
    "io": [
@@ -133419,7 +133453,9 @@
    "lt": [
     "melionus"
    ],
-   "lb": []
+   "lb": [
+    "Melounen"
+   ]
   },
   "19": {
    "io": [
@@ -133506,7 +133542,9 @@
    "lt": [
     "moliūgėlius"
    ],
-   "lb": []
+   "lb": [
+    "Kürbissen"
+   ]
   },
   "20": {
    "io": [
@@ -133593,7 +133631,9 @@
    "lt": [
     "grybus"
    ],
-   "lb": []
+   "lb": [
+    "Champignonen"
+   ]
   },
   "21": {
    "io": [
@@ -133680,7 +133720,9 @@
    "lt": [
     "pristatymo vežimą"
    ],
-   "lb": []
+   "lb": [
+    "Liwwerwon"
+   ]
   },
   "22": {
    "io": [
@@ -133767,7 +133809,9 @@
    "lt": [
     "alaus statinių"
    ],
-   "lb": []
+   "lb": [
+    "Béierfässer"
+   ]
   },
   "23": {
    "io": [
@@ -133852,7 +133896,9 @@
    "lt": [
     "artišokų"
    ],
-   "lb": []
+   "lb": [
+    "Artischocken"
+   ]
   },
   "24": {
    "io": [
@@ -133939,7 +133985,9 @@
    "lt": [
     "aukciono"
    ],
-   "lb": []
+   "lb": [
+    "Versteigerung"
+   ]
   },
   "25": {
    "io": [
@@ -134026,7 +134074,9 @@
    "lt": [
     "vidurių pardavėjos"
    ],
-   "lb": []
+   "lb": [
+    "Kaldaunenverkeeferin"
+   ]
   },
   "26": {
    "io": [
@@ -134111,7 +134161,9 @@
    "lt": [
     "Šeimininkės"
    ],
-   "lb": []
+   "lb": [
+    "Hausfraen"
+   ]
   },
   "27": {
    "io": [
@@ -134192,7 +134244,9 @@
    "lt": [
     "virėjas"
    ],
-   "lb": []
+   "lb": [
+    "Kach"
+   ]
   },
   "28": {
    "io": [
@@ -134279,7 +134333,9 @@
    "lt": [
     "žuvų pardavėją"
    ],
-   "lb": []
+   "lb": [
+    "Fëschverkeeferin"
+   ]
   },
   "29": {
    "io": [
@@ -134366,7 +134422,9 @@
    "lt": [
     "Paukštienos pardavėja"
    ],
-   "lb": []
+   "lb": [
+    "Gefligelverkeeferin"
+   ]
   },
   "30": {
    "io": [
@@ -134451,7 +134509,9 @@
    "lt": [
     "audinių pardavėjas"
    ],
-   "lb": []
+   "lb": [
+    "Stoffverkeefer"
+   ]
   },
   "31": {
    "io": [
@@ -134538,7 +134598,9 @@
    "lt": [
     "peilininkas"
    ],
-   "lb": []
+   "lb": [
+    "Messerschmadd"
+   ]
   },
   "32": {
    "io": [
@@ -134624,7 +134686,9 @@
    "lt": [
     "prieskonių krautuvė"
    ],
-   "lb": []
+   "lb": [
+    "Epicerie"
+   ]
   },
   "33": {
    "io": [
@@ -134711,7 +134775,9 @@
    "lt": [
     "arbatą"
    ],
-   "lb": []
+   "lb": [
+    "Téi"
+   ]
   },
   "34": {
    "io": [
@@ -134798,7 +134864,9 @@
    "lt": [
     "šokoladą"
    ],
-   "lb": []
+   "lb": [
+    "Schockela"
+   ]
   },
   "35": {
    "io": [
@@ -134885,7 +134953,9 @@
    "lt": [
     "konservai"
    ],
-   "lb": []
+   "lb": [
+    "Konserven"
+   ]
   },
   "36": {
    "io": [
@@ -134972,7 +135042,9 @@
    "lt": [
     "likeriai"
    ],
-   "lb": []
+   "lb": [
+    "Likören"
+   ]
   },
   "37": {
    "io": [
@@ -135059,7 +135131,9 @@
    "lt": [
     "gabalinį cukrų"
    ],
-   "lb": []
+   "lb": [
+    "Zockerstécker"
+   ]
   },
   "38": {
    "io": [
@@ -135146,7 +135220,9 @@
    "lt": [
     "muilą"
    ],
-   "lb": []
+   "lb": [
+    "Seef"
+   ]
   },
   "39": {
    "io": [
@@ -135233,7 +135309,9 @@
    "lt": [
     "kiškis"
    ],
-   "lb": []
+   "lb": [
+    "Hues"
+   ]
   },
   "40": {
    "io": [
@@ -135320,7 +135398,9 @@
    "lt": [
     "strazdai"
    ],
-   "lb": []
+   "lb": [
+    "Kramesvullen"
+   ]
   },
   "41": {
    "io": [
@@ -135407,7 +135487,9 @@
    "lt": [
     "kurapkos"
    ],
-   "lb": []
+   "lb": [
+    "Rebhénger"
+   ]
   },
   "42": {
    "io": [
@@ -135494,7 +135576,9 @@
    "lt": [
     "putpelės"
    ],
-   "lb": []
+   "lb": [
+    "Wuechtelen"
+   ]
   },
   "43": {
    "io": [
@@ -135581,7 +135665,9 @@
    "lt": [
     "laukinė antis"
    ],
-   "lb": []
+   "lb": [
+    "wëll Int"
+   ]
   },
   "44": {
    "io": [
@@ -135668,7 +135754,9 @@
    "lt": [
     "fazanas"
    ],
-   "lb": []
+   "lb": [
+    "Fasan"
+   ]
   },
   "45": {
    "io": [
@@ -135745,7 +135833,9 @@
    "lt": [
     "pameistrys"
    ],
-   "lb": []
+   "lb": [
+    "Garçon"
+   ]
   },
   "46": {
    "io": [
@@ -135832,7 +135922,9 @@
    "lt": [
     "bananai"
    ],
-   "lb": []
+   "lb": [
+    "Bananen"
+   ]
   },
   "47": {
    "io": [
@@ -135919,7 +136011,9 @@
    "lt": [
     "uogienės"
    ],
-   "lb": []
+   "lb": [
+    "Confitür"
+   ]
   },
   "48": {
    "io": [
@@ -136006,7 +136100,9 @@
    "lt": [
     "taukų"
    ],
-   "lb": []
+   "lb": [
+    "Fett"
+   ]
   },
   "49": {
    "io": [
@@ -136093,7 +136189,9 @@
    "lt": [
     "agurkėlių"
    ],
-   "lb": []
+   "lb": [
+    "Cornichonen"
+   ]
   },
   "50": {
    "io": [
@@ -136176,7 +136274,9 @@
    "lt": [
     "sardinių"
    ],
-   "lb": []
+   "lb": [
+    "Sardinnen"
+   ]
   },
   "51": {
    "io": [
@@ -136263,7 +136363,9 @@
    "lt": [
     "klientėms"
    ],
-   "lb": []
+   "lb": [
+    "Clientinnen"
+   ]
   },
   "52": {
    "io": [
@@ -136344,7 +136446,9 @@
    "lt": [
     "kriaušes"
    ],
-   "lb": []
+   "lb": [
+    "Bieren"
+   ]
   },
   "53": {
    "io": [
@@ -136431,7 +136535,9 @@
    "lt": [
     "slyvas"
    ],
-   "lb": []
+   "lb": [
+    "Quetschen"
+   ]
   },
   "54": {
    "io": [
@@ -136518,7 +136624,9 @@
    "lt": [
     "vynuoges"
    ],
-   "lb": []
+   "lb": [
+    "Wäintrauwen"
+   ]
   },
   "55": {
    "io": [
@@ -136605,7 +136713,9 @@
    "lt": [
     "persikus"
    ],
-   "lb": []
+   "lb": [
+    "Pëschingen"
+   ]
   },
   "56": {
    "io": [
@@ -136692,7 +136802,9 @@
    "lt": [
     "migdolus"
    ],
-   "lb": []
+   "lb": [
+    "Mandelen"
+   ]
   },
   "57": {
    "io": [
@@ -136779,7 +136891,9 @@
    "lt": [
     "riešutus"
    ],
-   "lb": []
+   "lb": [
+    "Nëss"
+   ]
   },
   "58": {
    "io": [
@@ -136866,7 +136980,9 @@
    "lt": [
     "Ryžiai"
    ],
-   "lb": []
+   "lb": [
+    "Räis"
+   ]
   },
   "59": {
    "io": [
@@ -136953,7 +137069,9 @@
    "lt": [
     "lęšiai"
    ],
-   "lb": []
+   "lb": [
+    "Lënsen"
+   ]
   },
   "60": {
    "io": [
@@ -137036,7 +137154,9 @@
    "lt": [
     "silkių"
    ],
-   "lb": []
+   "lb": [
+    "Hierenger"
+   ]
   },
   "61": {
    "io": [
@@ -137123,7 +137243,9 @@
    "lt": [
     "bulvės"
    ],
-   "lb": []
+   "lb": [
+    "Gromperen"
+   ]
   },
   "62": {
    "io": [
@@ -137210,7 +137332,9 @@
    "lt": [
     "obuolių"
    ],
-   "lb": []
+   "lb": [
+    "Äppel"
+   ]
   },
   "63": {
    "io": [
@@ -137297,7 +137421,9 @@
    "lt": [
     "pupelės"
    ],
-   "lb": []
+   "lb": [
+    "Bounen"
+   ]
   },
   "64": {
    "io": [
@@ -137384,7 +137510,9 @@
    "lt": [
     "figų"
    ],
-   "lb": []
+   "lb": [
+    "Feigen"
+   ]
   },
   "65": {
    "io": [
@@ -137471,7 +137599,9 @@
    "lt": [
     "džiovintų slyvų"
    ],
-   "lb": []
+   "lb": [
+    "gedréchente Quetschen"
+   ]
   },
   "66": {
    "io": [
@@ -137558,7 +137688,9 @@
    "lt": [
     "lazdyno riešutų"
    ],
-   "lb": []
+   "lb": [
+    "Hieselnëss"
+   ]
   },
   "67": {
    "io": [
@@ -137641,7 +137773,9 @@
    "lt": [
     "kiaušinių"
    ],
-   "lb": []
+   "lb": [
+    "Eeër"
+   ]
   },
   "68": {
    "io": [
@@ -137728,7 +137862,9 @@
    "lt": [
     "alyvuogių"
    ],
-   "lb": []
+   "lb": [
+    "Oliven"
+   ]
   },
   "69": {
    "io": [
@@ -137815,7 +137951,9 @@
    "lt": [
     "tarnaičių"
    ],
-   "lb": []
+   "lb": [
+    "Déngschtmeedercher"
+   ]
   },
   "70": {
    "io": [
@@ -137902,7 +138040,9 @@
    "lt": [
     "krepšiai"
    ],
-   "lb": []
+   "lb": [
+    "Kierf"
+   ]
   },
   "71": {
    "io": [
@@ -137987,7 +138127,9 @@
    "lt": [
     "prekybininkas"
    ],
-   "lb": []
+   "lb": [
+    "Epicier"
+   ]
   },
   "72": {
    "io": [
@@ -138074,7 +138216,9 @@
    "lt": [
     "kava"
    ],
-   "lb": []
+   "lb": [
+    "Kaffi"
+   ]
   },
   "73": {
    "io": [
@@ -138161,7 +138305,9 @@
    "lt": [
     "pirkinių tinkleliai"
    ],
-   "lb": []
+   "lb": [
+    "Akafsnetzer"
+   ]
   },
   "74": {
    "io": [
@@ -138246,7 +138392,9 @@
    "lt": [
     "karutį"
    ],
-   "lb": []
+   "lb": [
+    "Schubkar"
+   ]
   },
   "75": {
    "io": [
@@ -138329,7 +138477,9 @@
    "lt": [
     "mėsininko berno"
    ],
-   "lb": []
+   "lb": [
+    "Metzlergesell"
+   ]
   },
   "76": {
    "io": [
@@ -138416,7 +138566,9 @@
    "lt": [
     "husaras"
    ],
-   "lb": []
+   "lb": [
+    "Husar"
+   ]
   },
   "78": {
    "io": [
@@ -138503,7 +138655,9 @@
    "lt": [
     "kepyklos"
    ],
-   "lb": []
+   "lb": [
+    "Bäckerei"
+   ]
   },
   "79": {
    "io": [
@@ -138588,7 +138742,9 @@
    "lt": [
     "duonos"
    ],
-   "lb": []
+   "lb": [
+    "Brout"
+   ]
   },
   "80": {
    "io": [
@@ -138675,7 +138831,9 @@
    "lt": [
     "Kepėjas"
    ],
-   "lb": []
+   "lb": [
+    "Bäcker"
+   ]
   },
   "81": {
    "io": [
@@ -138762,7 +138920,9 @@
    "lt": [
     "raguolius"
    ],
-   "lb": []
+   "lb": [
+    "Croissanten"
+   ]
   },
   "82": {
    "io": [
@@ -138847,7 +139007,9 @@
    "lt": [
     "bandeles"
    ],
-   "lb": []
+   "lb": [
+    "Bréidercher"
+   ]
   },
   "83": {
    "io": [
@@ -138934,7 +139096,9 @@
    "lt": [
     "paplotėlius"
    ],
-   "lb": []
+   "lb": [
+    "Fladen"
+   ]
   },
   "84": {
    "io": [
@@ -139015,7 +139179,9 @@
    "lt": [
     "baltinių siuvėja"
    ],
-   "lb": []
+   "lb": [
+    "Wäschnéiesch"
+   ]
   },
   "85": {
    "io": [
@@ -139100,7 +139266,9 @@
    "lt": [
     "siuvinėtojas"
    ],
-   "lb": []
+   "lb": [
+    "Stickerinnen"
+   ]
   },
   "86": {
    "io": [
@@ -139185,7 +139353,9 @@
    "lt": [
     "skalbėja-lygintoja"
    ],
-   "lb": []
+   "lb": [
+    "Wäschbüglerin"
+   ]
   },
   "87": {
    "io": [
@@ -139272,7 +139442,9 @@
    "lt": [
     "lygintuvu"
    ],
-   "lb": []
+   "lb": [
+    "Bügeleisen"
+   ]
   },
   "88": {
    "io": [
@@ -139359,7 +139531,9 @@
    "lt": [
     "skalbinius"
    ],
-   "lb": []
+   "lb": [
+    "Wäsch"
+   ]
   },
   "89": {
    "io": [
@@ -139446,7 +139620,9 @@
    "lt": [
     "Mėsinėje"
    ],
-   "lb": []
+   "lb": [
+    "Metzlerei"
+   ]
   },
   "90": {
    "io": [
@@ -139533,7 +139709,9 @@
    "lt": [
     "mėsų: aviena"
    ],
-   "lb": []
+   "lb": [
+    "Hammelfleesch"
+   ]
   },
   "92": {
    "io": [
@@ -139620,7 +139798,9 @@
    "lt": [
     "veršiena"
    ],
-   "lb": []
+   "lb": [
+    "Kallefsfleesch"
+   ]
   },
   "93": {
    "io": [
@@ -139707,7 +139887,9 @@
    "lt": [
     "Mėsininko pameistrys"
    ],
-   "lb": []
+   "lb": [
+    "Metzlergesell"
+   ]
   },
   "94": {
    "io": [
@@ -139794,7 +139976,9 @@
    "lt": [
     "jautiena"
    ],
-   "lb": []
+   "lb": [
+    "Rëndfleesch"
+   ]
   },
   "96": {
    "io": [
@@ -139881,7 +140065,9 @@
    "lt": [
     "smegeninius kaulus"
    ],
-   "lb": []
+   "lb": [
+    "Maarksknachen"
+   ]
   },
   "97": {
    "io": [
@@ -139968,7 +140154,9 @@
    "lt": [
     "austrių pardavėja"
    ],
-   "lb": []
+   "lb": [
+    "Austeverkeeferin"
+   ]
   },
   "98": {
    "io": [
@@ -140055,7 +140243,9 @@
    "lt": [
     "austres"
    ],
-   "lb": []
+   "lb": [
+    "Austeren"
+   ]
   },
   "99": {
    "io": [
@@ -140140,7 +140330,9 @@
    "lt": [
     "daržovių pardavinėtojas"
    ],
-   "lb": []
+   "lb": [
+    "Geméisverkeeferinnen"
+   ]
   },
   "100": {
    "io": [
@@ -140227,7 +140419,9 @@
    "lt": [
     "policininkas"
    ],
-   "lb": []
+   "lb": [
+    "Polizist"
+   ]
   },
   "101": {
    "io": [
@@ -140314,7 +140508,9 @@
    "lt": [
     "česnakus"
    ],
-   "lb": []
+   "lb": [
+    "Knuewelek"
+   ]
   },
   "102": {
    "io": [
@@ -140399,7 +140595,9 @@
    "lt": [
     "pardavėjui"
    ],
-   "lb": []
+   "lb": [
+    "Verkeefer"
+   ]
   },
   "103": {
    "io": [
@@ -140482,7 +140680,9 @@
    "lt": [
     "stikliaus"
    ],
-   "lb": []
+   "lb": [
+    "Glaser"
+   ]
   },
   "104": {
    "io": [
@@ -140569,7 +140769,9 @@
    "lt": [
     "anglininko"
    ],
-   "lb": []
+   "lb": [
+    "Kuelemann"
+   ]
   },
   "105": {
    "io": [
@@ -140654,7 +140856,9 @@
    "lt": [
     "anglių maišelį"
    ],
-   "lb": []
+   "lb": [
+    "Kuelesak"
+   ]
   }
  },
  "t16": {
