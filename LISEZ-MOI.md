@@ -286,6 +286,45 @@ autres. Un balayage de registre se fait donc sur les **signes** autant que
 sur les mots : on ne relit pas un blanc, et c'est pour cela qu'il traverse.
 Les deux PDF, eux, gardent la leur : **la source ne bouge pas.**
 
+**Une mesure seule ne dit rien ; il faut les trente.** Le balayage de
+registre de 2026 a été mené colonne par colonne, mais chaque chiffre a été
+lu contre les vingt-neuf autres — c'est la comparaison qui désigne la
+faute, pas la valeur. Le turc disait « pek » 117 fois et « çok » 52 : rien
+d'anormal en soi, jusqu'à ce que les vingt-neuf autres colonnes montrent
+partout le mot neutre en tête. Le néerlandais disait « zeer » 109 fois
+contre 4 « heel » ; le japonais portait 116 mots d'avant-guerre ; le
+russe, cherché de la même manière, en rendait quatre. **Un balayage qui ne
+trouve rien est un résultat**, et il se note comme les autres.
+
+Ce que les trente colonnes ont donné :
+
+| corrigé | ce qui a été trouvé |
+| --- | --- |
+| en | 26 « for » explicatifs, 6 « here is », zéro contraction, une classe de dessin prise pour un salon |
+| sv | 34 « ty », 61 « skall », 51 espaces françaises |
+| es, pt, ca, gl | le présentatif calqué : 22 « he aquí », 22 « eis », 21 « heus aquí », 33 « velaquí » — aux mêmes blocs |
+| ca, cs | la conjonction livresque : 10 « car », 31 « neboť » |
+| nl | 32 « ziehier », 51 espaces, 109 « zeer », un hiver qui régnait |
+| ja | 116 mots d'avant-guerre (硝子, 珈琲, 停車場…), 12 tournures |
+| tr | 460 copules -dir, 106 « pek » pour « çok », 67 termes gras qui portaient la copule |
+| ru | 2 « ибо », 2 « весьма » |
+| zh | 3 « 这里是 » redondants |
+| lb | un hiver qui régnait |
+| eo, fi, hi, ia, pa, pnb, ga | l'espace française devant les signes doubles, et rien d'autre |
+
+| gardé | pourquoi |
+| --- | --- |
+| ro « iată », oc « vaicí », lt « štai », eo « jen », ia « ecce », lb « do ass », rm « qua è » | le présentatif de ces langues **se dit encore** |
+| fi « sillä », lt « nes », et « sest », lb « well », uk « бо », ro 5 « căci » | la conjonction causale y est courante, pas livresque |
+| ja である (276 fois), ja 汽船, ja 蓄音機 | registre expositif normal ; objets qui portent encore ce nom |
+| es « reina el invierno », pt, ca, gl | la tournure se dit dans ces langues, et pas en néerlandais |
+| ga, ar, bn, hi, pa, pnb, eu, de, it | rien à corriger : ces colonnes étaient déjà écrites au registre d'aujourd'hui |
+
+**Et l'on ne corrige pas une colonne parce qu'une autre l'a été.** Le même
+bloc de l'ido — « nam regnas la vintro » — se garde en espagnol et s'ôte
+en néerlandais, parce que ce n'est pas le bloc qu'on juge, c'est la langue
+d'arrivée.
+
 Les espaces-mots sont rendus insécables : le seul point de coupure légal
 d'une ligne est celui que le relevé a placé, et une ligne trop large
 devient un « Overfull \hbox » que les contrôles inventorient — la faute
