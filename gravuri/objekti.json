@@ -91864,7 +91864,9 @@
    "lt": [
     "Vandenyną"
    ],
-   "lb": []
+   "lb": [
+    "Ozean"
+   ]
   },
   "2": {
    "io": [
@@ -91951,7 +91953,9 @@
    "lt": [
     "horizonto"
    ],
-   "lb": []
+   "lb": [
+    "Horizont"
+   ]
   },
   "3": {
    "io": [
@@ -92034,7 +92038,9 @@
    "lt": [
     "garlaivius"
    ],
-   "lb": []
+   "lb": [
+    "Dampschëffer"
+   ]
   },
   "4": {
    "io": [
@@ -92119,7 +92125,9 @@
    "lt": [
     "molo"
    ],
-   "lb": []
+   "lb": [
+    "Damm"
+   ]
   },
   "5": {
    "io": [
@@ -92206,7 +92214,9 @@
    "lt": [
     "karinį uostą"
    ],
-   "lb": []
+   "lb": [
+    "Krichshafen"
+   ]
   },
   "6": {
    "io": [
@@ -92287,7 +92297,9 @@
    "lt": [
     "kreiserius"
    ],
-   "lb": []
+   "lb": [
+    "Croiseuren"
+   ]
   },
   "7": {
    "io": [
@@ -92374,7 +92386,9 @@
    "lt": [
     "patrankinius laivus"
    ],
-   "lb": []
+   "lb": [
+    "Kanounebooter"
+   ]
   },
   "8": {
    "io": [
@@ -92461,7 +92475,9 @@
    "lt": [
     "minininko"
    ],
-   "lb": []
+   "lb": [
+    "Torpedoboot"
+   ]
   },
   "9": {
    "io": [
@@ -92544,7 +92560,9 @@
    "lt": [
     "šarvuočiu"
    ],
-   "lb": []
+   "lb": [
+    "Panzerschëff"
+   ]
   },
   "10": {
    "io": [
@@ -92627,7 +92645,9 @@
    "lt": [
     "povandeniniu laivu"
    ],
-   "lb": []
+   "lb": [
+    "Ënnerseeboot"
+   ]
   },
   "11": {
    "io": [
@@ -92714,7 +92734,9 @@
    "lt": [
     "fregatą"
    ],
-   "lb": []
+   "lb": [
+    "Fregatt"
+   ]
   },
   "12": {
    "io": [
@@ -92799,7 +92821,9 @@
    "lt": [
     "transporto laivus"
    ],
-   "lb": []
+   "lb": [
+    "Transportschëffer"
+   ]
   },
   "13": {
    "io": [
@@ -92882,7 +92906,9 @@
    "lt": [
     "burlaivių"
    ],
-   "lb": []
+   "lb": [
+    "Segelschëffer"
+   ]
   },
   "14": {
    "io": [
@@ -92967,7 +92993,9 @@
    "lt": [
     "prieplauka"
    ],
-   "lb": []
+   "lb": [
+    "Kai"
+   ]
   },
   "15": {
    "io": [
@@ -93054,7 +93082,9 @@
    "lt": [
     "pylimais"
    ],
-   "lb": []
+   "lb": [
+    "Wäll"
+   ]
   },
   "16": {
    "io": [
@@ -93141,7 +93171,9 @@
    "lt": [
     "vilkiko"
    ],
-   "lb": []
+   "lb": [
+    "Schlepper"
+   ]
   },
   "17": {
    "io": [
@@ -93224,7 +93256,9 @@
    "lt": [
     "baržas"
    ],
-   "lb": []
+   "lb": [
+    "Lastbooter"
+   ]
   },
   "18": {
    "io": [
@@ -93311,7 +93345,9 @@
    "lt": [
     "laivų statyklų"
    ],
-   "lb": []
+   "lb": [
+    "Werften"
+   ]
   },
   "19": {
    "io": [
@@ -93398,7 +93434,9 @@
    "lt": [
     "pratybų lauką"
    ],
-   "lb": []
+   "lb": [
+    "Manöverfeld"
+   ]
   },
   "20": {
    "io": [
@@ -93481,7 +93519,9 @@
    "lt": [
     "tiltelį"
    ],
-   "lb": []
+   "lb": [
+    "Steg"
+   ]
   },
   "21": {
    "io": [
@@ -93568,7 +93608,9 @@
    "lt": [
     "arsenalu"
    ],
-   "lb": []
+   "lb": [
+    "Arsenal"
+   ]
   },
   "22": {
    "io": [
@@ -93655,7 +93697,9 @@
    "lt": [
     "patrankų"
    ],
-   "lb": []
+   "lb": [
+    "Kanounen"
+   ]
   },
   "23": {
    "io": [
@@ -93742,7 +93786,9 @@
    "lt": [
     "sviedinių"
    ],
-   "lb": []
+   "lb": [
+    "Kugelen"
+   ]
   },
   "24": {
    "io": [
@@ -93827,7 +93873,9 @@
    "lt": [
     "metalo liejyklą"
    ],
-   "lb": []
+   "lb": [
+    "Metallgisserei"
+   ]
   },
   "25": {
    "io": [
@@ -93914,7 +93962,9 @@
    "lt": [
     "katilai"
    ],
-   "lb": []
+   "lb": [
+    "Kessel"
+   ]
   },
   "26": {
    "io": [
@@ -93999,7 +94049,9 @@
    "lt": [
     "dokai"
    ],
-   "lb": []
+   "lb": [
+    "Docken"
+   ]
   },
   "27": {
    "io": [
@@ -94086,7 +94138,9 @@
    "lt": [
     "plaukiojantys dokai"
    ],
-   "lb": []
+   "lb": [
+    "schwiewend Docken"
+   ]
   },
   "28": {
    "io": [
@@ -94173,7 +94227,9 @@
    "lt": [
     "sraigtą"
    ],
-   "lb": []
+   "lb": [
+    "Schrauf"
+   ]
   },
   "29": {
    "io": [
@@ -94260,7 +94316,9 @@
    "lt": [
     "kilį"
    ],
-   "lb": []
+   "lb": [
+    "Kiel"
+   ]
   },
   "30": {
    "io": [
@@ -94347,7 +94405,9 @@
    "lt": [
     "vairą"
    ],
-   "lb": []
+   "lb": [
+    "Rudder"
+   ]
   },
   "31": {
    "io": [
@@ -94434,7 +94494,9 @@
    "lt": [
     "irklaračiai laivai"
    ],
-   "lb": []
+   "lb": [
+    "Raddampfer"
+   ]
   },
   "32": {
    "io": [
@@ -94519,7 +94581,9 @@
    "lt": [
     "stiebiniai kranai"
    ],
-   "lb": []
+   "lb": [
+    "Mastkrunn"
+   ]
   },
   "34": {
    "io": [
@@ -94606,7 +94670,9 @@
    "lt": [
     "transatlantiniais laivais"
    ],
-   "lb": []
+   "lb": [
+    "Transatlantiker"
+   ]
   },
   "35": {
    "io": [
@@ -94691,7 +94757,9 @@
    "lt": [
     "vėliavomis"
    ],
-   "lb": []
+   "lb": [
+    "Fändelen"
+   ]
   },
   "36": {
    "io": [
@@ -94772,7 +94840,9 @@
    "lt": [
     "locmano"
    ],
-   "lb": []
+   "lb": [
+    "Lotse"
+   ]
   },
   "37": {
    "io": [
@@ -94859,7 +94929,9 @@
    "lt": [
     "priešakyje"
    ],
-   "lb": []
+   "lb": [
+    "Virschëff"
+   ]
   },
   "38": {
    "io": [
@@ -94946,7 +95018,9 @@
    "lt": [
     "laivagalyje"
    ],
-   "lb": []
+   "lb": [
+    "Hannerschëff"
+   ]
   },
   "39": {
    "io": [
@@ -95033,7 +95107,9 @@
    "lt": [
     "kajutes"
    ],
-   "lb": []
+   "lb": [
+    "Kabinnen"
+   ]
   },
   "40": {
    "io": [
@@ -95120,7 +95196,9 @@
    "lt": [
     "plūdurais"
    ],
-   "lb": []
+   "lb": [
+    "Bojen"
+   ]
   },
   "41": {
    "io": [
@@ -95207,7 +95285,9 @@
    "lt": [
     "baidokų"
    ],
-   "lb": []
+   "lb": [
+    "Lastkähn"
+   ]
   },
   "42": {
    "io": [
@@ -95294,7 +95374,9 @@
    "lt": [
     "krovininis laivas"
    ],
-   "lb": []
+   "lb": [
+    "Frachtschëff"
+   ]
   },
   "43": {
    "io": [
@@ -95381,7 +95463,9 @@
    "lt": [
     "sandėlio"
    ],
-   "lb": []
+   "lb": [
+    "Lager"
+   ]
   },
   "44": {
    "io": [
@@ -95468,7 +95552,9 @@
    "lt": [
     "jūrų stoties"
    ],
-   "lb": []
+   "lb": [
+    "Séistatioun"
+   ]
   },
   "45": {
    "io": [
@@ -95555,7 +95641,9 @@
    "lt": [
     "krantinės geležinkelio"
    ],
-   "lb": []
+   "lb": [
+    "Kaibunn"
+   ]
   },
   "46": {
    "io": [
@@ -95638,7 +95726,9 @@
    "lt": [
     "valtys"
    ],
-   "lb": []
+   "lb": [
+    "Barken"
+   ]
   },
   "47": {
    "io": [
@@ -95723,7 +95813,9 @@
    "lt": [
     "irklą"
    ],
-   "lb": []
+   "lb": [
+    "Rudder"
+   ]
   },
   "48": {
    "io": [
@@ -95810,7 +95902,9 @@
    "lt": [
     "denio"
    ],
-   "lb": []
+   "lb": [
+    "Deck"
+   ]
   },
   "49": {
    "io": [
@@ -95897,7 +95991,9 @@
    "lt": [
     "burvaltės"
    ],
-   "lb": []
+   "lb": [
+    "Segelbark"
+   ]
   },
   "50": {
    "io": [
@@ -95984,7 +96080,9 @@
    "lt": [
     "rėjas"
    ],
-   "lb": []
+   "lb": [
+    "Rahen"
+   ]
   },
   "51": {
    "io": [
@@ -96071,7 +96169,9 @@
    "lt": [
     "stiebo"
    ],
-   "lb": []
+   "lb": [
+    "Mast"
+   ]
   },
   "52": {
    "io": [
@@ -96158,7 +96258,9 @@
    "lt": [
     "lynais"
    ],
-   "lb": []
+   "lb": [
+    "Tauen"
+   ]
   },
   "53": {
    "io": [
@@ -96245,7 +96347,9 @@
    "lt": [
     "uosto baseine"
    ],
-   "lb": []
+   "lb": [
+    "Schwämmbaseng"
+   ]
   },
   "54": {
    "io": [
@@ -96332,7 +96436,9 @@
    "lt": [
     "jole"
    ],
-   "lb": []
+   "lb": [
+    "mat enger Yol"
+   ]
   },
   "55": {
    "io": [
@@ -96415,7 +96521,9 @@
    "lt": [
     "žvejų valčių"
    ],
-   "lb": []
+   "lb": [
+    "Fëscherbooter"
+   ]
   },
   "56": {
    "io": [
@@ -96500,7 +96608,9 @@
    "lt": [
     "tinklai"
    ],
-   "lb": []
+   "lb": [
+    "Netzer"
+   ]
   },
   "58": {
    "io": [
@@ -96587,7 +96697,9 @@
    "lt": [
     "krantinės"
    ],
-   "lb": []
+   "lb": [
+    "Kai"
+   ]
   },
   "59": {
    "io": [
@@ -96672,7 +96784,9 @@
    "lt": [
     "prekės"
    ],
-   "lb": []
+   "lb": [
+    "Wueren"
+   ]
   },
   "60": {
    "io": [
@@ -96759,7 +96873,9 @@
    "lt": [
     "dėžėse"
    ],
-   "lb": []
+   "lb": [
+    "Këschten"
+   ]
   },
   "61": {
    "io": [
@@ -96846,7 +96962,9 @@
    "lt": [
     "ryšuliuose"
    ],
-   "lb": []
+   "lb": [
+    "Ballen"
+   ]
   },
   "62": {
    "io": [
@@ -96925,7 +97043,9 @@
    "lt": [
     "kranai"
    ],
-   "lb": []
+   "lb": [
+    "Krunnen"
+   ]
   },
   "63": {
    "io": [
@@ -97012,7 +97132,9 @@
    "lt": [
     "krovinį"
    ],
-   "lb": []
+   "lb": [
+    "Ladung"
+   ]
   },
   "64": {
    "io": [
@@ -97099,7 +97221,9 @@
    "lt": [
     "sunkvežimių"
    ],
-   "lb": []
+   "lb": [
+    "Camionen"
+   ]
   },
   "65": {
    "io": [
@@ -97186,7 +97310,9 @@
    "lt": [
     "muitinėje"
    ],
-   "lb": []
+   "lb": [
+    "Zollamt"
+   ]
   },
   "66": {
    "io": [
@@ -97273,7 +97399,9 @@
    "lt": [
     "pasukamąjį tiltą"
    ],
-   "lb": []
+   "lb": [
+    "Dréibréck"
+   ]
   },
   "67": {
    "io": [
@@ -97360,7 +97488,9 @@
    "lt": [
     "kanalą"
    ],
-   "lb": []
+   "lb": [
+    "Kanal"
+   ]
   },
   "68": {
    "io": [
@@ -97447,7 +97577,9 @@
    "lt": [
     "žemsiurbę"
    ],
-   "lb": []
+   "lb": [
+    "Bagger"
+   ]
   },
   "69": {
    "io": [
@@ -97534,7 +97666,9 @@
    "lt": [
     "šliuzą"
    ],
-   "lb": []
+   "lb": [
+    "Schleis"
+   ]
   },
   "70": {
    "io": [
@@ -97621,7 +97755,9 @@
    "lt": [
     "semaforo"
    ],
-   "lb": []
+   "lb": [
+    "Semaphor"
+   ]
   },
   "71": {
    "io": [
@@ -97708,7 +97844,9 @@
    "lt": [
     "laivavaltės"
    ],
-   "lb": []
+   "lb": [
+    "Schaluppen"
+   ]
   },
   "72": {
    "io": [
@@ -97795,7 +97933,9 @@
    "lt": [
     "bangos"
    ],
-   "lb": []
+   "lb": [
+    "Well"
+   ]
   },
   "73": {
    "io": [
@@ -97882,7 +98022,9 @@
    "lt": [
     "paplūdimyje"
    ],
-   "lb": []
+   "lb": [
+    "Plage"
+   ]
   },
   "74": {
    "io": [
@@ -97969,7 +98111,9 @@
    "lt": [
     "elektriniu tramvajumi"
    ],
-   "lb": []
+   "lb": [
+    "elektreschen Tram"
+   ]
   },
   "75": {
    "io": [
@@ -98056,7 +98200,9 @@
    "lt": [
     "stotelė"
    ],
-   "lb": []
+   "lb": [
+    "Arrêt"
+   ]
   },
   "76": {
    "io": [
@@ -98143,7 +98289,9 @@
    "lt": [
     "balkono"
    ],
-   "lb": []
+   "lb": [
+    "Balkon"
+   ]
   },
   "77": {
    "io": [
@@ -98230,7 +98378,9 @@
    "lt": [
     "inkarais"
    ],
-   "lb": []
+   "lb": [
+    "Ankeren"
+   ]
   },
   "78": {
    "io": [
@@ -98317,7 +98467,9 @@
    "lt": [
     "leitenantus"
    ],
-   "lb": []
+   "lb": [
+    "Leitnanten"
+   ]
   },
   "79": {
    "io": [
@@ -98404,7 +98556,9 @@
    "lt": [
     "artilerijos"
    ],
-   "lb": []
+   "lb": [
+    "Artilleriekapitänen"
+   ]
   },
   "80": {
    "io": [
@@ -98491,7 +98645,9 @@
    "lt": [
     "pėstininkų"
    ],
-   "lb": []
+   "lb": [
+    "Infanteriekapitänen"
+   ]
   },
   "81": {
    "io": [
@@ -98576,7 +98732,9 @@
    "lt": [
     "jūreivis"
    ],
-   "lb": []
+   "lb": [
+    "Matrous"
+   ]
   },
   "82": {
    "io": [
@@ -98659,7 +98817,9 @@
    "lt": [
     "jaunesniuosius leitenantus"
    ],
-   "lb": []
+   "lb": [
+    "Ënnerleitnanten"
+   ]
   },
   "83": {
    "io": [
@@ -98744,7 +98904,9 @@
    "lt": [
     "vado"
    ],
-   "lb": []
+   "lb": [
+    "Kommandant"
+   ]
   },
   "84": {
    "io": [
@@ -98831,7 +98993,9 @@
    "lt": [
     "admirolo"
    ],
-   "lb": []
+   "lb": [
+    "Admiral"
+   ]
   },
   "85": {
    "io": [
@@ -98918,7 +99082,9 @@
    "lt": [
     "bocmanas"
    ],
-   "lb": []
+   "lb": [
+    "Quartiermeeschter"
+   ]
   },
   "86": {
    "io": [
@@ -99003,7 +99169,9 @@
    "lt": [
     "palapinėmis"
    ],
-   "lb": []
+   "lb": [
+    "Zelter"
+   ]
   },
   "87": {
    "io": [
@@ -99090,7 +99258,9 @@
    "lt": [
     "kabinomis"
    ],
-   "lb": []
+   "lb": [
+    "Kabinnen"
+   ]
   },
   "88": {
    "io": [
@@ -99177,7 +99347,9 @@
    "lt": [
     "besimaudantieji"
    ],
-   "lb": []
+   "lb": [
+    "Bueder"
+   ]
   },
   "89": {
    "io": [
@@ -99264,7 +99436,9 @@
    "lt": [
     "kazino"
    ],
-   "lb": []
+   "lb": [
+    "Casino"
+   ]
   },
   "90": {
    "io": [],
@@ -99337,7 +99511,9 @@
    "lt": [
     "sąsmauka"
    ],
-   "lb": []
+   "lb": [
+    "Landeng"
+   ]
   },
   "91": {
    "io": [
@@ -99418,7 +99594,9 @@
    "lt": [
     "pusiasalį"
    ],
-   "lb": []
+   "lb": [
+    "Hallefinsel"
+   ]
   },
   "92": {
    "io": [
@@ -99505,7 +99683,9 @@
    "lt": [
     "didžioji banga"
    ],
-   "lb": []
+   "lb": [
+    "Brandungswell"
+   ]
   },
   "93": {
    "io": [
@@ -99592,7 +99772,9 @@
    "lt": [
     "švyturys"
    ],
-   "lb": []
+   "lb": [
+    "Luuchttuerm"
+   ]
   },
   "94": {
    "io": [
@@ -99679,7 +99861,9 @@
    "lt": [
     "Klifas"
    ],
-   "lb": []
+   "lb": [
+    "Klipp"
+   ]
   },
   "95": {
    "io": [
@@ -99766,7 +99950,9 @@
    "lt": [
     "įlankų"
    ],
-   "lb": []
+   "lb": [
+    "Buchten"
+   ]
   },
   "96": {
    "io": [
@@ -99853,7 +100039,9 @@
    "lt": [
     "plokščiakalnio"
    ],
-   "lb": []
+   "lb": [
+    "Plateau"
+   ]
   },
   "97": {
    "io": [
@@ -99936,7 +100124,9 @@
    "lt": [
     "fortas"
    ],
-   "lb": []
+   "lb": [
+    "Fort"
+   ]
   },
   "98": {
    "io": [
@@ -100023,7 +100213,9 @@
    "lt": [
     "sąsiaurio"
    ],
-   "lb": []
+   "lb": [
+    "Mieresarm"
+   ]
   },
   "99": {
    "io": [
@@ -100106,7 +100298,9 @@
    "lt": [
     "salą"
    ],
-   "lb": []
+   "lb": [
+    "Insel"
+   ]
   },
   "100": {
    "io": [
@@ -100193,7 +100387,9 @@
    "lt": [
     "rifų"
    ],
-   "lb": []
+   "lb": [
+    "Rëffer"
+   ]
   }
  },
  "t11": {
