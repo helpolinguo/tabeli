@@ -284,6 +284,17 @@ LANGUES = [
     # ecarte.
     {"kodo": "yue", "nomo": "粵語", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # L'ARABE EGYPTIEN S'ECRIT, ET IL S'IMPRIME. Il n'a pas
+    # d'academie non plus, mais il a ses romans, son theatre, ses
+    # sous-titres, ses paroles de chansons et son encyclopedie ; et
+    # il a une grammaire que l'arabe standard n'a pas — ده pour
+    # هذا, مش pour ليس, la negation en ما...ش, le presentatif بـ
+    # devant l'inaccompli, le futur en حـ, et بتاع pour l'annexion.
+    # La colonne s'ecrit donc en egyptien ECRIT, non en arabe
+    # standard lu au Caire : c'est la meme condition qui a fait la
+    # colonne cantonaise et qui a fait ecarter le wu.
+    {"kodo": "arz", "nomo": "مصرى", "dir": "rtl",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -906,7 +917,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "ga": "ga", "gl": "gl",
            "cs": "cs", "lt": "lt",
            "lb": "lb", "rm": "rm",
-           "et": "et", "vi": "vi", "yue": "yue",
+           "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 

@@ -64,6 +64,11 @@ DOSSIER = {"fr": "tableau",
            # confond pas avec le « tubiao » du mandarin : ce sont
            # les deux lectures du meme mot, et deux colonnes.
            "yue": "toubiu",
+           # MEME JETON QUE L'ARABE STANDARD : « لوحة » s'ecrit et se
+           # dit de la meme facon au Caire, et le glob se fait DANS le
+           # dossier de la langue — texto/ar et texto/arz ne se melent
+           # pas, comme texto/fr et texto/fr-CA.
+           "arz": "lawha",
            "de": "tafel",
            "it": "tavola"}
 
