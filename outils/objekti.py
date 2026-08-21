@@ -336,6 +336,7 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
            # Meme jeton que l'arabe standard, autre dossier : voir
            # renvoji.py.
            ("arz", "*-lawha-*.tex"), ("hi", "*-talika-*.tex"),
+           ("mr", "*-takta-*.tex"),
            ("pt", "*-quadro-*.tex"), ("bn", "*-sarani-*.tex"),
            ("ja", "*-zuhyo-*.tex"), ("pnb", "*-naqsha-*.tex"),
            ("pa", "*-sarni-*.tex"),

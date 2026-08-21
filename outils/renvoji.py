@@ -69,6 +69,9 @@ DOSSIER = {"fr": "tableau",
            # dossier de la langue — texto/ar et texto/arz ne se melent
            # pas, comme texto/fr et texto/fr-CA.
            "arz": "lawha",
+           # LE MARATHI dit « तक्ता », non « तालिका » : le jeton
+           # est donc « takta » et non celui du hindi.
+           "mr": "takta",
            "de": "tafel",
            "it": "tavola"}
 

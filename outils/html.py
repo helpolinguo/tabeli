@@ -295,6 +295,8 @@ LANGUES = [
     # colonne cantonaise et qui a fait ecarter le wu.
     {"kodo": "arz", "nomo": "مصرى", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
+    {"kodo": "mr", "nomo": "मराठी", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -918,6 +920,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "cs": "cs", "lt": "lt",
            "lb": "lb", "rm": "rm",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
+           "mr": "mr",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2043,6 +2046,12 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # exige donc le « सं. » qui suit le mot dans la
                         # seule ligne qui numerote.
                         r"|तालिका\s+सं"
+                        # LE MARATHI DIT « तक्ता », qui n'est pas le
+                        # « तालिका » du hindi : deux langues voisines,
+                        # deux mots, et c'est pour cela que la colonne
+                        # se traduit pour elle-meme. Meme raison que
+                        # pour le gourmoukhi et le shahmoukhi.
+                        r"|तक्ता\s+क्रमांक"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2363,6 +2372,8 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # oblige a toucher au marquage des roles.
                    r"|السلسلة\s+(?:التانية|التالتة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
+                   # LE MARATHI : « पहिली मालिका ».
+                   r"|(?:पहिली|दुसरी|तिसरी|चौथी)\s+मालिका"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
                    r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ"
@@ -2414,6 +2425,9 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # « المشهد التاني » et « المشهد التالت ».
                   r"|المشهد\s+(?:التاني|التالت)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
+                  # LE MARATHI APPELLE UNE SCENE « प्रवेश », le mot
+                  # de son theatre, la ou le hindi dit « दृश्य ».
+                  r"|(?:पहिला|दुसरा|तिसरा|चौथा)\s+प्रवेश"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"
