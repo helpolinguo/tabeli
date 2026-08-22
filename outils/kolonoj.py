@@ -185,6 +185,10 @@ LINGUI = {
         # signes : aucune frontiere, aucune matra ne les separe. On
         # exempte la forme suivie de sa particule, jamais le mot seul.
         "ये रे",
+        # « ये-जा », LE VA-ET-VIENT : meme verbe येणे, meme deux
+        # signes que le pronom hindi. Le tableau 9 l'ecrit de la
+        # chaussee qui facilite les communications.
+        "ये-जा",
     ]},
 }
 
