@@ -46,6 +46,7 @@ par alinéa.
 | Traduction marathe (`texto/mr/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — en devanagari comme le hindi, mais ni la même langue ni la même ponctuation (§ 8) |
 | Traduction telougoue (`texto/te/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dravidienne du relevé, et celle qui a fait la règle modificateur–tête (§ 8, § 9) |
 | Traduction coréenne (`texto/ko/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne du relevé sans langue voisine, d'où un contrôle qui tient en une classe de caractères (§ 8) |
+| Traduction tamoule (`texto/ta/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont l'adversaire est un **registre** et non une langue, et celle qui a fait naître `ordo.py` (§ 8, § 9) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -571,6 +572,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/mr/10-takta-01.tex … 25-takta-16.tex        (traduction)
     texto/te/10-pattika-01.tex … 25-pattika-16.tex  (traduction)
     texto/ko/10-dopyo-01.tex … 25-dopyo-16.tex      (traduction)
+    texto/ta/10-attavanai-01.tex … 25-attavanai-16.tex (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1246,6 +1248,106 @@ noté dans l'en-tête de chaque fichier concerné :
 On modernise la langue, jamais les choses, et cela vaut aussi pour les
 choses qu'on aurait plaisir à retrouver.
 
+### La colonne tamoule : quand l'adversaire est un registre
+
+Toutes les colonnes du relevé qui doivent se défendre se défendaient
+jusqu'ici contre une **langue voisine** — le cantonais contre le
+mandarin, l'égyptien contre l'arabe standard, le marathe contre le
+hindi — ou contre une **écriture ancienne**, le coréen contre le hanja.
+Le tamoul est le premier cas différent : sa voisine dravidienne, le
+télougou, ne partage pas une lettre avec lui, et son écriture n'est
+partagée par personne. Ce qui le guette est un **registre**.
+
+**Le tamoul est diglossique pour de bon** : la langue parlée et la
+langue écrite diffèrent jusque dans la conjugaison — *இருக்கு* contre
+*இருக்கிறது*, *இல்ல* contre *இல்லை*, *பண்ணு* contre *செய்* — et
+personne n'imprime la première. `kolonoj.py` relève six marques du
+parlé, chacune bornée par une classe tamoule en avant et en arrière,
+parce que « இல்ல » est aussi le début de « இல்லை » et de « இல்லாத ».
+S'y ajoutent les chiffres tamouls, qui ne servent plus qu'en
+épigraphie. Vérifié en plantant « குளிரா இல்ல » et « அட்டவணை எண் ௧ » :
+deux signalements, avec la ligne et la forme.
+
+**Et on ne vise pas les lettres grantha**, ஜ ஷ ஸ ஹ, qui servent aux
+noms étrangers — la note (*) du tableau 1 impose justement d'écrire
+ஸ்டெஃபானுஸ். Le contrôle symétrique de la pureté serait aussi faux que
+le contrôle du parlé est juste : les manuels de 2026 impriment
+நோட்டுப் புத்தகம், சிலேட்டு, பென்சில். **On modernise la langue,
+jamais les choses — et on ne la purifie pas non plus.**
+
+**Cette colonne a fait naître `ordo.py` (§ 9).** Le tableau 9 a coûté
+neuf écarts au premier passage, dont sept sur des couples que
+`parigi.py` ne contient pas ; le tableau 10, écrit avec la suite des
+renvois sous les yeux, en a coûté trois, et le tableau 15 — cent deux
+renvois, le maximum du livret — un seul.
+
+**Trois colonnes sur la même planche, et le compte suit la latitude.**
+Le tableau 9 est le meilleur relevé de tout le livret sur ce point :
+
+| Colonne | Latitude | Noms empruntés sur la planche 9 |
+|---|---|---|
+| coréenne | 33–43° N | **4** |
+| télougoue | 13–19° N | **9** |
+| tamoule | 8–13° N | **17** |
+
+Ce n'est plus une illustration de « le mot est là où la chose est » :
+c'est une **mesure**, et elle ne pouvait pas se faire avec moins de
+trois colonnes sur la même planche. Le tableau 16 la refait dans
+l'autre sens — sur dix-huit bêtes de la ménagerie, le tamoul en nomme
+seize et garde même la hyène, que le coréen empruntait.
+
+**Et la même langue ne paie rien trois tableaux plus loin.** Le port
+(10), la ville (11) et le chemin de fer (12) coûtent quatre emprunts à
+eux trois : la côte de Coromandel fait mille kilomètres, le commerce
+maritime tamoul est plus vieux que l'ère chrétienne, et la première
+ligne indienne part de Madras en 1856. **Ce n'est pas la langue qui
+est riche ou pauvre, c'est la planche qui est chez elle ou non** — la
+colonne télougoue avait fait exactement le même parcours.
+
+**Deux mots vieux de deux mille ans tombent sur des planches de 1926.**
+சதுரங்கம் (tableau 13) est le nom du jeu des quatre corps d'armée,
+d'où viennent le *shatranj* persan et le *chess* anglais : sur un salon
+de café où tout le reste vient d'Europe, un seul objet fait le chemin
+inverse. யாழ் (tableaux 14 et 16) est la harpe du Sangam, celle qui a
+donné son nom à Yazhpanam, et பேரிகை le grand tambour des mêmes
+textes — au milieu d'un étalage de guitares et de clarinettes.
+
+**Le vasistas (78) casse enfin sa série.** Trente-huit colonnes
+l'avaient nommé sans périphrase et la tâche 25 avait été close
+là-dessus. Le tamoul a la chose dans toutes ses maisons, mais l'écrit
+la nomme en deux mots — மேல் சாளரம் — et le parlé emprunte
+« ventilator » à l'anglais, que la colonne n'écrit pas. Il faut donc
+dire **trente-huit fois sur trente-neuf**, et non plus « toutes » :
+une série qui ne casse jamais ne prouve rien tant qu'on ne l'a pas
+cassée.
+
+**Huit refus de transposition, un par occasion, et jamais le même
+mot.** கபடி pour le jeu de barres (2) — le coréen avait refusé 진놀이
+au même renvoi, deux langues sans rapport et le même piège ; பாதுகை
+pour les sabots (3) ; திண்ணை pour le vérando (4) et pour le balcon
+(5, 10, 13) ; கோட்டை pour le manoir (4) — mais **écrit** au tableau 9,
+où le renvoi est une vraie forteresse : ce n'est pas le mot qu'on
+juge, c'est la chose ; மாவட்ட ஆட்சியர் அலுவலகம் pour la préfecture
+(11), qui était la tentation la plus forte de tout le relevé.
+
+**Quatre noms de métier arbitrés, et jamais par prudence.** Le
+cordonnier (7), le coiffeur et le tailleur (14), le boucher (15) ont
+tous un nom de caste en tamoul, et tous servent d'injure. La colonne
+écrit la fonction — mais celle qui est **peinte sur les enseignes de
+Chennai en 2026**, முடி திருத்துபவர், தையல்காரர் : écrire la fonction
+ne veut pas dire l'affadir.
+
+**Deux choses corrigées en cours de route, et dites ici plutôt que
+tues.** La lieue ne tombe pas juste en tamoul : le காதம் vaut dix à
+seize kilomètres et non quatre, ce qui défait la règle que les
+coïncidences télougoue et coréenne avaient suggérée (§ 8, colonne
+coréenne). Et la parenté tamoule, l'une des plus fines qui soient —
+நாத்தனார் la sœur du mari, சகலை le mari de la sœur aînée de l'épouse —
+est **moins** précise que la coréenne sur un point : மாமனார் est le
+beau-père des deux côtés. Deux langues très précises, précises sur des
+axes différents.
+
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1271,7 +1373,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 38 colonnes traduites
+    python3 outils/kolonoj.py            # les 39 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
