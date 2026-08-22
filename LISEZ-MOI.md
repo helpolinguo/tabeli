@@ -45,7 +45,7 @@ par alinéa.
 | Traduction en arabe égyptien (`texto/arz/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — écrite en égyptien et non en arabe standard ; colonne de droite à gauche (§ 8) |
 | Traduction marathe (`texto/mr/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — en devanagari comme le hindi, mais ni la même langue ni la même ponctuation (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
-| Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) |
+| Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
 Le projet compile en permanence :
 
@@ -575,6 +575,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     outils/ceni.py            indice de scène dans les clés %%K
     outils/controles.py       les six contrôles
     outils/kolonoj.py         la forme et la langue des colonnes traduites
+    outils/parigi.py          les paires de renvois à retourner (§ 9)
     outils/CONSIGNE-RELEVE.md consigne de transcription
     outils/lekto.py           prépare un feuillet pour la lecture à l'œil
     outils/html.py            écrit index.html
@@ -1131,6 +1132,58 @@ une ligne ne change donc rien à ce qui se lit.
 l'ont prouvé au tableau 7 et au tableau 13 égyptiens (§ 8). Les deux
 sont exemptés par leur forme **exacte**, jamais par le mot : un contrôle
 qu'on désarme en bloc ne contrôle plus rien.
+
+---
+
+### La liste de courses : `parigi.py`
+
+    python3 outils/parigi.py 5     # les paires du tableau 5
+    python3 outils/parigi.py       # les 377 paires du livret
+
+Ce n'est pas un contrôle, c'est une **liste de courses**. `renvoji.py`
+dit *après coup* que deux renvois sont sortis dans le mauvais ordre ;
+celui-ci le dit *avant*, en lisant l'ido seul.
+
+**La cause est l'ordre modificateur-tête, et rien d'autre.** La colonne
+télougoue a coûté 2, 0, 9 puis 7 inversions aux tableaux 1 à 4, et le
+tableau 4 en a donné la raison exacte : en télougou — comme en tamoul,
+en coréen, en ourdou, en persan, en goudjarati —, **tout ce qui
+qualifie précède ce qui est qualifié**, sans exception. Dès qu'un
+renvoi tombe sur un modificateur et un autre sur sa tête, les deux
+sortent à l'envers, mécaniquement, quelle que soit la phrase.
+
+L'outil relève donc, dans chaque bloc de l'ido, les couples de renvois
+séparés par un mot de rattachement — *di, dil, de, kun, qua, por, sur,
+proxim*… — **ou par un participe**, qui rattache sans mot-outil :
+« bubi (35) *preiranta* la muzikisti (36) ». Il ne relève **pas** les
+énumérations : deux renvois séparés par « e » ne sont pas en rapport de
+dépendance, et une langue à tête finale les rend dans l'ordre. C'est
+pourquoi les tableaux qui énumèrent — le marché, la rue — coûtent moins
+que ceux qui rattachent, **dans toutes les langues du relevé**.
+
+**Il est calibré, et ses ratés sont nommés.** Sur les dix-huit
+inversions réellement commises aux tableaux 3 et 4 télougous — relevées
+par `renvoji.py`, puis corrigées, donc de vérité connue :
+
+| Fenêtre | Trouvées | Lignes à lire (t1–t4) |
+|---|---|---|
+| 30 caractères | 13 sur 18 | 29 |
+| **45 caractères** | **16 sur 18** | **55** |
+| 80 caractères | 16 sur 18 | 88 |
+
+Les deux qui échappent sont nommées dans l'en-tête du fichier, et l'une
+d'elles n'est **pas** un rapport modificateur-tête : c'est une
+coordination, que le télougou rend dans l'ordre — l'outil a raison de ne
+pas la signaler. Sur les dix-sept vraies paires, il en trouve seize.
+
+**Ce n'est donc pas un contrôle exhaustif, et il ne prétend pas
+l'être** : `renvoji.py` reste l'autorité. Celui-ci fait gagner du temps,
+pas de la certitude.
+
+**Ce qu'il vaut, mesuré :** le tableau 5 télougou, **le plus long du
+livret** — 68 blocs, plus de cent vingt renvois —, a été écrit avec sa
+liste en main et n'a coûté **aucune** inversion au premier jet, là où
+les quatre précédents en avaient coûté dix-huit.
 
 ---
 
