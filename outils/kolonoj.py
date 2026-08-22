@@ -96,7 +96,24 @@ def _mot(*formes):
 # -------------------------------------------------------------------
 #  LES COLONNES QUI ONT UNE LANGUE A DEFENDRE
 # -------------------------------------------------------------------
-#  {kodo: {"mot": [(motif, ce qu'il faut ecrire)], "exemptes": [...]}}
+#  {kodo: {"mot": [(motif, ce qu'il faut ecrire)], "exemptes": [...],
+#          "narracio": [(motif, ...)]}}
+#
+#  « narracio » PORTE LES REGLES QUI NE VALENT QUE HORS DIALOGUE.
+#  Une seule colonne en a besoin, le javanais, et une seule raison
+#  la lui donne : ses niveaux de langue ne se choisissent pas par
+#  texte mais par QUI PARLE A QUI. La narration du livret tient le
+#  ngoko ; mais au tableau 5, qui est un dialogue d'un bout a
+#  l'autre, l'enfant s'adresse a son oncle, et un enfant javanais
+#  parle krama a son oncle. « kula », « mboten », « sampun » y sont
+#  donc les formes JUSTES, et les relever serait crier sur la
+#  politesse meme que l'alinea decrit.
+#
+#  LE DIALOGUE SE RECONNAIT AU FICHIER, ET LA MESURE EST NETTE.
+#  Les attributions de parole s'ecrivent « \textsc{...}. --- » : le
+#  tableau 5 en compte TRENTE-SIX, le tableau 12 en compte UNE (et
+#  c'est « Noto. », pas un locuteur), les quatorze autres n'en ont
+#  aucune. Le seuil est pose a cinq, ou il n'y a rien a departager.
 #
 #  Les colonnes absentes de cette table ne subissent que le controle de
 #  forme, qui vaut pour toutes.
@@ -468,22 +485,6 @@ LINGUI = {
         (r"(?i)(?<![A-Za-z])kemudian(?![A-Za-z])", "banjur"),
         (r"(?i)(?<![A-Za-z])se(?:buah|orang|ekor)(?![A-Za-z])",
          "le javanais ne compte pas avec le classificateur indonesien"),
-        (r"(?i)(?<![A-Za-z])kula(?![A-Za-z])",
-         "aku — la colonne tient le ngoko, non le krama"),
-        (r"(?i)(?<![A-Za-z])mboten(?![A-Za-z])",
-         "ora — la colonne tient le ngoko, non le krama"),
-        (r"(?i)(?<![A-Za-z])menika(?![A-Za-z])",
-         "iki — la colonne tient le ngoko, non le krama"),
-        (r"(?i)(?<![A-Za-z])ingkang(?![A-Za-z])",
-         "sing — la colonne tient le ngoko, non le krama"),
-        (r"(?i)(?<![A-Za-z])sampun(?![A-Za-z])",
-         "wis — la colonne tient le ngoko, non le krama"),
-        (r"(?i)(?<![A-Za-z])kaliyan(?![A-Za-z])",
-         "karo — la colonne tient le ngoko, non le krama"),
-        (r"(?i)(?<![A-Za-z])griya(?![A-Za-z])",
-         "omah — la colonne tient le ngoko, non le krama"),
-        (r"(?i)(?<![A-Za-z])toya(?![A-Za-z])",
-         "banyu — la colonne tient le ngoko, non le krama"),
         # ET LE PIEGE DE LA DATE VAUT ICI AUSSI : la reforme de 1972
         # a refait l'orthographe latine de l'indonesien ET celle du
         # javanais d'un seul coup. « djaran », « tjilik », « boekoe »
@@ -499,8 +500,41 @@ LINGUI = {
                                   "note « c » depuis la reforme"),
         (r"(?i)[A-Za-z]*oe[A-Za-z]*", "graphie d'avant 1972 — « oe » se "
                                   "note « u » depuis la reforme"),
+    ],
+     # LES REGLES DE NIVEAU NE VALENT QUE HORS DIALOGUE, et il a fallu
+     # le tableau 5 pour le comprendre. Elles etaient d'abord dans
+     # « mot », avec les autres, et c'etait juste tant que le livret
+     # racontait. Le tableau 5 est un dialogue entier : Ioannes y parle
+     # a son oncle, et un enfant javanais parle KRAMA a son oncle —
+     # « kula » y est la forme juste, et l'alinea dit meme que l'enfant
+     # est poli. La regle a donc ete deplacee, non otee : hors dialogue
+     # elle vaut toujours, et le krama y signale bien que le niveau
+     # entier a glisse.
+     "narracio": [
+        (r"(?i)(?<![A-Za-z])kula(?![A-Za-z])",
+         "aku — la narration tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])mboten(?![A-Za-z])",
+         "ora — la narration tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])menika(?![A-Za-z])",
+         "iki — la narration tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])ingkang(?![A-Za-z])",
+         "sing — la narration tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])sampun(?![A-Za-z])",
+         "wis — la narration tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])kaliyan(?![A-Za-z])",
+         "karo — la narration tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])griya(?![A-Za-z])",
+         "omah — la narration tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])toya(?![A-Za-z])",
+         "banyu — la narration tient le ngoko, non le krama"),
     ]},
 }
+
+# LE SEUIL AU-DELA DUQUEL UN FICHIER EST UN DIALOGUE. Mesure sur les
+# seize tableaux ido : 36 attributions de parole au tableau 5, 1 au
+# tableau 12 — et c'est « Noto. » —, 0 partout ailleurs. Cinq laisse
+# donc les deux cas de part et d'autre sans rien serrer.
+PAROLI = 5
 
 
 # LES ECRITURES QUI NE SE MELENT PAS DANS UN MOT. Deux lettres de
@@ -567,6 +601,13 @@ def formo(f, lg, mauvais):
     mots = regle.get("mot", [])
     exemptes = regle.get("exemptes", [])
     lignes = f.read_text(encoding="utf-8").split("\n")
+    # UN FICHIER QUI PARLE N'EST PAS UN FICHIER QUI RACONTE. Les
+    # regles de « narracio » ne s'appliquent qu'aux tableaux narres :
+    # voir PAROLI, plus haut, et l'en-tete de LINGUI.
+    dialogo = sum(x.count("\\textsc{") for x in lignes
+                  if not x.startswith("%")) >= PAROLI
+    if not dialogo:
+        mots = mots + regle.get("narracio", [])
     # LE MOT DE BROUILLON LAISSE DANS LE TEXTE. Trois fois dans la
     # seule colonne ourdoue, deux fois dans la tamoule, on a tape un
     # mot francais seul sur sa ligne — « Wait », « Ordre » — en
