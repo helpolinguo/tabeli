@@ -234,6 +234,20 @@ LINGUI = {
         (_mot("మొదటి దృశ్యం", "రెండవ దృశ్యం", "మూడవ దృశ్యం",
               "నాలుగవ దృశ్యం"), "మొదటి రంగం ..."),
     ]},
+
+    # LE COREEN CONTRE LE HANJA. Les autres colonnes se defendent
+    # contre une langue VOISINE qui partage leur alphabet — le
+    # cantonais contre le mandarin, le marathi contre le hindi. Le
+    # coreen n'a pas de voisin de ce genre : le hangul n'est partage
+    # par personne. Ce qui le guette est autre chose, et plus simple :
+    # le mot sino-coreen ecrit en ideogrammes, comme on l'imprimait
+    # encore en 1926. Le coreen de 2026 s'ecrit tout en hangul ; un
+    # seul ideogramme dans texto/ko est donc une faute, quel qu'il
+    # soit, et la regle tient en une classe de caracteres.
+    "ko": {"mot": [
+        (r"[\u4E00-\u9FFF]", "hangul seul — le coreen de 2026 "
+                              "n'imprime plus le hanja"),
+    ]},
 }
 
 

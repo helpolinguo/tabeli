@@ -307,6 +307,15 @@ LANGUES = [
     # ainsi.
     {"kodo": "te", "nomo": "తెలుగు", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE COREEN N'A DE PARENTE AVEC AUCUNE AUTRE COLONNE. Le japonais
+    # lui ressemble par l'ordre des mots et par rien d'autre ; le
+    # chinois et le cantonais lui ont prete son ancien lexique savant
+    # et pas sa grammaire. Il s'ecrit en outre dans un alphabet qui
+    # n'est partage par personne, ce qui rend la colonne facile a
+    # controler : un ideogramme dans texto/ko est une faute, et
+    # kolonoj.py le releve.
+    {"kodo": "ko", "nomo": "한국어", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -981,7 +990,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "lb": "lb", "rm": "rm",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
-           "te": "te",
+           "te": "te", "ko": "ko",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2117,6 +2126,10 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # hindi et le marathi, on exige le mot du
                         # numero qui suit, faute de capitales.
                         r"|పట్టిక\s+సంఖ్య"
+                        # LE COREEN ecrit « 도표 제 9 호 », batie sur
+                        # le meme moule que le japonais « 図表第 9
+                        # 号 » : le mot, puis le « 제 » qui numerote.
+                        r"|도표\s*제"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2440,6 +2453,8 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # LE MARATHI : « पहिली मालिका ».
                    r"|(?:पहिली|दुसरी|तिसरी|चौथी)\s+मालिका"
                    r"|(?:మొదటి|రెండవ|మూడవ|నాలుగవ)\s+శ్రేణి"
+                   # LE COREEN dit « 첫째 계열 ».
+                   r"|(?:첫째|둘째|셋째|넷째)\s+계열"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
                    r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ"
@@ -2498,6 +2513,12 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # son theatre, comme le marathi dit प्रवेश : ni l'un
                   # ni l'autre ne calque le « దృశ్యం » savant.
                   r"|(?:మొదటి|రెండవ|మూడవ|నాలుగవ)\s+రంగం"
+                  # LE COREEN APPELLE UNE SCENE « 마당 », le mot de son
+                  # theatre — celui du 판소리 et du 마당놀이 — la ou le
+                  # calque sino-coreen dirait « 장 ». Troisieme colonne
+                  # de suite a preferer son propre mot de scene apres
+                  # le marathi प्रवेश et le telougou రంగం.
+                  r"|(?:첫째|둘째|셋째|넷째)\s+마당"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"

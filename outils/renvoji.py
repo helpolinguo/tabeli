@@ -74,6 +74,9 @@ DOSSIER = {"fr": "tableau",
            "mr": "takta",
            # LE TELOUGOU DIT « పట్టిక » pour un tableau.
            "te": "pattika",
+           # LE COREEN DIT « 도표 » — dopyo. Le « 표 » seul serait le
+           # mot le plus banal de la langue ; le compose ne l'est pas.
+           "ko": "dopyo",
            "de": "tafel",
            "it": "tavola"}
 
