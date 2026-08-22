@@ -1,0 +1,418 @@
+% ===================================================================
+%  جدول نمبر 1 — اسکول، ثانوی اسکول، جماعت۔
+%
+%  Ceci n'est PAS une transcription : c'est une traduction, faite en
+%  2026, en ourdou d'aujourd'hui. D'ou trois differences avec
+%  texto/io et texto/fr, et trois seulement :
+%
+%   * pas de \nl ni de \cc — la traduction ne suit aucune ligne
+%     imprimee, et les lignes de ce fichier ne sont que du confort ;
+%   * pas de \begin{VUpage} — elle n'a ni feuillet ni folio ;
+%   * le gras se pose sur le TERME seul, ponctuation dehors.
+%
+%  Les cles « %%K » sont celles de texto/io, macro pour macro pour
+%  l'apparat, et les renvois \textsuperscript{(n)} visent les MEMES
+%  objets de la planche, dans le MEME ordre.
+%
+%  LA PREMIERE COLONNE DU RELEVE A DEUX VOISINES DE NATURES
+%  DIFFERENTES, ET C'EST TOUTE SON IDENTITE. Les colonnes defendues
+%  jusqu'ici l'etaient sur UN front — le cantonais contre le
+%  mandarin, le marathi contre le hindi, le coreen contre le hanja,
+%  le tamoul contre son propre parle. L'ourdou en a deux :
+%
+%   * il partage l'ECRITURE avec le pendjabi chahmoukhi (texto/pnb),
+%     qui est une autre langue. Meme alphabet, meme nastaliq : la
+%     voisine passerait inapercue.
+%   * il partage la LANGUE avec le hindi (texto/hi) — meme
+%     grammaire, meme lexique de base, au point que les deux se
+%     parlent sans traduction. Ils different par l'ecriture, qui
+%     empeche toute contamination visible, et par le REGISTRE
+%     SAVANT : sanskrit d'un cote, persan et arabe de l'autre.
+%
+%  kolonoj.py TIENT LES DEUX FRONTS PAR DEUX MOYENS DIFFERENTS. Le
+%  premier par la GRAMMAIRE : le genitif pendjabi « دا » n'existe pas
+%  en ourdou, qui dit « کا ». Le second par le LEXIQUE : les tatsama
+%  du hindi — ودیالیہ, پستک, ادھیاپک — que l'ourdou imprime n'emploie
+%  jamais, non parce qu'ils seraient trop savants mais parce que sa
+%  colonne savante est l'autre.
+%
+%  ET DEUX MOTS N'ONT PAS ETE RELEVES, EXPRES. « دی » et « دے » sont
+%  les deux autres formes du genitif pendjabi, et ce sont aussi des
+%  mots ourdous ordinaires — le passe et l'imperatif de « donner ».
+%  Un controle qui les prendrait crierait a chaque page. De meme
+%  « اوہ » : pronom pendjabi et interjection ourdoue, une seule
+%  graphie pour deux mots. On garde « ایہہ », qui n'est que
+%  pendjabi. Un controle qui crie finit desarme.
+%
+%  L'APPARAT SE SEPARE DE SON VOISIN D'ALPHABET SUR TROIS MOTS.
+%  L'ourdou dit جدول pour un tableau la ou le chahmoukhi dit نقشہ.
+%  Pour la serie et pour la scene, en revanche, les deux disent le
+%  MEME mot arabe — سلسلہ, منظر — et ne se separent que sur
+%  l'ordinal qui le compte : دوسرا, تیسرا contre دوجا, تیجا. C'est
+%  la premiere fois dans ce releve que deux colonnes partagent le nom
+%  d'un role et se distinguent par le nombre.
+%
+%  LA REGLE MODIFICATEUR–TETE VAUT ICI SANS RETOUCHE. L'ourdou est a
+%  tete finale, son verbe finit la phrase, ses postpositions suivent
+%  le nom. parigi.py sert donc comme pour le telougou, le coreen et
+%  le tamoul ; cinquieme famille, et il n'a toujours pas fallu y
+%  toucher.
+%
+%  LE VOCABULAIRE DE LA CLASSE EST PERSAN ET ARABE JUSQU'AU BOUT :
+%
+%    تختۂ سیاہ (1)  le tableau noir    جھاڑن (2)   le torchon
+%    چاک (3)        la craie           سلیٹ (42)   l'ardoise
+%    دوات (25)      l'encrier          جاذب کاغذ (41) le buvard
+%    لغت (30)       le dictionnaire    کاپی (28)   le cahier
+%    قلمدان (31)    le plumier         پرکار (26)  le compas
+%    پیمانہ (50)    la regle           چاقو (56)   le canif
+%    بیاض (54)      le carnet          بستہ (57)   le cartable
+%    کھونٹی (58)    la patere          انگیٹھی (46) le poele
+%    ریحل (65)      le pupitre         صحن (75)    la cour
+%    روشندان (78)   le vasistas
+%
+%  « روشندان » EST EXACTEMENT LE VASISTAS, et il arrive au bon
+%  moment. La colonne tamoule venait de casser une serie de
+%  trente-huit en devant l'ecrire en deux mots ; l'ourdou le nomme
+%  d'un seul — روشن, la lumiere, et دان, ce qui la contient : la
+%  petite fenetre haute par ou le jour entre. Trente-neuf fois sur
+%  quarante.
+%
+%  « چپراسی » (77) EST LE CAS LE PLUS INSTRUCTIF DU TABLEAU. L'homme
+%  de service de l'ecole s'est dit فرّاش en egyptien, शिपाई en
+%  marathe, சிப்பந்தி en tamoul — ces deux derniers du persan
+%  sipāhī —, బంట్రోతు en telougou, 수위 en coreen. L'ourdou POSSEDE
+%  سپاہی, le mot persan d'origine, et ne l'emploie pas ici : il dit
+%  چپراسی, d'apres چپراس, la plaque de cuivre que l'homme porte au
+%  ceinturon. La langue qui a prete le mot aux autres en a garde un
+%  troisieme pour elle.
+%
+%  LES QUATRE OPERATIONS ET LA GEOMETRIE SONT DE L'ARABE, ET C'EST LE
+%  MEME ARABE QUE L'EUROPE A EMPRUNTE : جمع, تفریق, ضرب, تقسیم ;
+%  دائرہ, مربع, مثلث, خط ; حساب, ہندسہ. Sur une planche ou l'ecole est
+%  europeenne de bout en bout, le vocabulaire des mathematiques est
+%  celui d'ou l'Europe tient les siennes.
+%
+%  LA GAMME RESTE OCCIDENTALE, comme au telougou, au coreen et au
+%  tamoul. L'ourdou a سرگم et ses sept سُر, et il serait tentant de
+%  les ecrire ; mais le tableau nomme do-re-mi et pose l'equivalence
+%  « = C. D. E. F. G. A. B. ». C'est la gamme d'Europe qui est
+%  l'objet.
+%
+%  TROIS RETOURNEMENTS SUR LES HUIT PAIRES DE parigi.py, ET CE SONT
+%  ENCORE LES MEMES TROIS : « stulo (8) en sua katedro (6) »,
+%  « nigra tabelo (1) kun la vishilo (2) », « furnelo (46) kun lua
+%  tubo (45) ». Cinquieme langue a tete finale, meme partage.
+% ===================================================================
+
+%%K t01-apar-0 apar
+\VUsaut{2.0mm}
+\VUcentre{12.6pt}{120}{وضاحتی کتابچہ}
+\VUsaut{3.2mm}
+\VUcentre{8.4pt}{160}{منسلک}
+\VUsaut{2.6mm}
+\VUtitre{15.6pt}{0}{دلماس کے مددگار جدولوں کا}
+\VUsaut{3.4mm}
+\VUornamento{9pt}
+\VUsaut{5.0mm}
+\VUcentre{13.2pt}{90}{پہلا سلسلہ}
+\VUsaut{3.0mm}
+\VUfilet{16mm}
+\VUsaut{5.6mm}
+
+%%K t01-apar-1 apar
+\VUtitre{15.0pt}{60}{جدول نمبر 1}
+\VUsaut{1.4mm}
+\VUtitre{11.4pt}{0}{اسکول۔ --- ثانوی اسکول۔ --- جماعت۔}
+\VUsaut{2.2mm}
+\VUfilet{20mm}
+\VUsaut{6.4mm}
+
+%%K t01-tit-1 sub
+\VUpk{10.2pt}{40}{عام وضاحت۔}
+\VUsaut{3.0mm}
+
+%%K t01-01-1 p
+1. --- یہ جدول ایک \VUgras{ثانوی اسکول} کی \VUgras{جماعت} دکھاتا ہے۔ اس
+جماعت میں آٹھ \VUgras{میزیں} \textsuperscript{(18)} اور آٹھ
+\VUgras{بینچیں} \textsuperscript{(32)} ہیں۔ ہر بینچ پر تین طالب علم
+بیٹھتے ہیں۔ \VUgras{استاد} \textsuperscript{(7)} ایک \VUgras{کرسی} پر
+\textsuperscript{(8)} بیٹھے ہیں ؛ وہ کرسی اُن کے \VUgras{چبوترے}
+\textsuperscript{(6)} پر ہے۔
+
+%%K t01-02-1 p
+2. --- چبوترے کی بائیں طرف \VUgras{شیشے کی الماری} \textsuperscript{(15)}
+ہے۔ دائیں طرف \VUgras{تختۂ سیاہ} \textsuperscript{(1)} ہے ؛ اُس کے ساتھ
+\VUgras{جھاڑن} \textsuperscript{(2)} اور \VUgras{چاک} \textsuperscript{(3)}
+رکھے ہیں۔
+
+%%K t01-02-2 p
+چبوترے کے اوپر \VUgras{دیواری تختیاں} \textsuperscript{(9, 11,}
+\textsuperscript{12)} اور ایک \VUgras{نقشہ} \textsuperscript{(10)}
+لٹکے ہوئے ہیں۔
+
+%%K t01-03-1 p
+3. --- سب طالب علم اپنی \VUgras{جگہ} \textsuperscript{(17)} پر نہیں
+بیٹھے۔ یوآنیس \textsuperscript{(4)} تختۂ سیاہ کے پاس کھڑا ہے ؛ وہ
+\VUgras{جھاڑن} پکڑے ہوئے \VUgras{ہندسی شکلیں} مٹا رہا ہے۔
+
+%%K t01-03-2 p
+پیٹرس چبوترے کے قریب ہے۔ وہ \VUgras{تحریری کام} \textsuperscript{(5)}
+جمع کر کے استاد کے پاس لے جا رہا ہے۔
+
+%%K t01-04-1 p
+4. --- \VUgras{یہ} استاد \VUgras{زندہ زبانوں} کے ہیں۔ وہ طالب علموں کو
+غیر ملکی زبانیں بولنا، پڑھنا اور لکھنا سکھاتے ہیں \VUgras{(جرمن،
+انگریزی، ہسپانوی، اطالوی، روسی} یا \VUgras{فرانسیسی)}۔
+
+%%K t01-05-1 p
+5. --- جماعت بہت کشادہ اور بہت روشن ہے۔ پیچھے کی طرف دو
+\VUgras{روشندانوں} \textsuperscript{(78)} والی ایک چوڑی \VUgras{کھڑکی}
+اور ایک \VUgras{شیشے کا دروازہ} ہے ؛ ان سے ہوا اور روشنی آتی ہے۔
+
+%%K t01-05-2 p
+یہ جماعت ٹھنڈی نہیں ہے۔ بیچ میں کمرہ گرم کرنے کے لیے ایک بہت اچھی
+\VUgras{انگیٹھی} \textsuperscript{(46)} ہے ؛ اُس کے ساتھ ایک
+\VUgras{دھوئیں کی نلی} \textsuperscript{(45)} لگی ہے۔
+
+%%K t01-05-3 p
+دیوار میں \VUgras{کھونٹیاں} \textsuperscript{(58)} جڑی ہیں ؛ اُن پر طالب
+علموں کی ٹوپیاں اور اوور کوٹ لٹکے ہیں۔
+
+%%K t01-tit-2 sub
+\VUsaut{5.2mm}
+\VUpk{10.2pt}{40}{کھیل کا میدان}
+\VUsaut{3.6mm}
+
+%%K t01-06-1 p
+6. --- \VUgras{گھڑی} \textsuperscript{(63)} نو بج کر پانچ منٹ بتا رہی
+ہے۔
+
+%%K t01-06-2 p
+\VUgras{تفریح کا وقت} \textsuperscript{(76)} ابھی ختم ہوا ہے اور سبق
+دوبارہ شروع ہو رہا ہے۔ کھیلنے کی جگہ \VUgras{صحن} \textsuperscript{(75)}
+میں ہے۔ کچھ طالب علم کھیلتے ہوئے نظر آتے ہیں۔ \VUgras{نگران استاد}
+\textsuperscript{(74)} اُن کی نگرانی کر رہے ہیں۔
+
+%%K t01-07-1 p
+7. --- صحن میں اور بھی کئی لوگ نظر آتے ہیں، یعنی \VUgras{معائنہ کار}
+\textsuperscript{(73)}، اسکول کے سربراہ \VUgras{(صدر مدرس)}
+\textsuperscript{(71)} اور \VUgras{ناظم} \textsuperscript{(72)}۔
+
+%%K t01-07-2 p
+معائنہ کار اسکولوں کا معائنہ کرتے ہیں، صدر مدرس ثانوی اسکول چلاتے
+ہیں، ناظم پڑھائی کی نگرانی کرتے ہیں۔
+
+%%K t01-07-3 p
+چوتھا آدمی \VUgras{چپراسی} \textsuperscript{(77)} ہے۔ وہ غیر حاضری
+لکھنے کے لیے بغل میں ایک رجسٹر دبائے پھرتا ہے۔
+
+%%K t01-08-1 p
+8. --- صحن کے پیچھے \VUgras{ورزشی آلات} \textsuperscript{(70)} اور
+\VUgras{دستکاری} \textsuperscript{(69)} کی کارگاہ ہے۔
+
+%%K t01-08-2 p
+جدول کی دائیں طرف \VUgras{موسیقی} اور \VUgras{خاکہ کشی} کی
+\VUgras{جماعتیں} نظر آنے لگتی ہیں۔
+
+%%K t01-noto-1 noto
+\VUnotes{143.2mm}{%
+(*) \textit{بپتسمے کے ناموں} کو بھی لاطینی صورت کے مطابق لکھنے کا
+مشورہ دیا جاتا ہے۔ بے شمار اختلافات سے بچنے کا یہی ایک طریقہ ہے۔
+پھر \textit{Giovanni, Jean, Johann, Jan, Hans, John, Ivan} وغیرہ میں
+سے کس کو چنیں؟ کیا ہم صرف بپتسمے کے ناموں کے لیے الگ لغت بنائیں؟
+لاطینی سے اُن کی فاعلی صورت لے کر یوں کہیں :
+\VUgras{Ioannes, Ioanna; Iulius, Iulia; Iakobus; Andreas; Lukas.}
+(Gram. Kompleta).%
+}
+
+%%K t01-tit-3 sub
+\VUpk{10.2pt}{40}{تفصیلی وضاحت۔}
+\VUsaut{2.4mm}
+
+%%K t01-tit-4 sub
+\VUpk{10.2pt}{40}{اچھے طالب علم۔}
+\VUsaut{3.0mm}
+
+%%K t01-09-1 p
+9. --- چبوترے کی دائیں طرف پہلی بینچ کے طالب علم \VUgras{ہنریکس} (*)،
+\VUgras{سٹیفانس} اور \VUgras{کارولس} ہیں۔
+
+%%K t01-09-2 p
+ہنریکس بہت توجہ دینے والا اور محنتی ہے ؛ وہ استاد کی بات سنتا ہے۔
+
+اپنی میز پر اُس کے پاس \VUgras{کاپی} \textsuperscript{(28)}،
+\VUgras{کتاب} \textsuperscript{(29)}، \VUgras{لغت} \textsuperscript{(30)}
+اور \VUgras{قلمدان} \textsuperscript{(31)} ہیں۔ اُس کی کتاب میں بہت سے
+\VUgras{صفحے} ہیں، ہر باب میں کئی \VUgras{پیرے} ہیں، اور ہر
+\VUgras{سطر} میں بہت سے \VUgras{الفاظ}۔
+
+%%K t01-09-4 p
+اُس کے ساتھ والا سٹیفانس \textsuperscript{(24)} پُر جوش ہے۔ وہ اگلی
+بار کا سبق اپنی کاپی میں لکھ لیتا ہے۔ اُس کی \VUgras{لکھائی} خوبصورت
+ہے۔ اُس کی کتاب بند ہے ؛ ہمیں صرف \VUgras{جلد} \textsuperscript{(27)}
+نظر آتی ہے۔ اُس کے پاس اُس کا \VUgras{پرکار} \textsuperscript{(26)}
+رکھا ہے۔
+
+%%K t01-09-5 p
+کارولس \textsuperscript{(23)} اپنی کتاب ہاتھ سے پکڑے ہوئے ہے ؛ اپنا
+سبق دوبارہ پڑھنے کے لیے اُسے کھولتا ہے۔ ہر طالب علم کی طرح اُس کے
+سامنے بھی \VUgras{دوات} \textsuperscript{(25)} ہے۔ وہ فرماں بردار ہے۔
+
+%%K t01-10-1 p
+10. --- ساتھ والی میز پر \VUgras{لودوویکس}، \VUgras{انتونیس} اور
+\VUgras{پالس} ہیں۔ لودوویکس اپنا \VUgras{سبق} \textsuperscript{(22)}
+سناتا ہے اور استاد کے \VUgras{سوالوں} کا جواب دیتا ہے۔ انتونیس
+\textsuperscript{(21)} بہت بے توجہ ہے ؛ کبھی کبھی استاد اُسے سزا بھی
+دیتے ہیں۔ پالس \textsuperscript{(20)} اچھا \VUgras{ساتھی} ہے، ملنسار
+اور مددگار۔ وہ بہت توجہ دینے والا ہے۔
+
+%%K t01-tit-5 sub
+\VUsaut{4.2mm}
+\VUpk{10.2pt}{40}{برے طالب علم۔}
+\VUsaut{3.2mm}
+
+%%K t01-11-1 p
+11. --- ہنریکس کے پیچھے \VUgras{جارجیس} \textsuperscript{(38)} ہے۔ وہ
+برا لڑکا نہیں ہے، مگر \VUgras{باتونی}، بے توجہ اور شرارتی ہے۔ اُس کی
+\VUgras{ہلکی مزاجی} اور \VUgras{نافرمانی} سبق کے دوران \VUgras{ہنگامہ}
+پیدا کرتی ہیں ؛ اسی لیے اُسے اکثر سخت \VUgras{تنبیہ} ملتی ہے۔ اُس کی
+\VUgras{مسودے کی کاپی} \textsuperscript{(35)} میلی ہے ؛ وہ اپنے
+\VUgras{قلم} \textsuperscript{(34)} سے اُس پر \VUgras{سیاہی گراتا} ہے،
+اسی لیے ہمیشہ اپنی \VUgras{ربڑ} \textsuperscript{(36)} استعمال کرتا
+ہے ؛ اُس کا \VUgras{کاپیوں کا بستہ} \textsuperscript{(33)} پھٹا ہوا
+ہے، کیونکہ وہ بہت بے پروا ہے۔ پھر وہ زندہ زبانوں کی جماعت میں اپنا
+\VUgras{پنسل دان} \textsuperscript{(37)} کیوں لے آتا ہے؟
+
+%%K t01-11-2 p
+اُس کے ساتھ والا ایڈمنڈس \textsuperscript{(39)} اُسے پسند نہیں کرتا۔ وہ
+سچ مچ کچھ سست ہے، مگر کم گو اور خاموش ہے۔ وہ باتیں نہیں کرتا ؛ البتہ
+سننے کے بجائے اپنی \VUgras{قرأت کی کتاب} کی \VUgras{کہانیاں} پڑھنا
+زیادہ پسند کرتا ہے۔
+
+%%K t01-11-3 p
+اس بینچ کا تیسرا طالب علم \VUgras{لودوویکس} \textsuperscript{(40)} ہے۔
+وہ محنتی ہے۔ سفید \VUgras{کاغذ} پر لکھتا ہے۔ اپنے سامنے اپنا
+\VUgras{جاذب کاغذ} \textsuperscript{(41)} رکھ لیا ہے۔
+
+%%K t01-12-1 p
+12. --- استاد کی بائیں طرف دوسری بینچ کے طالب علم بہت چھوٹے ہیں۔
+پہلا، ننھا \VUgras{ایمیلیس}، ابھی اچھی طرح لکھنا نہیں جانتا ؛ وہ اپنی
+\VUgras{سلیٹ} \textsuperscript{(42)}، اپنی \VUgras{سلیٹی} اور اپنا
+\VUgras{اسفنج} \textsuperscript{(43)} ساتھ لاتا ہے۔
+
+%%K t01-12-2 p
+اُس کے پاس \VUgras{اگستس} اور \VUgras{برنارڈس} \textsuperscript{(44)}
+ہیں۔ یہ اچھی طرح کام کرتا ہے، مگر اُس کا \VUgras{لباس} بہت بے ترتیب
+ہے۔
+
+%%K t01-13-1 p
+13. --- اُن کے پیچھے تین \VUgras{سست لڑکے} ہیں۔ \VUgras{البرٹس} اپنے
+سبق یاد نہیں کرتا۔ \VUgras{یاکوبس} \textsuperscript{(47)} سننے کے بجائے
+سوتا ہے۔ اُس کی \VUgras{سستی} اُسے \VUgras{سرزنش} اور \VUgras{سزا}
+دلاتی ہے۔ آخر میں \VUgras{کرسٹیانس} \textsuperscript{(48)} بہت غیر
+سنجیدہ ہے۔ وہ برا \VUgras{برتاؤ} کرتا ہے اور سدھرنے کی ذرا کوشش نہیں
+کرتا۔
+
+%%K t01-14-1 p
+14. --- اُس کے برعکس اُس کے ساتھی خوش اطوار ہیں۔ \VUgras{ارنسٹس}
+\textsuperscript{(51)} ترتیب اور سلیقے کو پسند کرتا ہے ؛ ہمیشہ اپنا
+\VUgras{پیمانہ} \textsuperscript{(50)} اور اپنی \VUgras{پنسل}
+\textsuperscript{(49)} استعمال کرتا ہے۔ وہ \VUgras{روزانہ آنے والا
+طالب علم} ہے۔
+
+%%K t01-14-2 p
+\VUgras{فرانسسکس} \textsuperscript{(52)} \VUgras{اقامتی طالب علم} ہے ؛
+وردی پہنتا ہے اور ثانوی اسکول ہی میں کھاتا اور سوتا ہے۔ وہ اچھا
+\VUgras{ساتھی} ہے۔
+
+%%K t01-14-3 p
+مورسیس اپنے \VUgras{چاقو} \textsuperscript{(56)} سے اپنی \VUgras{پنسل}
+چھیلتا ہے۔ وہ بہت محتاط ہے۔
+
+%%K t01-14-4 p
+وہ اپنی سب کتابیں ساتھ لاتا ہے — اپنی \VUgras{قواعد کی کتاب}
+\textsuperscript{(55)}، اپنی \VUgras{بیاض} \textsuperscript{(54)}، حتیٰ
+کہ اپنا \VUgras{تختۂ تحریر} \textsuperscript{(53)} بھی۔ اُس کا
+\VUgras{بستہ} \textsuperscript{(57)} اُس کے پیچھے فرش پر رکھا ہے۔
+
+%%K t01-14-5 p
+جماعت کے پیچھے کی دونوں میزیں \VUgras{اچھے طالب علم}
+\textsuperscript{(19)} استعمال کرتے ہیں۔
+
+%%K t01-tit-6 sub
+\VUsaut{4.6mm}
+\VUpk{10.2pt}{40}{خاکہ کشی اور موسیقی۔}
+\VUsaut{3.4mm}
+
+%%K t01-15-1 p
+15. --- \VUgras{خاکہ کشی کے کمرے} میں دیوار پر لٹکے خوبصورت
+\VUgras{نمونے} ہیں، اور چھت سے \VUgras{سایہ بان} والا ایک
+\VUgras{لیمپ} \textsuperscript{(62)} لٹکا ہے۔ \VUgras{استاد}
+\textsuperscript{(60)} بہت صابر ہیں۔ وہ طالب علموں کے \VUgras{خاکے}
+\textsuperscript{(61)} درست کرتے ہیں اور اُنھیں اصل دیکھ کر
+\VUgras{نیم تن مجسمہ} \textsuperscript{(59)} بنانا سکھاتے ہیں۔
+
+%%K t01-16-1 p
+16. --- \VUgras{موسیقی کا کمرہ} بہت دلچسپ لگتا ہے۔ وہاں
+\VUgras{موسیقی} پڑھنا، \VUgras{سرگم کی لکیروں} پر لکھے
+\VUgras{سُر} \textsuperscript{(67)} گانا (دو، رے، می، فا، سول، لا،
+سی\,=\,C. D. E. F. G. A. B.)، \VUgras{کلیدیں} پہچاننا اور خوبصورت
+\VUgras{دھنیں} گانا سکھایا جاتا ہے۔ موسیقی کے کاغذ \VUgras{ریحل}
+\textsuperscript{(65)} پر رکھے جاتے ہیں۔ ایک طالب علم \VUgras{پیانو
+بجاتا ہے} \textsuperscript{(64)} اور \VUgras{موسیقی کے استاد}
+\textsuperscript{(66)} \VUgras{تال دیتے ہیں} \textsuperscript{(68)}۔
+
+%%K t01-17-1 p
+17. --- \VUgras{دستکاری} \textsuperscript{(69)} کی \VUgras{کارگاہ} کا
+ایک کونہ نظر آنے لگتا ہے ؛ وہاں لڑکے لکڑی رندنا اور لوہا ریتنا سیکھ
+سکتے ہیں۔ یہ ہر ثانوی اسکول میں نہیں ہوتا۔
+
+%%K t01-tit-7 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{سائنس کی جماعت۔}
+\VUsaut{3.6mm}
+
+%%K t01-18-1 p
+18. --- ریاضی کے استاد طالب علموں کو \VUgras{ہندسہ}، \VUgras{حساب}،
+\VUgras{شمار} اور \VUgras{میٹری نظام} پڑھاتے ہیں۔ تختۂ سیاہ پر ہمیں
+اہم ہندسی شکلیں نظر آتی ہیں : \VUgras{دائرہ} \textsuperscript{(a)}،
+\VUgras{مربع} \textsuperscript{(b)}، \VUgras{مثلث} \textsuperscript{(c)}،
+\VUgras{خط} \textsuperscript{(d)}۔
+
+%%K t01-18-2 p
+ہمیں ایک \VUgras{سوال} بھی نظر آتا ہے۔ وہ نہ \VUgras{جمع} ہے، نہ
+\VUgras{تفریق}، نہ \VUgras{ضرب} ؛ وہ تو \VUgras{تقسیم}
+\textsuperscript{(e)} ہے۔
+
+%%K t01-19-1 p
+19. --- میٹری نظام کے جدول پر ہمیں یہ نظر آتے ہیں : \VUgras{میٹر}
+\textsuperscript{(a)}، \VUgras{ترازو} \textsuperscript{(b)} اور اُس کے
+\VUgras{باٹ}، \VUgras{لیٹر} \textsuperscript{(e)}، \VUgras{ڈیکا لیٹر}
+\textsuperscript{(f)}، \VUgras{ڈیسی لیٹر}، \VUgras{مکعب میٹر}
+\textsuperscript{(d)}۔
+
+%%K t01-19-2 p
+طالب علم \VUgras{علومِ فطرت} \textsuperscript{(11)}، علمِ حیوانات
+\textsuperscript{(a)}، علمِ نباتات \textsuperscript{(b)}، علمِ ارضیات
+\textsuperscript{(c)} اور \VUgras{تاریخ} \textsuperscript{(12)} بھی
+پڑھتے ہیں۔
+
+%%K t01-19-3 p
+الماری میں \VUgras{طبیعیات} \textsuperscript{(15)} اور
+\VUgras{کیمیا} \textsuperscript{(16)} کے آلات ہیں۔
+
+%%K t01-19-4 p
+الماری کے اوپر \VUgras{کرہ} \textsuperscript{(14)}، \VUgras{مخروط} اور
+\VUgras{کرۂ ارض} \textsuperscript{(13)} رکھے ہیں۔
+
+%%K t01-19-5 p
+جدولوں کے اوپر ایک \VUgras{نقشہ} لٹکا ہے جو دنیا کے پانچ حصے دکھاتا
+ہے : \VUgras{یورپ} \textsuperscript{(g)}، \VUgras{ایشیا}
+\textsuperscript{(e)}، \VUgras{افریقہ} \textsuperscript{(f)}،
+\VUgras{امریکہ} \textsuperscript{(ab)}، \VUgras{اوقیانوسیہ}
+\textsuperscript{(h)}، اور دو بڑے سمندر — \VUgras{بحرالکاہل}
+\textsuperscript{(c)} اور \VUgras{بحرِ اوقیانوس} \textsuperscript{(d)}۔
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}

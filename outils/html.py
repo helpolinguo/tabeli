@@ -324,6 +324,14 @@ LANGUES = [
     # se voit.
     {"kodo": "ta", "nomo": "தமிழ்", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # L'OURDOU EST LA PREMIERE COLONNE A DEUX VOISINES DE NATURES
+    # DIFFERENTES. Il partage la LANGUE avec le hindi — meme
+    # grammaire, meme lexique de base, deux ecritures et deux
+    # registres savants — et l'ECRITURE avec le pendjabi
+    # chahmoukhi, qui est une autre langue. kolonoj.py le defend
+    # donc sur deux fronts a la fois.
+    {"kodo": "ur", "nomo": "اردو", "dir": "rtl",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -998,7 +1006,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "lb": "lb", "rm": "rm",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
-           "te": "te", "ko": "ko", "ta": "ta",
+           "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2144,6 +2152,10 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # pas de capitales, donc on exige le mot du
                         # numero qui suit.
                         r"|அட்டவணை\s+எண்"
+                        # L'OURDOU DIT « جدول نمبر 1 ». Le pendjabi
+                        # chahmoukhi dit « نقشہ نمبر » dans le meme
+                        # alphabet : deux mots, deux colonnes.
+                        r"|جدول\s+نمبر"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2474,6 +2486,14 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
                    r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ"
+                   # L'OURDOU DIT « سلسلہ » COMME LE PENDJABI
+                   # CHAHMOUKHI — c'est le meme mot arabe dans le
+                   # meme alphabet —, mais ses ORDINAUX different :
+                   # دوسرا, تیسرا contre دوجا, تیجا. C'est la
+                   # premiere fois que deux colonnes du releve
+                   # partagent le nom d'un role et se separent sur
+                   # le mot qui le compte.
+                   r"|(?:پہلا|دوسرا|تیسرا|چوتھا)\s+سلسلہ"
                    # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
                    # « سلسلہ » : meme langue, deux lexiques, et c'est
                    # justement pourquoi les deux colonnes se
@@ -2544,6 +2564,10 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"
+                  # MEME CAS POUR LA SCENE : « منظر » est le mot des
+                  # deux colonnes, et seuls les ordinaux les
+                  # separent.
+                  r"|(?:پہلا|دوسرا|تیسرا|چوتھا)\s+منظر"
                   r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
                   # LE TURC, aux deux casses ecrites a la main, pour
                   # la raison dite plus haut a la serie.

@@ -82,6 +82,10 @@ DOSSIER = {"fr": "tableau",
            # mots, et c'est encore une raison de traduire chaque
            # colonne pour elle-meme.
            "ta": "attavanai",
+           # L'OURDOU DIT « جدول » — jadval. Le pendjabi chahmoukhi,
+           # qui partage son alphabet, dit « نقشہ » : meme ecriture,
+           # deux langues, deux mots d'apparat.
+           "ur": "jadval",
            "de": "tafel",
            "it": "tavola"}
 

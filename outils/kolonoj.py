@@ -283,6 +283,61 @@ LINGUI = {
         (r"[\u0BE6-\u0BF2]", "chiffres arabes — les chiffres tamouls "
                               "ne servent plus qu'en epigraphie"),
     ]},
+
+    # L'OURDOU CONTRE DEUX VOISINES A LA FOIS, ET C'EST UN CAS NEUF.
+    # Toutes les colonnes defendues jusqu'ici l'etaient sur UN front :
+    # le cantonais contre le mandarin, le marathi contre le hindi, le
+    # coreen contre le hanja, le tamoul contre son propre parle.
+    # L'ourdou en a deux, et de natures differentes :
+    #
+    #   * il partage l'ECRITURE avec le pendjabi chahmoukhi (pnb),
+    #     qui est une AUTRE LANGUE. Le risque est le meme que pour le
+    #     cantonais : la voisine s'ecrit dans le meme alphabet et
+    #     passerait inapercue.
+    #   * il partage la LANGUE avec le hindi — meme grammaire, meme
+    #     lexique de base — et n'en differe que par l'ecriture et par
+    #     le REGISTRE SAVANT : sanskrit d'un cote, persan et arabe de
+    #     l'autre. Le hindi ne peut pas s'infiltrer en devanagari,
+    #     mais son vocabulaire savant TRANSLITTERE, si.
+    #
+    # LE PREMIER FRONT SE TIENT PAR LA GRAMMAIRE. Le genitif pendjabi
+    # « دا » n'existe pas en ourdou, qui dit « کا » : c'est le
+    # marqueur le plus frequent et le plus sur de la langue voisine.
+    # On NE releve PAS « دی » ni « دے », qui sont pourtant les deux
+    # autres formes du meme genitif : ce sont aussi des mots ourdous
+    # ordinaires — « دی » est le passe de donner, « دے » son
+    # imperatif. Un controle qui les prendrait crierait a chaque
+    # page, et un controle qui crie finit desarme.
+    #
+    # LE SECOND SE TIENT PAR LE LEXIQUE, et les mots vises sont des
+    # tatsama que l'ourdou imprime n'emploie jamais — non parce
+    # qu'ils seraient trop savants, mais parce que sa colonne savante
+    # est l'autre.
+    "ur": {"mot": [
+        (_mot("دا"), "کا — genitif pendjabi"),
+        (_mot("دوجا", "تیجا"), "دوسرا / تیسرا"),
+        # « اوہ » EST LE « اوہ » PENDJABI (« lui ») ET L'INTERJECTION
+        # OURDOUE (« oh ! ») : deux mots pour une seule graphie. On
+        # ne le releve pas, et l'on garde « ایہہ », qui n'est que
+        # pendjabi.
+        (_mot("ایہہ"), "یہ"),
+        (_mot("نئیں"), "نہیں"),
+        (_mot("کیتا"), "کیا"),
+        (_mot("توں"), "سے"),
+        (_mot("کول"), "پاس"),
+        (_mot("جیہڑا", "جیہڑی"), "جو"),
+        (_mot("ساڈا", "تہاڈا"), "ہمارا / تمہارا"),
+        # LES TATSAMA DU HINDI, VISES SOUS LEUR FORME TRANSLITTEREE.
+        (_mot("ودیالیہ"), "اسکول / مدرسہ"),
+        (_mot("ودیارتھی"), "طالب علم"),
+        (_mot("ادھیاپک"), "استاد"),
+        (_mot("پستک"), "کتاب"),
+        (_mot("پرارتھنا"), "دعا"),
+        (_mot("سمے"), "وقت"),
+        (_mot("ورش"), "سال"),
+        (_mot("ناری"), "عورت"),
+        (_mot("کاریہ"), "کام"),
+    ]},
 }
 
 
