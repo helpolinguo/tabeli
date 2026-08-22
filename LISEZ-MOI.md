@@ -48,6 +48,7 @@ par alinéa.
 | Traduction coréenne (`texto/ko/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne du relevé sans langue voisine, d'où un contrôle qui tient en une classe de caractères (§ 8) |
 | Traduction tamoule (`texto/ta/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont l'adversaire est un **registre** et non une langue, et celle qui a fait naître `ordo.py` (§ 8, § 9) |
 | Traduction ourdoue (`texto/ur/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne à **deux voisines de natures différentes** (l'écriture avec le pendjabi chahmoukhi, la langue avec le hindi), et celle qui a rendu au tableau 11 ses gros plans (§ 8) |
+| Traduction indonésienne (`texto/id/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne dont la voisine n'est **dans aucun dossier**, d'où un contrôle qui relève au lieu de comparer, et sur une **date** autant que sur un lexique (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -593,6 +594,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/ko/10-dopyo-01.tex … 25-dopyo-16.tex      (traduction)
     texto/ta/10-attavanai-01.tex … 25-attavanai-16.tex (traduction)
     texto/ur/10-jadval-01.tex … 25-jadval-16.tex      (traduction)
+    texto/id/10-bagan-01.tex … 25-bagan-16.tex       (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1471,6 +1473,91 @@ l'écriture de cette colonne, qu'on a vu que le tableau 11 n'en avait
 aucun** — dans les 42 colonnes à la fois, depuis toujours (§ 8, plus
 haut).
 
+### La colonne indonésienne : une voisine qui n'est dans aucun dossier
+
+Toutes les colonnes défendues jusqu'ici l'étaient **contre une langue
+présente ailleurs dans `texto/`** : le cantonais contre le mandarin, le
+marathe contre le hindi, l'ourdou contre le chahmoukhi et le hindi à la
+fois. L'indonésien a une voisine, et de très près — le malais de
+Malaisie est la **même langue à un standard près** —, mais elle n'est
+dans aucun dossier. Rien ne la signalerait à l'œil, et il n'y a donc
+rien à comparer. `kolonoj.py` doit **relever**, non comparer, et il le
+fait sur deux fronts.
+
+**Le premier est géographique.** Les deux standards se séparent sur une
+liste courte et très connue de mots quotidiens : *cikgu* contre *guru*,
+*tandas* contre *toilet*, *stesen* contre *stasiun*, *ubat* contre
+*obat*, *wang* contre *uang*, *beg* contre *tas*, *kerusi* contre
+*kursi*, *almari* contre *lemari*, *tingkap* contre *jendela*, *bomba*
+contre *pemadam kebakaran*, *tarikh* contre *tanggal*, *tayar* contre
+*ban*, *basikal* contre *sepeda*, *hospital* contre *rumah sakit*.
+
+**Le second est une date, et il est propre à ce livret.** L'orthographe
+d'avant la réforme de 1972 — *boekoe* pour `buku`, *djalan* pour
+`jalan`, *tjelana* pour `celana` — est exactement celle qu'un imprimeur
+aurait employée en 1926, l'année du fac-similé. **C'est le seul piège du
+relevé où la faute serait contemporaine de la source :** une colonne
+écrite « comme à l'époque » serait plus fidèle à la date et moins fidèle
+à la consigne, qui est d'écrire l'indonésien de 2026. Le contrôle relève
+donc `dj`, `tj`, `oe` et `sj` partout ; `nj` est exclu exprès, il compte
+23 occurrences justes dans *menjadi*, *menjaga*, *menjual*.
+
+**Et cinq mots n'ont pas été relevés, exprès, parce qu'ils sont des faux
+amis** : *pejabat* est le bureau là-bas et le fonctionnaire ici,
+*budak* l'enfant là-bas et l'esclave ici, *polis* la police là-bas et la
+police d'assurance ici — et le tableau 7 met justement en scène un agent
+d'assurances —, *kedai* et *lori* existent des deux côtés avec des
+emplois différents. Un contrôle qui crie sur un mot juste finit désarmé :
+c'est la leçon de *دی* et *دے* à la colonne ourdoue, appliquée avant
+d'avoir servi.
+
+**Cinq couches, et chacune découverte par un tableau précis.** L'en-tête
+du tableau 1 annonçait trois couches ; le tableau 5 en a révélé une
+quatrième (le hokkien de la cuisine et du commerce de détail), le
+tableau 11 une cinquième (le portugais) — et la correction a été écrite
+là où la fausse annonce avait été faite, en notant que la preuve était
+déjà dans l'en-tête du tableau 4, `beranda` < *varanda*. Le fond est
+malais ; le sanskrit et l'arabe donnent l'école, la religion et l'État ;
+le portugais donne les objets des navires du XVI<sup>e</sup> siècle
+(*sepatu*, *jendela*, *meja*, *gereja*, *bendera*, *biola*, *serdadu*) ;
+le néerlandais donne l'administration, l'armée et le potager (*zeni*,
+*sersan mayor*, *brankas*, *wesel*, *kasir*, *wortel*, *buncis*,
+*kol*) ; le hokkien donne la cuisine et la boutique.
+
+**Le violon accepté, le théâtre refusé — et c'est la même règle.** Le
+tableau 16 nomme le violon `biola`, du portugais *viola*, là où l'ourdou
+avait refusé l'emprunt et gardé *سارنگی* (plus haut). Le même tableau
+refuse pourtant `wayang` pour le théâtre de marionnettes (41) et écrit
+`panggung boneka` : la chose gravée est un petit théâtre européen à
+rideau rouge et à fauteuils d'orchestre, et lui donner le nom du wayang
+aurait modernisé **la chose**. Le mot suit l'objet quand l'objet est
+venu, et le refuse quand la langue en avait déjà un — dans un sens comme
+dans l'autre.
+
+**L'exotisme d'une planche belge est ici le voisinage.** La ménagerie en
+carton du tableau 16 range côte à côte ce que le fabricant tenait pour
+des bêtes lointaines : le rhinocéros (7), le singe (10), le crocodile
+(12), la panthère (15), le léopard (18), la chauve-souris (35), le
+palmier (70), et le « pays planté de cocotiers » qu'attaquent des
+pirates dans un jeu de patience (48). Pour cette colonne, ce ne sont pas
+des bêtes lointaines : `badak` et `macan tutul` vivent à Java et à
+Sumatra, `buaya` est un des mots les plus anciennement malais du
+tableau, et la côte du jeu est celle du lecteur. **La colonne ne le dit
+pas : elle nomme, et c'est le nom qui le dit.** Le tableau 15 avait
+donné l'envers du même fait — le potager y est néerlandais d'un bout à
+l'autre parce que ce sont les Hollandais qui ont planté ces légumes-là,
+et les fleurs artificielles du tableau 16 s'empruntent cinq fois sur six
+pour la raison inverse : ces plantes n'ont jamais poussé ici.
+
+**Une seule espèce de faute, quatre fois.** `\VUgras{}` vide aux
+tableaux 5, 9, 10 et 15, toujours à la même place : un renvoi qui suit
+un terme dont le groupe gras est déjà fermé, la main ouvrant un second
+groupe pour « porter » l'exposant alors que l'exposant se porte tout
+seul. `kolonoj.py` l'a relevée les quatre fois **sans qu'on ait eu à
+inventer un contrôle pour elle** : il existait déjà. Le tableau 16, qui
+porte cent trois renvois — plus que tout autre du livret —, n'en a
+aucun, parce que la faute a été cherchée avant d'écrire.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1496,7 +1583,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 40 colonnes traduites
+    python3 outils/kolonoj.py            # les 41 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
