@@ -466,7 +466,15 @@ LINGUI = {
         (r"(?i)(?<![A-Za-z])besar(?![A-Za-z])", "gedhe"),
         (r"(?i)(?<![A-Za-z])kecil(?![A-Za-z])", "cilik"),
         (r"(?i)(?<![A-Za-z])orang(?![A-Za-z])", "wong"),
-        (r"(?i)(?<![A-Za-z])rumah(?![A-Za-z])", "omah"),
+        # « rumah sakit » N'EST PAS RELEVE, ET C'EST UN NOM
+        # D'INSTITUTION, PAS UN MOT. Le javanais dit omah pour la
+        # maison, et « rumah » y est bien un indonesianisme — sauf
+        # dans l'hopital, que Java appelle rumah sakit et pas
+        # autrement. La seule autre forme possible est « griya
+        # sakit », qui est du KRAMA : elle serait relevee par la
+        # regle de niveau. Un mot emprunte peut donc etre la seule
+        # forme juste, et le controle doit le savoir.
+        (r"(?i)(?<![A-Za-z])rumah(?!\s+sakit)(?![A-Za-z])", "omah"),
         # « banyak » A ETE RELEVE ICI, PUIS OTE AU TABLEAU 3. Le mot
         # indonesien veut dire « beaucoup » et le javanais dit akeh —
         # la regle semblait bonne. Mais « banyak » est AUSSI un mot
