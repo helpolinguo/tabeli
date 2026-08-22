@@ -51,6 +51,7 @@ par alinéa.
 | Traduction indonésienne (`texto/id/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne dont la voisine n'est **dans aucun dossier**, d'où un contrôle qui relève au lieu de comparer, et sur une **date** autant que sur un lexique (§ 8) |
 | Traduction javanaise (`texto/jv/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la voisine a été écrite par la même main, et **seule du relevé à avoir des niveaux de langue grammaticalisés** (ngoko, krama), d'où un contrôle qui distingue le récit du dialogue (§ 8) |
 | Traduction persane (`texto/fa/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la défense se joue au **caractère** et non au mot : deux voisines (ourdou, arabe) logent dans son propre alphabet, où ی/ي et ک/ك ne se distinguent pas à l'œil (§ 8) |
+| Traduction haoussa (`texto/ha/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne qui s'écrive en **lettres latines** et dont le contrôle vise pourtant le caractère : ɓ, ɗ, ƙ, ƴ sont quatre lettres pleines qu'aucun clavier ne donne, et l'alphabet boko n'a ni p, ni q, ni v, ni x (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -599,6 +600,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/id/10-bagan-01.tex … 25-bagan-16.tex       (traduction)
     texto/jv/10-gambar-01.tex … 25-gambar-16.tex     (traduction)
     texto/fa/10-tablo-01.tex … 25-tablo-16.tex       (traduction)
+    texto/ha/10-hoto-01.tex … 25-hoto-16.tex        (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1750,6 +1752,107 @@ dit *دریچه*, diminutif de *در*, la porte. **Une petite porte.** C'est le
 seul des quarante-trois qui nomme la chose par ce qu'elle est et non par
 où elle est — et c'est un mot que la langue avait déjà.
 
+### La colonne haoussa : le contrôle vise la lettre, en alphabet latin
+
+La colonne persane défendait son alphabet contre deux voisines qui y
+logeaient. Celle-ci s'écrit en **lettres latines** et n'a aucune
+voisine dans le relevé — et son contrôle vise le caractère malgré
+tout, parce que **son alphabet compte quatre lettres qu'aucun clavier
+ordinaire ne donne** : ɓ, ɗ, ƙ, ƴ. Ce ne sont pas des b, d, k, y
+ornés, ce sont des lettres pleines, et « kofa » n'est pas « ƙofa » :
+c'est la différence d'un mot à rien du tout. Une ligne dépouillée de
+ses crochets reste bien formée, le LaTeX compile, `html.py` publie, et
+l'œil qui lit le français ne voit rien. **Cette colonne se défend de
+sa propre saisie**, ce qu'aucune autre n'avait eu à faire.
+
+Douze règles dans `kolonoj.py`, **prouvées sur un fichier fabriqué
+avant qu'une ligne de haoussa soit écrite**, comme les dix règles
+persanes. Huit visent des formes nues qui ne sont *rien* en haoussa
+(kofa, karfe, karshe, kauye, daya, daki, dauka, yan) ; une vise la
+lettre arabe, cette colonne étant en boko et non en ajami ; une
+l'apostrophe droite, là où le coup de glotte s'écrit ’ ; et **une
+vise p, q, v, x, que l'alphabet boko n'a pas**.
+
+**Trois réglages, et les trois sont venus du texte.**
+
+1. **Une règle resserrée.** Le N.-B. du tableau 2 invite le maître à
+   décrire chaque jeu « daki-daki », en détail. Or *daki* était relevé,
+   puisque la chambre s'écrit *ɗaki* et que la forme nue ne valait
+   rien : elle valait quelque chose, liée à elle-même par un trait
+   d'union. C'est le « rumah sakit » javanais dans une autre langue.
+2. **Une règle qui tient un choix et non une faute.** Le Niger écrit
+   *ƴan*, le Nigeria *’yan* ; les deux sont justes chez eux. La
+   colonne s'est donnée **quatre crochets**, et trois crochets plus
+   une apostrophe n'est pas le même alphabet. Ce que la règle relève
+   n'est donc pas une faute mais un **mélange** — première du relevé
+   dans ce cas.
+3. **Deux exemptions, et elles disent où sont les citations.** La note
+   « Balk-o » du tableau 5 et la note « Lambrequino » du tableau 6
+   citent d'autres langues mot pour mot ; la règle des lettres
+   absentes a crié quatre fois puis deux, et elle avait raison à la
+   lettre. **Une citation n'est pas une faute d'orthographe, c'est un
+   autre texte** — et ce ne sont pas les italiques qui les portent,
+   ce sont les NOTES.
+
+**Et la règle des lettres absentes a fait la meilleure prise du
+relevé**, au tableau 15 : l'ido y nomme une confiture « riba o
+quinga », groseille ou coing, et l'alinéa avait été écrit en laissant
+les mots **anglais** dans le texte — *currant* et *quince*. Ce n'est
+pas une faute d'orthographe, c'est un mot qu'on a oublié de traduire,
+et aucun autre contrôle ne l'aurait vu : `renvoji.py` compte des
+renvois, `plenajo` compare des longueurs, `html.py` publie. **Le q de
+« quince » a suffi.**
+
+**Cinq mots portent presque toute la colonne, et ils nomment par la
+forme ou par l'usage, jamais par l'espèce.** *keke* est tout ce qui
+tourne sur un axe — la bicyclette (2), la voiture attelée (5), le
+rouet et la roue de moulin (7), le funiculaire (9), la roue à aubes
+(10), le tramway à chevaux (11), les roues de la locomotive (12), le
+fiacre et la machine à coudre (14) : **dix objets, un seul mot.**
+*jirgi* est tout grand porteur, et c'est le milieu qui le distingue —
+jirgin ruwa le bateau, jirgin ƙasa le train, jirgin sama l'avion.
+*dutse* est la pierre et la montagne, et bâtit tout le tableau 9.
+*fitila* est la lampe quel que soit son combustible, de l'huile au
+phare. *ma-* fait le lieu, l'agent et l'outil, et **la voyelle finale
+sépare le lieu de l'homme** — ma’aikata l'atelier contre ma’aikaci
+l'ouvrier, maƙera la forge contre maƙeri le forgeron.
+
+**Un métier à nom en « ma- » est plus vieux que le siècle ; un métier
+à nom en « mai » a été fabriqué hier.** Le préfixe est fermé, et la
+liste des ma- est exactement celle des métiers que la ville haoussa
+avait avant les Britanniques ; le mot libre *mai* est ouvert et a
+nommé tout ce qui est arrivé depuis. Le coiffeur le prouve à lui
+seul : « wanzami » au village (tableau 7), métier héréditaire ; « mai
+gyaran gashi » en ville (tableau 14), boutique au premier étage. Les
+mêmes ciseaux, et trois siècles entre les deux mots.
+
+**Douze refus, et deux d'entre eux valent pour tout le relevé.** Les
+marrons du tableau 7 : « gyaɗa », l'arachide grillée, donne mot pour
+mot la scène gravée — la vieille femme qui grelotte, le brasero, le
+cornet de papier, les mains qu'on réchauffe — et **la ressemblance
+parfaite d'un usage ne fait pas l'identité d'une chose**. Le chanteur
+de rue du tableau 14 : « maroƙi » avait été **écrit** au tableau 3
+pour le mendiant, parce que là l'homme demandait ; ici il tourne une
+manivelle. **Le même mot accepté à un tableau et refusé à un autre,
+pour la même raison les deux fois.**
+
+**Ce que le haoussa ne doit à personne tient en trois lexiques** — le
+corps (2), la cuisine (6) et la basse-cour (7) — et **ce qu'il doit,
+il le doit à qui a apporté la chose** : les sept jours à l'arabe, les
+douze mois à l'anglais, la marine et le chemin de fer à l'anglais
+encore. Mais **pas une de ses quatre directions**, arewa, kudu,
+gabas, yamma, que la rose des vents du tableau 16 confirme. On
+emprunte le temps, qui s'écrit ; on garde l'espace, qui se marche.
+
+**Et l'exception de la douane tombe ici, après avoir tenu deux fois.**
+Le javanais gardait « pabean » et le persan « گمرک » comme seul
+bâtiment moderne à nom d'ici, parce qu'on perçoit au port depuis
+toujours. Le haoussa n'a jamais eu de douane de port : le commerce
+transsaharien se taxait à la porte de la ville, « kuɗin ƙofa ». **Une
+exception qui tient deux fois et tombe la troisième en dit plus
+qu'une qui tiendrait toujours** — elle ne tenait pas à la douane,
+elle tenait au port.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1775,7 +1878,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 43 colonnes traduites
+    python3 outils/kolonoj.py            # les 44 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
