@@ -200,6 +200,16 @@ LINGUI = {
         # signes que le pronom hindi. Le tableau 9 l'ecrit de la
         # chaussee qui facilite les communications.
         "ये-जा",
+        # « दरवाजा » N'EST PAS TOUJOURS DU HINDI. Le marathi dit दार
+        # pour la porte d'une maison — c'est la regle, et la colonne
+        # l'applique partout — mais दरवाजा pour la GRANDE porte
+        # d'un fort, celle qu'on appelle महादरवाजा au Maharashtra.
+        # Le tableau 11 parle de la porte du vieux chateau fortifie
+        # flanquee de ses deux tours : c'est ce mot-la et pas
+        # l'autre. Exemptee par sa forme exacte, avec son renvoi ;
+        # la graphie hindi दरवाज़ा, avec son nukta, reste relevee
+        # partout, et दरवाजा aussi ailleurs qu'ici.
+        r"\VUgras{दरवाजा} \textsuperscript{(8)}",
     ]},
 }
 
