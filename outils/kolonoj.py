@@ -175,8 +175,19 @@ LINGUI = {
         (_deva("किताब"), "पुस्तक"),
         (_deva("आँख", "आंख", "आँखें"), "डोळा / डोळे"),
         (_deva("सड़क"), "रस्ता"),
-        (_deva("तालिका"), "तक्ता"), (_deva("दृश्य"), "प्रवेश"),
-        (_deva("शृंखला"), "मालिका"),
+        # LES TROIS MOTS D'APPARAT NE SE RELEVENT QUE SOUS LEUR
+        # FORME D'APPARAT. « दृश्य » est du marathi parfaitement
+        # ordinaire — une vue, un spectacle — et le tableau 10
+        # l'emploie deux fois a bon droit ; ce qui serait fautif
+        # est « पहिले दृश्य » a la place de « पहिला प्रवेश ». On vise
+        # donc le mot PRECEDE DE SON ORDINAL, jamais le mot seul :
+        # un controle trop large se fait desarmer, et un controle
+        # desarme ne controle plus rien.
+        (_deva("तालिका क्रमांक"), "तक्ता क्रमांक"),
+        (_deva("पहिले दृश्य", "दुसरे दृश्य", "तिसरे दृश्य",
+               "चौथे दृश्य"), "पहिला प्रवेश ..."),
+        (_deva("पहिली शृंखला", "दुसरी शृंखला", "तिसरी शृंखला",
+               "चौथी शृंखला"), "पहिली मालिका ..."),
     ], "exemptes": [
         # « ये » EST AUSSI L'IMPERATIF MARATHI DE « VENIR ». Le hindi
         # ecrit ये pour « ceux-ci » ; le marathi, lui, conjugue येणे et
