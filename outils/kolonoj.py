@@ -338,6 +338,70 @@ LINGUI = {
         (_mot("ناری"), "عورت"),
         (_mot("کاریہ"), "کام"),
     ]},
+    # L'INDONESIEN SE DEFEND SUR DEUX FRONTS, ET AUCUN DES DEUX N'EST
+    # UNE COLONNE VOISINE. Sa voisine reelle — le malais de Malaisie —
+    # n'est dans aucun dossier de texto/, et rien ne la signalerait a
+    # l'oeil : les deux standards s'ecrivent du meme alphabet et se
+    # lisent l'un l'autre sans peine. On ne peut donc pas comparer, on
+    # doit RELEVER.
+    #
+    # PREMIER FRONT, LE LEXIQUE. Les deux standards se separent sur une
+    # liste courte et tres connue de mots quotidiens. On ne prend que
+    # ceux dont la forme malaisienne n'existe pas du tout en
+    # indonesien standard.
+    #
+    # SECOND FRONT, UNE DATE. L'orthographe d'avant la reforme de 1972
+    # employait « dj », « tj », « oe », « sj » la ou l'on ecrit
+    # aujourd'hui j, c, u, sy — et c'est exactement l'orthographe qu'un
+    # imprimeur aurait employee en 1926, l'annee du fac-simile. C'est
+    # le seul piege du releve ou la faute serait CONTEMPORAINE de la
+    # source.
+    #
+    # LA MESURE AVANT LA REGLE, ET ELLE A DEJA CHANGE LA LISTE. Passe
+    # sur le corps des trois premiers tableaux : zero mot malaisien,
+    # zero « dj », zero « tj », zero « oe », zero « sj » — mais VINGT
+    # ET TROIS « nj », tous dans « menjadi », « menjaga », « menjual »,
+    # ou le n ferme un prefixe et le j ouvre la racine. « nj » est donc
+    # exclu, comme le danda l'a ete du controle des ecritures melees.
+    #
+    # TOUS LES MOTIFS SONT INSENSIBLES A LA CASSE, et cela n'est pas
+    # un detail : le premier essai n'a pas vu « Djalan » en tete de
+    # phrase parce que « Dj » n'est pas « dj ». Les fautes de graphie
+    # d'avant 1972 tombent justement sur des noms propres et des
+    # debuts de phrase — c'est la ou l'ancienne orthographe survit le
+    # plus longtemps.
+    #
+    # ET CINQ MOTS NE SONT PAS RELEVES, EXPRES, PARCE QU'ILS SONT DES
+    # FAUX AMIS : « pejabat » est le bureau la-bas et le fonctionnaire
+    # ici ; « budak » l'enfant la-bas et l'esclave ici ; « polis » la
+    # police la-bas et la police d'assurance ici — et le tableau 7 met
+    # justement en scene un agent d'assurances ; « kedai » et « lori »
+    # vivent des deux cotes avec des emplois differents. Un controle
+    # qui crie sur un mot juste finit desarme.
+    "id": {"mot": [
+        (r"(?i)(?<![A-Za-z])cikgu(?![A-Za-z])", "guru"),
+        (r"(?i)(?<![A-Za-z])tandas(?![A-Za-z])", "toilet"),
+        (r"(?i)(?<![A-Za-z])stesen(?![A-Za-z])", "stasiun"),
+        (r"(?i)(?<![A-Za-z])ubat(?![A-Za-z])", "obat"),
+        (r"(?i)(?<![A-Za-z])wang(?![A-Za-z])", "uang"),
+        (r"(?i)(?<![A-Za-z])beg(?![A-Za-z])", "tas"),
+        (r"(?i)(?<![A-Za-z])kerusi(?![A-Za-z])", "kursi"),
+        (r"(?i)(?<![A-Za-z])almari(?![A-Za-z])", "lemari"),
+        (r"(?i)(?<![A-Za-z])tingkap(?![A-Za-z])", "jendela"),
+        (r"(?i)(?<![A-Za-z])bomba(?![A-Za-z])", "pemadam kebakaran"),
+        (r"(?i)(?<![A-Za-z])tarikh(?![A-Za-z])", "tanggal"),
+        (r"(?i)(?<![A-Za-z])tayar(?![A-Za-z])", "ban"),
+        (r"(?i)(?<![A-Za-z])basikal(?![A-Za-z])", "sepeda"),
+        (r"(?i)(?<![A-Za-z])hospital(?![A-Za-z])", "rumah sakit"),
+        (r"(?i)[A-Za-z]*dj[A-Za-z]*", "graphie d'avant 1972 — « dj » se "
+                                  "note « j » depuis la reforme"),
+        (r"(?i)[A-Za-z]*tj[A-Za-z]*", "graphie d'avant 1972 — « tj » se "
+                                  "note « c » depuis la reforme"),
+        (r"(?i)[A-Za-z]*oe[A-Za-z]*", "graphie d'avant 1972 — « oe » se "
+                                  "note « u » depuis la reforme"),
+        (r"(?i)[A-Za-z]*sj[A-Za-z]*", "graphie d'avant 1972 — « sj » se "
+                                  "note « sy » depuis la reforme"),
+    ]},
 }
 
 
