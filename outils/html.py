@@ -370,6 +370,17 @@ LANGUES = [
     # faire.
     {"kodo": "ha", "nomo": "Hausa", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE GUJARATI A TROIS VOISINES DANS LE RELEVE ET ELLES SONT DE
+    # TROIS NATURES : le hindi, qui est la langue d'Etat et partage
+    # avec lui tout son fonds sanskrit ; le marathi, qui est le
+    # voisin du sud et partage la meme famille d'ecriture ; l'ourdou
+    # et le persan, qui lui ont laisse le lexique du Sultanat. Mais
+    # sa DIFFICULTE PROPRE est ailleurs : l'ecriture gujaratie est la
+    # devanagari SANS LA BARRE, lettre pour lettre ou presque, et un
+    # caractere devanagari glisse dans un mot gujarati se lit sans
+    # qu'on le remarque.
+    {"kodo": "gu", "nomo": "ગુજરાતી", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -1046,6 +1057,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "mr": "mr",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
            "id": "id", "jv": "jv", "fa": "fa", "ha": "ha",
+           "gu": "gu",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2242,6 +2254,13 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # taimako na Delmas », est compose en bas de
                         # casse et ne passe pas.
                         r"|HOTO"
+                        # LE GUJARATI ecrit « કોષ્ટક નં. ૧ ».
+                        # « કોષ્ટક » seul se lirait dans le titre du
+                        # volume, qui parle des « ડેલ્માસ સહાયક
+                        # કોષ્ટકો » ; on exige donc le « નં » qui ne
+                        # suit le mot que dans la ligne qui numerote,
+                        # comme pour le hindi et le bengali.
+                        r"|કોષ્ટક\s+નં"
                         # LE PERSAN ecrit « تابلوی شمارهٔ ۱ ».
                         # « تابلو » seul se lirait dans le titre du
                         # volume, qui parle des « تابلوهای کمکی » ;
@@ -2613,6 +2632,12 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # d'attente ordinaire.
                    r"|[Jj]eri\s+na\s+(?:[Ff]arko|[Bb]iyu|[Uu]ku"
                    r"|[Hh]u[ɗd]u)"
+                   # LE GUJARATI DIT « શ્રેણી » LA OU LE MARATHI DIT
+                   # « मालिका » et le hindi « शृंखला » : trois langues
+                   # du meme fonds sanskrit et trois mots, ce qui est
+                   # justement pourquoi chaque colonne se traduit pour
+                   # elle-meme.
+                   r"|(?:પ્રથમ|બીજી|ત્રીજી|ચોથી)\s+શ્રેણી"
                    # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
                    # « سلسلہ » : meme langue, deux lexiques, et c'est
                    # justement pourquoi les deux colonnes se
@@ -2707,6 +2732,11 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # l'ordinal suit, precede de son « na ».
                   r"|[Ff]age\s+na\s+(?:[Ff]arko|[Bb]iyu|[Uu]ku"
                   r"|[Hh]u[ɗd]u)"
+                  # LE GUJARATI DIT « દૃશ્ય » comme le marathi dit
+                  # « दृश्य » — c'est le meme mot sanskrit —, mais dans
+                  # son ecriture a lui, et avec ses ordinaux :
+                  # પ્રથમ, બીજું, ત્રીજું, ચોથું.
+                  r"|(?:પ્રથમ|બીજું|ત્રીજું|ચોથું)\s+દૃશ્ય"
                   r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
                   # LE TURC, aux deux casses ecrites a la main, pour
                   # la raison dite plus haut a la serie.

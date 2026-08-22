@@ -89,6 +89,19 @@ def _deva(*formes):
     return "|".join(f"(?<!{DEVA}){re.escape(f)}(?!{DEVA})" for f in formes)
 
 
+GUJ = r"[\u0A80-\u0AFF]"
+
+
+def _guj(*formes):
+    """Frontiere de mot en gujarati, pour la meme raison qu'en devanagari.
+
+    Le gujarati a les memes matras combinantes que le devanagari et le
+    \\b de Python y est tout aussi inutilisable : voir _deva, plus
+    haut, et les douze faux signalements du premier jet marathi.
+    """
+    return "|".join(f"(?<!{GUJ}){re.escape(f)}(?!{GUJ})" for f in formes)
+
+
 def _mot(*formes):
     return "|".join(rf"\b{re.escape(f)}\b" for f in formes)
 
@@ -672,6 +685,50 @@ LINGUI = {
         # « lambarkin », sans q : la regle continue donc de mordre
         # partout ailleurs dans ce fichier.
         "lambrequin",
+    ]},
+
+    # LE GUJARATI CONTRE LE HINDI, ET LA DIFFICULTE N'EST PAS CELLE DU
+    # MARATHI. Le marathi partageait l'ECRITURE du hindi et s'en
+    # separait par le lexique ; le gujarati a son ecriture a lui —
+    # c'est la devanagari sans la barre du haut — et l'on croirait donc
+    # les deux langues a l'abri l'une de l'autre. Elles ne le sont pas
+    # du tout : l'ecriture gujaratie transcrit N'IMPORTE QUEL mot
+    # hindi sans effort, et « બહુત » ou « લેકિન » composes en gujarati
+    # se lisent aussi bien que dans leur alphabet. Ce qu'il faut
+    # relever n'est donc pas une lettre etrangere mais un MOT
+    # etranger transcrit, ce qui ramene exactement au probleme
+    # marathi.
+    #
+    # ET UNE REGLE DE CARACTERE QUAND MEME, LA PREMIERE : un signe
+    # devanagari glisse au milieu d'un mot gujarati. Les deux
+    # ecritures ont les memes matras aux memes places et presque les
+    # memes formes de lettres ; seule la barre les separe, et elle ne
+    # se voit qu'a la ligne entiere. C'est le meme piege que ی contre
+    # ي dans la colonne persane, dans une autre famille d'ecriture.
+    #
+    # ON NE RELEVE PAS « નહીં », QUI EST DU GUJARATI. Le hindi l'ecrit
+    # de meme et le gujarati s'en sert tous les jours — « હું નહીં
+    # જાઉં » —, la ou « નથી » est la copule negative. Deux mots
+    # differents, pas deux langues. On ne releve pas non plus « કે »,
+    # qui est la conjonction gujaratie ordinaire, ni « મેં », qui est
+    # le pronom sujet a l'ergatif : ces deux-la sont hindi ET
+    # gujarati, et une regle qui crierait dessus se ferait desarmer
+    # au premier alinea.
+    "gu": {"mot": [
+        (r"[\u0900-\u097F]", "signe devanagari — cette colonne s'ecrit "
+                              "en gujarati (U+0A80..U+0AFF)"),
+        (_guj("હૈ", "હૈં"), "છે"),
+        (_guj("ઔર"), "અને"),
+        (_guj("લેકિન"), "પણ / પરંતુ"),
+        (_guj("બહુત"), "ઘણું"),
+        (_guj("યહ"), "આ"),
+        (_guj("વહ"), "તે"),
+        (_guj("ક્યા"), "શું"),
+        (_guj("કા", "કી"), "નો / ના / ની"),
+        (_guj("કો"), "ને"),
+        (_guj("સે"), "થી"),
+        (_guj("લડકા", "લડકો"), "છોકરો"),
+        (_guj("લડકી"), "છોકરી"),
     ]},
 }
 

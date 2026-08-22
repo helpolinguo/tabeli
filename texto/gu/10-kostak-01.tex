@@ -1,0 +1,415 @@
+% ===================================================================
+%  કોષ્ટક નં. ૧ — શાળા, માધ્યમિક શાળા, વર્ગખંડ.
+%
+%  Ceci n'est PAS une transcription : c'est une traduction, faite en
+%  2026, en gujarati d'aujourd'hui. D'ou trois differences avec
+%  texto/io et texto/fr, et trois seulement :
+%
+%   * pas de \nl ni de \cc — la traduction ne suit aucune ligne
+%     imprimee, et les lignes de ce fichier ne sont que du confort ;
+%   * pas de \begin{VUpage} — elle n'a ni feuillet ni folio ;
+%   * le gras se pose sur le TERME seul, ponctuation dehors.
+%
+%  Les cles « %%K » sont celles de texto/io, macro pour macro pour
+%  l'apparat, et les renvois \textsuperscript{(n)} visent les MEMES
+%  objets de la planche, dans le MEME ordre.
+%
+%  CETTE COLONNE A TROIS VOISINES ET ELLES SONT DE TROIS NATURES. Le
+%  hindi est la langue d'Etat et partage avec elle tout son fonds
+%  sanskrit ; le marathi est le voisin du sud, de la meme famille
+%  d'ecriture ; l'ourdou et le persan lui ont laisse le lexique du
+%  Sultanat. Aucune autre colonne du releve n'a eu trois voisines a
+%  la fois.
+%
+%  ET SON ECRITURE EST LA DEVANAGARI SANS LA BARRE DU HAUT. Lettre
+%  pour lettre ou presque, les deux alphabets ont les memes matras
+%  aux memes places ; seule la ligne superieure les separe, et elle
+%  ne se voit qu'a la ligne entiere. Un signe devanagari glisse au
+%  milieu d'un mot gujarati passe donc inapercu — c'est le piege de
+%  ی contre ي de la colonne persane, dans une autre famille
+%  d'ecriture, et c'est la premiere des treize regles de kolonoj.py.
+%
+%  MAIS LES DOUZE AUTRES RELEVENT UN MOT ET NON UNE LETTRE, et c'est
+%  la difference avec la persane. L'ecriture gujaratie transcrit
+%  n'importe quel mot hindi sans effort : « બહુત », « લેકિન »,
+%  « હૈ », « ક્યા » composes en gujarati se lisent aussi bien que dans
+%  leur alphabet, et rien dans le caractere ne les denonce. Le
+%  probleme est donc celui du marathi — deux langues d'un meme fonds
+%  qui se ressemblent trop —, pose dans deux ecritures differentes.
+%
+%  ON NE RELEVE PAS TROIS MOTS QUI EN AURAIENT L'AIR, ET C'EST ECRIT
+%  DANS LE CONTROLE : « નહીં », que le hindi ecrit de meme et que le
+%  gujarati emploie tous les jours ; « કે », qui est la conjonction
+%  gujaratie ordinaire ; « મેં », qui est ici le pronom sujet a
+%  l'ergatif. Ces trois-la sont hindi ET gujarati, et une regle qui
+%  crierait dessus se ferait desarmer au premier alinea. Les treize
+%  regles ont ete prouvees une par une sur un fichier fabrique AVANT
+%  que cette ligne-ci soit ecrite, et les trois exceptions avec.
+%
+%  LE VASISTAS (78) EST « રોશનદાન », LE DONNEUR DE LUMIERE, ET C'EST
+%  LA QUARANTE-CINQUIEME REPONSE DE LA SERIE — LA PREMIERE QUI NOMME
+%  LA CHOSE PAR CE QU'ELLE FAIT. Le francais interroge en allemand,
+%  « was ist das » ; l'indonesien et le javanais empruntent au
+%  neerlandais « boven », le jour d'EN HAUT ; le haoussa dit
+%  « ƙaramar taga », la PETITE fenetre ; le persan dit « دریچه », la
+%  petite PORTE. Quarante-quatre colonnes ont nomme cette ouverture
+%  par sa place, sa taille, sa forme ou par une question. Celle-ci la
+%  nomme par son office. Et le mot est PERSAN — روزن‌دان, le
+%  porte-lucarne —, ce qui acheve la demonstration : le persan
+%  lui-meme ne l'a pas employe, il a fabrique دریچه ; le mot est
+%  parti pour l'Inde et il y est reste.
+%
+%  DEUX FAUTES D'ORDRE AU PREMIER TABLEAU, ET parigi.py LES AVAIT
+%  ANNONCEES TOUTES LES DEUX. Le gujarati est a tete FINALE : le
+%  determinant precede le determine, le complement precede le verbe,
+%  et une phrase idiste comme « sidas sur stulo en sua katedro » se
+%  retourne mot pour mot en gujarati. Aux blocs t01-01-1 et t01-05-2,
+%  la chaire (6) etait passee devant la chaise (8) et le tuyau (45)
+%  devant le poele (46). Or parigi.py, qui lit l'ido et dit quelles
+%  PAIRES vont s'inverser dans une langue a tete finale, imprime pour
+%  ce seul tableau six paires — dont ces deux-la, nommees par leur
+%  bloc :
+%
+%      t01-01-1   (7) ← sur ← (8)      (8) ← en ← (6)
+%      t01-05-2   (46) ← kun ← (45)
+%
+%  Il n'a pas ete consulte avant d'ecrire ce fichier, et c'est la
+%  seule raison des deux fautes. LES TROIS OUTILS DE LA FAMILLE NE SE
+%  LISENT PAS AU MEME MOMENT : parigi.py AVANT — quelles paires vont
+%  s'inverser —, ordo.py PENDANT — la suite complete des renvois —,
+%  renvoji.py APRES — si l'ordre est juste. Les quinze tableaux qui
+%  suivent se sont ecrits parigi.py ouvert.
+%
+%  « મેજ » LA TABLE (18) EST PORTUGAIS, ET IL OUVRE UNE COUCHE
+%  QU'AUCUNE AUTRE COLONNE N'A. Les marchands gujaratis tenaient Diu
+%  et Daman, ils allaient a Mombasa, a Mascate, a Aden et jusqu'a
+%  Malacca, et la langue porte cinq depots a la fois. Ce seul tableau
+%  en montre quatre :
+%
+%    મેજ (18)      la table       portugais (mesa)
+%    કબાટ (15)     l'armoire      portugais (gabinete)
+%    દફતર (57)     le cartable    persan (daftar)
+%    કલમ (34)      la plume       arabe (qalam)
+%    ખડિયો (25)    l'encrier      gujarati
+%    પેન્સિલ (49)   le crayon      anglais
+%
+%  ET LES QUATRE OPERATIONS DU TABLEAU NOIR VIENNENT DE TROIS
+%  LANGUES : સરવાળો l'addition est gujarati, બાદબાકી la soustraction
+%  est perso-arabe — bād-bāqī, « le reste emporte » —, ગુણાકાર la
+%  multiplication et ભાગાકાર la division sont sanskrites. Quatre
+%  operations sur un meme tableau, trois provenances, et l'ecolier
+%  qui les apprend ne le sait pas.
+% ===================================================================
+
+%%K t01-apar-0 apar
+\VUsaut{2.0mm}
+\VUcentre{12.6pt}{120}{સમજૂતી-પુસ્તિકા}
+\VUsaut{3.2mm}
+\VUcentre{8.4pt}{160}{માટે}
+\VUsaut{2.6mm}
+\VUtitre{15.6pt}{0}{ડેલ્માસ સહાયક કોષ્ટકો}
+\VUsaut{3.4mm}
+\VUornamento{9pt}
+\VUsaut{5.0mm}
+\VUcentre{13.2pt}{90}{પ્રથમ શ્રેણી}
+\VUsaut{3.0mm}
+\VUfilet{16mm}
+\VUsaut{5.6mm}
+
+%%K t01-apar-1 apar
+\VUtitre{15.0pt}{60}{કોષ્ટક નં. ૧}
+\VUsaut{1.4mm}
+\VUtitre{11.4pt}{0}{શાળા, માધ્યમિક શાળા, વર્ગખંડ.}
+\VUsaut{2.2mm}
+\VUfilet{20mm}
+\VUsaut{6.4mm}
+
+%%K t01-tit-1 sub
+\VUpk{10.2pt}{40}{સામાન્ય વર્ણન.}
+\VUsaut{3.0mm}
+
+%%K t01-01-1 p
+1. --- આ કોષ્ટક એક \VUgras{માધ્યમિક શાળા}ના \VUgras{વર્ગખંડ}ને બતાવે
+છે. આ વર્ગખંડમાં આઠ \VUgras{મેજ} \textsuperscript{(18)} અને આઠ
+\VUgras{બાંકડા} \textsuperscript{(32)} છે. દરેક બાંકડા પર ત્રણ
+વિદ્યાર્થીઓ બેસે છે. \VUgras{શિક્ષક} \textsuperscript{(7)} પોતાની
+\VUgras{ખુરશી} \textsuperscript{(8)} પર, પોતાની \VUgras{વ્યાસપીઠ}
+\textsuperscript{(6)} આગળ બેઠા છે.
+
+%%K t01-02-1 p
+2. --- શિક્ષકની વ્યાસપીઠની ડાબી બાજુએ કાચનું \VUgras{કબાટ}
+\textsuperscript{(15)} ઊભું છે. જમણી બાજુએ \VUgras{કાળું પાટિયું}
+\textsuperscript{(1)} છે, તેની \VUgras{ભૂંસણી} \textsuperscript{(2)} અને
+\VUgras{ચોક} \textsuperscript{(3)} સાથે.
+
+%%K t01-02-2 p
+શિક્ષકની વ્યાસપીઠની ઉપર \VUgras{ભીંતચિત્રો} \textsuperscript{(9, 11,
+12)} અને એક \VUgras{નકશો} \textsuperscript{(10)} લટકે છે.
+
+%%K t01-03-1 p
+3. --- બધા વિદ્યાર્થીઓ પોતાની \VUgras{જગ્યાએ} \textsuperscript{(17)}
+બેઠા નથી. યોહાનેસ \textsuperscript{(4)} કાળા પાટિયા આગળ ઊભો છે ; તે
+\VUgras{ભૂંસણી} હાથમાં રાખીને \VUgras{ભૂમિતિની આકૃતિઓ} ભૂંસે છે.
+
+%%K t01-03-2 p
+પેત્રુસ શિક્ષકની વ્યાસપીઠ પાસે ઊભો છે ; તે \VUgras{લેખિતકામ}
+\textsuperscript{(5)} ભેગું કરે છે અને શિક્ષક પાસે લઈ જાય છે.
+
+%%K t01-04-1 p
+4. --- \VUgras{આ} શિક્ષક \VUgras{જીવંત ભાષાઓ}ના શિક્ષક છે. તે
+વિદ્યાર્થીઓને પરદેશી ભાષાઓ \VUgras{(જર્મન, અંગ્રેજી, સ્પેનિશ,
+ઇટાલિયન, રશિયન કે ફ્રેન્ચ)} બોલતાં, વાંચતાં અને લખતાં શીખવે છે.
+
+%%K t01-05-1 p
+5. --- વર્ગખંડ ઘણો વિશાળ અને ઘણો પ્રકાશિત છે. છેડે બે
+\VUgras{રોશનદાન} \textsuperscript{(78)} વાળી પહોળી \VUgras{બારી} અને
+હવા તથા અજવાળું આપવા માટે \VUgras{કાચનો દરવાજો} છે.
+
+%%K t01-05-2 p
+આ વર્ગખંડ ઠંડો નથી. તેને ગરમ રાખવા માટે વચ્ચે ઘણી સારી \VUgras{સગડી}
+\textsuperscript{(46)} છે, તેની \VUgras{નળી} \textsuperscript{(45)}
+સાથે.
+
+%%K t01-05-3 p
+ભીંતે \VUgras{કપડાંની ખીંટીઓ} \textsuperscript{(58)} જડેલી છે ; તેમના
+પર વિદ્યાર્થીઓની ટોપીઓ અને કોટ લટકે છે.
+
+%%K t01-tit-2 sub
+\VUsaut{5.2mm}
+\VUpk{10.2pt}{40}{રમતનું મેદાન}
+\VUsaut{3.6mm}
+
+%%K t01-06-1 p
+6. --- \VUgras{ઘડિયાળ} \textsuperscript{(63)} નવ વાગ્યાને પાંચ મિનિટ
+બતાવે છે.
+
+%%K t01-06-2 p
+\VUgras{વિરામનો સમય} \textsuperscript{(76)} હમણાં જ પૂરો થયો છે અને પાઠ
+ફરી શરૂ થાય છે. રમવાની જગ્યા \VUgras{મેદાનમાં} \textsuperscript{(75)}
+છે. અમે કેટલાક વિદ્યાર્થીઓને રમતા જોઈએ છીએ. એક \VUgras{નિરીક્ષક}
+\textsuperscript{(74)} તેમના પર નજર રાખે છે.
+
+%%K t01-07-1 p
+7. --- મેદાનમાં અમે બીજી કેટલીક વ્યક્તિઓ પણ જોઈએ છીએ, એટલે કે
+\VUgras{શાળા નિરીક્ષક} \textsuperscript{(73)}, \VUgras{આચાર્ય}
+\textsuperscript{(71)} અને \VUgras{ઉપાચાર્ય} \textsuperscript{(72)}.
+
+%%K t01-07-2 p
+નિરીક્ષક શાળાઓની તપાસ કરે છે, આચાર્ય માધ્યમિક શાળા ચલાવે છે, અને
+ઉપાચાર્ય અભ્યાસ પર દેખરેખ રાખે છે.
+
+%%K t01-07-3 p
+ચોથી વ્યક્તિ \VUgras{દ્વારપાળ} \textsuperscript{(77)} છે. તે ગેરહાજર
+રહેનારાંનાં નામ નોંધવા માટે બગલમાં હાજરીપત્રક રાખે છે.
+
+%%K t01-08-1 p
+8. --- મેદાનના છેડે \VUgras{કસરતનાં સાધનો} \textsuperscript{(70)} અને
+\VUgras{હસ્તકામ} \textsuperscript{(69)} માટેની કારીગરશાળા છે.
+
+%%K t01-08-2 p
+આ કોષ્ટકની જમણી બાજુએ અમે \VUgras{સંગીત} અને \VUgras{ચિત્ર}ના
+\VUgras{વર્ગખંડો} જોવા લાગીએ છીએ.
+
+%%K t01-noto-1 noto
+\VUnotes{143.2mm}{%
+(*) \textit{બાપ્તિસ્માનાં નામો} માટે પણ તેમને લૅટિન રૂપ પ્રમાણે
+લખવાની સલાહ અપાય છે. અસંખ્ય ભેદોમાંથી બચવાનો એ જ એકમાત્ર માર્ગ છે.
+વળી, \textit{Giovanni, Jean, Johann, Jan, Hans, John, Ivan} વગેરેમાંથી
+પસંદગી કેવી રીતે કરવી? શું આપણે બાપ્તિસ્માનાં નામો માટે ખાસ શબ્દકોશ
+બનાવીશું? ચાલો આપણે લૅટિનમાંથી તેમનું પ્રથમા વિભક્તિનું રૂપ લઈએ અને
+કહીએ : \VUgras{Ioannes, Ioanna; Iulius, Iulia; Iakobus; Andreas;
+Lukas.} (Gram. Kompleta).%
+}
+
+%%K t01-tit-3 sub
+\VUpk{10.2pt}{40}{વિગતવાર વર્ણન.}
+\VUsaut{2.4mm}
+
+%%K t01-tit-4 sub
+\VUpk{10.2pt}{40}{સારા વિદ્યાર્થીઓ.}
+\VUsaut{3.0mm}
+
+%%K t01-09-1 p
+9. --- શિક્ષકની વ્યાસપીઠની જમણી બાજુના પહેલા બાંકડાના વિદ્યાર્થીઓ
+\VUgras{હેન્રિકુસ} (*), \VUgras{સ્તેફાનુસ} અને \VUgras{કારોલુસ} છે.
+
+%%K t01-09-2 p
+હેન્રિકુસ ઘણો ધ્યાનવાળો અને મહેનતુ છે ; તે શિક્ષકનું સાંભળે છે.
+
+તેના મેજ પર \VUgras{નોટબુક} \textsuperscript{(28)}, \VUgras{પુસ્તક}
+\textsuperscript{(29)}, \VUgras{શબ્દકોશ} \textsuperscript{(30)} અને
+\VUgras{કલમદાની} \textsuperscript{(31)} છે. તેના પુસ્તકમાં ઘણાં
+\VUgras{પાનાં} છે ; દરેક પ્રકરણમાં કેટલાક \VUgras{ફકરા} અને દરેક
+\VUgras{લીટીમાં} ઘણા \VUgras{શબ્દો} છે.
+
+%%K t01-09-4 p
+તેનો પડોશી સ્તેફાનુસ \textsuperscript{(24)} ઉત્સાહી છે. તે પોતાની
+નોટબુકમાં આવતી વખતનો પાઠ નોંધે છે. તેના \VUgras{અક્ષર} સુંદર છે. તેનું
+પુસ્તક બંધ છે ; અમે માત્ર તેનું \VUgras{પૂંઠું} \textsuperscript{(27)}
+જોઈએ છીએ. તેની પાસે તેનું \VUgras{પરિકર} \textsuperscript{(26)} પડ્યું
+છે.
+
+%%K t01-09-5 p
+કારોલુસ \textsuperscript{(23)} પોતાનું પુસ્તક હાથમાં પકડે છે ; તે
+પોતાનો પાઠ ફરી વાંચવા માટે તેને ખોલે છે. દરેક વિદ્યાર્થીની જેમ, તેની
+આગળ \VUgras{ખડિયો} \textsuperscript{(25)} છે. તે આજ્ઞાંકિત છે.
+
+%%K t01-10-1 p
+10. --- બાજુના મેજ પર \VUgras{લુડોવિકુસ,} \VUgras{આન્તોનિયુસ} અને
+\VUgras{પાઉલુસ} છે. લુડોવિકુસ પોતાનો \VUgras{પાઠ} \textsuperscript{(22)}
+મોઢે બોલે છે અને શિક્ષકના \VUgras{પ્રશ્નોના} જવાબ આપે છે.
+આન્તોનિયુસ \textsuperscript{(21)} ઘણો બેધ્યાન છે ; ક્યારેક શિક્ષક તેને
+સજા પણ કરે છે. પાઉલુસ \textsuperscript{(20)} \VUgras{સારો સાથી} છે,
+મળતાવડો અને મદદરૂપ. તે ઘણો ધ્યાનવાળો છે.
+
+%%K t01-tit-5 sub
+\VUsaut{4.2mm}
+\VUpk{10.2pt}{40}{ખરાબ વિદ્યાર્થીઓ.}
+\VUsaut{3.2mm}
+
+%%K t01-11-1 p
+11. --- હેન્રિકુસની પાછળ \VUgras{ગેઓર્ગિયુસ} \textsuperscript{(38)}
+બેસે છે. તે ખરાબ છોકરો નથી, પણ તે \VUgras{વાતોડિયો,} બેધ્યાન અને
+તોફાની છે. તેની \VUgras{ચંચળતા} અને \VUgras{અવજ્ઞા} પાઠ દરમિયાન
+\VUgras{ધમાલ} મચાવે છે, અને ઘણી વાર તે આકરી \VUgras{ચેતવણી}ને પાત્ર
+બને છે. તેની \VUgras{કાચી નોંધપોથી} \textsuperscript{(35)} ગંદી છે ; તે
+પોતાની \VUgras{કલમથી} \textsuperscript{(34)} તેના પર \VUgras{શાહીના
+ડાઘ} પાડે છે, તેથી તે હંમેશાં પોતાનું \VUgras{રબર}
+\textsuperscript{(36)} વાપરે છે ; તેનું \VUgras{દફતર}
+\textsuperscript{(33)} ફાટેલું છે, કેમ કે તે ઘણો બેદરકાર છે. અને તે
+\VUgras{જીવંત ભાષાઓના} વર્ગખંડમાં પોતાની \VUgras{પેન્સિલપેટી}
+\textsuperscript{(37)} શા માટે લાવે છે ?
+
+%%K t01-11-2 p
+તેનો પડોશી એડ્મુન્ડુસ \textsuperscript{(39)} તેને પસંદ કરતો નથી. ખરું
+છે કે તે થોડો આળસુ છે, પણ તે શાંત અને ધીરો છે. તે વાતો કરતો નથી ; પણ
+સાંભળવાને બદલે તે પોતાની \VUgras{વાચનપોથીની} \VUgras{વાર્તાઓ} વાંચવાનું
+વધારે પસંદ કરે છે.
+
+%%K t01-11-3 p
+આ બાંકડાનો ત્રીજો વિદ્યાર્થી \VUgras{લુડોવિકુસ} \textsuperscript{(40)}
+છે. તે ખંતીલો છે. તે સફેદ \VUgras{કાગળ} પર લખે છે. તેની આગળ તેણે
+પોતાનો \VUgras{શાહીચૂસ કાગળ} \textsuperscript{(41)} મૂક્યો છે.
+
+%%K t01-12-1 p
+12. --- શિક્ષકની ડાબી બાજુના બીજા બાંકડાના વિદ્યાર્થીઓ હજી ઘણા નાના
+છે. પહેલો, નાનકડો \VUgras{એમિલિયુસ,} હજી બરાબર લખી શકતો નથી ; તે
+પોતાની \VUgras{સ્લેટ} \textsuperscript{(42)}, પોતાની \VUgras{સ્લેટપેન}
+અને પોતાનું \VUgras{સ્પોન્જ} \textsuperscript{(43)} લાવે છે.
+
+%%K t01-12-2 p
+તેની બાજુમાં \VUgras{આઉગુસ્તુસ} અને \VUgras{બેર્નાર્દુસ}
+\textsuperscript{(44)} છે. આ છેલ્લો સારું કામ કરે છે, પણ તેનાં
+\VUgras{કપડાં} ઘણાં અસ્તવ્યસ્ત છે.
+
+%%K t01-13-1 p
+13. --- તેમની પાછળ ત્રણ \VUgras{આળસુ} બેસે છે. \VUgras{આલ્બેર્તુસ}
+પોતાના પાઠ શીખતો નથી. \VUgras{યાકોબુસ} \textsuperscript{(47)}
+સાંભળવાને બદલે ઊંઘે છે. તેની \VUgras{આળસ} તેને \VUgras{ઠપકો} અને
+\VUgras{સજા} અપાવે છે. છેલ્લે \VUgras{ક્રિસ્તિયાનુસ}
+\textsuperscript{(48)} ઘણો બેજવાબદાર છે. તે ખરાબ \VUgras{વર્તન} કરે છે
+અને સુધરવા માટે જરાય પ્રયત્ન કરતો નથી.
+
+%%K t01-14-1 p
+14. --- તેના પડોશીઓ, તેનાથી ઊલટા, સારા વર્તનવાળા છે.
+\VUgras{એર્નેસ્તુસ} \textsuperscript{(51)} વ્યવસ્થા અને નિયમિતતા પસંદ
+કરે છે ; તે હંમેશાં પોતાની \VUgras{માપપટ્ટી} \textsuperscript{(50)}
+અને પોતાની \VUgras{પેન્સિલ} \textsuperscript{(49)} વાપરે છે. તે
+\VUgras{બહારનો વિદ્યાર્થી} છે.
+
+%%K t01-14-2 p
+\VUgras{ફ્રાન્સિસ્કુસ} \textsuperscript{(52)} \VUgras{છાત્રાલયનો
+વિદ્યાર્થી} છે ; તે ગણવેશ પહેરે છે, માધ્યમિક શાળામાં જ જમે છે અને સૂએ
+છે. તે \VUgras{સારો સાથી} છે.
+
+%%K t01-14-3 p
+માઉરિકિયુસ પોતાની \VUgras{પેન્સિલ} પોતાના \VUgras{ચપ્પુથી}
+\textsuperscript{(56)} છોલે છે ; તે ઘણો કાળજીવાળો છે.
+
+%%K t01-14-4 p
+તે પોતાનાં બધાં પુસ્તકો લાવે છે, પોતાનું \VUgras{વ્યાકરણ}
+\textsuperscript{(55)}, પોતાની \VUgras{નોંધપોથી} \textsuperscript{(54)},
+અને પોતાનું \VUgras{લખવાનું પૂંઠું} \textsuperscript{(53)} પણ. તેનું
+\VUgras{દફતર} \textsuperscript{(57)} તેની પાછળ જમીન પર છે.
+
+%%K t01-14-5 p
+વર્ગખંડના છેડેનાં બે મેજ \VUgras{સારા વિદ્યાર્થીઓએ}
+\textsuperscript{(19)} રોક્યાં છે.
+
+%%K t01-tit-6 sub
+\VUsaut{4.6mm}
+\VUpk{10.2pt}{40}{ચિત્ર અને સંગીત.}
+\VUsaut{3.4mm}
+
+%%K t01-15-1 p
+15. --- \VUgras{ચિત્રખંડમાં} ભીંતે લટકતા સુંદર \VUgras{નમૂના} અને
+છતથી લટકતો \VUgras{છાયો} વાળો \VUgras{દીવો} \textsuperscript{(62)} છે.
+તેમના \VUgras{શિક્ષક} \textsuperscript{(60)} ઘણા ધીરજવાળા છે ; તે
+વિદ્યાર્થીઓનાં \VUgras{ચિત્રો} \textsuperscript{(61)} સુધારે છે અને
+તેમને કુદરત પ્રમાણે \VUgras{પ્રતિમા} \textsuperscript{(59)} દોરતાં
+શીખવે છે.
+
+%%K t01-16-1 p
+16. --- \VUgras{સંગીતખંડ} ઘણો રસપ્રદ લાગે છે. ત્યાં
+\VUgras{સંગીત} વાંચતાં, \VUgras{સ્વરરેખા} પર લખેલા \VUgras{સૂરો}
+\textsuperscript{(67)} ગાતાં (દો, રે, મી, ફા, સોલ, લા, સી\,=\,C. D. E.
+F. G. A. B.), \VUgras{ચાવીઓ} ઓળખતાં અને મધુર \VUgras{ધૂનો} ગાતાં
+શીખવામાં આવે છે. સંગીતનાં પાનાં \VUgras{ઘોડી} \textsuperscript{(65)} પર
+મૂકવામાં આવે છે. વિદ્યાર્થીઓમાંનો એક \VUgras{પિયાનો વગાડે છે}
+\textsuperscript{(64)} અને \VUgras{સંગીતશિક્ષક} \textsuperscript{(66)}
+\VUgras{તાલ આપે છે} \textsuperscript{(68)}.
+
+%%K t01-17-1 p
+17. --- અમે \VUgras{હસ્તકામ} \textsuperscript{(69)} માટેની
+\VUgras{કારીગરશાળાનો} ખૂણો જોવા લાગીએ છીએ, જ્યાં છોકરાઓ લાકડું
+છોલતાં અને લોખંડ ઘસતાં શીખી શકે છે. એ બધી માધ્યમિક શાળાઓમાં હોતું
+નથી.
+
+%%K t01-tit-7 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{વિજ્ઞાનનો વર્ગખંડ.}
+\VUsaut{3.6mm}
+
+%%K t01-18-1 p
+18. --- ગણિતના શિક્ષક વિદ્યાર્થીઓને \VUgras{ભૂમિતિ, અંકગણિત, ગણતરી}
+અને \VUgras{મીટર પદ્ધતિ} શીખવે છે. પાટિયા પર અમે ભૂમિતિની મુખ્ય
+આકૃતિઓ જોઈએ છીએ : \VUgras{વર્તુળ} \textsuperscript{(a)},
+\VUgras{ચોરસ} \textsuperscript{(b)}, \VUgras{ત્રિકોણ}
+\textsuperscript{(c)}, \VUgras{રેખા} \textsuperscript{(d)}.
+
+%%K t01-18-2 p
+અમે એક \VUgras{ગણતરી} પણ જોઈએ છીએ ; તે \VUgras{સરવાળો} નથી,
+\VUgras{બાદબાકી} નથી, \VUgras{ગુણાકાર} પણ નથી — તે ખરેખર
+\VUgras{ભાગાકાર} \textsuperscript{(e)} છે.
+
+%%K t01-19-1 p
+19. --- મીટર પદ્ધતિના પાટિયા પર અમે જોઈએ છીએ : \VUgras{મીટર}
+\textsuperscript{(a)}, \VUgras{ત્રાજવું} \textsuperscript{(b)} અને તેનાં
+\VUgras{વજનિયાં,} \VUgras{લિટર} \textsuperscript{(e)},
+\VUgras{ડેકાલિટર} \textsuperscript{(f)}, \VUgras{ડેસિલિટર} અને
+\VUgras{ઘનમીટર} \textsuperscript{(d)}.
+
+%%K t01-19-2 p
+વિદ્યાર્થીઓ \VUgras{પ્રકૃતિવિજ્ઞાન} \textsuperscript{(11)},
+પ્રાણીશાસ્ત્ર \textsuperscript{(a)}, વનસ્પતિશાસ્ત્ર
+\textsuperscript{(b)}, ભૂસ્તરશાસ્ત્ર \textsuperscript{(c)} અને
+\VUgras{ઇતિહાસ} \textsuperscript{(12)} પણ ભણે છે.
+
+%%K t01-19-3 p
+કબાટમાં \VUgras{ભૌતિકશાસ્ત્ર} \textsuperscript{(15)} અને
+\VUgras{રસાયણશાસ્ત્ર} \textsuperscript{(16)} નાં સાધનો છે.
+
+%%K t01-19-4 p
+કબાટ પર છે : \VUgras{ગોળો} \textsuperscript{(14)}, \VUgras{શંકુ} અને
+\VUgras{પૃથ્વીગોળો} \textsuperscript{(13)}.
+
+%%K t01-19-5 p
+પાટિયાંની ઉપર દુનિયાના પાંચ ભાગ બતાવતો \VUgras{નકશો} લટકે છે :
+\VUgras{યુરોપ} \textsuperscript{(g)}, \VUgras{એશિયા}
+\textsuperscript{(e)}, \VUgras{આફ્રિકા} \textsuperscript{(f)},
+\VUgras{અમેરિકા} \textsuperscript{(ab)} અને \VUgras{ઓશનિયા}
+\textsuperscript{(h)}, તથા બે મોટા મહાસાગર, \VUgras{પેસિફિક}
+\textsuperscript{(c)} અને \VUgras{એટલાન્ટિક} \textsuperscript{(d)}.
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}

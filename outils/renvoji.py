@@ -93,6 +93,7 @@ DOSSIER = {"fr": "tableau",
            # malais de fond, qui ne doit rien a personne.
            "id": "bagan", "jv": "gambar", "fa": "tablo",
            "ha": "hoto",
+           "gu": "kostak",
            "de": "tafel",
            "it": "tavola"}
 
