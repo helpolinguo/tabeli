@@ -50,6 +50,7 @@ par alinéa.
 | Traduction ourdoue (`texto/ur/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne à **deux voisines de natures différentes** (l'écriture avec le pendjabi chahmoukhi, la langue avec le hindi), et celle qui a rendu au tableau 11 ses gros plans (§ 8) |
 | Traduction indonésienne (`texto/id/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne dont la voisine n'est **dans aucun dossier**, d'où un contrôle qui relève au lieu de comparer, et sur une **date** autant que sur un lexique (§ 8) |
 | Traduction javanaise (`texto/jv/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la voisine a été écrite par la même main, et **seule du relevé à avoir des niveaux de langue grammaticalisés** (ngoko, krama), d'où un contrôle qui distingue le récit du dialogue (§ 8) |
+| Traduction persane (`texto/fa/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la défense se joue au **caractère** et non au mot : deux voisines (ourdou, arabe) logent dans son propre alphabet, où ی/ي et ک/ك ne se distinguent pas à l'œil (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -597,6 +598,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/ur/10-jadval-01.tex … 25-jadval-16.tex      (traduction)
     texto/id/10-bagan-01.tex … 25-bagan-16.tex       (traduction)
     texto/jv/10-gambar-01.tex … 25-gambar-16.tex     (traduction)
+    texto/fa/10-tablo-01.tex … 25-tablo-16.tex       (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1667,6 +1669,87 @@ vrai : le potager du tableau 15 est néerlandais **dans les deux
 colonnes, mot pour mot**, parce que ce sont les mêmes Hollandais qui
 ont planté les mêmes légumes dans les mêmes jardins.
 
+### La colonne persane : la défense se joue au caractère
+
+Les quarante-deux colonnes précédentes se défendaient d'une **langue**
+voisine ; celle-ci se défend de deux voisines qui **logent dans son
+propre alphabet**. L'ourdou lui a pris sa graphie et la moitié de son
+lexique savant ; l'arabe lui a donné l'alphabet et l'autre moitié. Or
+**ی et ي, ک et ك, ۱ et ١ se dessinent presque pareil** : une ligne
+fautive reste bien formée, le LaTeX compile, `html.py` publie, et l'œil
+ne voit rien. Les dix règles de `kolonoj.py` visent donc le
+**caractère** — trois lettres rétroflexes ourdoues, ں, ے, ھ, puis ي,
+ك, ة, ى arabes, les chiffres ٠١٢٣ contre ۰۱۲۳, et le demi-espace
+manquant de نمی‌رود. **Elles ont toutes été prouvées sur un fichier
+fabriqué avant qu'une ligne de persan soit écrite** : un contrôle qui
+lit l'octet doit être vérifié sur des octets, pas sur du texte qu'on
+espère juste.
+
+**Le corps est persan, les organes sont arabes, et la frontière suit
+exactement la peau.** Tout ce qu'on montre du doigt porte un nom
+iranien — سر, چشم, دست, زانو, استخوان, خون —, et ce qu'il faut ouvrir
+pour le voir porte un nom arabe — جمجمه le crâne, قلب le cœur, معده
+l'estomac. La raison est une bibliothèque : **la médecine du monde
+iranien s'est écrite en arabe** — Avicenne a composé le *Qanun* en
+arabe —, et l'anatomie est revenue au persan dans la langue où elle
+avait été rédigée. Ce que l'enfant nomme est persan ; ce que le médecin
+nomme est arabe. Le même partage tient au tableau 4 : *سرماخوردگی*, « le
+fait d'avoir pris froid », est persan et se dit de soi-même ; la fièvre
+et l'ordonnance sont arabes.
+
+**Une troisième couche, française, et elle date tout ce qui est arrivé
+au XIX<sup>e</sup> siècle** : مرسی, آباژور, دوش, آسانسور, بلیت, واگن,
+کراوات, کنکور — et les **mois grégoriens**, مارس, آوریل, مه, ژوئن,
+ژوئیه, اوت. L'Iran a pourtant ses propres mois, ceux du calendrier
+solaire hégirien, qui sont les noms des *izad* zoroastriens ; mais la
+planche grave un printemps d'Europe, et **on modernise la langue,
+jamais les choses**. Le français tient ici la place exacte que le
+néerlandais tient en javanais, et pour la même raison : c'est la langue
+par laquelle l'État moderne est arrivé.
+
+**Les cinq sens sont cinq noms formés sur cinq verbes par un seul
+suffixe** — بینایی, شنوایی, بویایی, چشایی, بساوایی —, ce que le
+javanais fait au même alinéa du même tableau avec son préfixe *pa-*.
+Deux langues sans parenté, la même élégance, et le français comme l'ido
+y opposent cinq noms sans famille.
+
+**Trois refus, et ils portent le compte du relevé à huit.** Le samovar
+du tableau 6, le takyeh du 11 et le *خیمه‌شب‌بازی* du 16 : chaque fois
+le persan offrait le mot tout prêt, chaque fois la planche gravait une
+chose européenne — une cafetière belge, un opéra à l'italienne, un petit
+théâtre à rideau rouge. La colonne écrit قهوه‌جوش, « le fait-bouillir-le-café » ;
+تئاتر et اپرا pour la salle ; تئاتر عروسکی pour les marionnettes. **Mais le
+violon (76) est accepté sous le nom ویولن, tandis que کمانچه reste à
+l'instrument persan** — la solution la plus économique des trois du
+relevé, et elle n'était possible que parce que la langue avait déjà les
+deux choses.
+
+**Sept fautes d'ordre en seize tableaux, toutes de placement, aucune de
+grammaire.** Le quai du tableau 3, la table et la bibliothèque du 6, le
+fumier du 7, la meule du 8, le cerf du 9, la valise du 12, le pourboire
+du 13 : le persan est à tête initiale et pose ses compléments après,
+rien ne l'obligeait à intervertir. **Une colonne qui se trompe sans que
+la grammaire l'y pousse ne se corrige que par la machine** — c'est
+exactement ce que le javanais avait montré au même tableau 3, au bloc
+voisin.
+
+**Et le chemin de fer du tableau 12 mesure une date dans la forme des
+mots.** Le javanais n'avait pas un terme à lui — *sepur*, *karcis*,
+*rel*, *peron*, tout néerlandais, parce que la première ligne de Java
+date de 1867. Le persan a construit son transiranien en 1938, un siècle
+après l'invention, et il a eu le temps de composer : راه‌آهن le chemin
+de fer, ایستگاه le lieu où l'on s'arrête, قطار la file. **Ce qui arrive
+tôt arrive avec son nom étranger ; ce qui arrive tard trouve une langue
+prête à composer.** Java a reçu la machine avant d'avoir un mot ;
+l'Iran l'a reçue après en avoir fait un.
+
+**Enfin le vasistas (78) clôt une série de quarante-trois colonnes.**
+Le français nomme cette fenêtre par une question allemande, l'indonésien
+et le javanais par le néerlandais *boven*, le jour d'en haut ; le persan
+dit *دریچه*, diminutif de *در*, la porte. **Une petite porte.** C'est le
+seul des quarante-trois qui nomme la chose par ce qu'elle est et non par
+où elle est — et c'est un mot que la langue avait déjà.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1692,7 +1775,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 42 colonnes traduites
+    python3 outils/kolonoj.py            # les 43 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
