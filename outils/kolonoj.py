@@ -646,6 +646,22 @@ LINGUI = {
         (r"(?<![A-Za-z])yan(?![A-Za-z])", "ƴan (et non ’yan : la "
                                           "colonne ecrit le crochet)"),
         (r"'", "apostrophe droite — le haoussa de 2026 ecrit ’ (U+2019)"),
+    ], "exemptes": [
+        # LA NOTE « Balk-o » DU TABLEAU 5 EST LE SEUL ENDROIT DU
+        # LIVRET QUI CITE D'AUTRES LANGUES MOT POUR MOT, et l'ido les
+        # met lui-meme en italique pour dire qu'elles sont
+        # etrangeres : « Balk-o = D. Balken, E. joist, F. solive, I.
+        # travicello, R. balka, S. Port. viga ». La regle des lettres
+        # absentes du boko a donc crie quatre fois, et elle avait
+        # raison a la lettre : solive, poutre et viga ne sont pas du
+        # haoussa, et ne doivent surtout pas le devenir. On ne
+        # resserre donc rien — une citation n'est pas une faute
+        # d'orthographe, c'est un autre texte —, on exempte les trois
+        # lignes qui la portent, comme la colonne arabe egyptienne
+        # exempte la plaisanterie du vieux cordonnier.
+        "\\textit{solive}",
+        "\\textit{poutre}",
+        "\\textit{viga}",
     ]},
 }
 
