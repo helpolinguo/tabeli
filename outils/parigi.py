@@ -107,14 +107,14 @@ LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
 # raison : la distance.
 #
 #     « ponteto (20), qua komunikigas la parad-esplanado kun
-#       l'arsenalo (21) »            55 caracteres  (tableau 10)
+#       l'arsenalo (21) »            54 caracteres  (tableau 10)
 #     « Tribunalo (22) avan qua extensas su agreabla gardeno
 #       publika (26) »               47 caracteres  (tableau 11)
 #
 # Le motif, lui, n'a rien laisse passer : dans les deux cas le mot de
 # rattachement est « qua », deja dans LIENO. Porter PORTEO a 55 les
 # rattraperait tous les deux — et ferait passer le livret entier de
-# 385 paires a 462, soit vingt pour cent de lignes en plus. On ne le
+# 386 paires a 465, soit vingt pour cent de lignes en plus. On ne le
 # fait pas : renvoji.py les a attrapees toutes les deux au premier
 # jet, et une liste de courses qui double de longueur cesse d'etre
 # une liste de courses. Le seuil reste a 45, mais les deux distances
@@ -127,12 +127,27 @@ LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
 PORTEO = 45
 
 
+# « \cc » N'EST PAS UNE COUPURE, C'EST UNE SOUDURE. Le fac-simile
+# coupe ses mots en fin de ligne, et la transcription le note « \cc »
+# suivi d'un retour a la ligne : « ku\cc\nranta » est UN mot, pas
+# deux. Le premier jet depouillait les macros une par une et laissait
+# donc « ku ranta » — d'ou six paires du releve tenues par des
+# FRAGMENTS qui ressemblaient a des participes : ranta, sante, mante,
+# vinta, dante, danta. Elles etaient justes par accident ; on les tient
+# maintenant pour de bonnes raisons — ekiranta, impulsante, arivinta,
+# fumante, ludante, sidanta —, et le compte du livret passe de 385 a
+# 386 paires. Le raccord doit se faire AVANT le depouillement general,
+# sans quoi la macro est deja devenue une espace.
+_SOLDO = re.compile(r"\\cc(?:plein)?(?![A-Za-z])[ \t\n]*")
+
+
 def _nu(t):
     """Le texte sans ses macros, pour mesurer une vraie distance."""
+    t = _SOLDO.sub("", t)
     t = re.sub(r"\\textsuperscript\{\(([^)]*)\)\}", r" ⟨\1⟩ ", t)
     t = re.sub(r"(?<!\w)\((\d{1,3}(?: bis)?|[a-z]{1,2})\)", r" ⟨\1⟩ ", t)
     t = re.sub(r"\\[A-Za-z]+", " ", t)
-    t = t.replace("{", " ").replace("}", " ").replace("\\cc", " ")
+    t = t.replace("{", " ").replace("}", " ")
     return re.sub(r"[ \t\n]+", " ", t)
 
 

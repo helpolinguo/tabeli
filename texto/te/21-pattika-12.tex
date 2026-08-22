@@ -1,0 +1,230 @@
+% ===================================================================
+%  పట్టిక సంఖ్య 12 — స్టేషను. రైలుమార్గాలు. ఓడలు.
+%
+%  Traduction, faite en 2026, en telougou d'aujourd'hui, sur l'ido de
+%  texto/io. Regles de la colonne : voir 10-pattika-01.tex. Une seule
+%  suite d'alineas ; le « Noto. » d'ouverture appartient au bloc apar,
+%  et la note de bas de page du feuillet 85 a son bloc noto, aux
+%  memes places qu'en hindi.
+%
+%  LE RENVOI (*) N'EST PAS UN NUMERO ET SE PORTE QUAND MEME. Le bloc
+%  19 appelle la note par « \textsuperscript{(*)} » ; renvoji.py le
+%  releve comme les autres, et la colonne l'ecrit tel quel.
+%
+%  LE TELOUGOU DU RAIL EST ENTIER, ET IL EST ANCIEN. Le chemin de fer
+%  est arrive en Andhra en 1893, trente ans avant ce livret : la
+%  langue a eu le temps de se faire ses mots, et elle ne les a pas
+%  empruntes. పట్టాలు les rails (64), బోగీ le wagon (37), కూత le
+%  sifflet (59), సొరంగం le tunnel (87), పట్టాల చీలిక l'aiguillage
+%  (78), సామాను le bagage (17), మోతకూలీ le porteur (16), వేళల పట్టిక
+%  l'indicateur (26). C'est le deuxieme tableau de suite ou rien ne
+%  manque, apres le port — et pour la meme raison : la chose est la,
+%  donc le mot est la. Seuls restent en anglais les objets que le
+%  telougou nomme en anglais aujourd'hui : ప్లాట్‌ఫారం, ఇంజను,
+%  బాయిలరు, పిస్టన్లు, సూట్‌కేసు.
+%
+%  TREIZE RETOURNEMENTS SUR LES VINGT-HUIT PAIRES DE parigi.py.
+%  Rien de nouveau dans le tri des quinze autres : enumeration,
+%  renvoi de gauche deja modificateur, frontiere de phrase.
+%
+%  ET UN FAUX POSITIF QUI A APPRIS QUELQUE CHOSE A L'OUTIL. La liste
+%  donnait « (3) ← jonti ← (1) » au bloc 02-1 : « jonti » n'est pas un
+%  mot, c'est la queue de « voyajonti », les voyageurs. En cherchant
+%  d'ou venait ce debris on a trouve mieux qu'un cas : parigi.py
+%  depouillait « \cc » comme n'importe quelle macro, en le remplacant
+%  par une espace. Or « \cc » n'est pas une coupure, c'est une
+%  SOUDURE — le fac-simile coupe ses mots en fin de ligne et la
+%  transcription le note ainsi. « ku\cc ranta » etait donc lu
+%  « ku ranta », et SIX paires du livret se trouvaient tenues par des
+%  fragments qui ressemblaient a des participes : ranta, sante, mante,
+%  vinta, dante, danta. Elles etaient justes par accident. La soudure
+%  faite avant le depouillement, ce sont maintenant ekiranta,
+%  impulsante, arivinta, fumante, ludante, sidanta qui les tiennent —
+%  les vrais mots. Le livret passe de 385 a 386 paires.
+%
+%  « voyajonti », lui, reste signale, et c'est irreductible : en ido
+%  le nom d'agent pluriel et l'adjectif participe ont la meme finale
+%  (-anti, -onti). Aucune expression reguliere ne les separe. On le
+%  laisse donc, et on l'ecrit ici plutot que d'elargir le motif pour
+%  le faire taire : c'est du bruit connu, ce qui n'est pas la meme
+%  chose que du bruit ignore.
+% ===================================================================
+
+%%K t12-apar-1 apar
+\VUsaut{4.0mm}
+\VUtitre{15.0pt}{60}{పట్టిక సంఖ్య 12}
+\VUsaut{2.4mm}
+\VUpk{11.4pt}{40}{స్టేషను. --- రైలుమార్గాలు. --- ఓడలు.}
+\VUsaut{3.4mm}
+\textsc{గమనిక.} --- \textit{ప్రతి దేశంలోనూ వేళల లెక్క వేరువేరుగా ఉంటుంది; అందుకే
+ఉదాహరణగా మేము} \VUgras{ఫ్రెంచి పట్టిక} \textit{వేళలను తీసుకున్నాము.}
+
+%%K t12-01-1 p
+1. --- నేను ఇప్పుడే జర్మనీ గుండా ప్రయాణించాను. బయలుదేరే ముందు, రైళ్ళు ఎప్పుడు
+బయలుదేరతాయో తెలుసుకునేందుకు \VUgras{రైలు వేళల పుస్తకం} \textsuperscript{(15)} కొన్నాను.
+అన్నిటికంటే అనుకూలమైన రైలు పారిస్‌నుంచి రాత్రి తొమ్మిది గంటలకు బయలుదేరి, స్ట్రాస్‌బూర్గ్‌కు
+ఒంటిగంట పదమూడు నిమిషాలకు చేరుతుందని తేల్చుకున్నాక, నా ప్రయాణం సిద్ధం చేసుకున్నాను;
+మరుసటి రోజు స్టేషనుకు తీసుకెళ్ళమని చెప్పాను.
+
+%%K t12-02-1 p
+2. --- పెద్ద బయలుదేరు హాలులోకి నేను వెళ్ళేసరికి, పల్లె \VUgras{మతగురువు}
+\textsuperscript{(2)} వెనుక — ఆయన తన \VUgras{ప్రయాణపు సంచిని} \textsuperscript{(3)}
+చేతిలో పట్టుకున్నారు — చాలామంది \VUgras{ప్రయాణికులు} \textsuperscript{(1)} అప్పటికే
+వచ్చేశారు.
+
+%%K t12-02-2 p
+నేను \VUgras{తంతి (టెలిగ్రామ్)} \textsuperscript{(5)} పంపాలనుకున్నాను; అందుకని
+\VUgras{తనిఖీదారుడిని} \textsuperscript{(6)} అడిగి \VUgras{తంతి కార్యాలయం}
+\textsuperscript{(4)} ఎక్కడో చూపించుకున్నాను.
+
+%%K t12-03-1 p
+3. --- \VUgras{వేచి ఉండే గదిలోకి} \textsuperscript{(7)} వెళ్ళే ముందు, తిరుగు ప్రయాణంతో
+కూడిన \VUgras{టికెట్టు} \textsuperscript{(9)} తీసుకున్నాను.
+
+%%K t12-04-1 p
+4. --- \VUgras{టికెట్టు కిటికీ} \textsuperscript{(8)} దగ్గర నేను ఎక్కువసేపు ఆగలేదు,
+అక్కడ జనం తక్కువ. సెలవుపై బయలుదేరుతున్న \VUgras{సైనికుడు} \textsuperscript{(10)} ఒకడు
+దయతో తన వంతు నాకిచ్చాడు; అందువల్ల \VUgras{స్టేషను మాస్టరును} \textsuperscript{(13)}
+కొన్ని విషయాలు అడిగేంత సమయం నాకు దొరికింది — ఆయన నిఘా \VUgras{కమిషనరుతో}
+\textsuperscript{(12)}, విధిలో ఉన్న \VUgras{జెండార్ముతో} \textsuperscript{(11)}
+మాట్లాడుతున్నారు.
+
+%%K t12-tit-1 sub
+\VUpk{10.2pt}{40}{సామాను నమోదు.}
+\VUsaut{3.0mm}
+
+%%K t12-05-1 p
+5. --- \VUgras{పుస్తకాల దుకాణంలో} \textsuperscript{(14)} పత్రిక కొని, నా
+\VUgras{సామానును} \textsuperscript{(17)} తూయించాను — దాన్ని \VUgras{మోతకూలీ}
+\textsuperscript{(16)} ఇప్పుడే \VUgras{సామాను బండిపై} \textsuperscript{(19)} తెచ్చాడు;
+\VUgras{గుమాస్తా} \textsuperscript{(22)} — \VUgras{తూనిక యంత్రం} \textsuperscript{(21)}
+ఆయన బాధ్యత — నా పెట్టె ముప్ఫై అయిదు కిలోల బరువని చెప్పాడు; అంటే అయిదు కిలోల
+\VUgras{అధిక బరువు}, దానికి \VUgras{సామాను కిటికీ} \textsuperscript{(23)} దగ్గర అదనపు
+రుసుము కట్టాలి.
+
+%%K t12-06-1 p
+6. --- నేను చాలా ముందుగా వచ్చాను కాబట్టి, స్టేషనులో ప్రయాణికుల రాకపోకలను చూసేంత తీరిక
+దొరికింది. కొందరు తమ చిన్న సామానును \VUgras{సామాను భద్రపరిచే చోట} \textsuperscript{(25)}
+పెట్టుకుంటున్నారు లేదా తిరిగి తీసుకుంటున్నారు; ఇంకొందరు \VUgras{వేళల పట్టికలు}
+\textsuperscript{(26)} చూస్తున్నారు. వచ్చిన ప్రయాణికులు \VUgras{బయటికి వెళ్ళే దారికి}
+\textsuperscript{(32)} హడావిడిగా వెళ్తున్నారు — చేతిలో \VUgras{సూట్‌కేసుతో}
+\textsuperscript{(24)}. కొందరు \VUgras{సామాను ఇచ్చే చోట} \textsuperscript{(27)} వేచి ఉండి
+తమ \VUgras{చీటీ} \textsuperscript{(29)} చూపిస్తున్నారు — తమ పెట్టెలూ, \VUgras{డబ్బాలూ}
+\textsuperscript{(28)}, \VUgras{బుట్టలూ} \textsuperscript{(30)} తిరిగి తీసుకునేందుకు.
+
+%%K t12-07-1 p
+7. --- \VUgras{సుంకపు అధికారులు} \textsuperscript{(33)} మూటలను జాగ్రత్తగా పరిశీలించారు —
+ప్రకటించాల్సినది ఏమైనా ఉందేమో చూసేందుకు.
+
+%%K t12-08-1 p
+8. --- కొందరు ప్రయాణికులు \VUgras{ఫలహారశాలకు} \textsuperscript{(34)} వెళ్ళారు; అక్కడ
+\VUgras{సేవకుడు} \textsuperscript{(35)} వాళ్ళకు వడ్డించేందుకు హడావిడి పడుతున్నాడు. వాళ్ళు
+త్వరపడాలి — \VUgras{రైలు} \textsuperscript{(36)} ఎక్స్‌ప్రెస్సు, స్టేషనులో ఎక్కువసేపు
+ఆగదు.
+
+%%K t12-09-1 p
+9. --- ఆ తర్వాత బయలుదేరే ప్లాట్‌ఫారానికి వెళ్ళి, నేరుగా వెళ్ళే \VUgras{బోగీ}
+\textsuperscript{(37)} కోసం వెతికాను — ప్రయాణం మధ్యలో బోగీ మార్చాల్సిన అవసరం రాకుండా.
+కారిడారు బండిలోకి ఎక్కాను; అందులో పొగతాగేవాళ్ళకు ఒక \VUgras{గది} \textsuperscript{(38)},
+«ఒంటరి మహిళలకు» కేటాయించిన మరో గదీ ఉన్నాయి.
+
+%%K t12-tit-2 sub
+\VUpk{10.2pt}{40}{రాత్రి బయలుదేరడం.}
+\VUsaut{3.0mm}
+
+%%K t12-10-1 p
+10. --- \VUgras{మెట్టు} \textsuperscript{(40)} ఎక్కి, \VUgras{తలుపు}
+\textsuperscript{(39)} మూసి, \VUgras{కిటికీ తెర} \textsuperscript{(41)} చుట్టి, నా చిన్న
+సామానును \VUgras{వల అరపై} \textsuperscript{(43)} పెట్టి, \VUgras{బెంచీపై}
+\textsuperscript{(42)} కూర్చున్నాను. \VUgras{దీపాలు వెలిగించేవాడు} \textsuperscript{(44)}
+దీపాలు వెలిగించడం చూసి, రాత్రి బోగీలోనే గడపాల్సి వస్తుందని అనుకున్నాను;
+\VUgras{తలగడల} \textsuperscript{(45)} అద్దె బాధ్యత చూసే ఉద్యోగిని పిలిచి ఒకటి అడిగాను.
+
+%%K t12-11-1 p
+11. --- టికెట్లు చూసేందుకు రైలు తనిఖీదారు వచ్చాడు. సరైన సమయం అయిపోయినా ఇంకా ఎందుకు
+బయలుదేరలేదని అడిగాను. \VUgras{రైలు గార్డు} \textsuperscript{(46)} \VUgras{సామాను బోగీలో}
+\textsuperscript{(47)} సైకిళ్ళు పెట్టించడంలో ఉన్నాడని చెప్పాడు. పైగా
+\VUgras{కాళ్ళ వేడి పెట్టెలన్నీ} \textsuperscript{(48)} ఇంకా మార్చలేదు.
+
+%%K t12-12-1 p
+12. --- కానీ మేము త్వరలోనే బయలుదేరబోతున్నాము — \VUgras{బొగ్గు వేసేవాడు}
+\textsuperscript{(50)}, తన \VUgras{బొగ్గు బండిపై} \textsuperscript{(49)} ఉండి,
+\VUgras{ఇంజను} \textsuperscript{(54)} మంటను రగిల్చేందుకు బొగ్గు తీసుకున్నాడు;
+\VUgras{డ్రైవరు} \textsuperscript{(51)} \VUgras{స్టేషను ఉప అధిపతి} \textsuperscript{(52)}
+సంకేతం కోసమే ఎదురుచూస్తున్నాడు — ఆయన \VUgras{ప్లాట్‌ఫారంపై} \textsuperscript{(53)}
+ఉన్నారు.
+
+%%K t12-13-1 p
+13. --- ఇంజను \VUgras{బాయిలరు} \textsuperscript{(56)} మెల్లగా గురగురలాడింది;
+\VUgras{పొగగొట్టం} \textsuperscript{(55)} \VUgras{ఆవిరితో} \textsuperscript{(60)} కలిసిన
+పొగను వరదలా కక్కింది. కీచుమనే \VUgras{కూత} \textsuperscript{(59)} మోగింది,
+\VUgras{పిస్టన్లు} \textsuperscript{(58)} కదలడం మొదలుపెట్టాయి — ఆ బరువైన యంత్రపు
+\VUgras{చక్రాలను} \textsuperscript{(57)} నెడుతూ.
+
+%%K t12-tit-3 sub
+\VUsaut{3.0mm}
+\VUpk{10.2pt}{40}{బయలుదేరు!}
+\VUsaut{3.0mm}
+
+%%K t12-14-1 p
+14. --- \VUgras{పట్టాలపై} \textsuperscript{(64)} పరుగెత్తుతున్న రైలు వేగం పెరిగింది;
+\VUgras{ప్లాట్‌ఫారాలు} \textsuperscript{(65)} మాయమయ్యాయి; \VUgras{మరుగుదొడ్లను}
+\textsuperscript{(66)} దాటిపోయాం, అవతలి \VUgras{పట్టాదారిపై} \textsuperscript{(63)} ఆగి
+ఉన్న బోగీలనూ దాటాం : \VUgras{నిద్ర బోగీలు} \textsuperscript{(67)},
+\VUgras{భోజన బోగీ} \textsuperscript{(68)}, \VUgras{తపాలా బోగీ} \textsuperscript{(69)}.
+
+%%K t12-noto-1 noto
+\VUnotes{143.2mm}{%
+\textit{(*) గమనిక.} --- \textit{ఈ ప్రయాణ వర్ణన యుద్ధానికి ముందటి సరిహద్దును
+బట్టి ఉందని అర్థం చేసుకోవాలి.}%
+}
+
+%%K t12-15-1 p
+15. --- ఆ తర్వాత \VUgras{సరుకుల స్టేషను} \textsuperscript{(71)} మా కళ్ళ ముందునుంచి
+వెళ్ళిపోయింది. పాకల కింద ఉద్యోగులు నెమ్మది రైలుతో పంపిన \VUgras{సరుకును}
+\textsuperscript{(72)} ఎక్కిస్తున్నారు. \VUgras{పనివాళ్ళ జట్టు} \textsuperscript{(76)} —
+\VUgras{నీటి తొట్టి} \textsuperscript{(73)} దగ్గర — \VUgras{పశువుల బోగీలనూ}
+\textsuperscript{(75)}, \VUgras{చదునైన బోగీలనూ} \textsuperscript{(79)} కదిపింది,
+\VUgras{సరుకు రైలు} \textsuperscript{(80)} కట్టేందుకు.
+
+%%K t12-16-1 p
+16. --- చివరి \VUgras{పట్టాల చీలికను} \textsuperscript{(78)} దాటాం, దాని దగ్గరే ముల్లు
+మార్చేవాడు నిలబడి ఉన్నాడు; \VUgras{సంకేత చక్రాన్ని} \textsuperscript{(86)} దాటాం,
+స్టేషను దూరంలో మాయమైంది.
+
+%%K t12-17-1 p
+17. --- త్వరలోనే \VUgras{ఇనుప వంతెన} \textsuperscript{(74)} మీదుగా వెళ్ళాం — అది
+\VUgras{నదిని} \textsuperscript{(81)} దాటుతుంది. ఆ వంతెన దాటాక నది వెంట సాగాం; ఆ నదిపై
+శక్తిమంతమైన \VUgras{లాగుడు నౌకలు} \textsuperscript{(82)} బరువైన \VUgras{సరుకు పడవలను}
+\textsuperscript{(83)} లాగుతున్నాయి. ఇంకా \VUgras{ప్రయాణికుల ఓడను} \textsuperscript{(84)}
+చూశాం — అది \VUgras{తేలే దిమ్మెకు} \textsuperscript{(85)} చేరుతున్న క్షణంలో.
+
+%%K t12-18-1 p
+18. --- చాలా స్టేషన్లను వేగంగా దాటేసి, కొన్ని \VUgras{సొరంగాల} \textsuperscript{(87)}
+గుండా వెళ్ళాం; \VUgras{గేటు కాపలాదారుల} లెక్కలేనన్ని \VUgras{ఇళ్ళను}
+\textsuperscript{(88)} వెనక్కి వదిలేశాం. రైలు ఊపులో ఊయలలా ఊగుతూ నేను గాఢంగా
+నిద్రపోయాను.
+
+%%K t12-tit-4 sub
+\VUsaut{3.0mm}
+\VUpk{10.2pt}{40}{డాయిచ్-ఆవ్రీకూర్ స్టేషను.}
+\VUsaut{3.0mm}
+
+%%K t12-19-1 p
+19. --- ఉద్యోగి ఒకడు అరుస్తున్న కేకతో నాకు అకస్మాత్తుగా మెలకువ వచ్చింది :
+«డాయిచ్-ఆవ్రీకూర్! \textsuperscript{(*)} అందరూ దిగండి!» అది సుంకపు తనిఖీ, సరిహద్దు
+విసుగు పుట్టించే లాంఛనాలన్నీ. నా జేబు గడియారాన్ని స్టేషను \VUgras{పెద్ద గడియారానికి}
+\textsuperscript{(89)} సరిచేసుకోవాల్సి వచ్చింది — అది యాభై అయిదు నిమిషాలు ముందుంది;
+నిద్రమత్తు వదలని నేను \VUgras{పెద్ద ముల్లును} \textsuperscript{(90)}
+\VUgras{చిన్నదానినుంచి} \textsuperscript{(91)} కష్టంగా వేరుచేసి చూశాను; ఉదయపు పొగమంచు
+వల్ల \VUgras{అంకెల పలకే} \textsuperscript{(92)} పూర్తిగా అస్పష్టంగా ఉంది.
+
+%%K t12-20-1 p
+20. --- సుంకపు అధికారులు తనిఖీ చేస్తుండగా, ఆవులిస్తూ నేను స్టేషను గోడలను అలంకరించే
+\VUgras{ప్రకటన పత్రాలను} \textsuperscript{(93)} చదివాను. సమయం గడిపేందుకు అల్పాహారం
+తీసుకున్నాను, స్ట్రాస్‌బూర్గ్ ఇంకా ఎంత దూరమో చూసేందుకు జర్మనీ \VUgras{రైలు వల}
+\textsuperscript{(94)} పటం చూశాను; నా ప్రయాణ గమ్యం త్వరలో చేరుకుంటానన్న ఆశతో బలం
+పుంజుకుని మళ్ళీ నా బోగీలోకి ఎక్కాను.
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}
