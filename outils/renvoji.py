@@ -94,6 +94,7 @@ DOSSIER = {"fr": "tableau",
            "id": "bagan", "jv": "gambar", "fa": "tablo",
            "ha": "hoto",
            "gu": "kostak",
+           "apc": "lawha",
            "de": "tafel",
            "it": "tavola"}
 

@@ -106,6 +106,29 @@ def _mot(*formes):
     return "|".join(rf"\b{re.escape(f)}\b" for f in formes)
 
 
+ARAB = r"[\u0621-\u064A\u0660-\u0669\u0671-\u06FF]"
+
+
+def _arb(*formes):
+    """Frontiere de mot en arabe, quand le mot FINIT PAR UNE MARQUE.
+
+    LE \\b DE PYTHON NE SE REFERME PAS APRES UN TANWIN, et c'est la
+    meme lecon qu'en devanagari, sur un troisieme alphabet. « اً »
+    s'ecrit alef puis U+064B, qui est une marque combinante de
+    categorie Mn : str.isalnum() la rejette, il n'y a donc aucune
+    frontiere de mot apres elle, et « \\bأيضاً\\b » ne trouve JAMAIS
+    rien. Mesure faite avant d'ecrire une ligne de levantin :
+    « أيضًا » (tanwin puis alef) passait, « أيضاً » (alef puis tanwin)
+    ne passait pas — et la colonne egyptienne portait la meme regle
+    morte depuis le debut, pour أيضاً et pour جداً.
+
+    On ferme donc sur une NEGATION DE LETTRE ARABE au lieu du \\b, ce
+    qui vaut que le mot finisse par une lettre ou par une marque.
+    """
+    return "|".join(
+        rf"\b{re.escape(f)}(?!{ARAB})" for f in formes)
+
+
 # -------------------------------------------------------------------
 #  LES COLONNES QUI ONT UNE LANGUE A DEFENDRE
 # -------------------------------------------------------------------
@@ -152,9 +175,9 @@ LINGUI = {
         (_mot("ماذا"), "إيه"), (_mot("كيف"), "إزاي"), (_mot("أين"), "فين"),
         (_mot("لماذا"), "ليه"), (_mot("متى"), "إمتى"),
         (_mot("الآن"), "دلوقتي"), (_mot("عندما", "حينما"), "لما"),
-        (_mot("جدًا", "جداً"), "أوي"),
-        (_mot("كثيرًا", "كثيرة", "كثيرون"), "كتير"),
-        (_mot("أيضًا", "أيضاً"), "كمان"), (_mot("فقط"), "بس"),
+        (_arb("جدًا", "جداً"), "أوي"),
+        (_arb("كثيرًا", "كثيرة", "كثيرون"), "كتير"),
+        (_arb("أيضًا", "أيضاً"), "كمان"), (_mot("فقط"), "بس"),
         (_mot("ثلاثة", "ثلاث"), "تلاتة / تلات"),
         (_mot("ثمانية", "ثماني"), "تمانية / تمن"),
         (_mot("سيارة", "سيارات"), "عربية"),
@@ -730,6 +753,52 @@ LINGUI = {
         (_guj("લડકા", "લડકો"), "છોકરો"),
         (_guj("લડકી"), "છોકરી"),
     ]},
+
+    # L'ARABE LEVANTIN CONTRE DEUX VOISINES QUI SONT LA MEME LANGUE
+    # QUE LUI. Toutes les colonnes precedentes se defendaient contre
+    # une langue etrangere : le marathi contre le hindi, le persan
+    # contre l'ourdou, le gujarati contre le hindi. Celle-ci se
+    # defend contre l'arabe standard, qui est la forme ECRITE de sa
+    # propre langue, et contre l'arabe egyptien, qui en est une autre
+    # forme parlee. Le danger n'est donc pas qu'un mot etranger se
+    # glisse : c'est que la main, en ecrivant, remonte toute seule
+    # vers le registre qu'on lui a appris a l'ecole. Les regles
+    # visent les deux cotes a la fois — huit contre le standard,
+    # cinq contre l'egyptien.
+    #
+    # TROIS FORMES NE SONT DELIBEREMENT PAS RELEVEES, et il faut le
+    # dire ici sous peine de les reprendre plus tard. « كيف » est
+    # levantin ET standard ; « بس » est levantin ET egyptien ;
+    # « في » est l'existentiel levantin et la preposition standard.
+    # Une regle sur l'une des trois crierait a chaque tableau, et un
+    # controle qu'on desarme ne controle plus rien — lecon du
+    # marathi, tableau 10.
+    "apc": {"mot": [
+        # LES QUATRE LETTRES QUE L'ARABE N'A PAS. پ چ ژ گ sont
+        # persanes et ourdoues ; la colonne persane du releve se
+        # defendait contre l'arabe, celle-ci se defend contre elle.
+        (r"[\u067E\u0686\u0698\u06AF]", "lettre persane — cette "
+                                          "colonne s'ecrit en arabe"),
+        (_mot("ليس", "ليست", "ليسوا"), "ما / مش"),
+        (_mot("هذا", "هذه", "هؤلاء", "ذلك", "تلك"), "هاد / هاي / هدول"),
+        (_mot("الذي", "التي", "الذين"), "يلّي"),
+        (_mot("سوف"), "رح"),
+        (_mot("ماذا"), "شو"), (_mot("لماذا"), "ليش"),
+        (_mot("أين"), "وين"), (_mot("متى"), "إيمتى"),
+        (_mot("الآن"), "هلّق"), (_mot("هل"), "— le levantin n'a pas de "
+                                            "particule interrogative"),
+        (_mot("يوجد", "توجد"), "في"),
+        (_arb("أيضًا", "أيضاً"), "كمان"),
+        # LES CINQ EGYPTIENNES. « ده » et « دي » sont les
+        # demonstratifs du Caire, « إزاي » son comment, « دلوقتي »
+        # son maintenant, « عايز » son vouloir : rien de tout cela
+        # ne se dit de Beyrouth a Amman.
+        (_mot("ده", "دي", "دول"), "هاد / هاي / هدول"),
+        (_mot("إزاي"), "كيف"), (_mot("فين"), "وين"),
+        (_mot("دلوقتي"), "هلّق"), (_mot("كده"), "هيك"),
+        (_mot("عايز", "عاوز", "عايزة"), "بدّي / بدّو"),
+        (_mot("بتاع", "بتاعة"), "تبع"),
+    ], "virgule": True},
 }
 
 # LE SEUIL AU-DELA DUQUEL UN FICHIER EST UN DIALOGUE. Mesure sur les

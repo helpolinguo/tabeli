@@ -381,6 +381,16 @@ LANGUES = [
     # qu'on le remarque.
     {"kodo": "gu", "nomo": "ગુજરાતી", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LA PREMIERE COLONNE DONT LES DEUX VOISINES SONT LA MEME LANGUE
+    # QU'ELLE. Le persan defendait son alphabet contre deux langues
+    # etrangeres qui l'avaient emprunte ; celui-ci defend un REGISTRE
+    # contre deux autres registres de l'arabe, tous les trois deja
+    # dans le releve : « ar » le standard, « arz » l'egyptien. Le
+    # danger n'est pas qu'un mot etranger se glisse, c'est que la
+    # main remonte d'elle-meme vers la forme ecrite qu'on a apprise
+    # a l'ecole.
+    {"kodo": "apc", "nomo": "شامي", "dir": "rtl",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -1057,7 +1067,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "mr": "mr",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
            "id": "id", "jv": "jv", "fa": "fa", "ha": "ha",
-           "gu": "gu",
+           "gu": "gu", "apc": "apc",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
