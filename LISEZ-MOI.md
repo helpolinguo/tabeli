@@ -44,7 +44,7 @@ par alinéa.
 | Traduction cantonaise (`texto/yue/`) | **les 16 tableaux**, faite en 2026 d'après l'ido, en caractères traditionnels — écrite en cantonais et non en chinois standard (§ 8) |
 | Traduction en arabe égyptien (`texto/arz/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — écrite en égyptien et non en arabe standard ; colonne de droite à gauche (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
-| Contrôles automatiques | huit contrôles (`outils/controles.py`) |
+| Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) |
 
 Le projet compile en permanence :
 
@@ -572,6 +572,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     outils/chaso.py           corps par la chasse (mesure retenue, § 4)
     outils/ceni.py            indice de scène dans les clés %%K
     outils/controles.py       les six contrôles
+    outils/kolonoj.py         la forme et la langue des colonnes traduites
     outils/CONSIGNE-RELEVE.md consigne de transcription
     outils/lekto.py           prépare un feuillet pour la lecture à l'œil
     outils/html.py            écrit index.html
@@ -1007,6 +1008,50 @@ désarme en bloc ne contrôle plus rien.
 orphelines sur 572 ; contrôle 6 signale l'échelle du fac-similé
 français (§ 4) ; **contrôle 7 à 187 alinéas sur 562**, soit un tiers —
 c'est le chantier ouvert.
+
+### Le neuvième contrôle : la matière des colonnes traduites
+
+    python3 outils/kolonoj.py            # les 36 colonnes traduites
+    python3 outils/kolonoj.py yue mr     # celles-là
+
+Les huit contrôles ci-dessus regardent la pagination, l'appariement des
+clés et la géométrie ; `renvoji.py` regarde les renvois ; `objekti.py`,
+les objets nommés. **Aucun ne regardait la matière d'un fichier de
+traduction** — ses macros, ses coupures, sa langue. Cet outil-là, écrit
+d'abord au coup par coup dans un répertoire temporaire, est maintenant
+dans `outils/`, en un seul contrôle paramétré. Il ne prend jamais `io`
+ni `fr` : ce sont des *transcriptions*, elles suivent les lignes du
+fac-similé et écrivent donc légitimement `\nl`, `\cc` et `VUpage`.
+
+Chaque contrôle est né d'une faute, et deux d'entre elles étaient
+**invisibles à `renvoji.py`** :
+
+| Le contrôle | Ce qui l'a rendu nécessaire |
+|---|---|
+| macro inconnue | `\textuperscript{(74)}` au tableau 11 cantonais, `\textsuperscht{}` deux fois en irlandais — un s manquant, un i et un p en moins. `renvoji.py` **ne pouvait pas les voir** : il relève aussi les renvois composés `(74)` à plein corps, parce que le relevé ido en compose ainsi au tableau 5. Le renvoi sortait juste et le fichier composait faux. Même contrôle : quatre `\nl` restés en tchèque, en irlandais et en galicien |
+| renvoi en gras | `\VUgras{(94)}` au tableau 10 égyptien — même angle mort |
+| accolade en fin de ligne | le retour à la ligne se rend par une espace, et l'espace tombe alors *dedans* le groupe gras |
+| ligne trop longue | 41 lignes de 95 à 139 caractères dans neuf colonnes écrites avant que la règle existe |
+| bloc amputé | trois blocs marathis avaient perdu un fragment de phrase, repris au numéro de ligne dans un fichier déjà replié. `renvoji.py` n'en a signalé **qu'un** — celui qui avait perdu un renvoi |
+| forme étrangère | trois colonnes n'existent que parce qu'elles ne sont pas leur voisine (§ 8) |
+
+Le contrôle du bloc amputé ne compte pas les mots : il compare la
+**longueur** de chaque bloc à celle de son homologue ido et se cale sur
+la médiane de la colonne. Le rapport varie beaucoup d'une écriture à
+l'autre — le chinois dit en cent signes ce que le marathi dit en trois
+cents — mais il varie peu d'un bloc à l'autre *dans* une même colonne.
+Un bloc tombé sous la moitié de la médiane a perdu quelque chose.
+
+Les 46 coupures posées dans les neuf colonnes trop larges ont été
+vérifiées comme il se doit : les **42 colonnes rendues sont identiques
+octet pour octet** avant et après. Un retour à la ligne se rend par une
+espace, et l'espace entre deux idéogrammes s'ôte partout (§ 8) — replier
+une ligne ne change donc rien à ce qui se lit.
+
+**Un signalement de langue n'est pas toujours une faute**, et deux
+l'ont prouvé au tableau 7 et au tableau 13 égyptiens (§ 8). Les deux
+sont exemptés par leur forme **exacte**, jamais par le mot : un contrôle
+qu'on désarme en bloc ne contrôle plus rien.
 
 ---
 
