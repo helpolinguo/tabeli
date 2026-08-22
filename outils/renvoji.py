@@ -86,6 +86,12 @@ DOSSIER = {"fr": "tableau",
            # qui partage son alphabet, dit « نقشہ » : meme ecriture,
            # deux langues, deux mots d'apparat.
            "ur": "jadval",
+           # L'INDONESIEN DIT « bagan » pour un tableau figure. Le
+           # « tabel » qu'on aurait pris d'abord est celui du
+           # neerlandais, deja dans cette table — et l'indonesien l'a
+           # justement emprunte au neerlandais. On garde donc le mot
+           # malais de fond, qui ne doit rien a personne.
+           "id": "bagan",
            "de": "tafel",
            "it": "tavola"}
 

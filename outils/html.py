@@ -332,6 +332,16 @@ LANGUES = [
     # donc sur deux fronts a la fois.
     {"kodo": "ur", "nomo": "اردو", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
+    # L'INDONESIEN N'A PAS DE VOISINE DANS LE RELEVE, ET C'EST
+    # JUSTEMENT LA SA DIFFICULTE. Le malais de Malaisie est la meme
+    # langue a un standard pres, il n'est dans aucune colonne, et
+    # rien ne le signalerait a l'oeil : kolonoj.py le tient donc par
+    # le LEXIQUE. S'y ajoute un second front, qui est une DATE :
+    # l'orthographe d'avant la reforme de 1972 — « boekoe »,
+    # « djalan », « tjelana » — est exactement celle qu'un livret de
+    # 1926 aurait employee, et c'est le piege propre a cette colonne.
+    {"kodo": "id", "nomo": "Indonesia", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -1007,6 +1017,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
+           "id": "id",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2178,6 +2189,14 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # chahmoukhi dit « نقشہ نمبر » dans le meme
                         # alphabet : deux mots, deux colonnes.
                         r"|جدول\s+نمبر"
+                        # L'INDONESIEN ecrit « BAGAN No. 1 ». Le mot
+                        # ne se lit dans aucun autre membre — le
+                        # « TABEL » neerlandais et le « TABELO » de
+                        # l'ido n'en partagent pas une lettre de
+                        # suite — et le titre du volume, « Tabel
+                        # Bantu Delmas », est compose en bas de casse
+                        # comme au portugais et au turc.
+                        r"|BAGAN"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2516,6 +2535,13 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # partagent le nom d'un role et se separent sur
                    # le mot qui le compte.
                    r"|(?:پہلا|دوسرا|تیسرا|چوتھا)\s+سلسلہ"
+                   # L'INDONESIEN MET SON ORDINAL APRES LE NOM, comme
+                   # l'arabe : « Seri Pertama ». Il lui faut donc son
+                   # propre membre et non un mot de plus dans la
+                   # liste commune, que « \b...\s+... » gouverne dans
+                   # l'autre sens.
+                   r"|[Ss]eri\s+(?:[Pp]ertama|[Kk]edua|[Kk]etiga"
+                   r"|[Kk]eempat)"
                    # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
                    # « سلسلہ » : meme langue, deux lexiques, et c'est
                    # justement pourquoi les deux colonnes se
@@ -2590,6 +2616,10 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # deux colonnes, et seuls les ordinaux les
                   # separent.
                   r"|(?:پہلا|دوسرا|تیسرا|چوتھا)\s+منظر"
+                  # MEME PLACE DE L'ORDINAL POUR LA SCENE
+                  # INDONESIENNE : « Adegan Pertama ».
+                  r"|[Aa]degan\s+(?:[Pp]ertama|[Kk]edua|[Kk]etiga"
+                  r"|[Kk]eempat)"
                   r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
                   # LE TURC, aux deux casses ecrites a la main, pour
                   # la raison dite plus haut a la serie.
