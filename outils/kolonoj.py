@@ -450,7 +450,17 @@ LINGUI = {
         (r"(?i)(?<![A-Za-z])kecil(?![A-Za-z])", "cilik"),
         (r"(?i)(?<![A-Za-z])orang(?![A-Za-z])", "wong"),
         (r"(?i)(?<![A-Za-z])rumah(?![A-Za-z])", "omah"),
-        (r"(?i)(?<![A-Za-z])banyak(?![A-Za-z])", "akeh"),
+        # « banyak » A ETE RELEVE ICI, PUIS OTE AU TABLEAU 3. Le mot
+        # indonesien veut dire « beaucoup » et le javanais dit akeh —
+        # la regle semblait bonne. Mais « banyak » est AUSSI un mot
+        # javanais, et c'est l'OIE : elle parait au tableau 3, ou les
+        # enfants du village font fuir les oies (25). Les deux mots
+        # s'ecrivent pareil et ne sont pas le meme mot. Le controle
+        # criait donc sur une forme juste, et il a fallu le desarmer
+        # — comme pour « دی » et « دے » a la colonne ourdoue, et pour
+        # les cinq faux amis ecartes d'avance a la colonne
+        # indonesienne. Ici la lecon a servi CONTRE une regle qu'on
+        # venait d'ecrire soi-meme.
         (r"(?i)(?<![A-Za-z])semua(?![A-Za-z])", "kabeh"),
         (r"(?i)(?<![A-Za-z])atau(?![A-Za-z])", "utawa"),
         (r"(?i)(?<![A-Za-z])hanya(?![A-Za-z])", "mung"),
