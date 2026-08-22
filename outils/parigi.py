@@ -101,6 +101,25 @@ LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
 # Sur les DIX-SEPT paires qui sont vraiment des rapports
 # modificateur-tete, il en trouve donc seize.
 #
+# DEUXIEME MESURE, PRISE APRES COUP AUX TABLEAUX 10 ET 11 TELOUGOUS.
+# Onze tableaux ecrits avec la liste en main ont produit exactement
+# DEUX inversions qu'elle n'avait pas vues, et les deux pour la meme
+# raison : la distance.
+#
+#     « ponteto (20), qua komunikigas la parad-esplanado kun
+#       l'arsenalo (21) »            55 caracteres  (tableau 10)
+#     « Tribunalo (22) avan qua extensas su agreabla gardeno
+#       publika (26) »               47 caracteres  (tableau 11)
+#
+# Le motif, lui, n'a rien laisse passer : dans les deux cas le mot de
+# rattachement est « qua », deja dans LIENO. Porter PORTEO a 55 les
+# rattraperait tous les deux — et ferait passer le livret entier de
+# 385 paires a 462, soit vingt pour cent de lignes en plus. On ne le
+# fait pas : renvoji.py les a attrapees toutes les deux au premier
+# jet, et une liste de courses qui double de longueur cesse d'etre
+# une liste de courses. Le seuil reste a 45, mais les deux distances
+# sont ecrites ici pour que le prochain qui hesite ait le chiffre.
+#
 # CE N'EST DONC PAS UN CONTROLE EXHAUSTIF, et il ne pretend pas
 # l'etre : renvoji.py reste l'autorite. Celui-ci fait gagner du
 # temps, pas de la certitude.
