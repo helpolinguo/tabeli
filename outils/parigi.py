@@ -73,7 +73,25 @@ LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
          # deux renvois, et c'est pourtant le meme rapport : ce qui
          # precede est la tete, ce qui suit la qualifie. Trois
          # inversions du releve tenaient a cette seule forme.
-         r"|\b\w+(?:ant|int|ont)[aei]\b")
+         #
+         # LE PARTICIPE PASSIF RATTACHE EXACTEMENT COMME L'ACTIF, et le
+         # premier jet n'en avait pris que la moitie du paradigme.
+         # « porto-triciklo (80) duktata da grumo (79) », « tamburestro
+         # (42) sequata da la tamburisti (43) », « kontoristo (22)
+         # komisita pri la ponder-aparato (21) » : meme rapport, meme
+         # inversion, et la liste n'en disait rien. Mesure : le livret
+         # passe de 386 a 408 paires — six pour cent de lignes en plus
+         # pour vingt-deux rattachements dont dix-huit sont attributifs.
+         # Comparer au seuil PORTEO plus bas, qu'on a REFUSE d'elargir :
+         # la, c'etait vingt pour cent de lignes pour deux paires. Ce
+         # n'est pas le principe qui differe, c'est le rapport.
+         #
+         # LE MINIMUM DE DEUX LETTRES devant la desinence n'est pas de
+         # l'ornement : sans lui le motif prend « tota », « tote »,
+         # « poti », « pinti » — un adjectif, un adverbe et deux noms
+         # qui finissent comme des participes. Quatre bruits nommes,
+         # quatre bruits otes, aucun rattachement perdu.
+         r"|\b\w{2,}(?:ant|int|ont|at|it|ot)[aei]\b")
 
 # La distance au-dela de laquelle deux renvois ne se rattachent plus.
 # CALIBRE SUR LES INVERSIONS REELLEMENT COMMISES aux tableaux 3 et 4
@@ -114,7 +132,7 @@ LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
 # Le motif, lui, n'a rien laisse passer : dans les deux cas le mot de
 # rattachement est « qua », deja dans LIENO. Porter PORTEO a 55 les
 # rattraperait tous les deux — et ferait passer le livret entier de
-# 386 paires a 465, soit vingt pour cent de lignes en plus. On ne le
+# 408 paires a 490, soit vingt pour cent de lignes en plus. On ne le
 # fait pas : renvoji.py les a attrapees toutes les deux au premier
 # jet, et une liste de courses qui double de longueur cesse d'etre
 # une liste de courses. Le seuil reste a 45, mais les deux distances
@@ -135,10 +153,20 @@ PORTEO = 45
 # FRAGMENTS qui ressemblaient a des participes : ranta, sante, mante,
 # vinta, dante, danta. Elles etaient justes par accident ; on les tient
 # maintenant pour de bonnes raisons — ekiranta, impulsante, arivinta,
-# fumante, ludante, sidanta —, et le compte du livret passe de 385 a
-# 386 paires. Le raccord doit se faire AVANT le depouillement general,
-# sans quoi la macro est deja devenue une espace.
-_SOLDO = re.compile(r"\\cc(?:plein)?(?![A-Za-z])[ \t\n]*")
+# fumante, ludante, sidanta. Le raccord doit se faire AVANT le
+# depouillement general, sans quoi la macro est deja devenue une
+# espace.
+#
+# ET LA COUPURE TOMBE SOUVENT AU MILIEU D'UN GRAS, ce que le premier
+# raccord ne franchissait pas : « \VUgras{voya}\cc\n\VUgras{jonti} »
+# rendait encore « voya jonti », parce que l'accolade fermante et la
+# macro rouverte separaient les deux moities. On mange donc aussi la
+# frontiere de groupe, et « voyajonti » redevient un mot. (Le tableau
+# 12 avait conclu que ce debris etait irreductible pour une raison
+# morphologique ; la raison etait bonne mais elle n'etait pas la
+# seule, et celle-ci, elle, se corrigeait.)
+_SOLDO = re.compile(r"\}?\\cc(?:plein)?(?![A-Za-z])[ \t\n]*"
+                    r"(?:\\(?:VUgras|textit|textbf)\{)?")
 
 
 def _nu(t):
