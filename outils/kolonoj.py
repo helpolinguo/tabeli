@@ -626,9 +626,25 @@ LINGUI = {
         (r"(?<![A-Za-z])kauye(?![A-Za-z])", "ƙauye"),
         (r"(?<![A-Za-z])k(?:arami|anana)(?![A-Za-z])", "ƙarami / ƙanana"),
         (r"(?<![A-Za-z])daya(?![A-Za-z])", "ɗaya"),
-        (r"(?<![A-Za-z])daki(?![A-Za-z])", "ɗaki"),
+        # « daki-daki » A FAIT CRIER CETTE REGLE AU TABLEAU 2, ET LA
+        # REGLE AVAIT TORT. « ɗaki » est la chambre ; « daki-daki »,
+        # sans crochet et redouble, est l'adverbe « en detail » — il
+        # parait au N.-B. du tableau 2, ou le maitre est invite a
+        # decrire chaque jeu daki-daki. Deux mots differents, et le
+        # trait d'union les separe : on n'ouvre donc plus la regle sur
+        # un mot qui touche un trait d'union, des deux cotes.
+        (r"(?<![A-Za-z-])daki(?![A-Za-z-])", "ɗaki"),
         (r"(?<![A-Za-z])dauka(?![A-Za-z])", "ɗauka"),
-        (r"(?<![A-Za-z])yan(?![A-Za-z])", "ƴan"),
+        # LE HAOUSSA A DEUX ORTHOGRAPHES POUR UNE SEULE LETTRE, ET
+        # C'EST UNE FRONTIERE : le Niger ecrit ƴan, le Nigeria ’yan.
+        # Les deux sont justes chez eux. La colonne prend ƴ, pour que
+        # son alphabet tienne en quatre crochets et non en trois
+        # crochets plus une apostrophe — et la regle tient ce choix,
+        # puisqu'elle s'ouvre aussi bien apres une apostrophe qu'apres
+        # une espace. Ce n'est pas une faute qu'elle releve alors,
+        # c'est un melange.
+        (r"(?<![A-Za-z])yan(?![A-Za-z])", "ƴan (et non ’yan : la "
+                                          "colonne ecrit le crochet)"),
         (r"'", "apostrophe droite — le haoussa de 2026 ecrit ’ (U+2019)"),
     ]},
 }
