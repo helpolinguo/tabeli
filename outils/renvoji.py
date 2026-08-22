@@ -72,6 +72,8 @@ DOSSIER = {"fr": "tableau",
            # LE MARATHI dit « तक्ता », non « तालिका » : le jeton
            # est donc « takta » et non celui du hindi.
            "mr": "takta",
+           # LE TELOUGOU DIT « పట్టిక » pour un tableau.
+           "te": "pattika",
            "de": "tafel",
            "it": "tavola"}
 

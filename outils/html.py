@@ -297,6 +297,16 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "mr", "nomo": "मराठी", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE TELOUGOU EST DRAVIDIEN, ET C'EST LA PREMIERE FOIS. Les seize
+    # colonnes indiennes precedentes — hindi, bengali, pendjabi,
+    # marathi — sont indo-europeennes et cousines de l'ido de loin ;
+    # celle-ci ne l'est pas du tout. Elle agglutine ses cas au lieu
+    # de les postposer, elle n'a pas de genre grammatical mais une
+    # opposition humain / non-humain, et son verbe finit la phrase
+    # sans exception. Aucune autre colonne du releve n'est batie
+    # ainsi.
+    {"kodo": "te", "nomo": "తెలుగు", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -971,6 +981,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "lb": "lb", "rm": "rm",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
+           "te": "te",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2102,6 +2113,10 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # se traduit pour elle-meme. Meme raison que
                         # pour le gourmoukhi et le shahmoukhi.
                         r"|तक्ता\s+क्रमांक"
+                        # LE TELOUGOU DIT « పట్టిక ». Comme pour le
+                        # hindi et le marathi, on exige le mot du
+                        # numero qui suit, faute de capitales.
+                        r"|పట్టిక\s+సంఖ్య"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2424,6 +2439,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
                    # LE MARATHI : « पहिली मालिका ».
                    r"|(?:पहिली|दुसरी|तिसरी|चौथी)\s+मालिका"
+                   r"|(?:మొదటి|రెండవ|మూడవ|నాలుగవ)\s+శ్రేణి"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
                    r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ"
@@ -2478,6 +2494,10 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # LE MARATHI APPELLE UNE SCENE « प्रवेश », le mot
                   # de son theatre, la ou le hindi dit « दृश्य ».
                   r"|(?:पहिला|दुसरा|तिसरा|चौथा)\s+प्रवेश"
+                  # LE TELOUGOU APPELLE UNE SCENE « రంగం », le mot de
+                  # son theatre, comme le marathi dit प्रवेश : ni l'un
+                  # ni l'autre ne calque le « దృశ్యం » savant.
+                  r"|(?:మొదటి|రెండవ|మూడవ|నాలుగవ)\s+రంగం"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"

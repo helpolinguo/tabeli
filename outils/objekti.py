@@ -337,6 +337,7 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
            # renvoji.py.
            ("arz", "*-lawha-*.tex"), ("hi", "*-talika-*.tex"),
            ("mr", "*-takta-*.tex"),
+           ("te", "*-pattika-*.tex"),
            ("pt", "*-quadro-*.tex"), ("bn", "*-sarani-*.tex"),
            ("ja", "*-zuhyo-*.tex"), ("pnb", "*-naqsha-*.tex"),
            ("pa", "*-sarni-*.tex"),

@@ -211,6 +211,29 @@ LINGUI = {
         # partout, et दरवाजा aussi ailleurs qu'ici.
         r"\VUgras{दरवाजा} \textsuperscript{(8)}",
     ]},
+
+    # LE TELOUGOU CONTRE LE HINDI, ET LE CAS EST DIFFERENT DES TROIS
+    # AUTRES. Le cantonais, l'egyptien et le marathi devaient se
+    # defendre contre une voisine PROCHE ; le telougou est dravidien
+    # et n'a aucune parente avec les colonnes indiennes du releve. Le
+    # risque n'est donc pas de derailler vers le hindi mais d'y
+    # puiser un mot savant la ou le telougou en a un a lui — ce que
+    # font les traductions pressees. On releve les formes hindi et
+    # sanskrites que le telougou courant ne dit pas.
+    "te": {"mot": [
+        (_mot("है", "हैं", "था", "थे"), "ఉంది / ఉన్నాయి"),
+        (_mot("नहीं"), "లేదు / కాదు"),
+        (_mot("और"), "మరియు"), (_mot("लेकिन"), "కానీ"),
+        (_mot("क्योंकि"), "ఎందుకంటే"), (_mot("बहुत"), "చాలా"),
+        (_mot("यह", "वह"), "ఇది / అది"),
+        (_mot("क्या", "कैसे", "कहाँ"), "ఏమిటి / ఎలా / ఎక్కడ"),
+        # LES MOTS D'APPARAT, VISES SOUS LEUR SEULE FORME D'APPARAT,
+        # comme pour le marathi : « దృశ్యం » est du telougou
+        # parfaitement ordinaire pour une vue.
+        (_mot("తాలికా", "తాలిక"), "పట్టిక"),
+        (_mot("మొదటి దృశ్యం", "రెండవ దృశ్యం", "మూడవ దృశ్యం",
+              "నాలుగవ దృశ్యం"), "మొదటి రంగం ..."),
+    ]},
 }
 
 
