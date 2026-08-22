@@ -1410,6 +1410,16 @@ octet pour octet** avant et après. Un retour à la ligne se rend par une
 espace, et l'espace entre deux idéogrammes s'ôte partout (§ 8) — replier
 une ligne ne change donc rien à ce qui se lit.
 
+**Un caractère de remplacement n'est jamais du texte, et le contrôle
+a été ajouté après coup.** Un `U+FFFD` s'était glissé en fin de phrase
+dans `texto/ur/15-jadval-06.tex`, à la place d'un point ourdou. Aucun
+des cinq outils ne l'a vu : `renvoji.py` ne lit que l'ordre des
+renvois, `kolonoj.py` ne lisait que les macros et les mots, `html.py`
+l'aurait publié tel quel. Il n'a été trouvé qu'en relisant. Le contrôle
+relève désormais le caractère de remplacement et les caractères de
+commande C0 — c'est le seul de ce fichier qui ne regarde ni la langue
+ni la mise en page : **il regarde l'octet**.
+
 **Un signalement de langue n'est pas toujours une faute**, et deux
 l'ont prouvé au tableau 7 et au tableau 13 égyptiens (§ 8). Les deux
 sont exemptés par leur forme **exacte**, jamais par le mot : un contrôle

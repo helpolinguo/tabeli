@@ -354,6 +354,25 @@ def formo(f, lg, mauvais):
                 mauvais.append(f"{f}:{i} macro inconnue : \\{m.group(1)}")
         if "\\VUgras{}" in l:
             mauvais.append(f"{f}:{i} \\VUgras vide")
+        # LE CARACTERE DE REMPLACEMENT, ET CE QU'IL A COUTE POUR
+        # ETRE AJOUTE ICI. Un U+FFFD s'est glisse dans le bloc
+        # c4-08-1 de texto/ur/15-jadval-06.tex, en fin de phrase, a
+        # la place d'un point ourdou. Aucun des cinq outils ne l'a
+        # vu : renvoji.py ne lit que l'ordre des renvois, kolonoj.py
+        # ne lisait que les macros et les mots, html.py l'aurait
+        # publie tel quel. Il n'a ete trouve qu'en relisant.
+        #
+        # Un caractere de remplacement n'est jamais voulu : c'est la
+        # trace d'un octet perdu au passage d'un encodage a un autre,
+        # et il ne peut pas etre du texte. On releve avec lui les
+        # caracteres de controle C0, sauf la tabulation, pour la
+        # meme raison. C'est le seul controle de ce fichier qui ne
+        # regarde ni la langue ni la mise en page : il regarde
+        # l'octet.
+        for m in re.finditer(r"[\ufffd\x00-\x08\x0b-\x1f\x7f]", l):
+            mauvais.append(f"{f}:{i} caractere impossible "
+                           f"U+{ord(m.group(0)):04X} — octet perdu"
+                           f" a la conversion")
         # UNE ACCOLADE OUVERTE EN FIN DE LIGNE : le retour a la ligne se
         # rend par une espace, et l'espace tombe alors DEDANS le groupe.
         if re.search(r"\{\s*$", l):
