@@ -52,6 +52,7 @@ par alinéa.
 | Traduction javanaise (`texto/jv/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la voisine a été écrite par la même main, et **seule du relevé à avoir des niveaux de langue grammaticalisés** (ngoko, krama), d'où un contrôle qui distingue le récit du dialogue (§ 8) |
 | Traduction persane (`texto/fa/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la défense se joue au **caractère** et non au mot : deux voisines (ourdou, arabe) logent dans son propre alphabet, où ی/ي et ک/ك ne se distinguent pas à l'œil (§ 8) |
 | Traduction haoussa (`texto/ha/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne qui s'écrive en **lettres latines** et dont le contrôle vise pourtant le caractère : ɓ, ɗ, ƙ, ƴ sont quatre lettres pleines qu'aucun clavier ne donne, et l'alphabet boko n'a ni p, ni q, ni v, ni x (§ 8) |
+| Traduction gujaratie (`texto/gu/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — colonne **à tête finale**, où l'outil qui compte est `parigi.py`, lu *avant* d'écrire : le génitif gujarati pose le possesseur devant le possédé et retourne à lui seul la moitié des couples de renvois (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -601,6 +602,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/jv/10-gambar-01.tex … 25-gambar-16.tex     (traduction)
     texto/fa/10-tablo-01.tex … 25-tablo-16.tex       (traduction)
     texto/ha/10-hoto-01.tex … 25-hoto-16.tex        (traduction)
+    texto/gu/10-kostak-01.tex … 25-kostak-16.tex     (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1853,6 +1855,111 @@ exception qui tient deux fois et tombe la troisième en dit plus
 qu'une qui tiendrait toujours** — elle ne tenait pas à la douane,
 elle tenait au port.
 
+### La colonne gujaratie : l'outil qui compte se lit *avant* d'écrire
+
+Les deux colonnes précédentes ont appris que le contrôle peut viser la
+lettre. Celle-ci apprend autre chose : **quel outil de la famille il
+faut lire, et à quel moment.** Le gujarati est une langue à **tête
+finale** — le possesseur avant le possédé, le complément avant le
+verbe, la relative avant son antécédent. Or le livret est écrit dans
+une langue à tête initiale, et il enchaîne les génitifs : *le jet DE
+la fontaine*, *le bureau DE mon cousin*, *l'impériale DE l'omnibus*,
+*la scie DU bûcheron*. Chaque fois que deux renvois tombent de part et
+d'autre d'un « de », **le gujarati les retourne tout seul**.
+
+**Les trois outils se lisent à trois moments, et c'est cette colonne
+qui l'a démontré.** `parigi.py` **AVANT** : il dit quels *couples*
+vont s'inverser, et il faut l'avoir lu avant d'écrire une ligne.
+`ordo.py` **PENDANT** : il donne la suite complète des renvois du
+bloc, à recopier. `renvoji.py` **APRÈS** : il dit si l'ordre est bon.
+Les tableaux où `parigi.py` n'a pas été consulté d'abord sont ceux qui
+ont saigné : deux fautes au tableau 1, quatre au tableau 3, quatre au
+tableau 6, et **cinq au tableau 14** — le record du relevé, sur un
+tableau qui n'est qu'une enfilade de vitrines appartenant chacune à
+quelqu'un. **Un tableau de possessifs est, pour une langue à tête
+finale, ce que le bloc aveugle est pour le contrôle : l'endroit où il
+faut compter à la main.**
+
+**Le remède est un seul et il est toujours le même** : la relative
+gujaratie en « જે », héritée du sanskrit, qui **pose la tête d'abord**
+et rejette le reste derrière. *La scie (34), laquelle est aux mains du
+bûcheron (33).* Ce n'est pas une acrobatie de traducteur : c'est la
+tournure ordinaire de la langue, et c'est justement pour cela qu'elle
+marche.
+
+**Le contrôle de langue, lui, vise le mot et non la lettre** — treize
+règles, contre les douze du haoussa et les dix du persan. La difficulté
+n'est pas la même : le gujarati a **trois voisines de trois natures** —
+le hindi, qui partage son fonds et la moitié de ses mots-outils ; le
+marathi, qui partage sa grammaire ; l'ourdou et le persan, qui ont
+fourni le vocabulaire du commerce et de l'administration. Une règle de
+caractère écarte le dévanagari (`U+0900..U+097F`) : le gujarati est le
+dévanagari **moins la barre du haut**, et douze règles de mot écartent
+les formes hindies qui se glisseraient sans qu'on les voie — *હૈ* pour
+*છે*, *ઔર* pour *અને*, *કા/કી* pour *નો/ના/ની*. Trois formes sont
+**délibérément non relevées** — નહીં, કે, મેં — parce qu'elles sont
+hindies **et** gujaraties : une règle qui crierait au tableau 1 serait
+désarmée au tableau 16.
+
+**Ce que cette colonne a trouvé tient en une phrase : une langue garde
+le nom de ce qu'elle a manié.** Le bouleau (t. 9) est « ભૂર્જ » parce
+que le Cachemire a écrit dessus pendant quinze siècles ; le sapin, qui
+n'a jamais servi à rien ici, n'a pas de nom. Le port de commerce
+(t. 10) est entièrement gujarati — વહાણ, સઢ, ડોલકાઠી, હલેસું, સુકાન,
+તૂતક, લંગર, ધક્કો, ગોદી, વખાર, જકાત, ખલાસી, દીવાદાંડી — et le port de
+guerre entièrement anglais, parce que cette côte a commercé deux mille
+ans et n'a plus eu de marine à elle après les Portugais. Le chemin de
+fer (t. 12) partage exactement : **ce qu'on voit** reçoit un mot d'ici
+(ગાડી le train, ડબો le wagon, પાટા les rails), **ce qu'on ne fait
+qu'apprendre** reste anglais (સિગ્નલ, પ્લૅટફૉર્મ, ટિકિટ, ગાર્ડ).
+
+**Sept refus, et quatre d'affilée du même genre.** La châtaigne (t. 7)
+contre l'arachide grillée, le coquelicot (t. 8) contre le pavot à
+opium, la pervenche (t. 9) contre celle de Madagascar, le fromage
+(t. 13) contre le paneer. Chaque fois **le mot tombait sous la main et
+la chose n'était pas la même** — c'est exactement pour cela qu'il
+fallait refuser. À l'inverse, l'harmonium (t. 14) est écrit sans
+hésiter : la chose est venue, elle est restée, et le mot est d'ici.
+
+**Trois interdits, trois religions, une seule règle.** Le cochon
+(t. 7) dans l'État le plus végétarien de l'Inde, le menu de crevettes
+et de Saint-Émilion (t. 13) dans le seul grand État sous prohibition
+totale, et la viande de bœuf (t. 15), dont l'abattage est puni de la
+réclusion à perpétuité depuis 2017. Les trois sont écrits, sans note
+et sans détour, avec les mots que la langue possède : ભૂંડ, ઝીંગા,
+દારૂ, ગૌમાંસ. **La langue a les mots ; c'est le faire qui est
+interdit, pas le nommer** — la colonne haoussa l'avait démontré une
+fois, celle-ci le démontre trois fois de plus, et la troisième dans un
+code pénal et non dans des têtes.
+
+**Onze mots portugais en seize tableaux**, et aucun n'a l'air
+étranger à qui le parle : મેજ la table, પાદરી le prêtre, અનનાસ
+l'ananas, મિસ્ત્રી le maçon, બંબો la pompe — qui revient au tableau 11
+comme pompe à incendie, le pompier étant « બંબાવાળો » —, ઇસ્પિતાલ
+l'hôpital, આયા la bonne d'enfants, બટાટા la pomme de terre, કોબી le
+chou, પાંઉ le pain, નાતાલ Noël. **Les Portugais n'ont pas seulement
+apporté des mots : ils ont apporté les légumes, et le mot est venu
+accroché à la chose.** Diu et Daman ont été portugais jusqu'en 1961 :
+ce n'est pas un vieux fonds, c'est un voisinage.
+
+**Et deux mots ont remonté le courant, à deux tableaux de suite** :
+કુલી le porteur (t. 12), parti d'ici vers l'anglais, et શતરંજ les
+échecs (t. 13), chaturanga en sanskrit, passés par la Perse avant
+d'arriver dans un café de Royan. Un troisième aurait suivi — વાણિયો le
+marchand, qui a donné *banyan* — mais c'est un nom de caste avant
+d'être un nom de métier, et le commerçant du tableau 14 est un drapier
+français : on a écrit « વેપારી ». **Le tableau 7 avait noté que les
+métiers sont des castes ; c'est au tableau 14 que cela coûte quelque
+chose.**
+
+**Enfin le mot qui ferme le relevé était dans un titre.** « La
+Bazaro », au tableau 16, est « બજાર » : le seul des seize titres du
+livret dont les deux langues possédaient déjà le mot. Il est persan et
+il est arrivé dans chacune par une route différente — dans le gujarati
+directement, avec les marchands ; dans l'ido par le turc, l'italien et
+le français, après un tour de la Méditerranée. **Le livret dit bazar à
+un lecteur qui dit bazar.**
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1878,7 +1985,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 44 colonnes traduites
+    python3 outils/kolonoj.py            # les 45 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
