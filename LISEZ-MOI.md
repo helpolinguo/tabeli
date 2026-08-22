@@ -47,6 +47,7 @@ par alinéa.
 | Traduction telougoue (`texto/te/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dravidienne du relevé, et celle qui a fait la règle modificateur–tête (§ 8, § 9) |
 | Traduction coréenne (`texto/ko/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne du relevé sans langue voisine, d'où un contrôle qui tient en une classe de caractères (§ 8) |
 | Traduction tamoule (`texto/ta/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont l'adversaire est un **registre** et non une langue, et celle qui a fait naître `ordo.py` (§ 8, § 9) |
+| Traduction ourdoue (`texto/ur/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne à **deux voisines de natures différentes** (l'écriture avec le pendjabi chahmoukhi, la langue avec le hindi), et celle qui a rendu au tableau 11 ses gros plans (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -344,7 +345,7 @@ table pendant l'écriture de la colonne ourdoue : `t11` était le seul zéro
 d'une colonne de seize nombres. La réparation est un repli sur le numéro
 nu, et elle est sûre parce que le relevé le montre : aucune planche ne
 mêle les deux formes, ses numéros sont **tous** préfixés ou **tous** nus.
-Une colonne complète passe ainsi de 1 642 boutons à 1 731.
+Une colonne complète passe ainsi de 1 644 boutons à 1 733. (Le premier report annonçait 1 642 → 1 731 : le total avait été additionné à la main sur la liste des seize tableaux au lieu d'être relu dans le fichier. Deux de plus, et c'est le fichier qui a raison.)
 
 **Une mesure seule ne dit rien ; il faut les trente.** Le balayage de
 registre de 2026 a été mené colonne par colonne, mais chaque chiffre a été
@@ -591,6 +592,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/te/10-pattika-01.tex … 25-pattika-16.tex  (traduction)
     texto/ko/10-dopyo-01.tex … 25-dopyo-16.tex      (traduction)
     texto/ta/10-attavanai-01.tex … 25-attavanai-16.tex (traduction)
+    texto/ur/10-jadval-01.tex … 25-jadval-16.tex      (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1366,6 +1368,109 @@ beau-père des deux côtés. Deux langues très précises, précises sur des
 axes différents.
 
 
+### La colonne ourdoue : deux voisines, et de natures différentes
+
+Toutes les colonnes défendues jusqu'ici l'étaient sur **un** front : le
+cantonais contre le mandarin, le marathe contre le hindi, le coréen
+contre le hanja, le tamoul contre son propre parlé. L'ourdou en a deux,
+et elles ne se ressemblent pas.
+
+* Il partage l'**écriture** avec le pendjabi chahmoukhi (`texto/pnb`),
+  qui est une autre langue : même alphabet, même nastaliq, la voisine
+  passerait inaperçue.
+* Il partage la **langue** avec le hindi (`texto/hi`) — même grammaire,
+  même lexique de base, au point que les deux se parlent sans
+  traduction. Ils diffèrent par l'écriture, qui empêche toute
+  contamination visible, et par le **registre savant** : sanskrit d'un
+  côté, persan et arabe de l'autre.
+
+`kolonoj.py` tient donc les deux fronts par deux moyens différents : le
+premier par la **grammaire** — le génitif pendjabi *دا* n'existe pas en
+ourdou, qui dit *کا* —, le second par le **lexique** — les tatsama du
+hindi, ودیالیہ, پستک, ادھیاپک, que l'ourdou imprimé n'emploie jamais,
+non parce qu'ils seraient trop savants mais parce que sa colonne
+savante est l'autre. **Et deux mots n'ont pas été relevés, exprès** :
+*دی* et *دے* sont les autres formes du génitif pendjabi et aussi des
+mots ourdous ordinaires, le passé et l'impératif de « donner » ; de
+même *اوہ*, pronom pendjabi et interjection ourdoue. Un contrôle qui
+crie à chaque page finit désarmé.
+
+**Le mot suit la date, pas la carte ni le prestige.** Le tableau 9 le
+montre par un contre-exemple qu'aucune autre colonne n'offrait :
+گلیشیئر, le glacier, est un **emprunt** dans la langue d'un pays qui
+porte le Baltoro et le Siachen. Avoir la chose sous les yeux ne suffit
+donc pas. Le tableau 10 donne l'autre bout : آبدوز, le sous-marin, est
+un composé persan transparent — *آب* l'eau, *دوز* qui plonge — forgé au
+XX⁠e siècle pour une chose que le persan n'avait jamais vue, et
+« submarine » n'a jamais eu sa chance. **گلیشیئر est arrivé avant que
+l'ourdou ait forgé ; آبدوز est arrivé avant l'anglais.**
+
+**Deux tableaux voisins se renversent, et c'est l'usage qui décide.**
+Sur mer (10), tout ce qui précédait la vapeur porte un nom persan —
+عرشہ le pont, مستول le mât, لنگر l'ancre, بندرگاہ le port, آبنائے le
+détroit, برزخ l'isthme — et tout ce que la vapeur a inventé est
+anglais : کروزر, فریگیٹ, تارپیڈو, بوائلر, پسٹن. Au chemin de fer (12),
+la vapeur **est** l'objet et pourtant l'ourdou nomme presque tout :
+ڈبّا le wagon, پٹری le rail, پھاٹک la barrière, اوقات نامہ
+l'indicateur, مال گاڑی le train de marchandises. Sept emprunts
+seulement — et les sept se tiennent par la main : انجن, پلیٹ فارم,
+ٹکٹ, گارڈ, سگنل sont les cinq mots qu'un voyageur lit **écrits** sur
+place, en anglais, depuis 1861 ; بوائلر et پسٹن sont les deux pièces
+qu'un voyageur ne voit jamais. Le chemin de fer indien a été construit
+tôt et a servi tout le monde ; la marine à vapeur est restée le métier
+d'un corps d'officiers qui parlait anglais.
+
+**Trois mots ont voyagé dans l'autre sens, et il faut les compter dans
+le bon.** برآمدہ la véranda (tableau 5), قلی le porteur (12), بازار le
+bazar (16) : l'anglais et le français les ont pris à l'ourdou et au
+persan, pas l'inverse. Les trois se ressemblent — un lieu couvert, un
+homme qui porte, un marché : trois choses que l'Europe a rencontrées en
+Asie et pour lesquelles elle n'avait pas de mot à elle.
+
+**L'administration est le domaine où la colonne n'invente rien**, et la
+raison est historique et non linguistique : l'Inde britannique a bâti
+les mêmes offices que la France sur le même modèle, et ils ont gardé
+leurs noms. ڈپٹی کمشنر rend exactement le préfet (11) ; تحصیل دار
+exactement le percepteur (14) ; s'y ajoutent محصول خانہ, بلدیہ کا گھر,
+عدالت, بچت خانہ, ڈاک خانہ, کتب خانہ, عجائب گھر, دار المعلمین. Et
+گھنٹہ گھر, le beffroi (11), est le plus exact des neuf : une tour
+communale qui porte l'horloge et la cloche et domine la vieille ville —
+celle de Faisalabad, de Multan, de Lahore, bâtie au même siècle et pour
+la même raison, et le mot dit « la maison de la cloche ».
+
+**Dix refus de transposition, et le plus dur portait sur le plus beau
+mot.** سارنگی est l'instrument à archet du nord de l'Inde et il était
+tentant pour le violon (11), puisqu'il est vivant là où وائلن est un
+emprunt ; mais il n'a ni le même jeu ni la même place, et il n'est pas
+dans un orchestre de fosse. La colonne garde en revanche بانسری pour la
+flûte et ڈھول pour le tambour, parce que ceux-là **sont** les choses.
+Au tableau 9, on pouvait écrire مارخور pour le chamois (54) — le grand
+caprin du Pakistan, son animal national — et on ne l'a pas fait. Au 8,
+le vin, la bière et le cidre sont nommés sans détour dans une langue
+dont la plupart des lecteurs n'en boivent pas. Au 15, le porc ouvre le
+tableau et la colonne écrit son jambon, son boudin et son lard : c'est
+l'usage qui a changé, pas le mot. **Et le ھارمونیم (14) renverse la
+règle sans la casser** : mot emprunté, chose venue d'Europe en 1875, et
+devenu l'instrument le plus ordinaire de la musique du nord de l'Inde.
+Ce qui compte n'est pas d'où vient le mot, c'est ce qu'il montre.
+
+**La relative postposée est l'outil qui manquait aux colonnes à tête
+finale.** L'ourdou possède *جو … ہے*, héritée du persan, qui se pose
+**après** son antécédent comme celle de l'ido. Le coréen et le tamoul
+n'ont que le participe antéposé et devaient couper la phrase en deux ;
+au bloc `t07-c2-12-1`, où les trois colonnes ont trébuché sur le même
+passage, l'ourdou seul s'en tire sans couper. La prédiction écrite dans
+l'en-tête du tableau 9 — « plus de deux divergences par tableau une
+fois l'outil pris comme construction ordinaire » — a été vérifiée aux
+tableaux 10 à 16 : **zéro faute d'ordre sur sept tableaux de suite**.
+Le tiret reste nécessaire pour la circonstance et pour le génitif à
+trois étages, que la relative ne prend pas sans lourdeur.
+
+**Et c'est en comptant les gros plans tableau par tableau, pendant
+l'écriture de cette colonne, qu'on a vu que le tableau 11 n'en avait
+aucun** — dans les 42 colonnes à la fois, depuis toujours (§ 8, plus
+haut).
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1391,7 +1496,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 39 colonnes traduites
+    python3 outils/kolonoj.py            # les 40 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
