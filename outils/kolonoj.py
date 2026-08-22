@@ -341,12 +341,79 @@ LINGUI = {
 }
 
 
+# LES ECRITURES QUI NE SE MELENT PAS DANS UN MOT. Deux lettres de
+# deux ecritures non latines ne se rencontrent jamais a l'interieur
+# d'un meme mot : on n'ecrit pas un mot moitie arabe moitie tamoul.
+# Quand cela arrive, c'est une faute de frappe qu'aucun autre controle
+# ne peut voir — la ligne reste bien formee, le LaTeX compile, et
+# l'oeil qui ne lit pas les deux ecritures passe dessus.
+#
+# LA MESURE AVANT LA REGLE : passe sur les 42 colonnes de texto/,
+# le controle releve ZERO mot, une fois le danda « । » rendu neutre.
+# Ce signe vit dans le bloc devanagari mais sert au bengali, au
+# gujarati, au telougou et au marathe : sans cette exception le
+# controle criait sur presque chaque phrase bengalie. Les liants
+# U+200C et U+200D sont neutres pour la meme raison.
+ECRITURES = [
+    ("arabe", 0x0600, 0x06FF), ("devanagari", 0x0900, 0x097F),
+    ("bengali", 0x0980, 0x09FF), ("gourmoukhi", 0x0A00, 0x0A7F),
+    ("gujarati", 0x0A80, 0x0AFF), ("tamoul", 0x0B80, 0x0BFF),
+    ("telougou", 0x0C00, 0x0C7F), ("kannada", 0x0C80, 0x0CFF),
+    ("malayalam", 0x0D00, 0x0D7F), ("grec", 0x0370, 0x03FF),
+    ("cyrillique", 0x0400, 0x04FF), ("hebreu", 0x0590, 0x05FF),
+    ("han", 0x4E00, 0x9FFF), ("hangul", 0xAC00, 0xD7AF),
+]
+NEUTRES = {0x0964, 0x0965, 0x200C, 0x200D}
+
+
+def ecriture(c):
+    o = ord(c)
+    if o in NEUTRES:
+        return None
+    for nom, debut, fin in ECRITURES:
+        if debut <= o <= fin:
+            return nom
+    return None
+
+
+def octet(f, i, l, mauvais):
+    """Ce qui ne peut pas etre du texte, en-tetes compris."""
+    # LE CARACTERE DE REMPLACEMENT. Un U+FFFD s'est glisse dans le
+    # bloc c4-08-1 de texto/ur/15-jadval-06.tex, a la place d'un
+    # point ourdou. Aucun des cinq outils ne l'a vu : renvoji.py ne
+    # lit que l'ordre des renvois, kolonoj.py ne lisait que les
+    # macros et les mots, html.py l'aurait publie tel quel. Un
+    # caractere de remplacement n'est jamais voulu : c'est la trace
+    # d'un octet perdu au passage d'un encodage a un autre. On releve
+    # avec lui les caracteres de controle C0, sauf la tabulation.
+    for m in re.finditer(r"[\ufffd\x00-\x08\x0b-\x1f\x7f]", l):
+        mauvais.append(f"{f}:{i} caractere impossible "
+                       f"U+{ord(m.group(0)):04X} — octet perdu"
+                       f" a la conversion")
+    for mot in l.split():
+        vues = {ecriture(c) for c in mot}
+        vues.discard(None)
+        if len(vues) > 1:
+            mauvais.append(f"{f}:{i} « {mot} » mele "
+                           f"{' et '.join(sorted(vues))} dans un seul "
+                           f"mot — faute de frappe")
+
+
 def formo(f, lg, mauvais):
     """Les controles de forme, qui valent pour toutes les colonnes."""
     regle = LINGUI.get(lg, {})
     mots = regle.get("mot", [])
     exemptes = regle.get("exemptes", [])
     for i, l in enumerate(f.read_text(encoding="utf-8").split("\n"), 1):
+        # LES DEUX CONTROLES QUI SUIVENT REGARDENT L'OCTET, PAS LA
+        # LANGUE, ET ILS PASSENT DONC AUSSI SUR LES COMMENTAIRES.
+        # C'est la seule difference avec tout le reste du fichier, et
+        # elle a ete payee deux fois : un U+FFFD dans le corps de
+        # texto/ur/15-jadval-06.tex, puis un ک arabe glisse au milieu
+        # d'un mot tamoul cite dans l'EN-TETE de
+        # texto/ur/17-jadval-08.tex. Un en-tete se lit ; il doit donc
+        # se controler.
+        octet(f, i, l, mauvais)
         if l.startswith("%"):
             continue
         for m in re.finditer(r"\\([A-Za-z]+)", l):
@@ -354,25 +421,6 @@ def formo(f, lg, mauvais):
                 mauvais.append(f"{f}:{i} macro inconnue : \\{m.group(1)}")
         if "\\VUgras{}" in l:
             mauvais.append(f"{f}:{i} \\VUgras vide")
-        # LE CARACTERE DE REMPLACEMENT, ET CE QU'IL A COUTE POUR
-        # ETRE AJOUTE ICI. Un U+FFFD s'est glisse dans le bloc
-        # c4-08-1 de texto/ur/15-jadval-06.tex, en fin de phrase, a
-        # la place d'un point ourdou. Aucun des cinq outils ne l'a
-        # vu : renvoji.py ne lit que l'ordre des renvois, kolonoj.py
-        # ne lisait que les macros et les mots, html.py l'aurait
-        # publie tel quel. Il n'a ete trouve qu'en relisant.
-        #
-        # Un caractere de remplacement n'est jamais voulu : c'est la
-        # trace d'un octet perdu au passage d'un encodage a un autre,
-        # et il ne peut pas etre du texte. On releve avec lui les
-        # caracteres de controle C0, sauf la tabulation, pour la
-        # meme raison. C'est le seul controle de ce fichier qui ne
-        # regarde ni la langue ni la mise en page : il regarde
-        # l'octet.
-        for m in re.finditer(r"[\ufffd\x00-\x08\x0b-\x1f\x7f]", l):
-            mauvais.append(f"{f}:{i} caractere impossible "
-                           f"U+{ord(m.group(0)):04X} — octet perdu"
-                           f" a la conversion")
         # UNE ACCOLADE OUVERTE EN FIN DE LIGNE : le retour a la ligne se
         # rend par une espace, et l'espace tombe alors DEDANS le groupe.
         if re.search(r"\{\s*$", l):
