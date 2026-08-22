@@ -1,0 +1,371 @@
+% ===================================================================
+%  పట్టిక సంఖ్య 9 — కొండ. అడవి.
+%
+%  Traduction, faite en 2026, en telougou d'aujourd'hui, sur l'ido de
+%  texto/io. Regles de la colonne : voir 10-pattika-01.tex. Deux
+%  scenes, deux numerotations : les cles portent c1 et c2.
+%
+%  LE FAC-SIMILE IDO NE MET PAS EN GRAS « kaskado (10) » ni
+%  « kazino (21) » ; le francais les grasse tous les deux, et les
+%  colonnes deja servies suivent le francais. Celle-ci fait de meme.
+%
+%  LE TELOUGOU A LE RELIEF, IL N'A PAS LA FLORE. C'est la coupure la
+%  plus nette de ce tableau, et elle passe exactement entre ce que
+%  les Ghats orientaux portent et ce qu'ils ne portent pas :
+%
+%    కనుమ (27)    le col        లోయ (25)     la vallee
+%    కొండ వాలు (7) le flanc     గట్టు (23)   le talus
+%    జలపాతం (10)  la cascade    కొండ వాగు (33) le torrent
+%    అగాధం (34)   le gouffre    గుహ (56)     la grotte
+%    మేతబీడు (49) le paturage   వాగు (24)    le ruisseau
+%    సరస్సు (26)  le lac        బండరాళ్ళు (45) les rochers
+%    ఆమడ          la lieue — la mesure telougoue, quatre kilometres
+%                 comme la lieue du livret, et le mot vit encore
+%
+%  Et pour les vivants, le telougou nomme sans hesiter ce qui habite
+%  l'Inde : వడ్రంగి పిట్ట (30) le pic-vert, కాకి (60) la corneille,
+%  ఉడుత (61) l'ecureuil, హంస (45) le cygne, నత్త (4) l'escargot,
+%  సాలెగూడు (2) la toile d'araignee, చీమల పుట్ట (6) la fourmiliere,
+%  కుందేలు (18) le lievre, అడవి పంది (21) le sanglier.
+%
+%  LES EMPRUNTS SUIVENT LA FLORE, PAS LA LANGUE, et deux arbres le
+%  prouvent en sens contraire. Le bouleau et le cedre poussent en
+%  Inde : le telougou les appelle భూర్జం (26) et దేవదారు (49), mots
+%  a lui, anciens. Le hetre (23), le chene (29), l'orme (47), le
+%  peuplier (48), le sapin (11, 31) n'y poussent pas : la colonne
+%  ecrit బీచ్, ఓక్, ఎల్మ్, పాప్లర్, ఫర్. Meme regle qu'au marron
+%  chaud du tableau 5 et qu'au bleuet du tableau 8 — quand la CHOSE
+%  manque, le mot manque avec elle, et on ne fabrique pas un mot pour
+%  cacher un trou. Meme raison pour హీథర్ (57) la bruyere, ఫెర్న్
+%  (55) la fougere, ప్రిమ్‌రోజ్ (9) la primevere, ట్రఫుల్ la truffe,
+%  మార్మోట్ (39) la marmotte, చామోయి (54) le chamois, మాగ్‌పై (56)
+%  la pie et బాసెట్ (15) le chien basset. La pervenche, elle, tombe
+%  juste : బిల్లగన్నేరు (10) est la pervenche de l'Inde, meme genre,
+%  meme fleur.
+%
+%  LE « cigano » (41), COMME LE CORDONNIER DU TABLEAU 6. Le livret
+%  designe un homme par son peuple, et le mot francais de 1926 est
+%  aujourd'hui une insulte. La colonne marathe avait pu garder
+%  चांभार pour le cordonnier parce que le mot y est un nom de
+%  famille ordinaire ; le telougou avait du ecrire la fonction parce
+%  que les siens nomment des castes opprimees. Ici les deux langues
+%  se retrouvent : on ecrit సంచార జాతి మనిషి, « un homme d'un peuple
+%  qui voyage », qui dit la chose du livret — l'homme est de passage,
+%  il mene un ours — sans reprendre le nom. La scene ne perd rien :
+%  ce qui la fait tenir, c'est le contraste de la toque de fourrure
+%  et du capuchon dechire, et il est intact.
+%
+%  DIX-HUIT INVERSIONS SUR LES TRENTE-QUATRE PAIRES DE parigi.py.
+%  L'outil liste des paires ; il ne dit pas laquelle des deux est la
+%  tete, et c'est le redacteur qui tranche. Les seize autres ne
+%  retournent pas, pour trois raisons qui valent d'etre separees :
+%
+%   * la paire est une enumeration — « glacieri (5) e monto-pinti
+%     (4) », « rivo di torento (33), di abismo (34) ». Le telougou
+%     enumere dans l'ordre recu, comme toutes les langues du corpus.
+%   * le renvoi de gauche EST le modificateur — « montaro (1) dil
+%     Pirenei di qua la kresto (2) » : la chaine qualifie la crete,
+%     et le telougou antepose deja le qualifiant. L'ordre de l'ido
+%     et celui du telougou coincident, sans rien faire.
+%   * la paire enjambe une frontiere de phrase — « kapuco (43)
+%     lacerita. Il duktas per kateno urso (44) ». Faux positif franc.
+%
+%  ET UNE INVERSION QUE L'OUTIL NE SIGNALE PAS, DELIBEREMENT.
+%  « villa-i (19) esis konstruktita CIRKUM la kazino (21) » retourne
+%  bel et bien en telougou, qui dit « autour du casino on a bati des
+%  villas ». Il serait facile d'ajouter « cirkum » au motif. On ne le
+%  fait pas : « cirkum » y rattache un complement a un VERBE, non un
+%  modificateur a un nom, et l'outil ne cherche que le second. C'est
+%  le cas « kande » du tableau 8, sous une autre preposition — et
+%  « proxim », deja dans le motif, produit ici le meme faux positif
+%  verbal (« domo (46) ma, kande me arivis proxim la lageto (43) »).
+%  Elargir le motif a chaque echec le rendrait muet a force de crier.
+%  Le remede est le meme qu'au tableau 8 : c'est la redaction qui
+%  pose les villas d'abord et rejette le casino derriere.
+% ===================================================================
+
+%%K t09-apar-1 apar
+\VUsaut{4.0mm}
+\VUtitre{15.0pt}{60}{పట్టిక సంఖ్య 9}
+\VUsaut{3.0mm}
+
+%%K t09-tit-1 sub
+\VUcentre{13.2pt}{90}{\textit{మొదటి రంగం.}}
+\VUsaut{3.0mm}
+
+%%K t09-tit-2 sub
+\VUpk{11.4pt}{40}{కొండ. --- నీటి బుగ్గల పట్టణం.}
+\VUsaut{3.0mm}
+
+%%K t09-c1-01-1 p
+1. --- ఎనిమిది రోజులుగా నేను ప్రాట్జ్‌లో ఉన్నాను. పిరనీస్ అద్భుత \VUgras{పర్వత శ్రేణిని}
+\textsuperscript{(1)} ఎదురుగా చూసినప్పుడు నాకు కలిగిన ఆరాధన మొత్తాన్ని మాటల్లో చెప్పలేను —
+ఆ శ్రేణి \VUgras{శిఖర రేఖ} \textsuperscript{(2)} నీలి ఆకాశంపై పెద్ద అలంకార దండలా
+కనిపిస్తుంది.
+
+%%K t09-c1-02-1 p
+2. --- పిరనీస్ \VUgras{శిఖరాలు} \textsuperscript{(3)} అంత \VUgras{ఎత్తుకు}
+చేరుకుంటాయని నేను ఊహించలేదు; అద్భుతమైన \VUgras{హిమనీనదాల} \textsuperscript{(5)} ముందు,
+మంచు కప్పిన \VUgras{కొండ కొనల} \textsuperscript{(4)} ముందు నేను నిశ్చేష్టుడనయ్యాను — ఆ
+కొనలపైనుంచే అంత భయంకరమైన \VUgras{హిమపాతాలు} దొర్లుతాయి.
+
+%%K t09-tit-3 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{కొండ దృశ్యం.}
+\VUsaut{3.4mm}
+
+%%K t09-c1-03-1 p
+3. --- నేను వచ్చిన మరుసటి రోజునే, ప్రాట్జ్ దగ్గరున్న ఆరిపోయిన పాత \VUgras{అగ్నిపర్వతం}
+\textsuperscript{(6)} దగ్గరికి వెళ్ళాను. బోడిగా, ఎండిపోయి ఉన్న \VUgras{బిలం} అంచుల మీద,
+కొన్ని శతాబ్దాల కిందట \VUgras{కొండ వాలుపై} \textsuperscript{(7)} పారిన \VUgras{లావా}
+జాడలు ఇప్పటికీ బాగా కనిపిస్తాయి. ఆ లావా ముక్కలు కొన్ని నాకు ఒక \VUgras{వాలులో} దొరికాయి.
+
+%%K t09-c1-04-1 p
+4. --- ప్రాట్జ్ సరిహద్దుపై ఉంది; ఇక్కడి \VUgras{కోట} \textsuperscript{(8)} — ఫ్రాన్స్‌ను
+స్పెయిన్‌నుంచి వేరుచేసే \VUgras{కనుమను} \textsuperscript{(27)} కాపాడేది అదే — రైన్ ఒడ్డున
+తమ బండ కొననుంచి \VUgras{ఎర} కోసం కాచుకున్నట్టు కనిపించే ఆ పాత కోటలను సరిగ్గా గుర్తుకు
+తెస్తుంది.
+
+%%K t09-c1-05-1 p
+5. --- పెద్ద \VUgras{డేగ} \textsuperscript{(9)} ఒకటి తరచూ నా దృష్టిని లాగుతుంది — దాని
+గూడు \VUgras{కోటకు} \textsuperscript{(8)} దూరంగా లేదు.
+
+%%K t09-c1-05-1 p suite
+ఆ \VUgras{వేటాడే పక్షి} \VUgras{ముక్కు} బలమైనది; తన \VUgras{గోళ్ళతో} పట్టుకుని
+గొర్రెపిల్లనో మేకపిల్లనో తన పిల్లలకు తరచూ తెచ్చిపెడుతుంది. దాని \VUgras{రెక్కలు} ఎంత
+పెద్దవంటే, ఆ బరువైన మోతతో కూడా అది చాలాసేపు గాలిలో తేలగలదు.
+
+%%K t09-tit-4 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{విహార యాత్రికుడు.}
+\VUsaut{3.4mm}
+
+%%K t09-c1-06-1 p
+6. --- ఇక్కడ అన్నిటికంటే ఆహ్లాదకరమైన నడక «కౌ» \VUgras{జలపాతం} \textsuperscript{(10)} దాకా
+చేసే విహారం. ఆ \VUgras{నీటి ధార} సుడులు తిరుగుతూ పడి, ఆ తర్వాత అందమైన \VUgras{సెలయేరుగా}
+మారి, ఊరికి పడమట ఉన్న \VUgras{ఫర్ చెట్ల అడవిలో} \textsuperscript{(11)} మాయమవుతుంది. ఆ
+అడవిలోంచి మేము \VUgras{వాతావరణ పరిశీలన కేంద్రం} \textsuperscript{(12)} దాకా ఎక్కాము; ఆ
+\VUgras{ఎత్తు మిద్దె} మీదినుంచి ప్రాంతం మొత్తం \VUgras{సవివర దృశ్యం} మాకు కనిపించింది.
+\VUgras{ప్రకృతి దృశ్యం} అద్భుతం, తన దగ్గరున్న సంపదలన్నిటినీ \VUgras{ప్రకృతి} ఈ నేలకు
+దోసిళ్ళతో పోసినట్టుంది.
+
+%%K t09-c1-07-1 p
+7. --- దిగేందుకు మేము \VUgras{కేబుల్ రైలు} \textsuperscript{(13)} ఎక్కాము; ప్రాట్జ్
+ప్రభువులు ఒకప్పుడు నివసించిన పాత \VUgras{భూస్వామ్య కోట} \VUgras{శిథిలాల}
+\textsuperscript{(14)} దగ్గర చిన్న \VUgras{స్టేషనులో} ఆగాము.
+
+%%K t09-c1-08-1 p
+8. --- పాపం ఆ కోట! ఇప్పుడు నాగరిక \VUgras{ఆరోగ్య జల కేంద్రం} అయిపోయిన ఆ ముద్దైన
+\VUgras{నీటి బుగ్గల పట్టణాన్ని} \textsuperscript{(15)} తన కాళ్ళ కింద చూస్తూ అది ఏమనుకుంటుందో?
+
+%%K t09-c1-08-2 p
+\VUgras{వాతావరణం} అంత ఆహ్లాదకరం, \VUgras{ఖనిజ జలం} అంత గుణకారి — \VUgras{ఆరోగ్య నిలయంలో}
+\textsuperscript{(17)} చేసే \VUgras{చికిత్స} నిజంగా ఒక ఆనందం.
+
+%%K t09-tit-5 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{ఆహ్లాదకరమైన ఆరోగ్య జల పట్టణం.}
+\VUsaut{3.4mm}
+
+%%K t09-c1-09-1 p
+9. --- పైగా, ఇక్కడి బస ఆహ్లాదంగా ఉండేందుకు అన్నీ చేశారు. రైలుదారి వేసేందుకు వీలుగా పెద్ద
+\VUgras{ఎత్తు వంతెన} \textsuperscript{(16)} కట్టారు; \VUgras{ఆరోగ్య జల భవనం}
+\VUgras{ఉద్యానవనం} \textsuperscript{(18)} — అక్కడ \VUgras{సంగీత కచేరీలు} జరుగుతాయి —
+ఎంతో అందంగా తీర్చిదిద్దారు. అందమైన «\VUgras{విల్లా}»లు \textsuperscript{(19)} కొన్ని
+కట్టారు, \VUgras{కాసినో} \textsuperscript{(21)} చుట్టూ; బాగా చూసుకున్న
+\VUgras{పక్కా రోడ్డు} \textsuperscript{(22)} రాకపోకలను ఎంతో సులభం చేసింది.
+
+%%K t09-c1-10-1 p
+10. --- సాధారణమైన \VUgras{గట్టు} \textsuperscript{(23)} ఒకటి \VUgras{దారిని}
+\textsuperscript{(20)} అసలైన \VUgras{లోయనుంచి} \textsuperscript{(25)} వేరుచేస్తుంది; ఆ లోయ
+అడుగున అందమైన చిన్న \VUgras{సరస్సు} \textsuperscript{(26)} ఒకటి ఉంది, అది స్వచ్ఛమైన
+\VUgras{వాగుకు} \textsuperscript{(24)} నీళ్ళిస్తుంది.
+
+%%K t09-c1-11-1 p
+11. --- లోయకు అవతలి వైపున \VUgras{ఇనుప గని} \textsuperscript{(28)} ఒకటి నడుస్తోంది.
+\VUgras{గని కూలీలు} \VUgras{గోతిలోకి} దిగడం చూసేందుకు నేను చాలాసార్లు వెళ్ళాను;
+\VUgras{లోహం} ఉన్న \VUgras{ఖనిజాన్ని} తవ్వుతూ వాళ్ళు రోజంతా గడిపే \VUgras{సొరంగంలోకి}
+కూడా నేను వెళ్ళాను.
+
+%%K t09-c1-12-1 p
+12. --- గని దగ్గరే పెద్ద \VUgras{కరిగించే కర్మాగారం} కట్టారు — గనినుంచి తీసిన సంపదను
+వెంటనే వాడుకునేందుకు. ఇక్కడ సమృద్ధిగా దొరికే \VUgras{రాతిబొగ్గుతో} వేడెక్కే
+\VUgras{పెద్ద కొలిమి} \textsuperscript{(29)} వల్ల \VUgras{ముడి ఇనుము} వేగంగా, చవగ్గా
+దొరుకుతుంది.
+
+%%K t09-c1-13-1 p
+13. --- గనికి దూరం కాకుండా \VUgras{రాతి గని} \textsuperscript{(30)} ఒకటి తవ్వుతున్నారు.
+ముసలి \VUgras{రాతి పనివాడు} తన \VUgras{పికాసుతో} కొట్టి తీసేది \VUgras{గ్రానైట్} కాదు,
+\VUgras{పోర్ఫిరీ} కాదు, \VUgras{ఇసుకరాయి} కూడా కాదు — ఇళ్ళు కట్టేందుకు పనికొచ్చే మామూలు
+\VUgras{చెక్కుడు రాయి}.
+
+%%K t09-c1-14-1 p
+14. --- ఈ నేలకున్న అందమైన అలంకారాల్లో ఒకటి \VUgras{ఫర్ చెట్టు} \textsuperscript{(31)}.
+ఎక్కడ చూసినా — \VUgras{కొండ చీలిక} \textsuperscript{(32)} అడుగున, \VUgras{కొండ వాగు}
+\textsuperscript{(33)} ఒడ్డున, \VUgras{అగాధం} \textsuperscript{(34)} అంచున, లేదా నిటారు గుంట
+పక్కన — వాటి సన్నని సూదులు పచ్చని ఛాయలు వేస్తాయి.
+
+%%K t09-tit-6 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{కాలినడక.}
+\VUsaut{3.4mm}
+
+%%K t09-c1-15-1 p
+15. --- ఎక్కువసేపు \VUgras{నడిచేందుకు} నేను నా సెలవులను వాడుకుంటాను. కొండపై మెలికలు తిరిగే
+\VUgras{దారులు} \textsuperscript{(35)} దూరం తెలియకుండానే చాలా \VUgras{కిలోమీటర్లు}, తరచూ
+చాలా \VUgras{ఆమడలు} నడిచేలా చేస్తాయి.
+
+%%K t09-c1-15-2 p
+\VUgras{మైలురాళ్ళు} \textsuperscript{(36)}, \VUgras{దారి చూపే స్తంభాలు}
+\textsuperscript{(37)} ఆ దారులకు గుర్తులు పెడతాయి; వాటిపై తరచూ కుర్ర \VUgras{కొండవాసి}
+\textsuperscript{(38)} కనిపిస్తాడు — పక్కన \VUgras{జోలె} \textsuperscript{(40)} వేలాడుతూ,
+చేతిలో \VUgras{మార్మోట్} \textsuperscript{(39)} పట్టుకుని —, లేదా ఏదో
+\VUgras{సంచార జాతి మనిషి} \textsuperscript{(41)} కనిపిస్తాడు — అతని \VUgras{బొచ్చు టోపీ}
+\textsuperscript{(42)} చిరిగిన పాత \VUgras{తలముసుగుతో} \textsuperscript{(43)} విచిత్రంగా
+విభేదిస్తుంది. అతను గొలుసుతో పెంపుడు \VUgras{ఎలుగుబంటిని} \textsuperscript{(44)}
+నడిపిస్తాడు.
+
+%%K t09-tit-7 sub
+\VUpk{10.2pt}{40}{కొండ ఎక్కడం.}
+\VUsaut{3.4mm}
+
+%%K t09-c1-16-1 p
+16. --- దాదాపు ప్రతిరోజూ నేను \VUgras{మార్గదర్శితో} \textsuperscript{(48)} కలిసి
+\VUgras{కొండ ఎక్కడం} సాధన చేస్తాను; వీపున \VUgras{సంచి} \textsuperscript{(47)}, చేతిలో
+«\VUgras{ఆల్పెన్‌స్టాక్}», నిజమైన \VUgras{పర్యాటకుడిలా} \textsuperscript{(46)} నేను
+\VUgras{బండరాళ్ళపై} \textsuperscript{(45)} దాడి చేసినప్పుడు నాకు చాలా గర్వం.
+
+%%K t09-c1-17-1 p
+17. --- కొండ కొననుంచి చూస్తే మైదానపు జనం చీమలకంటే పెద్దగా కనిపించరు;
+\VUgras{గొర్రెల మంద} \textsuperscript{(50)} — \VUgras{మేతబీడులో} \textsuperscript{(49)}
+మేస్తూ — పిల్లల ఆటబొమ్మలా అనిపిస్తుంది. \VUgras{సరళ చెట్టు} \textsuperscript{(51)} గానీ
+\VUgras{కలప గుడిసె} \textsuperscript{(52)} గానీ ఆ పచ్చదనంపై ఒక మచ్చలా మాత్రమే కనిపిస్తాయి.
+
+%%K t09-c1-18-1 p
+18. --- ఆ విహారాల్లో \VUgras{కాలిబాటపై} \textsuperscript{(53)} \VUgras{చామోయి వేటగాడు}
+\textsuperscript{(54)} తరచూ మాకు తారసపడతాడు — ఇప్పుడే చంపిన జంతువును భుజాన మోసుకుంటూ.
+
+%%K t09-c1-19-1 p
+19. --- నా ఆఖరి నడకలో నేను చాలా విశేషమైన \VUgras{ఫెర్న్} \textsuperscript{(55)} కొమ్మ ఒకటీ,
+\VUgras{హీథర్} \textsuperscript{(57)} అందమైన గులాబీరంగు రెమ్మ ఒకటీ నా మొక్కల సేకరణలో
+పెట్టుకున్నాను — వాటిని నేను చిన్న \VUgras{గుహ} \textsuperscript{(56)} ముంగిట కోశాను.
+
+%%K t09-tit-8 sub
+\VUsaut{6.0mm}
+\VUcentre{13.2pt}{90}{\textit{రెండవ రంగం.}}
+\VUsaut{3.6mm}
+
+%%K t09-tit-9 sub
+\VUpk{11.4pt}{40}{అడవి. --- వేట.}
+\VUsaut{4.0mm}
+
+%%K t09-c2-01-1 p
+1. --- నిన్న నేను అడవిలో ఒక మధురమైన రోజు గడిపాను. అక్కడ నివసించే జంతువుల్లో,
+\VUgras{కీటకాల్లో} \textsuperscript{(5)} కనిపించే హడావిడి నాకు చాలా ఆసక్తి కలిగించింది.
+
+%%K t09-c2-01-2 p
+\VUgras{సాలెపురుగు} \textsuperscript{(1)} — తన \VUgras{గూడును} \textsuperscript{(2)} రెండు
+కొమ్మల మధ్య అల్లుతుంది, ఎగిరిపోయే \VUgras{ఈగను} \textsuperscript{(3)} పట్టేందుకు —, తన
+డిప్పను కష్టపడి మోసే \VUgras{నత్త} \textsuperscript{(4)}, తన వేటను పరిశీలిస్తున్న
+\VUgras{కొమ్ముల పురుగు}, \VUgras{చీమల పుట్ట} \textsuperscript{(6)} దగ్గర ఎంతో ఉత్సాహంగా
+ఉన్న శ్రమజీవి \VUgras{చీమ} — ఆ చిన్నవన్నీ అసాధారణమైన హడావిడితో వెళ్ళాయి, వచ్చాయి,
+పనిచేశాయి.
+
+%%K t09-c2-02-1 p
+2. --- \VUgras{పాము} \textsuperscript{(7)} ఒకటి చెట్టు మొదలు కింద ముడుచుకుని ఉంది — మొదట
+చూపులో అది \VUgras{రక్తపింజరి} అనుకున్నాను, కానీ అది మామూలు \VUgras{విషం లేని పాము} తప్ప
+మరేమీ కాదు —, అప్పుడప్పుడూ తన సన్నని చిన్న తలను బయటికి చాచేది, ఆ తల ఎప్పుడూ కరిచేందుకు
+సిద్ధంగా ఉన్నట్టు కనిపించేది. నా ముందు లావుపాటి \VUgras{డిప్ప లేని నత్త}
+\textsuperscript{(8)} ఒకటి బరువుగా పాకింది — అక్కడ సమృద్ధిగా పెరిగే రుచికరమైన
+\VUgras{అడవి స్ట్రాబెర్రీల్లో} \textsuperscript{(11)} ఒకదాన్ని తినేసిన తర్వాత.
+
+%%K t09-c2-03-1 p
+3. --- నేల \VUgras{అడవి పూలతో} పరచినట్టుంది : \VUgras{ప్రిమ్‌రోజ్‌లు}
+\textsuperscript{(9)}, \VUgras{బిల్లగన్నేరు} \textsuperscript{(10)}, నాకు తెలియని ఇంకా చాలా
+మొక్కలు \VUgras{గడ్డి పొదల} \textsuperscript{(12)} మధ్య పూశాయి.
+
+%%K t09-c2-04-1 p
+4. --- ఆ ప్రాంతంలో \VUgras{ట్రఫుల్} దాదాపు \VUgras{పుట్టగొడుగంత} \textsuperscript{(14)}
+మామూలే; అటవీ కాపలాదారుకు చెందిన \VUgras{పంది పిల్ల} \textsuperscript{(13)} ఒకటి, వాటిలో
+కొన్ని దొరుకుతాయేమోనని ఆబగా వెతికింది.
+
+%%K t09-tit-10 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{దొంగ వేట.}
+\VUsaut{3.4mm}
+
+%%K t09-c2-05-1 p
+5. --- నన్ను బాగా నవ్వించిన ఒక దృశ్యపు \VUgras{ముగింపు} నేను చూశాను. తన
+\VUgras{బాసెట్ కుక్క} \textsuperscript{(15)} వాసన పసిగట్టడంతో, \VUgras{అటవీ కాపలాదారు}
+\textsuperscript{(16)} ఇప్పుడే \VUgras{దొంగ వేటగాడిని} \textsuperscript{(22)} పట్టుకున్నాడు —
+అతను తాను చంపిన \VUgras{వేట జంతువులను} \textsuperscript{(17)} మోసుకుపోయేందుకు సిద్ధమవుతున్న
+క్షణంలో. పట్టుబడటం కంటే తన వేటను వదిలేయడమే మేలనుకుని దొంగ వేటగాడు పారిపోయాడు;
+\VUgras{కుందేలు} \textsuperscript{(18)}, \VUgras{ఆడ దుప్పి} \textsuperscript{(19)},
+\VUgras{చిన్న జింక} \textsuperscript{(20)}, \VUgras{అడవి పంది} \textsuperscript{(21)} గడ్డిపై
+పడి ఉన్నాయి, అటవీ కాపలాదారుని సంతోషపెడుతూ.
+
+%%K t09-c2-06-1 p
+6. --- అడవి తనలో ఉంచుకున్న చెట్ల వైవిధ్యం ఆశ్చర్యకరం. \VUgras{బీచ్ చెట్లు}
+\textsuperscript{(23)}, \VUgras{భూర్జ చెట్లు} \textsuperscript{(26)}, \VUgras{సరళ చెట్లు} —
+అవి \VUgras{బంకను} \textsuperscript{(27)} ఇస్తాయి —, \VUgras{ఓక్ చెట్లు}
+\textsuperscript{(29)}, ఇంకా చాలా ఇతర చెట్లు తమ కొమ్మలను కలగలుపుకుంటాయి.
+
+%%K t09-c2-06-2 p
+\VUgras{ఐవీ తీగ} \textsuperscript{(24)} ఎత్తైన చెట్ల మొదళ్ళను అల్లుకుని, మెరిసే పచ్చదనంతో
+\VUgras{పెద్ద చెట్ల అడవికి} \textsuperscript{(25)} రంగు వేస్తుంది; ఆ పచ్చదనం
+\VUgras{నాచు} \textsuperscript{(31)} లేత పాలిపోయిన ఛాయతో హాయిగా కలిసిపోతుంది — ఆ నాచులోనే
+\VUgras{వడ్రంగి పిట్ట} \textsuperscript{(30)} కీటకాలు వెతుకుతుంది.
+
+%%K t09-tit-11 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{అడవి దృశ్యం.}
+\VUsaut{3.4mm}
+
+%%K t09-c2-07-1 p
+7. --- ఆ ముసలి ఓక్ చెట్లు నన్ను మంత్రముగ్ధుడిని చేశాయి. నేలలోంచి సగం బయటికొచ్చిన వాటి
+లావుపాటి మెలికల \VUgras{వేళ్ళు} \textsuperscript{(32)} వాటికి బలం, ఓజస్సుల అద్భుత రూపాన్ని
+ఇస్తాయి; \VUgras{భూ యజమాని} \textsuperscript{(35)} వాటిని నరికించేందుకు, \VUgras{రంపానికి}
+\textsuperscript{(34)} — \VUgras{కట్టెలు కొట్టేవాడి} \textsuperscript{(33)} రంపం అది —
+అప్పగించేందుకు ఎలా ఒప్పుకుంటాడో నాకు అర్థం కాదు. పాపం ఆ \VUgras{మొదళ్ళు}
+\textsuperscript{(36)}, \VUgras{బెరడు} \textsuperscript{(37)} వొలిచినవి, లేదా
+\VUgras{గొడ్డలితో} \textsuperscript{(38)} చీలినవి — \VUgras{రోజు కూలీ} \textsuperscript{(39)}
+గొడ్డలి అది —, నన్ను బాధపెడతాయి.
+
+%%K t09-c2-08-1 p
+8. --- పక్కనే ముసలి \VUgras{బొగ్గు కాల్చేవాడు} \textsuperscript{(41)} తన \VUgras{పారతో}
+బొగ్గు \VUgras{కుప్పను} \textsuperscript{(42)} సిద్ధం చేస్తున్నాడు; ఒక ముసలామె నరికిన చెట్ల
+రెమ్మలతో \VUgras{ఎండు కట్టెల} \VUgras{మోపును} \textsuperscript{(40)} మోసుకెళ్ళింది.
+
+%%K t09-tit-12 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{వేట.}
+\VUsaut{3.4mm}
+
+%%K t09-c2-09-1 p
+9. --- కొన్ని క్షణాలు విశ్రాంతి తీసుకునేందుకు \VUgras{అటవీ కాపలాదారు ఇంటికి}
+\textsuperscript{(46)} వెళ్దామనుకున్నాను; కానీ \VUgras{చిన్న చెరువు} \textsuperscript{(43)}
+దగ్గరికి వచ్చేసరికి — దానిపై అందమైన \VUgras{హంస} \textsuperscript{(45)} ఈదుతోంది — ఇటీవలి
+\VUgras{వరద} \textsuperscript{(44)} దారిని నిజమైన \VUgras{ఊబిగా} మార్చేసిందని గమనించాను.
+నేను దారి మళ్ళక తప్పలేదు; అడవి అంచున ఉన్న \VUgras{దేవదారు} \textsuperscript{(49)},
+\VUgras{పాప్లర్ చెట్ల} \textsuperscript{(48)}, \VUgras{ఎల్మ్ చెట్టు} \textsuperscript{(47)}
+పక్కనుంచి వెళ్తుండగా, \VUgras{గుబురు పొదల్లోంచి} \textsuperscript{(54)} అందమైన
+\VUgras{మగ దుప్పి} \textsuperscript{(50)} ఒకటి బయటికి రావడం చూశాను — పట్టువదలని
+\VUgras{వేట కుక్కల గుంపు} \textsuperscript{(51)} దాన్ని తరుముతోంది, ఆ కుక్కలను
+\VUgras{కొమ్ము బూర} \textsuperscript{(53)} కూడా ఉసిగొల్పింది —
+\VUgras{గుర్రాలపై వేటగాళ్ళ} \textsuperscript{(52)} బూర అది. పాపం ఆ జంతువు పూర్తిగా
+అలసిపోయింది. నా దగ్గర కొన్ని అడుగుల దూరంలో అది చావుతూ కూలిపోయింది.
+
+%%K t09-c2-10-1 p
+10. --- \VUgras{వేట పరుగు} హడావిడి ఆకర్షించడంతో అటవీ కాపలాదారు కొడుకు ఇంట్లోంచి బయటికి
+వచ్చాడు, మేమిద్దరం మళ్ళీ అడవిలోకి వెళ్ళాము. ముసలి ఓక్ చెట్టు కొమ్మపై అతను
+\VUgras{మాగ్‌పై పక్షిని} \textsuperscript{(56)} చూశాడు. దాని గూడు \VUgras{ఆకుల గుబురులో}
+\textsuperscript{(58)} దాగి ఉంటుందనుకుని, ఆ గూడు పట్టాలనుకున్నాడు.
+
+%%K t09-c2-10-2 p
+\VUgras{ఉడుతలా} \textsuperscript{(61)} చురుకుగా అతను \VUgras{కొమ్మ} \textsuperscript{(55)}
+నుంచి కొమ్మకు ఎక్కాడు; కానీ అతనికి ఏమీ దొరకలేదు, ముసలి \VUgras{కాకిని}
+\textsuperscript{(60)} ఎగరగొట్టడం ఒక్కటే సాధించాడు — అది \VUgras{రెమ్మపై}
+\textsuperscript{(57)} కూర్చుని ఉంది.
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}
