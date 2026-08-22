@@ -1,0 +1,441 @@
+% ===================================================================
+%  GAMBAR No. 1 — Sekolah, sekolah menengah, kelas.
+%
+%  Ceci n'est PAS une transcription : c'est une traduction, faite en
+%  2026, en javanais d'aujourd'hui. D'ou trois differences avec
+%  texto/io et texto/fr, et trois seulement :
+%
+%   * pas de \nl ni de \cc — la traduction ne suit aucune ligne
+%     imprimee, et les lignes de ce fichier ne sont que du confort ;
+%   * pas de \begin{VUpage} — elle n'a ni feuillet ni folio ;
+%   * le gras se pose sur le TERME seul, ponctuation dehors.
+%
+%  Les cles « %%K » sont celles de texto/io, macro pour macro pour
+%  l'apparat, et les renvois \textsuperscript{(n)} visent les MEMES
+%  objets de la planche, dans le MEME ordre.
+%
+%  CETTE COLONNE EST L'EXACT CONTRAIRE DE LA PRECEDENTE, ET C'EST LA
+%  MEME PAIRE DE LANGUES. Quand on defendait l'indonesien, la voisine
+%  — le malais de Malaisie — n'etait dans aucun dossier, et il
+%  fallait relever sans pouvoir comparer. Ici la voisine est
+%  texto/id, ecrite par la meme main, la colonne d'avant. Le danger
+%  s'est retourne : ce n'est plus l'absence de la voisine, c'est sa
+%  PRESENCE. L'indonesien est la langue d'ecole de tout locuteur du
+%  javanais, celle dans laquelle il ecrit tout le reste de sa
+%  journee, et une phrase javanaise glisse a l'indonesien par les
+%  mots-outils avant de glisser par autre chose.
+%
+%  kolonoj.py RELEVE DONC LES MOTS-OUTILS INDONESIENS, ET JAMAIS LES
+%  MOTS DE CHOSE. tidak/ora, dan/lan, dengan/karo, yang/sing,
+%  ini/iki, itu/iku, sudah/wis, juga/uga, tetapi/nanging,
+%  sangat/banget, besar/gedhe, kecil/cilik, orang/wong, rumah/omah,
+%  banyak/akeh, semua/kabeh, atau/utawa, hanya/mung, karena/amarga,
+%  kemudian/banjur, plus les classificateurs sebuah, seorang, seekor,
+%  que le javanais ne compte pas ainsi. Les mots de chose — meja,
+%  kursi, jendhela, sekolah, buku, kamus — vivent dans les deux
+%  langues avec le meme sens, souvent du meme portugais ou du meme
+%  neerlandais : les relever ferait crier le controle sur chaque
+%  page.
+%
+%  ET UN SECOND FRONT QU'AUCUNE AUTRE COLONNE N'A EU : LES NIVEAUX DE
+%  LANGUE. Le javanais a deux lexiques paralleles dans une seule
+%  langue — le ngoko et le krama —, et il faut en tenir un.
+%
+%  LA COLONNE TIENT LE NGOKO ALUS : narration en ngoko, et verbes
+%  krama inggil pour ce que fait le grand-pere, qui parait aux
+%  tableaux 15 et 16. C'est ce qu'un enfant javanais ecrit et ce
+%  qu'un livre javanais de 2026 imprime. On releve donc le krama
+%  ordinaire — kula, mboten, menika, ingkang, sampun, kaliyan,
+%  griya, toya —, qui signale une main passee au niveau poli d'un
+%  bout a l'autre, ET ON NE RELEVE PAS les verbes krama inggil —
+%  dhahar, tindak, kondur, ngendika, priksa, sare —, qui sont
+%  exactement ce que la regle exige. Un controle qui crie sur la
+%  forme que la consigne demande est pire qu'un controle absent :
+%  c'est la lecon de « دی » et « دے », prise avant d'ecrire et non
+%  apres.
+%
+%  LE PIEGE DE LA DATE VAUT ICI AUSSI, ET C'EST LA SECONDE COLONNE
+%  OU IL VAUT. La reforme de 1972 a refait d'un seul coup
+%  l'orthographe latine de l'indonesien et celle du javanais :
+%  « djaran », « tjilik », « boekoe » sont exactement ce qu'un
+%  imprimeur aurait compose en 1926. On ne releve pas « sj », qui n'a
+%  jamais servi au javanais, et on ne touche pas a « dh » ni a
+%  « th », qui sont des lettres de la langue et non des restes de
+%  graphie.
+%
+%  LE FAUX AMI LE PLUS DANGEREUX DES DEUX LANGUES EST DANS CE
+%  TABLEAU : « tangga ». En javanais c'est le VOISIN — « tanggane
+%  Stefanus », son voisin de banc —, en indonesien c'est l'ECHELLE,
+%  et le voisin s'y dit « tetangga ». Le mot est le meme, la lettre
+%  pres, et il change de chose en passant la frontiere. Il n'est pas
+%  releve : ecrire « tangga » est ici la forme JUSTE, et un controle
+%  qui crie sur un mot juste finit desarme.
+%
+%  LE POTLOT (49) CONTRE LE PENSIL, ET C'EST TOUTE LA DIFFERENCE DES
+%  DEUX COLONNES EN UN MOT. Le crayon se dit potlot en javanais, du
+%  neerlandais potlood ; il se dit pensil en indonesien, de l'anglais
+%  pencil. Meme objet, meme ecole, deux siecles differents : le
+%  javanais a garde le mot de celui qui a bati l'ecole, l'indonesien
+%  a pris celui de la langue que la republique enseigne. La colonne
+%  garde partout le mot neerlandais quand le javanais l'a garde —
+%  potlot, setip, grip, spons, modhel, boven — parce que c'est en
+%  javanais qu'on l'entend encore.
+%
+%  ET LE VASISTAS (78) FAIT ICI QUELQUE CHOSE DE NEUF DANS LE RELEVE.
+%  Depuis quarante colonnes chaque langue le nomme d'un mot a elle ;
+%  ici, pour la premiere fois, DEUX colonnes le nomment du MEME mot —
+%  boven, du neerlandais bovenlicht, le jour d'en haut. Ce n'est pas
+%  un emprunt de l'une a l'autre : c'est que les deux ont regarde le
+%  meme menuisier poser la meme imposte au-dessus de la meme porte,
+%  a Java, dans les memes annees. La serie ne se rompt pas, elle se
+%  double.
+%
+%  LES COUCHES DU JAVANAIS NE SONT PAS CELLES DE L'INDONESIEN, ET LE
+%  TABLEAU DE L'ECOLE LES MONTRE TOUTES :
+%
+%    latar (75)      la cour        panggonan (17)  la place
+%    pamong (74)     le surveillant tembung         le mot
+%    wadhah mangsi (25) l'encrier   larik           la ligne
+%    kaca            la page        garisan (50)    la regle
+%    potlot (49)     le crayon      setip (36)      la gomme
+%    kothak potlot (31) la trousse  cantholan (58)  la patere
+%    paramasastra (55) la grammaire ngelmu          la science
+%    reca dhadha (59)  le buste     jogan           le plancher
+%
+%  Le fond est javanais et il tient tout ce qu'on manie et tout ce
+%  qu'on fait ; le sanskrit donne l'abstrait et l'ecole savante
+%  (ngelmu, paramasastra, wirama, samodra, sejarah) ; le neerlandais
+%  donne ce que l'ecole coloniale a apporte (potlot, setip, grip,
+%  spons, boven, modhel) ; le portugais donne les objets des premiers
+%  navires (jendhela, meja). L'arabe et le malais passent par-dessus.
+%  Cinq couches, comme en indonesien, mais reparties autrement : ici
+%  le neerlandais tient l'ecole entiere, la ou l'indonesien de 2026
+%  l'a rendue a l'anglais.
+% ===================================================================
+
+%%K t01-apar-0 apar
+\VUsaut{2.0mm}
+\VUcentre{12.6pt}{120}{BUKU KATRANGAN}
+\VUsaut{3.2mm}
+\VUcentre{8.4pt}{160}{KANGGO}
+\VUsaut{2.6mm}
+\VUtitre{15.6pt}{0}{Gambar Bantu Delmas}
+\VUsaut{3.4mm}
+\VUornamento{9pt}
+\VUsaut{5.0mm}
+\VUcentre{13.2pt}{90}{SERI KAPISAN}
+\VUsaut{3.0mm}
+\VUfilet{16mm}
+\VUsaut{5.6mm}
+
+%%K t01-apar-1 apar
+\VUtitre{15.0pt}{60}{GAMBAR No. 1}
+\VUsaut{1.4mm}
+\VUtitre{11.4pt}{0}{Sekolah, sekolah menengah, kelas.}
+\VUsaut{2.2mm}
+\VUfilet{20mm}
+\VUsaut{6.4mm}
+
+%%K t01-tit-1 sub
+\VUpk{10.2pt}{40}{Gegambaran umum.}
+\VUsaut{3.0mm}
+
+%%K t01-01-1 p
+1. --- Gambar iki nggambarake \VUgras{kelas} ing \VUgras{sekolah
+menengah.} Ing kelas iki ana wolung \VUgras{meja} \textsuperscript{(18)}
+lan wolung \VUgras{bangku} \textsuperscript{(32)}. Ing saben bangku
+lungguh murid telu. \VUgras{Guru} \textsuperscript{(7)} lungguh ing
+\VUgras{kursi} \textsuperscript{(8)} ing \VUgras{meja gurune}
+\textsuperscript{(6)}.
+
+%%K t01-02-1 p
+2. --- Ing sisih kiwane meja guru ana \VUgras{lemari}
+\textsuperscript{(15)} \VUgras{kaca.} Ing sisih tengen ana \VUgras{papan
+tulis} \textsuperscript{(1)} karo \VUgras{lap papane}
+\textsuperscript{(2)} lan \VUgras{kapure} \textsuperscript{(3)}.
+
+%%K t01-02-2 p
+Ing dhuwure meja guru gumantung \VUgras{gambar tempel}
+\textsuperscript{(9, 11, 12)} lan \VUgras{peta} \textsuperscript{(10)}.
+
+%%K t01-03-1 p
+3. --- Ora kabeh murid lungguh ing \VUgras{panggonane}
+\textsuperscript{(17)}. Ioannes \textsuperscript{(4)} ngadeg ing
+ngarepe papan tulis ; dheweke nyekel \VUgras{lap papan} iku lan
+ngusapi \VUgras{gambar-gambar ngelmu ukur.}
+
+%%K t01-03-2 p
+Petrus ngadeg cedhak meja guru ; dheweke nglumpukake \VUgras{garapan
+nulis} \textsuperscript{(5)} banjur nggawa menyang gurune.
+
+%%K t01-04-1 p
+4. --- Guru \VUgras{iki} guru \VUgras{basa-basa urip.} Dheweke mulang
+murid-murid guneman, maca lan nulis basa manca \VUgras{(Jerman,
+Inggris, Spanyol, Italia, Rusia utawa Prancis)}.
+
+%%K t01-05-1 p
+5. --- Kelas iku jembar banget lan padhang banget. Ing pojok mburi ana
+\VUgras{jendhela} amba karo \VUgras{boven} loro \textsuperscript{(78)}
+lan \VUgras{lawang kaca} kanggo ngangetake hawa lan madhangi ruwang
+iku.
+
+%%K t01-05-2 p
+Kelas iki ora adhem. Ing tengahe, kanggo ngangetake, ana
+\VUgras{tungku} \textsuperscript{(46)} kang becik banget karo
+\VUgras{cerobonge} \textsuperscript{(45)}.
+
+%%K t01-05-3 p
+Ing tembok kepasang \VUgras{cantholan klambi} \textsuperscript{(58)} ;
+ing kono gumantung kopyah lan mantel para murid.
+
+%%K t01-tit-2 sub
+\VUsaut{5.2mm}
+\VUpk{10.2pt}{40}{Latar dolanan}
+\VUsaut{3.6mm}
+
+%%K t01-06-1 p
+6. --- \VUgras{Jam tembok} \textsuperscript{(63)} nuduhake jam sanga
+luwih limang menit.
+
+%%K t01-06-2 p
+\VUgras{Wektu ngaso} \textsuperscript{(76)} lagi wae rampung lan
+piwulangan diwiwiti maneh. Panggonan dolanan ana ing \VUgras{latar}
+\textsuperscript{(75)}. Kita weruh sawetara murid kang lagi dolanan.
+\VUgras{Pamong} \textsuperscript{(74)} njaga bocah-bocah iku.
+
+%%K t01-07-1 p
+7. --- Ing latar kita uga weruh wong liya, yaiku \VUgras{panilik
+sekolah} \textsuperscript{(73)}, \VUgras{kepala sekolah}
+\textsuperscript{(71)} lan \VUgras{wakil kepala sekolah}
+\textsuperscript{(72)}.
+
+%%K t01-07-2 p
+Panilik nliti sekolah-sekolah, kepala sekolah mimpin sekolah menengah
+iku, dene wakile ngawasi piwulangan.
+
+%%K t01-07-3 p
+Wong kaping papat yaiku \VUgras{tukang jaga lawang}
+\textsuperscript{(77)}. Dheweke nggawa buku dhaptar ing sangisore
+kelek kanggo nyathet sing ora teka.
+
+%%K t01-08-1 p
+8. --- Ing pojoke latar ana \VUgras{piranti senam}
+\textsuperscript{(70)} lan bengkel kanggo \VUgras{gawean tangan}
+\textsuperscript{(69)}.
+
+%%K t01-08-2 p
+Ing sisih tengene gambar iki kita wiwit weruh \VUgras{ruwang-ruwang
+kelas} kanggo \VUgras{musik} lan \VUgras{nggambar.}
+
+%%K t01-noto-1 noto
+\VUnotes{143.2mm}{%
+(*) Kanggo \textit{jeneng baptis} uga disaranake nyalin miturut wujud
+Latin. Iku siji-sijine dalan kanggo nyingkiri beda-beda kang ora
+kaetung. Kajaba iku, kepriye milih ing antarane \textit{Giovanni,
+Jean, Johann, Jan, Hans, John, Ivan,} lan sapanunggalane? Apa kita
+bakal nggawe kamus mligi kanggo jeneng baptis? Ayo padha njupuk wujud
+nominatife saka basa Latin lan ngucap : \VUgras{Ioannes, Ioanna;
+Iulius, Iulia; Iakobus; Andreas; Lukas.} (Gram. Kompleta).%
+}
+
+%%K t01-tit-3 sub
+\VUpk{10.2pt}{40}{Gegambaran rinci.}
+\VUsaut{2.4mm}
+
+%%K t01-tit-4 sub
+\VUpk{10.2pt}{40}{Murid-murid kang becik.}
+\VUsaut{3.0mm}
+
+%%K t01-09-1 p
+9. --- Murid-murid ing bangku kapisan ing sisih tengene meja guru
+yaiku \VUgras{Henrikus} (*), \VUgras{Stefanus} lan \VUgras{Karolus.}
+
+%%K t01-09-2 p
+Henrikus temenan lan sregep banget ; dheweke ngrungokake gurune.
+
+Ing dhuwur mejane ana \VUgras{buku tulis} \textsuperscript{(28)},
+\VUgras{buku} \textsuperscript{(29)}, \VUgras{kamus}
+\textsuperscript{(30)} lan \VUgras{kothak potlot}
+\textsuperscript{(31)}. Bukune duwe akeh \VUgras{kaca} ; saben bab isi
+sawetara \VUgras{paragraf} lan saben \VUgras{larik} akeh
+\VUgras{tembung.}
+
+%%K t01-09-4 p
+Tanggane, Stefanus \textsuperscript{(24)}, sregep banget. Dheweke
+nyathet ing buku tulise piwulangan kanggo sesuk. \VUgras{Tulisane}
+apik. Bukune tutupan ; kita mung weruh \VUgras{sampule}
+\textsuperscript{(27)}. Ing cedhake ana \VUgras{jangkane}
+\textsuperscript{(26)}.
+
+%%K t01-09-5 p
+Karolus \textsuperscript{(23)} nyekel bukune nganggo tangan ; dheweke
+mbukak kanggo maca maneh piwulangane. Kaya saben murid, dheweke duwe
+\VUgras{wadhah mangsi} \textsuperscript{(25)} ing ngarepe. Dheweke
+manut.
+
+%%K t01-10-1 p
+10. --- Ing meja sandhinge ana \VUgras{Ludovikus,} \VUgras{Antonius}
+lan \VUgras{Paulus.} Ludovikus ngapalake \VUgras{piwulangane}
+\textsuperscript{(22)} lan mangsuli \VUgras{pitakonan}
+gurune. Antonius \textsuperscript{(21)} ora nggatekake babar pisan ;
+kadhang guru malah ngukum dheweke. Paulus \textsuperscript{(20)}
+\VUgras{kanca} kang becik, grapyak lan seneng tetulung. Dheweke
+temenan banget.
+
+%%K t01-tit-5 sub
+\VUsaut{4.2mm}
+\VUpk{10.2pt}{40}{Murid-murid kang ala.}
+\VUsaut{3.2mm}
+
+%%K t01-11-1 p
+11. --- Ing mburine Henrikus lungguh \VUgras{Georgius}
+\textsuperscript{(38)}. Dheweke dudu bocah ala, nanging dheweke
+\VUgras{seneng celuthak,} ora nggatekake lan mbeling.
+\VUgras{Kesenengane guyon} lan \VUgras{kebandelane} nuwuhake
+\VUgras{ribut} sajrone piwulangan, lan kerep dheweke pantes nampa
+\VUgras{pepeling} keras. \VUgras{Buku oret-oretane}
+\textsuperscript{(35)} reged ; dheweke \VUgras{nulari mangsi} saka
+\VUgras{penane} \textsuperscript{(34)}, mula dheweke tansah nganggo
+\VUgras{setipe} \textsuperscript{(36)} ; \VUgras{map bukune}
+\textsuperscript{(33)} suwek, amarga dheweke slebor banget. Yagene
+dheweke nggawa \VUgras{wadhah potlote} \textsuperscript{(37)} menyang
+kelas \VUgras{basa-basa urip?}
+
+%%K t01-11-2 p
+Tanggane, Edmundus \textsuperscript{(39)}, ora seneng marang dheweke.
+Pancen dheweke rada kesed, nanging meneng lan tentrem. Dheweke ora
+celuthak ; mung, tinimbang ngrungokake, dheweke luwih seneng maca
+\VUgras{crita-crita} ing \VUgras{buku wacane.}
+
+%%K t01-11-3 p
+Murid katelu ing bangku iki yaiku \VUgras{Ludovikus}
+\textsuperscript{(40)}. Dheweke tumemen. Dheweke nulis ing
+\VUgras{lembar kertas} putih. Ing ngarepe, dheweke ndeleh
+\VUgras{kertas isepe} \textsuperscript{(41)}.
+
+%%K t01-12-1 p
+12. --- Murid-murid ing bangku kapindho, ing sisih kiwane guru, isih
+enom banget. Kang kapisan, si cilik \VUgras{Emilius,} durung pinter
+temenan nulis ; dheweke nggawa \VUgras{sabake} \textsuperscript{(42)},
+\VUgras{gripe} lan \VUgras{sponse} \textsuperscript{(43)}.
+
+%%K t01-12-2 p
+Ing sandhinge ana \VUgras{Augustus} lan \VUgras{Bernardus}
+\textsuperscript{(44)}. Kang keri iki nyambut gawe kanthi becik,
+nanging \VUgras{sandhangane} ora karu-karuan.
+
+%%K t01-13-1 p
+13. --- Ing mburine bocah-bocah iku lungguh telung bocah
+\VUgras{kesed. Albertus} ora ngapalake piwulangane. \VUgras{Iakobus}
+\textsuperscript{(47)} turu tinimbang ngrungokake. \VUgras{Kesedane}
+nekakake \VUgras{panyaruwe} lan malah \VUgras{paukuman} kanggo
+dheweke. Wusana \VUgras{Kristianus} \textsuperscript{(48)} ora tenanan
+babar pisan. Dheweke \VUgras{tumindak} ala lan babar pisan ora ngudi
+mbenerake awake.
+
+%%K t01-14-1 p
+14. --- Kosokbaline, tanggane padha becik tumindake.
+\VUgras{Ernestus} \textsuperscript{(51)} seneng tata lan tertib ;
+dheweke tansah nganggo \VUgras{garisane} \textsuperscript{(50)} lan
+\VUgras{potlote} \textsuperscript{(49)}. Dheweke \VUgras{murid
+njaba.}
+
+%%K t01-14-2 p
+\VUgras{Franciskus} \textsuperscript{(52)} \VUgras{murid asrama} ;
+dheweke nganggo seragam, mangan lan turu ing sekolah menengah iku.
+Dheweke \VUgras{kanca} kang becik.
+
+%%K t01-14-3 p
+Mauricius ngraut \VUgras{potlote} nganggo \VUgras{ladhing raute}
+\textsuperscript{(56)} ; dheweke ngati-ati banget.
+
+%%K t01-14-4 p
+Dheweke nggawa kabeh bukune, \VUgras{paramasastrane}
+\textsuperscript{(55)}, \VUgras{buku cathetane} \textsuperscript{(54)},
+lan malah \VUgras{alas tulise} \textsuperscript{(53)}. \VUgras{Tas
+sekolahe} \textsuperscript{(57)} ana ing jogan mburine.
+
+%%K t01-14-5 p
+Meja loro ing pojok mburine kelas dienggoni \VUgras{murid-murid kang
+becik} \textsuperscript{(19)}.
+
+%%K t01-tit-6 sub
+\VUsaut{4.6mm}
+\VUpk{10.2pt}{40}{Nggambar lan musik.}
+\VUsaut{3.4mm}
+
+%%K t01-15-1 p
+15. --- Ing \VUgras{kelas nggambar} ana \VUgras{modhel-modhel} kang
+endah gumantung ing tembok lan \VUgras{lampu} \textsuperscript{(62)}
+karo \VUgras{kap lampune,} gumantung ing payon. \VUgras{Gurune}
+\textsuperscript{(60)} sabar banget ; dheweke mbenerake
+\VUgras{gambar-gambar} \textsuperscript{(61)} para murid lan mulang
+bocah-bocah nggambar \VUgras{reca dhadha} \textsuperscript{(59)}
+miturut alame.
+
+%%K t01-16-1 p
+16. --- \VUgras{Ruwang musik} katon narik banget. Ing kono wong sinau
+maca \VUgras{musik,} nyolmisasi \VUgras{not-not} \textsuperscript{(67)}
+kang ditulis ing \VUgras{garis not} (do, re, mi, fa, sol, la,
+si\,=\,C. D. E. F. G. A. B.), ngerteni \VUgras{kunci-kunci} lan
+nembang \VUgras{lagu-lagu} kang ngresepake. Lembaran musik didokok ing
+\VUgras{panyangga not} \textsuperscript{(65)}. Salah sijine murid
+\VUgras{main piano} \textsuperscript{(64)} lan \VUgras{guru musik}
+\textsuperscript{(66)} \VUgras{ngetungi wirama} \textsuperscript{(68)}.
+
+%%K t01-17-1 p
+17. --- Kita wiwit weruh pojoke \VUgras{bengkel} kanggo \VUgras{gawean
+tangan} \textsuperscript{(69)}, panggonan bocah-bocah kena sinau
+ngepasah kayu lan ngikir wesi. Bab iku ora ana ing kabeh sekolah
+menengah.
+
+%%K t01-tit-7 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{Kelas ngelmu.}
+\VUsaut{3.6mm}
+
+%%K t01-18-1 p
+18. --- Guru matematika mulang \VUgras{marang} para murid
+\VUgras{ngelmu ukur, ngelmu itung, petungan} lan \VUgras{sistem
+metrik}. Ing papan tulis kita weruh wangun-wangun ngelmu ukur kang
+baku : \VUgras{bunderan} \textsuperscript{(a)}, \VUgras{pesagi}
+\textsuperscript{(b)}, \VUgras{segi telu} \textsuperscript{(c)},
+\VUgras{garis} \textsuperscript{(d)}.
+
+%%K t01-18-2 p
+Kita uga weruh \VUgras{petungan} ; iku dudu \VUgras{panambahan,} dudu
+\VUgras{panyudan,} dudu uga \VUgras{pangaping} — iku pancen
+\VUgras{pambagi} \textsuperscript{(e)}.
+
+%%K t01-19-1 p
+19. --- Ing papan sistem metrik kita weruh : \VUgras{meter}
+\textsuperscript{(a)}, \VUgras{timbangan} \textsuperscript{(b)} karo
+\VUgras{anak timbangane,} \VUgras{liter} \textsuperscript{(e)},
+\VUgras{dekaliter} \textsuperscript{(f)}, \VUgras{desiliter} lan
+\VUgras{meter kubik} \textsuperscript{(d)}.
+
+%%K t01-19-2 p
+Para murid uga nyinaoni \VUgras{ngelmu alam} \textsuperscript{(11)},
+ngelmu kewan \textsuperscript{(a)}, ngelmu tetuwuhan
+\textsuperscript{(b)}, ngelmu bumi \textsuperscript{(c)} lan
+\VUgras{sejarah} \textsuperscript{(12)}.
+
+%%K t01-19-3 p
+Ing jero lemari ana piranti kanggo \VUgras{fisika}
+\textsuperscript{(15)} lan kanggo \VUgras{kimia} \textsuperscript{(16)}.
+
+%%K t01-19-4 p
+Ing dhuwure lemari ana : \VUgras{bal} \textsuperscript{(14)},
+\VUgras{kerucut} lan \VUgras{bal bumi} \textsuperscript{(13)}.
+
+%%K t01-19-5 p
+Ing dhuwure papan-papan iku gumantung \VUgras{peta} kang nggambarake
+limang perangane donya : \VUgras{Eropa} \textsuperscript{(g)},
+\VUgras{Asia} \textsuperscript{(e)}, \VUgras{Afrika}
+\textsuperscript{(f)}, \VUgras{Amerika} \textsuperscript{(ab)} lan
+\VUgras{Oseania} \textsuperscript{(h)}, sarta samodra gedhe loro,
+\VUgras{Pasifik} \textsuperscript{(c)} lan \VUgras{Atlantik}
+\textsuperscript{(d)}.
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}

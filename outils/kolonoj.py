@@ -402,6 +402,94 @@ LINGUI = {
         (r"(?i)[A-Za-z]*sj[A-Za-z]*", "graphie d'avant 1972 — « sj » se "
                                   "note « sy » depuis la reforme"),
     ]},
+
+    # LE JAVANAIS EST LE CAS INVERSE DE L'INDONESIEN, ET C'EST LA
+    # MEME PAIRE DE LANGUES. Quand on defendait « id », la voisine
+    # n'etait dans aucun dossier et il fallait relever sans pouvoir
+    # comparer. Maintenant elle y est, ecrite par la meme main, la
+    # ligne au-dessus — et c'est justement ce qui rend la derive
+    # facile : l'indonesien est la langue d'ecole de tout locuteur du
+    # javanais, celle dans laquelle il ecrit tout le reste de sa
+    # journee. On releve donc les mots-outils indonesiens, qui sont
+    # ceux qui glissent en premier, et jamais les mots de chose, que
+    # les deux langues partagent par centaines.
+    #
+    # ET UN SECOND FRONT QU'AUCUNE AUTRE COLONNE N'A EU : LES NIVEAUX
+    # DE LANGUE. Le javanais a deux lexiques paralleles — ngoko et
+    # krama — et il faut en tenir un. La colonne tient le NGOKO ALUS :
+    # narration en ngoko, et verbes krama inggil pour ce que fait le
+    # grand-pere. C'est ce qu'un enfant javanais ecrit et ce qu'un
+    # livre javanais de 2026 imprime.
+    #
+    # ON RELEVE DONC LE KRAMA ORDINAIRE — kula, mboten, menika,
+    # ingkang, sampun, kaliyan, griya, toya —, qui signale une main
+    # passee au niveau poli d'un bout a l'autre. ET ON NE RELEVE PAS
+    # LES VERBES KRAMA INGGIL — dhahar, tindak, kondur, ngendika,
+    # priksa, sare —, qui sont exactement ce que la regle de la
+    # colonne EXIGE pour le grand-pere. Un controle qui crie sur la
+    # forme que la consigne demande est pire qu'un controle absent :
+    # c'est la lecon de « دی » et « دے », prise avant d'ecrire.
+    #
+    # FAUX AMIS ECARTES EXPRES : « bisa », « anak », « sekolah »,
+    # « meja », « kursi », « jendela », « lawang » vivent dans les
+    # deux langues avec le meme sens — les deux les tiennent souvent
+    # du meme portugais ou du meme neerlandais. Les relever ferait
+    # crier le controle sur chaque page.
+    "jv": {"mot": [
+        (r"(?i)(?<![A-Za-z])tidak(?![A-Za-z])", "ora"),
+        (r"(?i)(?<![A-Za-z])dan(?![A-Za-z])", "lan"),
+        (r"(?i)(?<![A-Za-z])dengan(?![A-Za-z])", "karo"),
+        (r"(?i)(?<![A-Za-z])yang(?![A-Za-z])", "sing"),
+        (r"(?i)(?<![A-Za-z])ini(?![A-Za-z])", "iki"),
+        (r"(?i)(?<![A-Za-z])itu(?![A-Za-z])", "iku"),
+        (r"(?i)(?<![A-Za-z])sudah(?![A-Za-z])", "wis"),
+        (r"(?i)(?<![A-Za-z])juga(?![A-Za-z])", "uga"),
+        (r"(?i)(?<![A-Za-z])tetapi(?![A-Za-z])", "nanging"),
+        (r"(?i)(?<![A-Za-z])sangat(?![A-Za-z])", "banget"),
+        (r"(?i)(?<![A-Za-z])besar(?![A-Za-z])", "gedhe"),
+        (r"(?i)(?<![A-Za-z])kecil(?![A-Za-z])", "cilik"),
+        (r"(?i)(?<![A-Za-z])orang(?![A-Za-z])", "wong"),
+        (r"(?i)(?<![A-Za-z])rumah(?![A-Za-z])", "omah"),
+        (r"(?i)(?<![A-Za-z])banyak(?![A-Za-z])", "akeh"),
+        (r"(?i)(?<![A-Za-z])semua(?![A-Za-z])", "kabeh"),
+        (r"(?i)(?<![A-Za-z])atau(?![A-Za-z])", "utawa"),
+        (r"(?i)(?<![A-Za-z])hanya(?![A-Za-z])", "mung"),
+        (r"(?i)(?<![A-Za-z])karena(?![A-Za-z])", "amarga"),
+        (r"(?i)(?<![A-Za-z])kemudian(?![A-Za-z])", "banjur"),
+        (r"(?i)(?<![A-Za-z])se(?:buah|orang|ekor)(?![A-Za-z])",
+         "le javanais ne compte pas avec le classificateur indonesien"),
+        (r"(?i)(?<![A-Za-z])kula(?![A-Za-z])",
+         "aku — la colonne tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])mboten(?![A-Za-z])",
+         "ora — la colonne tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])menika(?![A-Za-z])",
+         "iki — la colonne tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])ingkang(?![A-Za-z])",
+         "sing — la colonne tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])sampun(?![A-Za-z])",
+         "wis — la colonne tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])kaliyan(?![A-Za-z])",
+         "karo — la colonne tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])griya(?![A-Za-z])",
+         "omah — la colonne tient le ngoko, non le krama"),
+        (r"(?i)(?<![A-Za-z])toya(?![A-Za-z])",
+         "banyu — la colonne tient le ngoko, non le krama"),
+        # ET LE PIEGE DE LA DATE VAUT ICI AUSSI : la reforme de 1972
+        # a refait l'orthographe latine de l'indonesien ET celle du
+        # javanais d'un seul coup. « djaran », « tjilik », « boekoe »
+        # sont donc exactement ce qu'un imprimeur aurait compose en
+        # 1926, et c'est la seconde colonne ou la faute serait
+        # CONTEMPORAINE de la source. On ne releve pas « sj », qui
+        # n'a jamais servi au javanais ; on ne touche pas non plus a
+        # « dh » et « th », qui sont des lettres retroflexes de la
+        # langue et non des restes de graphie.
+        (r"(?i)[A-Za-z]*dj[A-Za-z]*", "graphie d'avant 1972 — « dj » se "
+                                  "note « j » depuis la reforme"),
+        (r"(?i)[A-Za-z]*tj[A-Za-z]*", "graphie d'avant 1972 — « tj » se "
+                                  "note « c » depuis la reforme"),
+        (r"(?i)[A-Za-z]*oe[A-Za-z]*", "graphie d'avant 1972 — « oe » se "
+                                  "note « u » depuis la reforme"),
+    ]},
 }
 
 

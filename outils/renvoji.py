@@ -91,7 +91,7 @@ DOSSIER = {"fr": "tableau",
            # neerlandais, deja dans cette table — et l'indonesien l'a
            # justement emprunte au neerlandais. On garde donc le mot
            # malais de fond, qui ne doit rien a personne.
-           "id": "bagan",
+           "id": "bagan", "jv": "gambar",
            "de": "tafel",
            "it": "tavola"}
 

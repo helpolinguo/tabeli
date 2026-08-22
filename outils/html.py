@@ -342,6 +342,16 @@ LANGUES = [
     # 1926 aurait employee, et c'est le piege propre a cette colonne.
     {"kodo": "id", "nomo": "Indonesia", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE JAVANAIS EST LA PREMIERE COLONNE DONT LA VOISINE VIENT
+    # D'ETRE ECRITE PAR LA MEME MAIN. L'indonesien, qui manquait au
+    # releve quand on defendait la colonne « id », est maintenant
+    # dans texto/id — et le danger s'est retourne : ce n'est plus
+    # l'absence de la voisine, c'est sa presence a la ligne
+    # precedente. S'y ajoute ce qu'aucune colonne n'avait encore
+    # eu : des NIVEAUX DE LANGUE grammaticalises (ngoko, krama),
+    # deux lexiques paralleles dans une seule langue.
+    {"kodo": "jv", "nomo": "Basa Jawa", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -1017,7 +1027,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
-           "id": "id",
+           "id": "id", "jv": "jv",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2197,6 +2207,14 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # Bantu Delmas », est compose en bas de casse
                         # comme au portugais et au turc.
                         r"|BAGAN"
+                        # LE JAVANAIS ecrit « GAMBAR No. 1 ».
+                        # Le mot est celui de l'image, pas celui du
+                        # tableau : le javanais n'a pas de mot propre
+                        # pour la planche murale, et « bagan » lui
+                        # viendrait de l'indonesien — c'est-a-dire de
+                        # la voisine dont toute cette colonne se
+                        # defend.
+                        r"|GAMBAR"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2542,6 +2560,14 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # l'autre sens.
                    r"|[Ss]eri\s+(?:[Pp]ertama|[Kk]edua|[Kk]etiga"
                    r"|[Kk]eempat)"
+                   # LE JAVANAIS PARTAGE « seri » AVEC
+                   # L'INDONESIEN et s'en separe sur les ordinaux,
+                   # exactement comme l'ourdou et le chahmoukhi se
+                   # separaient sur « سلسلہ » : kapisan, kapindho,
+                   # katelu, kapat contre pertama, kedua, ketiga,
+                   # keempat.
+                   r"|[Ss]eri\s+(?:[Kk]apisan|[Kk]apindho"
+                   r"|[Kk]atelu|[Kk]apat)"
                    # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
                    # « سلسلہ » : meme langue, deux lexiques, et c'est
                    # justement pourquoi les deux colonnes se
@@ -2620,6 +2646,12 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # INDONESIENNE : « Adegan Pertama ».
                   r"|[Aa]degan\s+(?:[Pp]ertama|[Kk]edua|[Kk]etiga"
                   r"|[Kk]eempat)"
+                  # ET « adegan » EST UN MOT JAVANAIS QUE
+                  # L'INDONESIEN A EMPRUNTE — la voisine tient ici
+                  # son mot de la colonne dont elle se defend. Seuls
+                  # les ordinaux separent les deux membres.
+                  r"|[Aa]degan\s+(?:[Kk]apisan|[Kk]apindho"
+                  r"|[Kk]atelu|[Kk]apat)"
                   r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
                   # LE TURC, aux deux casses ecrites a la main, pour
                   # la raison dite plus haut a la serie.
