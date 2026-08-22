@@ -316,6 +316,14 @@ LANGUES = [
     # kolonoj.py le releve.
     {"kodo": "ko", "nomo": "한국어", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE TAMOUL EST LA DEUXIEME COLONNE DRAVIDIENNE, apres le
+    # telougou, et la premiere a avoir un voisin qui LUI ressemble :
+    # le telougou est de sa famille, non de son alphabet. La menace
+    # n'est donc pas graphique — chaque colonne dravidienne a son
+    # ecriture — mais lexicale, et kolonoj.py la prend par la ou elle
+    # se voit.
+    {"kodo": "ta", "nomo": "தமிழ்", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -990,7 +998,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "lb": "lb", "rm": "rm",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
-           "te": "te", "ko": "ko",
+           "te": "te", "ko": "ko", "ta": "ta",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2130,6 +2138,12 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # le meme moule que le japonais « 図表第 9
                         # 号 » : le mot, puis le « 제 » qui numerote.
                         r"|도표\s*제"
+                        # LE TAMOUL DIT « அட்டவணை எண் 1 » : le mot,
+                        # puis « எண் », le numero. Meme raison que
+                        # pour le hindi, le marathi et le telougou —
+                        # pas de capitales, donc on exige le mot du
+                        # numero qui suit.
+                        r"|அட்டவணை\s+எண்"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2455,6 +2469,8 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    r"|(?:మొదటి|రెండవ|మూడవ|నాలుగవ)\s+శ్రేణి"
                    # LE COREEN dit « 첫째 계열 ».
                    r"|(?:첫째|둘째|셋째|넷째)\s+계열"
+                   # LE TAMOUL dit « முதல் தொடர் ».
+                   r"|(?:முதல்|இரண்டாம்|மூன்றாம்|நான்காம்)\s+தொடர்"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
                    r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ"
@@ -2519,6 +2535,12 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # de suite a preferer son propre mot de scene apres
                   # le marathi प्रवेश et le telougou రంగం.
                   r"|(?:첫째|둘째|셋째|넷째)\s+마당"
+                  # LE TAMOUL DIT « காட்சி », le mot de son theatre.
+                  # Quatrieme colonne de suite a preferer le sien
+                  # apres le marathe प्रवेश, le telougou రంగం et le
+                  # coreen 마당 : la scene est justement ce qu'aucune
+                  # de ces langues n'emprunte.
+                  r"|(?:முதல்|இரண்டாம்|மூன்றாம்|நான்காம்)\s+காட்சி"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"

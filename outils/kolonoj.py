@@ -248,6 +248,41 @@ LINGUI = {
         (r"[\u4E00-\u9FFF]", "hangul seul — le coreen de 2026 "
                               "n'imprime plus le hanja"),
     ]},
+
+    # LE TAMOUL CONTRE LUI-MEME. C'est la premiere colonne du releve
+    # dont l'adversaire n'est ni une langue voisine ni une ecriture
+    # ancienne, mais un REGISTRE. Le tamoul est diglossique pour de
+    # bon : la langue parlee et la langue ecrite different jusque dans
+    # la conjugaison, et personne n'imprime la premiere. Un livret de
+    # 1926 rendu en tamoul parle serait aussi faux qu'un livret rendu
+    # en argot — non pas trop moderne, mais d'un autre usage. On
+    # releve donc les marques du parle les plus sures, celles qui ne
+    # peuvent pas etre autre chose.
+    #
+    # Deux d'entre elles demandent une precaution. « இருக்கு » est la
+    # forme parlee de « இருக்கிறது », mais elle est aussi la fin de
+    # « கிடைக்கு » et de quelques autres : on l'exige donc precedee
+    # d'un blanc. « இல்ல » est le parle de « இல்லை » et le debut de
+    # « இல்லாத » : on exige la fin de mot. Un controle qui se declenche
+    # sur un mot honnete finit desarme, et un controle desarme ne
+    # controle plus rien.
+    "ta": {"mot": [
+        (r"(?<![\u0B80-\u0BFF])இருக்கு(?![\u0B80-\u0BFF])",
+         "இருக்கிறது — la colonne s'imprime, elle ne se parle pas"),
+        (r"(?<![\u0B80-\u0BFF])இல்ல(?![\u0B80-\u0BFF])", "இல்லை"),
+        (r"(?<![\u0B80-\u0BFF])பண்ண(?:ு|ுது|லாம்)(?![\u0B80-\u0BFF])",
+         "செய் / செய்கிறது"),
+        (r"(?<![\u0B80-\u0BFF])ஏன்னா(?![\u0B80-\u0BFF])", "ஏனெனில்"),
+        (r"(?<![\u0B80-\u0BFF])இப்ப(?![\u0B80-\u0BFF])", "இப்போது"),
+        (r"(?<![\u0B80-\u0BFF])அப்ப(?![\u0B80-\u0BFF])", "அப்போது"),
+        # LES CHIFFRES TAMOULS SONT DE L'EPIGRAPHIE. Le tamoul de 2026
+        # compte en chiffres arabes, dans la prose comme dans
+        # l'apparat — « அட்டவணை எண் 1 » et non « எண் ௧ ». Les
+        # ௰ ௱ ௲ (dix, cent, mille) sont dans la meme plage et tombent
+        # sous la meme regle.
+        (r"[\u0BE6-\u0BF2]", "chiffres arabes — les chiffres tamouls "
+                              "ne servent plus qu'en epigraphie"),
+    ]},
 }
 
 

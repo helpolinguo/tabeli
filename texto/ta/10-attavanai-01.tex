@@ -1,0 +1,453 @@
+% ===================================================================
+%  அட்டவணை எண் 1 — பள்ளி, மேல்நிலைப் பள்ளி, வகுப்பறை.
+%
+%  Ceci n'est PAS une transcription : c'est une traduction, faite en
+%  2026, en tamoul d'aujourd'hui. D'ou trois differences avec
+%  texto/io et texto/fr, et trois seulement :
+%
+%   * pas de \nl ni de \cc — la traduction ne suit aucune ligne
+%     imprimee, et les lignes de ce fichier ne sont que du confort ;
+%   * pas de \begin{VUpage} — elle n'a ni feuillet ni folio ;
+%   * le gras se pose sur le TERME seul, ponctuation dehors.
+%
+%  Les cles « %%K » sont celles de texto/io, macro pour macro pour
+%  l'apparat, et les renvois \textsuperscript{(n)} visent les MEMES
+%  objets de la planche, dans le MEME ordre.
+%
+%  DEUXIEME COLONNE DRAVIDIENNE, ET LE TELOUGOU N'EST PAS SA
+%  VOISINE DE GRAPHIE. Les deux langues sont de la meme famille et
+%  s'ecrivent dans deux alphabets qui n'ont pas une lettre en commun.
+%  C'est l'inverse exact du couple hindi / marathi, qui partage
+%  l'ecriture et non le lexique. La colonne tamoule ne risque donc
+%  pas de derailler vers le telougou : elle risque autre chose.
+%
+%  SON ADVERSAIRE EST UN REGISTRE, ET C'EST LE PREMIER DU RELEVE. Le
+%  tamoul est diglossique pour de bon : la langue parlee et la langue
+%  ecrite different jusque dans la conjugaison — இருக்கு contre
+%  இருக்கிறது, இல்ல contre இல்லை, பண்ணு contre செய் — et personne
+%  n'imprime la premiere. Ecrire ce livret en tamoul parle serait
+%  aussi faux que l'ecrire en argot : non pas trop moderne, mais d'un
+%  autre usage. kolonoj.py releve donc six marques du parle, chacune
+%  bornee pour ne pas mordre sur un mot honnete (இல்ல est aussi le
+%  debut de இல்லை et de இல்லாத ; il faut exiger la fin de mot).
+%
+%  ET IL Y A UNE FAUTE SYMETRIQUE, QU'ON NE COMMETTRA PAS NON PLUS.
+%  Le tamoul a un mouvement puriste vivant, et il serait facile de
+%  remplacer chaque emprunt par une forge en தனித் தமிழ். Ce serait
+%  fausser la colonne dans l'autre sens : les manuels de 2026
+%  impriment நோட்டுப் புத்தகம் pour le cahier, சிலேட்டு pour
+%  l'ardoise, பென்சில் pour le crayon. Ces mots-la sont ecrits, donc
+%  ils s'ecrivent. On modernise la langue, jamais les choses — et on
+%  ne la purifie pas non plus.
+%
+%  LES LETTRES GRANTHA NE SONT PAS UN DEFAUT, et c'est pourquoi le
+%  controle ne les vise pas. ஜ, ஷ, ஸ, ஹ servent aux noms etrangers,
+%  et ce tableau en est plein : ஸ்டெஃபானுஸ், ஜார்ஜியுஸ்,
+%  ஃபிரான்சிஸ்குஸ். Un controle qui les refuserait interdirait a la
+%  colonne d'ecrire les prenoms que la note (*) lui impose.
+%
+%  LA REGLE DU TELOUGOU VAUT ICI SANS RETOUCHE. Le tamoul est a tete
+%  finale, son verbe finit la phrase, et il n'a pas de relative
+%  postposee. parigi.py sert donc exactement comme pour le telougou
+%  et le coreen ; c'est la quatrieme colonne a tete finale et il n'a
+%  toujours pas fallu y toucher.
+%
+%  L'APPARAT PREND SES PROPRES MOTS : அட்டவணை pour un tableau — le
+%  telougou voisin dit పట్టిక, et deux langues dravidiennes ne se
+%  pretent pas plus leur apparat que deux langues indo-aryennes —,
+%  தொடர் pour une serie, காட்சி pour une scene. காட்சி est le mot du
+%  theatre tamoul : quatrieme colonne d'affilee a preferer le sien,
+%  apres le प्रवेश marathe, le రంగం telougou et le 마당 coreen.
+%
+%  LA LIGNE « DI » EST LE SEUL ENDROIT OU L'APPARAT GENE. Le telougou
+%  avait యొక్క, un genitif qui tient debout tout seul ; le tamoul n'en
+%  a pas — son genitif est un suffixe. On ecrit உடைய, qui est un
+%  participe et fait l'office au prix d'une lecture en apposition.
+%  C'est la premiere fois qu'une macro de l'apparat resiste a une
+%  langue, et il vaut mieux le dire que le masquer.
+%
+%  LA CLASSE TAMOULE A SON VOCABULAIRE, ET IL EST TAMOUL DE FOND :
+%
+%    கரும்பலகை (1)   le tableau noir — « la planche noire »
+%    சுண்ணக்கட்டி (3)  la craie
+%    மைக்கூடு (25)    l'encrier — « la maison de l'encre »
+%    உறிஞ்சுத் தாள் (41) le buvard — « le papier qui aspire »
+%    அகராதி (30)     le dictionnaire
+%    கவராயம் (26)    le compas
+%    அளவுகோல் (50)   la regle
+%    மடிக்கத்தி (56)   le canif — « le couteau qui se plie »
+%    குறிப்பேடு (54)   le carnet
+%    பள்ளிப் பை (57)  le cartable
+%    கடற்பஞ்சு (43)   l'eponge
+%    இடைவேளை (76)   la recreation
+%    பட்டறை (69)     l'atelier
+%    மார்புச் சிலை (59) le buste
+%    சிப்பந்தி (77)    l'homme de service
+%
+%  « சிப்பந்தி » ET LE « शिपाई » MARATHE SONT LE MEME MOT. Tous deux
+%  viennent du persan sipāhī, tous deux ont cesse de designer un
+%  soldat pour designer l'homme de service d'un bureau ou d'une
+%  ecole. Cinquieme ecole reelle d'affilee — apres le فرّاش egyptien,
+%  le शिपाई marathe, le బంట్రోతు telougou et le 수위 coreen — et la
+%  premiere fois que deux colonnes tombent, sans se consulter, sur le
+%  meme mot venu d'ailleurs.
+%
+%  ET LE VASISTAS (78) NE PASSE PAS EN UN MOT, POUR LA PREMIERE FOIS.
+%  Trente-huit colonnes l'avaient nomme sans periphrase — le 들창
+%  coreen, le గవాక్షం telougou, le postigi de l'ido lui-meme. Le
+%  tamoul a la CHOSE dans toutes ses maisons, mais sa langue ecrite la
+%  nomme en deux mots, மேல் சாளரம், la fenetre haute, et sa langue
+%  parlee emprunte « ventilator » a l'anglais — emprunt que cette
+%  colonne n'ecrit pas, parce qu'il n'est pas imprime. Le releve
+%  disait « trente-huit fois sur trente-huit » ; il faut donc dire
+%  maintenant trente-huit fois sur trente-neuf, et c'est la
+%  trente-neuvieme qui est instructive : une serie qui ne casse
+%  jamais ne prouve rien tant qu'on ne l'a pas cassee.
+%
+%  LES QUATRE OPERATIONS ET LES SCIENCES SONT DU TAMOUL PUR, sans un
+%  emprunt : கூட்டல், கழித்தல், பெருக்கல், வகுத்தல் ; இயற்பியல்,
+%  வேதியியல், தாவரவியல், விலங்கியல், நிலவியல், வரலாறு. La ou la
+%  colonne emprunte, c'est pour les objets de la classe, pas pour ce
+%  qu'on y enseigne — et cela se lit comme une date : le vocabulaire
+%  savant a ete refait en tamoul, le mobilier scolaire ne l'a pas ete.
+%
+%  LA GAMME RESTE OCCIDENTALE, comme au telougou et au coreen. Le
+%  tamoul a la sienne — ஸ ரி க ம ப த நி — et l'ecrire ici serait
+%  tentant. Mais le tableau nomme do-re-mi et pose l'equivalence
+%  « = C. D. E. F. G. A. B. » : c'est la gamme d'Europe qui est
+%  l'objet, et l'on ne transpose pas les choses.
+%
+%  TROIS RETOURNEMENTS SUR LES HUIT PAIRES DE parigi.py, et ce sont
+%  LES MEMES TROIS QU'AU COREEN : « stulo (8) en sua katedro (6) »,
+%  « nigra tabelo (1) kun la vishilo (2) », « furnelo (46) kun lua
+%  tubo (45) ». Les cinq autres sont exemptees par les trois motifs
+%  connus — enumeration jointe par « e », renvoi de gauche deja
+%  modificateur, frontiere de phrase. Que deux langues sans parente
+%  tombent sur la meme liste n'est pas une coincidence : les trois
+%  motifs sont des proprietes de l'ido, pas des langues d'arrivee.
+% ===================================================================
+
+%%K t01-apar-0 apar
+\VUsaut{2.0mm}
+\VUcentre{12.6pt}{120}{விளக்கச் சிறுநூல்}
+\VUsaut{3.2mm}
+\VUcentre{8.4pt}{160}{உடைய}
+\VUsaut{2.6mm}
+\VUtitre{15.6pt}{0}{டெல்மா - அட்டவணைகளுக்கு உதவும்}
+\VUsaut{3.4mm}
+\VUornamento{9pt}
+\VUsaut{5.0mm}
+\VUcentre{13.2pt}{90}{முதல் தொடர்}
+\VUsaut{3.0mm}
+\VUfilet{16mm}
+\VUsaut{5.6mm}
+
+%%K t01-apar-1 apar
+\VUtitre{15.0pt}{60}{அட்டவணை எண் 1}
+\VUsaut{1.4mm}
+\VUtitre{11.4pt}{0}{பள்ளி, மேல்நிலைப் பள்ளி, வகுப்பறை.}
+\VUsaut{2.2mm}
+\VUfilet{20mm}
+\VUsaut{6.4mm}
+
+%%K t01-tit-1 sub
+\VUpk{10.2pt}{40}{பொதுவான விளக்கம்.}
+\VUsaut{3.0mm}
+
+%%K t01-01-1 p
+1. --- இந்த அட்டவணை ஒரு \VUgras{மேல்நிலைப் பள்ளியின்} \VUgras{வகுப்பறையைக்}
+காட்டுகிறது. இந்த வகுப்பறையில் எட்டு \VUgras{மேசைகளும்} \textsuperscript{(18)}
+எட்டு \VUgras{வாங்குகளும்} \textsuperscript{(32)} இருக்கின்றன. ஒவ்வொரு வாங்கிலும்
+மூன்று மாணவர்கள் அமர்கிறார்கள். \VUgras{ஆசிரியர்} \textsuperscript{(7)} ஒரு
+\VUgras{நாற்காலியில்} \textsuperscript{(8)} அமர்ந்திருக்கிறார் ; அந்த நாற்காலி
+அவருடைய \VUgras{மேடையின்} \textsuperscript{(6)} மேல் இருக்கிறது.
+
+%%K t01-02-1 p
+2. --- மேடையின் இடப் பக்கத்தில் \VUgras{கண்ணாடி} போட்ட \VUgras{அலமாரி}
+\textsuperscript{(15)} இருக்கிறது. வலப் பக்கத்தில் \VUgras{கரும்பலகை}
+\textsuperscript{(1)} இருக்கிறது ; அதனுடன் \VUgras{துடைப்பான்}
+\textsuperscript{(2)} இருக்கிறது, \VUgras{சுண்ணக்கட்டியும்}
+\textsuperscript{(3)} இருக்கிறது.
+
+%%K t01-02-2 p
+மேடைக்கு மேலே \VUgras{சுவர்ப் படங்களும்} \textsuperscript{(9, 11,}
+\textsuperscript{12)} \VUgras{வரைபடமும்} \textsuperscript{(10)} தொங்குகின்றன.
+
+%%K t01-03-1 p
+3. --- மாணவர்கள் எல்லாரும் தத்தம் \VUgras{இடத்தில்} \textsuperscript{(17)}
+அமர்ந்திருக்கவில்லை. இயோவான்னெஸ் \textsuperscript{(4)} கரும்பலகையின் முன்
+நின்று, \VUgras{துடைப்பானைப்} பிடித்துக் கொண்டு \VUgras{வடிவியல் உருவங்களை}
+அழிக்கிறான்.
+
+%%K t01-03-2 p
+பேத்ருஸ் மேடைக்கு அருகில் இருக்கிறான். அவன் \VUgras{எழுத்துப் பணிகளை}
+\textsuperscript{(5)} சேகரித்து ஆசிரியரிடம் கொண்டு போகிறான்.
+
+%%K t01-04-1 p
+4. --- \VUgras{இந்த} ஆசிரியர் \VUgras{நடைமுறை மொழிகளுக்கு} உரியவர். அவர்
+மாணவர்களுக்கு அயல் மொழிகளைப் பேசவும் படிக்கவும் எழுதவும் கற்பிக்கிறார்
+\VUgras{(ஜெர்மன், ஆங்கிலம், ஸ்பானிஷ், இத்தாலியன், ரஷ்யன்} அல்லது
+\VUgras{பிரெஞ்சு)}.
+
+%%K t01-05-1 p
+5. --- வகுப்பறை மிகவும் பரந்ததாகவும் மிகவும் ஒளி மிக்கதாகவும் இருக்கிறது.
+உள்பக்கத்தில் இரண்டு \VUgras{மேல் சாளரங்கள்} \textsuperscript{(78)} உள்ள ஒரு
+அகன்ற \VUgras{சாளரமும்}, \VUgras{கண்ணாடிக் கதவும்} இருக்கின்றன ; அவை காற்று
+வரவும் ஒளி வரவும் உதவுகின்றன.
+
+%%K t01-05-2 p
+இந்த வகுப்பறை குளிராக இல்லை. நடுவில், அறையைக் கதகதப்பாக்க மிகவும் நல்ல ஒரு
+\VUgras{கணப்படுப்பு} \textsuperscript{(46)} இருக்கிறது ; அதற்கு ஒரு
+\VUgras{புகைபோக்கி} \textsuperscript{(45)} உண்டு.
+
+%%K t01-05-3 p
+சுவரில் \VUgras{ஆடைக் கொக்கிகள்} \textsuperscript{(58)} பொருத்தப்பட்டிருக்கின்றன ;
+அவற்றில் மாணவர்களின் தொப்பிகளும் மேலங்கிகளும் தொங்குகின்றன.
+
+%%K t01-tit-2 sub
+\VUsaut{5.2mm}
+\VUpk{10.2pt}{40}{விளையாட்டு மைதானம்}
+\VUsaut{3.6mm}
+
+%%K t01-06-1 p
+6. --- \VUgras{கடிகாரம்} \textsuperscript{(63)} ஒன்பது மணி ஐந்து நிமிடத்தைக்
+காட்டுகிறது.
+
+%%K t01-06-2 p
+\VUgras{இடைவேளை} \textsuperscript{(76)} இப்போதுதான் முடிந்தது, பாடம் மீண்டும்
+தொடங்குகிறது. விளையாடும் இடம் \VUgras{மைதானத்தில்} \textsuperscript{(75)}
+இருக்கிறது. விளையாடும் மாணவர்கள் சிலரைப் பார்க்கிறோம்.
+\VUgras{துணை ஆசிரியர்} \textsuperscript{(74)} அவர்களைக் கண்காணிக்கிறார்.
+
+%%K t01-07-1 p
+7. --- மைதானத்தில் வேறு பலரையும் பார்க்கிறோம், அதாவது \VUgras{ஆய்வாளர்}
+\textsuperscript{(73)}, பள்ளித் தலைவர் \VUgras{(தலைமை ஆசிரியர்)}
+\textsuperscript{(71)}, \VUgras{கண்காணிப்பாளர்} \textsuperscript{(72)}.
+
+%%K t01-07-2 p
+ஆய்வாளர் பள்ளிகளை ஆய்கிறார், தலைமை ஆசிரியர் மேல்நிலைப் பள்ளியை நடத்துகிறார்,
+கண்காணிப்பாளர் படிப்பைக் கவனிக்கிறார்.
+
+%%K t01-07-3 p
+நான்காம் ஆள் \VUgras{சிப்பந்தி} \textsuperscript{(77)}. வராதவர்களைப் பதிவு
+செய்வதற்காக அவர் அக்குளில் ஒரு பதிவேட்டை வைத்துக் கொண்டு போகிறார்.
+
+%%K t01-08-1 p
+8. --- மைதானத்தின் உள்பக்கத்தில் \VUgras{உடற்பயிற்சிக் கருவிகளும்}
+\textsuperscript{(70)} \VUgras{கைவினைப் பணிகளுக்கான} \textsuperscript{(69)}
+பட்டறையும் இருக்கின்றன.
+
+%%K t01-08-2 p
+அட்டவணையின் வலப் பக்கத்தில் \VUgras{இசை} \VUgras{வகுப்பறையும்}
+\VUgras{ஓவிய} வகுப்பறையும் தெரியத் தொடங்குகின்றன.
+
+%%K t01-noto-1 noto
+\VUnotes{143.2mm}{%
+(*) \textit{ஞானஸ்நானப் பெயர்களையும்} இலத்தீன் வடிவத்தின்படி எழுதுவது நல்லது.
+எண்ணற்ற வேறுபாடுகளைத் தவிர்க்க அதுவே ஒரே வழி. மேலும் \textit{Giovanni, Jean,}
+\textit{Johann, Jan, Hans, John, Ivan} என்பவற்றுள் எதைத் தேர்ந்தெடுப்பது?
+ஞானஸ்நானப் பெயர்களுக்கென்று தனி அகராதி ஒன்றைச் செய்வோமா? இலத்தீனிலிருந்து
+அவற்றின் எழுவாய் வடிவத்தை எடுத்து இப்படிச் சொல்வோம் : \VUgras{Ioannes, Ioanna;}
+\VUgras{Iulius, Iulia; Iakobus; Andreas; Lukas.} (Gram. Kompleta).%
+}
+
+%%K t01-tit-3 sub
+\VUpk{10.2pt}{40}{விரிவான விளக்கம்.}
+\VUsaut{2.4mm}
+
+%%K t01-tit-4 sub
+\VUpk{10.2pt}{40}{நல்ல மாணவர்கள்.}
+\VUsaut{3.0mm}
+
+%%K t01-09-1 p
+9. --- மேடையின் வலப் பக்கத்தில் உள்ள முதல் வாங்கின் மாணவர்கள்
+\VUgras{ஹென்றிகுஸ்} (*), \VUgras{ஸ்டெஃபானுஸ்}, \VUgras{காரோலுஸ்}.
+
+%%K t01-09-2 p
+ஹென்றிகுஸ் மிகவும் கவனமாகவும் உழைப்பாகவும் இருக்கிறான், ஆசிரியர் சொல்வதைக்
+கேட்கிறான்.
+
+தன் மேசையின் மேல் அவனிடம் \VUgras{நோட்டுப் புத்தகம்} \textsuperscript{(28)},
+\VUgras{புத்தகம்} \textsuperscript{(29)}, \VUgras{அகராதி} \textsuperscript{(30)},
+\VUgras{எழுதுகோல் பெட்டி} \textsuperscript{(31)} இருக்கின்றன. அவனுடைய புத்தகத்தில்
+\VUgras{பக்கங்கள்} பல, ஒவ்வொரு அதிகாரத்திலும் \VUgras{பத்திகள்} பல, ஒவ்வொரு
+\VUgras{வரியிலும்} \VUgras{சொற்கள்} பல.
+
+%%K t01-09-4 p
+அவனுக்கு அடுத்திருக்கும் ஸ்டெஃபானுஸ் \textsuperscript{(24)} ஆர்வமுள்ளவன். அடுத்த
+முறைக்கான பாடத்தைத் தன் நோட்டுப் புத்தகத்தில் குறித்து வைக்கிறான். அவனுக்கு
+அழகான \VUgras{கையெழுத்து} உண்டு. அவனுடைய புத்தகம் மூடி இருக்கிறது. அதன்
+\VUgras{அட்டையை} \textsuperscript{(27)} மட்டுமே பார்க்கிறோம். அவனுக்கு அருகில்
+அவனுடைய \VUgras{கவராயம்} \textsuperscript{(26)} இருக்கிறது.
+
+%%K t01-09-5 p
+காரோலுஸ் \textsuperscript{(23)} தன் புத்தகத்தைக் கையால் பிடித்து, தன் பாடத்தை
+மீண்டும் படிப்பதற்காக அதைத் திறக்கிறான். ஒவ்வொரு மாணவனையும் போலவே அவனுக்கும்
+தன் முன்னால் \VUgras{மைக்கூடு} \textsuperscript{(25)} இருக்கிறது. அவன் சொல்
+கேட்பவன்.
+
+%%K t01-10-1 p
+10. --- பக்கத்து மேசையில் \VUgras{லுடோவிகுஸ்}, \VUgras{அன்டோனியுஸ்},
+\VUgras{பவுலுஸ்} இருக்கிறார்கள். லுடோவிகுஸ் தன் \VUgras{பாடத்தை}
+\textsuperscript{(22)} ஒப்பிக்கிறான், ஆசிரியரின் \VUgras{வினாக்களுக்கு}
+விடை சொல்கிறான். அன்டோனியுஸ் \textsuperscript{(21)} மிகவும் கவனமில்லாதவன்,
+சில வேளைகளில் ஆசிரியர் அவனைத் தண்டிக்கவும் செய்கிறார். பவுலுஸ்
+\textsuperscript{(20)} நல்ல \VUgras{தோழன்}, இனியவன், உதவி செய்பவன். அவன்
+மிகவும் கவனமுள்ளவன்.
+
+%%K t01-tit-5 sub
+\VUsaut{4.2mm}
+\VUpk{10.2pt}{40}{கெட்ட மாணவர்கள்.}
+\VUsaut{3.2mm}
+
+%%K t01-11-1 p
+11. --- ஹென்றிகுஸுக்குப் பின்னால் \VUgras{ஜார்ஜியுஸ்} \textsuperscript{(38)}
+இருக்கிறான். அவன் கெட்டவன் அல்ல, ஆனால் \VUgras{அளந்து பேசுபவன்},
+கவனமில்லாதவன், குறும்புக்காரன். அவனுடைய \VUgras{லேசுத்தனமும்}
+\VUgras{சொல் கேளாமையும்} பாடத்தின் போது \VUgras{கலவரத்தை} உண்டாக்குகின்றன,
+அதனால் அடிக்கடி கடுமையான \VUgras{கண்டிப்புக்கு} ஆளாகிறான். அவனுடைய
+\VUgras{கரடு ஏடு} \textsuperscript{(35)} அழுக்காக இருக்கிறது ; தன்
+\VUgras{பேனாவால்} \textsuperscript{(34)} அதில் \VUgras{மையைச் சிந்துகிறான்},
+அதனால் எப்போதும் தன் \VUgras{அழிப்பானை} \textsuperscript{(36)} உபயோகிக்கிறான் ;
+அவனுடைய \VUgras{ஏட்டுப் பை} \textsuperscript{(33)} கிழிந்திருக்கிறது, ஏனெனில்
+அவன் மிகவும் கவனக்குறைவானவன். நடைமுறை மொழிகளின் வகுப்பறைக்கு அவன் ஏன் தன்
+\VUgras{பென்சில் பெட்டியைக்} \textsuperscript{(37)} கொண்டு வருகிறான்?
+
+%%K t01-11-2 p
+அவனுக்கு அடுத்திருக்கும் எட்முண்டுஸ் \textsuperscript{(39)} அவனை
+விரும்புவதில்லை. அவன் உண்மையில் கொஞ்சம் சோம்பலானவன், ஆனால் பேச்சு
+குறைந்தவன், அமைதியானவன். அவன் அளந்து பேசுவதில்லை ; ஆனால் கேட்பதற்குப் பதிலாகத்
+தன் \VUgras{வாசிப்புப் புத்தகத்தின்} \VUgras{கதைகளைப்} படிக்கவே
+விரும்புகிறான்.
+
+%%K t01-11-3 p
+இந்த வாங்கின் மூன்றாம் மாணவன் \VUgras{லுடோவிகுஸ்} \textsuperscript{(40)}. அவன்
+உழைப்பாளி. வெள்ளைத் \VUgras{தாளில்} எழுதுகிறான். தன் முன்னால் தன்
+\VUgras{உறிஞ்சுத் தாளை} \textsuperscript{(41)} வைத்திருக்கிறான்.
+
+%%K t01-12-1 p
+12. --- ஆசிரியரின் இடப் பக்கத்தில் உள்ள இரண்டாம் வாங்கின் மாணவர்கள் மிகவும்
+சிறியவர்கள். முதலாமவன், சிறிய \VUgras{எமிலியுஸ்}, இன்னும் நன்றாக எழுதத்
+தெரியாதவன் ; அவன் தன் \VUgras{சிலேட்டையும்} \textsuperscript{(42)}, தன்
+\VUgras{சிலேட்டுக் குச்சியையும்}, தன் \VUgras{கடற்பஞ்சையும்}
+\textsuperscript{(43)} கொண்டு வருகிறான்.
+
+%%K t01-12-2 p
+அவனுக்கு அருகில் \VUgras{அகுஸ்துஸ்}, \VUgras{பெர்னார்துஸ்}
+\textsuperscript{(44)} இருக்கிறார்கள். இவன் நன்றாகப் படிக்கிறான், ஆனால்
+அவனுடைய \VUgras{உடையணிதல்} மிகவும் கவனக்குறைவானது.
+
+%%K t01-13-1 p
+13. --- அவர்களுக்குப் பின்னால் மூன்று \VUgras{சோம்பேறிகள்} இருக்கிறார்கள்.
+\VUgras{அல்பெர்துஸ்} தன் பாடங்களைக் கற்பதில்லை. \VUgras{யாகோபுஸ்}
+\textsuperscript{(47)} கேட்பதற்குப் பதிலாகத் தூங்குகிறான். அவனுடைய
+\VUgras{சோம்பல்} அவனுக்கு \VUgras{கடிந்துரைகளையும்} \VUgras{தண்டனைகளையும்}
+கொண்டு வருகிறது. கடைசியாக \VUgras{கிறிஸ்தியானுஸ்} \textsuperscript{(48)}
+மிகவும் நிதானமற்றவன். அவன் கெட்ட முறையில் \VUgras{நடந்து கொள்கிறான்},
+திருந்துவதற்குக் கொஞ்சமும் முயல்வதில்லை.
+
+%%K t01-14-1 p
+14. --- அவனுக்கு மாறாக, அவனுடைய அடுத்தவர்கள் நல்ல நடத்தை உள்ளவர்கள்.
+\VUgras{எர்னெஸ்துஸ்} \textsuperscript{(51)} ஒழுங்கையும் நேர்த்தியையும்
+விரும்புகிறான், எப்போதும் தன் \VUgras{அளவுகோலையும்} \textsuperscript{(50)} தன்
+\VUgras{பென்சிலையும்} \textsuperscript{(49)} உபயோகிக்கிறான். அவன்
+\VUgras{பகல் மாணவன்}.
+
+%%K t01-14-2 p
+\VUgras{ஃபிரான்சிஸ்குஸ்} \textsuperscript{(52)} \VUgras{விடுதி மாணவன்} ; சீருடை
+அணிந்து மேல்நிலைப் பள்ளியிலேயே சாப்பிட்டுத் தூங்குகிறான். அவன் நல்ல
+\VUgras{தோழன்}.
+
+%%K t01-14-3 p
+மவுரிசியுஸ் தன் \VUgras{மடிக்கத்தியால்} \textsuperscript{(56)} தன்
+\VUgras{பென்சிலைச்} சீவுகிறான். அவன் மிகவும் கவனமானவன்.
+
+%%K t01-14-4 p
+அவன் தன் புத்தகங்கள் எல்லாவற்றையும் கொண்டு வருகிறான் — தன்
+\VUgras{இலக்கண நூலையும்} \textsuperscript{(55)}, தன் \VUgras{குறிப்பேட்டையும்}
+\textsuperscript{(54)}, \VUgras{எழுதுத் தாங்கியையும்} \textsuperscript{(53)}
+கூட. அவனுடைய \VUgras{பள்ளிப் பை} \textsuperscript{(57)} அவனுக்குப் பின்னால்
+தரையில் இருக்கிறது.
+
+%%K t01-14-5 p
+வகுப்பறையின் உள்பக்கத்தில் உள்ள இரண்டு மேசைகளையும்
+\VUgras{சிறந்த மாணவர்கள்} \textsuperscript{(19)} உபயோகிக்கிறார்கள்.
+
+%%K t01-tit-6 sub
+\VUsaut{4.6mm}
+\VUpk{10.2pt}{40}{ஓவியமும் இசையும்.}
+\VUsaut{3.4mm}
+
+%%K t01-15-1 p
+15. --- \VUgras{ஓவிய அறையில்} சுவரில் மாட்டப்பட்ட அழகான \VUgras{மாதிரிகளும்},
+\VUgras{விளக்குக் கூடு} போட்ட ஒரு \VUgras{விளக்கும்} \textsuperscript{(62)}
+கூரையிலிருந்து தொங்குகின்றன. \VUgras{ஆசிரியர்} \textsuperscript{(60)} மிகவும்
+பொறுமையானவர். அவர் மாணவர்களின் \VUgras{ஓவியங்களைத்} \textsuperscript{(61)}
+திருத்துகிறார், இயற்கையைப் பார்த்து \VUgras{மார்புச் சிலை}
+\textsuperscript{(59)} வரையக் கற்றுத் தருகிறார்.
+
+%%K t01-16-1 p
+16. --- \VUgras{இசை அறை} மிகவும் சுவாரசியமாகத் தெரிகிறது. அங்கே
+\VUgras{இசைக் குறிப்பைப்} படிக்கவும், \VUgras{ஐங்கோட்டின்} மேல் எழுதப்பட்ட
+\VUgras{சுரக் குறிகளைப்} \textsuperscript{(67)} பாடவும் (த, ரி, க, ம, ப, த,
+நி\,=\,C. D. E. F. G. A. B.), \VUgras{சுரக் குறியீடுகளை} அறியவும், அழகான
+\VUgras{இன்னிசைகளைப்} பாடவும் கற்றுக் கொள்கிறார்கள். இசைத் தாள்களை
+\VUgras{இசைத்தாள் தாங்கியின்} \textsuperscript{(65)} மேல் வைக்கிறார்கள்.
+மாணவர்களுள் ஒருவன் \VUgras{பியானோ வாசிக்கிறான்} \textsuperscript{(64)},
+\VUgras{இசை ஆசிரியர்} \textsuperscript{(66)} \VUgras{தாளம் போடுகிறார்}
+\textsuperscript{(68)}.
+
+%%K t01-17-1 p
+17. --- \VUgras{கைவினைப் பணிகளுக்கான} \textsuperscript{(69)}
+\VUgras{பட்டறையின்} ஒரு மூலை தெரியத் தொடங்குகிறது ; அங்கே சிறுவர்கள் மரத்தைச்
+சீவவும் இரும்பை அராவவும் கற்கலாம். எல்லா மேல்நிலைப் பள்ளிகளிலும் இது
+இருப்பதில்லை.
+
+%%K t01-tit-7 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{அறிவியல் வகுப்பறை.}
+\VUsaut{3.6mm}
+
+%%K t01-18-1 p
+18. --- கணக்கு ஆசிரியர் மாணவர்களுக்கு \VUgras{வடிவியல்},
+\VUgras{எண்கணிதம்}, \VUgras{கணக்கு}, \VUgras{மெட்ரிக் முறை} ஆகியவற்றைக்
+கற்பிக்கிறார். கரும்பலகையின் மேல் முதன்மையான வடிவியல் உருவங்களைப் பார்க்கிறோம் :
+\VUgras{வட்டம்} \textsuperscript{(a)}, \VUgras{சதுரம்} \textsuperscript{(b)},
+\VUgras{முக்கோணம்} \textsuperscript{(c)}, \VUgras{கோடு} \textsuperscript{(d)}.
+
+%%K t01-18-2 p
+ஒரு \VUgras{கணக்கையும்} பார்க்கிறோம். அது \VUgras{கூட்டலும்} அல்ல,
+\VUgras{கழித்தலும்} அல்ல, \VUgras{பெருக்கலும்} அல்ல ; அது
+\VUgras{வகுத்தல்}தான் \textsuperscript{(e)}.
+
+%%K t01-19-1 p
+19. --- மெட்ரிக் முறையின் அட்டவணையின் மேல் இவற்றைப் பார்க்கிறோம் :
+\VUgras{மீட்டர்} \textsuperscript{(a)}, \VUgras{தராசு} \textsuperscript{(b)}
+அதனுடைய \VUgras{எடைக் கற்கள்}, \VUgras{லிட்டர்} \textsuperscript{(e)},
+\VUgras{டெக்காலிட்டர்} \textsuperscript{(f)}, \VUgras{டெசிலிட்டர்},
+\VUgras{கன மீட்டர்} \textsuperscript{(d)}.
+
+%%K t01-19-2 p
+மாணவர்கள் \VUgras{இயற்கை அறிவியலையும்} \textsuperscript{(11)}, விலங்கியலையும்
+\textsuperscript{(a)}, தாவரவியலையும் \textsuperscript{(b)}, நிலவியலையும்
+\textsuperscript{(c)}, \VUgras{வரலாற்றையும்} \textsuperscript{(12)}
+படிக்கிறார்கள்.
+
+%%K t01-19-3 p
+அலமாரிக்குள் \VUgras{இயற்பியல்} \textsuperscript{(15)},
+\VUgras{வேதியியல்} \textsuperscript{(16)} கருவிகள் இருக்கின்றன.
+
+%%K t01-19-4 p
+அலமாரியின் மேல் \VUgras{கோளம்} \textsuperscript{(14)}, \VUgras{கூம்பு},
+\VUgras{நிலவுருண்டை} \textsuperscript{(13)} இருக்கின்றன.
+
+%%K t01-19-5 p
+அட்டவணைகளுக்கு மேலே உலகின் ஐந்து பகுதிகளைக் காட்டும் \VUgras{வரைபடம்}
+தொங்குகிறது : \VUgras{ஐரோப்பா} \textsuperscript{(g)}, \VUgras{ஆசியா}
+\textsuperscript{(e)}, \VUgras{ஆப்பிரிக்கா} \textsuperscript{(f)},
+\VUgras{அமெரிக்கா} \textsuperscript{(ab)}, \VUgras{ஓசியானியா}
+\textsuperscript{(h)}, மேலும் இரண்டு பெரிய கடல்களான \VUgras{பசிபிக்}
+\textsuperscript{(c)}, \VUgras{அட்லாண்டிக்} \textsuperscript{(d)}.
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}

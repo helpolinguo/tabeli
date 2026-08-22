@@ -77,6 +77,11 @@ DOSSIER = {"fr": "tableau",
            # LE COREEN DIT « 도표 » — dopyo. Le « 표 » seul serait le
            # mot le plus banal de la langue ; le compose ne l'est pas.
            "ko": "dopyo",
+           # LE TAMOUL DIT « அட்டவணை » — attavanai. Le telougou
+           # voisin dit « పట్టిక » : deux langues dravidiennes, deux
+           # mots, et c'est encore une raison de traduire chaque
+           # colonne pour elle-meme.
+           "ta": "attavanai",
            "de": "tafel",
            "it": "tavola"}
 
