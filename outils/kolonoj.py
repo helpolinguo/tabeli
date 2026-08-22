@@ -177,6 +177,14 @@ LINGUI = {
         (_deva("सड़क"), "रस्ता"),
         (_deva("तालिका"), "तक्ता"), (_deva("दृश्य"), "प्रवेश"),
         (_deva("शृंखला"), "मालिका"),
+    ], "exemptes": [
+        # « ये » EST AUSSI L'IMPERATIF MARATHI DE « VENIR ». Le hindi
+        # ecrit ये pour « ceux-ci » ; le marathi, lui, conjugue येणे et
+        # dit « ये रे » — viens donc. Deux langues, un meme alphabet, et
+        # cette fois les deux mots s'ecrivent avec exactement les memes
+        # signes : aucune frontiere, aucune matra ne les separe. On
+        # exempte la forme suivie de sa particule, jamais le mot seul.
+        "ये रे",
     ]},
 }
 
