@@ -45,6 +45,7 @@ par alinéa.
 | Traduction en arabe égyptien (`texto/arz/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — écrite en égyptien et non en arabe standard ; colonne de droite à gauche (§ 8) |
 | Traduction marathe (`texto/mr/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — en devanagari comme le hindi, mais ni la même langue ni la même ponctuation (§ 8) |
 | Traduction telougoue (`texto/te/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dravidienne du relevé, et celle qui a fait la règle modificateur–tête (§ 8, § 9) |
+| Traduction coréenne (`texto/ko/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne du relevé sans langue voisine, d'où un contrôle qui tient en une classe de caractères (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -569,6 +570,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/arz/10-lawha-01.tex … 25-lawha-16.tex       (traduction)
     texto/mr/10-takta-01.tex … 25-takta-16.tex        (traduction)
     texto/te/10-pattika-01.tex … 25-pattika-16.tex  (traduction)
+    texto/ko/10-dopyo-01.tex … 25-dopyo-16.tex      (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1148,6 +1150,95 @@ colonne écrit *పరిపాలన భవనం*, *వర్తక భవన�
 exactement ce qu'avaient écrit le hindi et le marathe avant elle. Trois
 langues, trois rédactions séparées, une seule solution.
 
+### La colonne coréenne : la seule sans langue voisine
+
+Toutes les colonnes du relevé qui doivent se défendre contre une autre
+langue se défendent contre une **voisine qui partage leur alphabet** : le
+cantonais contre le mandarin, l'égyptien contre l'arabe standard, le
+marathe contre le hindi, le flamand contre le néerlandais des Pays-Bas.
+Le coréen n'a pas de voisin de ce genre. Le hangul n'est partagé par
+personne, et rien d'autre ne s'écrit avec.
+
+**Son contrôle tient donc en une classe de caractères, et c'est le
+premier du relevé qui ne soit pas une liste de mots.** Le coréen de 2026
+n'imprime plus le hanja : un seul idéogramme dans `texto/ko` est une
+faute, quel qu'il soit. `outils/kolonoj.py` refuse la plage
+`[\u4E00-\u9FFF]` en bloc. Vérifié en plantant 時計 à la place de 시계
+au tableau 1 (le contrôle sort la ligne et le caractère), puis en le
+retirant : 0 signalement sur les seize fichiers.
+
+**Troisième famille pour la règle modificateur–tête, et `parigi.py` n'a
+rien eu à changer.** Après l'indo-aryen (marathe) et le dravidien
+(telougou), le coréen est de la troisième famille sans rapport avec les
+deux autres — et la règle vaut à l'identique, parce qu'elle ne parle pas
+de la langue d'arrivée mais de l'ido de 1926.
+
+*(Une mise au point d'unités, faite dans `texto/ko/23-dopyo-14.tex` :
+les 9 contre 3 du marathe et les 19 contre 9 du telougou sont des
+inversions **réellement faites** ; les 33 contre 16 du coréen sont des
+paires **listées** par `parigi.py`. Ce dernier compte ne mesure pas la
+colonne coréenne — il mesure l'ido, puisque `parigi.py` ne lit que l'ido
+et sort la même liste pour toutes les colonnes. Le rapport de deux pour
+un vaut dans les deux unités ; la colonne coréenne confirme la cause
+dans une troisième famille, elle n'ajoute pas un troisième relevé
+indépendant.)*
+
+**Le fléau, et ce qu'il fallait quatre langues pour prouver.** Le
+marathe, l'égyptien et le telougou ont tous les trois dû périphraser le
+fléau du tableau 8 ; trois absences ne prouvaient rien sur la chose,
+seulement que trois cultures ne la battaient pas ainsi. Le coréen a le
+mot **et** l'outil — 도리깨, deux bâtons reliés par une lanière. C'est
+la langue qui **possède** la chose qui règle la question, pas celles qui
+en manquent. Même forme pour le marron chaud du tableau 7, le trou le
+mieux documenté du relevé : 군밤 est une nourriture de rue de l'hiver
+coréen, et cette colonne-là n'y perd rien.
+
+**Le tableau 9 est le miroir exact de son homologue telougou.** Le
+telougou empruntait neuf noms d'un coup — hêtre, chêne, orme, peuplier,
+sapin, bruyère, fougère, primevère, pie —, parce qu'aucun de ces vivants
+ne passe en Andhra. La Corée est à la latitude de la France : la liste
+se retourne d'un bloc, quatorze noms propres (너도밤나무, 참나무,
+느릅나무, 자작나무, 미루나무, 전나무, 고사리, 앵초, 까치, 노루,
+딱따구리, 다람쥐, 민달팽이…), et il n'en manque que quatre — le chamois,
+la bruyère, la marmotte, la pervenche. Pyrénées, Alpes, sous-bois
+d'Europe occidentale. **La coupure ne suit pas la langue, elle suit la
+carte** ; il aura fallu deux colonnes sur la même planche pour le
+montrer sans discuter.
+
+**Et la lieue tombe juste, comme l'ఆమడ telougou.** Le coréen mesure les
+longues marches en 리, et 십 리 fait quatre kilomètres — la lieue du
+livret. Le mot vit encore dans le proverbe *십 리도 못 가서 발병 난다*.
+Une journée de marche d'homme ne dépend d'aucune langue.
+
+**Les institutions se décrivent, quatrième langue et quatrième fois** :
+행정 청사, 상업 회관, 사범 학교. À quatre rédactions séparées, la
+convergence cesse d'être une coïncidence de famille.
+
+**Les mots devenus des injures, quatre fois dans cette seule colonne** :
+난쟁이 (tableau 3), 갖바치 le cordonnier (tableaux 7 et 14), 백정 le
+boucher (tableau 15) — deux des métiers 천민 —, et le « cigano » du
+tableau 9 écrit 떠돌이 사람. Même arbitrage que pour le కసాయి telougou
+et la coupure de caste marathe : on écrit la fonction.
+
+**Ce qu'on n'a pas transposé, alors que c'était tentant** — et c'est
+noté dans l'en-tête de chaque fichier concerné :
+
+* 진놀이 pour le jeu de barres (tableau 2) : un jeu coréen de deux camps
+  qui se poursuivent, exactement la même forme. L'écrire remplacerait le
+  jeu du livret par un autre.
+* 툇마루 pour le vérando (tableau 4) : la galerie de la maison coréenne
+  est un autre objet ; la colonne écrit l'emprunt 베란다.
+* 온돌 et 아궁이 pour le lit et la cheminée (tableau 6) : deux mots
+  coréens vivants et faux. La colonne écrit 침대, 벽난로, 욕조. Un seul
+  아궁이 est gardé, au bloc c4-01-1, parce que là la chose **est** un
+  foyer ouvert où tourne une broche.
+* Le menu du tableau 13 reste français — les tripes à la mode de Caen,
+  le gigot, le Saint-Émilion sont les choses qu'on mange dans cette
+  salle-là.
+
+On modernise la langue, jamais les choses, et cela vaut aussi pour les
+choses qu'on aurait plaisir à retrouver.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1173,7 +1264,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 37 colonnes traduites
+    python3 outils/kolonoj.py            # les 38 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
