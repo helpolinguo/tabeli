@@ -352,6 +352,14 @@ LANGUES = [
     # deux lexiques paralleles dans une seule langue.
     {"kodo": "jv", "nomo": "Basa Jawa", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # LE PERSAN A DEUX VOISINES DANS LE RELEVE ET ELLES SONT TOUTES
+    # LES DEUX DANS SON ALPHABET : l'ourdou, qui lui a pris sa
+    # graphie et la moitie de son lexique savant, et l'arabe, qui lui
+    # a donne l'alphabet et l'autre moitie. La difference se joue
+    # donc au CARACTERE autant qu'au mot — ی contre ي, ک contre ك,
+    # ۱ contre ١ —, et ces differences-la sont invisibles a l'oeil.
+    {"kodo": "fa", "nomo": "فارسی", "dir": "rtl",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -1027,7 +1035,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
-           "id": "id", "jv": "jv",
+           "id": "id", "jv": "jv", "fa": "fa",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2215,6 +2223,12 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # la voisine dont toute cette colonne se
                         # defend.
                         r"|GAMBAR"
+                        # LE PERSAN ecrit « تابلوی شمارهٔ ۱ ».
+                        # « تابلو » seul se lirait dans le titre du
+                        # volume, qui parle des « تابلوهای کمکی » ;
+                        # on exige donc le « شماره » qui ne suit le
+                        # mot que dans la ligne qui numerote.
+                        r"|تابلوی\s+شماره"
                         # MEME RAISON POUR LE BENGALI : « সারণি » sans
                         # son « নং » se lirait dans le titre du volume.
                         r"|সারণি\s+নং"
@@ -2568,6 +2582,10 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # keempat.
                    r"|[Ss]eri\s+(?:[Kk]apisan|[Kk]apindho"
                    r"|[Kk]atelu|[Kk]apat)"
+                   # LE PERSAN dit « سری اول ». Ses ordinaux
+                   # ne sont ni ceux de l'ourdou (پہلا) ni ceux de
+                   # l'arabe (الأولى) : اول، دوم، سوم، چهارم.
+                   r"|سری\s+(?:اول|دوم|سوم|چهارم)"
                    # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
                    # « سلسلہ » : meme langue, deux lexiques, et c'est
                    # justement pourquoi les deux colonnes se
@@ -2652,6 +2670,10 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # les ordinaux separent les deux membres.
                   r"|[Aa]degan\s+(?:[Kk]apisan|[Kk]apindho"
                   r"|[Kk]atelu|[Kk]apat)"
+                  # MEME CAS POUR LA SCENE PERSANE : « صحنهٔ
+                  # اول ». L'ourdou dit منظر, l'arabe المشهد ; صحنه
+                  # n'est ni l'un ni l'autre.
+                  r"|صحنهٔ?\s+(?:اول|دوم|سوم|چهارم)"
                   r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
                   # LE TURC, aux deux casses ecrites a la main, pour
                   # la raison dite plus haut a la serie.

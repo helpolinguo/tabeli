@@ -536,6 +536,56 @@ LINGUI = {
         (r"(?i)(?<![A-Za-z])toya(?![A-Za-z])",
          "banyu — la narration tient le ngoko, non le krama"),
     ]},
+
+    # LE PERSAN A DEUX VOISINES DANS LE RELEVE ET ELLES SONT TOUTES LES
+    # DEUX DANS SON ALPHABET. L'ourdou lui a pris sa graphie et la
+    # moitie de son lexique savant ; l'arabe lui a donne l'alphabet et
+    # l'autre moitie. C'est la premiere colonne dont la defense se joue
+    # au CARACTERE plus qu'au mot — et c'est justement la que l'oeil ne
+    # voit rien : ی et ي, ک et ك, ۱ et ١ se dessinent presque pareil, et
+    # la ligne reste bien formee, le LaTeX compile, html.py publie.
+    #
+    # LES LETTRES QUE LE PERSAN N'A PAS. Six sont ourdoues — les
+    # retroflexes ٹ ڈ ڑ, le noun ghunna ں, le bari yeh ے et le do-chashmi
+    # heh ھ — et quatre sont arabes : le yeh ي, le kaf ك, la ta marbuta ة
+    # et l'alef maqsura ى. Le persan ecrit ی, ک, ه et ی a leur place. Ce
+    # ne sont pas des variantes de style : ce sont d'autres points de
+    # code, et un texte persan n'en contient aucun.
+    #
+    # ET LES CHIFFRES SE SEPARENT DE MEME. Le persan compose ۰۱۲۳۴۵۶۷۸۹
+    # (U+06F0..U+06F9), l'arabe ٠١٢٣٤٥٦٧٨٩ (U+0660..U+0669). Le releve
+    # arabe ecrit « اللوحة رقم ١ », l'ourdou « جدول نمبر 1 » en chiffres
+    # latins : trois colonnes du meme alphabet et trois series de
+    # chiffres.
+    #
+    # ON NE RELEVE PAS أ NI إ, qui paraissent dans quelques emprunts
+    # arabes que le persan imprime encore ainsi, ni ؤ ni ئ, qui sont
+    # persans (مسئله, مؤسسه), ni ۀ (U+06C0), qui est la forme persane du
+    # he suivi de hamza. Un controle qui crie sur une forme juste finit
+    # desarme.
+    #
+    # ET UN SECOND FRONT, QUI EST UNE DATE COMME EN INDONESIEN : LE
+    # DEMI-ESPACE. L'orthographe persane de 2026 exige un U+200C apres
+    # le prefixe negatif-duratif « نمی » — نمی‌رود et non نمیرود. On ne
+    # releve QUE « نمی », et non « می » seul, parce que می ouvre aussi
+    # میز, میوه, میان, میدان, میلیون, ou il n'y a rien a couper :
+    # « نمی » en tete de mot est toujours le prefixe, et jamais autre
+    # chose.
+    "fa": {"mot": [
+        (r"[\u0679\u0688\u0691]", "lettre retroflexe ourdoue — le persan "
+                                    "ne les a pas"),
+        (r"\u06BA", "ں ourdou — le persan ecrit ن"),
+        (r"\u06D2", "ے ourdou — le persan ecrit ی"),
+        (r"\u06BE", "ھ ourdou — le persan ecrit ه"),
+        (r"\u064A", "ي arabe (U+064A) — le persan ecrit ی (U+06CC)"),
+        (r"\u0643", "ك arabe (U+0643) — le persan ecrit ک (U+06A9)"),
+        (r"\u0629", "ة arabe — le persan ecrit ه"),
+        (r"\u0649", "ى arabe — le persan ecrit ی"),
+        (r"[\u0660-\u0669]", "chiffre arabe — le persan compose "
+                              "۰۱۲۳۴۵۶۷۸۹ (U+06F0..U+06F9)"),
+        (r"نمی(?!\u200c)", "demi-espace manquant — l'orthographe de 2026 "
+                           "ecrit نمی\u200cرود"),
+    ]},
 }
 
 # LE SEUIL AU-DELA DUQUEL UN FICHIER EST UN DIALOGUE. Mesure sur les
