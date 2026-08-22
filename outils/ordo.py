@@ -26,6 +26,18 @@
 #  blocs « suite » sont recolles au bloc qu'ils continuent, comme
 #  html.py les recolle.
 #
+#  ET UNE COLONNE DE PLUS, AJOUTEE APRES DEUX FAUTES IDENTIQUES.
+#  Cinq blocs du volume tiennent DEUX alineas sous une seule cle :
+#  t01-09-2, t07-c1-07-1, t09-c1-05-1, t11-c1-12-1, t11-c2-03-1.
+#  L'ido y remet un \VUblancAlinea au milieu du bloc, souvent parce
+#  qu'une fin de page tombe la. En traduisant on voit deux alineas et
+#  on invente une seconde cle — « t09-c1-05-2 », « t11-c1-12-2 » —,
+#  renvoji.py repond « cle inconnue » et kolonoj.py signale un bloc
+#  ampute. C'est arrive deux fois dans la meme colonne. ordo.py
+#  imprime desormais « ¶2 » devant ces blocs-la : la cle tient deux
+#  alineas, il faut les ecrire tous les deux SOUS ELLE, separes d'une
+#  ligne vide, et n'ouvrir aucune cle nouvelle.
+#
 #  CE QU'IL NE FAIT PAS : aucun jugement. Il ne dit pas ce qu'il faut
 #  retourner ni pourquoi. C'est une copie de l'ordre recu, et c'est
 #  tout ce qu'on lui demande.
@@ -69,16 +81,18 @@ def blocs(tabelo):
             #  precedent, coupe par une fin de page.
             if not (listo and listo[-1][0] == kuranta
                     and "suite" in m.group(3)):
-                listo.append([kuranta, []])
+                listo.append([kuranta, [], 0])
             continue
         if kuranta is None or ligno.startswith("%"):
             continue
+        listo[-1][2] += ligno.count("\\VUblancAlinea")
         for a, b in RENVOJO.findall(ligno):
             valoro = (a or b).strip()
             #  L'asterisque des appels de note n'est pas un renvoi.
             if valoro and valoro != "*":
                 listo[-1][1].append(valoro)
-    return [(c, r) for c, r in listo if c.startswith(tabelo + "-")]
+    return [(c, r, n) for c, r, n in listo
+            if c.startswith(tabelo + "-")]
 
 
 def main():
@@ -92,10 +106,15 @@ def main():
     if not trovita:
         print("  %s : aucun bloc dans texto/io" % tabelo)
         return
-    for cle, renvoji in trovita:
-        print("  %-22s %s" % (cle, " ".join(renvoji)))
+    for cle, renvoji, alinei in trovita:
+        marko = "¶%d " % alinei if alinei > 1 else "   "
+        print("  %s%-22s %s" % (marko, cle, " ".join(renvoji)))
+    duobli = sum(1 for _, _, a in trovita if a > 1)
     print("\n  %d blocs, %d renvois."
-          % (len(trovita), sum(len(r) for _, r in trovita)))
+          % (len(trovita), sum(len(r) for _, r, _ in trovita)))
+    if duobli:
+        print("  %d bloc(s) marque(s) ¶ : une seule cle, plusieurs "
+              "alineas — ne pas en ouvrir une seconde." % duobli)
 
 
 if __name__ == "__main__":

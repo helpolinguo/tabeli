@@ -328,6 +328,24 @@ Et le **nom du gros plan** ne vient pas de l'alinéa mais de
 corrige la ligne et laisse la coquille dans le `title`. Dans les deux cas
 rien ne signale une règle qui ne mord pas.
 
+**Un seizième du volume n'avait aucun gros plan, et rien ne le disait.**
+Six planches portent plusieurs vignettes qui recommencent chacune à 1, si
+bien que `gravuri/numeri.json` y range les numéros par scène — `c1:1`,
+`c2:1`. Le tableau 11, lui, n'a qu'une numérotation : la première partie
+va de 1 à 43, « L'Incendie » continue de 44 à 96, et seule la
+**numérotation des alinéas** repart de 1 — d'où des clés `t11-c1` et
+`t11-c2` sur une planche à numéros nus. `html.py` cherchait donc
+« c2:46 », ne trouvait rien, et ne posait aucun bouton : quatre-vingt-neuf
+gros plans manquants, dans les 42 colonnes à la fois, sans un mot dans
+aucun contrôle — la fonction qui ouvre un bouton rend `None` en silence,
+par construction, puisqu'**on ne promet pas un gros plan qu'on ne saurait
+pas montrer**. Le défaut n'est apparu qu'en comptant les boutons table par
+table pendant l'écriture de la colonne ourdoue : `t11` était le seul zéro
+d'une colonne de seize nombres. La réparation est un repli sur le numéro
+nu, et elle est sûre parce que le relevé le montre : aucune planche ne
+mêle les deux formes, ses numéros sont **tous** préfixés ou **tous** nus.
+Une colonne complète passe ainsi de 1 642 boutons à 1 731.
+
 **Une mesure seule ne dit rien ; il faut les trente.** Le balayage de
 registre de 2026 a été mené colonne par colonne, mais chaque chiffre a été
 lu contre les vingt-neuf autres — c'est la comparaison qui désigne la

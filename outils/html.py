@@ -1508,6 +1508,28 @@ def boutons_renvois(rangi):
             ou il se trouve : on ne promet pas un gros plan qu'on ne
             saurait pas montrer."""
             v = par.get(f"{scene}:{n}" if scene else str(n))
+            # LE TABLEAU 11 N'A QU'UNE NUMEROTATION, MAIS SES CLES
+            # PORTENT DEUX SCENES — ET IL A PERDU SES QUATRE-VINGT-HUIT
+            # GROS PLANS PENDANT TOUT CE TEMPS, DANS LES 42 COLONNES.
+            # Ses cles disent c1 et c2 parce que la NUMEROTATION DES
+            # ALINEAS y repart de 1 a « L'Incendio » ; les renvois, eux,
+            # continuent la meme serie — la premiere partie va de 1 a
+            # 43, la seconde de 44 a 96. gravuri/numeri.json le sait et
+            # range donc la planche 11 en numeros nus, comme les
+            # planches a une seule scene. La recherche « c2:46 » ne
+            # trouvait rien, aucun bouton n'etait pose, et rien ne
+            # criait : ouvrir() rend None sans se plaindre, par
+            # construction. On retombe donc sur le numero nu.
+            #
+            # C'est sans danger : releve fait, aucune planche ne mele
+            # les deux formes — les numeri d'un tableau sont ou tous
+            # prefixes par leur scene (3, 4, 6, 7, 8, 9) ou tous nus
+            # (1, 2, 5, 10, 11, 12 a 16). Un tableau a scenes
+            # veritables n'a donc aucune entree nue a offrir a ce
+            # repli, et le repli ne peut pas y montrer le mauvais
+            # objet.
+            if not v and scene:
+                v = par.get(str(n))
             if not v:
                 return None
             cle, x, y, w, h, nm = v
