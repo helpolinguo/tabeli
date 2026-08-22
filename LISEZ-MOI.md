@@ -44,6 +44,7 @@ par alinéa.
 | Traduction cantonaise (`texto/yue/`) | **les 16 tableaux**, faite en 2026 d'après l'ido, en caractères traditionnels — écrite en cantonais et non en chinois standard (§ 8) |
 | Traduction en arabe égyptien (`texto/arz/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — écrite en égyptien et non en arabe standard ; colonne de droite à gauche (§ 8) |
 | Traduction marathe (`texto/mr/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — en devanagari comme le hindi, mais ni la même langue ni la même ponctuation (§ 8) |
+| Traduction telougoue (`texto/te/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dravidienne du relevé, et celle qui a fait la règle modificateur–tête (§ 8, § 9) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -567,6 +568,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/yue/10-toubiu-01.tex … 25-toubiu-16.tex     (traduction)
     texto/arz/10-lawha-01.tex … 25-lawha-16.tex       (traduction)
     texto/mr/10-takta-01.tex … 25-takta-16.tex        (traduction)
+    texto/te/10-pattika-01.tex … 25-pattika-16.tex  (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1066,6 +1068,86 @@ verbe येणे et écrits avec exactement les mêmes signes que le pronom
 hindi ये — le `\b` de Python ne pouvait pas les séparer, et un humain
 non plus.
 
+### La colonne telougoue : la première dravidienne, et la règle qu'elle a donnée
+
+Le telougou n'est pas de la famille du hindi ni du marathi. Il ne
+partage avec eux ni l'alphabet, ni le lexique de base, ni la
+grammaire : *అది* et non *यह*, *వచ్చాడు* et non *आया*, et une
+morphologie qui agglutine là où l'indo-aryen décline.
+
+**Et c'est cette colonne qui a donné la règle générale du relevé.** Les
+quatre premiers tableaux ont coûté 2, 0, 9 puis 7 inversions relevées
+*après coup* par `renvoji.py`. Le tableau 4 en a livré la cause exacte,
+et ce n'était pas l'agglutination : c'est l'**ordre modificateur–tête**.
+En telougou — comme en tamoul, en coréen, en ourdou, en persan, en
+goudjarati, en bhojpouri —, tout ce qui qualifie précède ce qui est
+qualifié. Dès qu'un renvoi tombe sur un modificateur et un autre sur sa
+tête, les deux sortent à l'envers, mécaniquement. De là `parigi.py`
+(§ 9), qui lit l'ido *avant* qu'on écrive et donne la liste des paires
+à retourner. Le tableau 5, le plus long du livret, a été écrit avec sa
+liste en main : **zéro inversion au premier jet**, et les onze tableaux
+suivants aussi.
+
+**Le compte par tableau redit ce que le marathi avait trouvé, dans une
+famille de langues sans rapport avec la sienne :**
+
+| Tableau | Retournements | Paires listées | Ce que fait le tableau |
+|---|---|---|---|
+| 13 (l'hôtel) | **19** | 33 | il accroche des choses les unes aux autres |
+| 14 (la rue) | **9** | 16 | il énumère des métiers |
+| 15 (le marché) | **7** | 18 | il énumère un étal — 105 renvois, le maximum du livret |
+| 16 (le bazar) | **7** | 20 | il énumère une ménagerie en carton |
+
+Le 15 a douze renvois de **plus** que le 13 et coûte douze
+retournements de **moins**. Le marathi avait mesuré 9 contre 3 aux
+mêmes tableaux. Deux langues, deux familles, deux rédactions
+indépendantes : la cause n'est pas dans la langue d'arrivée, elle est
+dans la syntaxe du texte de 1926.
+
+*(La colonne « paires listées » n'est pas comparable d'un bout à
+l'autre : `parigi.py` a gagné le participe passif au tableau 14, ce qui
+a fait passer le livret de 386 à 408 paires — § 9.)*
+
+**Ce que le telougou avait, et ce qu'il n'avait pas.** Deux tableaux
+n'ont rien coûté en vocabulaire — le port (10) et la gare (12) : la
+côte d'Andhra fait neuf cents kilomètres, le chemin de fer y est entré
+en 1893, et la langue a ses mots, *జలాంతర్గామి* le sous-marin comme
+*పట్టాలు* les rails. Le marché (15) est l'endroit où elle est le plus
+chez elle : riz, lentilles, ail, oignon, banane, ananas, crabe,
+crevette, caille, perdrix s'écrivent sans un emprunt. Ce qui manque
+manque parce que la **chose** manque, et se lit d'un coup d'œil : le
+fléau du tableau 8 — le Maharashtra et l'Égypte l'écrivaient déjà par
+périphrase, pour la même raison —, le marron chaud, le hêtre, le
+chêne, l'orme, la bruyère, la fougère, l'artichaut, le camembert ; le
+renne, la belette et le phoque de la ménagerie du tableau 16, seuls
+absents sur vingt animaux nommés.
+
+**Quatre oiseaux et un jeu sont notés comme non résolus** plutôt que
+masqués : l'hirondelle, la bergeronnette et l'alouette du tableau 8, la
+grive du 15, le jeu de dames du 13. Le telougou a des jeux de plateau
+et beaucoup de noms d'oiseaux ; aucun n'est *ceux-là*, et coller un nom
+approchant aurait fait croire à un mot.
+
+**Trois fois le même arbitrage sur les noms de métier, et le résultat
+n'est pas toujours le même.** Le marathi pouvait garder चांभार pour le
+cordonnier : c'est un patronyme ordinaire aujourd'hui. Les équivalents
+telougous nomment des castes opprimées et ne servent plus d'étiquettes
+de métier ; la colonne écrit donc la fonction — *చెప్పులు కుట్టేవాడు*,
+*గొర్రెల కాపరి*, *బట్టలకు రంగు వేసేవాడు* pour le teinturier — et
+*క్షురకుడు*, le mot neutre des enseignes, pour le coiffeur. Même
+raison, plus simple, pour le boucher du tableau 15 : *కసాయి* traduit
+exactement « boucher » et sert aujourd'hui d'injure ; on écrit *మాంసం
+అమ్మేవాడు*. La même règle de fidélité donne deux résultats dans deux
+langues, et c'est la langue vivante qui tranche, pas la symétrie.
+
+**Les institutions se décrivent, elles ne se transposent pas.** Une
+préfecture, une Bourse, une école normale de 1926 n'ont pas
+d'équivalent administratif en Andhra ; leur donner le nom de
+l'institution indienne la plus proche aurait déplacé la chose. La
+colonne écrit *పరిపాలన భవనం*, *వర్తక భవనం*, *ఉపాధ్యాయ శిక్షణ కళాశాల* —
+exactement ce qu'avaient écrit le hindi et le marathe avant elle. Trois
+langues, trois rédactions séparées, une seule solution.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1091,7 +1173,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 36 colonnes traduites
+    python3 outils/kolonoj.py            # les 37 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
@@ -1138,7 +1220,7 @@ qu'on désarme en bloc ne contrôle plus rien.
 ### La liste de courses : `parigi.py`
 
     python3 outils/parigi.py 5     # les paires du tableau 5
-    python3 outils/parigi.py       # les 377 paires du livret
+    python3 outils/parigi.py       # les 408 paires du livret
 
 Ce n'est pas un contrôle, c'est une **liste de courses**. `renvoji.py`
 dit *après coup* que deux renvois sont sortis dans le mauvais ordre ;
@@ -1187,6 +1269,45 @@ de la liste :
 Le premier cas élargit l'outil, le second lui donne raison. Les
 distinguer valait mieux que d'ajouter les deux.
 
+**Il s'est élargi une seconde fois au tableau 14, et cette fois il
+manquait une moitié de paradigme.** « tamburestro (42) *sequata* da la
+tamburisti (43) » et « porto-triciklo (80) *duktata* da grumo (79) »
+sont des rapports modificateur-tête aussi francs que « bubi (35)
+*preiranta* la muzikisti (36) » — mais le participe y est **passif**, et
+le motif ne prenait que l'actif : *-ant, -int, -ont*, sans *-at, -it,
+-ot*. Le livret passe de 386 à **408 paires**, six pour cent de lignes
+en plus pour vingt-deux rattachements dont dix-huit sont attributifs.
+Un minimum de deux lettres devant la désinence vient avec, sans quoi le
+motif prend *tota*, *tote*, *poti*, *pinti* — un adjectif, un adverbe
+et deux noms qui finissent comme des participes.
+
+**On a refusé, en revanche, d'allonger la fenêtre.** Deux inversions
+seulement ont échappé à la liste sur seize tableaux, toutes deux par
+distance : 54 caractères au tableau 10, 47 au tableau 11, contre une
+fenêtre de 45. Porter la fenêtre à 55 les rattraperait toutes les deux
+— et ferait passer le livret de 408 à 490 paires, vingt pour cent de
+lignes en plus. Ce n'est pas le principe qui diffère du cas précédent,
+c'est le **rapport** : six pour cent pour vingt-deux, contre vingt pour
+cent pour deux. On mesure avant de trancher, et `renvoji.py` a de toute
+façon attrapé les deux au premier jet.
+
+**Et « \cc » n'est pas une coupure, c'est une soudure.** Le fac-similé
+coupe ses mots en fin de ligne ; la transcription le note ainsi. Le
+premier jet dépouillait ce jeton comme n'importe quelle macro, en le
+remplaçant par une espace : « ku\cc\nranta » se lisait « ku ranta », et
+six paires du livret se trouvaient tenues par des **fragments** qui
+ressemblaient à des participes — *ranta, sante, mante, vinta, dante,
+danta*. Elles étaient justes par accident. La coupure tombe en outre
+souvent au milieu d'un gras — « \VUgras{voya}\cc\n\VUgras{jonti} » —,
+et il a fallu franchir aussi la frontière de groupe pour que
+« voyajonti » redevienne un mot.
+
+Celui-là reste signalé, et c'est irréductible : en ido le nom d'agent
+pluriel et l'adjectif participe ont la même finale, *-anti*, *-onti*.
+Aucune expression régulière ne les sépare. On le laisse donc, et on
+l'écrit dans l'en-tête plutôt que d'élargir le motif pour le faire
+taire : **du bruit connu n'est pas du bruit ignoré.**
+
 Les deux qui échappent sont nommées dans l'en-tête du fichier, et l'une
 d'elles n'est **pas** un rapport modificateur-tête : c'est une
 coordination, que le télougou rend dans l'ordre — l'outil a raison de ne
@@ -1199,7 +1320,9 @@ pas de la certitude.
 **Ce qu'il vaut, mesuré :** le tableau 5 télougou, **le plus long du
 livret** — 68 blocs, plus de cent vingt renvois —, a été écrit avec sa
 liste en main et n'a coûté **aucune** inversion au premier jet, là où
-les quatre précédents en avaient coûté dix-huit.
+les quatre précédents en avaient coûté dix-huit. **Les onze tableaux
+suivants non plus** : la colonne télougoue est complète, 683 blocs,
+`renvoji.py` à zéro divergence.
 
 ---
 
