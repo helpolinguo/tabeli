@@ -662,6 +662,16 @@ LINGUI = {
         "\\textit{solive}",
         "\\textit{poutre}",
         "\\textit{viga}",
+        # ET LA NOTE « Lambrequino » DU TABLEAU 6 EST DE LA MEME
+        # ESPECE, ce qui confirme la lecture faite au tableau 5 : ce
+        # ne sont pas les italiques qui portent les citations, ce sont
+        # les NOTES. Celle-ci gloses le mot par ses formes francaise,
+        # espagnole, portugaise, allemande et anglaise —
+        # « lambrequin, lambrequines, lambrequins » —, et l'ido ne les
+        # met meme pas en italique. Le haoussa du texte, lui, ecrit
+        # « lambarkin », sans q : la regle continue donc de mordre
+        # partout ailleurs dans ce fichier.
+        "lambrequin",
     ]},
 }
 
