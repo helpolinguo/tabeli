@@ -1208,7 +1208,13 @@ montrer sans discuter.
 **Et la lieue tombe juste, comme l'ఆమడ telougou.** Le coréen mesure les
 longues marches en 리, et 십 리 fait quatre kilomètres — la lieue du
 livret. Le mot vit encore dans le proverbe *십 리도 못 가서 발병 난다*.
-Une journée de marche d'homme ne dépend d'aucune langue.
+
+*(J'en avais tiré qu'une journée de marche d'homme ne dépend d'aucune
+langue. La colonne tamoule, écrite ensuite, a cassé la règle : son
+unité de longue distance est le காதம், qui vaut selon les textes dix à
+seize kilomètres et non quatre. Deux coïncidences ne faisaient pas une
+loi ; la troisième langue était celle qui pouvait la défaire, et elle
+l'a défaite — § 8, la colonne tamoule.)*
 
 **Les institutions se décrivent, quatrième langue et quatrième fois** :
 행정 청사, 상업 회관, 사범 학교. À quatre rédactions séparées, la
