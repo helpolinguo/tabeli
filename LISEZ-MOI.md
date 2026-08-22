@@ -43,6 +43,7 @@ par alinéa.
 | Traduction vietnamienne (`texto/vi/`) | **les 16 tableaux**, faite en 2026 d'après l'ido |
 | Traduction cantonaise (`texto/yue/`) | **les 16 tableaux**, faite en 2026 d'après l'ido, en caractères traditionnels — écrite en cantonais et non en chinois standard (§ 8) |
 | Traduction en arabe égyptien (`texto/arz/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — écrite en égyptien et non en arabe standard ; colonne de droite à gauche (§ 8) |
+| Traduction marathe (`texto/mr/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — en devanagari comme le hindi, mais ni la même langue ni la même ponctuation (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) |
 
@@ -565,6 +566,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/vi/10-bang-01.tex … 25-bang-16.tex           (traduction)
     texto/yue/10-toubiu-01.tex … 25-toubiu-16.tex     (traduction)
     texto/arz/10-lawha-01.tex … 25-lawha-16.tex       (traduction)
+    texto/mr/10-takta-01.tex … 25-takta-16.tex        (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -985,6 +987,83 @@ cordonnier oppose lui-même les deux registres, et `طاولة` au tableau 13,
 qui en égyptien n'est pas une table mais le trictrac. Les deux sont
 exemptés par leur forme exacte, jamais par le mot : un contrôle qu'on
 désarme en bloc ne contrôle plus rien.
+
+---
+
+### La colonne marathe : le même alphabet, l'autre langue
+
+Le marathi s'écrit en devanagari, comme le hindi de la colonne voisine.
+C'est tout ce que les deux ont en commun. Le marathi conjugue *आहे* là
+où le hindi dit *है*, il marque l'objet par *ला* et non par *को*, il dit
+*आणि* et non *और*, *खूप* et non *बहुत*, *मुलगा* et non *लड़का*, *पाणी*
+et non *पानी*, *दार* et non *दरवाज़ा* — et il **termine ses phrases par
+un point**, quand le hindi pose un danda. Deux colonnes en devanagari
+sur la même page, deux ponctuations.
+
+**Ce qui distingue cette colonne, c'est ce qu'elle n'a pas eu à
+emprunter.** Le livret porte trois notes d'auteur où l'ido cherche un
+mot qu'il n'a pas ; le marathi l'avait dans les trois cas.
+
+| La note | Ce que l'ido cherche | Ce que le marathi dit |
+|---|---|---|
+| tableau 5 | « *Balk-o*, racine technique pas encore adoptée », après six langues alignées | **वासा** — la pièce équarrie qui porte le plancher |
+| tableau 6 | « *babo* = infanteto, l'anglais *baby*, le français *bébé* » | **बाळ** |
+| tableau 6 | « *lambrequino* », donné en cinq langues | **झालर** |
+
+Et la lieue du tableau 9, que l'ido rend par « *quaropa kilometri* »,
+des kilomètres quadruples, s'appelle **कोस**.
+
+**Les métiers portent leur nom de caste** : गवंडी le maçon, पाथरवट le
+tailleur de pierre, सुतार le charpentier, लोहार le forgeron, धनगर le
+berger, चांभार le cordonnier, न्हावी le barbier, सोनार l'orfèvre, सराफ
+le changeur, कोळीण la poissonnière, परटीण la blanchisseuse. Et l'amiral
+du tableau 10 est **सरखेल** — le titre de Kanhoji Angre, qui tint la
+côte de Konkan contre les compagnies européennes au XVIII<sup>e</sup>
+siècle. Le livret écrit « admiralo » ; le mot marathe est plus ancien.
+
+**Trois mots servent deux fois, et ce ne sont pas des métaphores** :
+नांगर est l'ancre et la charrue, घाट le col de montagne et le quai,
+बंब le chaudron et la pompe à incendie.
+
+**Trois trous, et on ne les a pas bouchés.** Le marron chaud du
+tableau 7 (le châtaignier ne pousse pas au Maharashtra), le fléau du
+tableau 8 (on y bat en faisant piétiner les bœufs — **exactement le
+même trou que la colonne égyptienne**, qui bat au نورج, et exactement
+la même solution : *les bâtons de battage*), et le charpentier du
+tableau 5, que le marathi ne distingue pas du menuisier. On écrit
+l'emprunt ou la périphrase, et on le note en tête du fichier : *on
+modernise la langue, jamais les choses*.
+
+**La postposition est le seul obstacle, et il est mesurable.** Le
+marathi place le possesseur avant le possédé : « X de Y » sort donc à
+l'envers, et `renvoji.py` l'a relevé **soixante-neuf fois des tableaux
+3 à 16** — le compte est celui des messages de commit, tableau par
+tableau ; les deux premiers sont antérieurs au relevé. Le remède est toujours le même — nommer d'abord ce que
+l'ido nomme d'abord, puis qualifier par une seconde proposition. Mais
+le compte par tableau dit quelque chose de plus :
+
+| Tableau | Inversions | Ce que fait le tableau |
+|---|---|---|
+| 13 (l'hôtel) | **9** | il accroche des choses les unes aux autres |
+| 14 (la rue) | **3** | il énumère des métiers côte à côte |
+| 15 (le marché) | **4** | il énumère un étal |
+
+Le 14 est trois fois plus long que le 13 et coûte trois fois moins.
+**Ce n'est pas la longueur d'un tableau qui coûte, c'est sa syntaxe** —
+et la colonne cantonaise avait fait le même constat au même tableau 15,
+dans une langue sans aucun rapport.
+
+**Le contrôle de cette colonne a été corrigé deux fois plutôt que
+désarmé.** `kolonoj.py` relevait `दृश्य` comme du hindi : c'est du
+marathi ordinaire — une vue — et la règle visait en réalité l'apparat,
+elle vise donc maintenant le mot **précédé de son ordinal**. Il relevait
+`दरवाजा` : c'est le mot de la **grande** porte d'un fort, celle qu'on
+appelle महादरवाजा, et l'exemption a été vérifiée en posant un दरवाजा
+ordinaire ailleurs, que le contrôle relève aussitôt. Deux autres formes
+sont exemptées par leur forme exacte : `ये रे` et `ये-जा`, bâtis sur le
+verbe येणे et écrits avec exactement les mêmes signes que le pronom
+hindi ये — le `\b` de Python ne pouvait pas les séparer, et un humain
+non plus.
 
 ## 9. Les huit contrôles
 
