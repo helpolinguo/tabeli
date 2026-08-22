@@ -404,7 +404,33 @@ def formo(f, lg, mauvais):
     regle = LINGUI.get(lg, {})
     mots = regle.get("mot", [])
     exemptes = regle.get("exemptes", [])
-    for i, l in enumerate(f.read_text(encoding="utf-8").split("\n"), 1):
+    lignes = f.read_text(encoding="utf-8").split("\n")
+    # LE MOT DE BROUILLON LAISSE DANS LE TEXTE. Trois fois dans la
+    # seule colonne ourdoue, deux fois dans la tamoule, on a tape un
+    # mot francais seul sur sa ligne — « Wait », « Ordre » — en
+    # cherchant sa phrase, et on ne l'a pas efface. renvoji.py ne le
+    # voit que si le brouillon portait un renvoi ; kolonoj.py ne le
+    # voyait pas du tout ; html.py l'aurait publie au milieu d'un
+    # alinea ourdou.
+    #
+    # Une ligne entierement latine, seule, sans macro ni ponctuation,
+    # ne peut pas etre du texte dans une colonne qui ne s'ecrit pas
+    # en lettres latines. On ne le dit pas d'apres une liste de
+    # langues mais d'apres le FICHIER : s'il compte moins d'un
+    # dixieme de lettres latines, il n'est pas latin. Passe sur les
+    # 42 colonnes, le controle rend ZERO signalement — les noms
+    # propres et les citations du fac-simile sont toujours dans une
+    # phrase, jamais seuls sur leur ligne.
+    #  Les noms de macro sont latins et il y en a partout : on les
+    #  ote avant de compter, sans quoi aucun fichier ne serait juge
+    #  non latin. Le premier essai de ce controle est tombe dans ce
+    #  piege et n'a rien releve du tout.
+    corps = "\n".join(x for x in lignes if not x.startswith("%"))
+    corps = re.sub(r"\\[A-Za-z]+", "", corps)
+    lettres = [c for c in corps if c.isalpha()]
+    latines = sum(1 for c in lettres if ord(c) < 0x250)
+    nolatina = bool(lettres) and latines < len(lettres) // 10
+    for i, l in enumerate(lignes, 1):
         # LES DEUX CONTROLES QUI SUIVENT REGARDENT L'OCTET, PAS LA
         # LANGUE, ET ILS PASSENT DONC AUSSI SUR LES COMMENTAIRES.
         # C'est la seule difference avec tout le reste du fichier, et
@@ -421,6 +447,11 @@ def formo(f, lg, mauvais):
                 mauvais.append(f"{f}:{i} macro inconnue : \\{m.group(1)}")
         if "\\VUgras{}" in l:
             mauvais.append(f"{f}:{i} \\VUgras vide")
+        if nolatina and re.fullmatch(r"[A-Za-z\u00c0-\u024f'\u2019-]+",
+                                     l.rstrip()):
+            mauvais.append(f"{f}:{i} « {l.strip()} » seul sur sa "
+                           f"ligne dans une colonne non latine — "
+                           f"mot de brouillon oublie ?")
         # UNE ACCOLADE OUVERTE EN FIN DE LIGNE : le retour a la ligne se
         # rend par une espace, et l'espace tombe alors DEDANS le groupe.
         if re.search(r"\{\s*$", l):
