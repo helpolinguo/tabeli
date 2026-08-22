@@ -1171,6 +1171,22 @@ par `renvoji.py`, puis corrigées, donc de vérité connue :
 | **45 caractères** | **16 sur 18** | **55** |
 | 80 caractères | 16 sur 18 | 88 |
 
+Le motif s'est élargi **une fois depuis**, et il vaut la peine de dire
+pourquoi. Au tableau 8 deux inversions ont passé, toutes deux absentes
+de la liste :
+
+* « la planajo (39) **ube** flugeskas la alaudi (41) » — `ube` est
+  l'adverbe relatif de lieu, de la même famille que `qua`, et le motif
+  l'avait oublié. **Vrai trou, comblé** : le relevé passe à 17 sur 19.
+* « la fisho (47) snapas l'angelo quik **kande** ili plunjas sua filo
+  (46) » — `kande` introduit une circonstancielle, pas un modificateur
+  de nom. **Ce n'est pas un rapport modificateur-tête**, et l'outil a
+  raison de ne pas le signaler : l'inversion venait du rédacteur. On
+  n'ajoute donc ni `kande` ni `dum`.
+
+Le premier cas élargit l'outil, le second lui donne raison. Les
+distinguer valait mieux que d'ajouter les deux.
+
 Les deux qui échappent sont nommées dans l'en-tête du fichier, et l'une
 d'elles n'est **pas** un rapport modificateur-tête : c'est une
 coordination, que le télougou rend dans l'ordre — l'outil a raison de ne

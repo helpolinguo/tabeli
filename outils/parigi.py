@@ -56,7 +56,18 @@ import renvoji                                              # noqa: E402
 # terme le cadre du premier. Tous produisent, en langue a tete
 # finale, un modificateur AVANT sa tete.
 LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
-         r"super|proxim|avan|dop|inter|tra|per)\b"
+         r"super|proxim|avan|dop|inter|tra|per"
+         # ET « ube », L'ADVERBE RELATIF DE LIEU, qui est de la meme
+         # famille que « qua » et que le premier jet avait oublie :
+         # « la planajo (39) ube flugeskas la alaudi (41) » est une
+         # relative qui qualifie la plaine, exactement comme « qua ».
+         # Une inversion du tableau 8 telougou tenait a ce seul mot.
+         # On n'ajoute PAS « kande » ni « dum » : ceux-la introduisent
+         # une circonstancielle, pas un modificateur de nom, et la
+         # seconde inversion du meme tableau — « le poisson happe
+         # l'hamecon des qu'ils plongent leur ligne » — n'etait pas un
+         # rapport modificateur-tete mais un choix de redaction.
+         r"|ube)\b"
          # ET LE PARTICIPE, QUI RATTACHE SANS PREPOSITION. « bubi (35)
          # preiranta la muzikisti (36) » n'a aucun mot-outil entre les
          # deux renvois, et c'est pourtant le meme rapport : ce qui
