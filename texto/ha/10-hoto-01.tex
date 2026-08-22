@@ -1,0 +1,436 @@
+% ===================================================================
+%  HOTO Na 1 — Makaranta, makarantar sakandare, ajin karatu.
+%
+%  Ceci n'est PAS une transcription : c'est une traduction, faite en
+%  2026, en haoussa d'aujourd'hui. D'ou trois differences avec
+%  texto/io et texto/fr, et trois seulement :
+%
+%   * pas de \nl ni de \cc — la traduction ne suit aucune ligne
+%     imprimee, et les lignes de ce fichier ne sont que du confort ;
+%   * pas de \begin{VUpage} — elle n'a ni feuillet ni folio ;
+%   * le gras se pose sur le TERME seul, ponctuation dehors.
+%
+%  Les cles « %%K » sont celles de texto/io, macro pour macro pour
+%  l'apparat, et les renvois \textsuperscript{(n)} visent les MEMES
+%  objets de la planche, dans le MEME ordre.
+%
+%  CETTE COLONNE SE DEFEND DE SA PROPRE SAISIE, ET C'EST NOUVEAU. La
+%  persane se defendait de deux langues logees dans son alphabet ;
+%  celle-ci s'ecrit en lettres latines et n'a pas de voisine dans le
+%  releve — mais son alphabet, le boko, compte quatre lettres que nul
+%  clavier ordinaire ne donne : ɓ, ɗ, ƙ, ƴ. Ce ne sont pas des b, d,
+%  k, y ornes, ce sont des lettres pleines, et « kofa » n'est pas
+%  « ƙofa » : c'est la difference d'un mot a rien du tout. Une ligne
+%  depouillee de ses crochets reste bien formee, le LaTeX compile,
+%  html.py publie, et l'oeil qui lit le francais ne voit rien. Les
+%  douze regles de kolonoj.py sont ecrites dans son en-tete LINGUI,
+%  et elles ont ete prouvees une par une sur un fichier fabrique
+%  AVANT que cette ligne-ci soit ecrite.
+%
+%  ET LES DEUX MOTS LES PLUS FREQUENTS DU TABLEAU PORTENT CHACUN LEUR
+%  CROCHET : ɗalibi l'eleve — il parait cinquante fois — et ƙofa la
+%  porte. S'y ajoutent ƙamus (30), alƙalami (34), wuƙa (56), ƙugiya
+%  (58), ƙarfe, et le ƙasa du sol et du pays. Le crochet n'est pas
+%  une rarete d'apparat : il est dans le vocabulaire de tous les
+%  jours, et c'est pour cela qu'il fallait un controle.
+%
+%  MAIS ON NE RELEVE PAS « kasa », ET C'EST LA LEÇON DU « rumah
+%  sakit » JAVANAIS, PAYEE D'AVANCE. « ƙasa » est le sol et le pays —
+%  il parait ici a « ilimin ƙasa », la geologie (c) —, tandis que
+%  « kasa » sans crochet est un mot lui aussi : « en bas »,
+%  « echouer ». La regle aurait eu raison sur la lettre et tort sur le
+%  mot. On ne releve donc que les formes nues qui ne sont RIEN en
+%  haoussa : kofa, karfe, karshe, kauye, daya, daki, dauka, yan.
+%
+%  ET UN SECOND FRONT, QUI EST UN ALPHABET FERME : le boko n'a ni p,
+%  ni q, ni v, ni x. Ce qui vient d'ailleurs se refait a la bouche
+%  haoussa, et le tableau 1 en donne la table :
+%
+%    fensir (49)    le crayon        fiyano (64)    le piano
+%    Sifaniyanci    l'espagnol       Tekun Fasifik  le Pacifique
+%    tebur (18)     la table         benci (32)     le banc
+%    kabad (15)     l'armoire        rula (50)      la regle
+%
+%  Le p devient f sans exception — fensir, fiyano, Sifaniyanci,
+%  Fasifik —, et la regle qui releve un p minuscule est donc exacte
+%  et non prudente. Elle ne vise que les mots a INITIALE MINUSCULE :
+%  les noms propres gardent leur orthographe, Paris reste Paris, et
+%  la capitale suffit a les mettre hors de portee.
+%
+%  LE HAOUSSA FABRIQUE SES MOTS AVEC UN SEUL PREFIXE, « ma- », ET IL
+%  FAIT TOUT CE QUE LE PERSAN PARTAGEAIT ENTRE DEUX SUFFIXES :
+%
+%    makaranta      l'ecole, le lieu ou l'on lit (karatu)
+%    ma’aikata (69) l'atelier, le lieu ou l'on travaille (aiki)
+%    malami (7)     le maitre        maƙwabci      le voisin
+%    mataimaki (72) l'adjoint        mai gadi (77) le gardien
+%    ma’auni (b)    la balance       mabuɗi (67)   la clef
+%    mariƙi (65)    le pupitre       mazugi (14)   le cone
+%    matashi (53)   le sous-main
+%
+%  Le persan disait ایستگاه par گاه, le lieu, et آموزگار par گر,
+%  l'agent : deux suffixes pour deux offices. Le haoussa n'en a qu'un,
+%  et c'est la VOYELLE FINALE qui decide — ma’aikata l'atelier contre
+%  ma’aikaci l'ouvrier, maƙera la forge contre maƙeri le forgeron,
+%  mahauta l'abattoir contre mahauci le boucher. Meme prefixe, meme
+%  radical, et le lieu se separe de l'homme sur la derniere lettre.
+%
+%  L'ANGLAIS SE DIT « Turanci », C'EST-A-DIRE « L'EUROPEEN ». Le
+%  haoussa nomme les autres langues par leur pays — Jamusanci
+%  l'allemand, Faransanci le francais, Rashanci le russe — mais pour
+%  celle-la il ne dit pas l'Angleterre : il dit Turai, l'Europe, et
+%  l'anglais devient la langue de l'Europe entiere. Le mot date de
+%  l'epoque ou l'Europe n'arrivait au Sahel que par un seul port.
+%
+%  ET LE VASISTAS (78) N'A PAS DE NOM, CE QUI FAIT LA QUARANTE-
+%  QUATRIEME REPONSE DE LA SERIE. Le francais interroge en allemand,
+%  l'indonesien et le javanais empruntent au neerlandais le jour d'en
+%  haut, le persan dit دریچه, la petite porte. Le haoussa n'a pas de
+%  mot fixe et dit ce qu'il voit : « ƙaramar taga », la petite
+%  fenetre. Deux langues de suite refusent donc d'emprunter et
+%  diminuent — mais l'une diminue la PORTE et l'autre la FENETRE, et
+%  c'est la premiere fois du releve que deux colonnes trouvent le meme
+%  tour sur deux objets differents.
+%
+%  DEUX MOTS QUI SONT LE MEME MOT : « ƙarfe » est le fer (17) et
+%  l'heure (63). « ƙarfe tara », neuf heures, c'est le fer neuf — la
+%  cloche qu'on frappe. Le tableau les grave tous les deux, l'horloge
+%  de la cour et la lime de l'atelier, et la colonne ecrit le meme
+%  mot aux deux endroits sans y rien changer.
+% ===================================================================
+
+%%K t01-apar-0 apar
+\VUsaut{2.0mm}
+\VUcentre{12.6pt}{120}{LITTAFIN BAYANI}
+\VUsaut{3.2mm}
+\VUcentre{8.4pt}{160}{NA}
+\VUsaut{2.6mm}
+\VUtitre{15.6pt}{0}{Hotunan Taimako na Delmas}
+\VUsaut{3.4mm}
+\VUornamento{9pt}
+\VUsaut{5.0mm}
+\VUcentre{13.2pt}{90}{JERI NA FARKO}
+\VUsaut{3.0mm}
+\VUfilet{16mm}
+\VUsaut{5.6mm}
+
+%%K t01-apar-1 apar
+\VUtitre{15.0pt}{60}{HOTO Na 1}
+\VUsaut{1.4mm}
+\VUtitre{11.4pt}{0}{Makaranta, makarantar sakandare, ajin karatu.}
+\VUsaut{2.2mm}
+\VUfilet{20mm}
+\VUsaut{6.4mm}
+
+%%K t01-tit-1 sub
+\VUpk{10.2pt}{40}{Bayani gaba ɗaya.}
+\VUsaut{3.0mm}
+
+%%K t01-01-1 p
+1. --- Wannan hoto yana nuna \VUgras{ajin karatu} a
+\VUgras{makarantar sakandare}. A cikin wannan aji akwai
+\VUgras{tebura} \textsuperscript{(18)} takwas da \VUgras{benci}
+\textsuperscript{(32)} takwas. A kan kowane benci ɗalibai uku suke
+zaune. \VUgras{Malami} \textsuperscript{(7)} yana zaune a kan
+\VUgras{kujera} \textsuperscript{(8)} a \VUgras{teburinsa}
+\textsuperscript{(6)}.
+
+%%K t01-02-1 p
+2. --- A hannun hagu na teburin malami akwai \VUgras{kabad}
+\textsuperscript{(15)} \VUgras{mai gilashi}. A hannun dama kuwa akwai
+\VUgras{baƙin allo} \textsuperscript{(1)} tare da \VUgras{abin
+gogewarsa} \textsuperscript{(2)} da \VUgras{allinsa}
+\textsuperscript{(3)}.
+
+%%K t01-02-2 p
+A saman teburin malami an rataya \VUgras{hotunan bango}
+\textsuperscript{(9, 11, 12)} da \VUgras{taswira}
+\textsuperscript{(10)}.
+
+%%K t01-03-1 p
+3. --- Ba dukan ɗalibai ne suke zaune a \VUgras{wurarensu}
+\textsuperscript{(17)} ba. Ioannes \textsuperscript{(4)} yana tsaye a
+gaban baƙin allo ; yana riƙe da \VUgras{abin gogewa} yana share
+\VUgras{siffofin lissafi.}
+
+%%K t01-03-2 p
+Petrus yana kusa da teburin malami ; yana tara \VUgras{aikin rubutu}
+\textsuperscript{(5)} yana kai wa malami.
+
+%%K t01-04-1 p
+4. --- \VUgras{Wannan} malami malamin \VUgras{harsuna masu rai} ne.
+Yana koya wa ɗalibai su yi magana, su karanta su kuma rubuta harsunan
+waje \VUgras{(Jamusanci, Turanci, Sifaniyanci, Italiyanci, Rashanci
+ko Faransanci)}.
+
+%%K t01-05-1 p
+5. --- Ajin karatu yana da faɗi sosai kuma yana da haske sosai. A
+ƙarshen ɗakin akwai \VUgras{taga} mai faɗi da \VUgras{ƙananan tagogi}
+\textsuperscript{(78)} biyu da \VUgras{ƙofa mai gilashi} domin shaƙar
+iska da haskaka shi.
+
+%%K t01-05-2 p
+Wannan aji ba mai sanyi ba ne. A tsakiyarsa, domin ɗumama shi, akwai
+\VUgras{murhu} \textsuperscript{(46)} mai kyau sosai tare da
+\VUgras{bututunsa} \textsuperscript{(45)}.
+
+%%K t01-05-3 p
+A bango an kafa \VUgras{ƙugiyoyin tufafi} \textsuperscript{(58)} ; a
+kansu ne aka rataya huluna da rigunan ɗalibai.
+
+%%K t01-tit-2 sub
+\VUsaut{5.2mm}
+\VUpk{10.2pt}{40}{Filin wasa}
+\VUsaut{3.6mm}
+
+%%K t01-06-1 p
+6. --- \VUgras{Agogo} \textsuperscript{(63)} yana nuna ƙarfe tara da
+minti biyar.
+
+%%K t01-06-2 p
+\VUgras{Lokacin hutu} \textsuperscript{(76)} ya ƙare yanzu, darasi
+kuma ya sake farawa. Wurin wasa yana cikin \VUgras{filin makaranta}
+\textsuperscript{(75)}. Muna ganin waɗansu ɗalibai suna wasa.
+\VUgras{Mai kula da ɗalibai} \textsuperscript{(74)} yana sa musu ido.
+
+%%K t01-07-1 p
+7. --- A filin makaranta muna kuma ganin waɗansu mutane, wato
+\VUgras{mai duba makarantu} \textsuperscript{(73)}, \VUgras{shugaban
+makaranta} \textsuperscript{(71)} da \VUgras{mataimakin shugaba}
+\textsuperscript{(72)}.
+
+%%K t01-07-2 p
+Mai dubawa yana duba makarantu, shugaban makaranta yana jagorantar
+makarantar sakandare, mataimakinsa kuwa yana kula da karatu.
+
+%%K t01-07-3 p
+Mutum na huɗu shi ne \VUgras{mai gadin ƙofa} \textsuperscript{(77)}.
+Yana ɗauke da littafin rajista a hammatarsa domin ya rubuta sunayen
+waɗanda ba su zo ba.
+
+%%K t01-08-1 p
+8. --- A ƙarshen filin akwai \VUgras{kayan motsa jiki}
+\textsuperscript{(70)} da ma’aikatar \VUgras{aikin hannu}
+\textsuperscript{(69)}.
+
+%%K t01-08-2 p
+A hannun dama na wannan hoto mun fara ganin \VUgras{ajujuwan} karatun
+\VUgras{waƙa} da na \VUgras{zane}.
+
+%%K t01-noto-1 noto
+\VUnotes{143.2mm}{%
+(*) Ga \textit{sunayen baftisma} ma ana ba da shawarar a rubuta su
+bisa ga tsarin Latin. Wannan ita ce kaɗai hanyar kuɓuta daga saɓani
+marar iyaka. Ban da haka, yaya za a zaɓa tsakanin \textit{Giovanni,
+Jean, Johann, Jan, Hans, John, Ivan,} da sauransu? Shin za mu yi
+ƙamus na musamman domin sunayen baftisma? Bari mu ɗauko tsarin
+nominatif ɗinsu daga Latin mu ce : \VUgras{Ioannes, Ioanna; Iulius,
+Iulia; Iakobus; Andreas; Lukas.} (Gram. Kompleta).%
+}
+
+%%K t01-tit-3 sub
+\VUpk{10.2pt}{40}{Cikakken bayani.}
+\VUsaut{2.4mm}
+
+%%K t01-tit-4 sub
+\VUpk{10.2pt}{40}{Ɗalibai masu kyau.}
+\VUsaut{3.0mm}
+
+%%K t01-09-1 p
+9. --- Ɗalibai da suke a benci na farko a hannun dama na teburin
+malami su ne \VUgras{Henrikus} (*), \VUgras{Stefanus} da
+\VUgras{Karolus.}
+
+%%K t01-09-2 p
+Henrikus yana da hankali sosai kuma mai ƙwazo ne ; yana sauraron
+malami.
+
+A kan teburinsa akwai \VUgras{littafin rubutu} \textsuperscript{(28)},
+\VUgras{littafi} \textsuperscript{(29)}, \VUgras{ƙamus}
+\textsuperscript{(30)} da \VUgras{akwatin alƙalami}
+\textsuperscript{(31)}. Littafinsa yana da \VUgras{shafuka} masu yawa
+; kowane babi yana ɗauke da \VUgras{sakin layi} da dama, kowane
+\VUgras{layi} kuma yana da \VUgras{kalmomi} masu yawa.
+
+%%K t01-09-4 p
+Maƙwabcinsa, Stefanus \textsuperscript{(24)}, mai himma ne. Yana
+rubuta darasin gobe a littafin rubutunsa. \VUgras{Rubutunsa} yana da
+kyau. Littafinsa a rufe yake ; \VUgras{murfinsa}
+\textsuperscript{(27)} kaɗai muke gani. Kusa da shi akwai
+\VUgras{kwamfansa} \textsuperscript{(26)}.
+
+%%K t01-09-5 p
+Karolus \textsuperscript{(23)} yana riƙe da littafinsa da hannu ; yana
+buɗe shi domin ya sake karanta darasinsa. Kamar kowane ɗalibi, yana
+da \VUgras{kwanon tawada} \textsuperscript{(25)} a gabansa. Mai
+biyayya ne.
+
+%%K t01-10-1 p
+10. --- A teburin da yake gefe akwai \VUgras{Ludovikus,}
+\VUgras{Antonius} da \VUgras{Paulus.} Ludovikus yana haddar
+\VUgras{darasinsa} \textsuperscript{(22)} yana kuma amsa
+\VUgras{tambayoyin} malami. Antonius \textsuperscript{(21)} ba shi da
+hankali ko kaɗan ; wani lokaci ma malami yakan hukunta shi. Paulus
+\textsuperscript{(20)} \VUgras{abokin kirki} ne, mai sanyin hali kuma
+mai taimako. Yana da hankali sosai.
+
+%%K t01-tit-5 sub
+\VUsaut{4.2mm}
+\VUpk{10.2pt}{40}{Ɗalibai marasa kyau.}
+\VUsaut{3.2mm}
+
+%%K t01-11-1 p
+11. --- A bayan Henrikus akwai \VUgras{Georgius}
+\textsuperscript{(38)}. Ba mugun yaro ba ne, amma \VUgras{mai surutu}
+ne, marar hankali kuma mai fitina. \VUgras{Rashin natsuwarsa} da
+\VUgras{rashin biyayyarsa} suna kawo \VUgras{hargitsi} cikin darasi,
+sau da yawa kuma yakan cancanci \VUgras{gargaɗi} mai tsanani.
+\VUgras{Littafin ƙazamin rubutunsa} \textsuperscript{(35)} datti ne ;
+yakan \VUgras{zubar da tawada} a kansa daga \VUgras{alƙalaminsa}
+\textsuperscript{(34)}, shi ya sa kullum yake amfani da \VUgras{robar
+gogewarsa} \textsuperscript{(36)} ; \VUgras{jakar littafansa}
+\textsuperscript{(33)} a yage take, domin shi mai sakaci ne ƙwarai.
+Me ya sa kuma yake kawo \VUgras{gidan fensirinsa}
+\textsuperscript{(37)} cikin ajin \VUgras{harsuna masu rai?}
+
+%%K t01-11-2 p
+Maƙwabcinsa, Edmundus \textsuperscript{(39)}, ba ya sonsa. Gaskiya ne
+ɗan ragwanci gare shi, amma shiru yake kuma mai natsuwa ne. Ba ya
+surutu ; sai dai maimakon ya saurara, ya fi son karanta
+\VUgras{labarai} a \VUgras{littafin karatunsa.}
+
+%%K t01-11-3 p
+Ɗalibi na uku a wannan benci shi ne \VUgras{Ludovikus}
+\textsuperscript{(40)}. Mai himma ne. Yana rubutu a kan farar
+\VUgras{takarda.} A gabansa ya ajiye \VUgras{takardar shaƙe
+tawadarsa} \textsuperscript{(41)}.
+
+%%K t01-12-1 p
+12. --- Ɗaliban benci na biyu, a hannun hagu na malami, ƙanana ne har
+yanzu. Na farko, ƙaramin \VUgras{Emilius,} bai iya rubutu sosai ba
+tukuna ; yana kawo \VUgras{allonsa} \textsuperscript{(42)},
+\VUgras{fensirin allonsa} da \VUgras{sosonsa}
+\textsuperscript{(43)}.
+
+%%K t01-12-2 p
+A gefensa akwai \VUgras{Augustus} da \VUgras{Bernardus}
+\textsuperscript{(44)}. Wannan na ƙarshe yana aiki da kyau, amma
+\VUgras{tufafinsa} ba su da kula ko kaɗan.
+
+%%K t01-13-1 p
+13. --- A bayansu akwai \VUgras{ragwaye} uku. \VUgras{Albertus} ba ya
+haddar darussansa. \VUgras{Iakobus} \textsuperscript{(47)} yana barci
+maimakon ya saurara. \VUgras{Ragwancinsa} yana jawo masa
+\VUgras{zargi} har ma da \VUgras{hukunci.} A ƙarshe
+\VUgras{Kristianus} \textsuperscript{(48)} ba shi da kwarjini sam.
+\VUgras{Halinsa} mummuna ne kuma bai yi ƙoƙarin gyara kansa ko kaɗan
+ba.
+
+%%K t01-14-1 p
+14. --- Maƙwabtansa kuwa, akasin haka, masu kyawun hali ne.
+\VUgras{Ernestus} \textsuperscript{(51)} yana son tsari da natsuwa ;
+kullum yakan yi amfani da \VUgras{rularsa} \textsuperscript{(50)} da
+\VUgras{fensirinsa} \textsuperscript{(49)}. \VUgras{Ɗalibin waje} ne.
+
+%%K t01-14-2 p
+\VUgras{Franciskus} \textsuperscript{(52)} \VUgras{ɗalibin kwana} ne ;
+yana sanye da kayan makaranta, yana ci yana kuma kwana a makarantar
+sakandare. \VUgras{Abokin kirki} ne.
+
+%%K t01-14-3 p
+Mauricius yana fera \VUgras{fensirinsa} da \VUgras{wuƙarsa}
+\textsuperscript{(56)} ; mai kula ne ƙwarai.
+
+%%K t01-14-4 p
+Yana kawo dukan littattafansa, \VUgras{littafin nahawunsa}
+\textsuperscript{(55)}, \VUgras{ƙaramin littafin rubutunsa}
+\textsuperscript{(54)}, har ma da \VUgras{matashin rubutunsa}
+\textsuperscript{(53)}. \VUgras{Jakar makarantarsa}
+\textsuperscript{(57)} tana ƙasa a bayansa.
+
+%%K t01-14-5 p
+Tebura biyu da suke a ƙarshen aji, \VUgras{ɗalibai masu kyau}
+\textsuperscript{(19)} ne suka mamaye su.
+
+%%K t01-tit-6 sub
+\VUsaut{4.6mm}
+\VUpk{10.2pt}{40}{Zane da waƙa.}
+\VUsaut{3.4mm}
+
+%%K t01-15-1 p
+15. --- A \VUgras{ajin zane} akwai kyawawan \VUgras{abubuwan koyi} a
+rataye a bango da \VUgras{fitila} \textsuperscript{(62)} mai
+\VUgras{murfi,} rataye a rufin ɗakin. \VUgras{Malaminsu}
+\textsuperscript{(60)} mai haƙuri ne ƙwarai ; yana gyara
+\VUgras{zane-zanen} \textsuperscript{(61)} ɗalibai yana kuma koya musu
+su zana \VUgras{mutum-mutumi} \textsuperscript{(59)} bisa ga yadda
+yake a zahiri.
+
+%%K t01-16-1 p
+16. --- \VUgras{Ajin waƙa} yana da ban sha’awa sosai. A can ake koyon
+karanta \VUgras{waƙa,} a rera \VUgras{alamun sauti}
+\textsuperscript{(67)} da aka rubuta a kan \VUgras{layukan waƙa} (do,
+re, mi, fa, sol, la, si\,=\,C. D. E. F. G. A. B.), a san
+\VUgras{mabuɗan sauti} da rera kyawawan \VUgras{waƙoƙi.} Ana ajiye
+takardun waƙa a kan \VUgras{mariƙin waƙa} \textsuperscript{(65)}.
+Ɗaya daga cikin ɗalibai yana \VUgras{bugun fiyano}
+\textsuperscript{(64)}, \VUgras{malamin waƙa} \textsuperscript{(66)}
+kuwa yana \VUgras{bugun kari} \textsuperscript{(68)}.
+
+%%K t01-17-1 p
+17. --- Mun fara ganin kusurwar \VUgras{ma’aikata} domin
+\VUgras{aikin hannu} \textsuperscript{(69)}, inda yara ke iya koyon
+sassaƙa itace da nika ƙarfe. Wannan ba ya nan a dukan makarantun
+sakandare.
+
+%%K t01-tit-7 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{Ajin ilimin kimiyya.}
+\VUsaut{3.6mm}
+
+%%K t01-18-1 p
+18. --- Malamin lissafi yana koya \VUgras{wa} ɗalibai \VUgras{ilimin
+siffofi, ilimin lissafi, ƙidaya} da \VUgras{tsarin awo na mita}. A
+kan allo muna ganin manyan siffofin lissafi : \VUgras{da’ira}
+\textsuperscript{(a)}, \VUgras{murabba’i} \textsuperscript{(b)},
+\VUgras{mai kusurwa uku} \textsuperscript{(c)}, \VUgras{layi}
+\textsuperscript{(d)}.
+
+%%K t01-18-2 p
+Muna kuma ganin wani \VUgras{aikin lissafi} ; ba \VUgras{haɗawa} ba
+ne, ba \VUgras{ragi} ba, ba kuwa \VUgras{ninkawa} ba — \VUgras{rabo}
+\textsuperscript{(e)} ne kuwa.
+
+%%K t01-19-1 p
+19. --- A kan allon tsarin awo na mita muna gani : \VUgras{mita}
+\textsuperscript{(a)}, \VUgras{ma’auni} \textsuperscript{(b)} da
+\VUgras{nauyayensa,} \VUgras{lita} \textsuperscript{(e)},
+\VUgras{dakalita} \textsuperscript{(f)}, \VUgras{dasilita} da
+\VUgras{mita kubi} \textsuperscript{(d)}.
+
+%%K t01-19-2 p
+Ɗalibai suna kuma koyon \VUgras{ilimin halitta}
+\textsuperscript{(11)}, ilimin dabbobi \textsuperscript{(a)}, ilimin
+tsirrai \textsuperscript{(b)}, ilimin ƙasa \textsuperscript{(c)} da
+\VUgras{tarihi} \textsuperscript{(12)}.
+
+%%K t01-19-3 p
+A cikin kabad akwai kayan aiki na \VUgras{kimiyyar lissafi}
+\textsuperscript{(15)} da na \VUgras{kimiyyar sinadarai}
+\textsuperscript{(16)}.
+
+%%K t01-19-4 p
+A kan kabad akwai : \VUgras{kwallo} \textsuperscript{(14)},
+\VUgras{mazugi} da \VUgras{kwallon duniya} \textsuperscript{(13)}.
+
+%%K t01-19-5 p
+A saman hotunan an rataya \VUgras{taswira} mai nuna sassa biyar na
+duniya : \VUgras{Turai} \textsuperscript{(g)}, \VUgras{Asiya}
+\textsuperscript{(e)}, \VUgras{Afirka} \textsuperscript{(f)},
+\VUgras{Amirka} \textsuperscript{(ab)} da \VUgras{Osiyaniya}
+\textsuperscript{(h)}, da manyan tekuna biyu, \VUgras{Tekun Fasifik}
+\textsuperscript{(c)} da \VUgras{Tekun Atlantika}
+\textsuperscript{(d)}.
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}

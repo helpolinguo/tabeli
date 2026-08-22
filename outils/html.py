@@ -360,6 +360,16 @@ LANGUES = [
     # ۱ contre ١ —, et ces differences-la sont invisibles a l'oeil.
     {"kodo": "fa", "nomo": "فارسی", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
+    # LE HAOUSSA EST LA PREMIERE COLONNE DU RELEVE QUI S'ECRIVE EN
+    # LETTRES LATINES ET DONT LES SIGNES DIACRITIQUES SOIENT DES
+    # LETTRES A PART ENTIERE. ɓ, ɗ, ƙ et ƴ ne sont pas des b, d, k, y
+    # ornes : ce sont quatre lettres de l'alphabet boko, et « kofa »
+    # n'est pas « ƙofa ». Un clavier ordinaire ne les donne pas, et un
+    # correcteur les rend volontiers a leur forme nue : la colonne se
+    # defend donc de sa propre saisie, ce qu'aucune autre n'avait eu a
+    # faire.
+    {"kodo": "ha", "nomo": "Hausa", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -1035,7 +1045,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "et": "et", "vi": "vi", "yue": "yue", "arz": "arz",
            "mr": "mr",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
-           "id": "id", "jv": "jv", "fa": "fa",
+           "id": "id", "jv": "jv", "fa": "fa", "ha": "ha",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
@@ -2223,6 +2233,15 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # la voisine dont toute cette colonne se
                         # defend.
                         r"|GAMBAR"
+                        # LE HAOUSSA ecrit « HOTO Na 1 ». Le mot est
+                        # celui de l'image, comme « GAMBAR » en
+                        # javanais et pour la meme raison : le
+                        # haoussa n'a pas de mot propre pour la
+                        # planche murale, et « tebur » ne designe que
+                        # le meuble. Le titre du volume, « Hotunan
+                        # taimako na Delmas », est compose en bas de
+                        # casse et ne passe pas.
+                        r"|HOTO"
                         # LE PERSAN ecrit « تابلوی شمارهٔ ۱ ».
                         # « تابلو » seul se lirait dans le titre du
                         # volume, qui parle des « تابلوهای کمکی » ;
@@ -2586,6 +2605,14 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # ne sont ni ceux de l'ourdou (پہلا) ni ceux de
                    # l'arabe (الأولى) : اول، دوم، سوم، چهارم.
                    r"|سری\s+(?:اول|دوم|سوم|چهارم)"
+                   # LE HAOUSSA MET SON ORDINAL APRES LE NOM et
+                   # l'introduit par « na » : « Jeri na Farko ». La
+                   # particule est obligatoire — « jeri farko » ne se
+                   # dit pas —, et c'est elle qui rend le membre sur
+                   # au lieu du seul mot, qui signifie aussi la file
+                   # d'attente ordinaire.
+                   r"|[Jj]eri\s+na\s+(?:[Ff]arko|[Bb]iyu|[Uu]ku"
+                   r"|[Hh]u[ɗd]u)"
                    # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
                    # « سلسلہ » : meme langue, deux lexiques, et c'est
                    # justement pourquoi les deux colonnes se
@@ -2674,6 +2701,12 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # اول ». L'ourdou dit منظر, l'arabe المشهد ; صحنه
                   # n'est ni l'un ni l'autre.
                   r"|صحنهٔ?\s+(?:اول|دوم|سوم|چهارم)"
+                  # MEME TOUR POUR LA SCENE HAOUSSA : « Fage na
+                  # Farko ». « fage » est l'aire ou l'on joue —
+                  # l'arene du lutteur, la scene du theatre — et
+                  # l'ordinal suit, precede de son « na ».
+                  r"|[Ff]age\s+na\s+(?:[Ff]arko|[Bb]iyu|[Uu]ku"
+                  r"|[Hh]u[ɗd]u)"
                   r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
                   # LE TURC, aux deux casses ecrites a la main, pour
                   # la raison dite plus haut a la serie.

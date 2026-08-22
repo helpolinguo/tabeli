@@ -586,6 +586,51 @@ LINGUI = {
         (r"نمی(?!\u200c)", "demi-espace manquant — l'orthographe de 2026 "
                            "ecrit نمی\u200cرود"),
     ]},
+
+    # LE HAOUSSA REPREND LE FRONT DU PERSAN — le CARACTERE et non le
+    # mot — MAIS EN LETTRES LATINES, ET C'EST PIRE. Le persan se
+    # defendait de deux langues voisines logees dans son alphabet ;
+    # celle-ci se defend de sa PROPRE SAISIE. ɓ, ɗ, ƙ et ƴ sont quatre
+    # lettres pleines de l'alphabet boko, non des b, d, k, y ornes :
+    # « kofa » n'est pas « ƙofa », et la difference est celle d'un mot
+    # a rien du tout. Or aucun clavier ordinaire ne les donne, tout
+    # correcteur les rend a leur forme nue, et une ligne ainsi
+    # depouillee reste bien formee : le LaTeX compile, html.py publie.
+    #
+    # ON NE RELEVE QUE LES MOTS DONT LA FORME NUE N'EXISTE PAS. kofa,
+    # karfe, karshe, kauye, daya, daki, dauka, yan ne sont rien en
+    # haoussa ; leur trouver un sens demande de supposer une faute. On
+    # NE RELEVE PAS « kasa », qui est un mot — « en bas », « echouer »
+    # — la ou « ƙasa » est le pays et le sol : la regle aurait raison
+    # sur la lettre et tort sur le mot, et c'est exactement le cas du
+    # « rumah sakit » javanais, paye une fois.
+    #
+    # ET UN SECOND FRONT, QUI EST UN ALPHABET FERME : le boko n'a ni
+    # p, ni q, ni v, ni x. Ce qui vient d'ailleurs se refait a la
+    # bouche haoussa — « bitamin », « fensir », « kwafi » — et un p
+    # laisse dans un mot est toujours la trace d'une langue qui n'a
+    # pas ete traduite. La regle ne vise que les mots a INITIALE
+    # MINUSCULE : les noms propres gardent leur orthographe, Paris
+    # reste Paris, et la capitale suffit a les mettre hors de portee.
+    # Le lookbehind ecarte de meme les noms de macro — la lettre qui
+    # suit un « \\ » ou une autre lettre n'ouvre aucun mot — et les
+    # unites de \\VUcentre, ou le « pt » suit un chiffre.
+    "ha": {"mot": [
+        (r"[\u0600-\u06FF]", "lettre arabe — cette colonne s'ecrit en "
+                              "boko, non en ajami"),
+        (r"(?<![\\A-Za-z0-9])[a-zɓɗƙƴ’]*[pqvx][a-zɓɗƙƴ’]*",
+         "lettre absente de l'alphabet boko (p, q, v, x)"),
+        (r"(?<![A-Za-z])kofa(?![A-Za-z])", "ƙofa"),
+        (r"(?<![A-Za-z])karfe(?![A-Za-z])", "ƙarfe"),
+        (r"(?<![A-Za-z])karshe(?![A-Za-z])", "ƙarshe"),
+        (r"(?<![A-Za-z])kauye(?![A-Za-z])", "ƙauye"),
+        (r"(?<![A-Za-z])k(?:arami|anana)(?![A-Za-z])", "ƙarami / ƙanana"),
+        (r"(?<![A-Za-z])daya(?![A-Za-z])", "ɗaya"),
+        (r"(?<![A-Za-z])daki(?![A-Za-z])", "ɗaki"),
+        (r"(?<![A-Za-z])dauka(?![A-Za-z])", "ɗauka"),
+        (r"(?<![A-Za-z])yan(?![A-Za-z])", "ƴan"),
+        (r"'", "apostrophe droite — le haoussa de 2026 ecrit ’ (U+2019)"),
+    ]},
 }
 
 # LE SEUIL AU-DELA DUQUEL UN FICHIER EST UN DIALOGUE. Mesure sur les
