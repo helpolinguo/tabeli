@@ -129,11 +129,20 @@ def _arb(*formes):
     ne passait pas — et la colonne egyptienne portait la meme regle
     morte depuis le debut, pour أيضاً et pour جداً.
 
-    On ferme donc sur une NEGATION DE LETTRE ARABE au lieu du \\b, ce
-    qui vaut que le mot finisse par une lettre ou par une marque.
+    ET LE \\b NE S'OUVRE PAS DAVANTAGE QU'IL NE SE FERME. Corrige d'un
+    seul cote, l'outil a tenu deux tableaux puis a crie « فين » DANS
+    « مجدّفين » : la chadda precede le ف, le \\b s'ouvre donc juste
+    apres elle, et le mot pour rameur passait pour l'interrogatif
+    egyptien. Trois manifestations d'un seul defaut — un silence par
+    la fin, un faux par le milieu, un faux par le debut — avant que
+    la forme juste soit ecrite.
+
+    On encadre donc par DEUX NEGATIONS, sans \\b du tout, exactement
+    comme _deva et _guj le font depuis le debut. La reponse etait
+    deja dans le fichier, deux helpers plus haut.
     """
     return "|".join(
-        rf"\b{re.escape(f)}(?!{ARAB})" for f in formes)
+        f"(?<!{ARAB}){re.escape(f)}(?!{ARAB})" for f in formes)
 
 
 # -------------------------------------------------------------------
