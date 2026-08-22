@@ -1,0 +1,419 @@
+% ===================================================================
+%  કોષ્ટક નં. ૩ — બાળપણ અને યુવાની.
+%
+%  Traduction, faite en 2026, en gujarati d'aujourd'hui, sur l'ido de
+%  texto/io. Regles de la colonne : voir 10-kostak-01.tex. Deux
+%  scenes, deux numerotations : t03-c1-* le bapteme au village,
+%  t03-c2-* la fete publique. Ecrit parigi.py ouvert : vingt paires
+%  annoncees pour ce seul tableau, dont les quatre du bloc
+%  t03-c1-23-1.
+%
+%  LE « julio » DU BLOC t03-c2-01-1. Le fac-simile ido compose
+%  « (julio od \VUgras{agosto}) » en laissant le seul juillet hors du
+%  gras. gravuri/korekti.json le repare pour chaque colonne, et le
+%  triple gujarati — « (જુલાઈ અથવા » — a ete pose au cablage, AVANT
+%  que ce tableau soit ecrit.
+%
+%  CORRECTION, ET ELLE VAUT POUR DEUX MESSAGES DE COMMIT. Le cablage
+%  de cette colonne annoncait « corrections declarees : 61 a 62 », et
+%  celui de la colonne haoussa « 60 a 61 ». Les deux etaient faux
+%  d'un tableau : html.py ne compte pas les triples DECLARES dans
+%  korekti.json, il compte ceux qu'il a effectivement APPLIQUES, et
+%  un triple pose pour le tableau 3 ne s'applique qu'une fois le
+%  tableau 3 ecrit. Le compte passe donc a 62 ICI, et il etait passe
+%  a 61 au tableau 3 haoussa. Poser la correction d'avance reste la
+%  bonne facon de faire ; c'est l'annoncer comme deja comptee qui
+%  etait une erreur.
+%
+%  LE GUJARATI A SIX SAISONS, ET LA PLANCHE N'EN CONNAIT QUE QUATRE.
+%  Le releve en a maintenant trois comptes differents : quatre en
+%  Europe, cinq au Sahel — rani, bazara, damina, kaka, hunturu —, et
+%  six ici : વસંત le printemps, ગ્રીષ્મ l'ete, વર્ષા la mousson, શરદ
+%  l'automne, હેમંત l'avant-hiver, શિશિર l'hiver. La saison des
+%  pluies est celle qu'aucune des deux autres n'a comme telle, et
+%  c'est celle qui fait toute la difference : la ou l'Europe partage
+%  l'annee par la temperature, l'Inde la partage par l'eau. Le
+%  printemps de ce tableau tombe juste sur વસંત, mars-avril-mai.
+%
+%  ET LES SEPT JOURS SONT LES SEPT PLANETES, EXACTEMENT COMME EN
+%  EUROPE. રવિવાર le jour du Soleil, સોમવાર celui de la Lune, મંગળવાર
+%  celui de Mars, બુધવાર de Mercure, ગુરુવાર de Jupiter, શુક્રવાર de
+%  Venus, શનિવાર de Saturne. Ce n'est pas une ressemblance : c'est la
+%  MEME semaine, sortie de la meme astrologie hellenistique, arrivee
+%  en Inde par les Grecs de Bactriane et a Rome par l'Egypte. Le
+%  releve a donc trois reponses a la meme question — le haoussa a
+%  emprunte ses sept jours a l'arabe, le persan en a numerote six et
+%  n'a laisse a l'arabe que le vendredi, le gujarati a garde les
+%  planetes — et la troisieme est la seule ou le francais et la
+%  colonne disent litteralement la meme chose.
+%
+%  QUATRE FAUTES D'ORDRE, ET parigi.py LES AVAIT TOUTES LES QUATRE.
+%  Ce n'est pas le tableau 1 qui se repete : la liste avait ete lue
+%  cette fois, et les quatre blocs y sont — t03-c1-04-1, c1-09-1,
+%  c1-10-1, c1-14-1. Ce qui manquait n'etait pas l'avertissement,
+%  c'etait le TOUR DE PHRASE. Savoir que « (7) doit preceder (5) »
+%  ne sert a rien tant qu'on n'a pas la construction qui le permet
+%  dans une langue ou le determinant precede le determine.
+%
+%  LE REMEDE EST LA RELATIVE, ET IL VAUT POUR TOUTE LANGUE A TETE
+%  FINALE. Le gujarati a une relative postposee en « જે... », heritee
+%  du sanskrit, qui pose la TETE d'abord et rejette derriere tout ce
+%  qui la qualifie — c'est-a-dire exactement ce que l'ordre de la
+%  planche demande. « અબાબીલ ... શિખરની આસપાસ ઊડે છે, જે ઘંટમંદિરનું
+%  છે અને જે દેવળને મુગટ પહેરાવે છે » rend 4, 7, 5, 6 sans forcer la
+%  langue d'un pouce. Les quatre blocs se sont corriges par le meme
+%  moyen. parigi.py dit QUELLES paires ; la relative dit COMMENT.
+%
+%  L'EGLISE EST PORTUGAISE, ET C'EST LA QUATRIEME REPONSE DU RELEVE.
+%  Le persan nommait le bapteme en arabe et l'eglise en syriaque ; le
+%  haoussa nommait tout en anglais, coci, baftisma, fada ; le
+%  gujarati dit પાદરી le pretre, du portugais PADRE, et બાપ્તિસ્મા —
+%  parce que le christianisme est entre en Gujarat par Diu et Daman,
+%  et non par Londres. C'est la meme couche que « મેજ » la table du
+%  tableau 1, et elle traverse toute la colonne.
+%
+%  SECOND REFUS DE LA COLONNE, ET QUATRIEME DU RELEVE SUR CE MEME
+%  RENVOI : LE BAL PUBLIC (42). Le javanais avait « joged » et ne l'a
+%  pas ecrit ; le haoussa avait « bori » et ne l'a pas ecrit ; le
+%  gujarati a « ગરબા », la ronde de Navratri, neuf nuits, un cercle
+%  autour d'une lampe, une langue entiere de pas et de battements de
+%  mains. La planche grave un bal de sous-prefecture avec estrade et
+%  lampions. On ecrit « જાહેર નૃત્ય ». TROIS COLONNES, TROIS DANSES
+%  NATIONALES, TROIS REFUS AU MEME NUMERO.
+% ===================================================================
+
+%%K t03-apar-1 apar
+\VUsaut{3.0mm}
+\VUtitre{15.0pt}{60}{કોષ્ટક નં. ૩}
+\VUsaut{1.6mm}
+\VUtitre{11.4pt}{0}{બાળપણ અને યુવાની.}
+\VUsaut{3.4mm}
+
+%%K t03-apar-2 apar
+(ત્રીજું અને ચોથું કોષ્ટક એવી રીતે જોડાયેલાં છે કે તે ચાર
+\VUgras{કૌટુંબિક દૃશ્યોમાં} \VUgras{હવામાન,} \VUgras{ઉંમર,}
+\VUgras{કુટુંબ,} \VUgras{પોશાક} અને \VUgras{સ્થિતિ} વિશેના પાયાના
+ખ્યાલો રજૂ કરે છે.)
+
+\VUsaut{4.0mm}
+%%K t03-tit-1 sub
+\VUcentre{12.0pt}{0}{\textit{પ્રથમ દૃશ્ય.}}
+\VUsaut{3.0mm}
+
+%%K t03-tit-2 sub
+\VUpk{10.2pt}{40}{ગામમાં બાપ્તિસ્માની વિધિ.}
+\VUsaut{2.4mm}
+
+%%K t03-tit-3 sub
+\VUpk{10.2pt}{40}{વસંત.}
+\VUsaut{3.0mm}
+
+%%K t03-c1-01-1 p
+1. --- અમે \VUgras{વસંતમાં} છીએ, \VUgras{માર્ચ,} \VUgras{એપ્રિલ} કે
+\VUgras{મે} મહિનામાં, \VUgras{અઠવાડિયાના} દિવસોમાં,
+\VUgras{સોમવારે,} \VUgras{મંગળવારે} કે \VUgras{બુધવારે.} સવારના
+\VUgras{દસ વાગ્યા} છે.
+
+%%K t03-c1-02-1 p
+2. --- \VUgras{હવામાન} સુંદર છે, \VUgras{હવા} સ્વચ્છ છે. સૂરજ
+ચમકે છે. કેટલાંક \VUgras{નાનાં વાદળ} \textsuperscript{(2)} ભૂરા
+\VUgras{આકાશમાં} \textsuperscript{(1)} ચઢે છે.
+
+%%K t03-c1-03-1 p
+3. --- \VUgras{ઝાડને} હજી ભાગ્યે જ \VUgras{પાંદડાં} છે. પાતળાં
+\VUgras{પોપ્લર} \textsuperscript{(3)} અને ઊંચું \VUgras{ચિનાર}
+\textsuperscript{(17)} અત્યાર સુધી માત્ર કળીઓ જ ધરાવે છે.
+
+%%K t03-c1-04-1 p
+4. --- \VUgras{અબાબીલ} \textsuperscript{(4)} પાછાં આવે છે અને
+આનંદથી કલરવ કરતાં \VUgras{શિખરની} \textsuperscript{(7)} આસપાસ ઊડે છે,
+જે \VUgras{ઘંટમંદિરનું} \textsuperscript{(5)} છે અને જે ગામના
+\VUgras{દેવળને} \textsuperscript{(6)} મુગટ પહેરાવે છે.
+
+%%K t03-tit-4 sub
+\VUsaut{3.4mm}
+\VUpk{10.2pt}{40}{દેવળ.}
+\VUsaut{3.0mm}
+
+%%K t03-c1-05-1 p
+5. --- આ દેવળ પોતાના મોટા \VUgras{દરવાજા} \textsuperscript{(13)} અને
+મોટા \VUgras{ઘડિયાળ} \textsuperscript{(8)} સાથે ઘણું સાદું છે. નાનો
+\VUgras{કાંટો} \textsuperscript{(9)} X ના આંકડા પર છે, તે
+\VUgras{કલાક} બતાવે છે. \VUgras{મોટો} \textsuperscript{(10)} XII પર છે
+(બપોર) ; તે \VUgras{મિનિટ} બતાવે છે.
+
+%%K t03-c1-06-1 p
+6. --- ઘંટમંદિરમાં \VUgras{ઘંટ} \textsuperscript{(11)} આનંદથી વાગે છે.
+છાપરાની ટોચ પર પથ્થરનો નાનો \VUgras{ક્રૂસ} \textsuperscript{(12)} ઊભો
+છે.
+
+%%K t03-c1-07-1 p
+7. --- દેવળને માત્ર મોટો \VUgras{દરવાજો} \textsuperscript{(13)} જ નથી,
+તેને બાજુમાં નાનું બારણું પણ છે. આ નાના બારણામાંથી પોતાનો
+\VUgras{ઝભ્ભો} પહેરેલા \VUgras{પાદરી} \textsuperscript{(15)} સાહેબ
+\VUgras{વસ્ત્રખંડમાંથી} \textsuperscript{(14)} બહાર નીકળીને
+\VUgras{પાદરીના ઘર} \textsuperscript{(19)} તરફ જાય છે.
+
+%%K t03-c1-08-1 p
+8. --- તેની પાસે, આ રહી \VUgras{દૂધ વેચનારી}
+\textsuperscript{(24)} પોતાના \VUgras{ગધેડા} \textsuperscript{(23)} સાથે.
+તે શહેરમાંથી પાછી આવે છે, જ્યાં તે બાળકો માટે સારું દૂધ લઈ ગઈ હતી.
+
+%%K t03-tit-5 sub
+\VUsaut{4.0mm}
+\VUpk{10.2pt}{40}{ફળનો બગીચો.}
+\VUsaut{3.4mm}
+
+%%K t03-c1-09-1 p
+9. --- ગધેડાભાઈ આ સવારની દોડથી તદ્દન સંતુષ્ટ છે. તે
+\VUgras{ફૂલોની} \textsuperscript{(20)} સુગંધથી ભરેલી હવા મજાથી સૂંઘે
+છે, જે ફૂલો પડોશના \VUgras{ફળના બગીચાનાં}
+\VUgras{ફળઝાડને} \textsuperscript{(18)} ઢાંકે છે.
+આ \VUgras{આલૂનાં ઝાડ} \textsuperscript{(18)} અને \VUgras{જરદાળુનાં ઝાડ}
+\textsuperscript{(19)} તદ્દન ગુલાબી અને સફેદ છે, અને તે સારા પાકની આશા
+આપે છે.
+
+%%K t03-c1-10-1 p
+10. --- એ દરમિયાન નાની \VUgras{મધમાખીઓ}
+\textsuperscript{(22)} \VUgras{મધપૂડામાંથી} \textsuperscript{(21)}
+નીકળીને ગુંજતી ગુંજતી ત્યાં પોતાનું મીઠું \VUgras{મધ} ભેગું કરવા
+જાય છે.
+
+%%K t03-c1-11-1 p
+11. --- પણ શું થાય છે ? આ રહ્યા ગામનાં છોકરાં દોડી આવે છે અને ડરી ગયેલાં
+\VUgras{હંસને} \textsuperscript{(25)} ભગાડે છે. નોટરીના દીકરાના
+\VUgras{બાપ્તિસ્મા} પછી દેવળમાંથી નીકળતું સરઘસ છે.
+
+%%K t03-c1-12-1 p
+12. --- નાનકડો યાકોબુસ, પોતાના \VUgras{પારણામાં} \textsuperscript{(26)},
+ઘંટના આનંદી નાદથી જાગી જાય છે, અને તેની બહેન માગ્દાલેના, જે પોતે પણ
+બાપ્તિસ્માનું સરઘસ જોવા માગે છે, પોતાની માને વિનંતી કરે છે કે તે
+આવીને ઘરના ઉંબરે તેના વાળ ઓળે અને તેને કપડાં પહેરાવે.
+
+%%K t03-c1-13-1 p
+13. --- મા સંમત થાય છે. તે પોતાનો \VUgras{રૂમાલ}
+\textsuperscript{(28)}, પોતાનું \VUgras{કાપડું} \textsuperscript{(29)}
+અને પોતાનું \VUgras{એપ્રન} \textsuperscript{(30)} પહેરે છે, અને બારણા
+આગળ નાની ખુરશી પર બેસવા આવે છે. માગ્દાલેનાએ તો માત્ર પોતાનું
+\VUgras{ઘાઘરું} \textsuperscript{(31)} અને પોતાનું \VUgras{કાંચળી}
+\textsuperscript{(32)} જ પહેર્યાં છે.
+
+%%K t03-c1-14-1 p
+14. --- તે કેટલી ખુશ છે ! તે પોતાનાં પ્રિય ફૂલ ભૂલી જાય છે, પોતાનાં
+\VUgras{કાર્નેશન} \textsuperscript{(34)}, જેમના પર \VUgras{પતંગિયાં}
+\textsuperscript{(35)} બેસે છે, પોતાનાં \VUgras{ટ્યૂલિપ}
+\textsuperscript{(36)}, પોતાનાં \VUgras{મેનાં ફૂલ}
+\textsuperscript{(37)}, \VUgras{કૂંડાંમાં} \textsuperscript{(38)},
+\VUgras{ભીંત} \textsuperscript{(33)} પર, અને પોતાનાં \VUgras{ગુલાબ}
+\textsuperscript{(39)}, જે એટલી સુંદર વાડ બનાવે છે. તે સરઘસની
+સ્ત્રીઓનાં કીમતી કપડાં જુએ છે.
+
+%%K t03-c1-15-1 p
+15. --- ગામનાં છોકરાં કપડાં તરફ બહુ ધ્યાન આપતાં નથી. તેઓ
+\VUgras{ચોકલેટ} \textsuperscript{(55)} કે \VUgras{સિક્કા}
+\textsuperscript{(52)} મેળવવા માટે ધસી જાય છે અને એકબીજાને ધક્કો મારે
+છે. તેમાંનું એક રડે છે \textsuperscript{(40)}.
+
+%%K t03-c1-16-1 p
+16. --- બીજાએ \VUgras{કૂતરાના} \textsuperscript{(42)} પગ પર પગ મૂક્યો,
+જે રડતો રડતો ભાગે છે અને \VUgras{મરઘીને} \textsuperscript{(43)} અને
+તેનાં \VUgras{બચ્ચાંને} \textsuperscript{(44)} ભગાડે છે.
+
+%%K t03-tit-6 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{બાપ્તિસ્માનું સરઘસ.}
+\VUsaut{4.0mm}
+
+%%K t03-c1-17-1 p
+17. --- સરઘસની આગળ \VUgras{ધાવ} \textsuperscript{(45)} ચાલે છે. તેને
+લાંબી રિબનવાળી સુંદર \VUgras{ટોપી} \textsuperscript{(46)} છે. તે
+\VUgras{નવજાત બાળકને} \textsuperscript{(47)} ઊંચકે છે, જેને તદ્દન
+\VUgras{ભરતકામથી} \textsuperscript{(48)} વીંટ્યું છે.
+
+%%K t03-c1-18-1 p
+18. --- ધાવ પછી \VUgras{ધર્મપિતા} \textsuperscript{(49)} અને
+\VUgras{ધર્મમાતા} \textsuperscript{(53)} આવે છે. તેઓ ચોકલેટ અને સિક્કા
+વહેંચે છે. ધર્મપિતાએ \VUgras{મોજાં} \textsuperscript{(51)} અને
+\VUgras{ઊંચી ટોપી} \textsuperscript{(50)} પહેર્યાં છે. ધર્મમાતા હાથમાં
+સુંદર \VUgras{ફૂલગુચ્છ} \textsuperscript{(54)} પકડે છે.
+
+%%K t03-c1-19-1 p
+19. --- તેમની પાછળ, અમે બાળકના \VUgras{કાકા} \textsuperscript{(56)}
+અને \VUgras{ફોઈ} \textsuperscript{(58)} ને જોઈએ છીએ. ફોઈએ સુઘડ
+\VUgras{ટોપી} \textsuperscript{(59)} પહેરી છે, કાકાએ કાળો
+\VUgras{લાંબો કોટ} \textsuperscript{(57)} અને સફેદ બંડી. પછી આ રહ્યા
+\VUgras{કાકાનો દીકરો} \textsuperscript{(60)} અને \VUgras{કાકાની દીકરી}
+\textsuperscript{(61)}. તે હાથ પકડીને નવજાત બાળકની \VUgras{બહેન}
+\textsuperscript{(62)} ને, નાનકડી બેર્તાને, દોરે છે.
+
+%%K t03-c1-20-1 p
+20. --- બેર્તાનો બીજો \VUgras{ભાઈ} \textsuperscript{(63)} પાછળ ચાલે છે.
+તે એક \VUgras{સગી} \textsuperscript{(64)} નો હાથ પકડે છે. કુટુંબનાં
+\VUgras{મિત્રો} \textsuperscript{(65)} પછી આવે છે.
+
+%%K t03-tit-7 sub
+\VUsaut{4.6mm}
+\VUpk{10.2pt}{40}{જોનારાં.}
+\VUsaut{3.4mm}
+
+%%K t03-c1-21-1 p
+21. --- સરઘસની પાસે, આ રહ્યો \VUgras{ભિખારી} \textsuperscript{(66)}
+પોતાની \VUgras{ઘોડી} \textsuperscript{(67)} પર ટેકવીને. તે ભીખ માગે છે.
+
+%%K t03-c1-22-1 p
+22. --- બીજી બાજુએ ઘણો \VUgras{વિનયી} \textsuperscript{(68)} નાનો
+છોકરો છે. તે પોતે જેમને ઓળખે છે તેમને નમસ્કાર કરે છે અને
+« \VUgras{સુપ્રભાત} » કહે છે.
+
+%%K t03-c1-23-1 p
+23. --- ગામલોકો બાપ્તિસ્માનું સરઘસ જોવા પોતાનાં ઘરમાંથી બહાર નીકળ્યાં
+છે. અમે \VUgras{ખેડૂતને} \textsuperscript{(69)} પોતાની \VUgras{સુતરાઉ
+ટોપી} સાથે અને તેની બાજુમાં \VUgras{ખેડૂતાણીને} \textsuperscript{(70)}
+જોઈએ છીએ. પછી \VUgras{ડોસી} \textsuperscript{(71)} પોતાની
+\VUgras{લાકડી} \textsuperscript{(72)} પર ટેકવીને. છેલ્લે \VUgras{ઘંટીવાળો}
+\textsuperscript{(73)} પોતાની મોટી \VUgras{નમદાની ટોપી}
+\textsuperscript{(74)} સાથે અને \VUgras{લાકડાનાં ચંપલ}
+\textsuperscript{(75)} પહેરેલી જુવાન ખેડૂતાણી, જે પોતાના બાળકને ચાલતાં
+શીખવે છે.
+
+%%K t03-c1-24-1 p
+24. --- આ દૃશ્ય ઘણું મજાનું છે.
+
+\VUsaut{4.0mm}
+%%K t03-tit-8 sub
+\VUcentre{12.0pt}{0}{\textit{બીજું દૃશ્ય.}}
+\VUsaut{3.0mm}
+
+%%K t03-tit-9 sub
+\VUpk{10.2pt}{40}{જાહેર ઉત્સવ.}
+\VUsaut{2.4mm}
+
+%%K t03-tit-10 sub
+\VUpk{10.2pt}{40}{નૌકારમતો અને હરીફાઈઓ.}
+\VUsaut{3.0mm}
+
+%%K t03-c2-01-1 p
+1. --- \VUgras{ઉનાળો} આવી ગયો છે. \VUgras{જૂન} મહિનાનો (જુલાઈ અથવા
+\VUgras{ઓગસ્ટ}) સખત તડકો જુવાનોને નહાવા અને હોડી ચલાવવા પ્રેરે છે.
+
+%%K t03-c2-02-1 p
+2. --- નદીના જમણા કાંઠે, હોડી ચલાવનારા નૌકારમતો અને હરીફાઈઓમાં ભાગ
+લેવા માટે કપડાં ઉતારે છે.
+
+%%K t03-c2-03-1 p
+3. --- તેમાંનો એક પોતાનાં \VUgras{ચંપલ} \textsuperscript{(1)} ઉતારે છે ;
+તે તેમની દોરી છોડે છે. તેના બે સાથી તૈયાર થઈ ગયા છે. હવે તેમની પાસે
+માત્ર પોતાનું \VUgras{ગૂંથેલું બંડી} \textsuperscript{(2)} અને
+\VUgras{નહાવાની ચડ્ડી} \textsuperscript{(3)} જ છે. તેઓ પોતાના મિત્રોની
+રાહ જોતાં વાતો કરે છે. તેઓ રજા વિશે અને સામા કાંઠે થતા ઉત્સવ વિશે વાત
+કરે છે.
+
+%%K t03-c2-04-1 p
+4. --- જમીન પર, તેમની પાસે, તેમના સાથીઓનાં \VUgras{કપડાં} પડ્યાં છે :
+\VUgras{બૂટની} \textsuperscript{(4)} જોડ, \VUgras{ચંપલ}
+\textsuperscript{(5)}, \VUgras{મોજાં} \textsuperscript{(6)},
+\VUgras{નમદાની} \textsuperscript{(7)} અને \VUgras{ઘાસની}
+\textsuperscript{(8)} ટોપીઓ અને \VUgras{ટાઈ} \textsuperscript{(9)}.
+
+%%K t03-c2-05-1 p
+5. --- જુવાનોમાંના એકે પોતાનાં \VUgras{કપડાં} \textsuperscript{(10)}
+કાળજીથી વાળ્યાં છે. તે તેમને એક ટુવાલ પર મૂકે છે, જેમાં તેનો પડોશી
+થોડી વારમાં પોતાનાં બે \VUgras{કપડાં} બાંધશે.
+
+%%K t03-c2-06-1 p
+6. --- છઠ્ઠો છોકરો મોડો પડે છે. તેના માથે હજી પોતાની \VUgras{ટોપી}
+\textsuperscript{(11)} છે. તેણે પોતાનું \VUgras{પહેરણ}
+\textsuperscript{(12)}, પોતાનો \VUgras{કોલર} \textsuperscript{(13)} કે
+પોતાનાં \VUgras{કફ} \textsuperscript{(14)} ઉતાર્યાં નથી. તે હાથમાં
+પોતાની \VUgras{બંડી} \textsuperscript{(17)} પકડે છે અને હજી પોતાનું
+\VUgras{પાટલૂન} \textsuperscript{(16)} અને પોતાના \VUgras{ગાળિયા}
+\textsuperscript{(15)} પહેર્યાં છે. તે આવતી હરીફાઈ માટે તૈયાર નહીં થાય
+એ નક્કી.
+
+%%K t03-c2-07-1 p
+7. --- જુવાનોની પાસે, એક નાની કેડી, જેની બંને બાજુએ ઘણાં
+\VUgras{કાંટાળાં ઝાંખરાં} \textsuperscript{(18)} છે, નદીના કાંઠે લઈ
+જાય છે, જ્યાં યાકોબુસ કાકા \VUgras{બરુ} \textsuperscript{(19)} વચ્ચે
+\VUgras{દારૂખાનું} \textsuperscript{(20)} તૈયાર કરે છે, જે સાંજે
+ફોડવામાં આવશે.
+
+%%K t03-tit-11 sub
+\VUsaut{4.4mm}
+\VUpk{10.2pt}{40}{હરીફાઈ.}
+\VUsaut{3.4mm}
+
+%%K t03-c2-08-1 p
+8. --- નદી પર, કેટલીક સ્ત્રીઓ, પોતાની છત્રીથી પોતાને છાંયડો કરતી,
+\VUgras{હોડીમાં} \textsuperscript{(21)} ફરે છે. તેઓ ઘણી રસપ્રદ હરીફાઈ
+જુએ છે. દરેક \VUgras{નાવડીમાં} \textsuperscript{(22)} ચાર
+\VUgras{હલેસાં મારનારા} \textsuperscript{(24)} પોતાની બધી તાકાતથી હલેસાં
+મારે છે, જ્યારે \VUgras{સુકાની} \textsuperscript{(26)}
+\VUgras{સુકાન} \textsuperscript{(25)} પકડે છે અને નાજુક હોડીને દોરે છે.
+\VUgras{હલેસાં} \textsuperscript{(23)} તાલમાં પાણી પર પડે છે અને હલકી
+હોડીઓ ચક્કર આવે એવી ઝડપે ચાલે છે.
+
+%%K t03-c2-09-1 p
+9. --- કેટલાક જુવાનો, પુલના થાંભલા પાસે, \VUgras{લપસણા થાંભલાના}
+\textsuperscript{(28)} ઇનામ માટે હરીફાઈ કરે છે. તેમાંનો એક છેડે બાંધેલી
+નાની \VUgras{ધજા} \textsuperscript{(29)} સુધી પહોંચવા માટે લવચીક અને
+લપસણા થાંભલા પર સાવધાનીથી ચાલે છે. તેનો કમનસીબ \VUgras{હરીફ}
+\textsuperscript{(30)} પાણીમાં પડ્યો છે. તે કિનારે પહોંચવા તરે છે.
+
+%%K t03-c2-10-1 p
+10. --- મોટી ઉંમરના જુવાનો \VUgras{ધક્કાધક્કીની હરીફાઈ}
+\textsuperscript{(32)} \VUgras{ધક્કા} \textsuperscript{(33)} પાસે કરે છે.
+આ બધી રમતો મોટી \VUgras{જનતા} \textsuperscript{(31)} જુએ છે,
+\VUgras{પુલની} \textsuperscript{(27)} \VUgras{પાળી} પર ટેકવીને અને
+કાંઠા પર ભેગી થઈને. તેમ છતાં કેટલાક જોનારા \VUgras{ઇનામી થાંભલાની}
+\textsuperscript{(45)} રમત જોવા માટે કે ઇનામ \VUgras{વહેંચવા} આવતા
+\VUgras{નગરપતિના સરઘસને} વધાવવા માટે પાછા ફરે છે.
+
+%%K t03-c2-11-1 p
+11. --- પહેલાં, આ રહ્યા કેટલાક \VUgras{છોકરાઓ} \textsuperscript{(35)}
+\VUgras{વાજિંત્રવાળાઓની} \textsuperscript{(36)} આગળ ચાલતા ; પછી
+\VUgras{નગરપતિ} \textsuperscript{(37)}, તેમના મદદનીશો અને નાના શહેરની
+\VUgras{નગરસભા} આવે છે. છેલ્લે \VUgras{અગ્નિશામકો}
+\textsuperscript{(38)} ચાલે છે.
+
+%%K t03-tit-12 sub
+\VUsaut{5.0mm}
+\VUpk{10.2pt}{40}{મેળો.}
+\VUsaut{3.6mm}
+
+%%K t03-c2-12-1 p
+12. --- \VUgras{મેળાના મેદાન} \textsuperscript{(39)} પર ઘણા લોકો છે.
+લોકો જુદા જુદા \VUgras{માંડવા} જોવા આવે છે : \VUgras{લાકડાના ઘોડા}
+\textsuperscript{(40)}, \VUgras{સરકસ} \textsuperscript{(41)}, જ્યાં ખેલ
+શરૂ થઈ ગયો છે ; \VUgras{જાહેર નૃત્ય} \textsuperscript{(42)}, જ્યાં
+શહેરના જુવાનો અને જુવાનડીઓ \VUgras{નાચવાનો} આનંદ માણે છે.
+
+%%K t03-c2-13-1 p
+13. --- છેડે, અમે \VUgras{અખાડો} \textsuperscript{(44)} જોઈએ છીએ,
+જ્યાં બહાદુર સ્પેનિશ \VUgras{બળદલડવૈયો} ગુસ્સે થયેલા \VUgras{બળદ}
+\textsuperscript{(45)} સાથે લડે છે ; પછી \VUgras{લપસણી}
+\textsuperscript{(49)}, અને \VUgras{નિશાનબાજીની જગ્યા}
+\textsuperscript{(46)}, જ્યાં લોકો \VUgras{બંદૂક} વાપરવાનો અને
+\VUgras{નિશાન} પર તાકવાનો મહાવરો કરે છે.
+
+%%K t03-c2-14-1 p
+14. --- પાસે, આ રહ્યું \VUgras{મેળાનું નાટકઘર} \textsuperscript{(47)},
+જ્યાં \VUgras{પ્રહસન} અને \VUgras{કરુણ નાટક} ભજવાય છે. તદ્દન પાસે,
+\VUgras{રાક્ષસ} \textsuperscript{(48)} અને \VUgras{વામન}નો માંડવો છે.
+પહેલાની \VUgras{ઊંચાઈ} બે મીટર પંદર સેન્ટિમીટર છે ; બીજો ભાગ્યે જ
+બાળક જેટલો મોટો છે.
+
+%%K t03-c2-15-1 p
+15. --- છેલ્લે, આ રહ્યું મોટું \VUgras{પ્રાણીસંગ્રહાલય}
+\textsuperscript{(50)} પોતાનાં \VUgras{જંગલી પ્રાણીઓ} સાથે, પોતાના
+પ્રબળ \VUgras{નહોરવાળા} \VUgras{વાઘ} \textsuperscript{(51)} સાથે,
+પોતાની ઘાટી \VUgras{કેશવાળીવાળા} \VUgras{સિંહ} \textsuperscript{(52)}
+સાથે, પોતાનાં બે \VUgras{જિરાફ} \textsuperscript{(53)} અને પોતાના
+\VUgras{હાથી} \textsuperscript{(54)} સાથે, જે પોતાની \VUgras{સૂંઢ} એટલી
+કુશળતાથી વાપરે છે.
+
+%%K t03-c2-16-1 p
+16. --- આ પ્રાણીઓને કેળવનારો \VUgras{ખેલાડી} \textsuperscript{(55)}
+માંડવાના બારણે છે.
+
+\VUsaut{6.0mm}
+\VUfilet{22mm}
