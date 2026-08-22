@@ -49,6 +49,7 @@ par alinéa.
 | Traduction tamoule (`texto/ta/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont l'adversaire est un **registre** et non une langue, et celle qui a fait naître `ordo.py` (§ 8, § 9) |
 | Traduction ourdoue (`texto/ur/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne à **deux voisines de natures différentes** (l'écriture avec le pendjabi chahmoukhi, la langue avec le hindi), et celle qui a rendu au tableau 11 ses gros plans (§ 8) |
 | Traduction indonésienne (`texto/id/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne dont la voisine n'est **dans aucun dossier**, d'où un contrôle qui relève au lieu de comparer, et sur une **date** autant que sur un lexique (§ 8) |
+| Traduction javanaise (`texto/jv/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la voisine a été écrite par la même main, et **seule du relevé à avoir des niveaux de langue grammaticalisés** (ngoko, krama), d'où un contrôle qui distingue le récit du dialogue (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -595,6 +596,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/ta/10-attavanai-01.tex … 25-attavanai-16.tex (traduction)
     texto/ur/10-jadval-01.tex … 25-jadval-16.tex      (traduction)
     texto/id/10-bagan-01.tex … 25-bagan-16.tex       (traduction)
+    texto/jv/10-gambar-01.tex … 25-gambar-16.tex     (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1558,6 +1560,113 @@ inventer un contrôle pour elle** : il existait déjà. Le tableau 16, qui
 porte cent trois renvois — plus que tout autre du livret —, n'en a
 aucun, parce que la faute a été cherchée avant d'écrire.
 
+### La colonne javanaise : le contrôle apprend où sa règle s'applique
+
+La colonne javanaise est **l'exact contraire de la précédente, et c'est
+la même paire de langues.** Quand on défendait l'indonésien, la voisine
+n'était dans aucun dossier et il fallait relever sans pouvoir comparer.
+Ici la voisine est `texto/id`, écrite par la même main, la colonne
+d'avant : le danger s'est retourné, ce n'est plus l'absence de la
+voisine, c'est sa **présence**. L'indonésien est la langue d'école de
+tout locuteur du javanais, et une phrase javanaise glisse à
+l'indonésien par les mots-outils avant de glisser par autre chose.
+`kolonoj.py` relève donc vingt mots-outils — *tidak/ora*, *dan/lan*,
+*dengan/karo*, *yang/sing*, *ini/iki*, *itu/iku* — et **jamais les mots
+de chose**, que les deux langues partagent par centaines.
+
+**Et un second front qu'aucune autre colonne n'a eu : les niveaux de
+langue.** Le javanais a deux lexiques parallèles dans une seule langue,
+le *ngoko* et le *krama*. La colonne tient le **ngoko alus** :
+narration en ngoko, verbes krama inggil pour ce que fait le grand-père.
+On relève donc le krama ordinaire — *kula*, *mboten*, *menika*,
+*ingkang*, *sampun*, *kaliyan*, *griya*, *toya* —, et **on ne relève
+pas** les verbes krama inggil — *dhahar*, *tindak*, *kondur*,
+*ngendika*, *priksa*, *sare* —, qui sont exactement ce que la règle
+exige. Un contrôle qui crie sur la forme que la consigne demande est
+pire qu'un contrôle absent.
+
+**Trois réglages, de trois natures différentes, et c'est le vrai
+apport de cette colonne au relevé.**
+
+1. **Une règle ôtée, parce que le mot n'était pas le même mot.** Les
+   oies du tableau 3 se disent *banyak* en javanais ; *banyak* était
+   relevé comme indonésianisme — il y signifie « beaucoup », et le
+   javanais dit *akeh*. Les deux mots s'écrivent pareil et n'ont rien
+   à voir : le javanais est un **oiseau**. La règle est ôtée, sa
+   raison écrite à la place où elle était, et le mot reparaît au
+   tableau 7 — une règle ôtée pour une bonne raison se paie une fois
+   et sert toujours.
+2. **Huit règles déplacées, parce que la situation change.** Le
+   tableau 5 est un dialogue d'un bout à l'autre : Ioannes y parle à
+   son oncle, et **un enfant javanais parle krama à un adulte**.
+   *kula* y est la forme juste. Les niveaux ne se choisissent pas par
+   texte mais par **qui parle à qui**. Les huit règles de krama sont
+   donc passées de `"mot"` à une clé nouvelle, `"narracio"`, qui ne
+   s'applique qu'aux fichiers **narrés**. Le dialogue se reconnaît au
+   fichier et la mesure est nette : les attributions de parole
+   s'écrivent `\textsc{...}. ---`, le tableau 5 en compte **36**, le
+   tableau 12 en compte **une** — et c'est « Noto. », pas un locuteur
+   —, les quatorze autres **aucune**. Le seuil est posé à cinq.
+   Vérifié dans les deux sens : quatre mots de krama glissés exprès
+   dans le tableau 4 sont relevés, les mêmes dans le tableau 5 ne le
+   sont pas.
+3. **Une règle resserrée, parce qu'un mot n'est pas un nom.**
+   L'hôpital du tableau 11 se dit *rumah sakit* à Java comme partout ;
+   or *rumah* était relevé, le javanais disant *omah*. La règle avait
+   raison sur le **mot** et tort sur le **nom** — et la seule autre
+   forme possible, *griya sakit*, est du krama, que la règle de niveau
+   relèverait à son tour. `rumah` est donc relevé **sauf devant
+   `sakit`**.
+
+**Sept refus, et le dernier était préparé par les six autres.** Le
+javanais offrait un mot tout prêt pour sept objets gravés, et la
+colonne l'a refusé chaque fois : *gobak sodor* pour le jeu de barres
+(tableau 2), *joged* pour le bal public (3), *gendhongan* pour le
+berceau (6), *gamelan* pour l'orchestre (11), *dhakon* et *macanan*
+pour les jeux du café (13), et enfin **`wayang` pour le théâtre de
+marionnettes du tableau 16**. C'est le seul des sept dont la chose
+ressemble à s'y méprendre à la chose gravée — un théâtre de
+marionnettes contre un théâtre de marionnettes —, et c'est justement
+pourquoi il fallait le refuser : la planche montre un petit théâtre
+européen à rideau rouge et fauteuils d'orchestre. **On modernise la
+langue, jamais les choses.**
+
+**Mais le violon (76) est accepté, et sous le même nom portugais qu'en
+indonésien :** *biola*, de *viola*. La colonne ourdoue avait refusé
+l'emprunt et gardé *سارنگی* ; les deux colonnes de Java le prennent. Le
+mot suit l'objet quand l'objet est venu, et le refuse quand la langue
+en avait déjà un — le javanais avait le rebab et le gamelan, pas le
+violon d'orchestre.
+
+**Quatre couples néerlandais contre portugais, anglais ou malais,** et
+ils disent toute la différence des deux colonnes de Java : *potlot* /
+*pensil* le crayon, *pit* / *sepeda* le vélo, *porok* / *garpu* la
+fourchette, *sepur* / *kereta api* le train. Quand les deux langues ont
+emprunté le même objet, ce n'est presque jamais au même prêteur ni au
+même siècle — et le dernier couple est le seul où la forme javanaise
+soit un emprunt **contre** une forme indonésienne native. L'emprunt
+n'est pas un signe de faiblesse : il est un signe de date.
+
+**Et cinq mots sont sortis de Java**, ce qui n'arrive presque jamais
+dans ce relevé : *wajan* la poêle (tableau 6), devenue *wadjan* en
+néerlandais et *wok* en anglais ; *lahar* la coulée (9), qui se dit
+*lahar* à Paris comme à Yogyakarta ; *jong* le grand voilier (10), pris
+par les Portugais sous la forme *junco* et devenu *junk* en anglais —
+le seul des cinq qui ait changé de chose en route ; plus *قلی* et
+*بازار* déjà relevés à la colonne ourdoue. Presque tout ce livret
+décrit des choses qui sont venues ; il faut un tableau de cuisine, un
+volcan et un bateau pour qu'une chose parte.
+
+**Trois lexiques que le javanais ne doit à personne** — le corps
+(tableau 2), la parenté (4) et la ferme (7) —, et pas un mot commun
+avec l'indonésien sur trente parties du corps : *sirah* contre
+*kepala*, *rai* contre *wajah*, *mripat* contre *mata*, *untu* contre
+*gigi*, *getih* contre *darah*, *balung* contre *tulang*. **Le lexique
+le plus ancien est celui qui se ressemble le moins.** Et l'inverse est
+vrai : le potager du tableau 15 est néerlandais **dans les deux
+colonnes, mot pour mot**, parce que ce sont les mêmes Hollandais qui
+ont planté les mêmes légumes dans les mêmes jardins.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1583,7 +1692,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 41 colonnes traduites
+    python3 outils/kolonoj.py            # les 42 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
@@ -1606,6 +1715,7 @@ Chaque contrôle est né d'une faute, et deux d'entre elles étaient
 | ligne trop longue | 41 lignes de 95 à 139 caractères dans neuf colonnes écrites avant que la règle existe |
 | bloc amputé | trois blocs marathis avaient perdu un fragment de phrase, repris au numéro de ligne dans un fichier déjà replié. `renvoji.py` n'en a signalé **qu'un** — celui qui avait perdu un renvoi |
 | forme étrangère | trois colonnes n'existent que parce qu'elles ne sont pas leur voisine (§ 8) |
+| forme étrangère **hors dialogue** | le javanais choisit son niveau de langue par *qui parle à qui*, non par texte : ses huit règles de krama vivent dans une clé à part, `"narracio"`, qui ne s'applique qu'aux fichiers narrés. Le dialogue se reconnaît au nombre d'attributions de parole — 36 au tableau 5, une au 12, aucune ailleurs, seuil à cinq (§ 8) |
 
 Le contrôle du bloc amputé ne compte pas les mots : il compare la
 **longueur** de chaque bloc à celle de son homologue ido et se cale sur
