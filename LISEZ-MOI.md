@@ -580,6 +580,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     outils/controles.py       les six contrôles
     outils/kolonoj.py         la forme et la langue des colonnes traduites
     outils/parigi.py          les paires de renvois à retourner (§ 9)
+    outils/ordo.py            l'ordre des renvois, bloc par bloc (§ 9)
     outils/CONSIGNE-RELEVE.md consigne de transcription
     outils/lekto.py           prépare un feuillet pour la lecture à l'œil
     outils/html.py            écrit index.html
@@ -1420,6 +1421,35 @@ liste en main et n'a coûté **aucune** inversion au premier jet, là où
 les quatre précédents en avaient coûté dix-huit. **Les onze tableaux
 suivants non plus** : la colonne télougoue est complète, 683 blocs,
 `renvoji.py` à zéro divergence.
+
+---
+
+### L'ordre reçu : `ordo.py`
+
+    python3 outils/ordo.py t10     # les blocs du tableau 10
+    python3 outils/ordo.py 3       # les deux scènes, c1 et c2
+
+**Le troisième outil de la même famille, et il comble un trou qu'on a
+payé cher.** `parigi.py` dit *avant* d'écrire quelles **paires** une
+langue à tête finale sortira à l'envers ; `renvoji.py` dit *après coup*
+si l'ordre est bon. Entre les deux manquait la chose la plus simple :
+la **suite complète** des renvois d'un bloc, à suivre en écrivant.
+
+**Elle manquait vraiment, et c'est mesuré.** Le tableau 9 tamoul a
+coûté **neuf** écarts au premier passage, et **sept** portaient sur des
+couples que `parigi.py` ne contient pas — la scie et le bûcheron, le
+cor et les veneurs, la corneille et sa branche, l'araignée et sa
+mouche. Ce ne sont pas des rapports modificateur-tête : `parigi.py` n'a
+pas à les voir. Le tableau 10, écrit avec la suite sous les yeux, en a
+coûté **trois**. Neuf contre trois, même colonne, deux tableaux de
+suite.
+
+Il imprime pour chaque clé `%%K` les renvois dans l'ordre où ils
+tombent — chiffres, lettres, « 94 bis », et les parenthèses nues que le
+fac-similé compose sans leur `\textsuperscript`. Les blocs « suite »
+sont recollés au bloc qu'ils continuent, comme `html.py` les recolle.
+Il ne porte **aucun** jugement : c'est une copie de l'ordre reçu, et
+c'est tout ce qu'on lui demande.
 
 ---
 
