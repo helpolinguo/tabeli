@@ -53,6 +53,7 @@ par alinéa.
 | Traduction persane (`texto/fa/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont la défense se joue au **caractère** et non au mot : deux voisines (ourdou, arabe) logent dans son propre alphabet, où ی/ي et ک/ك ne se distinguent pas à l'œil (§ 8) |
 | Traduction haoussa (`texto/ha/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne qui s'écrive en **lettres latines** et dont le contrôle vise pourtant le caractère : ɓ, ɗ, ƙ, ƴ sont quatre lettres pleines qu'aucun clavier ne donne, et l'alphabet boko n'a ni p, ni q, ni v, ni x (§ 8) |
 | Traduction gujaratie (`texto/gu/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — colonne **à tête finale**, où l'outil qui compte est `parigi.py`, lu *avant* d'écrire : le génitif gujarati pose le possesseur devant le possédé et retourne à lui seul la moitié des couples de renvois (§ 8) |
+| Traduction levantine (`texto/apc/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont les **deux voisines sont la même langue qu'elle** (l'arabe standard, l'égyptien) : le danger n'y est pas le mot étranger mais la main qui remonte toute seule vers le registre de l'école (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -603,6 +604,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/fa/10-tablo-01.tex … 25-tablo-16.tex       (traduction)
     texto/ha/10-hoto-01.tex … 25-hoto-16.tex        (traduction)
     texto/gu/10-kostak-01.tex … 25-kostak-16.tex     (traduction)
+    texto/apc/10-lawha-01.tex … 25-lawha-16.tex      (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -1960,6 +1962,119 @@ directement, avec les marchands ; dans l'ido par le turc, l'italien et
 le français, après un tour de la Méditerranée. **Le livret dit bazar à
 un lecteur qui dit bazar.**
 
+### La colonne levantine : quand les deux voisines sont la même langue
+
+Les quinze colonnes précédentes se défendaient contre une langue
+**étrangère** : le marathe contre le hindi, le persan contre l'ourdou,
+le gujarati contre le hindi. L'arabe levantin (`texto/apc/`) est le
+premier cas où **les deux voisines sont la même langue que lui** —
+l'arabe standard (`ar`), qui est la forme *écrite* de sa propre langue,
+et l'égyptien (`arz`), qui en est une autre forme parlée. Le danger
+n'est donc pas qu'un mot étranger se glisse : **c'est que la main, en
+écrivant, remonte toute seule vers le registre qu'on lui a appris à
+l'école.** Les vingt règles de `kolonoj.py` visent les deux côtés à la
+fois — douze contre le standard (ليس, هذا, الذي, سوف, ماذا, أين, متى,
+الآن, هل, يوجد, أيضًا…), sept contre l'égyptien (ده, دي, إزاي, فين,
+دلوقتي, كده, عايز, بتاع), une contre les quatre lettres persanes.
+
+**Trois formes ne sont délibérément pas relevées**, et il fallait
+l'écrire sous peine de les reprendre plus tard : `كيف` est levantin
+*et* standard, `بس` est levantin *et* égyptien, `في` est l'existentiel
+levantin *et* la préposition standard. Une règle sur l'une des trois
+crierait à chaque tableau, et **un contrôle qu'on désarme ne contrôle
+plus rien** — la leçon du marathe au tableau 10.
+
+#### Le défaut de `\b`, trouvé en trois fois
+
+C'est cette colonne qui a mis au jour la faute la plus ancienne du
+contrôle. En arabe, `\b` de Python **ne se referme pas là où finit le
+mot** : les signes diacritiques (tanwin `U+064B`, chadda `U+0651`…)
+sont de catégorie `Mn`, donc « non-mot », et la frontière tombe *avant*
+eux. Le défaut a été trouvé en trois temps, et chaque temps a démenti
+le précédent :
+
+1. **Au câblage** — la règle `أيضاً` ne criait jamais. Mesuré : `أيضًا`
+   (alef puis tanwin) déclenche, `أيضاً` (tanwin puis alef) non. **Et
+   la colonne égyptienne portait la même règle morte depuis le
+   début**, pour `أيضاً`, `جداً` et la famille `كثيرًا`.
+2. **Au tableau 1** — la règle `هل` s'est déclenchée *à l'intérieur*
+   de `هلّق`, qui est le mot levantin le plus ordinaire du relevé : la
+   chadda est une marque, le `\b` se referme donc juste avant elle. Le
+   premier correctif, à une seule négation, **inventait un mot par le
+   milieu tout en en manquant un par la fin**.
+3. **Au tableau 3** — `فين` s'est déclenchée dans `مجدّفين` : le `\b`
+   *ouvrant* s'ouvre après une marque, exactement de même.
+
+La forme finale n'emploie plus `\b` du tout et encadre le mot de deux
+négations, **comme `_deva` et `_guj` le faisaient depuis le premier
+jour** : la réponse était dans le fichier, deux helpers plus haut. Les
+vingt règles ont été prouvées une à une sur un fichier fabriqué (20/20
+déclenchent) ; `ar` et `arz`, réparées au passage, restent à zéro
+signalement.
+
+#### Ce que la colonne a trouvé
+
+- **La forme du mot date le métier** (tableau 14). Le suffixe turc
+  `-جي` s'accroche à **l'objet qu'on vend** — البرنيطجي le chapelier,
+  الكفوفجي le gantier, العربجي le charretier, المكوجيّة la repasseuse
+  (t. 15) — et la forme arabe `فعّال` au **geste qu'on fait** —
+  الحدّاد, النجّار, الخيّاط, الصبّاغ. On forge, on scie, on coud : ce
+  sont des verbes, et les métiers sont vieux. On vend des chapeaux et
+  des parapluies : ce sont des objets, et ils sont arrivés avec
+  l'Empire. **C'est exactement la loi que la colonne haoussa avait
+  trouvée sur ses préfixes ma-/mai-** : deux langues sans rapport, deux
+  morphologies, une seule manière de dater un mot.
+- **Trois fois sous l'arabe.** `تموز` Tammuz (t. 5) et `صمّون` le petit
+  pain (t. 15) descendent à l'akkadien — le second par le grec
+  σεμίδαλις et l'araméen, et l'ido écrivait au même renvoi `semli`,
+  qui est le *Semmel* allemand, **du même mot akkadien arrivé par
+  l'autre bout de l'Europe**. `التمساح` le crocodile (t. 16) descend au
+  copte, donc à l'égyptien ancien. Le temps, la nourriture, une bête du
+  Nil.
+- **Des mots sortis et revenus** : `المقهى` (t. 13) est le café de
+  l'Europe entière ; `الترسانة` et `الأميرال` (t. 14) sont partis puis
+  rentrés ; `القيسريّة` (t. 15), la halle, est le nom de César resté
+  sur les plaques d'Alep. Et `الشطرنج` (t. 13) est **l'étape du milieu
+  de la route dont la colonne gujaratie avait trouvé le départ** :
+  chaturanga → شطرنج → scacchi, échecs, chess.
+- **Le mot que la voisine lit autrement.** Le seul alinéa du livret qui
+  aligne la poire, la prune et la pêche (t. 15, alinéa 9) écrit en
+  levantin إجّاص، خوخ، درّاق ; l'égyptien du même relevé écrirait
+  كمثرى، برقوق، خوخ. **Les deux colonnes emploient خوخ, et il vaut
+  prune à Beyrouth, pêche au Caire.** Un mot faux ne se verrait pas
+  ici : il se lirait.
+- **Le menu du tableau 13 passe sans une égratignure**, et c'est
+  précieux, parce que c'est lui qui avait cassé la colonne gujaratie.
+  La difficulté du gujarati n'était donc **pas** la francité du repas :
+  c'étaient les interdits. **Il aura fallu deux colonnes pour savoir ce
+  qui était difficile dans la première.**
+
+#### Une règle suspendue en le disant
+
+L'alinéa 5 du tableau 16 — la bataille de soldats de plomb — est **le
+seul endroit de la colonne écrit en arabe standard, exprès**. Le siège,
+le bombardement, l'assaut, la sortie, l'armistice, le traité de paix
+n'ont aucune forme dialectale : on ne raconte pas une guerre en
+levantin, on la raconte en fusha, parce que c'est la langue des
+communiqués. La colonne le fait et l'inscrit dans son en-tête : **une
+règle qu'on suspend en le disant vaut mieux qu'une règle qu'on trahit
+en silence.**
+
+Et la dernière tentation a été refusée. Le théâtre de marionnettes du
+tableau 16 (41) et ses trois personnages appellent de toutes leurs
+forces `كراكوز`, le Karagöz du théâtre d'ombres ottoman, que tout le
+monde connaît à Damas et à Alep. **Ce n'est pas ce que la planche
+montre.** On écrit donc مسرح العرايس et les trois noms transcrits : *on
+modernise la langue, jamais les choses* — et la règle se vérifie mieux
+au dernier tableau qu'au premier, parce qu'au dernier on sait
+exactement ce qu'on perd.
+
+Enfin le titre du seizième tableau n'a pas eu besoin d'être traduit :
+`البازار`. La colonne gujaratie avait fait la même trouvaille au même
+tableau avec `બજાર`, et le français de Rochelle écrit *bazar* sans
+s'apercevoir qu'il écrit du persan. **Trois colonnes et l'original sur
+un seul mot, et c'est le dernier titre du livret.**
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -1985,7 +2100,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 45 colonnes traduites
+    python3 outils/kolonoj.py            # les 46 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des

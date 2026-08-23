@@ -779,8 +779,12 @@ LINGUI = {
     # forme parlee. Le danger n'est donc pas qu'un mot etranger se
     # glisse : c'est que la main, en ecrivant, remonte toute seule
     # vers le registre qu'on lui a appris a l'ecole. Les regles
-    # visent les deux cotes a la fois — huit contre le standard,
-    # cinq contre l'egyptien.
+    # visent les deux cotes a la fois — DOUZE contre le standard,
+    # SEPT contre l'egyptien, une contre les lettres persanes, vingt
+    # en tout. (Ce commentaire a d'abord annonce « huit » et « cinq » :
+    # c'etait le compte du brouillon, avant que les tableaux 1 a 16
+    # n'en fassent ajouter. Recompte a la main sur la liste
+    # ci-dessous.)
     #
     # TROIS FORMES NE SONT DELIBEREMENT PAS RELEVEES, et il faut le
     # dire ici sous peine de les reprendre plus tard. « كيف » est
@@ -805,7 +809,7 @@ LINGUI = {
                                             "particule interrogative"),
         (_arb("يوجد", "توجد"), "في"),
         (_arb("أيضًا", "أيضاً"), "كمان"),
-        # LES CINQ EGYPTIENNES. « ده » et « دي » sont les
+        # LES SEPT EGYPTIENNES. « ده » et « دي » sont les
         # demonstratifs du Caire, « إزاي » son comment, « دلوقتي »
         # son maintenant, « عايز » son vouloir : rien de tout cela
         # ne se dit de Beyrouth a Amman.
