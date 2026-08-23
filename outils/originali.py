@@ -748,9 +748,83 @@ QUAL_DETALO = 74
 # « PIANOS » du batiment (10) du tableau 14 s'y lisait moins bien que
 # sur le PDF d'origine. Moins de points, plus de qualite : le fichier
 # reste plus leger que celui d'un fac-simile.
-def servir(cle, neta, verbeux=True, qual_detalo=None):
+# -------------------------------------------------------------------
+#  LE TON : RENDRE SON NOIR A LA PLANCHE
+# -------------------------------------------------------------------
+#  LES QUATORZE PLANCHES EN GRIS N'AVAIENT PAS DE NOIR. Leur encre la
+#  plus sombre s'arretait entre 45 et 65 sur 255, et au plus un point
+#  sur dix mille descendait sous 40 -- quand les deux planches en
+#  couleur, servies a cote d'elles dans la meme galerie, descendent a
+#  11 et 13 avec trois a quatre points sur cent vraiment noirs. C'est
+#  ce voisinage que l'oeil lisait comme de la paleur.
+#
+#  CE N'ETAIT PAS NOTRE TRAITEMENT : netigar redresse et rogne, il ne
+#  touchait pas au ton. La paleur vient des numerisations d'origine.
+#
+#  ON ETIRE DONC ENTRE DEUX CENTILES, planche par planche -- les
+#  numerisations different trop pour un reglage commun. Le point noir
+#  au centile 0,05, le point blanc au centile 99,5.
+#
+#  LE POINT BLANC A ETE LE POINT DISCUTE, et la mesure a tranche contre
+#  l'intuition. Le deplacer ecrase six points sur mille au blanc, contre
+#  trois avant : on a d'abord cru que c'etait le grain du papier qui
+#  partait. Le releve dit autre chose. Le gradient moyen la ou l'on
+#  ecrase vaut 16 a 18, soit celui du reste de la planche ; deux points
+#  sur mille seulement de ces points-la n'ont aucun voisin different
+#  d'eux. Ce ne sont pas des aplats de papier : c'est le bord CLAIR des
+#  traits. Les blanchir ne supprime aucune ligne, cela detache la ligne
+#  de son papier. Le compte des gradients faibles en zone claire --
+#  la hachure fine, ce qu'on risquait de perdre -- le confirme : il
+#  monte a 107-111 pour cent apres etirement, exactement comme si l'on
+#  gardait le blanc a 255.
+#
+#  ET GARDER LE BLANC A 255 COUTAIT PLUS QUE CELA N'EPARGNAIT. Le
+#  papier median tombait alors de 227 a 217, quand le fond de la page
+#  de lecture vaut 250 : la planche se posait sur la page comme un
+#  rectangle plus gris qu'avant. Au centile 99,5 il reste a 224.
+#
+#  APPROCHE ESSAYEE ET ABANDONNEE : un raccord souple au lieu d'un
+#  ecretage franc, pour ne rien ecraser du tout. C'est la seule des
+#  quatre variantes qui abime le trace -- la hachure fine tombe a
+#  86-93 pour cent, parce que la courbe tasse justement le haut du
+#  signal, la ou vit le trait clair. Retiree.
+#
+#  ON NE VA PAS PLUS LOIN QUE LE CENTILE 99,5, et cela s'est mesure
+#  aussi : au centile 98 la hachure fine tient encore (103-108 %), au
+#  centile 96 elle commence a tomber (91 % au tableau 7), au centile 92
+#  elle s'effondre (63 %). Le gain d'ecart-type entre 99,5 et 98 ne vaut
+#  que deux pour cent. On s'arrete ou le gain cesse de payer.
+#
+#  LES DEUX PLANCHES EN COULEUR NE PASSENT PAS PAR LA : kolorigo.py
+#  appelle servir() avec tono=False. Elles ont deja leur noir.
+TONO_NOIR = 0.05
+TONO_BLANC = 99.5
+
+
+def tonigar(im):
+    """Etire le ton entre deux centiles. Rend l'image et les bornes."""
+    a = np.asarray(im.convert("L")).astype(np.float32)
+    noir = float(np.percentile(a, TONO_NOIR))
+    blanc = float(np.percentile(a, TONO_BLANC))
+    if blanc - noir < 1.0:
+        return im, None
+    b = np.clip((np.asarray(im).astype(np.float32) - noir) / (blanc - noir),
+                0, 1) * 255.0
+    return (Image.fromarray(np.round(b).astype(np.uint8), mode=im.mode),
+            {"noir": round(noir, 1), "blanc": round(blanc, 1),
+             "faktoro": round(255.0 / (blanc - noir), 4)})
+
+
+def servir(cle, neta, verbeux=True, qual_detalo=None, tono=True):
     """Les deux WebP, tires de la planche d'origine nettoyee."""
     im = Image.open(neta).convert("RGB")
+    par_tono = None
+    if tono:
+        im, par_tono = tonigar(im)
+        if verbeux and par_tono:
+            print(f"  ton : noir {par_tono['noir']:.0f}, "
+                  f"blanc {par_tono['blanc']:.0f}, "
+                  f"facteur x{par_tono['faktoro']:.3f}")
     GRAVURI = RACINE / "gravuri"
     taille = {}
     for nom, largeur, qualite in (("vido", LARGE_VIDO, QUAL_VIDO),
@@ -773,6 +847,8 @@ def servir(cle, neta, verbeux=True, qual_detalo=None):
                  "koloro": False, "fonto": Path(neta).name,
                  "origino": True,
                  "vido": taille["vido"], "detalo": taille["detalo"]}
+    if par_tono:
+        tout[cle]["tono"] = par_tono
     cat.write_text(json.dumps(tout, indent=1, sort_keys=True,
                               ensure_ascii=False) + "\n", encoding="utf-8")
 
@@ -805,7 +881,37 @@ def reprendre(cle, chemin, force=False):
           f"puis relancer numeri.py et html.py.")
 
 
+# -------------------------------------------------------------------
+#  REPRENDRE LE TON DES PLANCHES EN GRIS
+# -------------------------------------------------------------------
+#  Le ton se calcule a chaque service, depuis le PNG sans perte : ce
+#  verbe ne fait donc que re-servir. Il est idempotent -- on peut le
+#  relancer sans empiler deux etirements l'un sur l'autre, parce que
+#  rien n'est jamais ecrit dans le PNG d'origine.
+#
+#      python3 outils/originali.py toni
+def toni():
+    cat = json.loads((RACINE / "gravuri" / "gravuri.json")
+                     .read_text(encoding="utf-8"))
+    kovri = RACINE / "originali" / "kovri"
+    n = 0
+    for cle in sorted(cat):
+        if cat[cle].get("koloro"):
+            print(f"{cle} : en couleur, laissee telle quelle")
+            continue
+        neta = kovri / f"{cle}-neta.png"
+        if not neta.exists():
+            print(f"{cle} : {neta.name} introuvable, passee")
+            continue
+        print(f"{cle} :")
+        servir(cle, neta)
+        n += 1
+    print(f"\n{n} planches re-servies avec leur ton redresse.")
+
+
 def main(args):
+    if args and args[0] == "toni":
+        return toni()
     if len(args) < 2:
         raise SystemExit(__doc__)
     verbe, cle, chemin = args[0], args[1], args[2]
@@ -824,6 +930,8 @@ def main(args):
                             + "\n", encoding="utf-8")
     elif verbe == "servir":
         servir(cle, chemin)
+    elif verbe == "toni":
+        toni()
     elif verbe == "transporti":
         transporti(cle, chemin, force="force" in args)
     elif verbe == "caler":

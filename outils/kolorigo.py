@@ -404,7 +404,12 @@ def main(args):
     dest = kolorigi(cle, pdf, essai="--essai" in args)
     if "--essai" in args:
         return
-    O.servir(cle, dest, qual_detalo=QUAL_KOLORO)
+    # LES DEUX PLANCHES EN COULEUR GARDENT LEUR TON. L'etirement
+    # entre centiles rend son noir a une numerisation grise qui n'en
+    # a pas ; celles-ci en ont deja -- elles descendent a 11 et 13,
+    # avec trois a quatre points sur cent sous la valeur 40. Les
+    # etirer par-dessus ne ferait que boucher les ombres.
+    O.servir(cle, dest, qual_detalo=QUAL_KOLORO, tono=False)
     cat = RACINE / "gravuri" / "gravuri.json"
     tout = json.loads(cat.read_text(encoding="utf-8"))
     tout[cle]["koloro"] = True
