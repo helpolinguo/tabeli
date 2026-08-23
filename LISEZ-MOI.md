@@ -55,6 +55,8 @@ par alinéa.
 | Traduction gujaratie (`texto/gu/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — colonne **à tête finale**, où l'outil qui compte est `parigi.py`, lu *avant* d'écrire : le génitif gujarati pose le possesseur devant le possédé et retourne à lui seul la moitié des couples de renvois (§ 8) |
 | Traduction levantine (`texto/apc/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont les **deux voisines sont la même langue qu'elle** (l'arabe standard, l'égyptien) : le danger n'y est pas le mot étranger mais la main qui remonte toute seule vers le registre de l'école (§ 8) |
 | Traduction bhojpourie (`texto/bho/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — **dernière des vingt-neuf langues**, et seule colonne dont la voisine nie qu'elle existe : le hindi l'administre comme un de ses dialectes, et il n'y a donc **aucune défense possible au caractère** — c'est le verbe qui les sépare (§ 8) |
+| Traduction polonaise (`texto/pl/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — **hors des deux listes** (ni les vingt-neuf d'Ethnologue, ni les dix-sept pays de l'ido) : elle est là parce qu'on l'a demandée. Sa voisine est le tchèque, et la défense se joue sur les diacritiques : `piec` est un mot polonais (le four, cuire) quand `pięć` est le chiffre cinq, si bien que la règle « accent perdu » n'est sûre que là où la forme nue n'est pas déjà un mot (§ 9) |
+| Traduction afrikaans (`texto/af/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — **hors des deux listes**, comme le polonais. Sa voisine est le néerlandais, dont elle sort : le contrôle vise donc l'orthographe, `ij` pour `y`, `z` initial pour `s`, `sch-` pour `sk-`, `niet` pour `nie`, et la double négation. Une seule exemption, `strooijonker`, où l'`ij` est une couture de composé et non un digramme (§ 9) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`), les substitutions de numéros du français (`outils/renvoji.py fr`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -873,6 +875,8 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/gu/10-kostak-01.tex … 25-kostak-16.tex     (traduction)
     texto/apc/10-lawha-01.tex … 25-lawha-16.tex      (traduction)
     texto/bho/10-nakasa-01.tex … 25-nakasa-16.tex    (traduction)
+    texto/pl/10-tablica-01.tex … 25-tablica-16.tex   (traduction)
+    texto/af/10-tabel-01.tex … 25-tabel-16.tex      (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
