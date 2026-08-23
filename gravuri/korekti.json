@@ -19,6 +19,39 @@
   "pointer le savon sur la femme de chambre. Une entree dont la cle est",
   "celle d'un BLOC ne vaut donc que dans ce bloc.",
   "",
+  "ET LES SEPT RENVOIS OU LE FRANCAIS ET L'IDO NE DISENT PAS LE MEME",
+  "NUMERO. La planche est LA MEME GRAVURE dans les deux livrets, et sa",
+  "legende chiffree aussi ; quand les deux textes divergent, l'un des",
+  "deux ateliers s'est trompe, et la page de lecture doit montrer",
+  "l'objet, non repeter le chiffre. Les transcriptions le disent",
+  "elles-memes : texto/fr/18-tableau-09.tex porte « ce sont des ecarts",
+  "REELS du fac-simile, releves tels quels, non des erreurs de",
+  "transcription », et texto/fr/24-tableau-15.tex que le (32) des petits",
+  "pains est « net a l'agrandissement, donc conserve tel quel plutot que",
+  "corrige ». La source ne bouge donc pas ; la lecture, si.",
+  "",
+  "  bloc            francais   ido   ce que le francais montrait",
+  "  t03-c1-17-1        (16)     (46)  rien : la scene 1 n'a pas de 16",
+  "  t05-01-20         (140)    (146)  rien : la planche n'a pas de 140",
+  "  t09-c1-15-2        (11)     (41)  le bois de sapin, pour le bohemien",
+  "  t09-c1-15-2        (14)     (44)  les ruines, pour l'ours",
+  "  t09-c1-17-1        (19)     (49)  les villas, pour le paturage",
+  "  t14-07-2           (24)     (21)  le bureau de tabac, pour l'appareil",
+  "  t15-13-1           (32)     (82)  l'epicerie, pour les petits pains",
+  "",
+  "CINQ MONTRAIENT LE MAUVAIS OBJET SANS RIEN DIRE, et c'est pire que",
+  "les deux qui ne montraient rien : un gros plan vide se remarque, un",
+  "gros plan faux se croit. Le tableau 9 en porte trois a lui seul, et",
+  "les quatre de la premiere colonne ont la meme forme — un 4 lu ou",
+  "compose 1. On ne peut pas savoir de quel atelier vient la faute, et",
+  "cela ne change rien a ce qu'il faut montrer.",
+  "",
+  "AUCUNE DE CES SEPT CORRECTIONS N'EST BORNEE A UNE LANGUE, et il faut",
+  "dire pourquoi c'est sans danger : mesure faite sur les quarante-neuf",
+  "colonnes, aucune autre que le francais ne porte le numero fautif dans",
+  "le bloc ou il se corrige. Les traductions suivent l'ido — renvoji.py",
+  "l'exige — et l'ido porte le bon numero partout ici.",
+  "",
   "POURQUOI LA SOURCE NE BOUGE PAS, ici comme ailleurs : la ligne du",
   "fac-simile est composee pour « (6) ». Mise a « (16) » dans le releve,",
   "elle deborde de 3,2 pt — pdflatex le dit — et le PDF cesse d'etre la",
@@ -151,10 +184,16 @@
  "t03": {
   "t03-c1-10-1": {
    "24": "21"
+  },
+  "t03-c1-17-1": {
+   "16": "46"
   }
  },
  "t05": {
-  "150": "50"
+  "150": "50",
+  "t05-01-20": {
+   "140": "146"
+  }
  },
  "t06": {
   "t06-c1-06-1": {
@@ -686,5 +725,24 @@
     "chauve-souris"
    ]
   ]
+ },
+ "t09": {
+  "t09-c1-15-2": {
+   "11": "41",
+   "14": "44"
+  },
+  "t09-c1-17-1": {
+   "19": "49"
+  }
+ },
+ "t14": {
+  "t14-07-2": {
+   "24": "21"
+  }
+ },
+ "t15": {
+  "t15-13-1": {
+   "32": "82"
+  }
  }
 }

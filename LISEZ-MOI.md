@@ -56,7 +56,7 @@ par alinéa.
 | Traduction levantine (`texto/apc/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont les **deux voisines sont la même langue qu'elle** (l'arabe standard, l'égyptien) : le danger n'y est pas le mot étranger mais la main qui remonte toute seule vers le registre de l'école (§ 8) |
 | Traduction bhojpourie (`texto/bho/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — **dernière des vingt-neuf langues**, et seule colonne dont la voisine nie qu'elle existe : le hindi l'administre comme un de ses dialectes, et il n'y a donc **aucune défense possible au caractère** — c'est le verbe qui les sépare (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
-| Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
+| Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`), les substitutions de numéros du français (`outils/renvoji.py fr`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
 Le projet compile en permanence :
 
@@ -354,6 +354,18 @@ nu, et elle est sûre parce que le relevé le montre : aucune planche ne
 mêle les deux formes, ses numéros sont **tous** préfixés ou **tous** nus.
 Une colonne complète passe ainsi de 1 644 boutons à 1 733. (Le premier report annonçait 1 642 → 1 731 : le total avait été additionné à la main sur la liste des seize tableaux au lieu d'être relu dans le fichier. Deux de plus, et c'est le fichier qui a raison.)
 
+**Et cinq gros plans montraient un autre objet, sans rien manquer à
+l'écran.** Le fac-similé français écrit sept fois un numéro que la
+planche donne à autre chose — `(24)` pour `(21)`, `(32)` pour `(82)`,
+`(11)` et `(14)` pour `(41)` et `(44)`… Deux de ces numéros n'existent
+pas sur leur planche et n'ouvraient donc rien ; les cinq autres
+ouvraient **le gros plan d'un autre objet**, avec un cadre bien posé et
+un nom sous le cadre. Aucun contrôle ne les voyait : `renvoji.py`
+comparait les traductions à l'ido et le français en était exclu. Voir
+le dixième contrôle (§ 9). Les sept sont corrigées dans
+`gravuri/korekti.json` — la source, elle, garde ce que Rochelle a
+imprimé.
+
 **Une mesure seule ne dit rien ; il faut les trente.** Le balayage de
 registre de 2026 a été mené colonne par colonne, mais chaque chiffre a été
 lu contre les vingt-neuf autres — c'est la comparaison qui désigne la
@@ -495,6 +507,35 @@ ont été renumérotées sur la numérotation ido, prise comme référence ;
 six autres cas isolés (tableaux 1, 2, 6, 7, 9, 11) ont été repris au
 fac-similé. Il reste **un** rang mal apparié sur 524 — une *Nota*
 pédagogique propre au français.
+
+### Le gros plan : un recadrage, jamais un chargement
+
+Cliquer sur un `(N)` ouvre **sous l'alinéa** — et non par-dessus — un
+gros plan de l'objet N. Ce n'est pas une image de plus : c'est
+l'**image de détail de la planche**, `t<nn>-apar-1-detalo.webp`, posée
+en fond du cadre et recadrée par `background-size` et
+`background-position`. La position vient de `gravuri/numeri.json`, en
+fractions de la planche, converties en points d'écran au moment de
+poser le cadre.
+
+**Une seule image par planche, quel que soit le nombre de gros plans.**
+C'est la même image que le plein écran ouvre ; une fois venue, elle ne
+revient plus. Mesuré au navigateur : le premier gros plan d'une planche
+demande une image, tous les suivants **zéro**. Le cadre se déplace au
+doigt ou à la souris, et un seul gros plan reste ouvert à la fois.
+
+**Il n'y a de bouton que là où l'on sait montrer quelque chose.** La
+fonction qui compose le début d'un bouton rend `None` quand le numéro
+n'a pas de position : on ne promet pas un gros plan qu'on ne saurait pas
+ouvrir. Ce silence est utile — il évite un bouton mort — mais il a un
+prix, payé deux fois : quatre-vingt-neuf gros plans manquants au tableau
+11 (§ 5) et deux renvois français sans bouton, qu'aucun contrôle n'a
+signalés (§ 9).
+
+Vérifié au navigateur sur les huit renvois corrigés du tableau 3 au
+tableau 15 : le cadre s'ouvre après le rang, il porte le nom de l'objet
+et son numéro de tableau, et la vignette photographiée montre bien le
+chiffre visé au milieu de l'objet qu'il annonce.
 
 ### Disposition
 
@@ -2308,6 +2349,78 @@ ni la mise en page : **il regarde l'octet**.
 l'ont prouvé au tableau 7 et au tableau 13 égyptiens (§ 8). Les deux
 sont exemptés par leur forme **exacte**, jamais par le mot : un contrôle
 qu'on désarme en bloc ne contrôle plus rien.
+
+---
+
+### Le dixième contrôle : les substitutions du français
+
+    python3 outils/renvoji.py fr     # les substitutions
+    python3 outils/renvoji.py        # elles passent avec les autres
+
+`renvoji.py` compare la **suite** des renvois d'une traduction à celle
+de l'ido. Le français en était exclu, et pour une bonne raison écrite
+dans le fichier : ce n'est pas une traduction mais le relevé d'une
+**autre édition**, où Rochelle ordonne ses phrases comme il l'entend —
+quarante-cinq blocs y divergent, pas un n'est une faute.
+
+**« Pas ce contrôle-ci » avait fini par vouloir dire « aucun ».** Le
+français est resté seul non contrôlé pendant tout le projet, et sept
+substitutions y ont vécu jusqu'à la tâche 3 :
+
+| tableau | le fac-similé français dit | la planche porte | ce que le gros plan montrait |
+|---|---|---|---|
+| 3 | (24) | (21) ruche | le bureau de tabac — sur un autre tableau |
+| 3 | (16) | (46) bonnet | rien : le (16) du tableau 3 n'a pas de position |
+| 5 | (140) | (146) manœuvre | rien : le (140) n'existe pas sur la planche |
+| 9 | (11) | (41) bohémien | bois de sapin |
+| 9 | (14) | (44) ours | ruines |
+| 9 | (19) | (49) pâturage | villas |
+| 14 | (24) | (21) appareil photographique | bureau de tabac |
+| 15 | (32) | (82) petits pains | épicerie |
+
+Cinq ouvraient **en silence** le gros plan d'un autre objet : c'est la
+pire des deux façons de se tromper, parce que rien ne manque à l'écran.
+
+**La faute d'un alinéa salissait le bouton juste d'un autre alinéa.**
+`objekti.json` range les noms d'objets par **numéro**, non par bloc :
+le « (24) » écrit pour « (21) » au tableau 14 a inscrit *appareil
+photographique* sous le numéro 24, et le vrai (24) — le bureau de tabac,
+sept alinéas plus bas — a porté ce nom-là dans son propre bouton. Deux
+objets fantômes s'étaient ainsi glissés dans le fichier (1710 au lieu de
+1708). Une erreur de relevé ne reste pas où elle est écrite.
+
+**Le contrôle tient en une ligne : même compte, valeurs différentes.**
+
+    if sum(a.values()) == sum(b.values()) and a != b:
+
+C'est toute la règle, et sa force est de ne rien demander d'autre.
+Deux autres formulations ont été essayées et mesurées avant celle-ci :
+
+| ce qu'on compare | ce que ça donne |
+|---|---|
+| les **suites** de renvois, bloc à bloc | 31 blocs signalés, dont les quarante-cinq réordonnancements légitimes et le bruit des blocs que le français coupe en deux là où l'ido écrit `suite` — inutilisable |
+| les **ensembles** de numéros, planche par planche | 2 signalements sur 7 : un « 24 » mis pour « 21 » existe ailleurs sur la même planche et se fond dans l'ensemble |
+| les **comptes**, bloc à bloc | 7 sur 7, et zéro bruit |
+
+L'égalité des comptes écarte d'un coup tout ce qu'il aurait fallu
+déclarer : le découpage différent, l'appel de note `(1)` qu'une seule
+des deux éditions porte, le bloc absent d'un côté. Ces cas-là **changent
+le compte** ; une substitution, jamais.
+
+**On corrige les deux colonnes, pas la seule qu'on soupçonne.** Le
+`(150)` du tableau 5 est une faute de l'**ido**, et `korekti.json` la
+répare ; ne passer les corrections que sur le français faisait
+reparaître en substitution ce qu'on venait de corriger.
+
+Le contrôle est vérifié par la panne : on retire du fichier de
+corrections l'entrée `t15-13-1`, il ressort `t15-13-1 : io [82] / fr
+[32]`. Sinon il annonce `fr : 587 blocs, 0 substitution`.
+
+**La source ne bouge pas.** Les sept divergences sont réelles : le
+fac-similé français porte bien `(24)`, `(16)`, `(140)`, `(11)`, `(14)`,
+`(19)`, `(32)`. Elles sont donc corrigées dans `gravuri/korekti.json`,
+qui n'agit que sur la page de lecture, et l'en-tête du fichier les
+nomme une à une.
 
 ---
 

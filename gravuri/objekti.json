@@ -17799,59 +17799,6 @@
    "de": [],
    "it": []
   },
-  "c1:16": {
-   "io": [],
-   "fr": [
-    "bonnet"
-   ],
-   "fr-CA": [],
-   "en": [],
-   "es": [],
-   "ru": [],
-   "zh": [],
-   "ar": [],
-   "arz": [],
-   "hi": [],
-   "mr": [],
-   "te": [],
-   "ko": [],
-   "ta": [],
-   "ur": [],
-   "id": [],
-   "jv": [],
-   "fa": [],
-   "ha": [],
-   "gu": [],
-   "apc": [],
-   "bho": [],
-   "pt": [],
-   "bn": [],
-   "ja": [],
-   "pnb": [],
-   "pa": [],
-   "tr": [],
-   "eo": [],
-   "ia": [],
-   "nl": [],
-   "sv": [],
-   "fi": [],
-   "ca": [],
-   "oc": [],
-   "uk": [],
-   "eu": [],
-   "ro": [],
-   "ga": [],
-   "gl": [],
-   "cs": [],
-   "lt": [],
-   "lb": [],
-   "rm": [],
-   "et": [],
-   "vi": [],
-   "yue": [],
-   "de": [],
-   "it": []
-  },
   "c1:17": {
    "io": [
     "platano"
@@ -21039,7 +20986,9 @@
    "io": [
     "kofio"
    ],
-   "fr": [],
+   "fr": [
+    "bonnet"
+   ],
    "fr-CA": [
     "coiffe"
    ],
@@ -58268,64 +58217,13 @@
    "de": [],
    "it": []
   },
-  "140": {
-   "io": [],
-   "fr": [
-    "manœuvre"
-   ],
-   "fr-CA": [],
-   "en": [],
-   "es": [],
-   "ru": [],
-   "zh": [],
-   "ar": [],
-   "arz": [],
-   "hi": [],
-   "mr": [],
-   "te": [],
-   "ko": [],
-   "ta": [],
-   "ur": [],
-   "id": [],
-   "jv": [],
-   "fa": [],
-   "ha": [],
-   "gu": [],
-   "apc": [],
-   "bho": [],
-   "pt": [],
-   "bn": [],
-   "ja": [],
-   "pnb": [],
-   "pa": [],
-   "tr": [],
-   "eo": [],
-   "ia": [],
-   "nl": [],
-   "sv": [],
-   "fi": [],
-   "ca": [],
-   "oc": [],
-   "uk": [],
-   "eu": [],
-   "ro": [],
-   "ga": [],
-   "gl": [],
-   "cs": [],
-   "lt": [],
-   "lb": [],
-   "rm": [],
-   "et": [],
-   "vi": [],
-   "yue": [],
-   "de": [],
-   "it": []
-  },
   "146": {
    "io": [
     "Manulaboristo"
    ],
-   "fr": [],
+   "fr": [
+    "manœuvre"
+   ],
    "fr-CA": [
     "manœuvre"
    ],
@@ -112553,8 +112451,7 @@
     "bosko de abieti"
    ],
    "fr": [
-    "bois de sapin",
-    "bohémien"
+    "bois de sapin"
    ],
    "fr-CA": [
     "bois de sapins"
@@ -112917,8 +112814,7 @@
     "ruinaji"
    ],
    "fr": [
-    "ruines",
-    "ours"
+    "ruines"
    ],
    "fr-CA": [
     "ruines"
@@ -113513,8 +113409,7 @@
   "c1:19": {
    "io": [],
    "fr": [
-    "villas",
-    "pâturage"
+    "villas"
    ],
    "fr-CA": [
     "villas"
@@ -116079,7 +115974,9 @@
    "io": [
     "cigano"
    ],
-   "fr": [],
+   "fr": [
+    "bohémien"
+   ],
    "fr-CA": [
     "Tsigane"
    ],
@@ -116432,7 +116329,9 @@
    "io": [
     "kateno urso"
    ],
-   "fr": [],
+   "fr": [
+    "ours"
+   ],
    "fr-CA": [
     "ours"
    ],
@@ -117029,7 +116928,9 @@
    "io": [
     "pastureyo"
    ],
-   "fr": [],
+   "fr": [
+    "pâturage"
+   ],
    "fr-CA": [
     "pâturage"
    ],
@@ -170573,7 +170474,9 @@
    "io": [
     "fotografilo"
    ],
-   "fr": [],
+   "fr": [
+    "appareil photographique"
+   ],
    "fr-CA": [
     "appareil photo"
    ],
@@ -170935,7 +170838,6 @@
     "tabakvendeyo"
    ],
    "fr": [
-    "appareil photographique",
     "bureau de tabac"
    ],
    "fr-CA": [
@@ -183553,8 +183455,7 @@
     "spic-venderio"
    ],
    "fr": [
-    "épicerie",
-    "petits pains"
+    "épicerie"
    ],
    "fr-CA": [
     "épicerie"
@@ -189442,7 +189343,9 @@
    "io": [
     "semli"
    ],
-   "fr": [],
+   "fr": [
+    "petits pains"
+   ],
    "fr-CA": [
     "petits pains au lait"
    ],

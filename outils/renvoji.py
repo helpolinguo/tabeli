@@ -27,17 +27,35 @@
 #  et le francais a raison. On les nomme ci-dessous avec leur raison,
 #  et le controle les passe. Tout le reste est une faute.
 #
+#  ET LE FRANCAIS, QU'ON NE CONTROLE PAS EN ORDRE, SE CONTROLE EN
+#  VALEUR. Rochelle ordonne ses phrases comme il l'entend, mais il
+#  vise les MEMES OBJETS : le numero grave sur la planche est le meme
+#  pour les deux editions. Quand un bloc porte de part et d'autre le
+#  meme NOMBRE de renvois et pas les memes, ce n'est plus un ordre
+#  different, c'est une SUBSTITUTION — et sept dormaient la depuis le
+#  premier relevé : 24 pour 21, 16 pour 46, 140 pour 146, 11 pour 41,
+#  14 pour 44, 19 pour 49, 32 pour 82. Cinq ouvraient en silence le
+#  gros plan d'un autre objet ; deux n'ouvraient rien. Voir
+#  substitui().
+#
 #  USAGE
 #      python3 outils/renvoji.py            # toutes les colonnes
 #      python3 outils/renvoji.py hi         # une seule
+#      python3 outils/renvoji.py fr         # les substitutions
 # ===================================================================
 
 import json
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
+
+_KOR = RACINE / "gravuri" / "korekti.json"
+KOREKTI = ({k: v for k, v in
+            json.loads(_KOR.read_text(encoding="utf-8")).items()
+            if not k.startswith("_")} if _KOR.exists() else {})
 
 # Le nom que chaque colonne donne a « tableau » dans ses fichiers.
 DOSSIER = {"fr": "tableau",
@@ -102,7 +120,11 @@ DOSSIER = {"fr": "tableau",
 # LE FRANCAIS N'EST PAS UNE TRADUCTION. C'est le releve d'une AUTRE
 # edition, et Rochelle ordonne ses phrases comme il l'entend :
 # quarante-cinq blocs y divergent de l'ido, et pas un n'est une faute.
-# On ne le controle donc pas.
+# On ne lui applique donc pas le controle d'ordre — mais « pas celui-ci »
+# n'a jamais voulu dire « aucun », et c'est pourtant ce que cette ligne
+# a fini par signifier : le francais est reste seul non controle, et
+# sept substitutions y ont vecu jusqu'a la tache 3. Il a le sien,
+# substitui(), et main() le passe avec les autres.
 TRADUKTI = [k for k in DOSSIER if k != "fr"]
 
 # ECARTS DECLARES : {cle de bloc: raison}
@@ -144,6 +166,52 @@ def blocs(dossier, mot):
     return {k: "\n".join(v) for k, v in out.items()}
 
 
+def korekti_renvojo(cle):
+    """{lu: a lire} pour UN BLOC — la meme lecture que html.py fait de
+    gravuri/korekti.json : les corrections du tableau entier, plus
+    celles que ce bloc-ci porte seul."""
+    t = KOREKTI.get(cle[:3], {})
+    out = {k: v for k, v in t.items() if isinstance(v, str)}
+    out.update(t.get(cle, {}))
+    return out
+
+
+def substitui(verbeux=True):
+    """Les numeros ou le francais et l'ido ne montrent pas le meme objet.
+
+    LE MEME COMPTE ET PAS LES MEMES VALEURS, c'est une substitution.
+    C'est tout le controle, et sa force tient a ce qu'il ne demande
+    rien d'autre. Comparer les SUITES aurait signale les quarante-cinq
+    blocs que Rochelle reordonne ; comparer les ENSEMBLES par planche
+    n'en voyait que deux sur sept, parce qu'un « 24 » mis pour « 21 »
+    existe ailleurs sur la meme planche et se fond dans l'ensemble.
+    L'egalite des comptes ecarte d'un coup tout le bruit — le bloc que
+    le francais coupe en deux quand l'ido le coupe en « suite », l'appel
+    de note « (1) » qu'une seule des deux editions porte — sans qu'on
+    ait rien a declarer : ces cas-la changent le compte.
+
+    ON CORRIGE LES DEUX COLONNES, non la seule qu'on soupconne. Le
+    « (150) » du tableau 5 est une faute de l'IDO, et korekti.json la
+    repare ; ne passer la correction que sur le francais faisait
+    reapparaitre en substitution ce qui venait d'etre corrige.
+    """
+    io = blocs("io", "tabelo")
+    fr = blocs("fr", "tableau")
+    faux = []
+    for k, v in fr.items():
+        if k in APARTA or k not in io:
+            continue
+        m = korekti_renvojo(k)
+        a = Counter(m.get(x, x) for x in renvois(io[k]))
+        b = Counter(m.get(x, x) for x in renvois(v))
+        if sum(a.values()) == sum(b.values()) and a != b:
+            faux.append((k, sorted(a - b), sorted(b - a)))
+    if verbeux:
+        for k, a, b in faux:
+            print(f"  {k}\n     io {a}\n     fr {b}")
+    return len(fr), len(faux)
+
+
 def controlar(lg, verbeux=True):
     io = blocs("io", "tabelo")
     tr = blocs(lg, DOSSIER[lg])
@@ -173,6 +241,18 @@ def controlar(lg, verbeux=True):
 def main(args):
     lgs = args or TRADUKTI
     total = 0
+    # LE FRANCAIS PASSE EN PREMIER ET PAR UN AUTRE CONTROLE. On le
+    # nomme comme les autres — « renvoji.py fr » — mais ce qu'on lui
+    # demande n'est pas l'ordre : c'est que les deux editions montrent
+    # le meme objet.
+    if not args or "fr" in args:
+        n, f = substitui()
+        print(f"  fr : {n:4d} blocs, {f} substitution{'s' if f > 1 else ''}")
+        total += f
+        lgs = [lg for lg in lgs if lg != "fr"]
+        if args and not lgs:
+            print(f"\n  {len(APARTA)} ecarts declares, passes sans rien dire.")
+            return 1 if total else 0
     for lg in lgs:
         if lg not in DOSSIER:
             raise SystemExit(f"  langue inconnue : {lg}")
