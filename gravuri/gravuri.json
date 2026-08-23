@@ -4,16 +4,21 @@
   "detalo": {
    "alteso": 3053,
    "largeur": 4506,
-   "okteti": 1840730
+   "okteti": 2300648
   },
   "fonto": "t01-apar-1-neta.png",
   "koloro": false,
   "largeur": 4506,
   "origino": true,
+  "tono": {
+   "blanc": 250.0,
+   "faktoro": 1.3564,
+   "noir": 62.0
+  },
   "vido": {
    "alteso": 813,
    "largeur": 1200,
-   "okteti": 236154
+   "okteti": 282048
   }
  },
  "t02-apar-1": {
@@ -21,16 +26,21 @@
   "detalo": {
    "alteso": 3020,
    "largeur": 4516,
-   "okteti": 1633032
+   "okteti": 2118348
   },
   "fonto": "t02-apar-1-neta.png",
   "koloro": false,
   "largeur": 4516,
   "origino": true,
+  "tono": {
+   "blanc": 250.0,
+   "faktoro": 1.371,
+   "noir": 64.0
+  },
   "vido": {
    "alteso": 802,
    "largeur": 1200,
-   "okteti": 223454
+   "okteti": 265434
   }
  },
  "t02-tit-0": {
@@ -54,16 +64,21 @@
   "detalo": {
    "alteso": 3057,
    "largeur": 4548,
-   "okteti": 1646212
+   "okteti": 2167594
   },
   "fonto": "t03-apar-1-neta.png",
   "koloro": false,
   "largeur": 4548,
   "origino": true,
+  "tono": {
+   "blanc": 249.0,
+   "faktoro": 1.4011,
+   "noir": 67.0
+  },
   "vido": {
    "alteso": 807,
    "largeur": 1200,
-   "okteti": 212296
+   "okteti": 257402
   }
  },
  "t04-apar-1": {
@@ -71,16 +86,21 @@
   "detalo": {
    "alteso": 3029,
    "largeur": 4525,
-   "okteti": 1959644
+   "okteti": 2474040
   },
   "fonto": "t04-apar-1-neta.png",
   "koloro": false,
   "largeur": 4525,
   "origino": true,
+  "tono": {
+   "blanc": 251.0,
+   "faktoro": 1.3564,
+   "noir": 63.0
+  },
   "vido": {
    "alteso": 803,
    "largeur": 1200,
-   "okteti": 248618
+   "okteti": 294130
   }
  },
  "t05-apar-1": {
@@ -88,16 +108,21 @@
   "detalo": {
    "alteso": 3062,
    "largeur": 4487,
-   "okteti": 1523820
+   "okteti": 1993106
   },
   "fonto": "t05-apar-1-neta.png",
   "koloro": false,
   "largeur": 4487,
   "origino": true,
+  "tono": {
+   "blanc": 249.0,
+   "faktoro": 1.3934,
+   "noir": 66.0
+  },
   "vido": {
    "alteso": 819,
    "largeur": 1200,
-   "okteti": 222058
+   "okteti": 265056
   }
  },
  "t05-apar-2": {
@@ -121,16 +146,21 @@
   "detalo": {
    "alteso": 3074,
    "largeur": 4555,
-   "okteti": 1867014
+   "okteti": 2357932
   },
   "fonto": "t06-apar-1-neta.png",
   "koloro": false,
   "largeur": 4555,
   "origino": true,
+  "tono": {
+   "blanc": 249.0,
+   "faktoro": 1.3492,
+   "noir": 60.0
+  },
   "vido": {
    "alteso": 810,
    "largeur": 1200,
-   "okteti": 254234
+   "okteti": 300620
   }
  },
  "t07-apar-1": {
@@ -138,16 +168,21 @@
   "detalo": {
    "alteso": 2998,
    "largeur": 4522,
-   "okteti": 2028672
+   "okteti": 2472146
   },
   "fonto": "t07-apar-1-neta.png",
   "koloro": false,
   "largeur": 4522,
   "origino": true,
+  "tono": {
+   "blanc": 248.0,
+   "faktoro": 1.301,
+   "noir": 52.0
+  },
   "vido": {
    "alteso": 796,
    "largeur": 1200,
-   "okteti": 269708
+   "okteti": 307452
   }
  },
  "t08-apar-1": {
@@ -155,16 +190,21 @@
   "detalo": {
    "alteso": 3012,
    "largeur": 4548,
-   "okteti": 2271282
+   "okteti": 2685750
   },
   "fonto": "t08-apar-1-neta.png",
   "koloro": false,
   "largeur": 4548,
   "origino": true,
+  "tono": {
+   "blanc": 252.0,
+   "faktoro": 1.2687,
+   "noir": 51.0
+  },
   "vido": {
    "alteso": 795,
    "largeur": 1200,
-   "okteti": 264520
+   "okteti": 299980
   }
  },
  "t09-apar-1": {
@@ -172,16 +212,21 @@
   "detalo": {
    "alteso": 3009,
    "largeur": 4511,
-   "okteti": 2379440
+   "okteti": 2857650
   },
   "fonto": "t09-apar-1-neta.png",
   "koloro": false,
   "largeur": 4511,
   "origino": true,
+  "tono": {
+   "blanc": 250.0,
+   "faktoro": 1.3077,
+   "noir": 55.0
+  },
   "vido": {
    "alteso": 800,
    "largeur": 1200,
-   "okteti": 308242
+   "okteti": 354046
   }
  },
  "t10-apar-1": {
@@ -189,16 +234,21 @@
   "detalo": {
    "alteso": 3078,
    "largeur": 4580,
-   "okteti": 1586386
+   "okteti": 2015222
   },
   "fonto": "t10-apar-1-neta.png",
   "koloro": false,
   "largeur": 4580,
   "origino": true,
+  "tono": {
+   "blanc": 250.0,
+   "faktoro": 1.3281,
+   "noir": 58.0
+  },
   "vido": {
    "alteso": 806,
    "largeur": 1200,
-   "okteti": 173850
+   "okteti": 207358
   }
  },
  "t11-apar-1": {
@@ -206,16 +256,21 @@
   "detalo": {
    "alteso": 3048,
    "largeur": 4527,
-   "okteti": 1907050
+   "okteti": 2332418
   },
   "fonto": "t11-apar-1-neta.png",
   "koloro": false,
   "largeur": 4527,
   "origino": true,
+  "tono": {
+   "blanc": 249.0,
+   "faktoro": 1.301,
+   "noir": 53.0
+  },
   "vido": {
    "alteso": 808,
    "largeur": 1200,
-   "okteti": 239146
+   "okteti": 276898
   }
  },
  "t12-01-1": {
@@ -239,16 +294,21 @@
   "detalo": {
    "alteso": 3048,
    "largeur": 4541,
-   "okteti": 1832922
+   "okteti": 2203858
   },
   "fonto": "t12-apar-1-neta.png",
   "koloro": false,
   "largeur": 4541,
   "origino": true,
+  "tono": {
+   "blanc": 249.0,
+   "faktoro": 1.2624,
+   "noir": 47.0
+  },
   "vido": {
    "alteso": 805,
    "largeur": 1200,
-   "okteti": 262882
+   "okteti": 295834
   }
  },
  "t13-apar-1": {
@@ -256,16 +316,21 @@
   "detalo": {
    "alteso": 3069,
    "largeur": 4525,
-   "okteti": 1757136
+   "okteti": 2165094
   },
   "fonto": "t13-apar-1-neta.png",
   "koloro": false,
   "largeur": 4525,
   "origino": true,
+  "tono": {
+   "blanc": 250.0,
+   "faktoro": 1.3212,
+   "noir": 57.0
+  },
   "vido": {
    "alteso": 814,
    "largeur": 1200,
-   "okteti": 229332
+   "okteti": 269592
   }
  },
  "t14-apar-1": {
@@ -290,16 +355,21 @@
   "detalo": {
    "alteso": 3030,
    "largeur": 4512,
-   "okteti": 2021988
+   "okteti": 2462210
   },
   "fonto": "t15-apar-1-neta.png",
   "koloro": false,
   "largeur": 4512,
   "origino": true,
+  "tono": {
+   "blanc": 250.0,
+   "faktoro": 1.3077,
+   "noir": 55.0
+  },
   "vido": {
    "alteso": 806,
    "largeur": 1200,
-   "okteti": 266484
+   "okteti": 307018
   }
  },
  "t16-apar-1": {
