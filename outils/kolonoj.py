@@ -872,6 +872,16 @@ LINGUI = {
         (_deva("दरवाज़ा", "दरवाजा"), "केवाड़"),
         (_deva("अभी", "अब"), "अबहीं"),
         (_deva("यहाँ", "वहाँ", "यहां", "वहां"), "इहाँ / ओहिजा"),
+    ], "exemptes": [
+        # « आया » LA BONNE D'ENFANTS N'EST PAS « आया » LE PASSE DE
+        # « VENIR ». Le premier est un nom, portugais (aia), et il est
+        # bhojpouri autant que hindi ; le second est la forme hindi que
+        # la regle vise, la ou le bhojpouri dit आइल. Les deux s'ecrivent
+        # pareil. Trouve au tableau 14, ou le renvoi (98) est la bonne
+        # d'enfants — et ce n'est pas une raison de desarmer la regle,
+        # qui reste juste partout ailleurs : c'est une raison d'exempter
+        # LE MOT EN GRAS, qui est le seul endroit ou le nom apparait.
+        "\\VUgras{आया}",
     ]},
 }
 
