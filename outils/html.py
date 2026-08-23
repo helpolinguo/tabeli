@@ -462,7 +462,15 @@ TABLO["io"] = "io"
 #      nomme : l'esperanto, puis l'interlingua. Elles n'ont pas de
 #      locuteurs premiers a compter, et ce sont les plus proches
 #      parentes de la langue du livret.
-#   3. PUIS LES AUTRES, PAR NOMBRE DE LOCUTEURS PREMIERS, du plus grand
+#   3. PUIS LES COLONNES QUE LE REGISTRE PORTE « hors liste », c'est-a-dire
+#      celles qu'on ecrit sans les avoir pour langue maternelle. L'arabe
+#      standard est la seule du menu dans ce cas : Ethnologue ne lui donne
+#      pas de chiffre parce qu'il n'a presque pas de locuteurs premiers —
+#      ils sont comptes sur ses varietes, l'egyptien (83) et le levantin
+#      (55), qui sont deux colonnes de ce depot. Ce n'est donc PAS une
+#      langue sans chiffre par accident, c'est une langue declaree hors du
+#      tableau, et le registre le dit lui-meme dans son preambule.
+#   4. PUIS LES AUTRES, PAR NOMBRE DE LOCUTEURS PREMIERS, du plus grand
 #      au plus petit. Le chiffre n'est pas une opinion : il est dans
 #      texto/lingui.json, tire d'Ethnologue, et c'est ce meme fichier
 #      qui sert de registre a la colonne. Une langue sans chiffre passe
@@ -471,16 +479,42 @@ TABLO["io"] = "io"
 # Le tri LIT le registre au lieu de le repeter : ajouter une colonne ne
 # demande donc plus de choisir sa place, et la place ne peut plus
 # mentir sur le chiffre.
+#
+# LE RANG 3 A ETE AJOUTE APRES COUP, ET IL REPARE UN DEFAUT MESURE.
+# L'arabe standard sortait DERNIER du menu, cinquante-troisieme sur
+# cinquante-trois, sous le romanche et ses quarante mille locuteurs.
+# La cause n'etait pas le registre, qui a raison de ne pas lui donner de
+# chiffre, mais un desaccord entre deux endroits du meme fichier :
+# SEN_NOMBRO, plus bas, declarait QUATRE colonnes legitimement sans
+# chiffre — fr, eo, ia, ar — mais le tri n'en plaçait que trois. Le
+# francais est pris au rang 1, l'esperanto et l'interlingua au rang 2 ;
+# l'arabe, lui, ne tombait sous aucune regle et finissait donc dans la
+# branche par defaut, « une langue sans chiffre passe en queue ».
+# UNE EXEMPTION QUI N'EST PAS AUSSI UNE PLACE N'EXEMPTE DE RIEN : elle
+# fait seulement taire le controle pendant que le defaut s'installe.
+# On lit donc « stato » comme on lisait « milioni », dans le meme
+# registre et par la meme cle, et SEN_NOMBRO se DEDUIT au lieu de se
+# tenir a la main — un rang de plus ne peut plus etre oublie.
 KONSTRUKTITA = ["eo", "ia"]
 
 
-def _rango_lingui():
-    """{kodo: millions de locuteurs premiers}, d'apres le registre."""
+def _lire_registre(champ):
+    """{kodo: valeur du champ}, d'apres texto/lingui.json."""
     f = RACINE / "texto" / "lingui.json"
     if not f.is_file():
         return {}
     reg = json.loads(f.read_text(encoding="utf-8"))
-    return {l[0]: l[2] for l in reg.get("lingui", [])}
+    return {l[0]: l[champ] for l in reg.get("lingui", []) if len(l) > champ}
+
+
+def _rango_lingui():
+    """{kodo: millions de locuteurs premiers}, d'apres le registre."""
+    return _lire_registre(2)
+
+
+def _stato_lingui():
+    """{kodo: etat de la colonne}, d'apres le registre."""
+    return _lire_registre(4)
 
 
 # LE CHIFFRE SE CHERCHE SOUS LE CODE DE LA COLONNE, NON SOUS CELUI DE
@@ -505,28 +539,35 @@ def _rango_lingui():
 #      variante — le quebecois en est une — trouve ainsi sa place sans
 #      qu'on ait a l'inscrire au registre d'Ethnologue, ou elle n'a
 #      rien a faire.
-def _milioni(lg, rango):
+def _sub_registre(lg, table):
     for k in (lg.get("dosiero"), lg["kodo"], lg["kodo"].split("-")[0]):
-        if k in rango:
-            return rango[k]
+        if k in table:
+            return table[k]
     return None
 
 
-def _ordre(lg, milioni):
+def _milioni(lg, rango):
+    return _sub_registre(lg, rango)
+
+
+def _ordre(lg, milioni, statoj):
     if lg["kodo"] == "fr":
         return (0, 0, "")
     if lg["kodo"] in KONSTRUKTITA:
         return (1, KONSTRUKTITA.index(lg["kodo"]), "")
+    if _sub_registre(lg, statoj) == "hors liste":
+        return (2, 0, lg["kodo"])
     m = _milioni(lg, milioni)
     # LES DEUX EDITIONS D'UNE LANGUE ONT LE MEME CHIFFRE et se suivent
     # donc forcement. Entre elles on tranche par le code, qui est
     # neutre : la colonne qui porte les fichiers n'a aucun privilege,
     # comme texto/varianti.json le pose en principe.
-    return (2, -(m if m is not None else -1), lg["kodo"])
+    return (3, -(m if m is not None else -1), lg["kodo"])
 
 
 _RANGO = _rango_lingui()
-LANGUES.sort(key=lambda lg: _ordre(lg, _RANGO))
+_STATOJ = _stato_lingui()
+LANGUES.sort(key=lambda lg: _ordre(lg, _RANGO, _STATOJ))
 
 # UNE COLONNE SANS CHIFFRE TOMBE EN QUEUE SANS RIEN DIRE, et c'est
 # precisement ce qui s'est produit. Le tri ne peut pas se controler
@@ -537,7 +578,8 @@ LANGUES.sort(key=lambda lg: _ordre(lg, _RANGO))
 # et l'interlingua, qui n'ont pas de locuteurs premiers a compter ;
 # l'arabe standard, qui n'en a presque pas et que texto/lingui.json
 # porte « hors liste ». Toute autre est une faute de branchement.
-SEN_NOMBRO = {"fr", "eo", "ia", "ar"}
+SEN_NOMBRO = ({"fr"} | set(KONSTRUKTITA)
+              | {k for k, v in _STATOJ.items() if v == "hors liste"})
 _orfa = [lg["kodo"] for lg in LANGUES
          if lg["kodo"] not in SEN_NOMBRO and _milioni(lg, _RANGO) is None]
 if _orfa:

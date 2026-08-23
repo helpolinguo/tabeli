@@ -691,7 +691,8 @@ d'abord.
 **Ce que les variantes ont coûté à l'ordre du menu, et comment on l'a
 repris.** Le menu se trie sur `texto/lingui.json` : le français d'abord
 parce qu'il n'est pas une traduction, puis les deux langues construites,
-puis toutes les autres **par nombre de locuteurs premiers**. Or
+puis les colonnes que le registre porte « hors liste », puis toutes les
+autres **par nombre de locuteurs premiers**. Or
 `poser_varianti()` remplace le code de la colonne par celui de
 l'affichage — `en` devient `en-GB` et `en-US` — et le registre, lui, ne
 connaît que `en`. La recherche du chiffre échouait donc, les deux
@@ -707,6 +708,27 @@ sont tombées d'un coup**, dont les quatre plus parlées du livret :
 | portugais | 252 M | 5<sup>e</sup> | après le romanche |
 | allemand | 76 M | 16<sup>e</sup> | après le romanche |
 | néerlandais | 25 M | 20<sup>e</sup> | après le romanche |
+
+**Et une seconde fois, sur l'arabe standard, pour une autre cause.** Il
+sortait **dernier du menu, cinquante-troisième sur cinquante-trois**,
+sous le romanche et ses quarante mille locuteurs. Le registre n'y est
+pour rien : il a raison de ne pas donner de chiffre à l'arabe standard,
+qui n'a presque pas de locuteurs premiers — ils sont comptés sur ses
+variétés, l'égyptien (83 M) et le levantin (55 M), qui sont deux
+colonnes de ce dépôt. La faute était un **désaccord entre deux endroits
+du même fichier** : `SEN_NOMBRO` déclarait quatre colonnes légitimement
+sans chiffre — `fr`, `eo`, `ia`, `ar` — mais le tri n'en plaçait que
+trois, et la quatrième tombait dans la branche par défaut, « une langue
+sans chiffre passe en queue ».
+
+**Une exemption qui n'est pas aussi une place n'exempte de rien** : elle
+fait seulement taire le contrôle pendant que le défaut s'installe. Le
+tri lit donc maintenant `stato` comme il lisait `milioni`, dans le même
+registre et par la même clé, et gagne un rang pour les colonnes portées
+« hors liste » — celles qu'on écrit sans les avoir pour langue
+maternelle. `SEN_NOMBRO` **se déduit** au lieu de se tenir à la main :
+un rang de plus ne peut plus être oublié. L'arabe passe de la
+cinquante-troisième place à la quatrième, derrière l'interlingua.
 
 Le chiffre se cherche maintenant sous le code de la **colonne** — celui
 des fichiers et du registre — puis, à défaut, sous la sous-étiquette de
