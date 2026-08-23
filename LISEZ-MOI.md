@@ -567,6 +567,69 @@ marge et son filet, et le blanc de compensation se retire avec eux.
 Mesuré au navigateur sur les 40 rangs centrés, à 1400, 1100, 950 et
 800 px : −9 px avant, 0 après.
 
+**« Et que le folio paraisse ou non » n'était vrai qu'en large, et la
+mesure qui l'affirmait n'avait été faite qu'en large.** Sous 1180 px le
+folio n'a plus de marge où se poser et devient un **flottant** — et un
+flottant ne se contente pas de se placer : il **raccourcit la ligne**.
+Sur un alinéa justifié cela ne se voit pas, le texte contourne le
+numéro puis reprend toute sa largeur. Sur un intertitre, si :
+`text-align:center` centre alors le titre dans ce qui *reste* de la
+ligne, et non dans la colonne.
+
+Relevé sur la capture d'un iPhone 16 (402 pt, densité 3), en mesurant
+l'encre elle-même — axe de la colonne à 603 :
+
+| titre | centre de l'encre | écart |
+|---|---|---|
+| « Detaloza deskripto. » (ido, folio à gauche) | 628 | +8,3 px |
+| « La bona lernanti. » (ido, folio à gauche) | 627,5 | +8,3 px |
+| « II. Description détaillée. » (fr, folio à droite) | 570 | −11 px |
+| « [Les bons élèves.] » (fr, **sans folio**) | 601 | juste |
+
+C'est ce qui rendait le défaut illisible : un rang dont le titre ne
+porte pas de folio reste bien centré, et le désalignement paraît
+capricieux. Il ne l'est pas — l'écart vaut la moitié du folio, et un
+folio compte de un à trois chiffres. Au navigateur, sur les 148 rangs
+centrés : **184 titres hors axe à 390 px, 194 à 700, 180 à 1000, 0 à
+1400**. L'écart dominant n'est pas 9 px mais 12,8 px.
+
+**On rend donc au folio sa position absolue pour les seuls rangs
+centrés**, et l'on creuse une **gouttière égale des deux côtés** pour
+l'y loger. Hors du flux, le folio ne pousse plus le texte : il passe
+dessous — mesure faite, trois rangs le rencontraient (`t06-apar-2`,
+`t08-tit-6`), ce qui ne se voyait pas tant que le flottant écartait le
+texte. Une gouttière symétrique ne déplace pas l'axe, par construction ;
+elle coûte 8 rangs plus longs sur 148 à 390 px, et ce sont justement les
+titres les plus larges — ceux qui touchaient le folio. **On paie là où
+il fallait payer.**
+
+La règle est la **dernière de la feuille**, et c'est voulu : la requête
+de 900 px remet à zéro les blancs des rangs centrés, et une gouttière
+écrite avant elle aurait été effacée sur les téléphones — c'est-à-dire
+partout où le défaut se voit.
+
+**Et un intertitre se centre aussi quand la colonne se lit à
+l'envers.** `.k.tra[dir=rtl]{text-align:justify}` compte un attribut de
+plus que `.r.sub .k{text-align:center}` et l'emportait donc partout, y
+compris sur les rangs centrés : les six colonnes de droite à gauche —
+**ar, arz, apc, fa, ur, pnb** — collaient leurs 162 titres au bord
+droit, **à toute largeur**, depuis le jour où l'arabe est entré. Le
+défaut ne sautait pas aux yeux, parce qu'un titre collé à droite dans
+une colonne qui se lit à droite a l'air d'être à sa place. Il ne l'est
+pas : en face, le titre ido est centré.
+
+Il restait ensuite **exactement −1 px** sur les 164 titres arabes, et
+ce n'était pas une approximation : la règle qui ôte son filet à un rang
+centré ne l'ôtait qu'à **gauche**, si bien que les six colonnes
+inversées gardaient une barre de 2 px que les quarante-trois autres
+n'avaient pas — et cette barre, comptée dans la boîte, déplaçait l'axe
+d'un pixel. **Une règle écrite pour un sens de lecture n'en couvre
+qu'un.**
+
+Vérification finale, sur 15 colonnes (dont les 6 inversées) à 390, 1000
+et 1400 px : **0 titre hors axe, 0 rencontre avec le folio**, et les
+179 folios des rangs centrés tous visibles et dans leur case.
+
 Le sélecteur de langue ne recharge rien **une fois la langue venue** :
 elle reste dans la page, et la bascule est instantanée. Le français y
 est d'emblée — c'est un fac-similé transcrit, il fait partie de

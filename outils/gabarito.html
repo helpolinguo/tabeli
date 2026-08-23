@@ -128,7 +128,14 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    toujours 9, a toute largeur, et que le folio paraisse ou non : ce n'est
    pas lui qui decalait, c'est le filet. On rend a la case ido, pour les
    seuls rangs centres, un blanc egal a gauche : le titre retrouve l'axe de
-   sa colonne, et le filet ne bouge pas. */
+   sa colonne, et le filet ne bouge pas.
+
+   « QUE LE FOLIO PARAISSE OU NON » N'ETAIT VRAI QU'EN LARGE, et la mesure
+   qui l'affirmait n'avait ete faite qu'en large. Sous 1180px le folio
+   quitte la marge et devient un flottant : il decale alors bel et bien, et
+   d'un ecart different a chaque rang. Voir la derniere regle de cette
+   feuille, qui repare cela ; celle-ci ne vaut que pour la mise en deux
+   colonnes. */
 .r.sub .k.io,.r.apar .k.io{padding-left:18px}
 .vaka{}
 /* La celo vakua ne esas eroro : ol dicas ke ta alineo ne existas en
@@ -154,6 +161,16 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
    « left » et « right » sont deja partout ailleurs dans cette
    feuille, et melanger les deux familles se relit mal. */
 .k.tra[dir=rtl]{text-align:justify}
+/* UN INTERTITRE SE CENTRE AUSSI QUAND LA COLONNE SE LIT A L'ENVERS. La
+   ligne ci-dessus compte un attribut de plus que « .r.sub .k{text-align:
+   center} » et l'emportait donc partout, y compris sur les rangs
+   centres : les six colonnes de droite a gauche -- ar, arz, apc, fa, ur,
+   pnb -- collaient leurs 162 titres au bord droit, a toute largeur,
+   depuis le jour ou l'arabe est entre. Ce n'etait pas visible d'un coup
+   d'oeil, parce qu'un titre colle a droite dans une colonne qui se lit a
+   droite a l'air d'etre a sa place. Il ne l'est pas : en face, le titre
+   ido est centre. */
+.r.sub .k.tra[dir=rtl],.r.apar .k.tra[dir=rtl]{text-align:center}
 .k.tra[dir=rtl] .fol{left:-28px;right:auto}
 .r.p .k.tra[dir=rtl]{text-indent:1.3em}
 .k.tra[dir=rtl] sup{margin-left:0;margin-right:.08em}
@@ -440,6 +457,80 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
  .r.sub .k.io,.r.apar .k.io{padding-left:0}}
 @media (max-width:900px) and (prefers-color-scheme:dark){
  nav{box-shadow:0 0 24px rgba(0,0,0,.6)}}
+
+/* --- UN FLOTTANT NE SE CONTENTE PAS DE SE PLACER : IL RACCOURCIT LA
+   LIGNE. Sous 1180px le folio n'a plus de marge ou se poser et devient un
+   flottant. Sur un alinea justifie cela ne se voit pas : le texte
+   contourne le numero, puis reprend toute sa largeur. Sur un INTERTITRE,
+   si -- « text-align:center » centre alors le titre dans ce qui RESTE de
+   la ligne, et non dans la colonne. Le titre ido part vers la droite de la
+   moitie de son folio, le titre francais vers la gauche de la moitie du
+   sien, et un rang dont le titre ne porte pas de folio reste, lui, bien
+   centre : d'ou un desalignement qui parait capricieux et ne l'est pas.
+
+   Releve sur la capture d'un iPhone 16 (402pt, densite 3), en mesurant
+   l'encre elle-meme : axe de la colonne a 603 ; « Detaloza deskripto. »
+   centre a 628 et « La bona lernanti. » a 627,5 -- +8,3px ; « II.
+   Description detaillee. » a 570 -- -11px ; « [Les bons eleves.] », qui
+   n'a pas de folio, a 601 -- juste. Puis au navigateur, sur les 148 rangs
+   centres : 184 titres hors axe a 390px, 194 a 700px, 180 a 1000px, 0 a
+   1400px. L'ecart dominant n'est pas 9px mais 12,8px, parce qu'il vaut la
+   moitie du folio et qu'un folio compte de un a trois chiffres.
+
+   ON REND DONC AU FOLIO SA POSITION ABSOLUE POUR LES SEULS RANGS CENTRES.
+   Hors du flux, il ne raccourcit plus rien, et le titre retrouve l'axe de
+   sa colonne sans compensation -- une compensation aurait du suivre le
+   nombre de chiffres.
+
+   ET L'ON CREUSE UNE GOUTTIERE EGALE DES DEUX COTES pour l'y loger.
+   Absolu, le folio ne pousse plus le texte : il passe DESSOUS. Mesure
+   faite, trois rangs le rencontraient -- t06-apar-2 et t08-tit-6 --, ce
+   qui ne se voyait pas tant que le flottant ecartait le texte. Une
+   gouttiere symetrique ne deplace pas l'axe, par construction ; elle coute
+   8 rangs plus longs sur 148 a 390px, et ce sont justement les titres les
+   plus larges, ceux qui touchaient le folio. On paie donc la ou il fallait
+   payer.
+
+   CE BLOC EST LE DERNIER DE LA FEUILLE, ET C'EST VOULU. La requete de
+   900px, plus haut, remet a zero les blancs des rangs centres ; ecrite
+   avant elle, la gouttiere aurait ete effacee sur les telephones -- c'est
+   a dire partout ou le defaut se voit. --- */
+@media (max-width:1180px){
+ .r.sub .k .fol,.r.apar .k .fol{position:absolute;float:none;margin:0;
+  top:.15em}
+ .r.sub .k.io .fol,.r.apar .k.io .fol{left:0;right:auto}
+ .r.sub .k.tra .fol,.r.apar .k.tra .fol{left:auto;right:0}
+ /* L'ARABE REPREND TOUT EN ENTIER, ET NON LE SEUL COTE. La regle
+    « .k.tra[dir=rtl] .fol » compte un attribut de plus et l'emporte donc
+    sur « .r.sub .k .fol » : le folio d'une colonne de droite a gauche
+    redevenait flottant, et 162 de ses titres repartaient hors axe alors
+    que les 332 du francais etaient justes. On y redit donc tout. */
+ .r.sub .k.tra[dir=rtl] .fol,.r.apar .k.tra[dir=rtl] .fol{position:absolute;
+  float:none;margin:0;top:.15em;left:0;right:auto}
+ /* En deux colonnes la case ido garde 17px de marge et 1px de filet a
+    droite : sa gouttiere de gauche vaut donc 26+18, celle de droite
+    26+17, et l'axe reste au milieu. */
+ .r.sub .k.io,.r.apar .k.io{padding-left:44px;padding-right:43px}
+ .r.sub .k.tra,.r.apar .k.tra{padding-left:26px;padding-right:26px}}
+/* Sous 900px les colonnes s'empilent, le filet passe a gauche de la
+   traduction et la case ido n'a plus rien a compenser : les quatre
+   gouttieres sont egales. */
+@media (max-width:900px){
+ .r.sub .k.io,.r.apar .k.io,.r.sub .k.tra,.r.apar .k.tra{
+  padding-left:26px;padding-right:26px}
+ /* Meme raison qu'au-dessus : « .k.tra[dir=rtl] » pose ici 11px a droite
+    et rien a gauche, pour son filet, et l'emporte sur « .r.sub .k.tra ».
+    Un rang centre n'a pas de filet ; il a deux gouttieres egales.
+
+    ET LE FILET AVEC. La regle voisine ote « border-left » aux rangs
+    centres, parce qu'un intertitre n'est pas un alinea a apparier : il
+    n'a rien a separer. Elle ne l'otait qu'a gauche, si bien que les six
+    colonnes de droite a gauche gardaient leur barre de 2px la ou les
+    quarante-trois autres ne l'avaient pas -- et cette barre, comptee dans
+    la boite, deplacait l'axe du titre d'exactement 1px. Une regle ecrite
+    pour un sens de lecture n'en couvre qu'un. */
+ .r.sub .k.tra[dir=rtl],.r.apar .k.tra[dir=rtl]{
+  padding-left:26px;padding-right:26px;border-right:0}}
 
 </style>
 
