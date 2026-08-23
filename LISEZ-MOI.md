@@ -2878,3 +2878,12 @@ qui garantit que le bouton est identique sur les trois, et que le retoucher
 se fait à un seul endroit. Le mot « Ido » est dans le lien et non dans la
 feuille : si celle-ci ne se charge pas, il reste un lien lisible en fin de
 document au lieu d'un carré vide.
+
+**Et ces deux lignes vivent dans le gabarit, non dans la page.** Elles
+avaient d'abord été posées dans `index.html`, qui est un fichier
+**produit** : `outils/html.py` réécrit la page entière à partir de
+`outils/gabarito.html`, et la génération suivante les aurait effacées
+sans rien dire — pas une erreur, pas un signalement, juste un bouton
+disparu. Elles sont maintenant dans le gabarit, et le commentaire qui
+les accompagne dit pourquoi. **Un fichier produit n'est pas un endroit
+où l'on écrit.**

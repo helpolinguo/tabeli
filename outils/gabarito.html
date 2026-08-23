@@ -1,6 +1,18 @@
 <!DOCTYPE html><html lang="io"><meta charset="utf-8">
 <title>{{TITRO}}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- LE BOUTON DE RETOUR VERS ido.help. Deux lignes seulement — cette
+     feuille-ci et l'ancre en fin de document — et son apparence n'est
+     dans aucune des deux : elle est dans /pordo.css, servi depuis la
+     racine du site, que les trois livres partagent. C'est ce qui
+     garantit que le bouton est identique sur les trois, et que le
+     retoucher se fait a un seul endroit.
+
+     CES DEUX LIGNES ONT D'ABORD ETE POSEES DANS index.html, QUI EST UN
+     FICHIER PRODUIT. La generation suivante les aurait effacees sans
+     rien dire : html.py reecrit la page entiere a partir de ce
+     gabarit. Elles sont donc ici, et nulle part ailleurs. -->
+<link rel="stylesheet" href="/pordo.css">
 <style>
 :root{--enk:#1a1a1a;--pap:#fbfaf7;--sub:#6b6560;--acc:#7a4b2a;--lin:#e2ddd5;
  --pap2:#f4f1ea;--flag:#b4552d;
@@ -1419,4 +1431,9 @@ addEventListener("scroll", function(){
 }, {passive:true});
 courant();
 </script>
+<!-- Le mot « Ido » est dans l'ancre et non dans la feuille : si
+     celle-ci ne se charge pas — page ouverte hors du site, fichier
+     deplace —, il reste un lien lisible en fin de document au lieu
+     d'un carre vide. -->
+<a class="ido-pordo" href="/">Ido</a>
 </html>
