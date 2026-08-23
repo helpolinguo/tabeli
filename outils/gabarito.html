@@ -66,6 +66,36 @@ select#lg{flex:none;padding:8px 10px;border:1px solid var(--lin);border-radius:7
 @media (max-width:700px){
  input[type=search]{min-width:0;flex:1 1 60px}
  select#lg{padding:8px 6px}}
+
+/* --- LA RECHERCHE PREND TOUTE LA BARRE PENDANT QU'ON Y TAPE. Sur un
+   telephone, les trois commandes se partagent une ligne de 370 px :
+   « Materio » en prend une centaine, le selecteur de langue quatre-
+   vingts, et il reste au champ de quoi montrer « Serchez e » -- le
+   placeholder est coupe au dixieme caractere, et le mot qu'on tape
+   defile dans une fenetre de deux centimetres. On rend donc au champ
+   toute la barre le temps qu'il a le curseur, et on la lui reprend
+   quand il le perd. La barre ne change pas de HAUTEUR : elle est
+   collante, et une ligne de plus se paierait sur toute la page.
+
+   LES VOISINS SE REPLIENT, ILS NE DISPARAISSENT PAS. « display:none »
+   aurait fait sauter la barre et rendu la commande intouchable au
+   milieu d'un geste ; une largeur nulle avec « overflow:hidden » se
+   transitionne et laisse l'element dans le flux, donc dans l'ordre de
+   tabulation.
+
+   ET CHACUN DES DEUX SE REPLIE SUR SA PROPRE CONDITION. Le selecteur
+   suit le champ (« ~ »), de sorte qu'il se rouvre des qu'on tabule
+   dessus. Le bouton, lui, precede le champ et aucun selecteur ne
+   remonte : il se replie sur « :focus-within » de la barre -- mais
+   « :not(:focus) » le protege, sans quoi un utilisateur au clavier
+   aurait mis le curseur sur un bouton devenu invisible. --- */
+@media (max-width:700px){
+ .bar .tir,.bar select#lg{
+  transition:max-width .16s,opacity .16s,padding .16s,border-width .16s}
+ .bar:focus-within .tir:not(:focus),
+ input[type=search]:focus ~ select#lg{
+  max-width:0;padding-left:0;padding-right:0;border-width:0;
+  opacity:0;overflow:hidden}}
 .tir{display:none;flex:none;border:1px solid var(--lin);border-radius:7px;
  background:var(--pap);color:var(--acc);font:600 12.5px/1 system-ui,sans-serif;
  padding:9px 11px;cursor:pointer}

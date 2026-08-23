@@ -630,6 +630,29 @@ Vérification finale, sur 15 colonnes (dont les 6 inversées) à 390, 1000
 et 1400 px : **0 titre hors axe, 0 rencontre avec le folio**, et les
 179 folios des rangs centrés tous visibles et dans leur case.
 
+**La recherche prend toute la barre pendant qu'on y tape.** Sur un
+téléphone, les trois commandes se partagent une ligne de 370 px :
+« Materio » en prend une centaine, le sélecteur de langue cent
+cinquante, et il reste au champ **103 px** — le placeholder est coupé au
+dixième caractère et le mot qu'on tape défile dans une fenêtre de deux
+centimètres. Le champ prend donc toute la barre le temps qu'il a le
+curseur, et la rend quand il le perd : mesuré à 402 px, **103 → 342 →
+103**, et à 360 px, **61 → 300 → 61**. La barre ne change pas de
+hauteur — elle est collante, et une ligne de plus se paierait sur toute
+la page.
+
+Les voisins **se replient, ils ne disparaissent pas** : `display:none`
+aurait fait sauter la barre et rendu la commande intouchable au milieu
+d'un geste, là où une largeur nulle avec `overflow:hidden` se
+transitionne et laisse l'élément dans le flux, donc dans l'ordre de
+tabulation. Chacun des deux se replie d'ailleurs sur **sa propre
+condition** : le sélecteur suit le champ (`~`) et se rouvre dès qu'on
+tabule dessus ; le bouton, qui *précède* le champ et qu'aucun sélecteur
+ne remonte, se replie sur le `:focus-within` de la barre — mais
+`:not(:focus)` le protège, sans quoi un utilisateur au clavier aurait
+mis le curseur sur un bouton devenu invisible. Au-dessus de 700 px,
+rien ne bouge.
+
 Le sélecteur de langue ne recharge rien **une fois la langue venue** :
 elle reste dans la page, et la bascule est instantanée. Le français y
 est d'emblée — c'est un fac-similé transcrit, il fait partie de
@@ -750,13 +773,69 @@ texte il remonte de toute sa hauteur et se repose par-dessus ; et
 le sommet du bloc — et posait donc la note 4 mm trop haut.
 
 **Et la correction a mis au jour ce qu'elle cachait.** Six feuillets
-portent, au relevé, plus de matière que la feuille n'en tient : le texte y
-remplit déjà le bloc, et la note n'a plus que la marge du bas, qui ne
-suffit pas de 1,7 à 2,7 mm — `tabeli` f9 et f35, `tableaux` f45, f75, f76
-et f91. Tant que la note s'imprimait *dans* le texte, elle ne sortait
-jamais du papier. Trancher ces six pages demande le fac-similé du livret,
-que ce dépôt ne contient pas : `outils/notoj.py` les **nomme** à chaque
-construction, et `make -f tab.mk controles` l'appelle.
+posaient leur note **sous le bord du papier**, de 1,7 à 2,7 mm — `tabeli`
+f9 et f35, `tableaux` f45, f75, f76 et f91. Tant que la note s'imprimait
+*dans* le texte, elle ne sortait jamais de la feuille. On avait alors
+écrit ici que trancher ces six pages **demandait le fac-similé du livret,
+que ce dépôt ne contient pas**. C'était renoncer trop tôt : il n'en a
+fallu aucun, et la cause n'était pas « plus de matière que la feuille n'en
+tient ».
+
+**Trois défauts, et le troisième cachait les deux autres.**
+
+**1. La note ne comptait que pour sa première ligne.** `\VUnotoBoxo` est
+un `\vtop` : sa hauteur est celle de sa *première* ligne, tout le reste
+est en **profondeur**. Or la hauteur d'un `\vbox` s'arrête à la dernière
+ligne de base — la profondeur de la note n'entrait donc pas dans le
+calcul, et le ressort la poussait jusqu'à ce que sa première ligne touche
+le pied du bloc. Les autres pendaient dessous, hors du feuillet, **et cela
+quelle que fût la quantité de texte** : le feuillet 17, aux deux tiers
+vide, sortait du papier exactement comme le feuillet 9, plein à ras bord.
+Un `\kern` égal à cette profondeur ferme la liste verticale et le ressort
+pose désormais le **bas** de la note au pied du bloc.
+
+Le `\par` avant ce `\kern` n'est pas décoratif : le `\noindent` qui
+précède ouvre un alinéa, et sans le fermer le `\kern` se posait en mode
+**horizontal**, où il ne vaut qu'un blanc de largeur nulle. Le PDF
+sortait identique à l'octet près — rien ne distingue une correction qui
+ne mord pas d'une correction absente.
+
+**2. Le pas par page avait été réglé sur le texte seul.**
+`\VUinterlignoPage` donne à chaque page le pas qui fait *remplir* le bloc
+— et la note ne comptait pas dans cette matière, puisqu'elle se diffère
+jusqu'à la fermeture de la page. Une page à note recevait donc un pas qui
+remplit le bloc **avec le texte seul**, et sa note n'avait plus où aller.
+Le feuillet 9 — la page 7 du livret — portait ainsi 15,31 pt là où ses
+voisines tiennent 11,19 et 12,42, et où le fac-similé lui-même en mesure
+**11,0** (`inv-io.json` : un pas de 72 px sur un bloc de 2800 px pour
+150,65 mm). `korpi-io-noto.tex` et `korpi-fr-noto.tex` rendent leur pas
+aux dix pages concernées ; à chaque fois la valeur corrigée **rejoint
+celle des pages voisines**, ce qui est le meilleur signe qu'on se
+rapproche du fac-similé et non qu'on s'en écarte.
+
+**3. Et le contrôle regardait la mauvaise page.** `notoj.py` tenait pour
+acquis que « le numéro de feuillet EST le numéro de page du PDF ». C'est
+faux : le livret ido saute **deux versos vierges**, les feuillets 48 et
+76, qui ne se composent pas. La page du PDF retarde donc d'un feuillet à
+partir du 49, de deux à partir du 77 — et le contrôle allait mesurer
+ailleurs. **Six des dix pages à note du volume n'avaient jamais été
+contrôlées** : f49, f57, f85, f87, f89 et f106. On y mesurait des pages
+sans note, on n'y trouvait « aucune note », et l'on se taisait. La page
+du PDF est désormais le **rang** de la page dans le document, et le
+rapport nomme les deux.
+
+Le livret français, lui, garde un défaut qui n'est pas celui de la note :
+son bloc est calibré à 7,96 + 173,40 = **181,36 mm sur un papier de
+180** — son pied est déjà hors de la feuille de 1,36 mm (contrôle 6,
+§ 4). Tant que le texte s'arrête plus haut, cela ne se voit pas ; une
+note posée au pied du bloc, elle, sort du massicot. Le calcul
+`\VUnotoPied` la retient 2 mm au-dessus du bord, et il vaut **zéro** pour
+le livret ido : ce n'est pas un réglage, c'est un calcul, et il ne mord
+que là où la calibration est fautive.
+
+État : **0 note sur le texte, 0 note hors du feuillet**, et les quatorze
+notes des deux volumes sont dans leur bloc. `outils/notoj.py` le vérifie
+à chaque construction, et `make -f tab.mk controles` l'appelle.
 
 ### Les variantes régionales
 

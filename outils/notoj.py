@@ -55,17 +55,34 @@ VOLUMES = (("io", "tabeli.pdf"), ("fr", "tableaux.pdf"))
 
 
 def feuillets_a_note(lg):
-    """Les feuillets ou le releve pose une note. Le numero de feuillet EST
-    le numero de page du PDF : une page du fac-simile, une page du PDF."""
+    """[(feuillet, page du PDF)] la ou le releve pose une note.
+
+    ET LE NUMERO DE FEUILLET N'EST PAS LE NUMERO DE PAGE DU PDF. C'est
+    ce que ce controle a cru pendant tout ce temps -- « une page du
+    fac-simile, une page du PDF » --, et c'est faux : le livret ido saute
+    DEUX VERSOS VIERGES, les feuillets 48 et 76, qui ne se composent
+    pas. La page du PDF retarde donc d'un feuillet a partir du 49, de
+    deux a partir du 77, et le controle allait regarder ailleurs. Les
+    feuillets 49, 57, 85, 87, 89 et 106 -- six des dix pages a note du
+    volume -- n'ont jamais ete controles : on mesurait a leur place des
+    pages sans note, ou l'on ne trouvait « aucune note » et ou l'on se
+    taisait.
+
+    La page du PDF est le RANG de la page dans le document, et rien
+    d'autre : les fichiers se lisent dans l'ordre ou main-<lg>.tex les
+    appelle, qui est leur ordre alphabetique.
+    """
     out = []
+    rang = 0
     for p in sorted(glob.glob(str(RACINE / "texto" / lg / "*.tex"))):
         t = _io.open(p, encoding="utf-8").read()
         for m in re.finditer(r"\\begin\{VUpage\}\[(\d+)\][^\n]*\n(.*?)\\end\{VUpage\}",
                              t, re.S):
+            rang += 1
             corps = "\n".join(l for l in m.group(2).split("\n")
                               if not l.startswith("%"))
             if "\\VUnotes" in corps:
-                out.append(int(m.group(1)))
+                out.append((int(m.group(1)), rang))
     return sorted(set(out))
 
 
@@ -92,7 +109,7 @@ def controlar(lg, pdf):
         print(f"  {pdf.name} : absent, rien a controler")
         return 0, 0
     heurte = deborde = 0
-    for pg in feuillets_a_note(lg):
+    for fe, pg in feuillets_a_note(lg):
         haut, ls = lignes(pdf, pg)
         if len(ls) < 4:
             continue
@@ -107,7 +124,7 @@ def controlar(lg, pdf):
                 ix = min(bn[2], bc[2]) - max(bn[0], bc[0])
                 if iy > 1.0 and ix > 5.0:
                     heurte += 1
-                    print(f"  NOTE SUR LE TEXTE  {pdf.name} f{pg}")
+                    print(f"  NOTE SUR LE TEXTE  {pdf.name} f{fe} (page {pg})")
                     break
             else:
                 continue
@@ -115,7 +132,7 @@ def controlar(lg, pdf):
         bas = max(b[3] for b in note)
         if bas > haut:
             deborde += 1
-            print(f"  NOTE HORS DU FEUILLET  {pdf.name} f{pg} : "
+            print(f"  NOTE HORS DU FEUILLET  {pdf.name} f{fe} (page {pg}) : "
                   f"{(bas - haut) / MM:.1f} mm sous le bord — cette page porte "
                   f"plus de matiere que la feuille n'en tient")
     return heurte, deborde

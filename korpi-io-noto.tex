@@ -1,0 +1,41 @@
+% korpi-io-noto.tex — le pas des pages qui portent une note.
+%
+% ECRIT A LA MAIN, page par page. Voir preambule.tex, section 8 : le pas
+% de korpi-io.tex a ete regle pour que la matiere REMPLISSE le bloc, et
+% la note n'entrait pas dans cette matiere -- elle se differe jusqu'a la
+% fermeture de la page, et l'outil de mesure n'en voyait rien. Une page
+% a note recevait donc un pas qui remplit le bloc avec le TEXTE SEUL, et
+% sa note n'avait plus ou aller : celle du feuillet 9 -- la page 7 du
+% livret, sept lignes de note, la plus longue des deux volumes --
+% tombait 2,7 mm sous le bord du papier.
+%
+% La valeur retenue est le plus grand pas qui laisse tenir LE TEXTE ET LA
+% NOTE dans la hauteur relevee. Des que la page tient, le ressort de
+% \VUnotoPose pose le bas de la note au pied du bloc : il n'y a donc pas
+% a l'ajuster au centieme, il suffit qu'elle tienne. On verifie par
+% outils/notoj.py, qui mesure le PDF.
+%
+% LE PAS OBTENU REJOINT CHAQUE FOIS CELUI DES PAGES VOISINES, et c'est le
+% meilleur signe qu'on se rapproche du fac-simile et non qu'on s'en
+% ecarte : le fac-simile du feuillet 9 mesure lui-meme 11,0 pt
+% (inv-io.json, un pas de 72 px sur un bloc de 2800 px pour 150,65 mm).
+%
+%   feuillet   avant     voisines            apres
+%      9       15.31pt   11.19 / 12.42       11.98pt
+%     35       14.93pt   11.55 / 12.75       11.90pt
+%     41       14.50pt   12.71 / 12.40       12.30pt
+%     85       13.58pt   12.36               12.50pt
+%     87       14.23pt   12.63               12.50pt
+%     89       13.26pt   12.63 / 15.18       12.28pt
+%    106       13.53pt   13.13 / 12.59       12.70pt
+%
+% Seul le feuillet 9 sortait du papier ; les six autres posaient leur
+% note SOUS LE BLOC, dans la marge de pied, ou le fac-simile ne la met
+% pas. Meme cause, meme correction.
+\VUinterlignoPage{9}{11.98pt}
+\VUinterlignoPage{35}{11.90pt}
+\VUinterlignoPage{41}{12.30pt}
+\VUinterlignoPage{85}{12.50pt}
+\VUinterlignoPage{87}{12.50pt}
+\VUinterlignoPage{89}{12.28pt}
+\VUinterlignoPage{106}{12.70pt}

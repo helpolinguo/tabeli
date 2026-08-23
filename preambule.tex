@@ -392,6 +392,34 @@
 \newif\ifVUnoto
 % Pied du bloc de texte, compte depuis le bord superieur du papier.
 \newcommand{\VUnotoBas}{\dimexpr\VUfolioY+\VUtexteHauteur\relax}
+% LE PIED DE LA NOTE, QUAND LE BLOC LUI-MEME TOMBE SOUS LE PAPIER.
+% Le bloc du livret francais est calibre a 7,96 + 173,40 = 181,36 mm sur
+% un papier de 180 : son pied est DEJA hors de la feuille de 1,36 mm.
+% C'est l'erreur que le controle 6 signale depuis toujours -- le cadre du
+% scan francais tombe dans le papier, et l'echelle absolue qu'on en tire
+% est fausse (LISEZ-MOI, § 4). Tant que le texte s'arrete plus haut, cela
+% ne se voit pas ; une note posee au pied du bloc, elle, sort du
+% massicot. On la retient donc au-dessus du bord du papier, de 2 mm.
+% La valeur vaut ZERO pour le livret ido, dont le bloc finit a 161,33 mm
+% pour un papier de 180 : ce n'est pas un reglage, c'est un calcul, et il
+% ne mord que la ou la calibration est fautive.
+\newlength{\VUnotoPied}
+% LE \relax FINAL FERME L'AFFECTATION, ET IL EN FAUT UN ICI AUSSI :
+% sans lui, TeX cherchait « plus » au-dela du \dimexpr et developpait
+% pour cela le \ifdim de la ligne suivante -- qui se trouvait donc
+% evalue AVANT que le registre ait sa valeur, sur le zero du
+% \newlength. La condition etait toujours fausse, le pied restait
+% negatif, et le PDF sortait a l'octet pres identique : rien ne
+% distingue une condition qui ne mord pas d'une condition absente.
+\VUnotoPied=\dimexpr\VUmargeSup+\VUtexteHauteur-\VUpapierHauteur+2mm\relax\relax
+% LE \relax APRES « 0pt » N'EST PAS DECORATIF. \VUnotoPied est un
+% registre de RESSORT : apres la dimension, TeX cherche « plus » et
+% « minus », et pour les chercher il DEVELOPPE ce qui suit -- donc le
+% \fi, qui referme la condition avant que l'affectation soit faite. Sans
+% ce \relax, le livret ido gardait un pied de -47,43 pt et sa note
+% remontait dans le texte : la condition etait juste, l'affectation ne
+% l'atteignait pas.
+\ifdim\VUnotoPied<0pt\relax \VUnotoPied=0pt\relax \fi
 % ET « \VUnotoBas » PARTAIT DU FOLIO, QUI EST AU-DESSUS DU BLOC.
 % \VUfolioY donne la ligne de base du numero de feuillet, \VUmargeSup le
 % sommet du bloc de texte : les deux different de 4,11 mm en ido et de
@@ -421,7 +449,26 @@
 \newcommand{\VUnotoPose}{%
   \ifVUnoto
     \par\nobreak\vskip0pt plus1fill\relax
-    \noindent\hbox to \textwidth{\usebox{\VUnotoBoxo}\hss}%
+    % ET LA NOTE COMPTE POUR TOUTE SA HAUTEUR, NON POUR SA PREMIERE
+    % LIGNE. \VUnotoBoxo est un \vtop : sa hauteur est celle de sa
+    % PREMIERE ligne, tout le reste est en PROFONDEUR. Or la hauteur
+    % d'un \vbox s'arrete a la derniere ligne de base -- la profondeur
+    % de la note n'entrait donc pas dans le calcul, et le ressort la
+    % poussait jusqu'a ce que sa premiere ligne touche le pied du bloc.
+    % Les six autres lignes pendaient dessous, hors du feuillet, ET
+    % CELA QUELLE QUE FUT LA QUANTITE DE TEXTE : le feuillet 17, aux
+    % deux tiers vide, sortait du papier exactement comme le feuillet 9,
+    % plein a ras bord. Un \kern egal a cette profondeur ferme la liste
+    % verticale : la boite n'a plus de profondeur, sa hauteur comprend
+    % la note entiere, et le ressort pose le BAS de la note au pied du
+    % bloc -- la ou le compositeur la pose.
+    %
+    % LE \par EST INDISPENSABLE AVANT LE \kern. Le \noindent ouvre un
+    % alinea ; sans le fermer, le \kern se posait en mode HORIZONTAL,
+    % ou il ne vaut qu'un blanc de largeur nulle. Il n'y paraissait
+    % rien : le PDF sortait identique a l'octet pres.
+    \noindent\hbox to \textwidth{\usebox{\VUnotoBoxo}\hss}\par
+    \nobreak\kern\dimexpr\dp\VUnotoBoxo+\VUnotoPied\relax
   \fi}
 
 % -------------------------------------------------------------------
@@ -526,3 +573,17 @@
 % Le fichier peut ne pas exister : le volume se compose alors au corps
 % global, ce qui est le comportement voulu avant la premiere mesure.
 \InputIfFileExists{korpi-\VUlangue.tex}{}{}
+% ET LA TABLE SE CORRIGE APRES COUP, POUR LES PAGES A NOTE.
+% Le pas par page ci-dessus a ete regle pour que la matiere REMPLISSE le
+% bloc -- et la note ne comptait pas dans cette matiere : elle se differe
+% jusqu'a la fermeture de la page, et l'outil de mesure n'en voyait rien.
+% Sur une page a note, le pas obtenu remplit donc le bloc avec le TEXTE
+% SEUL, et il ne reste plus rien pour la note. Le feuillet 9 recevait
+% ainsi 15,31 pt la ou ses voisines tiennent 11,19 et 12,42, et ou le
+% fac-simile lui-meme en mesure 11,0 (inv-io.json : un pas de 72 px sur
+% un bloc de 2800 px pour 150,65 mm).
+% Le fichier ci-dessous rend a ces pages un pas qui laisse la place de la
+% note. Il est ECRIT A LA MAIN, page par page : l'outil qui a produit
+% korpi-*.tex n'est plus dans le depot, et le refaire pour une page
+% aurait coute plus cher que de la mesurer.
+\InputIfFileExists{korpi-\VUlangue-noto.tex}{}{}
