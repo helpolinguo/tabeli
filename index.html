@@ -38,6 +38,16 @@ h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
 .dl svg{display:block;width:15px;height:15px;stroke:currentColor;fill:none;
  stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:700px){.dl span{display:none}.dl{padding:7px 9px}}
+/* ET LE SOMMAIRE PERD SON MOT COMME LES TELECHARGEMENTS PERDENT LES
+   LEURS. Le globe pose devant le nom de langue coute 21 px, et la barre
+   d'un iPhone n'en avait pas 21 : elle passait a trois lignes des 402 px
+   -- 218 px de haut au lieu de 170, sur une barre COLLANTE, donc autant
+   de moins pour lire. « Materio » vaut 57 px et ne dit rien de plus que
+   les trois barres qui le precedent, lesquelles ne sont d'aucune langue.
+   On l'ote sous 700 px, ou les deux boutons de telechargement ont deja
+   perdu « Ido » et « Francais » pour la meme raison. L'etiquette ARIA
+   reste : ce qui disparait est le mot, non le nom. */
+@media (max-width:700px){.tir span{display:none}}
 .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 input[type=search]{flex:1 1 240px;min-width:150px;padding:8px 11px;
  border:1px solid var(--lin);border-radius:7px;background:var(--pap);
@@ -47,7 +57,26 @@ input[type=search]{flex:1 1 240px;min-width:150px;padding:8px 11px;
    La altra solvuro -- maximum-scale=1 -- impedus anke la zomo per la
    fingri, do la lekteblesa por qui bezonas lu. */
 input[type=search]:focus{outline:2px solid var(--acc);outline-offset:-1px}
-select#lg{flex:none;padding:8px 10px;border:1px solid var(--lin);border-radius:7px;
+/* --- LE NOM D'UNE LANGUE NE DIT PAS QU'ON EST DEVANT UN CHOIX DE
+   LANGUE. Le selecteur affiche la langue COURANTE, dans sa propre
+   langue : « Francais » a l'ouverture, et c'est bien ainsi -- chacun
+   reconnait le nom de la sienne dans la liste. Mais celui qui ne lit pas
+   le francais voit alors un mot qu'il ne comprend pas, a cote d'une
+   recherche et d'un sommaire : rien ne lui dit que c'est LA qu'on change
+   de langue. L'etiquette ARIA ne l'aide pas non plus -- elle est en ido,
+   et elle ne se voit pas.
+   On pose donc devant le nom le seul signe qui ne soit d'aucune langue :
+   un globe. Il est en SVG et non en emoji, comme les deux boutons de
+   telechargement -- un emoji change de dessin d'un systeme a l'autre et
+   ne suit pas la couleur du texte. Il ne prend pas le clic
+   (« pointer-events:none ») : c'est le selecteur qui reste la cible,
+   sur toute sa surface. --- */
+.lgu{position:relative;flex:none;display:flex;align-items:center}
+.glob{position:absolute;left:10px;width:15px;height:15px;pointer-events:none;
+ stroke:var(--sub);fill:none;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+select#lg{flex:none;padding:8px 10px 8px 31px;border:1px solid var(--lin);
+ border-radius:7px;
  background:var(--pap);color:var(--enk);font:600 13px/1 system-ui,sans-serif;
  cursor:pointer}
 /* LE CHOIX DE LANGUE TIENT SUR LA LIGNE DE LA RECHERCHE. Sur telephone
@@ -59,13 +88,18 @@ select#lg{flex:none;padding:8px 10px;border:1px solid var(--lin);border-radius:7
    largeur minimale : c'est « flex-basis » qu'il faut baisser, et
    laisser ensuite la recherche s'etirer pour prendre ce qui reste. Le
    selecteur se retrouve ainsi a droite, sous les deux boutons de
-   telechargement, et la barre tient sur deux lignes jusqu'a 320px.
+   telechargement, et la barre tient sur deux lignes jusqu'a 360px.
+   (« Jusqu'a 320px », disait cette ligne : mesure faite, la barre y
+   passe a trois lignes -- 238px de haut -- et elle y passait deja avant
+   qu'on y touche. Ce n'est pas un defaut nouveau, c'est un chiffre qui
+   n'avait pas ete verifie.)
    CETTE REGLE VIENT APRES CELLES QU'ELLE CORRIGE. Une requete de media
    n'ajoute rien a la specificite : placee plus haut, elle perdait
    contre le « min-width:150px » de la recherche, et rien ne bougeait. */
 @media (max-width:700px){
  input[type=search]{min-width:0;flex:1 1 60px}
- select#lg{padding:8px 6px}}
+ select#lg{padding:8px 6px 8px 27px}
+ .glob{left:8px}}
 
 /* --- LA RECHERCHE PREND TOUTE LA BARRE PENDANT QU'ON Y TAPE. Sur un
    telephone, les trois commandes se partagent une ligne de 370 px :
@@ -90,10 +124,11 @@ select#lg{flex:none;padding:8px 10px;border:1px solid var(--lin);border-radius:7
    « :not(:focus) » le protege, sans quoi un utilisateur au clavier
    aurait mis le curseur sur un bouton devenu invisible. --- */
 @media (max-width:700px){
- .bar .tir,.bar select#lg{
-  transition:max-width .16s,opacity .16s,padding .16s,border-width .16s}
+ .bar .tir,.bar .lgu{
+  transition:max-width .16s,opacity .16s}
+ .bar .tir{transition:max-width .16s,opacity .16s,padding .16s,border-width .16s}
  .bar:focus-within .tir:not(:focus),
- input[type=search]:focus ~ select#lg{
+ input[type=search]:focus ~ .lgu{
   max-width:0;padding-left:0;padding-right:0;border-width:0;
   opacity:0;overflow:hidden}}
 .tir{display:none;flex:none;border:1px solid var(--lin);border-radius:7px;
@@ -578,9 +613,12 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 </div>
 </div>
 <div class="bar">
- <button class="tir" id="tirL" aria-label="Tabelo di la materio">&#9776; Materio</button>
+ <button class="tir" id="tirL" aria-label="Tabelo di la materio">&#9776;<span> Materio</span></button>
  <input type="search" id="q" placeholder="Serchez en la du texti&hellip;" autocomplete="off">
- <select id="lg" aria-label="Linguo dil dextra kolono"><option value="fr">Français</option><option value="eo">Esperanto</option><option value="ia">Interlingua</option><option value="ar">العربية</option><option value="zh-Hans">中文（简体）</option><option value="zh-Hant">中文（繁體）</option><option value="es-419">Español (América)</option><option value="es-ES">Español (ES)</option><option value="en-GB">English (UK)</option><option value="en-US">English (US)</option><option value="hi">हिन्दी</option><option value="pt-BR">Português (BR)</option><option value="pt-PT">Português (PT)</option><option value="bn">বাংলা</option><option value="ru">Русский</option><option value="ja">日本語</option><option value="pa">ਪੰਜਾਬੀ</option><option value="pnb">پنجابی</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option><option value="yue">粵語</option><option value="arz">مصرى</option><option value="mr">मराठी</option><option value="te">తెలుగు</option><option value="ko">한국어</option><option value="ta">தமிழ்</option><option value="id">Indonesia</option><option value="ur">اردو</option><option value="de-AT">Deutsch (AT)</option><option value="de-DE">Deutsch (DE)</option><option value="fr-CA">Français (CA)</option><option value="jv">Basa Jawa</option><option value="fa">فارسی</option><option value="it">Italiano</option><option value="gu">ગુજરાતી</option><option value="ha">Hausa</option><option value="apc">شامي</option><option value="bho">भोजपुरी</option><option value="uk">Українська</option><option value="nl-BE">Nederlands (BE)</option><option value="nl-NL">Nederlands (NL)</option><option value="ro">Română</option><option value="cs">Čeština</option><option value="sv">Svenska</option><option value="ca">Català</option><option value="fi">Suomi</option><option value="lt">Lietuvių</option><option value="gl">Galego</option><option value="et">Eesti</option><option value="eu">Euskara</option><option value="oc">Occitan</option><option value="lb">Lëtzebuergesch</option><option value="ga">Gaeilge</option><option value="rm">Rumantsch</option></select>
+ <span class="lgu">
+  <svg class="glob" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9s1.4-6.6 3.9-9z"/></svg>
+  <select id="lg" aria-label="Linguo dil dextra kolono"><option value="fr">Français</option><option value="eo">Esperanto</option><option value="ia">Interlingua</option><option value="ar">العربية</option><option value="zh-Hans">中文（简体）</option><option value="zh-Hant">中文（繁體）</option><option value="es-419">Español (América)</option><option value="es-ES">Español (ES)</option><option value="en-GB">English (UK)</option><option value="en-US">English (US)</option><option value="hi">हिन्दी</option><option value="pt-BR">Português (BR)</option><option value="pt-PT">Português (PT)</option><option value="bn">বাংলা</option><option value="ru">Русский</option><option value="ja">日本語</option><option value="pa">ਪੰਜਾਬੀ</option><option value="pnb">پنجابی</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option><option value="yue">粵語</option><option value="arz">مصرى</option><option value="mr">मराठी</option><option value="te">తెలుగు</option><option value="ko">한국어</option><option value="ta">தமிழ்</option><option value="id">Indonesia</option><option value="ur">اردو</option><option value="de-AT">Deutsch (AT)</option><option value="de-DE">Deutsch (DE)</option><option value="fr-CA">Français (CA)</option><option value="jv">Basa Jawa</option><option value="fa">فارسی</option><option value="it">Italiano</option><option value="gu">ગુજરાતી</option><option value="ha">Hausa</option><option value="apc">شامي</option><option value="bho">भोजपुरी</option><option value="uk">Українська</option><option value="nl-BE">Nederlands (BE)</option><option value="nl-NL">Nederlands (NL)</option><option value="ro">Română</option><option value="cs">Čeština</option><option value="sv">Svenska</option><option value="ca">Català</option><option value="fi">Suomi</option><option value="lt">Lietuvių</option><option value="gl">Galego</option><option value="et">Eesti</option><option value="eu">Euskara</option><option value="oc">Occitan</option><option value="lb">Lëtzebuergesch</option><option value="ga">Gaeilge</option><option value="rm">Rumantsch</option></select>
+ </span>
 </div>
 </header>
 

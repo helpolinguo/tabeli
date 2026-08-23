@@ -630,14 +630,36 @@ Vérification finale, sur 15 colonnes (dont les 6 inversées) à 390, 1000
 et 1400 px : **0 titre hors axe, 0 rencontre avec le folio**, et les
 179 folios des rangs centrés tous visibles et dans leur case.
 
+**Le nom d'une langue ne dit pas qu'on est devant un choix de langue.**
+Le sélecteur affiche la langue *courante*, dans sa propre langue —
+« Français » à l'ouverture. C'est le bon principe pour la liste : chacun
+reconnaît le nom de la sienne. Mais pour l'en-tête c'est un piège : qui
+ne lit pas le français voit un mot qu'il ne comprend pas, entre une
+recherche et un sommaire, et **rien ne lui dit que c'est là qu'on change
+de langue**. L'étiquette ARIA ne l'aide pas non plus — elle est en ido,
+et elle ne se voit pas. On pose donc devant le nom le seul signe qui ne
+soit d'aucune langue : **un globe**. En SVG et non en emoji, comme les
+deux boutons de téléchargement — un emoji change de dessin d'un système
+à l'autre et ne suit pas la couleur du texte ; et sans prise au clic,
+pour que la cible reste le sélecteur sur toute sa surface.
+
+**Le globe coûtait 21 px, et la barre d'un téléphone ne les avait pas** :
+elle passait à trois lignes dès 402 px — 218 px de haut au lieu de 170,
+sur une barre *collante*, donc autant de moins pour lire. « Materio »
+vaut 57 px et ne dit rien de plus que les trois barres qui le précèdent,
+lesquelles ne sont d'aucune langue : le mot s'efface sous 700 px, là où
+les deux téléchargements ont déjà perdu « Ido » et « Français » pour la
+même raison. Le compte y gagne — mesuré à 402 px, le champ de recherche
+passe de **103 à 135 px** au repos, et l'en-tête reste à 170 px.
+
 **La recherche prend toute la barre pendant qu'on y tape.** Sur un
 téléphone, les trois commandes se partagent une ligne de 370 px :
-« Materio » en prend une centaine, le sélecteur de langue cent
-cinquante, et il reste au champ **103 px** — le placeholder est coupé au
-dixième caractère et le mot qu'on tape défile dans une fenêtre de deux
+le sommaire en prend trente-cinq, le sélecteur de langue cent
+soixante-douze, et il reste au champ **135 px** — le placeholder est
+coupé et le mot qu'on tape défile dans une fenêtre de trois
 centimètres. Le champ prend donc toute la barre le temps qu'il a le
-curseur, et la rend quand il le perd : mesuré à 402 px, **103 → 342 →
-103**, et à 360 px, **61 → 300 → 61**. La barre ne change pas de
+curseur, et la rend quand il le perd : mesuré à 402 px, **135 → 342 →
+135**, et à 360 px, **93 → 300 → 93**. La barre ne change pas de
 hauteur — elle est collante, et une ligne de plus se paierait sur toute
 la page.
 
