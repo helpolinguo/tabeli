@@ -679,7 +679,7 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
  <button class="tir" id="tirL" aria-label="Tabelo di la materio"><svg class="ikon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Materio</span></button>
  <span class="serc">
   <svg class="ikon lupeto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4L21 21"/></svg>
-  <input type="search" id="q" placeholder="Serchez en la du texti&hellip;" autocomplete="off">
+  <input type="search" id="q" aria-label="Serchez en la du texti" placeholder="Serchez en la du texti&hellip;" autocomplete="off">
  </span>
  <span class="lgu">
   <svg class="ikon glob" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9s1.4-6.6 3.9-9z"/></svg>
@@ -2043,6 +2043,27 @@ document.addEventListener("pointerdown", function(e){
    elle ne contient pas le mot. C'est le but des deux colonnes ; une
    recherche qui masquerait la case d'en face les separerait. --- */
 var q = document.getElementById("q");
+
+/* --- ET LE PLACEHOLDER SE RACCOURCIT SUR TELEPHONE. « Serchez en la du
+   texti... » demande 154 px et le champ n'en avait que 43 : il sortait
+   coupe a « Serchez en », ce qui se lit comme une panne et non comme une
+   invite. Un texte tronque ne dit rien de plus qu'un texte court ; il
+   dit seulement qu'on n'a pas regarde.
+
+   LE NOM ACCESSIBLE, LUI, NE SE RACCOURCIT PAS. Le champ n'avait pour
+   toute etiquette que son placeholder -- ce qui est deja une faiblesse,
+   puisqu'un placeholder disparait des qu'on tape. Il porte maintenant un
+   « aria-label » qui donne la phrase entiere a toute largeur : ce qui se
+   raccourcit est ce qui se VOIT, jamais ce qui s'annonce.
+
+   Le placeholder est un attribut : aucune feuille de style ne le change,
+   et c'est la seule raison pour laquelle ceci est du script. Le reglage
+   lui-meme est plus bas, dans serBarilo() : il depend de la largeur que
+   le selecteur de langue laisse au champ, et le selecteur n'existe pas
+   encore ici. --- */
+var qLarga = q.getAttribute("placeholder");
+var qKurta = "Serchez\u2026";
+var qEtroita = window.matchMedia("(max-width:700px)");
 var rangi = [].slice.call(document.querySelectorAll(".r"));
 var origine = rangi.map(function(r){
   return [].map.call(r.querySelectorAll(".k"), function(k){ return k.innerHTML; });
@@ -2206,12 +2227,76 @@ function poserLangue(code){
   });
   try { localStorage.setItem("tabeli-lg", code); } catch(e){}
 }
-sel.onchange = function(){ poserLangue(sel.value); };
+sel.onchange = function(){ poserLangue(sel.value); serBarilo(); };
 var memo = null;
 try { memo = localStorage.getItem("tabeli-lg"); } catch(e){}
 if (memo && [].some.call(sel.options, function(o){ return o.value === memo; }))
   sel.value = memo;
 poserLangue(sel.value);
+
+/* --- LA BARRE SE PARTAGE PAR LA MESURE, ET DANS CET ORDRE : LE
+   SELECTEUR PREND CE QU'IL MONTRE, LE CHAMP PREND LE RESTE, ET LE
+   PLACEHOLDER PREND CE QUI TIENT.
+
+   1. UN « select » SE DIMENSIONNE SUR SON OPTION LA PLUS LARGE, non sur
+   celle qu'il affiche : « Español (América) » fait 121 px et fixait la
+   largeur meme quand la case montrait « বাংলা », qui en fait 25. Sur un
+   ecran de 360 px cela donnait 178 px au selecteur et 81 au champ --
+   deux fois plus de place a ce qu'on touche une fois par visite qu'a ce
+   dans quoi on tape. Et c'est cela, non la longueur du texte, qui
+   empechait « Serchez... » de tenir : le placeholder n'etait pas trop
+   long, le champ etait trop court.
+
+   2. LE PLACEHOLDER SE MESURE AU LIEU DE SE DEVINER. On prend le plus
+   long des textes qui TIENNENT -- la phrase entiere, sinon « Serchez... »,
+   sinon rien. Rien n'est un choix et non un echec : la loupe dit deja ce
+   qu'est le champ, et c'est le cas de la langue au plus long nom sur le
+   plus petit ecran. Une regle mesuree vaut mieux qu'un seuil de plus :
+   celui-ci se corrige tout seul le jour ou l'on changera la police, le
+   texte, ou la liste des langues.
+
+   3. AU LARGE, ON NE TOUCHE A RIEN. La place ne manque pas, et une
+   largeur qui suivrait la langue ferait sauter la barre a chaque
+   changement.
+
+   La mesure se fait au canevas, dans la police CALCULEE des deux
+   champs -- jamais dans une police supposee : elle a deja change une
+   fois. --- */
+var mezurilo = document.createElement("canvas").getContext("2d");
+function policoDe(e){
+  var st = getComputedStyle(e);
+  return [st.fontStyle, st.fontWeight, st.fontSize, st.fontFamily].join(" ");
+}
+function serBarilo(){
+  if (qEtroita.matches){
+    var st = getComputedStyle(sel);
+    mezurilo.font = policoDe(sel);
+    var o = sel.options[sel.selectedIndex];
+    sel.style.width = (Math.ceil(mezurilo.measureText(o ? o.textContent : "").width)
+      + parseFloat(st.paddingLeft) + parseFloat(st.paddingRight) + 2) + "px";
+  } else {
+    sel.style.width = "";
+  }
+  var sq = getComputedStyle(q);
+  mezurilo.font = policoDe(q);
+  var loko = q.clientWidth - parseFloat(sq.paddingLeft) - parseFloat(sq.paddingRight);
+  var texto = qEtroita.matches ? qKurta : qLarga;
+  if (mezurilo.measureText(texto).width > loko) texto = qKurta;
+  if (mezurilo.measureText(texto).width > loko) texto = "";
+  q.setAttribute("placeholder", texto);
+}
+serBarilo();
+if (qEtroita.addEventListener) qEtroita.addEventListener("change", serBarilo);
+else qEtroita.addListener(serBarilo);
+/* La largeur peut changer sans franchir le seuil -- un ecran pliant, une
+   fenetre qu'on tire. On se raccroche donc aussi au redimensionnement,
+   mais une fois par image : la mesure lit clientWidth, et la lire a
+   chaque pixel ferait travailler la mise en page pour rien. */
+var barilo0 = 0;
+window.addEventListener("resize", function(){
+  if (barilo0) return;
+  barilo0 = requestAnimationFrame(function(){ barilo0 = 0; serBarilo(); });
+});
 
 /* --- LE TABLEAU EN PLEIN ECRAN. Au clic, la gravure s'ouvre sur toute
    la fenetre, sans quitter la page. Ce n'est pas la vue d'ensemble qu'on

@@ -703,18 +703,55 @@ vaut 57 px et ne dit rien de plus que les trois barres qui le précèdent,
 lesquelles ne sont d'aucune langue : le mot s'efface sous 700 px, là où
 les deux téléchargements ont déjà perdu « Ido » et « Français » pour la
 même raison. Le compte y gagne — mesuré à 402 px, le champ de recherche
-passe de **103 à 135 px** au repos, et l'en-tête reste à 170 px.
+passe de **103 à 135 px** au repos, et l'en-tête reste à 170 px. (Il en
+gagnera 55 de plus au partage mesuré, ci-dessous.)
 
-**La recherche prend toute la barre pendant qu'on y tape.** Sur un
-téléphone, les trois commandes se partagent une ligne de 370 px :
-le sommaire en prend trente-cinq, le sélecteur de langue cent
-soixante-douze, et il reste au champ **135 px** — le placeholder est
-coupé et le mot qu'on tape défile dans une fenêtre de trois
-centimètres. Le champ prend donc toute la barre le temps qu'il a le
-curseur, et la rend quand il le perd : mesuré à 402 px, **135 → 342 →
-135**, et à 360 px, **93 → 300 → 93**. La barre ne change pas de
-hauteur — elle est collante, et une ligne de plus se paierait sur toute
-la page.
+**La barre se partage par la mesure, et dans cet ordre : le sélecteur
+prend ce qu'il montre, le champ prend le reste, le placeholder prend ce
+qui tient.**
+
+Un `select` se dimensionne sur son option **la plus large**, non sur
+celle qu'il affiche : « Español (América) » fait 121 px et fixait la
+largeur même quand la case montrait « বাংলা », qui en fait 25. Sur un
+écran de 360 px cela donnait **178 px au sélecteur et 81 au champ** —
+deux fois plus de place à ce qu'on touche une fois par visite qu'à ce
+dans quoi on tape. Et c'est cela, non la longueur du texte, qui
+empêchait « Serchez… » de tenir : *le placeholder n'était pas trop long,
+le champ était trop court.* Le sélecteur se règle donc sur son option
+courante, et seulement en mode étroit — au large la place ne manque pas,
+et une largeur qui suivrait la langue ferait sauter la barre à chaque
+changement.
+
+Le placeholder, ensuite, **se mesure au lieu de se deviner** : on prend
+le plus long des textes qui *tiennent* — la phrase entière, sinon
+« Serchez… », sinon rien. Rien est un choix et non un échec : la loupe
+dit déjà ce qu'est le champ, et c'est le cas de la langue au plus long
+nom sur le plus petit écran. Une règle mesurée vaut mieux qu'un seuil de
+plus ; celle-ci se corrigera d'elle-même le jour où l'on changera la
+police, le texte, ou la liste des langues.
+
+| | sélecteur | place au texte | placeholder |
+|---|---|---|---|
+| 360 px, « বাংলা » | 82 px | 139 px | Serchez… |
+| 360 px, « Français » | 111 px | 110 px | Serchez… |
+| 360 px, « Lëtzebuergesch » | 157 px | 64 px | *(vide)* |
+| 360 px, « Español (América) » | 178 px | 43 px | *(vide)* |
+| 701 px et au-delà | 187 px | 310 px | Serchez en la du texti… |
+
+Le nom accessible, lui, ne se raccourcit pas : le champ n'avait pour
+toute étiquette que son placeholder — ce qui est déjà une faiblesse,
+puisqu'un placeholder disparaît dès qu'on tape. Il porte maintenant un
+`aria-label` qui donne la phrase entière à toute largeur. **Ce qui se
+raccourcit est ce qui se voit, jamais ce qui s'annonce.**
+
+Et le partage a payé un dividende : à 320 px, la barre tenait sur trois
+lignes — 238 px de haut — depuis toujours. Elle en tient deux, **189 px**.
+
+**La recherche prend toute la barre pendant qu'on y tape.** Le champ
+prend toute la barre le temps qu'il a le curseur, et la rend quand il le
+perd : mesuré à 402 px, **190 → 342 → 190**, et à 360 px, **148 → 300 →
+148**. La barre ne change pas de hauteur — elle est collante, et une
+ligne de plus se paierait sur toute la page.
 
 Les voisins **se replient, ils ne disparaissent pas** : `display:none`
 aurait fait sauter la barre et rendu la commande intouchable au milieu
