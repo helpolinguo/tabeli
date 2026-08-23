@@ -15,6 +15,13 @@ en brouillon. Une branche repart toujours du `main` courant :
     git fetch origin main
     git checkout -B <branche> origin/main
 
+**Une branche porte le nom de son sujet**, en français, en minuscules, les
+mots liés par des traits d'union : `claude/branches-par-sujet`,
+`claude/colonnes-pl-af`, `claude/note-de-bas-de-page`. Pas d'identifiant de
+session, pas de suffixe aléatoire — un nom pareil ne dit rien six mois plus
+tard, et il ment dès que la branche sert à autre chose que ce pour quoi on
+l'avait ouverte. Le préfixe `claude/` reste : il dit qui a tenu la plume.
+
 Une pull request fusionnée est finie : elle ne peut pas porter de suite. Le
 travail d'après repart de `main`, et c'est une nouvelle pull request.
 
