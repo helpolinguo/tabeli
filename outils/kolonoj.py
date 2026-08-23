@@ -819,6 +819,55 @@ LINGUI = {
         (_arb("عايز", "عاوز", "عايزة"), "بدّي / بدّو"),
         (_arb("بتاع", "بتاعة"), "تبع"),
     ], "virgule": True},
+
+    # LE BHOJPOURI CONTRE LE HINDI, ET C'EST LA SEULE COLONNE DU
+    # RELEVE DONT LA VOISINE NIE QU'ELLE EXISTE. Le marathi, le
+    # gujarati et l'ourdou se defendaient contre une langue qui les
+    # tenait pour des langues ; le bhojpouri est administre en Inde
+    # comme un « dialecte du hindi » et n'est dans aucune des annexes
+    # officielles, avec cinquante millions de locuteurs.
+    #
+    # IL N'Y A DONC AUCUNE DEFENSE POSSIBLE AU CARACTERE, et c'est la
+    # premiere fois. Le persan surveillait ی contre ي, le haoussa ses
+    # quatre lettres crochues, le gujarati le devanagari glisse dans
+    # son alphabet. Ici l'ecriture est la meme, le lexique est le meme
+    # aux trois quarts, et la morphologie nominale se ressemble. CE
+    # QUI SEPARE LES DEUX LANGUES, C'EST LE VERBE : la copule बा /
+    # बानी / बाड़ें contre है / हैं, la negation existentielle नइखे
+    # contre नहीं है, le passe en -ल contre le passe en -आ. Les regles
+    # visent donc d'abord la conjugaison, ensuite les pronoms, et le
+    # lexique en dernier.
+    #
+    # QUATRE FORMES NE SONT DELIBEREMENT PAS RELEVEES, et il faut le
+    # dire ici sous peine de les reprendre plus tard. « का » est le
+    # genitif hindi ET le mot bhojpouri pour « quoi » : une regle
+    # dessus crierait a chaque page. « के » est le genitif bhojpouri
+    # ET un oblique hindi. « पानी » et « हाथ » sont le meme mot dans
+    # les deux langues. Un controle qu'on desarme ne controle plus
+    # rien — lecon du marathi, tableau 10.
+    "bho": {"mot": [
+        (_deva("है", "हैं", "हूँ", "हूं"), "बा / बानी / बाड़ें"),
+        (_deva("था", "थे", "थी"), "रहे / रहलें / रहली"),
+        (_deva("नहीं"), "ना / नइखे"),
+        (_deva("मैं"), "हम"), (_deva("मुझे", "मुझको"), "हमरा"),
+        (_deva("मेरा", "मेरी", "मेरे"), "हमार"),
+        (_deva("तुम", "आप"), "तू / रउआ"),
+        (_deva("यह", "वह", "ये", "वे"), "ई / ऊ"),
+        (_deva("और"), "आ / अउर"), (_deva("लेकिन"), "बाकिर"),
+        (_deva("क्या"), "का"), (_deva("क्यों"), "काहे"),
+        (_deva("कैसे"), "कइसे"), (_deva("कहाँ", "कहां"), "कहाँ / कहवाँ"),
+        (_deva("बहुत"), "बहुते / खूब"),
+        (_deva("किया", "किये", "किए"), "कइल / कइलें"),
+        (_deva("गया", "गये", "गए"), "गइल / गइलें"),
+        (_deva("आया", "आये", "आए"), "आइल / आइलें"),
+        (_deva("लड़का", "लड़के", "लड़की"), "लइका / लइकी"),
+        (_deva("आदमी"), "मरद / आदमी के बदले मनई"),
+        (_deva("बड़ा", "बड़ी", "बड़े"), "बड़का"),
+        (_deva("छोटा", "छोटी", "छोटे"), "छोटका"),
+        (_deva("दरवाज़ा", "दरवाजा"), "केवाड़"),
+        (_deva("अभी", "अब"), "अबहीं"),
+        (_deva("यहाँ", "वहाँ", "यहां", "वहां"), "इहाँ / ओहिजा"),
+    ]},
 }
 
 # LE SEUIL AU-DELA DUQUEL UN FICHIER EST UN DIALOGUE. Mesure sur les

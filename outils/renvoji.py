@@ -95,6 +95,7 @@ DOSSIER = {"fr": "tableau",
            "ha": "hoto",
            "gu": "kostak",
            "apc": "lawha",
+           "bho": "nakasa",
            "de": "tafel",
            "it": "tavola"}
 

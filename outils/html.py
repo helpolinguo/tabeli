@@ -391,6 +391,17 @@ LANGUES = [
     # a l'ecole.
     {"kodo": "apc", "nomo": "شامي", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
+    # LA SEULE COLONNE DONT LA VOISINE NIE QU'ELLE EXISTE. Toutes les
+    # autres se defendaient contre une langue qui les reconnaissait
+    # comme distinctes ; le bhojpouri, lui, est administre en Inde
+    # comme un « dialecte du hindi », alors qu'il a plus de cinquante
+    # millions de locuteurs. Il partage avec le hindi l'ecriture,
+    # l'essentiel du lexique et une bonne part de la morphologie : il
+    # n'y a donc AUCUNE defense possible au caractere. Ce qui separe
+    # les deux langues, c'est le verbe — la copule बा, la negation
+    # नइखे, le passe en -ल.
+    {"kodo": "bho", "nomo": "भोजपुरी", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
@@ -1067,7 +1078,7 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "mr": "mr",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
            "id": "id", "jv": "jv", "fa": "fa", "ha": "ha",
-           "gu": "gu", "apc": "apc",
+           "gu": "gu", "apc": "apc", "bho": "bho",
            "de": "de", "it": "it"}   # langue -> texto/<...>
 
 
