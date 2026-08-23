@@ -54,6 +54,7 @@ par alinéa.
 | Traduction haoussa (`texto/ha/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — seule colonne qui s'écrive en **lettres latines** et dont le contrôle vise pourtant le caractère : ɓ, ɗ, ƙ, ƴ sont quatre lettres pleines qu'aucun clavier ne donne, et l'alphabet boko n'a ni p, ni q, ni v, ni x (§ 8) |
 | Traduction gujaratie (`texto/gu/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — colonne **à tête finale**, où l'outil qui compte est `parigi.py`, lu *avant* d'écrire : le génitif gujarati pose le possesseur devant le possédé et retourne à lui seul la moitié des couples de renvois (§ 8) |
 | Traduction levantine (`texto/apc/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — première colonne dont les **deux voisines sont la même langue qu'elle** (l'arabe standard, l'égyptien) : le danger n'y est pas le mot étranger mais la main qui remonte toute seule vers le registre de l'école (§ 8) |
+| Traduction bhojpourie (`texto/bho/`) | **les 16 tableaux**, faite en 2026 d'après l'ido — **dernière des vingt-neuf langues**, et seule colonne dont la voisine nie qu'elle existe : le hindi l'administre comme un de ses dialectes, et il n'y a donc **aucune défense possible au caractère** — c'est le verbe qui les sépare (§ 8) |
 | Les 16 tableaux muraux | **absents** — voir § 7 |
 | Contrôles automatiques | huit contrôles (`outils/controles.py`), plus la forme et la langue des colonnes traduites (`outils/kolonoj.py`) et les paires de renvois à retourner (`outils/parigi.py`) |
 
@@ -605,6 +606,7 @@ langues, ce que l'imprimé de 1926 ne pouvait pas faire.
     texto/ha/10-hoto-01.tex … 25-hoto-16.tex        (traduction)
     texto/gu/10-kostak-01.tex … 25-kostak-16.tex     (traduction)
     texto/apc/10-lawha-01.tex … 25-lawha-16.tex      (traduction)
+    texto/bho/10-nakasa-01.tex … 25-nakasa-16.tex    (traduction)
     outils/inventaire.py      relevé de géométrie, feuillet par feuillet
     outils/mesures.py         médianes et échelles possibles
     outils/kalibro.py         écrit kalibro-*.tex
@@ -2075,6 +2077,138 @@ tableau avec `બજાર`, et le français de Rochelle écrit *bazar* sans
 s'apercevoir qu'il écrit du persan. **Trois colonnes et l'original sur
 un seul mot, et c'est le dernier titre du livret.**
 
+### La colonne bhojpourie : quand la voisine nie que vous existez
+
+La vingt-neuvième et dernière langue de plus de cinquante millions de
+locuteurs (`texto/bho/`) est la seule du relevé dont la voisine **nie
+qu'elle existe**. Le marathe, le gujarati, l'ourdou, le persan, le
+levantin se défendaient contre une langue qui les tenait pour des
+langues ; le bhojpouri est administré en Inde comme un « dialecte du
+hindi » et ne figure dans aucune annexe officielle, avec cinquante
+millions de locuteurs.
+
+**Il n'y a donc aucune défense possible au caractère, et c'est la
+première fois en quarante-six colonnes.** Le persan surveillait ی contre
+ي, le haoussa ses quatre lettres crochues, le gujarati un signe
+dévanagari glissé dans son alphabet, le levantin quatre lettres persanes.
+Ici l'écriture est la même dévanagari, sans un signe de différence. Ce
+qui sépare les deux langues est le **verbe** : la copule बा / बानी /
+बाड़ें contre है / हैं, la négation existentielle नइखे contre नहीं है,
+le passé en -ल — कइल, गइल, आइल — contre le passé hindi en -आ. Les
+vingt-quatre règles de `kolonoj.py` visent donc la conjugaison d'abord,
+les pronoms ensuite, le lexique en dernier — **l'inverse de l'ordre de
+toutes les colonnes précédentes**.
+
+Quatre formes ne sont délibérément pas relevées : `का` est le génitif
+hindi *et* le mot bhojpouri pour « quoi » ; `के` est le génitif
+bhojpouri *et* un oblique hindi ; `पानी` et `हाथ` sont le même mot dans
+les deux langues. Une cinquième, `कहाँ`, a été **câblée puis retirée
+avant son premier emploi** : sa réparation portait la forme signalée —
+« कहाँ → कहाँ / कहवाँ » —, et une règle dont le remède répète la faute
+ne donne aucun ordre à suivre.
+
+#### Le mot emprunté, lui, se voit
+
+Le bhojpouri ne supporte pas qu'un mot commence par s + consonne : il
+pose une voyelle devant. L'école n'est pas स्कूल mais **इसकूल**, la gare
+n'est pas स्टेशन mais **इस्टेसन**. Le titre du tableau 1 est donc déjà
+une preuve de langue, et **c'est le mot anglais qui la donne, pas le mot
+indien** ; le tableau 12 la redonne sur le mot le plus entendu de la
+région. Second marqueur : le bhojpouri écrit ब là où le hindi écrit व —
+बियाकरन la grammaire, बिज्ञान la science, बनस्पति la botanique.
+
+#### Ce que la colonne a trouvé
+
+- **Cinq mots portugais, et une exception régulière.** मेज la table
+  (t. 1), पादरी le curé (t. 3), मिस्त्री le maçon (t. 5), अस्पताल
+  l'hôpital (t. 11), आया la bonne d'enfants (t. 14) — **les cinq
+  figuraient dans la liste des onze de la colonne gujaratie**, alors que
+  le Gujarat est la côte et le Bhojpour à mille cinq cents kilomètres :
+  la couche portugaise n'est donc pas côtière mais indienne. Mais બટાટા
+  et કોબી, eux, **ne sont pas passés** : la plaine dit आलू et गोभी (t.
+  15). Les mots portugais qui ont franchi le sous-continent sont ceux
+  qui nommaient une chose **sans nom** ; ceux qui nommaient un légume se
+  sont arrêtés à la côte, parce que la plaine avait un vieux mot à
+  recycler.
+- **On n'emprunte pas ce qu'on peut dire avec ce qu'on a**, vérifié
+  trois fois : पनडुब्बी le sous-marin, seul mot de mer non emprunté
+  (t. 10) ; डिब्बा le wagon et खाना le compartiment, seuls mots du fonds
+  dans un vocabulaire ferroviaire entièrement anglais (t. 12) ; आलू
+  (t. 15).
+- **Le fleuve est à lui, la mer est empruntée** (t. 10). नाव, डोंगी,
+  पतवार, डाँड़, घाट, माँझी, धार en propre ; जहाज, बंदरगाह, लंगर, मस्तूल,
+  डेक, महासागर empruntés. C'est la réponse exacte de la colonne
+  gujaratie, dont le vocabulaire maritime du même tableau 10 était
+  entièrement gujarati.
+- **Trois outils de moisson, trois réponses** (t. 7 et 8). Deux mots
+  pour la faucille — हँसुआ et दराँती —, **aucun** pour la faux ni pour
+  le fléau : on ne bat pas la gerbe au bâton dans la plaine, on la fait
+  fouler par les bœufs (दाँवन). La colonne gujaratie avait trouvé le
+  même trou au même endroit : ce n'est pas une particularité du
+  gujarati, c'est une **frontière d'outil**.
+- **Le vocabulaire se date tout seul.** Quatre âges de la lumière dans
+  une maison (t. 6) et un seul mot du fonds, दिया, qui n'y est pas ; la
+  montagne nommée par du sanskrit savant parce que la plaine est plate
+  (t. 9) ; भाप के दमकल, la « machine à souffle », qui a survécu à la
+  pompe à vapeur qu'elle décrivait (t. 11). Mais le tableau
+  d'astronomie (t. 16) n'emprunte rien : धूमकेतु, ग्रहण, गोलार्ध, ग्रह,
+  सौरमंडल, et les quatre points cardinaux. **La langue emprunte pour les
+  choses, non pour le ciel.**
+- **La langue a les mots ; c'est le faire qui est interdit, pas le
+  nommer.** Le Saint-Émilion du tableau 13 est un délit au Bihar depuis
+  2016 ; la viande de bœuf du tableau 15 y est interdite depuis 1955 —
+  et la colonne gujaratie avait rencontré la même chose **au même
+  tableau 15 et au même renvoi (94)**. Les deux colonnes l'écrivent.
+
+#### Là où la règle de la colonne s'arrête
+
+Sept refus ont été possibles — चइत pour les mois, राम-राम pour le
+salut, पतरा pour le calendrier, कबड्डी pour le jeu de barres, रोटी pour
+le pain, खटिया pour le lit, मदारी pour le montreur d'ours, पचीसी pour
+le trictrac — **parce qu'il existait autre chose à écrire**. Le tableau
+14 montre où cela s'arrête : dans cette langue, le nom d'un métier est
+le nom d'une caste — लोहार, बढ़ई, कुम्हार, धोबी, हजाम, तेली, हलवाई,
+दर्जी, सोनार, माली, रँगरेज —, et il n'y a rien d'autre à mettre.
+**Un refus n'est possible que là où il y a quelque chose d'autre à
+écrire ; ailleurs ce n'est plus un refus, c'est un trou.** La loi « on
+modernise la langue, jamais les choses » suppose que la langue ait deux
+mots, et elle n'en a pas toujours deux.
+
+#### Ce que les seize tableaux ont appris sur `parigi.py`
+
+Le bhojpouri est à tête finale comme le gujarati, et les paires à
+retourner ont été comptées tableau par tableau :
+
+| tableau | paires | manquées | |
+|---|---|---|---|
+| 1 | 8 | 0 | liste posée sous les yeux avant d'écrire |
+| 2 | 7 | 0 | |
+| 3 | 25 | 6 | outil lu d'un coup, pas tenu |
+| 4 | 19 | 0 | vérifié bloc à bloc **pendant** l'écriture |
+| 5 | 37 | 5 | la vigilance a tenu jusqu'aux deux tiers |
+| 6 | 52 | 4 | cinq chambres relues séparément |
+| 7 à 16 | 260 | 17 | |
+| **total** | **408** | **32** | |
+
+**ATTENTION — LES CHIFFRES DES EN-TÊTES DE FICHIER NE SONT PAS TOUS
+COMPARABLES.** Les en-têtes des seize fichiers `texto/bho/` annoncent
+tantôt le nombre de *paires* que `parigi.py` imprime, tantôt le nombre
+de *blocs* qui en portent au moins une, et le tableau 1 dit « six »
+là où l'outil en compte huit sur six blocs. Le tableau ci-dessus donne
+les comptes de l'outil, obtenus en recomptant sa sortie ligne à ligne ;
+ce sont ceux-là qui font foi.
+
+**Ce n'est pas le nombre de paires qui fait la faute, c'est le moment où
+la vérification retombe** : le remède n'est pas de mieux lire l'outil,
+c'est de couper le tableau en morceaux que la vigilance peut tenir. Et
+le tableau 1 n'avait rien prouvé — il en avait huit, pas
+cinquante-deux.
+
+Deux fautes d'un genre que **la chaîne ne rattrape jamais** ont été
+prises à l'œil, aux tableaux 10 et 11 : un renvoi accroché au mauvais
+mot. `renvoji.py` compare la **suite** des renvois, jamais ce à quoi ils
+tiennent.
+
 ## 9. Les huit contrôles
 
     python3 outils/controles.py
@@ -2100,7 +2234,7 @@ c'est le chantier ouvert.
 
 ### Le neuvième contrôle : la matière des colonnes traduites
 
-    python3 outils/kolonoj.py            # les 46 colonnes traduites
+    python3 outils/kolonoj.py            # les 47 colonnes traduites
     python3 outils/kolonoj.py yue mr     # celles-là
 
 Les huit contrôles ci-dessus regardent la pagination, l'appariement des
