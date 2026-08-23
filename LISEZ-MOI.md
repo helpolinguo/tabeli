@@ -643,6 +643,23 @@ deux boutons de téléchargement — un emoji change de dessin d'un système
 à l'autre et ne suit pas la couleur du texte ; et sans prise au clic,
 pour que la cible reste le sélecteur sur toute sa surface.
 
+**Et le placeholder ne dit pas davantage qu'on est devant une
+recherche.** « Serchez en la du texti… » est en ido comme le reste de
+l'interface, et sur un téléphone il sort coupé — « Serchez en la d ».
+Qui ne lit pas l'ido voit un cadre vide avec des mots inconnus dedans.
+Même remède, pour la même raison : **une loupe**, qui n'est d'aucune
+langue. Les trois commandes de la barre se lisent désormais sans un mot
+— trois barres, une loupe, un globe.
+
+Le champ passe dans une enveloppe pour la porter, et c'est l'enveloppe
+qui devient l'élément souple de la barre. Deux conséquences à ne pas
+manquer : le `flex-basis` qui décide du retour à la ligne se pose
+désormais sur l'enveloppe, et le sélecteur de langue — qui suivait le
+champ par `~` — suit maintenant l'enveloppe, par `:focus-within`,
+puisque le curseur est *dans* elle et non *sur* elle. Vérifié :
+`elementFromPoint` au centre de la loupe rend `INPUT#q`, et un clic
+dessus donne bien le curseur au champ.
+
 **Le globe coûtait 21 px, et la barre d'un téléphone ne les avait pas** :
 elle passait à trois lignes dès 402 px — 218 px de haut au lieu de 170,
 sur une barre *collante*, donc autant de moins pour lire. « Materio »

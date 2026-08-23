@@ -49,7 +49,25 @@ h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
    reste : ce qui disparait est le mot, non le nom. */
 @media (max-width:700px){.tir span{display:none}}
 .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-input[type=search]{flex:1 1 240px;min-width:150px;padding:8px 11px;
+/* --- ET LE PLACEHOLDER NE DIT PAS DAVANTAGE QU'ON EST DEVANT UNE
+   RECHERCHE. « Serchez en la du texti... » est en ido comme le reste de
+   l'interface, et sur un telephone il sort coupe : « Serchez en la d ».
+   Qui ne lit pas l'ido voit un cadre vide avec des mots inconnus dedans.
+   Meme remede que pour le choix de langue, et pour la meme raison : une
+   loupe, qui n'est d'aucune langue.
+   Le champ passe dans une enveloppe pour la porter -- c'est l'enveloppe
+   qui devient l'element souple de la barre, et le champ la remplit. Deux
+   consequences a ne pas manquer : le « flex-basis » qui decide du retour
+   a la ligne se pose desormais sur l'enveloppe, et le selecteur de
+   langue, qui suivait le champ par « ~ », suit maintenant l'enveloppe --
+   par « :focus-within », puisque le curseur est DANS elle et non SUR
+   elle. --- */
+.serc{position:relative;flex:1 1 240px;min-width:150px;
+ display:flex;align-items:center}
+.lupeto{position:absolute;left:11px;width:15px;height:15px;pointer-events:none;
+ stroke:var(--sub);fill:none;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round}
+input[type=search]{flex:1 1 auto;width:100%;min-width:0;padding:8px 11px 8px 32px;
  border:1px solid var(--lin);border-radius:7px;background:var(--pap);
  color:var(--enk);font:inherit;font-size:16px}
 /* 16px exacte, e ne min: Safari sur iPhone zomas automate sur irga
@@ -97,7 +115,9 @@ select#lg{flex:none;padding:8px 10px 8px 31px;border:1px solid var(--lin);
    n'ajoute rien a la specificite : placee plus haut, elle perdait
    contre le « min-width:150px » de la recherche, et rien ne bougeait. */
 @media (max-width:700px){
- input[type=search]{min-width:0;flex:1 1 60px}
+ .serc{min-width:0;flex:1 1 60px}
+ input[type=search]{padding:8px 8px 8px 28px}
+ .lupeto{left:9px}
  select#lg{padding:8px 6px 8px 27px}
  .glob{left:8px}}
 
@@ -128,7 +148,7 @@ select#lg{flex:none;padding:8px 10px 8px 31px;border:1px solid var(--lin);
   transition:max-width .16s,opacity .16s}
  .bar .tir{transition:max-width .16s,opacity .16s,padding .16s,border-width .16s}
  .bar:focus-within .tir:not(:focus),
- input[type=search]:focus ~ .lgu{
+ .serc:focus-within ~ .lgu{
   max-width:0;padding-left:0;padding-right:0;border-width:0;
   opacity:0;overflow:hidden}}
 .tir{display:none;flex:none;border:1px solid var(--lin);border-radius:7px;
@@ -614,7 +634,10 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 </div>
 <div class="bar">
  <button class="tir" id="tirL" aria-label="Tabelo di la materio">&#9776;<span> Materio</span></button>
- <input type="search" id="q" placeholder="Serchez en la du texti&hellip;" autocomplete="off">
+ <span class="serc">
+  <svg class="lupeto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4L21 21"/></svg>
+  <input type="search" id="q" placeholder="Serchez en la du texti&hellip;" autocomplete="off">
+ </span>
  <span class="lgu">
   <svg class="glob" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9s1.4-6.6 3.9-9z"/></svg>
   <select id="lg" aria-label="Linguo dil dextra kolono">{{LINGUI}}</select>
