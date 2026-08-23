@@ -193,8 +193,28 @@ select#lg{flex:none;padding:0 32px 0 31px;cursor:pointer;
  .bar .tir{transition:max-width .16s,opacity .16s,padding .16s,border-width .16s}
  .bar:focus-within .tir:not(:focus),
  .serc:focus-within ~ .lgu{
-  max-width:0;padding-left:0;padding-right:0;border-width:0;
-  opacity:0;overflow:hidden}}
+  max-width:0;width:0;min-width:0;flex-basis:0;margin:0;
+  padding-left:0;padding-right:0;border-width:0;
+  opacity:0;overflow:hidden}
+ /* « min-width:0 » N'EST PAS UNE REDONDANCE. La taille minimale
+    AUTOMATIQUE d'un element de boite flexible est celle de son contenu,
+    et cette minimale l'emporte sur « max-width » : une largeur nulle ne
+    peut donc rien contre elle. La regle veut qu'elle retombe a zero des
+    que l'element porte un « overflow » autre que « visible » -- ce que
+    fait Chromium, qui rend bien 0,00 px --, mais on ne se repose pas sur
+    une resolution automatique pour un effet qu'on peut demander.
+    Signale sur un iPhone : le bouton du sommaire laissait voir un coin
+    arrondi de six pixels a la gauche du champ elargi.
+    ET LE CONTENU DU BOUTON SE RETIRE AVEC LUI. L'icone mesure 15 px et
+    ne se laisse pas comprimer (« flex:none ») : dans une boite de
+    largeur nulle, elle ne tient que par le rognage. Un rognage qui ne se
+    fait pas est invisible dans le code et bien visible a l'ecran ; on
+    ote donc ce qu'il y a a rogner. Le bouton, lui, reste dans le flux et
+    dans l'ordre de tabulation -- et « :not(:focus) » lui rend son icone
+    des qu'on l'atteint au clavier. Le selecteur de langue, dont l'enfant
+    est le champ focalisable lui-meme, ne peut pas recevoir le meme
+    traitement : lui n'a que la geometrie. */
+ .bar:focus-within .tir:not(:focus) > *{display:none}}
 .tir{display:none;flex:none;align-items:center;gap:7px;
  padding:0 12px;cursor:pointer}
 .tir:hover{background:var(--lin)}

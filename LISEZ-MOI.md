@@ -765,6 +765,33 @@ ne remonte, se replie sur le `:focus-within` de la barre — mais
 mis le curseur sur un bouton devenu invisible. Au-dessus de 700 px,
 rien ne bouge.
 
+**Et une largeur nulle ne suffit pas à faire disparaître une boîte
+flexible.** Signalé sur un iPhone : le bouton du sommaire laissait voir
+un coin arrondi de six pixels à la gauche du champ élargi. La taille
+minimale **automatique** d'un élément de boîte flexible est celle de son
+contenu, et cette minimale l'emporte sur `max-width` — une largeur nulle
+ne peut rien contre elle. La règle veut qu'elle retombe à zéro dès que
+l'élément porte un `overflow` autre que `visible`, ce que Chromium fait
+(il rend bien 0,00 px), mais **on ne se repose pas sur une résolution
+automatique pour un effet qu'on peut demander** : `min-width:0` est
+maintenant écrit, avec `width`, `flex-basis` et les marges.
+
+Et le contenu du bouton se retire avec lui. L'icône mesure 15 px et ne
+se laisse pas comprimer (`flex:none`) : dans une boîte de largeur nulle
+elle ne tient que par le rognage, et **un rognage qui ne se fait pas est
+invisible dans le code et bien visible à l'écran**. On ôte donc ce qu'il
+y a à rogner. Le bouton reste dans le flux et dans l'ordre de
+tabulation, et `:not(:focus)` lui rend son icône dès qu'on l'atteint au
+clavier — vérifié : Maj+Tab depuis le champ le ramène à 41 px avec son
+icône de 15. Le sélecteur de langue, dont l'enfant est le champ
+focalisable lui-même, ne peut pas recevoir le même traitement : lui n'a
+que la géométrie.
+
+*Ce défaut n'a pas pu être reproduit ici* — Chromium collapse déjà à
+zéro, et WebKit ne s'installe pas dans cet environnement. La correction
+vise la cause connue, elle n'est pas vérifiée sur le moteur qui l'a
+montrée.
+
 Le sélecteur de langue ne recharge rien **une fois la langue venue** :
 elle reste dans la page, et la bascule est instantanée. Le français y
 est d'emblée — c'est un fac-similé transcrit, il fait partie de
