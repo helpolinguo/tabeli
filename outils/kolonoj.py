@@ -931,6 +931,19 @@ LINGUI = {
         (r"(?<![A-Za-z])[A-Za-z]+tje(?:s)?(?![A-Za-z])",
          "diminutif neerlandais — l'afrikaans ecrit -tjie / -jie"),
         (r"(?<![A-Za-z])ook(?=\s+niet)", "ook nie"),
+    ], "exemptes": [
+        # « strooijonker » N'A PAS DE DIGRAMME : IL A UNE SOUDURE.
+        # La regle du « ij » a crie au tableau 4 sur le garcon d'honneur
+        # — et elle avait raison a la lettre et tort au mot. Le compose
+        # est « strooi » plus « jonker » : le i ferme le premier membre,
+        # le j ouvre le second, et les deux ne se touchent que par
+        # accident de soudure. C'est le meme genre de piege que « piec »
+        # en polonais, a ceci pres qu'ici la regle reste juste partout
+        # ailleurs — elle vise un digramme, et il n'y en a pas ici. On
+        # exempte donc LA FORME, non la regle.
+        # « strooimeisie », la demoiselle d'honneur, ne pose pas la
+        # question : sa soudure tombe entre deux voyelles.
+        "strooijonker",
     ]},
 
     # LE POLONAIS, ET SA DEFENSE N'EST PAS CELLE DE L'AFRIKAANS.
