@@ -855,7 +855,12 @@ LINGUI = {
         (_deva("यह", "वह", "ये", "वे"), "ई / ऊ"),
         (_deva("और"), "आ / अउर"), (_deva("लेकिन"), "बाकिर"),
         (_deva("क्या"), "का"), (_deva("क्यों"), "काहे"),
-        (_deva("कैसे"), "कइसे"), (_deva("कहाँ", "कहां"), "कहाँ / कहवाँ"),
+        (_deva("कैसे"), "कइसे"),
+        # « कहाँ » A ETE CABLE PUIS RETIRE AVANT LE PREMIER EMPLOI.
+        # Sa reparation portait la forme signalee — « कहाँ -> कहाँ /
+        # कहवाँ » —, ce qui est un ordre impossible a suivre : le mot
+        # est bhojpouri autant que hindi, et une regle dont le remede
+        # repete la faute n'apprend rien a qui la lit.
         (_deva("बहुत"), "बहुते / खूब"),
         (_deva("किया", "किये", "किए"), "कइल / कइलें"),
         (_deva("गया", "गये", "गए"), "गइल / गइलें"),
