@@ -403,7 +403,10 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     # ressemble au « taula » que se partagent le catalan, l'occitan et
     # le basque — un V de plus — et au « tabella » de l'interlingua et
     # du romanche — un V au lieu d'un B.
-    ("it", "*-tavola-*.tex")]
+    ("it", "*-tavola-*.tex"),
+           # Meme jeton que le russe et le neerlandais, autres
+           # dossiers : voir renvoji.py.
+           ("pl", "*-tablica-*.tex"), ("af", "*-tabel-*.tex")]
 
 
 def construire():

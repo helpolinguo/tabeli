@@ -115,7 +115,16 @@ DOSSIER = {"fr": "tableau",
            "apc": "lawha",
            "bho": "nakasa",
            "de": "tafel",
-           "it": "tavola"}
+           "it": "tavola",
+           # LE POLONAIS DIT « tablica », comme le russe transcrit --
+           # et le glob se fait DANS le dossier de la langue, si bien
+           # que texto/pl et texto/ru ne se melent pas, comme texto/fr
+           # et texto/fr-CA.
+           "pl": "tablica",
+           # L'AFRIKAANS DIT « tabel », comme le neerlandais. Meme
+           # jeton, autre dossier : c'est deja le cas de l'arabe
+           # standard et de l'egyptien.
+           "af": "tabel"}
 
 # LE FRANCAIS N'EST PAS UNE TRADUCTION. C'est le releve d'une AUTRE
 # edition, et Rochelle ordonne ses phrases comme il l'entend :

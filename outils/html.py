@@ -267,6 +267,17 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "et", "nomo": "Eesti", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
+    # DEUX COLONNES HORS DES DEUX LISTES. Le polonais n'est pas dans
+    # les vingt-neuf d'Ethnologue -- il vient loin derriere le
+    # bhojpouri -- et n'est pas non plus un des dix-sept pays de
+    # l'ido ; l'afrikaans est plus loin encore. Elles sont la parce
+    # qu'on les a demandees. Le menu ne les distingue pas des autres :
+    # elles ont un nombre de locuteurs, elles prennent leur rang au
+    # nombre, et c'est tout ce que _ordre() sait d'elles.
+    {"kodo": "pl", "nomo": "Polski", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
+    {"kodo": "af", "nomo": "Afrikaans", "dir": "ltr",
+     "fonto": "traduction moderne", "differita": True},
     # LES DIX-SEPT LANGUES DE LA COMMUNAUTE IDISTE SONT CLOSES. Ce qui
     # suit reprend le programme des vingt-neuf langues d'Ethnologue,
     # dans l'ordre des locuteurs premiers, la ou il s'etait arrete —
@@ -1121,7 +1132,8 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "te": "te", "ko": "ko", "ta": "ta", "ur": "ur",
            "id": "id", "jv": "jv", "fa": "fa", "ha": "ha",
            "gu": "gu", "apc": "apc", "bho": "bho",
-           "de": "de", "it": "it"}   # langue -> texto/<...>
+           "de": "de", "it": "it",
+           "pl": "pl", "af": "af"}   # langue -> texto/<...>
 
 
 # LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
@@ -2489,6 +2501,10 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         # casse, et la comparaison est sensible a la
                         # casse.
                         r"|TAVOLA"
+                        # LE POLONAIS DIT « TABLICA », en alphabet
+                        # latin : le membre cyrillique « ТАБЛИЦА »,
+                        # pose pour le russe, ne le couvre pas.
+                        r"|TABLICA"
                         )
 # LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
 # tout determinant. Le mot est le meme que le catalan et l'occitan, et
@@ -2642,6 +2658,12 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
                    # LE CANTONAIS, meme mot, autre graphie.
                    r"|第[一二三四]組"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
+                   # LE POLONAIS MET SON ORDINAL APRES LE NOM :
+                   # « SERIA PIERWSZA ». Le groupe commun place
+                   # l'ordinal devant, et aucun ordinal polonais n'y
+                   # est ; c'est donc un membre a lui, comme l'arabe
+                   # en a un pour la meme raison de place.
+                   r"|seria\s+(?:pierwsza|druga|trzecia|czwarta)"
                    # L'ARABE EGYPTIEN FAIT PASSER SA PHONOLOGIE JUSQUE
                    # DANS L'APPARAT : le ث devient ت, et « الثانية »
                    # s'ecrit « التانية », « الثالثة » « التالتة ». Le
@@ -2745,6 +2767,11 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
                   # ecrit deja plus bas : le membre existe, on ne le
                   # double pas.
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
+                  # LE POLONAIS, MEME RAISON QU'A LA SERIE : son
+                  # ordinal suit le nom. « scena » est deja dans le
+                  # groupe commun, mais il y attend un ordinal DEVANT
+                  # lui, et le polonais le met derriere.
+                  r"|scena\s+(?:pierwsza|druga|trzecia|czwarta)"
                   # MEME RAISON QU'A LA SERIE : l'egyptien ecrit
                   # « المشهد التاني » et « المشهد التالت ».
                   r"|المشهد\s+(?:التاني|التالت)"

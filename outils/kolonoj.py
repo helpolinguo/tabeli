@@ -883,6 +883,100 @@ LINGUI = {
         # LE MOT EN GRAS, qui est le seul endroit ou le nom apparait.
         "\\VUgras{आया}",
     ]},
+
+    # L'AFRIKAANS CONTRE LE NEERLANDAIS, ET C'EST LE CAS D'ECOLE.
+    # Les deux voisines de ce releve sont la meme langue a un siecle et
+    # demi de distance : l'afrikaans sort du neerlandais des colons du
+    # Cap, et texto/nl est dans le meme dossier. Une phrase neerlandaise
+    # se lit sans effort par qui ecrit l'afrikaans, et c'est exactement
+    # la situation du bhojpouri devant le hindi -- a une difference
+    # pres, decisive : ICI, LA DEFENSE SE JOUE AUSSI A LA LETTRE.
+    #
+    # LE DIGRAMME « ij » N'EXISTE PAS EN AFRIKAANS. Le neerlandais en a
+    # partout -- zijn, mijn, wij, tijd, altijd, vrij, kijken --, et
+    # l'afrikaans ecrit y : sy, my, ons, tyd, altyd, vry, kyk. Une seule
+    # regle de deux caracteres releve donc toute une classe de calques,
+    # comme le q de « quince » l'avait fait pour le haoussa.
+    #
+    # LE « z » INITIAL NON PLUS. Le neerlandais dit zijn, zitten, zien,
+    # zon, zee ; l'afrikaans dit is, sit, sien, son, see. Le z ne lui
+    # reste que dans les noms propres et quelques emprunts.
+    #
+    # ET « sch » AU DEBUT D'UN MOT EST DU NEERLANDAIS : school, schoen,
+    # schrijven donnent skool, skoen, skryf.
+    #
+    # ON NE RELEVE PAS « het », QUI EST DE L'AFRIKAANS. C'est
+    # l'auxiliaire du passe -- « ek het gesien » --, la ou le
+    # neerlandais l'emploie comme article. Les deux s'ecrivent pareil et
+    # une regle dessus crierait a chaque page. On ne releve pas « een »
+    # non plus : c'est le NUMERAL afrikaans, quand l'article est « 'n ».
+    # Deux mots que la graphie confond ; c'est la meme raison qui a fait
+    # exempter « आया » plus haut.
+    "af": {"mot": [
+        (r"(?<![A-Za-z])[A-Za-z]*ij[A-Za-z]*(?![A-Za-z])",
+         "digramme « ij » — l'afrikaans ecrit y (zijn/is, tijd/tyd)"),
+        (r"(?<![A-Za-z])z(?=[aeiouy])[A-Za-z]*(?![A-Za-z])",
+         "« z » initial — l'afrikaans ecrit s (zien/sien, zon/son)"),
+        (r"(?<![A-Za-z])sch[A-Za-z]*(?![A-Za-z])",
+         "« sch » initial — l'afrikaans ecrit sk (school/skool)"),
+        (r"(?<![A-Za-z])niet(?![A-Za-z])", "nie"),
+        (r"(?<![A-Za-z])nu(?![A-Za-z])", "nou"),
+        (r"(?<![A-Za-z])(?:heeft|hebben|hebt)(?![A-Za-z])", "het / hê"),
+        (r"(?<![A-Za-z])(?:wordt|worden)(?![A-Za-z])", "word"),
+        (r"(?<![A-Za-z])(?:de|der|den)(?![A-Za-z])",
+         "die — l'afrikaans n'a qu'un article defini"),
+        (r"(?<![A-Za-z])jullie(?![A-Za-z])", "julle"),
+        (r"(?<![A-Za-z])meisje(?![A-Za-z])", "meisie"),
+        (r"(?<![A-Za-z])jongen(?![A-Za-z])", "seun"),
+        (r"(?<![A-Za-z])[A-Za-z]+tje(?:s)?(?![A-Za-z])",
+         "diminutif neerlandais — l'afrikaans ecrit -tjie / -jie"),
+        (r"(?<![A-Za-z])ook(?=\s+niet)", "ook nie"),
+    ]},
+
+    # LE POLONAIS, ET SA DEFENSE N'EST PAS CELLE DE L'AFRIKAANS.
+    # Aucune de ses voisines ne lui ressemble assez pour le contaminer :
+    # le tcheque est ouest-slave comme lui, mais leurs alphabets se
+    # separent a l'oeil -- ě, ř, ů, č, š, ž, ď, ť, ň d'un cote ; ą, ę,
+    # ł, ń, ó, ś, ź, ż, cz, sz, rz de l'autre. Un mot tcheque dans cette
+    # colonne se verrait.
+    #
+    # LE DANGER EST AILLEURS, ET C'EST CELUI DU HAOUSSA : LE CLAVIER.
+    # Neuf lettres du polonais ne s'obtiennent pas sans combinaison, et
+    # une main pressee ecrit ksiazka, zolty, dzien, reka, stol la ou il
+    # faut książka, żółty, dzień, ręka, stół. La faute ne se voit pas :
+    # le mot reste lisible, il est seulement faux. On releve donc les
+    # formes NUES des mots que ce livret emploie, et la liste s'allonge
+    # tableau par tableau -- c'est ainsi que celle du haoussa s'est
+    # faite.
+    "pl": {"mot": [
+        (r"[ěřůďťňĚŘŮ]",
+         "lettre tcheque — cette colonne s'ecrit en polonais"),
+        (r"(?<![A-Za-z])ksiazk\w*(?![A-Za-z])", "książka"),
+        (r"(?<![A-Za-z])zolt\w*(?![A-Za-z])", "żółty"),
+        (r"(?<![A-Za-z])dzien(?![A-Za-z])", "dzień"),
+        (r"(?<![A-Za-z])rek[aę](?![A-Za-z])", "ręka"),
+        (r"(?<![A-Za-z])stol(?![A-Za-z])", "stół"),
+        (r"(?<![A-Za-z])krzeslo(?![A-Za-z])", "krzesło"),
+        (r"(?<![A-Za-z])sciana(?![A-Za-z])", "ściana"),
+        (r"(?<![A-Za-z])swiat\w*(?![A-Za-z])", "świat"),
+        (r"(?<![A-Za-z])maly(?![A-Za-z])", "mały"),
+        (r"(?<![A-Za-z])bial\w*(?![A-Za-z])", "biały"),
+        (r"(?<![A-Za-z])dlug\w*(?![A-Za-z])", "długi"),
+        (r"(?<![A-Za-z])glow\w*(?![A-Za-z])", "głowa"),
+        (r"(?<![A-Za-z])wiecej(?![A-Za-z])", "więcej"),
+        (r"(?<![A-Za-z])czesc(?![A-Za-z])", "część"),
+        # « piec » N'EST PAS « pięć » AMPUTE : C'EST LE POELE.
+        # La regle a crie des le premier tableau, sur « \VUgras{piec}
+        # \textsuperscript{(46)} » — et elle avait tort. « piec » est un
+        # mot polonais entier, le poele et le verbe cuire ; « pięć » est
+        # cinq. Deux mots que la perte des accents ne relie pas, puisque
+        # le premier n'en a jamais eu.
+        # LA REGLE DES ACCENTS PERDUS N'EST SURE QUE LA OU LA FORME NUE
+        # N'EST PAS DEJA UN MOT. C'est le cas de stol, dzien, reka,
+        # ksiazka, czesc, glowa — aucun n'existe sans ses accents. Ce
+        # n'etait pas le cas de piec, et il n'y a rien a exempter : la
+        # regle elle-meme etait fausse, on l'ote.
+    ]},
 }
 
 # LE SEUIL AU-DELA DUQUEL UN FICHIER EST UN DIALOGUE. Mesure sur les

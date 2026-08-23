@@ -55,7 +55,17 @@
   "« milioni » vaut null pour eux : on ne compte pas des locuteurs",
   "premiers a une langue construite. Le menu de la page de lecture les",
   "range juste apres le francais, avant les langues comptees ; les",
-  "quinze autres prennent leur rang au nombre, comme les vingt-neuf."
+  "quinze autres prennent leur rang au nombre, comme les vingt-neuf.",
+  "",
+  "DEUX COLONNES HORS DES DEUX LISTES : LE POLONAIS ET L'AFRIKAANS.",
+  "Elles ne sont ni dans les vingt-neuf d'Ethnologue -- le polonais",
+  "vient loin derriere le bhojpouri, l'afrikaans plus loin encore --",
+  "ni dans les dix-sept pays de l'ido. Elles sont la parce qu'on les",
+  "a demandees, et c'est une raison suffisante : ce fichier dit d'ou",
+  "vient chaque colonne, il ne pretend pas que toutes viennent du",
+  "meme endroit. Elles prennent leur rang au nombre de locuteurs,",
+  "comme les autres -- le polonais entre l'italien et l'ukrainien,",
+  "l'afrikaans entre le catalan et le finnois."
  ],
  "lingui": [
   [
@@ -290,6 +300,13 @@
    "faite"
   ],
   [
+   "pl",
+   "Polski",
+   40,
+   "ltr",
+   "a faire"
+  ],
+  [
    "uk",
    "Українська",
    33,
@@ -330,6 +347,13 @@
    9,
    "ltr",
    "faite"
+  ],
+  [
+   "af",
+   "Afrikaans",
+   7.2,
+   "ltr",
+   "a faire"
   ],
   [
    "fi",
