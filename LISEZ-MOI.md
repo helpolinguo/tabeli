@@ -630,6 +630,42 @@ Vérification finale, sur 15 colonnes (dont les 6 inversées) à 390, 1000
 et 1400 px : **0 titre hors axe, 0 rencontre avec le folio**, et les
 179 folios des rangs centrés tous visibles et dans leur case.
 
+**Les trois commandes sont une rangée, et non trois objets.** Elles
+étaient nées à trois moments différents et chacune s'était réglée pour
+elle-même. Mesuré au navigateur, sur un iPhone :
+
+| | hauteur | police | couleur |
+|---|---|---|---|
+| sommaire | 32,5 px | 12,5 px / 600, system-ui | accent |
+| recherche | 42,8 px | 16 px / 400, serif | encre |
+| langue | 38,0 px | 13 px / 600, system-ui | encre |
+
+Trois hauteurs, trois polices, trois graisses, et une des trois dans la
+couleur d'accent — qui, dans cette feuille, signale un lien vers le
+*dehors* (les deux téléchargements). Rien ne les tenait ensemble que
+leur bord et leur rayon.
+
+On pose donc un **socle**, et chaque règle particulière ne garde que ce
+qui lui est propre. La hauteur est celle du champ de recherche —
+**42 px** —, non par goût mais par contrainte : son corps est fixé à
+16 px pour empêcher Safari de zoomer, et c'est ce corps qui commande sa
+hauteur. Les deux autres n'avaient aucune raison de rester plus basses,
+et 42 px fait de surcroît une cible tactile honnête. La police est celle
+du livre, à 16 px : le sélecteur y perd son system-ui gras de 13 px et
+gagne le serif du texte — mesuré, il passe de 172 à 184 px de large, et
+la barre tient toujours sur deux lignes à 360 px. Douze pixels pour que
+les deux boîtes voisines soient de la même main.
+
+**Et le chevron est à nous, non au système.** Chaque navigateur dessine
+le sien : Safari empile deux flèches, Chrome pose un triangle. Deux
+dessins pour la même commande, et aucun qui s'accorde aux deux icônes
+voisines. `appearance:none` les ôte, et le chevron se pose comme le
+globe — même trait, même gris, même taille, sans prise au clic.
+
+Les icônes sont grises, le texte est à l'encre : l'icône dit ce que la
+commande *fait*, le texte dit ce qu'elle *porte*. L'accent reste ce
+qu'il était — la marque de ce qui sort de la page.
+
 **Le nom d'une langue ne dit pas qu'on est devant un choix de langue.**
 Le sélecteur affiche la langue *courante*, dans sa propre langue —
 « Français » à l'ouverture. C'est le bon principe pour la liste : chacun

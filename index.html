@@ -3,7 +3,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{--enk:#1a1a1a;--pap:#fbfaf7;--sub:#6b6560;--acc:#7a4b2a;--lin:#e2ddd5;
- --pap2:#f4f1ea;--flag:#b4552d}
+ --pap2:#f4f1ea;--flag:#b4552d;
+ /* La hauteur des trois commandes de la barre. Voir « LES TROIS
+    COMMANDES SONT UNE RANGEE » plus bas : elle est ici parce qu'elle
+    vaut pour trois regles qui ne se touchent pas. */
+ --kmd:42px}
 @media(prefers-color-scheme:dark){:root{--enk:#e8e4de;--pap:#16161a;--sub:#9a938c;
  --acc:#d69a6a;--lin:#2c2c33;--pap2:#1c1c21;--flag:#e08a5c}}
 *{box-sizing:border-box}
@@ -49,6 +53,47 @@ h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
    reste : ce qui disparait est le mot, non le nom. */
 @media (max-width:700px){.tir span{display:none}}
 .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* --- LES TROIS COMMANDES SONT UNE RANGEE, ET NON TROIS OBJETS.
+   Elles etaient nees a trois moments differents et chacune s'etait
+   reglee pour elle-meme. Mesure au navigateur, sur un iPhone :
+
+     sommaire    32,5 px de haut   12,5 px / 600   system-ui   accent
+     recherche   42,8 px de haut   16 px   / 400   serif       encre
+     langue      38,0 px de haut   13 px   / 600   system-ui   encre
+
+   Trois hauteurs, trois polices, trois graisses, et une des trois dans
+   la couleur d'accent -- qui, dans cette feuille, signale un lien vers
+   le dehors (les deux telechargements). Rien ne les tenait ensemble que
+   leur bord et leur rayon.
+
+   ON POSE DONC UN SOCLE, et chaque regle particuliere ne garde ensuite
+   que ce qui lui est propre. La hauteur est celle du champ de recherche
+   -- 42 px --, non par gout mais par contrainte : son corps est fixe a
+   16 px pour empecher Safari de zoomer, et c'est ce corps qui commande
+   sa hauteur. Les deux autres n'avaient aucune raison de rester plus
+   basses ; 42 px fait de surcroit une cible tactile honnete.
+
+   LA POLICE EST CELLE DU LIVRE, a 16 px. Le selecteur y perd 13 px de
+   system-ui gras et gagne le serif du texte ; mesure : il passe de 172 a
+   184 px de large, et la barre tient toujours sur deux lignes a 360 px.
+   Douze pixels pour que les deux boites voisines soient de la meme
+   main.
+
+   LES ICONES SONT GRISES, LE TEXTE EST A L'ENCRE. L'accent reste ce
+   qu'il etait : la marque de ce qui sort de la page. --- */
+.tir,input[type=search],select#lg{
+ height:var(--kmd);border:1px solid var(--lin);border-radius:7px;
+ background:var(--pap);color:var(--enk);
+ font-family:inherit;font-size:16px;font-weight:400;line-height:1}
+.tir:focus-visible,input[type=search]:focus,select#lg:focus{
+ outline:2px solid var(--acc);outline-offset:-1px}
+/* L'icone d'une commande ne se lit pas comme son texte : elle dit ce que
+   la commande FAIT, il dit ce qu'elle porte. D'ou le gris. */
+.ikon{width:15px;height:15px;flex:none;pointer-events:none;
+ stroke:var(--sub);fill:none;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round}
+
 /* --- ET LE PLACEHOLDER NE DIT PAS DAVANTAGE QU'ON EST DEVANT UNE
    RECHERCHE. « Serchez en la du texti... » est en ido comme le reste de
    l'interface, et sur un telephone il sort coupe : « Serchez en la d ».
@@ -64,17 +109,12 @@ h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
    elle. --- */
 .serc{position:relative;flex:1 1 240px;min-width:150px;
  display:flex;align-items:center}
-.lupeto{position:absolute;left:11px;width:15px;height:15px;pointer-events:none;
- stroke:var(--sub);fill:none;stroke-width:1.8;
- stroke-linecap:round;stroke-linejoin:round}
-input[type=search]{flex:1 1 auto;width:100%;min-width:0;padding:8px 11px 8px 32px;
- border:1px solid var(--lin);border-radius:7px;background:var(--pap);
- color:var(--enk);font:inherit;font-size:16px}
+.lupeto{position:absolute;left:11px}
+input[type=search]{flex:1 1 auto;width:100%;min-width:0;padding:0 11px 0 32px}
 /* 16px exacte, e ne min: Safari sur iPhone zomas automate sur irga
    kampo di qua la litero-grandeso esas sub 16px, kande onu tushas lu.
    La altra solvuro -- maximum-scale=1 -- impedus anke la zomo per la
    fingri, do la lekteblesa por qui bezonas lu. */
-input[type=search]:focus{outline:2px solid var(--acc);outline-offset:-1px}
 /* --- LE NOM D'UNE LANGUE NE DIT PAS QU'ON EST DEVANT UN CHOIX DE
    LANGUE. Le selecteur affiche la langue COURANTE, dans sa propre
    langue : « Francais » a l'ouverture, et c'est bien ainsi -- chacun
@@ -90,13 +130,16 @@ input[type=search]:focus{outline:2px solid var(--acc);outline-offset:-1px}
    (« pointer-events:none ») : c'est le selecteur qui reste la cible,
    sur toute sa surface. --- */
 .lgu{position:relative;flex:none;display:flex;align-items:center}
-.glob{position:absolute;left:10px;width:15px;height:15px;pointer-events:none;
- stroke:var(--sub);fill:none;stroke-width:1.7;
- stroke-linecap:round;stroke-linejoin:round}
-select#lg{flex:none;padding:8px 10px 8px 31px;border:1px solid var(--lin);
- border-radius:7px;
- background:var(--pap);color:var(--enk);font:600 13px/1 system-ui,sans-serif;
- cursor:pointer}
+.glob{position:absolute;left:10px}
+/* ET LE CHEVRON EST A NOUS, NON AU SYSTEME. Chaque navigateur dessine le
+   sien : Safari empile deux fleches, Chrome pose un triangle. Deux
+   dessins pour la meme commande, et aucun qui s'accorde aux deux icones
+   voisines. « appearance:none » les ote, et l'on pose le chevron comme
+   le globe -- meme trait, meme gris, meme taille, et sans prise au clic.
+   Le selecteur reste la cible sur toute sa surface. */
+.shevro{position:absolute;right:10px}
+select#lg{flex:none;padding:0 32px 0 31px;cursor:pointer;
+ appearance:none;-webkit-appearance:none}
 /* LE CHOIX DE LANGUE TIENT SUR LA LIGNE DE LA RECHERCHE. Sur telephone
    il passait a la ligne pour lui seul : « Materio » plus la recherche
    plus le selecteur depassaient de quelques pixels la largeur d'un
@@ -116,10 +159,11 @@ select#lg{flex:none;padding:8px 10px 8px 31px;border:1px solid var(--lin);
    contre le « min-width:150px » de la recherche, et rien ne bougeait. */
 @media (max-width:700px){
  .serc{min-width:0;flex:1 1 60px}
- input[type=search]{padding:8px 8px 8px 28px}
+ input[type=search]{padding:0 8px 0 28px}
  .lupeto{left:9px}
- select#lg{padding:8px 6px 8px 27px}
- .glob{left:8px}}
+ select#lg{padding:0 27px 0 27px}
+ .glob{left:8px}.shevro{right:8px}
+ .tir{padding:0 9px}}
 
 /* --- LA RECHERCHE PREND TOUTE LA BARRE PENDANT QU'ON Y TAPE. Sur un
    telephone, les trois commandes se partagent une ligne de 370 px :
@@ -151,9 +195,8 @@ select#lg{flex:none;padding:8px 10px 8px 31px;border:1px solid var(--lin);
  .serc:focus-within ~ .lgu{
   max-width:0;padding-left:0;padding-right:0;border-width:0;
   opacity:0;overflow:hidden}}
-.tir{display:none;flex:none;border:1px solid var(--lin);border-radius:7px;
- background:var(--pap);color:var(--acc);font:600 12.5px/1 system-ui,sans-serif;
- padding:9px 11px;cursor:pointer}
+.tir{display:none;flex:none;align-items:center;gap:7px;
+ padding:0 12px;cursor:pointer}
 .tir:hover{background:var(--lin)}
 
 /* --- DU PANELI, ne tri. La Kompleta Gramatiko havas anke panelo dextra
@@ -531,7 +574,7 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
   background:var(--pap);z-index:15;transform:translateX(-100%);
   transition:transform .18s;box-shadow:0 0 24px rgba(0,0,0,.14)}
  nav.mont{transform:none}
- .tir{display:block}
+ .tir{display:flex}
  #kont{padding:18px 16px 120px}
  .r{grid-template-columns:1fr;gap:.35em 0}
  .k.io{padding-right:0;border-right:0}
@@ -633,14 +676,15 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 </div>
 </div>
 <div class="bar">
- <button class="tir" id="tirL" aria-label="Tabelo di la materio">&#9776;<span> Materio</span></button>
+ <button class="tir" id="tirL" aria-label="Tabelo di la materio"><svg class="ikon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Materio</span></button>
  <span class="serc">
-  <svg class="lupeto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4L21 21"/></svg>
+  <svg class="ikon lupeto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4L21 21"/></svg>
   <input type="search" id="q" placeholder="Serchez en la du texti&hellip;" autocomplete="off">
  </span>
  <span class="lgu">
-  <svg class="glob" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9s1.4-6.6 3.9-9z"/></svg>
+  <svg class="ikon glob" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9s1.4-6.6 3.9-9z"/></svg>
   <select id="lg" aria-label="Linguo dil dextra kolono"><option value="fr">Français</option><option value="eo">Esperanto</option><option value="ia">Interlingua</option><option value="ar">العربية</option><option value="zh-Hans">中文（简体）</option><option value="zh-Hant">中文（繁體）</option><option value="es-419">Español (América)</option><option value="es-ES">Español (ES)</option><option value="en-GB">English (UK)</option><option value="en-US">English (US)</option><option value="hi">हिन्दी</option><option value="pt-BR">Português (BR)</option><option value="pt-PT">Português (PT)</option><option value="bn">বাংলা</option><option value="ru">Русский</option><option value="ja">日本語</option><option value="pa">ਪੰਜਾਬੀ</option><option value="pnb">پنجابی</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option><option value="yue">粵語</option><option value="arz">مصرى</option><option value="mr">मराठी</option><option value="te">తెలుగు</option><option value="ko">한국어</option><option value="ta">தமிழ்</option><option value="id">Indonesia</option><option value="ur">اردو</option><option value="de-AT">Deutsch (AT)</option><option value="de-DE">Deutsch (DE)</option><option value="fr-CA">Français (CA)</option><option value="jv">Basa Jawa</option><option value="fa">فارسی</option><option value="it">Italiano</option><option value="gu">ગુજરાતી</option><option value="ha">Hausa</option><option value="apc">شامي</option><option value="bho">भोजपुरी</option><option value="uk">Українська</option><option value="nl-BE">Nederlands (BE)</option><option value="nl-NL">Nederlands (NL)</option><option value="ro">Română</option><option value="cs">Čeština</option><option value="sv">Svenska</option><option value="ca">Català</option><option value="fi">Suomi</option><option value="lt">Lietuvių</option><option value="gl">Galego</option><option value="et">Eesti</option><option value="eu">Euskara</option><option value="oc">Occitan</option><option value="lb">Lëtzebuergesch</option><option value="ga">Gaeilge</option><option value="rm">Rumantsch</option></select>
+  <svg class="ikon shevro" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg>
  </span>
 </div>
 </header>
