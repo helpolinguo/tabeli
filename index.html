@@ -42,7 +42,26 @@ html{scroll-padding-top:calc(var(--kapo,104px) + 12px)}
    do la skripto mezuras ol e pozas ol en --kapo ; omna ancero haltas
    sub ol. --- */
 header{position:sticky;top:0;background:var(--pap);border-bottom:1px solid var(--lin);
- padding:13px 20px 11px;z-index:20}
+ padding:13px 20px 11px;z-index:20;
+
+ /* --- L'EN-TETE SUIT LE CORPS. ---------------------------------------
+    La bande tient toute la largeur, et c'est voulu : le fond et le filet
+    du bas doivent aller d'un bord a l'autre. Mais ce qu'elle PORTE doit
+    s'arreter ou le corps s'arrete. Sinon, sur une vue tres large, le
+    titre et la barre de recherche continuent de s'etendre alors que
+    les deux colonnes de texte et leur volet s'est deja fige a 1560px et centre. Cela s'est vu
+    sur un Vision Pro, dont la vue est bien plus large qu'aucun ecran
+    d'ordinateur.
+
+    L'ecart lateral vaut donc 20 px tant que la vue est etroite, puis la
+    moitie de ce qui deborde des 1560px de « main ». Les deux
+    boites se superposent alors exactement, a toute largeur au-dela.
+
+    Elle est posee APRES la forme courte, qu'elle ne remplace que sur les
+    deux cotes : un navigateur ignorant « max » ecarte cette ligne-ci et
+    garde les 20 px de la precedente, de sorte que l'en-tete redevient ce
+    qu'elle etait, sans rien casser. */
+ padding-inline:max(20px, (100% - 1560px) / 2)}
 .tito{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
 h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
 .sub{color:var(--sub);font-size:12.5px;margin-bottom:9px}
