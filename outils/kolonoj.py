@@ -171,6 +171,47 @@ def _arb(*formes):
 #  forme, qui vaut pour toutes.
 LINGUI = {
 
+    # L'ESPERANTO CONTRE SES PROPRES NEOLOGISMES. La colonne n'avait
+    # aucun controle : elle est la seule langue construite du releve dont
+    # la voisine n'est pas une autre langue mais UNE AUTRE ECOLE DE LA
+    # MEME. « La Bona Lingvo » — le livre de Claude Piron, 1989, et le
+    # site labonalingvo.org — tient que l'esperanto dit deja tout par
+    # composition et derivation, et qu'un radical emprunte de plus est
+    # un mot de plus a apprendre pour rien. On releve donc ici les
+    # neologismes que cette ecole remplace par « mal- » ou par un
+    # compose.
+    #
+    # LES FORMES SONT ECRITES ENTIERES, terminaison comprise, et c'est
+    # necessaire : « kurt- » attraperait « kurteno », le rideau, et
+    # « led- » attraperait « ledo », le cuir, qui sont l'un et l'autre
+    # de bons mots. Un radical ne se cherche pas par son debut dans une
+    # langue agglutinante.
+    #
+    # LES DEUX DERNIERS NE SONT PAS DES NEOLOGISMES mais des radicaux
+    # savants officiels, que la colonne employait une et deux fois :
+    # « hospitalo » et « karcero ». Ils sont remplaces par
+    # « malsanulejo » et « malliberejo », qui ne demandent aucun radical
+    # neuf. La colonne faisait deja ce choix ailleurs — elle ecrit
+    # « lernejo » la ou l'ido ecrit « skolo ».
+    "eo": {"mot": [
+        (_mot("olda", "oldaj", "oldan", "oldajn", "olde", "oldulo"),
+         "maljuna"),
+        (_mot("kurta", "kurtaj", "kurtan", "kurtajn", "kurte"),
+         "mallonga"),
+        (_mot("povra", "povraj", "povran", "povrajn", "povre"),
+         "malricha (kompatinda)"),
+        (_mot("mava", "mavaj", "mavan", "mavajn", "mave"),
+         "malbona"),
+        (_mot("pigra", "pigraj", "pigran", "pigrajn", "pigre"),
+         "maldiligenta"),
+        (_mot("spita", "spitaj", "spitan", "spitajn", "spite"),
+         "malgrau"),
+        (_mot("hospitalo", "hospitaloj", "hospitalon", "hospitalojn"),
+         "malsanulejo"),
+        (_mot("karcero", "karceroj", "karceron", "karcerojn"),
+         "malliberejo"),
+    ]},
+
     # LE CANTONAIS CONTRE LE CHINOIS STANDARD. Les quatorze marqueurs
     # sont poses en tete de texto/yue/10-toubiu-01.tex ; on releve ici
     # les formes du nord qui les remplaceraient.
