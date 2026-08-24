@@ -3136,6 +3136,66 @@ def uniformiser_filets(rangi):
     return pose
 
 
+# -------------------------------------------------------------------
+#  CE QU'ON EFFACERAIT SANS RIEN DIRE
+# -------------------------------------------------------------------
+#  TROIS FOIS EN UN JOUR, UN CHANGEMENT ECRIT A LA MAIN DANS index.html
+#  A FAILLI DISPARAITRE : le bouton de retour vers ido.help, puis
+#  « autocapitalize » sur le champ de recherche, puis le script du meme
+#  bouton — ce dernier ajoute JUSTE SOUS le commentaire qui dit de ne
+#  pas le faire. Chaque fois la page continuait de s'afficher, et le
+#  changement n'etait plus la. Un fichier produit ne previent pas quand
+#  il oublie.
+#
+#  LA COUTURE EST NETTE, ET C'EST ELLE QUI REND LE CONTROLE EXACT. La
+#  page est le gabarit avec six substitutions, pas davantage : tout ce
+#  qui n'est pas une des six valeurs vient VERBATIM du gabarit. On
+#  decoupe donc le gabarit sur ses six marques, et l'on cherche chacun
+#  des morceaux litteraux, DANS L'ORDRE, dans la page qu'on s'apprete a
+#  remplacer. Ce qui separe deux morceaux trouves est du contenu
+#  engendre, et ne regarde pas ce controle.
+#
+#  UN MORCEAU INTROUVABLE VEUT DIRE QUE L'ARMATURE A DIVERGE, dans un
+#  sens ou dans l'autre : ou bien le gabarit a change — c'est normal,
+#  on vient peut-etre de l'editer —, ou bien la page a ete retouchee a
+#  la main. On ne signale donc pas la divergence elle-meme, mais
+#  seulement les lignes qui n'existent NI dans le gabarit NI dans la
+#  page qu'on va ecrire : celles-la, et elles seules, sont sur le point
+#  d'etre perdues.
+#
+#  APPROCHE ESSAYEE ET ABANDONNEE : comparer simplement l'ancienne page
+#  et la nouvelle, ligne a ligne, et signaler les disparues. Le releve
+#  est inutilisable — la moindre correction dans texto/ en fait
+#  apparaitre des dizaines, toutes legitimes. C'est le decoupage sur
+#  les marques qui separe l'armature du contenu ; sans lui le controle
+#  crie a chaque passage, et l'on cesse de le lire.
+#
+#  IL AVERTIT, IL N'INTERROMPT PAS, et c'est voulu. Une ligne qui
+#  disparait n'est pas toujours une perte : effacer une ligne du gabarit
+#  la fait disparaitre de la page aussi, et le releve la signale de la
+#  meme facon puisqu'il ne peut pas savoir laquelle des deux mains a
+#  bouge. Arreter la generation dans ce cas empecherait la suppression
+#  volontaire d'un element. On ecrit donc la page, et l'on dit ce qu'on
+#  a emporte — c'est au lecteur de reconnaitre s'il l'avait voulu.
+MARQUES = ("TITRO", "SUBTITRO", "NAV", "LINGUI", "KONTENO", "LINGUIJSON")
+
+
+def perdues(gabarito, ancienne, nouvelle):
+    """Les lignes de l'ancienne page que la nouvelle n'aura plus."""
+    morceaux = [m for m in re.split(
+        r"\{\{(?:" + "|".join(MARQUES) + r")\}\}", gabarito) if m]
+    pos = 0
+    for m in morceaux:
+        i = ancienne.find(m, pos)
+        if i < 0:
+            break
+        pos = i + len(m)
+    else:
+        return []
+    return [l for l in dict.fromkeys(ancienne.splitlines())
+            if l.strip() and l not in gabarito and l not in nouvelle]
+
+
 def rendre(rangi):
     # LES LANGUES DIFFEREES SE RANGENT ICI PLUTOT QUE DANS LA PAGE.
     # Tout est calcule comme pour les autres -- roles d'apparat, appels
@@ -3556,7 +3616,22 @@ def rendre(rangi):
             .replace("{{LINGUI}}", opcioni)
             .replace("{{KONTENO}}", "\n".join(lignes))
             .replace("{{LINGUIJSON}}", json.dumps(LANGUES, ensure_ascii=False)))
-    (RACINE / "index.html").write_text(page, encoding="utf-8")
+    cible = RACINE / "index.html"
+    if cible.exists():
+        perdu = perdues(gabarito, cible.read_text(encoding="utf-8"), page)
+        if perdu:
+            print("\n" + "=" * 64)
+            print("  CE QUI DISPARAIT DE index.html, ET N'EST PAS DANS LE GABARIT")
+            print("=" * 64)
+            for l in perdu[:20]:
+                print("  " + l.strip()[:98])
+            if len(perdu) > 20:
+                print(f"  ... et {len(perdu) - 20} autres")
+            print("  Si l'une de ces lignes a ete ecrite a la main dans")
+            print("  index.html, elle est perdue : sa place est dans")
+            print("  outils/gabarito.html, qui seul survit a la generation.")
+            print("=" * 64 + "\n")
+    cible.write_text(page, encoding="utf-8")
     for cle, lg, a, b in diskordi:
         print(f"  ROLES DISCORDANTS {cle} : io {a} / {lg} {b}")
     print(f"index.html ecrit : {len(rangi)} bloki, "
