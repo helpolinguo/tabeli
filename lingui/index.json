@@ -1,0 +1,230 @@
+{
+ "pri": "Lingui dil Delmas-Tabeli. La klefi esas ti di tabeli.json.",
+ "fonto": "https://ido.help/tabeli/",
+ "enshaltita": {
+  "io": "en index.html e tabeli.json",
+  "fr": "en index.html e tabeli.json"
+ },
+ "lingui": [
+  {
+   "kodexo": "af",
+   "okteti": 463884
+  },
+  {
+   "kodexo": "apc",
+   "okteti": 510019
+  },
+  {
+   "kodexo": "ar",
+   "okteti": 507041
+  },
+  {
+   "kodexo": "arz",
+   "okteti": 513087
+  },
+  {
+   "kodexo": "bho",
+   "okteti": 598421
+  },
+  {
+   "kodexo": "bn",
+   "okteti": 625287
+  },
+  {
+   "kodexo": "ca",
+   "okteti": 463108
+  },
+  {
+   "kodexo": "cs",
+   "okteti": 457854
+  },
+  {
+   "kodexo": "de-AT",
+   "okteti": 467378
+  },
+  {
+   "kodexo": "de-DE",
+   "okteti": 467408
+  },
+  {
+   "kodexo": "en-GB",
+   "okteti": 458276
+  },
+  {
+   "kodexo": "en-US",
+   "okteti": 458216
+  },
+  {
+   "kodexo": "eo",
+   "okteti": 462091
+  },
+  {
+   "kodexo": "es-419",
+   "okteti": 463704
+  },
+  {
+   "kodexo": "es-ES",
+   "okteti": 463693
+  },
+  {
+   "kodexo": "et",
+   "okteti": 451098
+  },
+  {
+   "kodexo": "eu",
+   "okteti": 460868
+  },
+  {
+   "kodexo": "fa",
+   "okteti": 533751
+  },
+  {
+   "kodexo": "fi",
+   "okteti": 468451
+  },
+  {
+   "kodexo": "fr-CA",
+   "okteti": 475141
+  },
+  {
+   "kodexo": "ga",
+   "okteti": 478651
+  },
+  {
+   "kodexo": "gl",
+   "okteti": 459546
+  },
+  {
+   "kodexo": "gu",
+   "okteti": 602877
+  },
+  {
+   "kodexo": "ha",
+   "okteti": 467725
+  },
+  {
+   "kodexo": "hi",
+   "okteti": 626085
+  },
+  {
+   "kodexo": "ia",
+   "okteti": 466120
+  },
+  {
+   "kodexo": "id",
+   "okteti": 471544
+  },
+  {
+   "kodexo": "it",
+   "okteti": 462903
+  },
+  {
+   "kodexo": "ja",
+   "okteti": 476746
+  },
+  {
+   "kodexo": "jv",
+   "okteti": 462599
+  },
+  {
+   "kodexo": "ko",
+   "okteti": 476789
+  },
+  {
+   "kodexo": "lb",
+   "okteti": 472282
+  },
+  {
+   "kodexo": "lt",
+   "okteti": 460045
+  },
+  {
+   "kodexo": "mr",
+   "okteti": 617082
+  },
+  {
+   "kodexo": "nl-BE",
+   "okteti": 466844
+  },
+  {
+   "kodexo": "nl-NL",
+   "okteti": 466815
+  },
+  {
+   "kodexo": "oc",
+   "okteti": 464387
+  },
+  {
+   "kodexo": "pa",
+   "okteti": 633194
+  },
+  {
+   "kodexo": "pl",
+   "okteti": 459990
+  },
+  {
+   "kodexo": "pnb",
+   "okteti": 541759
+  },
+  {
+   "kodexo": "pt-BR",
+   "okteti": 460630
+  },
+  {
+   "kodexo": "pt-PT",
+   "okteti": 460793
+  },
+  {
+   "kodexo": "rm",
+   "okteti": 469162
+  },
+  {
+   "kodexo": "ro",
+   "okteti": 462226
+  },
+  {
+   "kodexo": "ru",
+   "okteti": 537968
+  },
+  {
+   "kodexo": "sv",
+   "okteti": 462381
+  },
+  {
+   "kodexo": "ta",
+   "okteti": 709153
+  },
+  {
+   "kodexo": "te",
+   "okteti": 633431
+  },
+  {
+   "kodexo": "tr",
+   "okteti": 462032
+  },
+  {
+   "kodexo": "uk",
+   "okteti": 533222
+  },
+  {
+   "kodexo": "ur",
+   "okteti": 533684
+  },
+  {
+   "kodexo": "vi",
+   "okteti": 482563
+  },
+  {
+   "kodexo": "yue",
+   "okteti": 442721
+  },
+  {
+   "kodexo": "zh-Hans",
+   "okteti": 434989
+  },
+  {
+   "kodexo": "zh-Hant",
+   "okteti": 434989
+  }
+ ]
+}
