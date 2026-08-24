@@ -8,11 +8,19 @@
      garantit que le bouton est identique sur les trois, et que le
      retoucher se fait a un seul endroit.
 
-     CES DEUX LIGNES ONT D'ABORD ETE POSEES DANS index.html, QUI EST UN
+     CES LIGNES ONT D'ABORD ETE POSEES DANS index.html, QUI EST UN
      FICHIER PRODUIT. La generation suivante les aurait effacees sans
      rien dire : html.py reecrit la page entiere a partir de ce
-     gabarit. Elles sont donc ici, et nulle part ailleurs. -->
+     gabarit. Elles sont donc ici, et nulle part ailleurs.
+
+     TROIS FOIS LA LECON S'EST PAYEE, ET LE COMMENTAIRE CI-DESSUS ETAIT
+     DEJA LA LES DEUX DERNIERES FOIS : le bouton de retour d'abord, puis
+     « autocapitalize » sur le champ de recherche, puis ce script-ci,
+     ajoute dans index.html juste SOUS ces lignes qui disent de ne pas
+     le faire. Un fichier produit ne previent pas quand il oublie : la
+     page continue de s'afficher, et le changement a disparu. -->
 <link rel="stylesheet" href="/pordo.css">
+<script src="/pordo.js" defer></script>
 <style>
 :root{--enk:#1a1a1a;--pap:#fbfaf7;--sub:#6b6560;--acc:#7a4b2a;--lin:#e2ddd5;
  --pap2:#f4f1ea;--flag:#b4552d;
@@ -200,14 +208,37 @@ select#lg{flex:none;padding:0 32px 0 31px;cursor:pointer;
    « :not(:focus) » le protege, sans quoi un utilisateur au clavier
    aurait mis le curseur sur un bouton devenu invisible. --- */
 @media (max-width:700px){
- .bar .tir,.bar .lgu{
-  transition:max-width .16s,opacity .16s}
- .bar .tir{transition:max-width .16s,opacity .16s,padding .16s,border-width .16s}
+ /* LA GEOMETRIE NE S'ANIME PAS, ET C'EST LE CORRECTIF. Elle s'animait :
+    « max-width », « padding » et « border-width » passaient a zero en
+    cent soixante millisecondes. Un iPhone montrait alors, a la gauche du
+    champ elargi, un coin arrondi gris avec sa bordure -- et seulement au
+    sommet de la page. La cause est la : ce n'est pas un repli rate, c'est
+    l'ETAT INTERMEDIAIRE DE LA TRANSITION, fige. Mesure sur Chromium au
+    format d'un iPhone, trente millisecondes apres la mise au foyer :
+    largeur 23,56 px, opacite 0,90, bordure 1 px, marge interieure
+    10,78 px -- l'image exacte de la capture d'ecran. Au sommet de la
+    page, Safari n'a nulle part ou defiler quand le clavier monte : il
+    redimensionne la fenetre visuelle, et ce changement de disposition
+    interrompt la transition en cours. Plus bas dans la page il defile a
+    la place, la transition va jusqu'au bout, et le coin ne parait pas.
+    Une geometrie qui bascule en une seule image n'a pas d'etat
+    intermediaire ou se faire surprendre, sur aucun moteur.
+    L'OPACITE, ELLE, PEUT RESTER ANIMEE : meme surprise a mi-course, elle
+    s'applique a une boite large de zero, sans bordure ni marge
+    interieure, qui ne peint rien. */
+ .bar .tir,.bar .lgu{transition:opacity .16s}
+ /* LE « gap » DE LA BARRE SURVIT AU REPLI. Un element de largeur nulle
+    reste un element : les dix pixels qui le separaient de son voisin
+    restent la, et le champ « pleine largeur » commencait a vingt-huit
+    pixels du bord au lieu de vingt. La marge negative les reprend, des
+    deux cotes. */
  .bar:focus-within .tir:not(:focus),
  .serc:focus-within ~ .lgu{
-  max-width:0;width:0;min-width:0;flex-basis:0;margin:0;
+  max-width:0;width:0;min-width:0;flex-basis:0;
   padding-left:0;padding-right:0;border-width:0;
   opacity:0;overflow:hidden}
+ .bar:focus-within .tir:not(:focus){margin:0 -10px 0 0}
+ .serc:focus-within ~ .lgu{margin:0 0 0 -10px}
  /* « min-width:0 » N'EST PAS UNE REDONDANCE. La taille minimale
     AUTOMATIQUE d'un element de boite flexible est celle de son contenu,
     et cette minimale l'emporte sur « max-width » : une largeur nulle ne
