@@ -1,10 +1,9 @@
-# Les feuillets numerises : ~180 Mo, et ils se regenerent en deux
-# commandes depuis les deux PDF d'origine (voir LISEZ-MOI, § 2).
-# « Livret explicatif.pdf » fait 114 Mo et depasse de toute facon la
-# limite de 100 Mo par fichier de GitHub.
-skan/
+# The scanned leaves: ~180 MB, and they are regenerated in two commands
+# from the two original PDFs (see README, § 2). "Livret explicatif.pdf"
+# is 114 MB and exceeds GitHub's 100 MB per-file limit in any case.
+scan/
 
-# Sorties de LaTeX.
+# LaTeX output.
 *.aux
 *.log
 *.out
@@ -14,24 +13,23 @@ altezo.*
 chaso.*
 noto.*
 
-# Images de travail produites par outils/lekto.py.
-outils/.lekto/
+# Working images produced by tools/reading.py.
+tools/.reading/
 __pycache__/
 
-# Les tableaux muraux : les PDF d'origine pesent pres de 100 Mo, et les
-# deux couches extraites autant. Seuls les deux WebP par tableau, que
-# outils/gravuri.py en tire, sont versionnes -- environ 1 Mo chacun.
-gravuri/font/
-gravuri/kovri/
+# The wall plates: the original PDFs weigh close to 100 MB, and the two
+# extracted layers as much again. Only the two WebP per table, which
+# tools/plates.py draws from them, are versioned -- about 1 MB each.
+plates/font/
+plates/working/
 
-# La numerisation nettoyee : elle se refait en une commande depuis le
-# fac-simile versionne (outils/originali.py netigar), et pese huit fois
-# plus lourd que lui.
-originali/kovri/
+# The cleaned scan: it is remade in one command from the versioned
+# facsimile (tools/originals.py clean), and weighs eight times as much.
+originals/working/
 
-# Feuilles de travail pour le releve a l'oeil : les tuiles de manuali.py
-# et la feuille de relecture de chifri.py. Elles se refont en une
-# commande, et ce qu'on en garde part dans gravuri/manuali.json.
-gravuri/tuili/
-gravuri/proponi.png
-gravuri/proponi.json
+# Working sheets for the survey by eye: the tiles of manual.py and the
+# proofing sheet of ciphers.py. They are remade in one command, and what
+# is kept of them goes into plates/manual.json.
+plates/tiles/
+plates/proposals.png
+plates/proposals.json

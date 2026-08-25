@@ -1,68 +1,80 @@
-# Notes de travail
+# Working notes
 
-Ce fichier dit comment on travaille sur ce dépôt. Le *quoi* est dans
-`LISEZ-MOI.md`, qui reste la documentation du projet ; on ne le double pas
-ici, on y renvoie.
+This file says how we work on this repository. The *what* is in
+`README.md`, which is the project's documentation; we do not repeat it
+here, we point at it.
 
-## Branches et pull requests
+## Branches and pull requests
 
-**Le projet vit sur `main`**, qui est la branche par défaut.
+**The project lives on `main`**, which is the default branch.
 
-On n'écrit jamais directement sur `main`. On travaille sur une branche, et
-on la fait entrer par une **pull request dont la base est `main`**, ouverte
-en brouillon. Une branche repart toujours du `main` courant :
+We never write to `main` directly. We work on a branch, and bring it in
+through a **pull request whose base is `main`**, opened as a draft. A
+branch always starts again from the current `main`:
 
     git fetch origin main
-    git checkout -B <branche> origin/main
+    git checkout -B <branch> origin/main
 
-**Une branche porte le nom de son sujet**, en français, en minuscules, les
-mots liés par des traits d'union : `claude/branches-par-sujet`,
-`claude/colonnes-pl-af`, `claude/note-de-bas-de-page`. Pas d'identifiant de
-session, pas de suffixe aléatoire — un nom pareil ne dit rien six mois plus
-tard, et il ment dès que la branche sert à autre chose que ce pour quoi on
-l'avait ouverte. Le préfixe `claude/` reste : il dit qui a tenu la plume.
+**A branch is named after its subject**, in English, in lower case, the
+words joined by hyphens: `claude/branches-by-subject`,
+`claude/columns-pl-af`, `claude/footnote`. No session identifier, no
+random suffix — a name like that says nothing six months later, and it
+lies the moment the branch serves something other than what it was
+opened for. The `claude/` prefix stays: it says who held the pen.
 
-Une pull request fusionnée est finie : elle ne peut pas porter de suite. Le
-travail d'après repart de `main`, et c'est une nouvelle pull request.
+A merged pull request is finished: it cannot carry a sequel. The next
+piece of work starts again from `main`, and it is a new pull request.
 
-## Ce qu'on vérifie avant de pousser
+## What we check before pushing
 
-La chaîne complète, dans cet ordre. Chaque outil dit ce qu'il attend ; un
-chiffre qui bouge sans raison est un défaut, pas un détail.
+The whole chain, in this order. Each tool says what it expects; a figure
+that moves without a reason is a defect, not a detail.
 
-    python3 outils/renvoji.py    # 683 blocs, 0 divergence, 3 écarts déclarés
-    python3 outils/kolonoj.py    # 16 fichiers, 0 signalement, par colonne
-    python3 outils/objekti.py    # 1708/1694 = 100 %
-    python3 outils/html.py       # 683 bloki, 524 alinei
-    python3 outils/controles.py  # 1 signalement (le cadre du scan « fra 6 »)
-    python3 outils/notoj.py      # 0 et 0
+    python3 tools/cross_refs.py  # 683 blocks, 0 divergence, 3 declared exceptions
+    python3 tools/columns.py     # 16 files, 0 reports, per column
+    python3 tools/objects.py     # 1708/1694 = 100 %
+    python3 tools/html.py        # 683 bloki, 524 alinei
+    python3 tools/checks.py      # 1 report (the frame of the « fra 6 » scan)
+    python3 tools/notes.py       # 0 and 0
 
-Et le tout compile en permanence :
+And the whole thing compiles, always:
 
-    make -f tab.mk               # tabeli.pdf, tableaux.pdf, index.html
+    make -f build.mk             # tabeli.pdf, tableaux.pdf, index.html
 
-## Trois règles qui ne se négocient pas
+## Three rules that are not negotiable
 
-**LA SOURCE NE BOUGE PAS.** `texto/io/` et `texto/fr/` reproduisent le
-fac-similé tel qu'il est, coquilles du compositeur comprises. Ce qu'il faut
-corriger pour la page de lecture se déclare dans `gravuri/korekti.json` et
-n'agit que là. Voir § 5 de `LISEZ-MOI.md`.
+**THE SOURCE DOES NOT MOVE.** `text/io/` and `text/fr/` reproduce the
+facsimile as it is, the compositor's typos included. What has to be
+corrected for the reading page is declared in `plates/corrections.json`
+and acts there alone. See § 5 of `README.md`.
 
-**UNE TRADUCTION N'EST PAS UNE TRANSCRIPTION.** Chaque `texto/<langue>/`
-porte les mêmes clés `%%K`, le même appareil macro pour macro et les mêmes
-`\textsuperscript{(n)}` dans le même ordre — mais pas de `\nl`, pas de
-`\cc`, pas de `\begin{VUpage}` : ce sont des accidents de page du
-fac-similé, pas du texte. Le gras porte sur le terme seul, la ponctuation
-en dehors.
+**A TRANSLATION IS NOT A TRANSCRIPTION.** Each `text/<language>/` carries
+the same `%%K` keys, the same apparatus macro for macro and the same
+`\textsuperscript{(n)}` in the same order — but no `\nl`, no `\cc`, no
+`\begin{VUpage}`: those are accidents of the facsimile's page, not of the
+text. The bold falls on the term alone, the punctuation outside it.
 
-**UN FICHIER PRODUIT N'EST PAS UN ENDROIT OÙ L'ON ÉCRIT.** `index.html`,
-`kalibro-*.tex` et `lingui/*.json` sont regénérés ; une modification qu'on y
-fait à la main disparaît au premier `make`. Ce qui doit changer se change
-dans `outils/gabarito.html`, dans `outils/*.py` ou dans `texto/`.
+**A PRODUCED FILE IS NOT A PLACE WHERE ONE WRITES.** `index.html`,
+`tabeli.md`, `tabeli.json`, `lingui/*.json`, `calibrate-*.tex` and
+`body-*.tex` are regenerated; an edit made in them by hand disappears at
+the first `make`. What must change is changed in `tools/template.html`,
+in `tools/*.py` or in `text/`.
 
-## Écriture
+This one has been paid for four times, and the fourth was a measurement
+rather than a piece of markup: `calibrate.py` did not write `\VUlangue`,
+which `preamble.tex` reads, and computed the type size from a ratio the
+journal refutes. `tools/html.py` therefore reports, at every build, the
+lines about to disappear from `index.html` that are not in the template.
+Read what it says.
 
-Messages de commit et commentaires de code **en français**, dans le style de
-la maison : la trouvaille en tête et en capitales, des mesures plutôt que des
-suppositions, les approches essayées puis abandonnées consignées, et une
-affirmation antérieure devenue fausse corrigée **là où elle est écrite**.
+## Writing
+
+Commit messages and code comments **in English**, in the house style: the
+finding at the head and in capitals, measurements rather than
+suppositions, the approaches tried and then abandoned recorded, and an
+earlier assertion that has become false corrected **where it is
+written**.
+
+The interface stays in Ido, and the `\VU…` macro names stay as they are:
+they are the vocabulary in which the facsimile was recorded. See the note
+on language at the end of `README.md`.

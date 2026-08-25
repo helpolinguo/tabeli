@@ -1,0 +1,1548 @@
+<!DOCTYPE html><html lang="io"><meta charset="utf-8">
+<title>{{TITLE}}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- ===================================================================
+     FOR THE MACHINES — what search engines and crawlers read.
+     ===================================================================
+     The page is built for the eye; these lines make it legible to what
+     has no eyes.
+
+     "description" and "canonical" serve search engines. The "alternate"
+     link announces the Markdown version: that is the form a robot that
+     comes to READ rather than to look should take — it costs a
+     fraction of this page's weight, the markup being gone.
+
+     The JSON-LD block says what this document IS: a book, its author,
+     its date, its language. An engine that understands it no longer has
+     to guess.
+
+     The overall map is in /llms.txt, at the root, which speaks for all
+     four pages at once.
+     =================================================================== -->
+<meta name="description" content="Transskribo integra dil Expliko-Libreto di la Delmas-Tabeli helpanta (J. Guignon, Ido-Kontoro, Thaon-les-Vosges, 1926) : 672 rangi en 57 lingui, kun la gravuri. Serchebla, ed ofrata anke en formo lektebla da mashini (Markdown e JSON).">
+<link rel="canonical" href="https://ido.help/tabeli/">
+<link rel="alternate" type="text/markdown" href="tabeli.md" title="Texto pura, por lekto da mashini">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Book",
+ "name": "Expliko-Libreto di la Delmas-Tabeli helpanta",
+ "author": {
+  "@type": "Person",
+  "name": "J. Guignon"
+ },
+ "datePublished": "1926",
+ "inLanguage": "io",
+ "url": "https://ido.help/tabeli/",
+ "isAccessibleForFree": true,
+ "isPartOf": {
+  "@type": "WebSite",
+  "name": "ido.help",
+  "url": "https://ido.help/"
+ },
+ "encoding": [
+  {
+   "@type": "MediaObject",
+   "encodingFormat": "text/markdown",
+   "contentUrl": "https://ido.help/tabeli/tabeli.md"
+  },
+  {
+   "@type": "MediaObject",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://ido.help/tabeli/tabeli.json"
+  }
+ ]
+}
+</script>
+<!-- THE BUTTON BACK TO ido.help. Two lines only — this sheet and the
+     anchor at the end of the document — and its appearance is in
+     neither: it is in /shared.css, served from the root of the site,
+     which the three books share. That is what guarantees the button is
+     identical on all three, and that retouching it is done in one
+     place.
+
+     THESE LINES WERE FIRST LAID IN index.html, WHICH IS A PRODUCED
+     FILE. The next build would have erased them without a word:
+     html.py rewrites the whole page from this template. They are
+     therefore here, and nowhere else.
+
+     THE LESSON HAS BEEN PAID FOR THREE TIMES, AND THE COMMENT ABOVE WAS
+     ALREADY THERE THE LAST TWO: the back button first, then
+     « autocapitalize » on the search field, then this very script,
+     added to index.html just BENEATH these lines that say not to do it.
+     A produced file does not warn when it forgets: the page goes on
+     displaying, and the change has gone. -->
+<link rel="stylesheet" href="/shared.css">
+<script src="/shared.js" defer></script>
+<style>
+:root{--enk:#1a1a1a;--pap:#fbfaf7;--sub:#6b6560;--acc:#7a4b2a;--lin:#e2ddd5;
+ --pap2:#f4f1ea;--flag:#b4552d;
+ /* The height of the bar's three controls. See « THE THREE CONTROLS
+    ARE ONE ROW » below: it is here because it holds for three rules
+    that do not touch. */
+ --kmd:42px}
+@media(prefers-color-scheme:dark){:root{--enk:#e8e4de;--pap:#16161a;--sub:#9a938c;
+ --acc:#d69a6a;--lin:#2c2c33;--pap2:#1c1c21;--flag:#e08a5c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enk);
+ font:16px/1.55 "Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif}
+
+/* THE ANCHOR STOPS BENEATH THE BAR. The bar is « sticky »: it covers
+   the top of the page, and a jump to #t02-apar-1 brought the target to
+   zero, hence BEHIND it -- the table's Ido title was hidden, and the
+   reading began in the middle of the block. The bar was measured
+   properly into --kapo, but that measurement served only to place the
+   side panel; nothing subtracted it from the jump. A single declaration
+   on the scrolling container suffices, and holds for every target --
+   the blocks as well as the display lines, which are <span>s. */
+html{scroll-padding-top:calc(var(--kapo,104px) + 12px)}
+
+/* --- THE BAR. It is sticky: it stays on the screen while one reads.
+   Its height is not fixed -- two lines of title on a telephone -- so
+   the script measures it and lays it in --kapo; every anchor stops
+   beneath it. --- */
+header{position:sticky;top:0;background:var(--pap);border-bottom:1px solid var(--lin);
+ padding:13px 20px 11px;z-index:20;
+
+ /* --- THE HEADER FOLLOWS THE BODY. --------------------------------
+    The band spans the whole width, and that is intended: its ground and
+    the rule beneath it must go from edge to edge. But what it CARRIES
+    must stop where the body stops. Otherwise, on a very wide viewport,
+    the title and the search bar go on spreading while the two columns of
+    text and their panel have already frozen at 1560px and centred. This
+    was seen on a Vision Pro, whose viewport is far wider than any
+    computer screen.
+
+    The side inset is therefore 20 px while the viewport is narrow, then
+    half of whatever overflows the 1560px of "main". The two boxes then
+    coincide exactly, at every width beyond.
+
+    It is placed AFTER the short form, which it replaces only on the two
+    sides: a browser that does not know "max" discards this line and
+    keeps the 20 px of the previous one, so that the header becomes what
+    it was, breaking nothing. */
+ padding-inline:max(20px, (100% - 1560px) / 2)}
+.tito{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
+h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:9px}
+.dls{flex:none;display:flex;gap:7px}
+.dl{display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+ border:1px solid var(--lin);border-radius:7px;padding:6px 11px;color:var(--acc);
+ background:var(--pap);font-size:13px;font-weight:600;white-space:nowrap;
+ transition:background .12s,border-color .12s}
+.dl:hover{background:var(--lin);border-color:var(--acc)}
+.dl svg{display:block;width:15px;height:15px;stroke:currentColor;fill:none;
+ stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:700px){.dl span{display:none}.dl{padding:7px 9px}}
+/* AND THE CONTENTS BUTTON LOSES ITS WORD AS THE DOWNLOADS LOSE THEIRS.
+   The globe set before the language name costs 21 px, and an iPhone's
+   bar did not have 21 to spare: it went to three lines at 402 px -- 218
+   px tall instead of 170, on a STICKY bar, hence that much less to read
+   with. « Materio » is worth 57 px and says nothing the three bars
+   before it do not, and those are of no language. We take it off below
+   700 px, where the two download buttons have already lost « Ido » and
+   « Francais » for the same reason. The ARIA label stays: what
+   disappears is the word, not the name. */
+@media (max-width:700px){.tir span{display:none}}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* --- THE THREE CONTROLS ARE ONE ROW, NOT THREE OBJECTS.
+   They were born at three different moments and each had settled itself
+   for itself. Measured in the browser, on an iPhone:
+
+     contents   32.5 px tall   12.5 px / 600   system-ui   accent
+     search     42.8 px tall   16 px   / 400   serif       ink
+     language   38.0 px tall   13 px   / 600   system-ui   ink
+
+   Three heights, three fonts, three weights, and one of the three in
+   the accent colour -- which, in this sheet, signals a link to the
+   outside (the two downloads). Nothing held them together but their
+   border and their radius.
+
+   WE THEREFORE LAY A BASE, and each particular rule then keeps only
+   what is its own. The height is that of the search field -- 42 px --
+   not by taste but by constraint: its size is fixed at 16 px to stop
+   Safari zooming, and it is that size that governs its height. The
+   other two had no reason to stay lower; 42 px makes an honest touch
+   target besides.
+
+   THE FONT IS THE BOOK'S, at 16 px. The selector loses 13 px of bold
+   system-ui there and gains the text's serif; measured: it goes from
+   172 to 184 px wide, and the bar still holds on two lines at 360 px.
+   Twelve pixels so that the two neighbouring boxes are of the same
+   hand.
+
+   THE ICONS ARE GREY, THE TEXT IS IN INK. The accent stays what it was:
+   the mark of what leaves the page. --- */
+.tir,input[type=search],select#lg{
+ height:var(--kmd);border:1px solid var(--lin);border-radius:7px;
+ background:var(--pap);color:var(--enk);
+ font-family:inherit;font-size:16px;font-weight:400;line-height:1}
+.tir:focus-visible,input[type=search]:focus,select#lg:focus{
+ outline:2px solid var(--acc);outline-offset:-1px}
+/* A control's icon does not read as its text does: the icon says what
+   the control DOES, the text says what it carries. Hence the grey. */
+.ikon{width:15px;height:15px;flex:none;pointer-events:none;
+ stroke:var(--sub);fill:none;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round}
+
+/* --- AND THE PLACEHOLDER SAYS NO MORE THAN THAT ONE IS BEFORE A
+   SEARCH. « Serchez en la du texti... » is in Ido like the rest of the
+   interface, and on a telephone it comes out cut: « Serchez en la d ».
+   Whoever does not read Ido sees an empty frame with unknown words in
+   it. The same remedy as for the language chooser, and for the same
+   reason: a magnifying glass, which is of no language.
+   The field goes into a shell to carry it -- it is the shell that
+   becomes the flexible element of the bar, and the field fills it. Two
+   consequences not to be missed: the « flex-basis » that decides the
+   line break is now laid on the shell, and the language selector, which
+   followed the field by « ~ », now follows the shell -- by
+   « :focus-within », since the cursor is IN it and not ON it. --- */
+.serc{position:relative;flex:1 1 240px;min-width:150px;
+ display:flex;align-items:center}
+.lupeto{position:absolute;left:11px}
+input[type=search]{flex:1 1 auto;width:100%;min-width:0;padding:0 11px 0 32px}
+/* Exactly 16px, and not less: Safari on iPhone zooms automatically on
+   any field whose letter size is below 16px, when it is touched. The
+   other remedy -- maximum-scale=1 -- would also prevent zooming with
+   the fingers, and so the legibility of those who need it. */
+/* --- THE NAME OF A LANGUAGE DOES NOT SAY THAT ONE IS BEFORE A CHOICE
+   OF LANGUAGE. The selector shows the CURRENT language, in its own
+   language: « Francais » on opening, and rightly so -- everyone
+   recognises the name of his own in the list. But whoever does not read
+   French then sees a word he does not understand, beside a search and a
+   contents list: nothing tells him that THAT is where one changes
+   language. The ARIA label does not help him either -- it is in Ido,
+   and it cannot be seen.
+   We therefore set before the name the one sign that is of no language:
+   a globe. It is in SVG and not an emoji, like the two download buttons
+   -- an emoji changes its drawing from one system to another and does
+   not follow the colour of the text. It does not take the click
+   (« pointer-events:none »): the selector remains the target, over its
+   whole surface. --- */
+.lgu{position:relative;flex:none;display:flex;align-items:center}
+.glob{position:absolute;left:10px}
+/* AND THE CHEVRON IS OURS, NOT THE SYSTEM'S. Every browser draws its
+   own: Safari stacks two arrows, Chrome lays a triangle. Two drawings
+   for the same control, and neither agreeing with the two neighbouring
+   icons. « appearance:none » takes them off, and we lay the chevron as
+   we laid the globe -- same stroke, same grey, same size, and no
+   purchase on the click. The selector remains the target over its whole
+   surface. */
+.shevro{position:absolute;right:10px}
+select#lg{flex:none;padding:0 32px 0 31px;cursor:pointer;
+ appearance:none;-webkit-appearance:none}
+/* THE LANGUAGE CHOICE HOLDS ON THE SEARCH'S LINE. On a telephone it
+   went onto a line of its own: « Materio » plus the search plus the
+   selector overflowed the width of an iPhone by a few pixels, and that
+   line break swelled the bar -- 215px tall instead of 170 -- which eats
+   as much of the page, the bar being sticky. But the line break is
+   decided on the BASE width, not on the minimum width: it is
+   « flex-basis » that must come down, and the search must then be let
+   stretch to take what is left. The selector thus ends up on the right,
+   under the two download buttons, and the bar holds on two lines down
+   to 360px.
+   (« Down to 320px », this line used to say: measured, the bar goes to
+   three lines there -- 238px tall -- and it did so before anything was
+   touched. It is not a new defect, it is a figure that had not been
+   checked.)
+   THIS RULE COMES AFTER THE ONES IT CORRECTS. A media query adds
+   nothing to specificity: placed higher, it lost against the search's
+   « min-width:150px », and nothing moved. */
+@media (max-width:700px){
+ .serc{min-width:0;flex:1 1 60px}
+ input[type=search]{padding:0 8px 0 28px}
+ .lupeto{left:9px}
+ select#lg{padding:0 27px 0 27px}
+ .glob{left:8px}.shevro{right:8px}
+ .tir{padding:0 9px}}
+
+/* --- THE SEARCH TAKES THE WHOLE BAR WHILE ONE TYPES IN IT. On a
+   telephone, the three controls share a line of 370 px: « Materio »
+   takes a hundred of them, the language selector eighty, and what is
+   left lets the field show « Serchez e » -- the placeholder is cut at
+   the tenth character, and the word one types scrolls in a window two
+   centimetres wide. We therefore give the field the whole bar for as
+   long as it has the cursor, and take it back when it loses it. The bar
+   does not change HEIGHT: it is sticky, and one more line would be paid
+   for over the whole page.
+
+   THE NEIGHBOURS FOLD AWAY, THEY DO NOT DISAPPEAR. « display:none »
+   would have made the bar jump and the control untouchable in the
+   middle of a gesture; a zero width with « overflow:hidden »
+   transitions and leaves the element in the flow, hence in the tab
+   order.
+
+   AND EACH OF THE TWO FOLDS ON ITS OWN CONDITION. The selector follows
+   the field (« ~ »), so that it reopens as soon as one tabs onto it.
+   The button, for its part, precedes the field and no selector goes
+   back up: it folds on the bar's « :focus-within » -- but « :not(:focus) »
+   protects it, failing which a keyboard user would have put the cursor
+   on a button gone invisible. --- */
+@media (max-width:700px){
+ /* THE GEOMETRY IS NOT ANIMATED, AND THAT IS THE FIX. It used to be:
+    « max-width », « padding » and « border-width » went to zero in a
+    hundred and sixty milliseconds. An iPhone then showed, to the left of
+    the widened field, a grey rounded corner with its border -- and only
+    at the top of the page. The cause is there: it is not a failed fold,
+    it is the TRANSITION'S INTERMEDIATE STATE, frozen. Measured on
+    Chromium at an iPhone's format, thirty milliseconds after focus:
+    width 23.56 px, opacity 0.90, border 1 px, inner margin 10.78 px --
+    the exact image of the screenshot. At the top of the page, Safari has
+    nowhere to scroll when the keyboard comes up: it resizes the visual
+    viewport, and that change of layout interrupts the transition under
+    way. Further down the page it scrolls instead, the transition runs to
+    the end, and the corner does not appear. A geometry that flips in a
+    single frame has no intermediate state to be caught in, on any
+    engine.
+    THE OPACITY MAY STAY ANIMATED: even caught mid-course, it applies to
+    a box zero wide, with neither border nor inner margin, which paints
+    nothing. */
+ .bar .tir,.bar .lgu{transition:opacity .16s}
+ /* THE BAR'S « gap » SURVIVES THE FOLD. An element zero wide is still
+    an element: the ten pixels that separated it from its neighbour stay
+    there, and the « full width » field began twenty-eight pixels from
+    the edge instead of twenty. The negative margin takes them back, on
+    both sides. */
+ .bar:focus-within .tir:not(:focus),
+ .serc:focus-within ~ .lgu{
+  max-width:0;width:0;min-width:0;flex-basis:0;
+  padding-left:0;padding-right:0;border-width:0;
+  opacity:0;overflow:hidden}
+ .bar:focus-within .tir:not(:focus){margin:0 -10px 0 0}
+ .serc:focus-within ~ .lgu{margin:0 0 0 -10px}
+ /* « min-width:0 » IS NOT A REDUNDANCY. The AUTOMATIC minimum size of
+    a flex-box element is that of its content, and that minimum beats
+    « max-width »: a zero width can therefore do nothing against it. The
+    specification has it fall back to zero as soon as the element carries
+    an « overflow » other than « visible » -- which Chromium does,
+    rendering a proper 0.00 px -- but we do not rest on an automatic
+    resolution for an effect we can ask for.
+    Reported on an iPhone: the contents button showed a six-pixel rounded
+    corner to the left of the widened field.
+    AND THE BUTTON'S CONTENT WITHDRAWS WITH IT. The icon measures 15 px
+    and will not be compressed (« flex:none »): in a box of zero width it
+    holds only by the clipping. A clipping that does not happen is
+    invisible in the code and very visible on the screen; we therefore
+    take away what there is to clip. The button itself stays in the flow
+    and in the tab order -- and « :not(:focus) » gives it back its icon
+    as soon as one reaches it from the keyboard. The language selector,
+    whose child is the focusable field itself, cannot be given the same
+    treatment: it has only the geometry. */
+ .bar:focus-within .tir:not(:focus) > *{display:none}}
+.tir{display:none;flex:none;align-items:center;gap:7px;
+ padding:0 12px;cursor:pointer}
+.tir:hover{background:var(--lin)}
+
+/* --- TWO PANELS, not three. The Kompleta Gramatiko also has a right
+   panel for the headwords; this book has none, and the room that is
+   left serves the TWO COLUMNS OF TEXT, which need it. --- */
+main{display:grid;grid-template-columns:250px minmax(0,1fr);
+ max-width:1560px;margin:0 auto;gap:0}
+nav{position:sticky;top:var(--kapo,104px);height:calc(100vh - var(--kapo,104px));
+ overflow-y:auto;padding:16px 14px 60px;font-family:system-ui,sans-serif;
+ font-size:13px;border-right:1px solid var(--lin)}
+nav .parto{margin:14px 0 5px;font-size:11px;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--sub);font-weight:700}
+nav a{display:block;padding:3px 6px;border-radius:5px;text-decoration:none;
+ color:var(--enk);line-height:1.35;font-size:12.5px}
+/* Two ranks in the table of contents: the table, and its subheadings.
+   Sixteen tables and eighty subheadings laid flat would be
+   unreadable. */
+/* Three ranks, because the book has three: the table, the scene, the
+   subheading. Sixteen tables and a hundred and forty subheadings laid
+   flat would be a list, not a table of contents. */
+nav a.tt{margin-top:13px;font-size:12.5px;font-weight:600}
+nav a.tt b{color:var(--acc);font-weight:700}
+nav a.sc{padding-left:14px;font-size:12px;font-style:italic}
+nav a.st{padding-left:26px;color:var(--sub);font-size:12px}
+nav a.st:hover,nav a.sc:hover{color:var(--enk)}
+nav a:hover{background:var(--lin)}
+nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
+
+/* THE SIDE MARGIN MUST HOUSE THE FOLIO. The folio is laid OUTSIDE its
+   column -- 30px on the left for the Ido, 28px on the right for the
+   translation -- and this margin is all it has to stand in. At 26px it
+   was two short on the right: the page overflowed the window by 2px,
+   and one could slide it sideways. It showed only between 1181px --
+   below which the folio comes back into the flow -- and 1600px, where
+   the automatic margins of « main » end up absorbing the overflow;
+   hence a nuisance that seemed to come and go for no reason. */
+#kont{padding:22px 32px 140px}
+
+/* --- THE TWO COLUMNS. Grid and not two floating columns: the two
+   cells of one row must begin at the same height, and only grid
+   guarantees that when the texts are of different lengths -- which
+   they always are, since the two editions do not say the same thing in
+   the same number of words. The line between the columns is the
+   boundary: it shows that the two texts are the same paragraph, not
+   two paragraphs one after the other. --- */
+.r{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;
+ align-items:start;position:relative}
+.r+.r{margin-top:.62em}
+.k{position:relative;min-width:0;text-align:justify;hyphens:auto;
+ -webkit-hyphens:auto}
+.k.io{padding-right:17px;border-right:1px solid var(--lin)}
+.k.tra{padding-left:0}
+.r.sub .k,.r.apar .k{text-align:center}
+/* THE TITLE IS CENTRED ON THE COLUMN, NOT ON WHAT IS LEFT OF THE COLUMN.
+   The Ido cell carries 17px of margin and 1px of rule ON THE RIGHT, to lay
+   the dividing line; its content box is therefore 18px narrower than the
+   French cell, and « text-align:center » centred within that box. The two
+   titles of one row thus fell 9px apart -- always 9, at every width, and
+   whether the folio showed or not: it was not the folio that shifted them,
+   it was the rule. We give the Ido cell back, for the centred rows alone,
+   an equal margin on the left: the title finds the axis of its column
+   again, and the rule does not move.
+
+   « WHETHER THE FOLIO SHOWS OR NOT » WAS TRUE ONLY WIDE, and the
+   measurement that asserted it had been made only wide. Below 1180px the
+   folio leaves the margin and becomes a float: it does then shift things,
+   and by a different amount at every row. See the last rule of this sheet,
+   which repairs that; this one holds only for the two-column layout. */
+.r.sub .k.io,.r.apar .k.io{padding-left:18px}
+.vaka{}
+/* The empty cell is not an error: it says that that paragraph does not
+   exist in the other edition. Guignon divided by subheadings a text
+   Rochelle lets run; the emptiness is the difference itself, and hiding
+   it would make the two columns lie. */
+.k.tra.vaka::after{content:"—";color:var(--lin);font-size:13px}
+.r.sub .k.tra.vaka::after{content:""}
+/* « dif »: the cell is waiting for its translation, it is not missing. */
+.k.tra.vaka.dif::after{content:""}
+
+/* --- ARABIC RUNS FROM RIGHT TO LEFT, and it is the CELL that says so,
+   not the page: the six other columns keep their direction. The « dir »
+   attribute is enough for the browser as to word order and punctuation
+   -- « (13) » files itself on the right side of the noun by itself --
+   but three things in the layout remain to be turned round.
+   The folio first: it is laid outside the column, on the right for a
+   translation, and must move to the left when the column reads the
+   other way, failing which it falls ON the start of the lines. The
+   paragraph indent next, which indents on the right. The narrow mode's
+   border last, which separates the two texts and must stay on the side
+   where the Arabic begins. Logical properties would have done it all at
+   a stroke; « left » and « right » are already everywhere else in this
+   sheet, and mixing the two families reads badly. */
+.k.tra[dir=rtl]{text-align:justify}
+/* A SUBHEADING IS CENTRED TOO WHEN THE COLUMN READS THE OTHER WAY. The
+   line above counts one attribute more than « .r.sub .k{text-align:
+   center} » and therefore won everywhere, the centred rows included: the
+   six right-to-left columns -- ar, arz, apc, fa, ur, pnb -- pinned their
+   162 titles to the right edge, at every width, from the day Arabic came
+   in. It was not visible at a glance, because a title pinned right in a
+   column that reads rightwards looks as though it were in place. It is
+   not: opposite it, the Ido title is centred. */
+.r.sub .k.tra[dir=rtl],.r.apar .k.tra[dir=rtl]{text-align:center}
+.k.tra[dir=rtl] .fol{left:-28px;right:auto}
+.r.p .k.tra[dir=rtl]{text-indent:1.3em}
+.k.tra[dir=rtl] sup{margin-left:0;margin-right:.08em}
+
+.r.p .k{text-indent:1.3em}
+.r.sub{margin:1.9em 0 .9em}
+.r.sub .k{font-variant:small-caps;letter-spacing:.06em;font-weight:600;
+ text-indent:0;color:var(--enk)}
+.r.apar{margin:.4em 0 1.8em}
+.r.apar .k{text-indent:0;line-height:1.5}
+.ln{display:block;letter-spacing:.09em;margin:.28em 0}
+.ln.lg{font-weight:700;letter-spacing:.01em;font-size:1.32em;margin:.42em 0}
+
+/* --- THE ROLE DRESSES THE LINE, NOT THE MACRO. The two volumes do not
+   set in the same way what plays the same role: the title of table 8
+   goes through \VUpk on the Ido side and through \VUtitre on the
+   French, so that the page gave « La Rekolto. » in text size facing a
+   « La Moisson. --- Les aspects de la campagne. » in large and bold;
+   and the scene was italic on one side, roman on the other. The PDF
+   keeps each facsimile as it is; the reading page, for its part, serves
+   to COMPARE, and two things that answer each other must look alike.
+   These rules come AFTER « .ln » and « .ln.lg », which they annul: at
+   equal specificity, the last one wins. --- */
+/* « font-variant:normal » from the base: a subheading's cell carries
+   « small-caps », and a table title housed in a subheading -- tables 7,
+   9, 14, 15 -- inherited it, so that it came out in small capitals
+   where table 10's came out bold. It is « sekc » that asks for the
+   small capitals again, and it alone. */
+.k [data-rolo]{display:block;font-style:normal;font-weight:400;
+ font-variant:normal;font-size:1rem;letter-spacing:.04em;margin:.3em 0}
+/* The transcription's italic no longer decides: the role takes charge.
+   Failing which « Unesma ceno. », set in italic by Guignon, stayed
+   slanted facing an upright « Première scène. ». */
+.k [data-rolo] i,.k [data-rolo] em{font-style:inherit}
+.k [data-rolo="avan"]{font-size:.9rem;color:var(--sub);letter-spacing:.09em}
+.k [data-rolo="serio"]{font-size:.82rem;color:var(--sub);letter-spacing:.14em;
+ text-transform:uppercase;margin:.7em 0 .35em}
+.k [data-rolo="nom"]{font-weight:700;font-size:1.32rem;letter-spacing:.02em;
+ margin:.45em 0 .3em}
+.k [data-rolo="tit"]{font-weight:700;font-size:1.1rem;letter-spacing:.02em;
+ margin:.12em 0}
+/* THE TITLE OF A SCENE. It was set as a section, so that it changed
+   size from one table to the next -- bold on table 7, where it stands
+   for the table's title, small capitals on table 3, where it does not.
+   It is the same thing all the same. It therefore has a rank of its
+   own, between the table's title and the subheading. */
+.k [data-rolo="titceno"]{font-weight:700;font-size:1rem;letter-spacing:.02em;
+ margin:.15em 0 .3em}
+/* The lines of one title are read again in one breath:
+   « inline-block » puts them on one line without taking away their
+   margins, and the joiner -- the dash or the space -- is laid in the
+   text by render(). */
+.k [data-kunligita]{display:inline-block;margin-top:0;margin-bottom:0}
+.k [data-rolo="ceno"]{font-style:italic;font-variant:normal;font-size:.88rem;
+ letter-spacing:.03em;margin:.55em 0 .25em}
+.k [data-rolo="sekc"]{font-variant:small-caps;font-weight:600;font-size:.85rem;
+ letter-spacing:.07em;margin:.45em 0 .25em}
+.k [data-rolo="subt"]{font-style:italic;font-size:.78rem;color:var(--sub);
+ letter-spacing:.02em;margin:.1em 0 .35em}
+
+/* THE SUBHEADING THE FRENCH BOOKLET DOES NOT HAVE. It comes from the
+   Ido, it is ours, and it must be seen as such: the same size and the
+   same place as the others -- the column would stay lame were it set
+   otherwise -- but a bracket on either side, discreet, saying it is an
+   addition. That is the convention of diplomatic editions, and it costs
+   one character. The tooltip gives the rest. */
+.apud::before{content:"[";color:var(--sub);font-weight:400}
+.apud::after{content:"]";color:var(--sub);font-weight:400}
+.fil{display:block;width:52px;height:1px;background:var(--lin);
+ margin:.85em auto}
+.orn{display:block;color:var(--sub);margin:.5em 0;font-size:.9em}
+
+/* The folio is laid OUTSIDE the text, in the left margin of its
+   column: it must neither enter the measure nor reduce it. On a narrow
+   screen — where the two columns stack — it comes back into the flow,
+   for want of a margin to sit in. */
+/* « text-indent:0 » is no detail. The paragraph carries
+   « text-indent:1.3em », and the folio, which is a block in that
+   column, INHERITED it: its number was pushed 21px to the right on the
+   paragraphs, and stayed at the edge on the titles and the openings,
+   which have no indent. The number therefore seemed to run off
+   leftwards as soon as one left a paragraph -- when in fact it did not
+   move: it was the others that were too far right. */
+.fol{position:absolute;left:-30px;top:.15em;font:600 11px/1 system-ui,sans-serif;
+ color:var(--sub);text-decoration:none;padding:2px 3px;border-radius:3px;
+ text-indent:0}
+.fol:hover{color:var(--acc);background:var(--lin)}
+.k.tra .fol{left:auto;right:-28px}
+@media (max-width:1180px){
+ .fol{position:static;float:left;margin:.2em .5em 0 0}
+ .k.tra .fol{float:right;margin:.2em 0 0 .5em}
+ .k.tra[dir=rtl] .fol{float:left;margin:.2em .5em 0 0}}
+
+/* --- THE NOTE FOLDS AWAY. At the foot of a printed page the note has
+   its place; in a scrolling column, set between two paragraphs, it
+   breaks the reading. The call therefore becomes a button, and the note
+   opens beneath the paragraph that carries it -- as in the page of the
+   Kompleta Gramatiko. It is a <button> and not an <a>: it leads
+   nowhere, it shows and it hides; the keyboard and the screen readers
+   understand it so, and aria-expanded tells them. --- */
+/* THE SUPERSCRIPT KEEPS ITS BOX. « vertical-align:super » with
+   « line-height:0 » reduced it to zero height: the glyph alone
+   overflowed, the dotted rule passed straight through it, and the open
+   state -- ground « --acc », text « --pap » -- had nothing left to
+   paint itself on. The marker became cream on cream, hence invisible to
+   the click. We therefore keep a full box and raise the superscript by
+   a relative offset, which does not count in the line: the
+   transcription's leading does not move by a pixel. */
+.apel{font:inherit;font-size:.72em;line-height:1;position:relative;top:-.42em;
+ background:none;border:0;padding:0 .12em;margin:0;cursor:pointer;
+ color:var(--acc);font-weight:600;border-bottom:1px dotted var(--acc)}
+.apel:hover{background:var(--lin)}
+/* A transparent border, and not « 0 »: the two states are then the
+   same height, and the word does not jump when the note opens. */
+.apel[aria-expanded=true]{background:var(--acc);color:var(--pap);
+ border-radius:3px;border-bottom:1px solid transparent}
+.noto{margin:.5em 0 .7em;padding:.6em .8em;border-left:2px solid var(--acc);
+ background:var(--pap2);font-size:13.5px;line-height:1.5;color:var(--sub);
+ border-radius:0 5px 5px 0}
+.noto b{color:var(--enk)}
+
+/* THE CLOSE-UP ON A NUMBER. The cross-reference « (12) » keeps exactly
+   the look it had — same size, same superscript, same place in the
+   line — and announces itself only by a dotted underline: the page must
+   not cover itself in buttons. Those whose position on the plate is not
+   known stay text, with no underline. */
+.lupo{font:inherit;background:none;border:0;padding:0;margin:0;
+ cursor:zoom-in;color:inherit;line-height:inherit}
+.lupo sup, .lupo.nuda{border-bottom:1px dotted var(--acc)}
+.lupo:hover sup, .lupo.nuda:hover{background:var(--lin)}
+.lupo[aria-expanded=true] sup, .lupo.nuda[aria-expanded=true]{
+ background:var(--acc);color:var(--pap);
+ border-radius:3px;border-bottom-color:transparent}
+/* ONE CROSS-REFERENCE MAY BE WORTH THREE. « Les tableaux muraux
+   (9, 11, 12) » names three objects at once; each number in it is
+   clickable on its own account, while the parentheses and the commas
+   stay text. The button is then BARE -- it has no superscript of its
+   own, being already inside the group's -- and therefore carries the
+   dotted rule itself.
+
+   THE LINE HEIGHT MUST BE GIVEN BACK TO THE BARE BUTTON. A superscript
+   carries « line-height:0 » so as not to spread the paragraph's lines;
+   the button, which inherits it, ends up with a box one point tall, and
+   its dotted rule then falls IN THE MIDDLE of the figures instead of
+   passing beneath them -- five points too high, measured. « normal »
+   gives it back its box: it falls exactly on that of the other
+   cross-references, and the paragraph's leading does not move by a
+   point. */
+.lupo.nuda{font:inherit;line-height:normal}
+/* The close-up is laid beneath the paragraph, like a note: it is the
+   same idea, to show without leaving one's line. */
+/* THE VIEW IS PANORAMIC, AND DELIBERATELY SO. Its HEIGHT is fixed —
+   hence the magnification too, nine figure heights whatever the window
+   — and its width takes all the page gives it. A wide window therefore
+   shows more of the scene around the object, at the same magnification;
+   a narrow window shows less. It is the scene that explains the object,
+   not the object alone. */
+.lupo-vido{margin:.5em 0 .8em;border-left:2px solid var(--acc);
+ background:var(--pap2);border-radius:0 5px 5px 0;overflow:hidden}
+/* AND THE VIEW MOVES. The close-up falls on the named object, but the
+   eye often wants to see beside it — what is at the end of the counter,
+   which is its neighbour on the left. We therefore drag the view with
+   the finger or the mouse, like a map. « touch-action:none » is what
+   makes that possible with the finger: without it the browser takes the
+   drag for a page scroll and tells us nothing about it. */
+.lupo-vido .kadro{width:100%;height:250px;background-repeat:no-repeat;
+ background-color:var(--pap2);cursor:grab;touch-action:none;
+ -webkit-user-select:none;user-select:none}
+.lupo-vido .kadro.tiras{cursor:grabbing}
+.lupo-vido .dir{display:flex;justify-content:space-between;gap:1em;
+ padding:.42em .8em;font-size:12.5px;color:var(--sub);
+ border-top:1px solid var(--lin)}
+.lupo-vido .dir b{color:var(--enk);font-weight:600}
+@media (max-width:900px){.lupo-vido .kadro{height:190px}}
+
+/* THE JOIN. Rochelle sometimes cuts in two a paragraph Guignon leaves
+   whole. The PDF keeps each edition as it stands; here the two halves
+   are glued back so that the rows answer each other, and this rule says
+   where the other edition began a new paragraph. A plain space read
+   like a slip. */
+.nal{display:inline-block;width:1.1em;margin:0 .25em;
+ border-left:1px solid var(--lin);height:.85em;vertical-align:-.05em}
+
+b{font-weight:700}
+sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
+.k.io sup,.k.tra sup{margin-left:.08em}
+
+/* --- THE WALL PLATE. The booklet describes an engraving the reader of
+   1926 had on the wall; the page gives it back to him, above the text
+   it illustrates. It loads ONLY when it comes near the viewport --
+   « loading=lazy » --, and its dimensions are written into the tag: the
+   room is therefore reserved from the start, and the text does not jump
+   when the image arrives. --- */
+.gravuro{margin:2.2em 0 .6em;text-align:center}
+.gravuro img{width:100%;max-width:1246px;height:auto;/* The engraving fills its frame: with no width declared, it stopped at
+   its own size and « sizes » then announced a width it did not occupy
+   -- the browser chose wrongly. */
+ border:1px solid var(--lin);
+ border-radius:3px;background:var(--pap2);cursor:zoom-in;
+ box-shadow:0 1px 4px rgba(0,0,0,.10);transition:box-shadow .15s}
+.gravuro img:hover{box-shadow:0 2px 10px rgba(0,0,0,.18)}
+@media (prefers-color-scheme:dark){.gravuro img,.gravuro img:hover{box-shadow:none}}
+
+/* --- FULL SCREEN. A wall plate is looked at close to; the reading
+   column is too narrow for that. On a click it opens over the whole
+   window, WITHOUT leaving the page -- no new tab, no new request: it is
+   the detail image, the very one the close-ups will be cut from, and
+   once loaded it is never loaded again.
+   The transition works on the opacity and on a slight scale: that is
+   enough for the eye to follow the opening without anything jumping.
+   « prefers-reduced-motion » cuts it for those who do not want it. --- */
+.plena{position:fixed;inset:0;z-index:50;display:flex;align-items:center;
+ justify-content:center;background:rgba(20,18,16,.94);
+ opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s;
+ padding:18px;overflow:hidden;touch-action:none}
+.plena.mont{opacity:1;visibility:visible}
+/* « -webkit-user-drag » IS NOT AN ORNAMENT. Without it, dragging an
+   image starts the browser's drag-and-drop, which cuts the pointer
+   tracking at the second movement: the view advanced one step then
+   froze. */
+.plena img{max-width:100%;max-height:100%;object-fit:contain;
+ transform:scale(.97);transition:transform .22s ease;border-radius:2px;
+ cursor:zoom-in;-webkit-user-select:none;user-select:none;
+ -webkit-user-drag:none}
+.plena.mont img{transform:scale(1)}
+/* ONCE ENLARGED, THE IMAGE IS DRAGGED. The cursor says so, and the
+   transition goes: it is good for the opening, it would drag behind the
+   finger. */
+.plena.prox img{cursor:grab;transition:none}
+.plena.prox.tiras img{cursor:grabbing}
+.plena .fermi{position:absolute;top:12px;right:16px;border:0;background:none;
+ color:#f2ede6;font:600 26px/1 system-ui,sans-serif;cursor:pointer;padding:6px 10px;
+ z-index:2}
+/* THE ZOOM BUTTONS, for whoever has neither a wheel nor two fingers.
+   They also say that the view enlarges: without them nothing announces
+   it. */
+.plena .lupili{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+ display:flex;gap:2px;background:rgba(0,0,0,.42);border-radius:6px;
+ padding:3px;z-index:2}
+.plena .lupili button{border:0;background:none;color:#f2ede6;cursor:pointer;
+ font:600 17px/1 system-ui,sans-serif;padding:7px 13px;border-radius:4px}
+.plena .lupili button:hover{background:rgba(255,255,255,.16)}
+.plena .lupili .grado{font-weight:400;font-size:12.5px;padding:8px 6px;
+ min-width:3.4em;text-align:center;opacity:.82;pointer-events:none}
+@media (prefers-reduced-motion:reduce){
+ .plena,.plena img{transition:none}}
+
+/* The search: what does not answer disappears, and the match is marked
+   in the text itself. The highlight is laid on a <mark> made by the
+   script, never in the source. */
+mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
+.for{display:none}
+/* The table's opening stays above its results, so that one knows WHERE
+   one has found. But it is not a result: we reduce it to its label --
+   number and title, which the script has deposited in data-tete --
+   instead of spreading the four lines of its display matter, series
+   page and lesson subtitles included, above two paragraphs. */
+.r.apar.tete{display:block;margin:1.6em 0 .1em;padding-bottom:.3em;
+ border-bottom:1px solid var(--lin);text-align:left}
+.r.apar.tete>*{display:none}
+.r.apar.tete::before{content:attr(data-tete);display:block;color:var(--acc);
+ font:600 13px/1.4 system-ui,sans-serif;letter-spacing:.02em}
+/* A search with no answer must be seen: without that the page simply
+   stays empty, and one thinks it has broken. */
+.nulo{display:none;padding:2.6em 20px;color:var(--sub);text-align:center;
+ font-size:14.5px}
+.nulo.mont{display:block}
+
+/* --- ON A NARROW SCREEN the two columns stack: the Ido first, the
+   translation beneath, with a rule on the left so that one sees at a
+   glance which one is being read. The parallel stays legible because
+   each row keeps its block. --- */
+@media (max-width:900px){
+ main{grid-template-columns:1fr}
+ nav{position:fixed;left:0;top:var(--kapo,150px);bottom:0;width:270px;
+  background:var(--pap);z-index:15;transform:translateX(-100%);
+  transition:transform .18s;box-shadow:0 0 24px rgba(0,0,0,.14)}
+ nav.mont{transform:none}
+ .tir{display:flex}
+ #kont{padding:18px 16px 120px}
+ .r{grid-template-columns:1fr;gap:.35em 0}
+ .k.io{padding-right:0;border-right:0}
+ .k.tra{padding-left:11px;border-left:2px solid var(--lin);color:var(--sub)}
+ .k.tra[dir=rtl]{padding-left:0;padding-right:11px;
+  border-left:0;border-right:2px solid var(--lin)}
+ .r.sub .k.tra,.r.apar .k.tra{border-left:0;padding-left:0}
+ .r.sub .k.io,.r.apar .k.io{padding-left:0}}
+@media (max-width:900px) and (prefers-color-scheme:dark){
+ nav{box-shadow:0 0 24px rgba(0,0,0,.6)}}
+
+/* --- A FLOAT DOES NOT MERELY PLACE ITSELF: IT SHORTENS THE LINE.
+   Below 1180px the folio has no margin left to sit in and becomes a float.
+   On a justified paragraph that does not show: the text goes round the
+   number, then takes its full width again. On a SUBHEADING it does --
+   « text-align:center » then centres the title in what is LEFT of the
+   line, and not in the column. The Ido title moves right by half its
+   folio, the French title left by half of its own, and a row whose title
+   carries no folio stays properly centred: hence a misalignment that looks
+   capricious and is not.
+
+   Read off a screenshot of an iPhone 16 (402pt, density 3), measuring the
+   ink itself: axis of the column at 603; « Detaloza deskripto. » centred
+   at 628 and « La bona lernanti. » at 627.5 -- +8.3px; « II. Description
+   detaillee. » at 570 -- -11px; « [Les bons eleves.] », which has no
+   folio, at 601 -- right. Then in the browser, over the 148 centred rows:
+   184 titles off axis at 390px, 194 at 700px, 180 at 1000px, 0 at 1400px.
+   The dominant gap is not 9px but 12.8px, because it is worth half the
+   folio and a folio runs to one, two or three figures.
+
+   WE THEREFORE GIVE THE FOLIO BACK ITS ABSOLUTE POSITION FOR THE CENTRED
+   ROWS ALONE. Out of the flow, it shortens nothing any more, and the title
+   finds the axis of its column again with no compensation -- a
+   compensation would have had to follow the number of figures.
+
+   AND WE CUT AN EQUAL GUTTER ON BOTH SIDES to house it. Absolute, the
+   folio no longer pushes the text: it passes BENEATH it. Measured, three
+   rows met it -- t06-apar-2 and t08-tit-6 -- which did not show as long as
+   the float pushed the text aside. A symmetrical gutter does not move the
+   axis, by construction; it costs 8 rows out of 148 becoming longer at
+   390px, and those are precisely the widest titles, the ones that were
+   touching the folio. We pay, then, where paying was due.
+
+   THIS BLOCK IS THE LAST OF THE SHEET, AND DELIBERATELY SO. The 900px
+   query, above, resets the margins of the centred rows; written before it,
+   the gutter would have been erased on telephones -- that is, everywhere
+   the defect shows. --- */
+@media (max-width:1180px){
+ .r.sub .k .fol,.r.apar .k .fol{position:absolute;float:none;margin:0;
+  top:.15em}
+ .r.sub .k.io .fol,.r.apar .k.io .fol{left:0;right:auto}
+ .r.sub .k.tra .fol,.r.apar .k.tra .fol{left:auto;right:0}
+ /* ARABIC TAKES THE WHOLE THING AGAIN, NOT THE SIDE ALONE. The rule
+    « .k.tra[dir=rtl] .fol » counts one attribute more and therefore beats
+    « .r.sub .k .fol »: the folio of a right-to-left column became a float
+    again, and 162 of its titles went off axis while the French's 332 were
+    right. We therefore say it all again here. */
+ .r.sub .k.tra[dir=rtl] .fol,.r.apar .k.tra[dir=rtl] .fol{position:absolute;
+  float:none;margin:0;top:.15em;left:0;right:auto}
+ /* In two columns the Ido cell keeps 17px of margin and 1px of rule on
+    the right: its left gutter is therefore 26+18, its right one 26+17,
+    and the axis stays in the middle. */
+ .r.sub .k.io,.r.apar .k.io{padding-left:44px;padding-right:43px}
+ .r.sub .k.tra,.r.apar .k.tra{padding-left:26px;padding-right:26px}}
+/* Below 900px the columns stack, the rule moves to the left of the
+   translation and the Ido cell has nothing left to compensate: the four
+   gutters are equal. */
+@media (max-width:900px){
+ .r.sub .k.io,.r.apar .k.io,.r.sub .k.tra,.r.apar .k.tra{
+  padding-left:26px;padding-right:26px}
+ /* The same reason as above: « .k.tra[dir=rtl] » lays 11px on the right
+    here and nothing on the left, for its rule, and beats
+    « .r.sub .k.tra ». A centred row has no rule; it has two equal
+    gutters.
+
+    AND THE RULE WITH IT. The neighbouring rule takes « border-left » off
+    the centred rows, because a subheading is not a paragraph to be
+    paired: it has nothing to separate. It took it off on the left only,
+    so that the six right-to-left columns kept their 2px bar where the
+    other forty-three did not -- and that bar, counted in the box, moved
+    the title's axis by exactly 1px. A rule written for one direction of
+    reading covers one only. */
+ .r.sub .k.tra[dir=rtl],.r.apar .k.tra[dir=rtl]{
+  padding-left:26px;padding-right:26px;border-right:0}}
+
+</style>
+
+<header>
+<div class="tito">
+<div>
+<h1>{{TITLE}}</h1>
+<div class="sub">{{SUBTITLE}}</div>
+</div>
+<div class="dls">
+<a class="dl" href="tabeli.pdf" download title="Deskargar la Ido-versiono (PDF)">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg><span>Ido</span></a>
+<a class="dl" href="tableaux.pdf" download title="Télécharger la version française (PDF)">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg><span>Français</span></a>
+</div>
+</div>
+<div class="bar">
+ <button class="tir" id="tirL" aria-label="Tabelo di la materio"><svg class="ikon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Materio</span></button>
+ <span class="serc">
+  <svg class="ikon lupeto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4L21 21"/></svg>
+  <!-- THE MOBILE KEYBOARD MUST NEITHER CAPITALISE NOR CORRECT. The field
+       searches two texts one of which is in Ido: the initial capital
+       iOS lays, and the autocorrection that replaces « serchez » with
+       an English word, made the search fail before it had even
+       started. -->
+  <input type="search" id="q" aria-label="Serchez en la du texti" placeholder="Serchez en la du texti&hellip;" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+ </span>
+ <span class="lgu">
+  <svg class="ikon glob" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9s1.4-6.6 3.9-9z"/></svg>
+  <select id="lg" aria-label="Linguo dil dextra kolono">{{LANGUAGES}}</select>
+  <svg class="ikon shevro" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg>
+ </span>
+</div>
+</header>
+
+<main>
+<!-- The series divisions come with the table of contents itself: the
+     facsimile announces them at the head of tables 1, 7 and 11, and
+     writing them hard here gave only one for all sixteen tables.
+     DO NOT name a template marker here: render() replaces them
+     EVERYWHERE, comments included, and the whole table of contents was
+     copied into this comment -- eleven invisible kilobytes. -->
+<nav id="nav">{{NAV}}</nav>
+<div><div id="kont">
+{{CONTENT}}
+</div>
+<p class="nulo" id="nulo" role="status"></p>
+<div class="plena" id="plena" role="dialog" aria-modal="true" aria-label="Tabelo">
+ <button class="fermi" id="fermi" aria-label="Klozar">&times;</button>
+ <img id="plena-bildo" alt="" draggable="false">
+ <div class="lupili">
+  <button type="button" data-lupilo="-" aria-label="Min granda">&minus;</button>
+  <span class="grado" id="plena-grado">1&times;</span>
+  <button type="button" data-lupilo="+" aria-label="Plu granda">+</button>
+  <button type="button" data-lupilo="0" aria-label="Tuta tabelo">&#8862;</button>
+ </div>
+</div>
+
+</div>
+</main>
+
+<script>
+"use strict";
+var LANGS = {{LANGS_JSON}};
+
+/* The header's height is not a constant: two lines of title on a
+   telephone, one on a computer. We measure it at load and at every
+   resize, and deposit it in --kapo; the hard values in the CSS serve
+   only as a fallback before the script has run. */
+function headerBox(){
+  var h = document.querySelector("header").offsetHeight;
+  document.documentElement.style.setProperty("--kapo", h + "px");
+}
+addEventListener("resize", headerBox); headerBox();
+
+/* The table-of-contents panel, on a narrow screen. */
+var nav = document.getElementById("nav");
+document.getElementById("tirL").onclick = function(){ nav.classList.toggle("mont"); };
+nav.addEventListener("click", function(e){
+  if (e.target.tagName === "A" && innerWidth <= 900) nav.classList.remove("mont");
+});
+/* A TOUCH OUTSIDE CLOSES IT. On a telephone the panel covers the page;
+   it closed only on touching « Materio » again or on following a
+   reference, and one stayed caught in front of the table of contents.
+   We therefore listen for the touch rather than the click -- on a
+   telephone it comes first, and the panel goes without waiting for the
+   click's 300ms. The button is excluded: it already has its toggle, and
+   closing it here would reopen it at once. */
+document.addEventListener("pointerdown", function(e){
+  if (!nav.classList.contains("mont")) return;
+  if (nav.contains(e.target) || e.target.closest("#tirL")) return;
+  nav.classList.remove("mont");
+});
+
+
+/* --- THE SEARCH. It bears on BOTH texts at once: an Ido word finds
+   the paragraph, and its translation stays opposite, even if it does
+   not contain the word. That is the point of the two columns; a search
+   that masked the facing cell would separate them. --- */
+var q = document.getElementById("q");
+
+/* --- AND THE PLACEHOLDER SHORTENS ON A TELEPHONE. « Serchez en la du
+   texti... » asks 154 px and the field had but 43: it came out cut at
+   « Serchez en », which reads as a breakdown and not as an invitation. A
+   truncated text says no more than a short one; it says only that nobody
+   looked.
+
+   THE ACCESSIBLE NAME, HOWEVER, DOES NOT SHORTEN. The field had for its
+   whole label only its placeholder -- which is already a weakness, since
+   a placeholder disappears as soon as one types. It now carries an
+   « aria-label » that gives the whole sentence at every width: what
+   shortens is what is SEEN, never what is announced.
+
+   The placeholder is an attribute: no style sheet changes it, and that
+   is the only reason this is script. The setting itself is below, in
+   serBarilo(): it depends on the width the language selector leaves the
+   field, and the selector does not exist yet here. --- */
+var qWide = q.getAttribute("placeholder");
+var qShort = "Serchez\u2026";
+var qNarrow = window.matchMedia("(max-width:700px)");
+var rows = [].slice.call(document.querySelectorAll(".r"));
+var pristine = rows.map(function(r){
+  return [].map.call(r.querySelectorAll(".k"), function(k){ return k.innerHTML; });
+});
+function withoutAccent(s){
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+function highlight(el, raw, term){
+  if (!term) { el.innerHTML = raw; return false; }
+  /* We highlight in the TEXT, not in the tags: without that a term
+     falling inside an attribute (href, title) would break the page.
+     We therefore walk the fragment's text nodes. */
+  var d = document.createElement("div");
+  d.innerHTML = raw;
+  var found = false;
+  var it = document.createTreeWalker(d, NodeFilter.SHOW_TEXT);
+  var nodes = [], n;
+  while ((n = it.nextNode())) nodes.push(n);
+  nodes.forEach(function(t){
+    var s = t.nodeValue, flat = withoutAccent(s), i = flat.indexOf(term);
+    if (i < 0) return;
+    found = true;
+    var frag = document.createDocumentFragment(), pos = 0;
+    while (i >= 0){
+      frag.appendChild(document.createTextNode(s.slice(pos, i)));
+      var m = document.createElement("mark");
+      m.textContent = s.slice(i, i + term.length);
+      frag.appendChild(m);
+      pos = i + term.length;
+      i = flat.indexOf(term, pos);
+    }
+    frag.appendChild(document.createTextNode(s.slice(pos)));
+    t.parentNode.replaceChild(frag, t);
+  });
+  el.innerHTML = d.innerHTML;
+  return found;
+}
+var timer = null;
+q.addEventListener("input", function(){
+  clearTimeout(timer);
+  timer = setTimeout(search, 110);
+});
+/* The table openings. The table of contents knows them already --
+   they are its first-rank entries -- and we use that rather than mark
+   them a second time in the page. */
+var openings = {};
+document.querySelectorAll("nav a.tt").forEach(function(a){
+  openings[a.dataset.ch] = 1;
+});
+var zero = document.getElementById("nulo");
+var plates = [].slice.call(document.querySelectorAll(".gravuro"));
+
+function search(){
+  var term = withoutAccent(q.value.trim());
+  /* WHAT DOES NOT ANSWER DISAPPEARS, OF WHATEVER RANK. The condition
+     carried « && r.classList.contains("p") »: only the paragraphs were
+     filtered, and the book's hundred and forty-nine titles -- table
+     openings and subheadings -- stayed on screen whatever one searched
+     for. Two paragraphs answered « kranio », and one saw a hundred and
+     fifty-one blocks; a search with no answer changed nothing at all in
+     the page, and one thought the field dead. A block's rank does not
+     say whether it answers: only its text says so. */
+  var founds = rows.map(function(r, i){
+    var found = false;
+    [].slice.call(r.querySelectorAll(".k")).forEach(function(k, j){
+      if (highlight(k, pristine[i][j], term)) found = true;
+    });
+    r.classList.toggle("for", !!term && !found);
+    r.classList.remove("tete");
+    return found;
+  });
+
+  /* BUT A RESULT WITHOUT ITS TABLE CANNOT BE PLACED. We therefore keep
+     the opening of any table that keeps at least one answer: it serves
+     as a running head for its results. One per table, and none for the
+     tables that have nothing. */
+  if (term){
+    var head = null;
+    rows.forEach(function(r, i){
+      // If the opening answers itself, it stays a whole result
+      // and does not have to fold back to its label.
+      if (openings[r.dataset.cle]) head = founds[i] ? null : r;
+      else if (founds[i] && head){
+        head.classList.remove("for");
+        head.classList.add("tete");
+        head = null;
+      }
+    });
+  }
+  /* THE ENGRAVINGS WITHDRAW DURING A SEARCH. They are not in the rows
+     but beside them, and the filter therefore left them in place: one
+     searched for a word, the blocks disappeared, and the nineteen
+     plates stayed on screen, alone. A plate is twelve hundred points
+     wide; between two results it separates them more than it lights
+     them. The list of results is a view of TEXT, and the plate is
+     looked at in its own place, in the reading. */
+  plates.forEach(function(f){ f.classList.toggle("for", !!term); });
+
+  var nothing = !founds.some(function(v){ return v; });
+  zero.textContent = term
+    ? "Nula rezulto por « " + q.value.trim() + " »." : "";
+  zero.classList.toggle("mont", !!term && nothing);
+  placeLanguage(sel.value);
+}
+
+/* --- THE CHOICE OF LANGUAGE. One right-hand column at a time; the
+   others stay in the page, hidden. They are not there for nothing: the
+   search goes through them, and the passage from one language to
+   another is instantaneous.
+
+   EXCEPT THOSE WE DO NOT YET HAVE. The French is in the page -- it is a
+   transcribed facsimile, it is part of the object. The translations are
+   marked « differita » and live in a separate file: the page carries
+   only their empty cells, and we fetch the text only when the menu asks
+   for it. Once come it does not go again, and the language becomes a
+   toggle with no request.
+
+   THIS BLOCK IS AFTER THE SEARCH, AND IT MUST BE: the text that arrives
+   must enter « origine » -- the unhighlighted copy the search starts
+   from -- and then run chercher() again, failing which a word already
+   typed would not be highlighted in the language that has just
+   arrived. --- */
+var sel = document.getElementById("lg");
+var arrived = {};                      /* kodo -> promise of loading */
+
+function pour(code, d){
+  rows.forEach(function(r, i){
+    var cells = [].slice.call(r.querySelectorAll(".k"));
+    cells.forEach(function(k, j){
+      if (k.dataset.lg !== code) return;
+      var t = d.k[r.dataset.cle];
+      if (t == null) return;
+      k.classList.remove("vaka", "dif");
+      pristine[i][j] = t;
+      k.innerHTML = t;
+    });
+  });
+  var head = "noto-" + code + "-";
+  document.querySelectorAll('.noto[data-lg="' + code + '"]').forEach(function(n){
+    var t = d.noto[n.id.slice(head.length)];
+    if (t != null) n.innerHTML = t;
+  });
+  search();
+}
+
+function loadLanguage(code){
+  if (arrived[code]) return arrived[code];
+  var lg = LANGS.filter(function(l){ return l.kodo === code; })[0];
+  if (!lg || !lg.differita || !lg.adreso) return null;
+  arrived[code] = fetch(lg.adreso)
+    .then(function(r){ return r.json(); })
+    .then(function(d){ pour(code, d); })
+    .catch(function(){ delete arrived[code]; });
+  return arrived[code];
+}
+
+function placeLanguage(code){
+  loadLanguage(code);
+  document.querySelectorAll(".k.tra").forEach(function(k){
+    k.style.display = (k.dataset.lg === code) ? "" : "none";
+  });
+  try { localStorage.setItem("tabeli-lg", code); } catch(e){}
+}
+sel.onchange = function(){ placeLanguage(sel.value); setBar(); };
+var memo = null;
+try { memo = localStorage.getItem("tabeli-lg"); } catch(e){}
+if (memo && [].some.call(sel.options, function(o){ return o.value === memo; }))
+  sel.value = memo;
+placeLanguage(sel.value);
+
+/* --- THE BAR IS SHARED OUT BY MEASUREMENT, AND IN THIS ORDER: THE
+   SELECTOR TAKES WHAT IT SHOWS, THE FIELD TAKES THE REST, AND THE
+   PLACEHOLDER TAKES WHAT FITS.
+
+   1. A « select » SIZES ITSELF ON ITS WIDEST OPTION, not on the one it
+   displays: « Español (América) » is 121 px and fixed the width even
+   when the box showed « বাংলা », which is 25. On a 360 px screen that
+   gave 178 px to the selector and 81 to the field -- twice as much room
+   to what one touches once a visit as to what one types in. And it is
+   that, not the length of the text, that kept « Serchez... » from
+   fitting: the placeholder was not too long, the field was too short.
+
+   2. THE PLACEHOLDER IS MEASURED INSTEAD OF GUESSED. We take the longest
+   of the texts that FIT -- the whole sentence, failing that
+   « Serchez... », failing that nothing. Nothing is a choice and not a
+   failure: the magnifying glass already says what the field is, and this
+   is the case of the longest language name on the smallest screen. A
+   measured rule is worth more than one more threshold: this one corrects
+   itself the day the font, the text or the list of languages changes.
+
+   3. WIDE, WE TOUCH NOTHING. There is no shortage of room, and a width
+   that followed the language would make the bar jump at every change.
+
+   The measurement is made on the canvas, in the COMPUTED font of the two
+   fields -- never in a supposed font: it has already changed once. --- */
+var gauge = document.createElement("canvas").getContext("2d");
+function fontOf(e){
+  var st = getComputedStyle(e);
+  return [st.fontStyle, st.fontWeight, st.fontSize, st.fontFamily].join(" ");
+}
+function setBar(){
+  if (qNarrow.matches){
+    var st = getComputedStyle(sel);
+    gauge.font = fontOf(sel);
+    var o = sel.options[sel.selectedIndex];
+    sel.style.width = (Math.ceil(gauge.measureText(o ? o.textContent : "").width)
+      + parseFloat(st.paddingLeft) + parseFloat(st.paddingRight) + 2) + "px";
+  } else {
+    sel.style.width = "";
+  }
+  var sq = getComputedStyle(q);
+  gauge.font = fontOf(q);
+  var place = q.clientWidth - parseFloat(sq.paddingLeft) - parseFloat(sq.paddingRight);
+  var text = qNarrow.matches ? qShort : qWide;
+  if (gauge.measureText(text).width > place) text = qShort;
+  if (gauge.measureText(text).width > place) text = "";
+  q.setAttribute("placeholder", text);
+}
+setBar();
+if (qNarrow.addEventListener) qNarrow.addEventListener("change", setBar);
+else qNarrow.addListener(setBar);
+/* The width can change without crossing the threshold -- a folding
+   screen, a window being dragged. We therefore hook onto the resize as
+   well, but once per frame: the measurement reads clientWidth, and
+   reading it at every pixel would set the layout working for nothing. */
+var bar0 = 0;
+window.addEventListener("resize", function(){
+  if (bar0) return;
+  bar0 = requestAnimationFrame(function(){ bar0 = 0; setBar(); });
+});
+
+/* --- THE PLATE FULL SCREEN. On a click, the engraving opens over the
+   whole window, without leaving the page. What is shown there is not the
+   general view but the DETAIL IMAGE: it is the one to be looked at close
+   to, and it is the same one the close-ups will be cut from -- once
+   loaded, it is never loaded again. --- */
+var full = document.getElementById("plena");
+var fullImage = document.getElementById("plena-bildo");
+var fullArrived = null;
+
+function openFull(fig){
+  var url = fig.dataset.detalo;
+  if (fullImage.getAttribute("src") !== url){
+    fullImage.width = fig.dataset.dl;
+    fullImage.height = fig.dataset.dh;
+    /* The general view is displayed while the detail arrives: one is not
+       left in front of an empty rectangle. */
+    fullImage.src = fig.querySelector("img").currentSrc
+                  || fig.querySelector("img").src;
+    var big = new Image();
+    big.onload = function(){ fullImage.src = url; };
+    big.src = url;
+  }
+  fullArrived = fig.querySelector("img");
+  full.classList.add("mont");
+  document.body.style.overflow = "hidden";
+  placeView(1, 0, 0);
+  document.getElementById("fermi").focus();
+}
+function closeFull(){
+  full.classList.remove("mont");
+  document.body.style.overflow = "";
+  if (fullArrived) fullArrived.focus({preventScroll:true});
+}
+
+/* --- THE PLATE ENLARGES. Full screen shows the whole plate; at that
+   size a shop front is two centimetres and nothing can be read on it.
+   We therefore add magnification: wheel, two fingers, double click, or
+   the buttons at the bottom.
+
+   SCALE 1 IS THE ONE THAT FITS THE WINDOW, not the image's: that is
+   what the eye calls « the whole plate », and the figure displayed
+   counts from there. Beyond six times, one would see the facsimile's
+   screen and no longer the engraving; below one, the plate would float
+   in black. We therefore bound it.
+
+   WE MOVE KEEPING THE POINT UNDER THE FINGER. Zooming about the centre
+   of the window seems right as long as one is looking at the centre; as
+   soon as one aims at a corner, the object aimed at runs away. The
+   anchor point is therefore the one being pointed at — the mouse, or the
+   midpoint of the two fingers. --- */
+var view = {k:1, x:0, y:0};
+var VIEW_MAX = 6;
+
+function placeView(k, x, y){
+  view.k = Math.min(VIEW_MAX, Math.max(1, k));
+  /* THE MARGIN FOR MOVEMENT is what overflows the window once the image
+     is enlarged. At scale 1 it is nil on both sides: the image fits
+     whole, and nothing can make it slide. */
+  var b = full.getBoundingClientRect();
+  var mx = Math.max(0, (fullImage.offsetWidth * view.k - b.width) / 2);
+  var my = Math.max(0, (fullImage.offsetHeight * view.k - b.height) / 2);
+  view.x = Math.min(mx, Math.max(-mx, x));
+  view.y = Math.min(my, Math.max(-my, y));
+  fullImage.style.transform = "translate(" + view.x + "px," + view.y + "px) scale("
+                             + view.k + ")";
+  full.classList.toggle("prox", view.k > 1.001);
+  var g = document.getElementById("plena-grado");
+  if (g) g.textContent = (Math.round(view.k * 10) / 10) + "\u00d7";
+}
+
+/* Magnification about a point of the window: that point does not move,
+   everything else moves away from it. */
+function zoom(nk, px, py){
+  var b = full.getBoundingClientRect();
+  var cx = px - b.left - b.width / 2, cy = py - b.top - b.height / 2;
+  nk = Math.min(VIEW_MAX, Math.max(1, nk));
+  var f = nk / view.k;
+  placeView(nk, cx - (cx - view.x) * f, cy - (cy - view.y) * f);
+}
+
+full.addEventListener("wheel", function(e){
+  if (!full.classList.contains("mont")) return;
+  e.preventDefault();
+  /* A laptop's trackpad sends a pinch as a wheel held with Ctrl: the two
+     are handled alike, but for the step. */
+  var pas = e.ctrlKey ? 0.012 : 0.0022;
+  zoom(view.k * Math.exp(-e.deltaY * pas), e.clientX, e.clientY);
+}, {passive:false});
+
+full.addEventListener("dblclick", function(e){
+  if (e.target.closest(".lupili") || e.target.closest(".fermi")) return;
+  zoom(view.k > 1.001 ? 1 : 3, e.clientX, e.clientY);
+});
+
+document.querySelectorAll(".plena .lupili button").forEach(function(t){
+  t.addEventListener("click", function(e){
+    e.stopPropagation();
+    var b = full.getBoundingClientRect();
+    var mx = b.left + b.width / 2, my = b.top + b.height / 2;
+    if (t.dataset.lupilo === "+") zoom(view.k * 1.5, mx, my);
+    else if (t.dataset.lupilo === "-") zoom(view.k / 1.5, mx, my);
+    else placeView(1, 0, 0);
+  });
+});
+
+/* THE DRAG, with the mouse as with the finger. « pointerdown » covers
+   all three — mouse, finger, stylus — and two fingers at once give the
+   pinch: we then follow their DISTANCE, which gives the scale, and their
+   MIDPOINT, which gives the fixed point. */
+var fingers = new Map(), start = null, moved = false;
+
+full.addEventListener("dragstart", function(e){ e.preventDefault(); });
+full.addEventListener("pointerdown", function(e){
+  if (e.target.closest(".lupili") || e.target.closest(".fermi")) return;
+  fingers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  moved = false;
+  if (fingers.size === 1){
+    start = {x:e.clientX, y:e.clientY, vx:view.x, vy:view.y};
+    full.classList.add("tiras");
+    full.setPointerCapture(e.pointerId);
+  } else if (fingers.size === 2){
+    var d = [...doigts.values()];
+    start = {gap:Math.hypot(d[0].x-d[1].x, d[0].y-d[1].y), k:view.k,
+              mx:(d[0].x+d[1].x)/2, my:(d[0].y+d[1].y)/2,
+              vx:view.x, vy:view.y};
+  }
+});
+full.addEventListener("pointermove", function(e){
+  if (!fingers.has(e.pointerId) || !start) return;
+  fingers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (fingers.size >= 2 && start.ecart){
+    var d = [...doigts.values()];
+    var ec = Math.hypot(d[0].x-d[1].x, d[0].y-d[1].y);
+    if (ec > 4){
+      view.x = start.vx; view.y = start.vy; view.k = start.k;
+      zoom(start.k * ec / start.ecart, start.mx, start.my);
+      moved = true;
+    }
+    return;
+  }
+  var dx = e.clientX - start.x, dy = e.clientY - start.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+  if (view.k > 1.001) placeView(view.k, start.vx + dx, start.vy + dy);
+});
+function release(e){
+  fingers.delete(e.pointerId);
+  if (fingers.size === 0){ start = null; full.classList.remove("tiras"); }
+  else if (fingers.size === 1){
+    var d = [...doigts.entries()][0];
+    start = {x:d[1].x, y:d[1].y, vx:view.x, vy:view.y};
+  }
+}
+full.addEventListener("pointerup", release);
+full.addEventListener("pointercancel", release);
+
+document.addEventListener("click", function(e){
+  var fig = e.target.closest ? e.target.closest(".gravuro") : null;
+  if (fig){ openFull(fig); return; }
+  if (!full.classList.contains("mont")) return;
+  /* WE DO NOT CLOSE BY DRAGGING. A drag ends in a « click » the browser
+     sends all the same; without this guard, moving the view closed
+     it. */
+  if (moved){ moved = false; return; }
+  if (e.target.closest(".fermi")){ closeFull(); return; }
+  if (e.target.closest(".lupili")) return;
+  /* ON THE ENLARGED IMAGE, THE CLICK NO LONGER CLOSES: it serves to
+     move it, and closing at the least pause of the hand would be
+     unbearable. We close instead by the ground, by the cross, or by
+     Escape.
+     It is the PLACE of the click that decides, not its target: an image
+     in « object-fit » enlarged by a transform cannot be designated
+     reliably — the browser returns now the image, now the ground that
+     carries it, for a click landing in the same spot. The rectangle
+     does not lie. */
+  if (view.k > 1.001){
+    var r = fullImage.getBoundingClientRect();
+    if (e.clientX >= r.left && e.clientX <= r.right &&
+        e.clientY >= r.top && e.clientY <= r.bottom) return;
+  }
+  closeFull();
+});
+addEventListener("keydown", function(e){
+  if (!full.classList.contains("mont")) return;
+  if (e.key === "Escape"){ closeFull(); return; }
+  var b = full.getBoundingClientRect();
+  var mx = b.left + b.width / 2, my = b.top + b.height / 2;
+  if (e.key === "+" || e.key === "=") zoom(view.k * 1.5, mx, my);
+  else if (e.key === "-") zoom(view.k / 1.5, mx, my);
+  else if (e.key === "0") placeView(1, 0, 0);
+  else if (view.k > 1.001 && e.key.indexOf("Arrow") === 0){
+    var p = 80;
+    placeView(view.k, view.x + (e.key === "ArrowLeft" ? p : e.key === "ArrowRight" ? -p : 0),
+                    view.y + (e.key === "ArrowUp" ? p : e.key === "ArrowDown" ? -p : 0));
+    e.preventDefault();
+  }
+});
+addEventListener("resize", function(){
+  if (full.classList.contains("mont")) placeView(view.k, view.x, view.y);
+});
+
+/* --- THE UNFOLDING OF THE NOTES. The note lives at the end of the
+   document, hidden; on a click, we move it beneath the paragraph that
+   calls it, and a second click puts it back. We MOVE it instead of
+   copying it: so it exists only once in the page, and the search does
+   not find it twice. --- */
+document.addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest(".apel") : null;
+  if (!b) return;
+  var n = document.getElementById("noto-" + b.dataset.noto);
+  if (!n) return;
+  var open_ = b.getAttribute("aria-expanded") === "true";
+  if (open_){
+    n.hidden = true;
+    b.setAttribute("aria-expanded", "false");
+  } else {
+    var row = b.closest(".r");
+    if (row && n.previousElementSibling !== row)
+      row.parentNode.insertBefore(n, row.nextSibling);
+    n.hidden = false;
+    b.setAttribute("aria-expanded", "true");
+  }
+});
+
+/* --- THE CLOSE-UP ON A NUMBER. On a click on « (12) », object 12 of
+   the plate appears beneath the paragraph, enlarged.
+
+   IT IS A RE-FRAMING, NEVER A LOADING. We do not fetch one image per
+   number: we take the plate's DETAIL image — the same that serves for
+   full screen — and show only a piece of it, playing on
+   « background-size » and « background-position ». The first close-up
+   of a table brings it in if it is not there yet; every one after costs
+   nothing at all, and full screen uses it too.
+
+   THE FRAME IS COMPUTED AT OPENING, not when the page is built: it
+   depends on the width of the column, which depends on the window. We
+   take a square of nine figure heights around the number — enough for
+   the object designated to fit inside with its surroundings — then
+   stretch it to the shape of the frame, without ever deforming the
+   image. --- */
+document.addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest(".lupo") : null;
+  if (b) { openMagnifier(b); return; }
+  var k = e.target.closest ? e.target.closest(".lupo-vido") : null;
+  if (k && k.dataset.par){
+    var src = document.querySelector('[data-lupo="' + k.dataset.par + '"]');
+    if (src) openMagnifier(src);
+  }
+});
+
+var magnifierN = 0;
+
+function openMagnifier(b){
+  var empty = b.nextElementSibling;
+  if (b.getAttribute("aria-expanded") === "true"){
+    var v = document.querySelector('.lupo-vido[data-par="' + b.dataset.lupo + '"]');
+    if (v) v.remove();
+    b.setAttribute("aria-expanded", "false");
+    return;
+  }
+  var fig = document.querySelector('.gravuro[data-cle="' + b.dataset.g + '"]');
+  if (!fig) return;
+  var c = b.dataset.c.split(",").map(Number);   /* x, y, width, height */
+  var W = +fig.dataset.dl, H = +fig.dataset.dh;
+  if (!W || !H) return;
+
+  var row = b.closest(".r");
+  if (!row) return;
+  if (!b.dataset.lupo) b.dataset.lupo = "l" + (++magnifierN);
+  /* One close-up open at a time: two views of the same plate one below
+     the other explain no better than the first. */
+  document.querySelectorAll(".lupo-vido").forEach(function(v){
+    var s = document.querySelector('[data-lupo="' + v.dataset.par + '"]');
+    if (s) s.setAttribute("aria-expanded", "false");
+    v.remove();
+  });
+
+  var sight = document.createElement("div");
+  sight.className = "lupo-vido";
+  sight.dataset.par = b.dataset.lupo;
+  var frame = document.createElement("div");
+  frame.className = "kadro";
+  var dir = document.createElement("div");
+  dir.className = "dir";
+  dir.innerHTML = '<span><b>(' + b.dataset.n + ')</b> ' +
+    (b.getAttribute("title") || "") + '</span>' +
+    '<span>' + b.dataset.g.slice(0, 3).toUpperCase().replace("T", "tabelo ")
+      .replace(/^table 0/, "tabelo ") + '</span>';
+  sight.appendChild(frame);
+  sight.appendChild(dir);
+  row.parentNode.insertBefore(sight, row.nextSibling);
+
+  /* The source square, as fractions of the plate. */
+  var half = 4.5 * c[3];                        /* 9 figure heights */
+  var cx = c[0] + c[2] / 2, cy = c[1] + c[3] / 2;
+  var lg = frame.clientWidth, ht = frame.clientHeight;
+  var sh = Math.min(1, half * 2);
+  var sw = Math.min(1, (sh * H * lg) / (ht * W));  /* same shape as the frame */
+  var sx = Math.min(1 - sw, Math.max(0, cx - sw / 2));
+  var sy = Math.min(1 - sh, Math.max(0, cy - sh / 2));
+  frame.style.backgroundImage = 'url("' + fig.dataset.detalo + '")';
+  /* THE PLACE IS COUNTED IN SCREEN POINTS, not in per cent. The two say
+     the same thing as long as the view does not move; as soon as one
+     drags it, per cent forces a return through the fraction of the plate
+     at every movement of the finger — and it divides by a margin that is
+     zero when the image just fits. In points, to drag is to add. */
+  frame._vido = {bw: lg / sw, bh: ht / sh, px: -(sx / sw) * lg,
+                 py: -(sy / sh) * ht};
+  placeFrame(frame);
+  b.setAttribute("aria-expanded", "true");
+}
+
+/* --- THE VIEW MOVES. The close-up falls on the named object; the eye
+   then wants to see beside it — the display at the end of the counter,
+   the house next door. We therefore drag the view, with the mouse as
+   with the finger.
+   The magnification does not change: it is what it is so that the object
+   fits in the frame with what surrounds it, and the reader who wants it
+   larger has full screen, which magnifies. --- */
+function placeFrame(frame){
+  var d = frame._vido;
+  if (!d) return;
+  var lg = frame.clientWidth, ht = frame.clientHeight;
+  d.px = Math.min(0, Math.max(lg - d.bw, d.px));
+  d.py = Math.min(0, Math.max(ht - d.bh, d.py));
+  frame.style.backgroundSize = d.bw + "px " + d.bh + "px";
+  frame.style.backgroundPosition = d.px + "px " + d.py + "px";
+}
+
+var drag = null, dragMoved = false;
+document.addEventListener("pointerdown", function(e){
+  var k = e.target.closest ? e.target.closest(".lupo-vido .kadro") : null;
+  if (!k || !k._vido) return;
+  drag = {k:k, x:e.clientX, y:e.clientY, px:k._vido.px, py:k._vido.py};
+  dragMoved = false;
+  k.classList.add("tiras");
+  k.setPointerCapture(e.pointerId);
+});
+document.addEventListener("pointermove", function(e){
+  if (!drag) return;
+  var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) dragMoved = true;
+  drag.k._vido.px = drag.px + dx;
+  drag.k._vido.py = drag.py + dy;
+  placeFrame(drag.k);
+});
+function releaseFrame(){
+  if (!drag) return;
+  drag.k.classList.remove("tiras");
+  drag = null;
+}
+document.addEventListener("pointerup", releaseFrame);
+document.addEventListener("pointercancel", releaseFrame);
+/* The drag ends in a « click » the browser sends all the same; without
+   this guard, moving the view closed it. */
+document.addEventListener("click", function(e){
+  if (!dragMoved) return;
+  if (e.target.closest && e.target.closest(".lupo-vido")){
+    e.stopPropagation();
+    dragMoved = false;
+  }
+}, true);
+addEventListener("resize", function(){
+  document.querySelectorAll(".lupo-vido .kadro").forEach(placeFrame);
+});
+
+/* --- THE RUNNING HEAD in the table of contents. We do not follow the
+   scroll pixel by pixel: we observe the title blocks, and the last one
+   to have passed the top of the window is the one being read. --- */
+var titles = [].slice.call(document.querySelectorAll(".r.sub, .r.apar"));
+var links = {};
+document.querySelectorAll("nav a").forEach(function(a){ links[a.dataset.ch] = a; });
+function current(){
+  var h = parseInt(getComputedStyle(document.documentElement)
+            .getPropertyValue("--kapo")) || 104;
+  var vu = null;
+  titles.forEach(function(t){
+    if (t.getBoundingClientRect().top - h - 14 <= 1) vu = t;
+  });
+  for (var c in links) links[c].classList.remove("nun");
+  if (vu && links[vu.dataset.cle]){
+    links[vu.dataset.cle].classList.add("nun");
+    var a = links[vu.dataset.cle], p = a.parentNode;
+    if (a.offsetTop < p.scrollTop || a.offsetTop > p.scrollTop + p.clientHeight - 30)
+      p.scrollTop = a.offsetTop - p.clientHeight / 2;
+  }
+}
+addEventListener("scroll", function(){
+  requestAnimationFrame(current);
+}, {passive:true});
+current();
+</script>
+<!-- The word « Ido » is in the anchor and not in the style sheet: if
+     the sheet does not load — a page opened away from the site, a file
+     moved —, a legible link is left at the end of the document instead
+     of an empty square. -->
+<a class="ido-home" href="/">Ido</a>
+</html>
