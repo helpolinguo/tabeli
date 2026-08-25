@@ -1,35 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-altox.py — mesure la HAUTEUR D'X du fac-similé, et en déduit le corps.
+height.py — measures the X-HEIGHT of the facsimile, and deduces the size.
 
-    python3 tools/altox.py io
-    python3 tools/altox.py fr
+    python3 tools/height.py io
+    python3 tools/height.py fr
 
-POURQUOI. Le corps était jusqu'ici déduit du pas des lignes par un
-rapport posé à 1,20, valeur d'usage pour l'impression de labeur de ce
-temps. Elle allait à peu près pour le livret ido (294 lignes trop
-courtes sur 100 pages, soit 3 par page) et pas du tout pour le livret
-français (1179 sur 84, soit 14 par page) : là, une ligne sur trois
-n'atteignait pas la marge, et TeX écartait les mots pour combler.
+WHY. The size was until now deduced from the line pitch by a ratio set at
+1.20, the usual value for the bookwork printing of that period. It did
+roughly for the Ido booklet (294 short lines over 100 pages, that is 3 a
+page) and not at all for the French one (1179 over 84, that is 14 a page):
+there, one line in three did not reach the margin, and TeX spread the words
+to fill.
 
-Un rapport n'est pas une mesure. Le corps se lit sur le fac-similé,
-comme le reste — par la hauteur d'x, qui est la grandeur la plus
-robuste d'une page imprimée : elle ne dépend ni des ascendantes ni des
-descendantes, donc ni des mots que la ligne porte.
+A ratio is not a measurement. The size is read from the facsimile, like the
+rest -- by the x-height, which is the most robust quantity of a printed
+page: it depends neither on ascenders nor on descenders, hence not on the
+words the line carries.
 
-COMMENT. Pour chaque bande de ligne, on prend le profil d'encre par
-rangée de pixels. Une ligne de texte y dessine un plateau — le corps
-des lettres sans ascendante — encadré de deux épaules bien plus
-maigres, les ascendantes en haut, les descendantes en bas. La hauteur
-du plateau au-dessus de la moitié du maximum EST la hauteur d'x, à un
-pixel près.
+HOW. For each band of line, we take the ink profile by row of pixels. A
+line of text draws a plateau there -- the body of the letters without
+ascenders -- framed by two far thinner shoulders, the ascenders above, the
+descenders below. The height of the plateau above half the maximum IS the
+x-height, to within a pixel.
 
-Le corps s'en déduit par le rapport propre à la fonte de composition :
-XCharter place sa hauteur d'x à 0,481 de son corps. Composer à un corps
-tel que la hauteur d'x tombe juste, c'est faire coïncider l'œil du
-caractère composé et celui du fac-similé — ce qui gouverne à la fois la
-couleur de la page et la chasse, donc le remplissage des lignes.
+The size follows from the ratio proper to the composing font: XCharter
+places its x-height at 0.481 of its size. To set at a size such that the
+x-height falls right is to make the eye of the composed face coincide with
+that of the facsimile -- which governs both the colour of the page and the
+width, hence the filling of the lines.
 """
 import json
 import sys
@@ -42,8 +41,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from inventory import bloc, otsu  # noqa: E402
 
 RACINE = Path(__file__).resolve().parent.parent
-# Hauteur d'x de la fonte de composition, en fraction du corps.
-# Mesuree sur XCharter : \fontcharht avec le caractere « x ».
+# X-height of the composing font, as a fraction of the size.
+# Measured on XCharter: \fontcharht with the character "x".
 XCHARTER = 0.481
 
 
@@ -61,7 +60,7 @@ def hauteur_x_page(chemin):
     seuil = 0.04 * (x1 - x0)
     plein = prof > seuil
 
-    # Decoupage en bandes de ligne.
+    # Division into bands of line.
     hauteurs = []
     i = 0
     n = len(plein)
@@ -74,17 +73,16 @@ def hauteur_x_page(chemin):
             j += 1
         seg = prof[i:j]
         if len(seg) >= 8:
-            # LE PLATEAU, ET NON LA BANDE ENTIERE. La bande va du haut
-            # des ascendantes au bas des descendantes ; le plateau, lui,
-            # est la ou l'encre est dense, c'est-a-dire le corps des
-            # lettres. On le prend a mi-hauteur du maximum : plus bas,
-            # on happe les ascendantes ; plus haut, on rogne les
-            # jambages.
+            # THE PLATEAU, AND NOT THE WHOLE BAND. The band runs from the top
+            # of the ascenders to the bottom of the descenders; the plateau is
+            # where the ink is dense, that is the body of the letters. We take
+            # it at half the height of the maximum: lower, we catch the
+            # ascenders; higher, we clip the descenders.
             dedans = seg > 0.5 * seg.max()
             k = np.where(dedans)[0]
             if len(k):
-                # Le plateau doit etre d'un seul tenant : deux lignes
-                # collees par une ascendante en donneraient deux.
+                # The plateau must be in one piece: two lines joined by an
+                # ascender would give two.
                 h = k[-1] - k[0] + 1
                 if 4 <= h <= 0.75 * len(seg):
                     hauteurs.append(h)
@@ -98,8 +96,8 @@ def main():
                      .read_text(encoding="utf-8"))
     pleines = sorted(int(k) for k, v in inv.items()
                      if not v.get("vide") and v.get("lignes", 0) >= 35)
-    # Un echantillon suffit : la mesure est prise sur des milliers de
-    # lignes, pas sur des pages.
+    # One sample suffices: the measurement is taken over thousands of
+    # lines, not over pages.
     echantillon = pleines[::max(1, len(pleines) // 20)][:20]
 
     toutes = []
@@ -114,10 +112,10 @@ def main():
         print("aucune mesure")
         return
 
-    # LA HAUTEUR D'X SE RAPPORTE A LA JUSTIFICATION, pas aux
-    # millimetres : le fac-simile francais est une prise de vue, son
-    # echelle change d'une page a l'autre, et une hauteur en pixels n'y
-    # veut rien dire hors de sa page. Le RAPPORT, lui, est invariant.
+    # THE X-HEIGHT IS RELATIVE TO THE MEASURE, not to millimetres: the
+    # French facsimile is a photograph, its scale changes from one page to
+    # another, and a height in pixels means nothing there outside its page.
+    # The RATIO, on the other hand, is invariant.
     rapports = []
     for n, h in par_page.items():
         rapports.append(h / inv[str(n)]["largeur"])

@@ -1,38 +1,37 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-controles.py — vérifie ce que ni le compilateur ni l'œil ne voient.
+checks.py — verifies what neither the compiler nor the eye sees.
 
-    python3 tools/controles.py
+    python3 tools/checks.py
 
-Un relevé peut compiler parfaitement et être faux. Ces contrôles
-cherchent les fautes qui ne se signalent pas d'elles-mêmes.
+A survey can compile perfectly and be wrong. These checks look for the
+faults that do not announce themselves.
 
-  1. PAGINATION      folio imprimé = feuillet − 2, sur toutes les pages.
-  2. FEUILLETS       aucun feuillet du fac-similé oublié, aucun relevé
-                     deux fois, dans l'intervalle couvert.
-  3. APPARIEMENT     chaque clé %%K de l'ido a-t-elle un vis-à-vis
-                     français, et réciproquement ? C'est LE contrôle du
-                     projet : une clé orpheline est soit un écart réel
-                     entre les deux éditions, soit une faute de relevé,
-                     et il faut regarder chacune pour trancher.
-  4. UNICITÉ         aucune clé ne paraît deux fois dans une même
-                     langue, sauf le second membre d'un alinéa coupé
-                     par un changement de page, qui porte « suite ».
-  5. COUPURES        chaque fin d'alinea a cheval (\\parplein ou
-                     \\ccplein) a sa reprise \\VUcontinue.
-  6. GEOMETRIE       la boite d'encre occupe-t-elle une part
-                     vraisemblable de la page ? Sinon, le cadre du scan
-                     tombe dans le papier et l'echelle est fausse.
-  7. GRAS            les deux colonnes mettent-elles en gras le meme
-                     nombre de passages ? L'une temoigne pour l'autre.
-  8. SYNCHRONIE      les deux colonnes d'un rang portent-elles le meme
-                     alinea ? Une difference de longueur enorme dit que
-                     le compteur de cles a derive.
+  1. PAGINATION      printed folio = leaf − 2, on every page.
+  2. LEAVES          no leaf of the facsimile forgotten, none surveyed
+                     twice, within the interval covered.
+  3. MATCHING        does each %%K key of the Ido have a French
+                     counterpart, and the reverse? This is THE check of
+                     the project: an orphaned key is either a real
+                     divergence between the two editions or a fault of
+                     survey, and each must be looked at to decide.
+  4. UNIQUENESS      no key appears twice in the same language, save the
+                     second member of a paragraph cut by a change of
+                     page, which carries "suite".
+  5. BREAKS          each straddling end of paragraph (\\parplein or
+                     \\ccplein) has its \\VUcontinue resumption.
+  6. GEOMETRY        does the ink box occupy a plausible share of the
+                     page? If not, the frame of the shot falls inside
+                     the paper and the scale is wrong.
+  7. BOLD            do the two columns set the same number of passages
+                     in bold? Each is witness for the other.
+  8. SYNCHRONY       do the two columns of a row carry the same
+                     paragraph? An enormous difference of length says
+                     that the key counter has drifted.
 
-Le contrôle 3 ne peut pas être automatisé jusqu'au verdict : il compte
-et il montre. C'est au releveur de dire, pour chaque orphelin, s'il est
-légitime.
+Check 3 cannot be automated as far as a verdict: it counts and it shows.
+It is for the surveyor to say, for each orphan, whether it is legitimate.
 """
 import re
 import sys
@@ -43,15 +42,15 @@ RACINE = Path(__file__).resolve().parent.parent
 CLE = re.compile(r"^%%K\s+(\S+)\s+(\S+)(?:\s+(\S+))?\s*$")
 PAGE = re.compile(r"\\begin\{VUpage\}(?:\[(\d+)\])?\{([^}]*)\}")
 
-# Les intertitres ne s'apparient pas : l'edition ido en ajoute que le
-# francais ne connait pas, et leur numerotation (tit-1, tit-2...) est
-# propre a chaque edition. Les compter comme orphelins noierait le
-# signal utile sous le bruit.
+# Running heads do not match: the Ido edition adds some the French does
+# not know, and their numbering (tit-1, tit-2...) is proper to each
+# edition. Counting them as orphans would drown the useful signal in
+# noise.
 SANS_VIS_A_VIS = ("tit", "apar", "noto")
 
 
 def lire(dossier):
-    """{cle: [(fichier, feuillet, folio, suite)]} et la liste des pages."""
+    """{key: [(file, leaf, folio, continuation)]} and the list of pages."""
     cles = defaultdict(list)
     pages = []
     for f in sorted(dossier.glob("*.tex")):
@@ -70,7 +69,7 @@ def lire(dossier):
 
 
 def feuillets_vierges(nom):
-    """Feuillets sans bloc d'encre, d'apres tools/inv-<langue>.json."""
+    """Leaves with no ink block, from tools/inventory-<language>.json."""
     import json
     lg = {"ido": "io", "fra": "fr"}[nom]
     f = RACINE / "tools" / f"inv-{lg}.json"
@@ -89,19 +88,19 @@ def feuillets_vierges(nom):
 
 
 def controle_6(faute):
-    """La boite d'encre occupe-t-elle une part vraisemblable de la page ?
+    """Does the ink box occupy a plausible share of the page?
 
-    Un livre imprime laisse des marges. Quand la boite d'encre couvre
-    presque toute la hauteur de l'image, ce n'est pas que le livre n'a
-    pas de marges : c'est que le CADRE DE LA PRISE DE VUE tombe a
-    l'interieur du papier. La hauteur d'image ne vaut alors plus la
-    hauteur du papier, et l'echelle qu'on en tire est fausse.
+    A printed book leaves margins. When the ink box covers nearly the whole
+    height of the image, it is not that the book has no margins: it is that
+    the FRAME OF THE SHOT falls inside the paper. The image height is then
+    no longer the height of the paper, and the scale drawn from it is
+    wrong.
 
-    C'est le cas du fac-simile francais : 96,5 % de la hauteur, contre
-    83,7 % pour l'ido. Les rapports internes -- pas sur justification,
-    hauteur d'x sur justification -- restent bons, et la composition
-    est donc juste ; seule l'echelle d'ensemble est incertaine. Une
-    regle posee sur l'exemplaire la corrige d'un coup.
+    That is the case of the French facsimile: 96.5 % of the height, against
+    83.7 % for the Ido. The internal ratios -- pitch over measure, x-height
+    over measure -- stay good, and the composition is therefore right; only
+    the overall scale is uncertain. A rule laid on the copy corrects it at
+    a stroke.
     """
     import json
     import statistics
@@ -125,21 +124,20 @@ def controle_6(faute):
 
 
 def controle_7():
-    """Le gras des deux colonnes se repond-il ?
+    """Does the bold of the two columns answer?
 
-    Les deux livrets mettent en gras LES MEMES CHOSES : le mot de
-    vocabulaire que le tableau mural illustre. « ok \VUgras{tabli} » a
-    pour vis-a-vis « huit \VUgras{tables} ». Le nombre de passages gras
-    d'un alinea doit donc etre le meme des deux cotes -- non pas par
-    principe, mais parce que c'est ainsi que les deux editions sont
-    faites.
+    The two booklets set THE SAME THINGS in bold: the vocabulary word the
+    wall table illustrates. "ok \VUgras{tabli}" has for counterpart "huit
+    \VUgras{tables}". The number of bold passages in a paragraph must
+    therefore be the same on both sides -- not on principle, but because
+    that is how the two editions are made.
 
-    Quand il differe, c'est presque toujours une faute de releve : le
-    releveur a mis en gras un mot qui ne l'etait pas, ou l'inverse.
-    L'autre colonne sert alors de temoin. Ce controle ne tranche pas --
-    il ne sait pas laquelle des deux a tort -- il DESIGNE les alineas a
-    revoir au fac-simile, et il les classe par ecart decroissant pour
-    qu'on commence par les plus douteux.
+    When it differs, it is nearly always a fault of survey: the surveyor
+    set a word in bold that was not, or the reverse. The other column then
+    serves as witness. This check does not decide -- it does not know which
+    of the two is wrong -- it POINTS OUT the paragraphs to be looked at
+    again in the facsimile, and it ranks them by decreasing discrepancy so
+    that one begins with the most doubtful.
     """
     import subprocess
     import sys as _s
@@ -178,21 +176,20 @@ def controle_7():
 
 
 def controle_8():
-    """Les deux colonnes d'un rang portent-elles le MEME alinea ?
+    """Do the two columns of a row carry the SAME paragraph?
 
-    Le controle 3 voit les cles orphelines — celles qui n'existent que
-    d'un cote. Il ne voit pas la faute plus grave : deux cles qui se
-    correspondent alors que leurs textes n'ont rien a voir. Cela
-    arrive des que la numerotation d'alineas de l'auteur manque et que
-    le releve doit compter lui-meme : au tableau 5, un dialogue sans
-    numeros imprimes, les deux releveurs n'ont pas coupe aux memes
-    endroits, et le compteur a derive. La page mettait alors en regard
-    une replique et la reponse a la precedente.
+    Check 3 sees the orphaned keys — those that exist on one side only. It
+    does not see the graver fault: two keys that correspond to each other
+    while their texts have nothing to do with each other. That happens as
+    soon as the author's paragraph numbering is missing and the survey has
+    to count for itself: at table 5, a dialogue with no printed numbers,
+    the two surveyors did not cut in the same places, and the counter
+    drifted. The page then set a speech opposite the answer to the one
+    before it.
 
-    Un signal simple le trahit : LA LONGUEUR. Une traduction fait
-    rarement moins de la moitie ou plus du double de son original ; un
-    rapport de sept pour un ne se traduit pas, il se decale. On
-    signale, et l'oeil verifie.
+    A simple signal betrays it: LENGTH. A translation is rarely less than
+    half or more than double its original; a ratio of seven to one is not a
+    translation, it is a shift. We report, and the eye verifies.
     """
     import sys as _s
     _s.path.insert(0, str(RACINE / "tools"))
@@ -246,12 +243,11 @@ def controle_1_2(nom, pages, faute):
             faute(f"{nom} 2 : feuillet {n} relevé {len(ou)} fois "
                   f"({', '.join(ou)})")
     if vus:
-        # UNE PAGE VIERGE N'EST PAS UNE PAGE OUBLIEE. Le livret ido a
-        # deux versos blancs (feuillets 48 et 76) ; les signaler comme
-        # manquants ferait crier le controle a chaque execution, et un
-        # controle qui crie pour rien finit par ne plus etre lu. On
-        # interroge le releve de geometrie : une page dont la boite
-        # d'encre est degeneree est vierge, et son absence est normale.
+        # A BLANK PAGE IS NOT A FORGOTTEN PAGE. The Ido booklet has two
+        # blank versos (leaves 48 and 76); reporting them as missing would
+        # make the check cry out at every run, and a check that cries for
+        # nothing ends up unread. We consult the geometry survey: a page
+        # whose ink box is degenerate is blank, and its absence is normal.
         vierges = feuillets_vierges(nom)
         manquants = [n for n in range(min(vus), max(vus) + 1)
                      if n not in vus and n not in vierges]
@@ -293,9 +289,9 @@ def main():
     controle_7()
     controle_8()
 
-    # Controle 3, par tableau : on veut voir OU se concentrent les
-    # orphelins. Repartis un par tableau, ce sont des ecarts d'edition ;
-    # groupes sur un seul, c'est une faute de releve.
+    # Check 3, by table: we want to see WHERE the orphans concentrate.
+    # Spread one per table, they are differences of edition; grouped on a
+    # single one, they are a fault of survey.
     def tableau(cle):
         return cle.split("-")[0]
 

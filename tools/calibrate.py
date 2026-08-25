@@ -1,40 +1,37 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-kalibro.py — ecrit calibrate-io.tex et calibrate-fr.tex a partir de
-tools/inv-<langue>.json et d'UNE SEULE constante physique par livret :
-la largeur du papier, relevee a la regle sur l'exemplaire.
+calibrate.py — writes calibrate-io.tex and calibrate-fr.tex from
+tools/inventory-<language>.json and ONE SINGLE physical constant per
+booklet: the width of the paper, measured with a rule on the copy.
 
-    python3 tools/kalibro.py io 180      # le livret ido fait 180 mm de haut
-    python3 tools/kalibro.py fr 180
+    python3 tools/calibrate.py io 180      # the Ido booklet is 180 mm tall
+    python3 tools/calibrate.py fr 180
 
-POURQUOI UNE CONSTANTE PHYSIQUE. Les deux fac-similes sont des PRISES
-DE VUE, non des passages au scanner a plat : le nombre de pixels par
-millimetre n'est ecrit nulle part dans le fichier, et la resolution que
-declare le PDF (300 dpi pour l'ido, 72 dpi pour le francais) est celle
-du rendu, pas celle du papier. Un scan photographie a 40 cm et un scan
-photographie a 60 cm donnent le meme nombre de pixels par LIGNE mais
-pas le meme nombre par MILLIMETRE.
+WHY A PHYSICAL CONSTANT. Both facsimiles are PHOTOGRAPHS, not passes
+through a flatbed scanner: the number of pixels per millimetre is written
+nowhere in the file, and the resolution the PDF declares (300 dpi for the
+Ido, 72 dpi for the French) is that of the rendering, not of the paper. A
+scan photographed at 40 cm and one photographed at 60 cm give the same
+number of pixels per LINE but not the same number per MILLIMETRE.
 
-Tout le reste — justification, hauteur du bloc, pas des lignes, corps —
-se deduit de cette seule mesure par une regle de trois, puisque le
-rapport de deux longueurs, lui, est dans l'image et ne depend d'aucune
-echelle. Se tromper sur la largeur du papier ne deforme donc pas la
-page : elle la met a l'echelle, en bloc.
+All the rest -- measure, height of the block, line pitch, size -- follows
+from that single measurement by a rule of three, since the ratio of two
+lengths is in the image and depends on no scale. Being wrong about the
+width of the paper therefore does not deform the page: it scales it, whole.
 
-LA MESURE EST LA HAUTEUR, ET NON LA LARGEUR, parce que c'est la
-hauteur que donnent les catalogues de bibliotheque : la notice
-HathiTrust du « Livret explicatif des tableaux auxiliaires Delmas »
-(20e edition, G. Delmas, Bordeaux, 1916) porte « 90 p., 2 l. 18 cm. ».
-D'ou 180 mm pour le livret francais, mesure de bibliotheque et non
-hypothese.
+THE MEASUREMENT IS THE HEIGHT, AND NOT THE WIDTH, because it is the height
+that library catalogues give: the HathiTrust record for the "Livret
+explicatif des tableaux auxiliaires Delmas" (20th edition, G. Delmas,
+Bordeaux, 1916) reads "90 p., 2 l. 18 cm.". Hence 180 mm for the French
+booklet, a library measurement and not a hypothesis.
 
-Pour le livret ido, aucune notice n'a ete trouvee. On lui applique la
-meme hauteur : il sort de la meme presse — « Imprimerie des Tableaux
-Auxiliaires Delmas, 6 place Saint-Christoly, Bordeaux » — et les deux
-editions du meme livret se vendaient ensemble. C'est une inference, pas
-une mesure ; une regle posee sur l'exemplaire la confirmera ou la
-corrigera, et rien d'autre ne changera alors que l'echelle d'ensemble.
+For the Ido booklet, no record has been found. We apply the same height to
+it: it comes from the same press -- "Imprimerie des Tableaux Auxiliaires
+Delmas, 6 place Saint-Christoly, Bordeaux" -- and the two editions of the
+same booklet were sold together. That is an inference, not a measurement; a
+rule laid on the copy will confirm or correct it, and nothing else will
+change then but the overall scale.
 """
 import json
 import sys
@@ -43,7 +40,7 @@ from pathlib import Path
 import numpy as np
 
 RACINE = Path(__file__).resolve().parent.parent
-MINLIGNES = 35          # pages pleines : celles qui mesurent le pas
+MINLIGNES = 35          # full pages: those that measure the pitch
 MM_PAR_PT = 25.4 / 72.27
 
 LIVRE = {
@@ -93,10 +90,10 @@ def releve(langue):
 def ecrire(langue, hauteur_mm):
     r = releve(langue)
     liv = LIVRE[langue]
-    # L'ECHELLE SE PREND SUR LA HAUTEUR. Premiere version, elle se
-    # prenait sur la largeur, parce que c'est la largeur qui porte la
-    # justification ; mais la largeur du papier ne se trouve nulle
-    # part, tandis que sa hauteur est dans toutes les notices.
+    # THE SCALE IS TAKEN FROM THE HEIGHT. In the first version it was taken
+    # from the width, because it is the width that carries the measure; but
+    # the width of the paper is nowhere to be found, whereas its height is in
+    # every record.
     pxmm = r["page_h"] / hauteur_mm
     papier_mm = r["page_l"] / pxmm
 
@@ -105,10 +102,10 @@ def ecrire(langue, hauteur_mm):
 
     pas_mm = mm(r["pas"])
     pas_pt = pas_mm / MM_PAR_PT
-    # Le corps se deduit du pas. L'interlignage courant des impressions
-    # de labeur de ce temps vaut 1,20 fois le corps ; le rapport est
-    # verifie page par page par le controle 11, qui compare la ligne de
-    # base composee a la ligne de base relevee.
+    # The size follows from the pitch. The current leading of the bookwork
+    # printing of that period is 1.20 times the size; the ratio is verified
+    # page by page by check 11, which compares the composed baseline with the
+    # surveyed baseline.
     corps_pt = pas_pt / 1.20
 
     txt = f"""% ===================================================================
@@ -171,7 +168,7 @@ def ecrire(langue, hauteur_mm):
 \\newcommand{{\\VUfonteGras}}{{{liv['gras']}}}
 \\newcommand{{\\VUratioGras}}{{0.98}}
 """
-    # Le fichier est ecrit tel quel : c'est un produit, pas une source.
+    # The file is written as it stands: it is a product, not a source.
     (RACINE / f"kalibro-{langue}.tex").write_text(txt, encoding="utf-8")
     print(f"kalibro-{langue}.tex ecrit  ({pxmm:.3f} px/mm ; "
           f"corps {corps_pt:.2f} pt sur {pas_pt:.2f} pt)")

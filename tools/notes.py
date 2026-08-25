@@ -1,43 +1,42 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-notoj.py — les notes de bas de page tiennent-elles leur place ?
+notes.py — do the footnotes keep their place?
 
-    python3 tools/notoj.py
+    python3 tools/notes.py
 
-DEUX FAUTES POSSIBLES, ET IL FAUT LES DEUX.
+TWO POSSIBLE FAULTS, AND BOTH ARE NEEDED.
 
-La premiere est la COLLISION : la note s'imprime par-dessus le texte.
-Elle venait de ce que \\VUnotes posait sa note dans une boite de HAUTEUR
-NULLE, calee sur le pied du bloc : la note tombait juste, et elle ne
-poussait rien. Sur une page dont le texte descend jusqu'au pied, les deux
-s'imprimaient donc l'un sur l'autre — sept pages du livret ido et une du
-francais. La note se differe maintenant jusqu'a la fermeture de la page
-et entre dans le flux apres le dernier alinea ; le chevauchement est
-devenu impossible par construction.
+The first is COLLISION: the note prints over the text. It came from
+\\VUnotes laying its note in a box of NULL HEIGHT, set on the foot of the
+block: the note fell right, and it pushed nothing. On a page whose text
+descends to the foot, the two therefore printed one over the other -- seven
+pages of the Ido booklet and one of the French. The note is now deferred
+until the page closes and enters the flow after the last paragraph; the
+overlap has become impossible by construction.
 
-La seconde est le DEBORDEMENT : la note passe sous le bord du feuillet.
-Elle ne vient pas de la macro mais de la page : six feuillets portent,
-au releve, plus de matiere que la feuille n'en tient — le texte y remplit
-deja le bloc, et la note n'a plus que la marge du bas, qui ne suffit pas.
-Le premier defaut la CACHAIT : tant que la note s'imprimait dans le
-texte, elle ne sortait jamais du papier. La corriger l'a mise au jour.
+The second is OVERFLOW: the note passes below the edge of the leaf. It
+comes not from the macro but from the page: six leaves carry, in the
+survey, more matter than the sheet holds -- the text there already fills
+the block, and the note has only the bottom margin, which does not suffice.
+The first fault HID it: as long as the note printed within the text, it
+never left the paper. Correcting the first brought it to light.
 
-Ce controle ne tranche pas ces six pages : il les nomme. Les trancher
-demande le fac-simile du livret, que ce depot ne contient pas — on n'a
-que les seize planches.
+This check does not decide those six pages: it names them. Deciding them
+needs the facsimile of the booklet, which this repository does not contain
+-- we have only the sixteen plates.
 
 
-COMMENT ON SEPARE LA NOTE DU TEXTE : par le CORPS, non par la position.
-Mesure sur les deux livrets : le corps de note vaut 0,79 fois le corps de
-texte — 9,09 contre 10,93 en ido, 8,45 contre 10,70 en francais — tandis
-que l'exposant d'un renvoi vaut 0,70. La fenetre [0,74 ; 0,85] les separe
-donc proprement, et c'est la mesure qui la fixe.
+HOW THE NOTE IS SEPARATED FROM THE TEXT: by the SIZE, not by the position.
+Measured on both booklets: the note size is 0.79 times the text size --
+9.09 against 10.93 in Ido, 8.45 against 10.70 in French -- while the
+superscript of a reference is 0.70. The window [0.74; 0.85] therefore
+separates them cleanly, and it is the measurement that fixes it.
 
-Et la LISTE DES PAGES vient du releve, non du PDF : on ne cherche une
-note que la ou \\VUnotes en pose une. Une heuristique de corps seule
-prenait les exposants et les petites capitales pour des notes, et rendait
-quatre-vingt-deux pages sur quatre-vingt-seize.
+And the LIST OF PAGES comes from the survey, not from the PDF: we look for
+a note only where \\VUnotes lays one. A heuristic on size alone took
+superscripts and small capitals for notes, and returned eighty-two pages
+out of ninety-six.
 """
 
 import glob
@@ -55,22 +54,20 @@ VOLUMES = (("io", "tabeli.pdf"), ("fr", "tableaux.pdf"))
 
 
 def feuillets_a_note(lg):
-    """[(feuillet, page du PDF)] la ou le releve pose une note.
+    """[(leaf, PDF page)] where the survey lays a note.
 
-    ET LE NUMERO DE FEUILLET N'EST PAS LE NUMERO DE PAGE DU PDF. C'est
-    ce que ce controle a cru pendant tout ce temps -- « une page du
-    fac-simile, une page du PDF » --, et c'est faux : le livret ido saute
-    DEUX VERSOS VIERGES, les feuillets 48 et 76, qui ne se composent
-    pas. La page du PDF retarde donc d'un feuillet a partir du 49, de
-    deux a partir du 77, et le controle allait regarder ailleurs. Les
-    feuillets 49, 57, 85, 87, 89 et 106 -- six des dix pages a note du
-    volume -- n'ont jamais ete controles : on mesurait a leur place des
-    pages sans note, ou l'on ne trouvait « aucune note » et ou l'on se
-    taisait.
+    AND THE LEAF NUMBER IS NOT THE PDF PAGE NUMBER. That is what this check
+    believed all this time -- "one page of the facsimile, one page of the
+    PDF" -- and it is false: the Ido booklet skips TWO BLANK VERSOS, leaves
+    48 and 76, which are not set. The PDF page therefore falls one leaf
+    behind from 49 on, two from 77 on, and the check was looking elsewhere.
+    Leaves 49, 57, 85, 87, 89 and 106 -- six of the volume's ten pages with
+    notes -- were never checked: we measured pages without notes in their
+    place, found "no note", and said nothing.
 
-    La page du PDF est le RANG de la page dans le document, et rien
-    d'autre : les fichiers se lisent dans l'ordre ou main-<lg>.tex les
-    appelle, qui est leur ordre alphabetique.
+    The PDF page is the RANK of the page in the document, and nothing else:
+    the files are read in the order main-<lg>.tex calls them, which is
+    their alphabetical order.
     """
     out = []
     rang = 0
@@ -97,7 +94,7 @@ def lignes(pdf, page):
         if f is None:
             continue
         t = float(f.get("size"))
-        if t < 1.0:            # le filigrane de provenance
+        if t < 1.0:            # the provenance watermark
             continue
         out.append((t, [float(v) for v in ln.get("bbox").split()]))
     return haut, out

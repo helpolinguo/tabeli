@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-mesures.py — tire de tools/inv-<langue>.json les CONSTANTES du
-preambule LaTeX : justification, pas des lignes, echelle du scan.
+measures.py — draws from tools/inventory-<language>.json the CONSTANTS of
+the LaTeX preamble: measure, line pitch, scale of the scan.
 
-    python3 tools/mesures.py io
-    python3 tools/mesures.py fr
+    python3 tools/measures.py io
+    python3 tools/measures.py fr
 
-Rien ici ne s'invente : chaque constante est une mediane, assortie de
-son ecart-type et du nombre de pages sur lequel elle est prise. Les
-pages courtes (moins de `MINLIGNES` lignes) sont ecartees : une page de
-titre ou une fin de section ne mesure ni la justification ni le pas.
+Nothing here is invented: every constant is a median, together with its
+standard deviation and the number of pages it is taken over. Short pages
+(fewer than `MIN_LINES` lines) are set aside: a title page or the end of a
+section measures neither the text width nor the pitch.
 """
 import json
 import sys

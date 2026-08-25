@@ -1,36 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-korpo.py — mesure le corps PAGE PAR PAGE et écrit korpi-<langue>.tex.
+body.py — measures the type size PAGE BY PAGE and writes body-<language>.tex.
 
-    python3 tools/korpo.py io
-    python3 tools/korpo.py fr
+    python3 tools/body.py io
+    python3 tools/body.py fr
 
-LE PROBLÈME. `tools/chaso.py` trouve le corps qui remplit le mieux les
-lignes du volume ENTIER. C'est une moyenne : sur les pages où le
-compositeur de 1926 serrait un peu plus que sa moyenne, ce corps est
-trop petit, et TeX écarte les mots pour combler — d'où des blancs
-inter-mots béants, visibles à l'œil et pénibles à lire.
+THE PROBLEM. `tools/chaso.py` finds the size that best fills the lines of
+the WHOLE volume. That is an average: on the pages where the compositor of
+1926 set a little tighter than his average, that size is too small, and TeX
+spreads the words to fill -- hence gaping word spaces, visible to the eye
+and tiring to read.
 
-La cause est réelle et n'est pas un défaut de relevé. Le compositeur ne
-tenait pas une chasse constante d'un cahier à l'autre — casses usées,
-fontes de remplacement — et la fonte d'aujourd'hui n'a de toute façon
-pas exactement la sienne. Un seul corps ne peut donc pas remplir toutes
-les pages.
+The cause is real and is not a fault of the survey. The compositor did not
+hold a constant width from one gathering to the next -- worn sorts,
+substitute founts -- and today's font does not have his in any case. A
+single size therefore cannot fill every page.
 
-LA MESURE. Pour chaque page, le bon corps est **le plus grand qui ne
-fasse déborder aucune de ses lignes**. C'est mesurable : on balaie, on
-compile, et TeX dit lui-même, ligne de source par ligne de source, ce
-qui déborde et de combien.
+THE MEASUREMENT. For each page, the right size is **the largest that makes
+none of its lines overflow**. That is measurable: we sweep, we compile, and
+TeX itself says, source line by source line, what overflows and by how
+much.
 
-Une difficulté pratique : le journal de TeX donne « in paragraph at
-lines A--B » sans dire de quel fichier. On compile donc **un fichier de
-relevé à la fois**, dans une enveloppe minimale : les numéros de ligne
-y sont sans ambiguïté, et on les rattache à leur page par les
-`\\begin{VUpage}[n]` du fichier.
+One practical difficulty: TeX's log gives "in paragraph at lines A--B"
+without saying which file. We therefore compile **one transcription file at
+a time**, in a minimal wrapper: the line numbers there are unambiguous, and
+we attach them to their page by the `\\begin{VUpage}[n]` of the file.
 
-On demande à TeX de tout dire — `\\hbadness=0`, `\\hfuzz=0pt` — sinon il
-tait les débordements inférieurs à 0,1 pt et les lignes un peu lâches.
+We ask TeX to say everything -- `\\hbadness=0`, `\\hfuzz=0pt` -- otherwise
+it keeps quiet about overflows under 0.1 pt and about slightly loose lines.
 """
 import re
 import shutil
@@ -46,8 +44,8 @@ BOITE = re.compile(
     r"(Underfull) \\hbox \(badness (\d+)\)")
 LIGNES = re.compile(r"in paragraph at lines (\d+)--(\d+)")
 
-# Le balayage : autour du corps global, vers le haut surtout, puisque
-# c'est la moyenne et que la moitie des pages en veut davantage.
+# The sweep: around the global size, upwards above all, since that is the
+# average and half the pages want more.
 ECART = [-0.30, -0.15, 0.0, 0.15, 0.30, 0.45, 0.60, 0.75, 0.90,
          1.05, 1.20, 1.35, 1.50]
 
@@ -58,7 +56,7 @@ def corps_global(langue):
 
 
 def pages_du_fichier(chemin):
-    """[(feuillet, premiere ligne, derniere ligne)] du fichier."""
+    """[(leaf, first line, last line)] of the file."""
     lignes = chemin.read_text(encoding="utf-8").splitlines()
     bornes = []
     for i, l in enumerate(lignes, 1):
@@ -73,7 +71,7 @@ def pages_du_fichier(chemin):
 
 
 def essai(langue, fichier, corps, tmp):
-    """{feuillet: (debordement max en pt, nombre de lignes laches)}."""
+    """{leaf: (maximum overflow in pt, number of loose lines)}."""
     env = tmp / "essai.tex"
     env.write_text(
         f"\\documentclass{{article}}\n"
@@ -122,7 +120,7 @@ def main():
     sous = "io" if langue == "io" else "fr"
     fichiers = sorted((RACINE / "text" / sous).glob("*.tex"))
 
-    # {feuillet: {corps: (debordement, laches)}}
+    # {leaf: {size: (overflow, loose)}}
     releve = {}
     with tempfile.TemporaryDirectory() as d:
         tmp = Path(d)
@@ -136,10 +134,10 @@ def main():
     lignes = []
     choisis = {}
     for feuillet, par_corps in releve.items():
-        # Le plus grand corps SANS DEBORDEMENT. Une page dont toutes les
-        # valeurs debordent (cela arrive quand une seule ligne du releve
-        # est un peu trop longue) garde le plus petit essai : mieux vaut
-        # une page lache qu'une ligne qui sort de la justification.
+        # The largest size WITH NO OVERFLOW. A page all of whose values
+        # overflow (which happens when a single line of the survey is a little
+        # too long) keeps the smallest trial: better a loose page than a line
+        # that leaves the measure.
         sans = [c for c, (deb, _) in par_corps.items() if deb == 0.0]
         c = max(sans) if sans else min(par_corps)
         choisis[feuillet] = c

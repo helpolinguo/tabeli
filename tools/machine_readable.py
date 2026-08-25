@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
-"""Tire des Tabeli leurs versions LISIBLES PAR LES MACHINES.
+"""Draws from the Tabeli their MACHINE-READABLE versions.
 
-POURQUOI. La page pese 3,3 Mo pour 257 Ko de texte : treize octets de
-balisage pour un de texte. Le tableau porte 683 entrees en 57 langues, et
-c'est justement sa richesse qui le rend illisible a la machine — les
-53 langues autres que l'ido et le francais sont des cellules VIDES que le
-navigateur remplit ensuite depuis lingui/*.json.
+WHY. The page weighs 3.3 MB for 257 kB of text: thirteen bytes of markup
+for one of text. The table carries 683 entries in 57 languages, and it is
+precisely its richness that makes it illegible to a machine -- the 53
+languages other than Ido and French are EMPTY cells which the browser then
+fills from lingui/*.json.
 
-LE POINT QUI COMPTE : les cles des rangees (data-cle) sont EXACTEMENT
-celles des fichiers de langue. Publier les paires ido/francais sous ces
-memes cles rend donc tout le corpus joignable par programme : qui veut le
-couple ido-japonais joint tabeli.json et lingui/ja.json sur la cle, sans
-avoir a ouvrir la page ni a executer son JavaScript.
+THE POINT THAT COUNTS: the rows' keys (data-cle) are EXACTLY those of the
+language files. Publishing the Ido/French pairs under those same keys
+therefore makes the whole corpus joinable by program: whoever wants the
+Ido-Japanese pair joins tabeli.json and lingui/ja.json on the key, without
+having to open the page or run its JavaScript.
 
-  tabeli.json       {cle: {io, fr}} — la charniere du corpus.
-  tabeli.md         le tableau a plat, ido et francais en regard.
-  lingui/index.json les 57 langues offertes, avec leur code et leur poids.
+  tabeli.json       {key: {io, fr}} — the hinge of the corpus.
+  tabeli.md         the table laid flat, Ido and French facing.
+  lingui/index.json the 57 languages offered, with their code and weight.
 
-Engendres, jamais edites a la main. La source reste index.html.
+Generated, never edited by hand. The source stays index.html.
 
-    python3 tools/robotoj.py
+    python3 tools/machine_readable.py
 """
 
 import json
@@ -28,7 +28,7 @@ import re
 import sys
 from pathlib import Path
 
-# Ce dossier porte son propre « html.py », qui masquerait le module standard.
+# This directory carries its own "html.py", which would shadow the standard module.
 sys.path[:] = [d for d in sys.path
                if os.path.abspath(d) != os.path.dirname(os.path.abspath(__file__))]
 import html as modul_html  # noqa: E402
@@ -40,13 +40,13 @@ FONTO = 'Transskribita de https://ido.help/tabeli/\n'
 
 
 def texto(h: str) -> str:
-    """Un fragment de HTML en texte simple.
+    """A fragment of HTML as plain text.
 
-    Les « ln » sont des LIGNES du livre imprime, non des phrases : le
-    tableau original est compose en colonnes etroites, et une phrase y
-    tient sur trois ou quatre lignes. On les rejoint par une espace,
-    faute de quoi le texte rendu serait hache la ou le livre ne l'est
-    pas — un artefact de mise en page, pas du texte.
+    The "ln" are LINES of the printed book, not sentences: the original
+    table is set in narrow columns, and a sentence there runs over three or
+    four lines. We rejoin them with a space, failing which the text
+    rendered would be chopped where the book is not -- an artefact of
+    layout, not of the text.
     """
     h = re.sub(r'<span class="fil"></span>', '', h)
     h = re.sub(r'<i>(.*?)</i>', r'*\1*', h, flags=re.S)
@@ -57,10 +57,10 @@ def texto(h: str) -> str:
 
 
 class Rangi(HTMLParser):
-    """Ramasse les rangees du tableau, et pour chacune l'ido et le francais.
+    """Gathers the table's rows, and for each of them the Ido and the French.
 
-    On compte la profondeur plutot que de chercher le « /div » fermant :
-    une cellule contient des « span », et parfois d'autres « div ».
+    We count the depth rather than looking for the closing "/div": a cell
+    contains "span"s, and sometimes other "div"s.
     """
 
     def __init__(self):
@@ -124,12 +124,12 @@ def main() -> None:
     p.feed(korpo.group(0) if korpo else s)
     rangi = [r for r in p.rangi if r['io'] or r['fr']]
 
-    # 1. La charniere du corpus.
+    # 1. The hinge of the corpus.
     (RACINO / 'tabeli.json').write_text(
         json.dumps({r['cle']: {'io': r['io'], 'fr': r['fr']} for r in rangi},
                    ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 
-    # 2. Le tableau a plat.
+    # 2. The table laid flat.
     lin = [ENTETE, '# Expliko-Libreto di la Delmas-Tabeli helpanta\n',
            'J. Guignon · Ido-Kontoro, Thaon-les-Vosges, 1926 · '
            'E. Rochelle · G. Delmas, Bordeaux\n', FONTO,
@@ -142,7 +142,7 @@ def main() -> None:
         lin.append('| `%s` | %s | %s |' % (r['cle'], io, fr))
     (RACINO / 'tabeli.md').write_text('\n'.join(lin) + '\n', encoding='utf-8')
 
-    # 3. Les langues offertes.
+    # 3. The languages offered.
     lingui = RACINO / 'lingui'
     listo = sorted(f.name[:-5] for f in lingui.glob('*.json')
                    if f.name != 'index.json')

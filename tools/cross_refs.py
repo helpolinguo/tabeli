@@ -1,47 +1,45 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  renvoji.py — les renvois d'une traduction suivent-ils l'ordre de
-#  l'ido ?
+#  cross_refs.py — do a translation's references follow the order of the
+#  Ido?
 #
-#  LE RENVOI EST UN RENDEZ-VOUS. La colonne de gauche porte le livret
-#  ido, et chaque « (n) » y ouvre le gros plan d'un objet de la
-#  planche. Une traduction doit viser les MEMES objets, dans le MEME
-#  ordre : le lecteur qui suit les deux colonnes du regard veut
-#  retrouver le (18) en face du (18).
+#  A REFERENCE IS AN APPOINTMENT. The left column carries the Ido
+#  booklet, and each "(n)" there opens the close-up of an object on the
+#  plate. A translation must aim at the SAME objects, in the SAME order:
+#  the reader following both columns with the eye wants to find the (18)
+#  opposite the (18).
 #
-#  L'ORDRE N'EST PAS UN DETAIL DE FORME. Une langue qui postpose ce
-#  que l'ido antepose deplace le substantif, et le renvoi le suit :
-#  « अध्यापक (7) अपने मंच (6) पर कुर्सी (8) पर » donne 7, 6, 8 la ou
-#  l'ido donne 7, 8, 6. Le remede n'est jamais de deplacer le renvoi —
-#  il appartient a son mot — mais de refaire la phrase autour. Onze
-#  inversions relevees dans le seul hindi, dix dans les cinq
-#  traductions deja servies.
+#  ORDER IS NOT A DETAIL OF FORM. A language that postposes what Ido
+#  preposes moves the noun, and the reference follows it: "अध्यापक (7)
+#  अपने मंच (6) पर कुर्सी (8) पर" gives 7, 6, 8 where the Ido gives 7, 8,
+#  6. The remedy is never to move the reference — it belongs to its word
+#  — but to remake the sentence around it. Eleven inversions reported in
+#  Hindi alone, ten in the five translations already served.
 #
-#  LE RENVOI NE S'ECRIT PAS TOUJOURS EN EXPOSANT. Le releve ido compose
-#  parfois « (80) » a plein corps — le nom du parleur, au tableau 5 —
-#  et html.py le rend en renvoi comme les autres. On releve donc les
-#  deux formes, sans quoi le tableau 5 sortait faux de part en part.
+#  A REFERENCE IS NOT ALWAYS SET AS A SUPERSCRIPT. The Ido survey
+#  sometimes sets "(80)" at full size — the speaker's name, in table 5 —
+#  and html.py renders it as a reference like the others. We therefore
+#  survey both forms, without which table 5 came out wrong throughout.
 #
-#  LES ECARTS DECLARES. Trois blocs divergent de l'ido dans les six
-#  traductions a la fois, et c'est voulu : le fac-simile ido s'y trompe
-#  et le francais a raison. On les nomme ci-dessous avec leur raison,
-#  et le controle les passe. Tout le reste est une faute.
+#  THE DECLARED DIVERGENCES. Three blocks diverge from the Ido in all six
+#  translations at once, and that is intended: the Ido facsimile is wrong
+#  there and the French is right. They are named below with their reason,
+#  and the check passes them. Everything else is a fault.
 #
-#  ET LE FRANCAIS, QU'ON NE CONTROLE PAS EN ORDRE, SE CONTROLE EN
-#  VALEUR. Rochelle ordonne ses phrases comme il l'entend, mais il
-#  vise les MEMES OBJETS : le numero grave sur la planche est le meme
-#  pour les deux editions. Quand un bloc porte de part et d'autre le
-#  meme NOMBRE de renvois et pas les memes, ce n'est plus un ordre
-#  different, c'est une SUBSTITUTION — et sept dormaient la depuis le
-#  premier relevé : 24 pour 21, 16 pour 46, 140 pour 146, 11 pour 41,
-#  14 pour 44, 19 pour 49, 32 pour 82. Cinq ouvraient en silence le
-#  gros plan d'un autre objet ; deux n'ouvraient rien. Voir
-#  substitui().
+#  AND THE FRENCH, WHICH WE DO NOT CHECK FOR ORDER, IS CHECKED FOR VALUE.
+#  Rochelle orders his sentences as he pleases, but he aims at the SAME
+#  OBJECTS: the number engraved on the plate is the same for both
+#  editions. When a block carries the same NUMBER of references on either
+#  side and not the same ones, that is no longer a different order, it is
+#  a SUBSTITUTION — and seven had been sleeping there since the first
+#  survey: 24 for 21, 16 for 46, 140 for 146, 11 for 41, 14 for 44, 19
+#  for 49, 32 for 82. Five silently opened the close-up of another
+#  object; two opened nothing. See substitui().
 #
 #  USAGE
-#      python3 tools/renvoji.py            # toutes les colonnes
-#      python3 tools/renvoji.py hi         # une seule
-#      python3 tools/renvoji.py fr         # les substitutions
+#      python3 tools/cross_refs.py            # every column
+#      python3 tools/cross_refs.py hi         # one only
+#      python3 tools/cross_refs.py fr         # the substitutions
 # ===================================================================
 
 import json
@@ -57,11 +55,11 @@ KOREKTI = ({k: v for k, v in
             json.loads(_KOR.read_text(encoding="utf-8")).items()
             if not k.startswith("_")} if _KOR.exists() else {})
 
-# Le nom que chaque colonne donne a « tableau » dans ses fichiers.
+# The name each column gives to "table" in its files.
 DOSSIER = {"fr": "tableau",
-           # LE MEME JETON QUE LE FRANCAIS : le mot est le meme des deux
-           # cotes de l'Atlantique, et le glob se fait DANS le dossier de
-           # la langue — text/fr et text/fr-CA ne se melent pas.
+           # THE SAME TOKEN AS THE FRENCH: the word is the same on both
+           # sides of the Atlantic, and the glob is done WITHIN the
+           # language's directory — text/fr and text/fr-CA do not mix.
            "fr-CA": "tableau",
            "en": "table", "es": "cuadro", "ru": "tablica",
            "zh": "tubiao", "ar": "lawha", "hi": "talika",
@@ -77,38 +75,37 @@ DOSSIER = {"fr": "tableau",
            "lb": "tabell", "rm": "tabella",
            "et": "tabel",
            "vi": "bang",
-           # LE CANTONAIS prend « toubiu », qui est « 圖表 » en
-           # jyutping depouille de ses tons — tou4 biu2. Il ne se
-           # confond pas avec le « tubiao » du mandarin : ce sont
-           # les deux lectures du meme mot, et deux colonnes.
+           # CANTONESE takes "toubiu", which is "圖表" in jyutping
+           # stripped of its tones — tou4 biu2. It is not confused with
+           # Mandarin's "tubiao": these are the two readings of the same
+           # word, and two columns.
            "yue": "toubiu",
-           # MEME JETON QUE L'ARABE STANDARD : « لوحة » s'ecrit et se
-           # dit de la meme facon au Caire, et le glob se fait DANS le
-           # dossier de la langue — text/ar et text/arz ne se melent
-           # pas, comme text/fr et text/fr-CA.
+           # SAME TOKEN AS STANDARD ARABIC: "لوحة" is written and said
+           # the same way in Cairo, and the glob is done WITHIN the
+           # language's directory — text/ar and text/arz do not mix, as
+           # text/fr and text/fr-CA do not.
            "arz": "lawha",
-           # LE MARATHI dit « तक्ता », non « तालिका » : le jeton
-           # est donc « takta » et non celui du hindi.
+           # MARATHI says "तक्ता", not "तालिका": the token is
+           # therefore "takta" and not Hindi's.
            "mr": "takta",
-           # LE TELOUGOU DIT « పట్టిక » pour un tableau.
+           # TELUGU SAYS "పట్టిక" for a table.
            "te": "pattika",
-           # LE COREEN DIT « 도표 » — dopyo. Le « 표 » seul serait le
-           # mot le plus banal de la langue ; le compose ne l'est pas.
+           # KOREAN SAYS "도표" — dopyo. "표" alone would be the most
+           # ordinary word in the language; the compound is not.
            "ko": "dopyo",
-           # LE TAMOUL DIT « அட்டவணை » — attavanai. Le telougou
-           # voisin dit « పట్టిక » : deux langues dravidiennes, deux
-           # mots, et c'est encore une raison de traduire chaque
-           # colonne pour elle-meme.
+           # TAMIL SAYS "அட்டவணை" — attavanai. Neighbouring Telugu
+           # says "పట్టిక": two Dravidian languages, two words, and that
+           # is one more reason to translate each column for itself.
            "ta": "attavanai",
-           # L'OURDOU DIT « جدول » — jadval. Le pendjabi chahmoukhi,
-           # qui partage son alphabet, dit « نقشہ » : meme ecriture,
-           # deux langues, deux mots d'apparat.
+           # URDU SAYS "جدول" — jadval. Shahmukhi Punjabi, which
+           # shares its alphabet, says "نقشہ": same script, two
+           # languages, two words of apparatus.
            "ur": "jadval",
-           # L'INDONESIEN DIT « bagan » pour un tableau figure. Le
-           # « tabel » qu'on aurait pris d'abord est celui du
-           # neerlandais, deja dans cette table — et l'indonesien l'a
-           # justement emprunte au neerlandais. On garde donc le mot
-           # malais de fond, qui ne doit rien a personne.
+           # INDONESIAN SAYS "bagan" for a figured table. The "tabel"
+           # one might have taken first is the Dutch word, already in
+           # this table — and Indonesian borrowed it precisely from
+           # Dutch. We therefore keep the underlying Malay word, which
+           # owes nothing to anyone.
            "id": "bagan", "jv": "gambar", "fa": "tablo",
            "ha": "hoto",
            "gu": "kostak",
@@ -116,27 +113,27 @@ DOSSIER = {"fr": "tableau",
            "bho": "nakasa",
            "de": "tafel",
            "it": "tavola",
-           # LE POLONAIS DIT « tablica », comme le russe transcrit --
-           # et le glob se fait DANS le dossier de la langue, si bien
-           # que text/pl et text/ru ne se melent pas, comme text/fr
-           # et text/fr-CA.
+           # POLISH SAYS "tablica", like transliterated Russian --
+           # and the glob is done WITHIN the language's directory, so
+           # that text/pl and text/ru do not mix, as text/fr and
+           # text/fr-CA do not.
            "pl": "tablica",
-           # L'AFRIKAANS DIT « tabel », comme le neerlandais. Meme
-           # jeton, autre dossier : c'est deja le cas de l'arabe
-           # standard et de l'egyptien.
+           # AFRIKAANS SAYS "tabel", like Dutch. Same token, another
+           # directory: that is already the case for standard Arabic
+           # and Egyptian.
            "af": "tabel"}
 
-# LE FRANCAIS N'EST PAS UNE TRADUCTION. C'est le releve d'une AUTRE
-# edition, et Rochelle ordonne ses phrases comme il l'entend :
-# quarante-cinq blocs y divergent de l'ido, et pas un n'est une faute.
-# On ne lui applique donc pas le controle d'ordre — mais « pas celui-ci »
-# n'a jamais voulu dire « aucun », et c'est pourtant ce que cette ligne
-# a fini par signifier : le francais est reste seul non controle, et
-# sept substitutions y ont vecu jusqu'a la tache 3. Il a le sien,
-# substitui(), et main() le passe avec les autres.
+# THE FRENCH IS NOT A TRANSLATION. It is the survey of ANOTHER
+# edition, and Rochelle orders his sentences as he pleases: forty-five
+# blocks diverge from the Ido there, and not one is a fault. We
+# therefore do not apply the order check to it — but "not this one" has
+# never meant "none", and that is nevertheless what this line ended up
+# meaning: the French stayed the only one unchecked, and seven
+# substitutions lived there until task 3. It has its own,
+# substitui(), and main() runs it with the others.
 TRADUKTI = [k for k in DOSSIER if k != "fr"]
 
-# ECARTS DECLARES : {cle de bloc: raison}
+# DECLARED DIVERGENCES: {block key: reason}
 APARTA = {
     "t06-c1-06-1":
         "le fac-simile ido ouvre sur « (6) », qui est le savon ; c'est la "
@@ -159,14 +156,14 @@ def renvois(t):
 
 
 def blocs(dossier, mot):
-    """{cle de bloc: corps}, les blocs « suite » recolles au premier."""
+    """{block key: body}, the "continuation" blocks rejoined to the first."""
     out = {}
     d = RACINE / "text" / dossier
     if not d.is_dir():
         return out
     for f in sorted(d.glob(f"*-{mot}-*.tex")):
-        # Le commentaire s'ote, mais « %%K » est une cle, non un
-        # commentaire : le retirer effacait tout le decoupage.
+        # The comment is stripped, but "%%K" is a key, not a comment:
+        # removing it erased the whole division.
         t = re.sub(r"^%(?!%K).*\n", "", f.read_text(encoding="utf-8"),
                    flags=re.M)
         parts = re.split(r"^%%K (\S+)[^\n]*\n", t, flags=re.M)
@@ -176,9 +173,9 @@ def blocs(dossier, mot):
 
 
 def korekti_renvojo(cle):
-    """{lu: a lire} pour UN BLOC — la meme lecture que html.py fait de
-    plates/corrections.json : les corrections du tableau entier, plus
-    celles que ce bloc-ci porte seul."""
+    """{read: to be read} for ONE BLOCK — the same reading html.py makes of
+    plates/corrections.json: the corrections for the whole table, plus
+    those this block alone carries."""
     t = KOREKTI.get(cle[:3], {})
     out = {k: v for k, v in t.items() if isinstance(v, str)}
     out.update(t.get(cle, {}))
@@ -186,23 +183,23 @@ def korekti_renvojo(cle):
 
 
 def substitui(verbeux=True):
-    """Les numeros ou le francais et l'ido ne montrent pas le meme objet.
+    """The numbers where the French and the Ido do not show the same object.
 
-    LE MEME COMPTE ET PAS LES MEMES VALEURS, c'est une substitution.
-    C'est tout le controle, et sa force tient a ce qu'il ne demande
-    rien d'autre. Comparer les SUITES aurait signale les quarante-cinq
-    blocs que Rochelle reordonne ; comparer les ENSEMBLES par planche
-    n'en voyait que deux sur sept, parce qu'un « 24 » mis pour « 21 »
-    existe ailleurs sur la meme planche et se fond dans l'ensemble.
-    L'egalite des comptes ecarte d'un coup tout le bruit — le bloc que
-    le francais coupe en deux quand l'ido le coupe en « suite », l'appel
-    de note « (1) » qu'une seule des deux editions porte — sans qu'on
-    ait rien a declarer : ces cas-la changent le compte.
+    THE SAME COUNT AND NOT THE SAME VALUES is a substitution. That is the
+    whole check, and its strength lies in its asking for nothing else.
+    Comparing the RUNS would have reported the forty-five blocks Rochelle
+    reorders; comparing the SETS by plate saw only two of the seven,
+    because a "24" put for "21" exists elsewhere on the same plate and
+    melts into the set. The equality of the counts discards all the noise
+    at a stroke — the block the French cuts in two where the Ido cuts it
+    with "suite", the note call "(1)" that only one of the two editions
+    carries — without anything having to be declared: those cases change
+    the count.
 
-    ON CORRIGE LES DEUX COLONNES, non la seule qu'on soupconne. Le
-    « (150) » du tableau 5 est une faute de l'IDO, et corrections.json la
-    repare ; ne passer la correction que sur le francais faisait
-    reapparaitre en substitution ce qui venait d'etre corrige.
+    WE CORRECT BOTH COLUMNS, not only the one under suspicion. The "(150)"
+    of table 5 is a fault of the IDO, and corrections.json repairs it;
+    passing the correction over the French alone made what had just been
+    corrected reappear as a substitution.
     """
     io = blocs("io", "tabelo")
     fr = blocs("fr", "tableau")
@@ -250,10 +247,9 @@ def controlar(lg, verbeux=True):
 def main(args):
     lgs = args or TRADUKTI
     total = 0
-    # LE FRANCAIS PASSE EN PREMIER ET PAR UN AUTRE CONTROLE. On le
-    # nomme comme les autres — « renvoji.py fr » — mais ce qu'on lui
-    # demande n'est pas l'ordre : c'est que les deux editions montrent
-    # le meme objet.
+    # THE FRENCH GOES FIRST AND BY ANOTHER CHECK. We name it like the
+    # others — "cross_refs.py fr" — but what we ask of it is not order:
+    # it is that the two editions show the same object.
     if not args or "fr" in args:
         n, f = substitui()
         print(f"  fr : {n:4d} blocs, {f} substitution{'s' if f > 1 else ''}")

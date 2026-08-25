@@ -1,53 +1,50 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  chifri.py — apprendre les chiffres du fac-simile, et s'en servir
-#              pour PROPOSER a l'oeil ce qui manque encore.
+#  ciphers.py — learn the facsimile's figures, and use them to PROPOSE
+#               to the eye what is still missing.
 #
-#  LE PROBLEME. tools/ciphers.npz tient dix modeles de chiffres tires
-#  de la couche de trait du PDF colorise : un pochoir, deux tons, des
-#  contours nets. Les seize planches ayant ete reprises sur leurs
-#  fac-similes, cette couche n'est plus ce qu'on regarde ; l'encre y
-#  est grise, les pleins bavent, les deliés s'effacent, et le lecteur
-#  de numeri.py, qui compare des formes, ne reconnait plus rien : sur
-#  le tableau 14 il lisait soixante-seize numeros sur le pochoir, il
-#  en lit dix sur le gris.
+#  THE PROBLEM. tools/ciphers.npz holds ten models of figures drawn from
+#  the line layer of the colourised PDF: a stencil, two tones, clean
+#  outlines. The sixteen plates having been redone from their facsimiles,
+#  that layer is no longer what one looks at; the ink there is grey, the
+#  stems bleed, the hairlines fade, and the reader in numbers.py, which
+#  compares shapes, recognises nothing any more: on table 14 it read
+#  seventy-six numbers on the stencil, it reads ten on the grey.
 #
-#  CE QU'ON PEUT APPRENDRE SANS RIEN DESSINER. Mille cinq cents
-#  numeros sont deja places, verifies un a un, sur les planches
-#  grises elles-memes. Chacun est un exemplaire ETIQUETE de la fonte
-#  a reconnaitre, dans le medium meme ou il faut la reconnaitre. On
-#  les decoupe — sept cent soixante et un se separent proprement en
-#  chiffres, ce qui fait quatorze cents exemplaires, quatre-vingt-
-#  quatre au moins par classe — on les regroupe par la forme, et les
-#  centres des groupes sont les modeles.
+#  WHAT CAN BE LEARNT WITHOUT DRAWING ANYTHING. Fifteen hundred numbers
+#  are already placed, verified one by one, on the grey plates
+#  themselves. Each is a LABELLED specimen of the fount to be
+#  recognised, in the very medium in which it must be recognised. We cut
+#  them out — seven hundred and sixty-one separate cleanly into figures,
+#  which makes fourteen hundred specimens, at least eighty-four per class
+#  — we group them by shape, and the centres of the groups are the
+#  models.
 #
-#  ET CE QUE CELA VAUT, MESURE. Avec ces modeles, le lecteur relit
-#  les seize planches : 442 numeros retrouves a leur place, 132 poses
-#  AILLEURS, 45 numeros nouveaux. Un sur quatre est faux. C'est trop
-#  pour entrer seul dans numbers.json — la regle de la maison est
-#  qu'un numero sans gros plan vaut mieux qu'un gros plan sur autre
-#  chose — et c'est pourquoi ce lecteur-ci NE TOURNE PAS dans la
-#  chaine. Monter le seuil n'y fait rien : a 0.86 la lecture tombe a
-#  246 justes pour 173 fautes, la mesure a ete faite.
+#  AND WHAT THAT IS WORTH, MEASURED. With these models, the reader
+#  re-reads the sixteen plates: 442 numbers found in their place, 132
+#  laid ELSEWHERE, 45 new numbers. One in four is wrong. That is too many
+#  to enter numbers.json on its own — the rule of the house is that a
+#  number without a close-up is better than a close-up on something else
+#  — and that is why this reader DOES NOT RUN in the chain. Raising the
+#  threshold does nothing: at 0.86 the reading falls to 246 right for 173
+#  wrong; the measurement has been made.
 #
-#  D'OU SON EMPLOI : il ne decide pas, il PROPOSE. On ne lui demande
-#  que les numeros ENCORE MANQUANTS — le reste est deja juge — on
-#  decoupe ce qu'il montre, et l'oeil garde ou jette. Premiere
-#  fournee : quarante-cinq propositions, vingt-six bonnes. Les dix-
-#  neuf autres etaient soit du dessin pris pour un chiffre, soit un
-#  morceau de nombre voisin : « 6 » lu dans le 36, « 5 » dans le 56,
-#  « 3 » dans le 31 et dans le 13. Ce qui est garde entre dans
-#  plates/manual.json, par la meme porte que ce que l'oeil trouve
-#  tout seul.
+#  HENCE ITS USE: it does not decide, it PROPOSES. We ask it only for the
+#  numbers STILL MISSING — the rest are already judged — we cut out what
+#  it shows, and the eye keeps or throws away. First batch: forty-five
+#  proposals, twenty-six good. The other nineteen were either drawing
+#  taken for a figure, or a piece of a neighbouring number: "6" read in
+#  36, "5" in 56, "3" in 31 and in 13. What is kept enters
+#  plates/manual.json, by the same door as what the eye finds on its own.
 #
 #  USAGE
-#      python3 tools/chifri.py aprendar     # refait ciphers-grey.npz
-#      python3 tools/chifri.py proponar     # propose, et decoupe
-#      python3 tools/chifri.py proponar t14-apar-1
+#      python3 tools/ciphers.py aprendar     # rebuilds ciphers-grey.npz
+#      python3 tools/ciphers.py proponar     # proposes, and cuts out
+#      python3 tools/ciphers.py proponar t14-apar-1
 #
-#  La feuille de relecture sort dans plates/proponi.png, et les
-#  places proposees dans plates/proponi.json — a recopier a la main
-#  dans manual.json, celles qu'on garde.
+#  The proofing sheet comes out in plates/proponi.png, and the proposed
+#  places in plates/proponi.json — to be copied by hand into manual.json,
+#  those that are kept.
 # ===================================================================
 
 import json
@@ -65,12 +62,12 @@ RACINE = N.RACINE
 MODELES = RACINE / "tools" / "ciphers-grey.npz"
 PROPONI = RACINE / "plates" / "proponi.png"
 PLACES = RACINE / "plates" / "proponi.json"
-GROUPES = 8            # groupes par classe
-RARE = 0.05            # un groupe sous ce poids ne fait pas un modele
+GROUPES = 8            # groups by class
+RARE = 0.05            # a group below this weight does not make a model
 
 
 def moissonar():
-    """Decoupe, sur les planches grises, les chiffres des numeros surs."""
+    """Cuts out, on the grey plates, the figures of the sure numbers."""
     cat = json.loads((RACINE / "plates" / "numbers.json")
                      .read_text(encoding="utf-8"))
     rec = {str(c): [] for c in range(10)}
@@ -91,11 +88,11 @@ def moissonar():
             tot += 1
             n, lab, st, cen = cv2.connectedComponentsWithStats(
                 enc[y0:y1, x0:x1], 8)
-            # UN CHIFFRE, C'EST UNE COMPOSANTE DE LA TAILLE D'UN CHIFFRE.
-            # On n'apprend que des nombres qui se separent d'eux-memes en
-            # autant de morceaux qu'ils ont de chiffres, tous poses sur la
-            # meme ligne de base : c'est la seule facon d'etre sur de ce
-            # qu'on etiquette.
+            # A FIGURE IS A COMPONENT THE SIZE OF A FIGURE.
+            # We learn only from numbers that separate of themselves into as
+            # many pieces as they have figures, all sitting on the same
+            # baseline: that is the only way to be sure of what one is
+            # labelling.
             comp = [i for i in range(1, n)
                     if 0.60 * h <= st[i, 3] <= 1.5 * h
                     and 0.10 * h <= st[i, 2] <= 1.15 * h
@@ -116,7 +113,7 @@ def moissonar():
 
 
 def aprendar():
-    """Regroupe la moisson : les centres des groupes sont les modeles."""
+    """Groups the harvest: the centres of the groups are the models."""
     rec = moissonar()
     out = {}
     for c in "0123456789":
@@ -135,7 +132,7 @@ def aprendar():
 
 
 def charger():
-    """Met les modeles gris a la place de ceux du pochoir."""
+    """Puts the grey models in place of the stencil's."""
     d = np.load(MODELES)
     noms = [c for c in d.files for _ in range(len(d[c]))]
     pile = np.stack([m for c in d.files for m in d[c]]).reshape(len(noms), -1)
@@ -145,7 +142,7 @@ def charger():
 
 
 def proponar(cles=None):
-    """Relit les planches grises, mais ne rend QUE ce qui manque."""
+    """Re-reads the grey plates, but returns ONLY what is missing."""
     charger()
     cat = json.loads((RACINE / "plates" / "numbers.json")
                      .read_text(encoding="utf-8"))
@@ -186,7 +183,7 @@ def proponar(cles=None):
 
 
 def feuille(prop, cat, cols=6, cote=330, pied=66, rayon=62):
-    """La feuille de relecture : le decoupe, le nom de l'objet, la place."""
+    """The proofing sheet: the cut-out, the object's name, the place."""
     obj = json.loads((RACINE / "plates" / "objects.json")
                      .read_text(encoding="utf-8"))
     def fonte(f, t):

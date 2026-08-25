@@ -1,55 +1,55 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ceni.py — ajoute l'indice de SCÈNE aux clés d'appariement.
+scenes.py — adds the SCENE index to the matching keys.
 
-    python3 tools/ceni.py                 # tous les fichiers de text/
-    python3 tools/ceni.py text/io/13-tabelo-04.tex
+    python3 tools/scenes.py                 # every file in text/
+    python3 tools/scenes.py text/io/13-tabelo-04.tex
 
-POURQUOI. Plusieurs tableaux sont découpés en scènes — « Unesma ceno »,
-« Duesma ceno » ; « Première scène », « Deuxième scène » — et
-**l'auteur remet à 1 la numérotation des alinéas à chaque scène**. Au
-tableau 4, les alinéas vont de 1 à 19 puis reprennent de 1 à 13.
+WHY. Several tables are divided into scenes -- "Unesma ceno", "Duesma
+ceno"; "Première scène", "Deuxième scène" -- and **the author resets the
+paragraph numbering to 1 at each scene**. In table 4, the paragraphs run
+from 1 to 19 and then start again from 1 to 13.
 
-La clé `t04-01-1` désigne donc DEUX alinéas différents. Telle quelle,
-elle fait mentir la page de lecture de deux façons : le dictionnaire
-qui indexe la colonne française n'en garde qu'un — le dernier — et la
-colonne ido se voit apparier le mauvais texte ; et le premier alinéa de
-la scène 2 hérite du vis-à-vis du premier alinéa de la scène 1.
+The key `t04-01-1` therefore designates TWO different paragraphs. As it
+stands, it makes the reading page lie in two ways: the dictionary indexing
+the French column keeps only one of them -- the last -- and the Ido column
+finds itself matched with the wrong text; and the first paragraph of scene
+2 inherits the counterpart of the first paragraph of scene 1.
 
-Ce n'est pas au relevé de gérer cela. Le releveur note ce qu'il voit :
-l'imprimé porte « 1. — », il écrit `01`. C'est ici, en une passe
-déterministe appliquée AUX DEUX LANGUES DE LA MÊME MANIÈRE, que la
-scène entre dans la clé :
+It is not for the transcription to deal with this. The surveyor notes what
+he sees: the print carries "1. —", he writes `01`. It is here, in one
+deterministic pass applied TO BOTH LANGUAGES IN THE SAME WAY, that the
+scene enters the key:
 
-    t04-01-1   ->   t04-c1-01-1      (avant la reprise)
-    t04-01-1   ->   t04-c2-01-1      (après la reprise)
+    t04-01-1   ->   t04-c1-01-1      (before the reset)
+    t04-01-1   ->   t04-c2-01-1      (after the reset)
 
-La reprise se détecte sans rien connaître du texte : le numéro d'alinéa
-DÉCROÎT. C'est le seul signal fiable — le titre de scène, lui, n'est
-pas libellé pareil dans les deux éditions, et certains tableaux en ont
-un sans remettre la numérotation à zéro.
+The reset is detected without knowing anything of the text: the paragraph
+number DECREASES. That is the only reliable signal -- the scene title is
+not worded the same way in the two editions, and some tables have one
+without resetting the numbering.
 
-Les tableaux d'une seule scène ne sont pas touchés : leurs clés restent
-`t01-09-3`, sans indice. Un indice partout aurait été plus régulier,
-mais aurait cassé le tableau 1, déjà relevé et déjà apparié.
+Tables of a single scene are not touched: their keys stay `t01-09-3`,
+without an index. An index everywhere would have been more regular, but
+would have broken table 1, already surveyed and already matched.
 
-L'outil est IDEMPOTENT : une clé qui porte déjà son indice est laissée
-telle quelle. On peut donc le relancer après chaque relevé.
+The tool is IDEMPOTENT: a key that already carries its index is left as it
+is. It can therefore be re-run after every survey.
 """
 import re
 import sys
 from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
-# t<NN>-<NN>-<R>, sans indice de scene deja pose.
+# t<NN>-<NN>-<R>, with no scene index already set.
 CLE = re.compile(r"^(%%K\s+t(\d\d)-)(\d\d)(-\d+[a-z]?)(\s+\S+.*)$")
 
 
 def traiter(chemin, ecrire=True):
     lignes = chemin.read_text(encoding="utf-8").splitlines(keepends=True)
 
-    # Premiere passe : y a-t-il une reprise ? Si non, on ne touche a rien.
+    # First pass: is there a reset? If not, we touch nothing.
     precedent = None
     derniere = None
     reprise = False
@@ -58,7 +58,7 @@ def traiter(chemin, ecrire=True):
         if not m:
             continue
         cle = m.group(1) + m.group(3) + m.group(4)
-        if cle == derniere:      # bloc « suite » : meme clé, pas un alinea neuf
+        if cle == derniere:      # a "continuation" block: same key, not a new paragraph
             continue
         derniere = cle
         n = int(m.group(3))
@@ -68,7 +68,7 @@ def traiter(chemin, ecrire=True):
     if not reprise:
         return 0
 
-    # Seconde passe : on pose l'indice.
+    # Second pass: we set the index.
     scene = 1
     precedent = None
     derniere = None

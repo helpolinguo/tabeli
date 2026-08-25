@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-lekto.py — prepare un feuillet pour la LECTURE (releve a l'oeil).
+reading.py — prepares a leaf for READING (surveying by eye).
 
-Le fac-simile brut ne se lit pas commodement : bandes noires du bord,
-marges larges, contraste faible sur le livret francais, qui est une
-prise de vue et non un passage au scanner. Cet outil recadre sur la
-boite d'encre, redresse le contraste et sort une image a la largeur
-demandee.
+The raw facsimile does not read comfortably: black bands at the edge, wide
+margins, low contrast on the French booklet, which is a photograph and not
+a pass through a scanner. This tool crops to the ink box, restores the
+contrast and outputs an image at the width asked for.
 
-    python3 tools/lekto.py io 7            # un feuillet
-    python3 tools/lekto.py fr 9 13         # une tranche
-    python3 tools/lekto.py io 7 --moitie   # coupe en deux dans la hauteur
+    python3 tools/reading.py io 7            # one leaf
+    python3 tools/reading.py fr 9 13         # a slice
+    python3 tools/reading.py io 7 --moitie   # cut in two across the height
 
-Sortie : tools/.lekto/<langue>-<n>[a|b].png
+Output: tools/.reading/<language>-<n>[a|b].png
 """
 import sys
 from pathlib import Path
@@ -27,7 +26,7 @@ from inventory import bloc, otsu  # noqa: E402
 RACINE = Path(__file__).resolve().parent.parent
 SORTIE = RACINE / "tools" / ".lekto"
 LARGEUR = 1500
-AIR = 0.035          # air laisse autour du bloc, en fraction de sa largeur
+AIR = 0.035          # air left around the block, as a fraction of its width
 
 
 def prepare(langue, n, moitie=False, largeur=LARGEUR):
@@ -39,13 +38,11 @@ def prepare(langue, n, moitie=False, largeur=LARGEUR):
     if b is None:
         return []
     x0, y0, x1, y1 = b
-    # UNE PAGE BLANCHE N'A PAS DE BLOC. Les feuillets 48 et 76 du
-    # livret ido sont des versos vierges : 0,1 % d'encre, du grain de
-    # papier. La detection y rend une boite degeneree — quelques
-    # pixels de large sur toute la hauteur — et la mise a l'echelle sur
-    # 1500 px de large fabriquait alors une image d'un milliard de
-    # pixels, que PIL refusait d'ouvrir. On le dit plutot que de le
-    # subir.
+    # A BLANK PAGE HAS NO BLOCK. Leaves 48 and 76 of the Ido booklet are
+    # blank versos: 0.1 % of ink, the grain of the paper. Detection returns
+    # a degenerate box there -- a few pixels wide over the whole height --
+    # and scaling that to 1500 px of width made an image of a billion
+    # pixels, which PIL refused to open. We say so rather than suffer it.
     if (x1 - x0) < 0.25 * g.shape[1] or (y1 - y0) < 0.10 * g.shape[0]:
         print(f"  {langue} {n} : feuillet vierge (aucun bloc d'encre)")
         return []
@@ -55,9 +52,9 @@ def prepare(langue, n, moitie=False, largeur=LARGEUR):
     x1 = min(g.shape[1] - 1, x1 + air)
     y1 = min(g.shape[0] - 1, y1 + air)
     im = im.crop((x0, y0, x1 + 1, y1 + 1))
-    # Le contraste se reprend sur les CENTILES et non sur les extremes :
-    # une poussiere noire et un eclat blanc suffiraient a annuler
-    # l'etirement s'il se calait sur le minimum et le maximum.
+    # The contrast is taken from the PERCENTILES and not from the extremes:
+    # a speck of black and a fleck of white would suffice to cancel the
+    # stretch if it were set on the minimum and the maximum.
     a = np.asarray(im, float)
     lo, hi = np.percentile(a, [2, 98])
     if hi - lo < 1:
@@ -69,7 +66,7 @@ def prepare(langue, n, moitie=False, largeur=LARGEUR):
     morceaux = [(im, "")]
     if moitie:
         h = im.size[1]
-        rec = int(h * 0.54)          # recouvrement : deux lignes communes
+        rec = int(h * 0.54)          # overlap: two lines in common
         morceaux = [(im.crop((0, 0, im.size[0], rec)), "a"),
                     (im.crop((0, h - rec, im.size[0], h)), "b")]
     chemins = []

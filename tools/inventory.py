@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-inventaire.py — releve, feuillet par feuillet, la GEOMETRIE de chaque
-page des deux fac-similes : boite d'encre, folio, premiere et derniere
-ligne de base, pas des lignes.
+inventory.py — surveys, leaf by leaf, the GEOMETRY of each page of the two
+facsimiles: ink box, folio, first and last baseline, line pitch.
 
-Le principe est celui du projet « Kompleta Gramatiko » : aucune valeur
-du preambule LaTeX ne s'invente, chacune sort d'une mediane prise sur
-l'ensemble des pages pleines.
+The principle is that of the "Kompleta Gramatiko" project: no value in the
+LaTeX preamble is invented, each comes from a median taken over all the
+full pages.
 
-    python3 tools/inventaire.py io          # les 116 feuillets ido
-    python3 tools/inventaire.py fr 1 20     # une tranche
+    python3 tools/inventory.py io          # the 116 Ido leaves
+    python3 tools/inventory.py fr 1 20     # a slice
 
-Sortie : tools/inv-<langue>.json
+Output: tools/inventory-<language>.json
 """
 import json
 import sys
@@ -24,10 +23,10 @@ from PIL import Image
 RACINE = Path(__file__).resolve().parent.parent
 SKAN = RACINE / "skan"
 
-# Seuil de binarisation. Les deux scans sont en niveaux de gris ; le
-# papier du livret ido est piquete, celui du livret francais est sale et
-# gondole. Un seuil fixe sur 255 mordrait sur le grain : on prend le
-# seuil d'Otsu, calcule page par page.
+# Binarisation threshold. Both scans are greyscale; the paper of the Ido
+# booklet is speckled, that of the French booklet dirty and cockled. A
+# fixed threshold on 255 would bite into the grain: we take Otsu's
+# threshold, computed page by page.
 def otsu(g):
     hist = np.bincount(g.ravel(), minlength=256).astype(float)
     tot = hist.sum()
@@ -54,7 +53,7 @@ def otsu(g):
 
 
 def profils(chemin, dpi):
-    """Renvoie (encre, hauteur, largeur, dpi) — encre = tableau booleen."""
+    """Returns (ink, height, width, dpi) — ink = boolean array."""
     im = Image.open(chemin).convert("L")
     g = np.asarray(im)
     s = otsu(g)
@@ -63,16 +62,16 @@ def profils(chemin, dpi):
 
 
 def _plage_centrale(profil, seuil, ecart):
-    """Plus longue plage continue au-dessus du seuil, trous de moins de
-    `ecart` pixels ignores, et qui contienne le milieu du profil.
+    """Longest continuous run above the threshold, gaps of fewer than `gap`
+    pixels ignored, and which contains the middle of the profile.
 
-    LE BORD DU SCAN N'EST PAS DE L'ENCRE. Les deux fac-similes portent,
-    sur un bord ou sur l'autre, une bande noire — l'ombre de la reliure
-    pour le livret ido, le fond du plateau pour le livret francais. Prise
-    telle quelle, la boite d'encre allait donc d'un bord a l'autre de
-    l'image et TOUTES les mesures de justification etaient fausses. On ne
-    retient que la plage qui contient le milieu de la page : la bande de
-    bord en est separee par la marge blanche, large de plus de `ecart`.
+    THE EDGE OF THE SCAN IS NOT INK. Both facsimiles carry, on one edge or
+    the other, a black band -- the shadow of the binding for the Ido
+    booklet, the ground of the platen for the French one. Taken as it is,
+    the ink box therefore ran from one edge of the image to the other and
+    ALL the measurements of the text width were wrong. We keep only the run
+    that contains the middle of the page: the edge band is separated from
+    it by the white margin, wider than `gap`.
     """
     plein = profil > seuil
     n = len(plein)
@@ -104,17 +103,16 @@ def _plage_centrale(profil, seuil, ecart):
 
 
 def bloc(encre, marge_bruit=0.010, ecart=60):
-    """Boite du bloc d'encre, bord du scan ecarte.
+    """Box of the ink block, the edge of the scan set aside.
 
-    En DEUX temps, et l'ordre compte. Les colonnes d'abord : c'est la
-    largeur qui porte la justification, et c'est sur les bords lateraux
-    que se trouvent les bandes noires. Les lignes ENSUITE, mesurees sur
-    les seules colonnes retenues — sans quoi le bord noir, qui court sur
-    toute la hauteur, remplit le profil vertical et la boite prend la
-    page entiere. La plage centrale ne sert qu'aux colonnes : appliquee
-    aux lignes, elle coupait la page a la premiere fenetre blanche un peu
-    large (blanc de titre, fin de section) et la boite commencait au
-    milieu du texte.
+    In TWO stages, and the order matters. The columns first: it is the
+    width that carries the measure, and it is on the lateral edges that the
+    black bands lie. The rows AFTERWARDS, measured on the retained columns
+    alone -- without which the black edge, which runs the whole height,
+    fills the vertical profile and the box takes the whole page. The
+    central-run test serves only for the columns: applied to the rows, it
+    cut the page at the first slightly wide white window (title space, end
+    of section) and the box began in the middle of the text.
     """
     h, w = encre.shape
     colonne = encre.sum(0) / h
@@ -131,13 +129,13 @@ def bloc(encre, marge_bruit=0.010, ecart=60):
 
 
 def lignes_de_base(encre, x0, x1, y0, y1, seuil=0.02):
-    """Ordonnees des lignes de base.
+    """Ordinates of the baselines.
 
-    La ligne de base n'est pas le haut d'une ligne : celui-ci depend des
-    ascendantes que la ligne porte, donc du texte. Le BAS de la masse
-    d'encre d'une ligne, lui, ne bouge pas — sauf descendantes, qui sont
-    minoritaires. On prend donc, pour chaque bande d'encre, l'ordonnee
-    ou le profil retombe sous le seuil.
+    The baseline is not the top of a line: the top depends on the ascenders
+    the line carries, hence on the text. The BOTTOM of a line's mass of
+    ink, on the other hand, does not move -- save for descenders, which are
+    in the minority. We therefore take, for each band of ink, the ordinate
+    at which the profile falls back below the threshold.
     """
     bande = encre[y0:y1 + 1, x0:x1 + 1]
     prof = bande.sum(1) / max(1, x1 - x0)

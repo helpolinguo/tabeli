@@ -1,45 +1,43 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  parigi.py — les paires de renvois qu'une langue a tete finale
-#  sortira a l'envers si l'on n'y prend pas garde
+#  pair_up.py — the pairs of references a head-final language will bring
+#  out reversed if one is not careful
 #
-#  CE N'EST PAS UN CONTROLE, C'EST UNE LISTE DE COURSES. renvoji.py
-#  dit APRES COUP que deux renvois sont sortis dans le mauvais
-#  ordre ; celui-ci le dit AVANT, en lisant l'ido seul. On s'en sert
-#  en ouvrant le fichier, pas en le fermant.
+#  THIS IS NOT A CHECK, IT IS A SHOPPING LIST. cross_refs.py says AFTER
+#  THE FACT that two references came out in the wrong order; this one
+#  says so BEFORE, by reading the Ido alone. It is used on opening the
+#  file, not on closing it.
 #
-#  D'OU IL VIENT. La colonne telougou a coute 2, 0, 9 puis 7
-#  inversions aux tableaux 1 a 4, et le tableau 4 a fini par en
-#  donner la cause exacte : ce n'est pas l'agglutination, c'est
-#  l'ORDRE MODIFICATEUR-TETE. En telougou — comme en tamoul, en
-#  coreen, en japonais, en ourdou, en persan, en goudjarati —, TOUT
-#  ce qui qualifie precede ce qui est qualifie : l'adjectif, le
-#  complement de nom, la relative, le participe, le groupe
-#  instrumental. Donc des qu'un renvoi tombe sur un modificateur et
-#  un autre sur sa tete, les deux sortent a l'envers, mecaniquement,
-#  quelle que soit la phrase.
+#  WHERE IT COMES FROM. The Telugu column cost 2, 0, 9 then 7 inversions
+#  on tables 1 to 4, and table 4 finally gave the exact cause: it is not
+#  agglutination, it is MODIFIER-HEAD ORDER. In Telugu — as in Tamil,
+#  Korean, Japanese, Urdu, Persian, Gujarati — EVERYTHING that qualifies
+#  precedes what is qualified: the adjective, the genitive, the relative
+#  clause, the participle, the instrumental phrase. So as soon as one
+#  reference falls on a modifier and another on its head, the two come out
+#  reversed, mechanically, whatever the sentence.
 #
-#  CE QU'IL RELEVE. Dans chaque bloc de l'ido, les couples de renvois
-#  separes par un mot de RATTACHEMENT — di, dil, de, kun, qua, quan,
-#  por, sur, en, an, proxim — c'est-a-dire ceux ou le second terme
-#  qualifie le premier. Ce sont exactement les paires qu'il faut
-#  retourner : poser la TETE d'abord, rejeter le modificateur
-#  derriere, en apposition ou en relative detachee.
+#  WHAT IT SURVEYS. In each block of the Ido, the couples of references
+#  separated by a word of ATTACHMENT — di, dil, de, kun, qua, quan, por,
+#  sur, en, an, proxim — that is, those in which the second term qualifies
+#  the first. Those are exactly the pairs to be reversed: lay the HEAD
+#  first, throw the modifier behind, in apposition or in a detached
+#  relative.
 #
-#  CE QU'IL NE RELEVE PAS, et c'est voulu : les enumerations. Deux
-#  renvois separes par « e » ou une virgule ne sont pas en rapport
-#  de dependance, et une langue a tete finale les rend dans l'ordre.
-#  C'est pourquoi les tableaux qui enumerent — le marche, la rue —
-#  coutent moins que ceux qui rattachent, dans TOUTES les langues du
-#  releve : le constat vaut pour le cantonais comme pour le marathi.
+#  WHAT IT DOES NOT SURVEY, and that is intended: enumerations. Two
+#  references separated by "e" or a comma are not in a relation of
+#  dependence, and a head-final language renders them in order. That is
+#  why the tables that enumerate — the market, the street — cost less than
+#  those that attach, in ALL the languages of the survey: the observation
+#  holds for Cantonese as for Marathi.
 #
-#  CE QU'IL VAUT : le tableau 5 telougou, le plus long du livret, a
-#  ete ecrit avec sa liste en main et n'a coute AUCUNE inversion au
-#  premier jet, la ou les quatre precedents en avaient coute dix-huit.
+#  WHAT IT IS WORTH: table 5 in Telugu, the longest in the booklet, was
+#  written with its list in hand and cost NO inversion at the first draft,
+#  where the four preceding ones had cost eighteen.
 #
 #  USAGE
-#      python3 tools/parigi.py 5          # les paires du tableau 5
-#      python3 tools/parigi.py            # tous les tableaux
+#      python3 tools/pair_up.py 5          # the pairs of table 5
+#      python3 tools/pair_up.py            # every table
 # ===================================================================
 
 import re
@@ -50,127 +48,120 @@ RACINE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE / "tools"))
 import cross_refs                                              # noqa: E402
 
-# LES MOTS QUI RATTACHENT. « di / dil » est le genitif, « de »
-# l'origine ou la matiere, « kun » l'accompagnement, « qua / quan /
-# di qua » la relative, et les prepositions de lieu font du second
-# terme le cadre du premier. Tous produisent, en langue a tete
-# finale, un modificateur AVANT sa tete.
+# THE WORDS THAT ATTACH. "di / dil" is the genitive, "de" origin or
+# material, "kun" accompaniment, "qua / quan / di qua" the relative, and
+# the prepositions of place make the second term the setting of the
+# first. All produce, in a head-final language, a modifier BEFORE its
+# head.
 LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
          r"super|proxim|avan|dop|inter|tra|per"
-         # ET « ube », L'ADVERBE RELATIF DE LIEU, qui est de la meme
-         # famille que « qua » et que le premier jet avait oublie :
-         # « la planajo (39) ube flugeskas la alaudi (41) » est une
-         # relative qui qualifie la plaine, exactement comme « qua ».
-         # Une inversion du tableau 8 telougou tenait a ce seul mot.
-         # On n'ajoute PAS « kande » ni « dum » : ceux-la introduisent
-         # une circonstancielle, pas un modificateur de nom, et la
-         # seconde inversion du meme tableau — « le poisson happe
-         # l'hamecon des qu'ils plongent leur ligne » — n'etait pas un
-         # rapport modificateur-tete mais un choix de redaction.
+         # AND "ube", THE RELATIVE ADVERB OF PLACE, which is of the same
+         # family as "qua" and which the first draft had forgotten: "la
+         # planajo (39) ube flugeskas la alaudi (41)" is a relative
+         # qualifying the plain, exactly like "qua". One inversion in table
+         # 8 in Telugu hung on that word alone.
+         # We do NOT add "kande" or "dum": those introduce an adverbial
+         # clause, not a modifier of a noun, and the second inversion of the
+         # same table — "the fish takes the hook as soon as they cast their
+         # line" — was not a modifier-head relation but a choice of wording.
          r"|ube)\b"
-         # ET LE PARTICIPE, QUI RATTACHE SANS PREPOSITION. « bubi (35)
-         # preiranta la muzikisti (36) » n'a aucun mot-outil entre les
-         # deux renvois, et c'est pourtant le meme rapport : ce qui
-         # precede est la tete, ce qui suit la qualifie. Trois
-         # inversions du releve tenaient a cette seule forme.
+         # AND THE PARTICIPLE, WHICH ATTACHES WITHOUT A PREPOSITION. "bubi (35)
+         # preiranta la muzikisti (36)" has no function word between the two
+         # references, and yet it is the same relation: what precedes is the
+         # head, what follows qualifies it. Three inversions in the survey hung
+         # on this form alone.
          #
-         # LE PARTICIPE PASSIF RATTACHE EXACTEMENT COMME L'ACTIF, et le
-         # premier jet n'en avait pris que la moitie du paradigme.
-         # « porto-triciklo (80) duktata da grumo (79) », « tamburestro
-         # (42) sequata da la tamburisti (43) », « kontoristo (22)
-         # komisita pri la ponder-aparato (21) » : meme rapport, meme
-         # inversion, et la liste n'en disait rien. Mesure : le livret
-         # passe de 386 a 408 paires — six pour cent de lignes en plus
-         # pour vingt-deux rattachements dont dix-huit sont attributifs.
-         # Comparer au seuil PORTEO plus bas, qu'on a REFUSE d'elargir :
-         # la, c'etait vingt pour cent de lignes pour deux paires. Ce
-         # n'est pas le principe qui differe, c'est le rapport.
+         # THE PASSIVE PARTICIPLE ATTACHES EXACTLY AS THE ACTIVE DOES, and the
+         # first draft had taken only half the paradigm. "porto-triciklo (80)
+         # duktata da grumo (79)", "tamburestro (42) sequata da la tamburisti
+         # (43)", "kontoristo (22) komisita pri la ponder-aparato (21)": same
+         # relation, same inversion, and the list said nothing of it.
+         # Measurement: the booklet goes from 386 to 408 pairs — six per cent
+         # more lines for twenty-two attachments of which eighteen are
+         # attributive. Compare with the REACH threshold below, which we
+         # REFUSED to widen: there it was twenty per cent more lines for two
+         # pairs. It is not the principle that differs, it is the ratio.
          #
-         # LE MINIMUM DE DEUX LETTRES devant la desinence n'est pas de
-         # l'ornement : sans lui le motif prend « tota », « tote »,
-         # « poti », « pinti » — un adjectif, un adverbe et deux noms
-         # qui finissent comme des participes. Quatre bruits nommes,
-         # quatre bruits otes, aucun rattachement perdu.
+         # THE MINIMUM OF TWO LETTERS before the ending is not ornament:
+         # without it the pattern takes "tota", "tote", "poti", "pinti" — an
+         # adjective, an adverb and two nouns that end like participles. Four
+         # named noises, four noises removed, no attachment lost.
          r"|\b\w{2,}(?:ant|int|ont|at|it|ot)[aei]\b")
 
-# La distance au-dela de laquelle deux renvois ne se rattachent plus.
-# CALIBRE SUR LES INVERSIONS REELLEMENT COMMISES aux tableaux 3 et 4
-# telougous, relevees par renvoji.py puis corrigees — dix-huit paires
-# dont on connait la verite :
+# The distance beyond which two references no longer attach.
+# CALIBRATED ON THE INVERSIONS ACTUALLY COMMITTED in tables 3 and 4 in
+# Telugu, reported by cross_refs.py and then corrected — eighteen pairs
+# whose truth we know:
 #
-#     seuil 30 : 13 sur 18 trouvees, 29 lignes a lire
-#     seuil 45 : 16 sur 18 trouvees, 55 lignes a lire
-#     seuil 80 : 16 sur 18 trouvees, 88 lignes a lire
+#     threshold 30: 13 of 18 found, 29 lines to read
+#     threshold 45: 16 of 18 found, 55 lines to read
+#     threshold 80: 16 of 18 found, 88 lines to read
 #
-# On prend 45 : au-dela on paie soixante pour cent de lignes en plus
-# sans rien trouver de neuf. LES DEUX QUI ECHAPPENT SONT NOMMEES,
-# parce qu'un chiffre sans ses exceptions ne veut rien dire :
+# We take 45: beyond that one pays sixty per cent more lines without
+# finding anything new. THE TWO THAT ESCAPE ARE NAMED, because a figure
+# without its exceptions means nothing:
 #
-#   * « la avulo (33) obliviis, ke il esis malada, ke lua reumatismo
-#     fixigas lu an sua stulego (34) » — soixante-dix-sept caracteres
-#     et deux subordonnees entre les deux renvois. Hors d'atteinte de
-#     toute fenetre honnete.
-#   * « sua granda mantelo (4) e ledra zono (5) » — et celle-la n'est
-#     PAS un rapport modificateur-tete : c'est une coordination, que
-#     le telougou rend dans l'ordre. Si elle est sortie a l'envers,
-#     c'est ma faute de redaction, pas celle de la langue, et l'outil
-#     a raison de ne pas la signaler.
+#   * "la avulo (33) obliviis, ke il esis malada, ke lua reumatismo
+#     fixigas lu an sua stulego (34)" — seventy-seven characters and two
+#     subordinate clauses between the two references. Beyond the reach
+#     of any honest window.
+#   * "sua granda mantelo (4) e ledra zono (5)" — and that one is NOT a
+#     modifier-head relation: it is a coordination, which Telugu renders
+#     in order. If it came out reversed, that is my fault of wording,
+#     not the language's, and the tool is right not to report it.
 #
-# Sur les DIX-SEPT paires qui sont vraiment des rapports
-# modificateur-tete, il en trouve donc seize.
+# Of the SEVENTEEN pairs that really are modifier-head relations, it
+# therefore finds sixteen.
 #
-# DEUXIEME MESURE, PRISE APRES COUP AUX TABLEAUX 10 ET 11 TELOUGOUS.
-# Onze tableaux ecrits avec la liste en main ont produit exactement
-# DEUX inversions qu'elle n'avait pas vues, et les deux pour la meme
-# raison : la distance.
+# SECOND MEASUREMENT, TAKEN AFTERWARDS ON TABLES 10 AND 11 IN TELUGU.
+# Eleven tables written with the list in hand produced exactly TWO
+# inversions it had not seen, and both for the same reason: distance.
 #
-#     « ponteto (20), qua komunikigas la parad-esplanado kun
-#       l'arsenalo (21) »            54 caracteres  (tableau 10)
-#     « Tribunalo (22) avan qua extensas su agreabla gardeno
-#       publika (26) »               47 caracteres  (tableau 11)
+#     "ponteto (20), qua komunikigas la parad-esplanado kun
+#       l'arsenalo (21)"            54 characters  (table 10)
+#     "Tribunalo (22) avan qua extensas su agreabla gardeno
+#       publika (26)"               47 characters  (table 11)
 #
-# Le motif, lui, n'a rien laisse passer : dans les deux cas le mot de
-# rattachement est « qua », deja dans LIENO. Porter PORTEO a 55 les
-# rattraperait tous les deux — et ferait passer le livret entier de
-# 408 paires a 490, soit vingt pour cent de lignes en plus. On ne le
-# fait pas : renvoji.py les a attrapees toutes les deux au premier
-# jet, et une liste de courses qui double de longueur cesse d'etre
-# une liste de courses. Le seuil reste a 45, mais les deux distances
-# sont ecrites ici pour que le prochain qui hesite ait le chiffre.
+# The pattern itself let nothing through: in both cases the word of
+# attachment is "qua", already in LINKERS. Raising REACH to 55 would
+# catch them both — and would take the whole booklet from 408 pairs to
+# 490, that is twenty per cent more lines. We do not do it:
+# cross_refs.py caught them both at the first draft, and a shopping list
+# that doubles in length ceases to be a shopping list. The threshold
+# stays at 45, but both distances are written here so that whoever
+# hesitates next has the figure.
 #
-# CE N'EST DONC PAS UN CONTROLE EXHAUSTIF, et il ne pretend pas
-# l'etre : renvoji.py reste l'autorite. Celui-ci fait gagner du
-# temps, pas de la certitude.
+# THIS IS THEREFORE NOT AN EXHAUSTIVE CHECK, and it does not claim to be:
+# cross_refs.py remains the authority. This one saves time, not
+# certainty.
 
 PORTEO = 45
 
 
-# « \cc » N'EST PAS UNE COUPURE, C'EST UNE SOUDURE. Le fac-simile
-# coupe ses mots en fin de ligne, et la transcription le note « \cc »
-# suivi d'un retour a la ligne : « ku\cc\nranta » est UN mot, pas
-# deux. Le premier jet depouillait les macros une par une et laissait
-# donc « ku ranta » — d'ou six paires du releve tenues par des
-# FRAGMENTS qui ressemblaient a des participes : ranta, sante, mante,
-# vinta, dante, danta. Elles etaient justes par accident ; on les tient
-# maintenant pour de bonnes raisons — ekiranta, impulsante, arivinta,
-# fumante, ludante, sidanta. Le raccord doit se faire AVANT le
-# depouillement general, sans quoi la macro est deja devenue une
-# espace.
+# "\cc" IS NOT A BREAK, IT IS A WELD. The facsimile breaks its words at
+# the end of a line, and the transcription notes it "\cc" followed by a
+# newline: "ku\cc\nranta" is ONE word, not two. The first draft stripped
+# the macros one by one and therefore left "ku ranta" — hence six pairs
+# of the survey held by FRAGMENTS that looked like participles: ranta,
+# sante, mante, vinta, dante, danta. They were right by accident; we now
+# hold them for good reasons — ekiranta, impulsante, arivinta, fumante,
+# ludante, sidanta. The rejoining must be done BEFORE the general
+# stripping, or the macro has already become a space.
 #
-# ET LA COUPURE TOMBE SOUVENT AU MILIEU D'UN GRAS, ce que le premier
-# raccord ne franchissait pas : « \VUgras{voya}\cc\n\VUgras{jonti} »
-# rendait encore « voya jonti », parce que l'accolade fermante et la
-# macro rouverte separaient les deux moities. On mange donc aussi la
-# frontiere de groupe, et « voyajonti » redevient un mot. (Le tableau
-# 12 avait conclu que ce debris etait irreductible pour une raison
-# morphologique ; la raison etait bonne mais elle n'etait pas la
-# seule, et celle-ci, elle, se corrigeait.)
+# AND THE BREAK OFTEN FALLS IN THE MIDDLE OF A BOLD PASSAGE, which the
+# first rejoining did not cross: "\VUgras{voya}\cc\n\VUgras{jonti}"
+# still gave "voya jonti", because the closing brace and the reopened
+# macro separated the two halves. We therefore eat the group boundary
+# too, and "voyajonti" becomes one word again. (Table 12 had concluded
+# that this remnant was irreducible for a morphological reason; the
+# reason was good but it was not the only one, and this one could be
+# corrected.)
 _SOLDO = re.compile(r"\}?\\cc(?:plein)?(?![A-Za-z])[ \t\n]*"
                     r"(?:\\(?:VUgras|textit|textbf)\{)?")
 
 
 def _nu(t):
-    """Le texte sans ses macros, pour mesurer une vraie distance."""
+    """The text without its macros, to measure a real distance."""
     t = _SOLDO.sub("", t)
     t = re.sub(r"\\textsuperscript\{\(([^)]*)\)\}", r" ⟨\1⟩ ", t)
     t = re.sub(r"(?<!\w)\((\d{1,3}(?: bis)?|[a-z]{1,2})\)", r" ⟨\1⟩ ", t)
@@ -180,7 +171,7 @@ def _nu(t):
 
 
 def paires(corps):
-    """[(a, b, le mot qui les rattache)] pour un bloc d'ido."""
+    """[(a, b, the word that attaches them)] for a block of Ido."""
     t = _nu(corps)
     marques = [(m.start(), m.end(), m.group(1))
                for m in re.finditer(r"⟨([^⟩]*)⟩", t)]

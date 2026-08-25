@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-grasdiff.py — montre, alinéa par alinéa, où le gras des deux colonnes
-ne se répond pas.
+bold_diff.py — shows, paragraph by paragraph, where the bold of the two
+columns does not answer.
 
-    python3 tools/grasdiff.py t16
-    python3 tools/grasdiff.py t05 --tout
+    python3 tools/bold_diff.py t16
+    python3 tools/bold_diff.py t05 --tout
 
-Les deux livrets mettent en gras la même chose : le mot de vocabulaire
-que le tableau mural illustre. Quand les comptes diffèrent, l'une des
-deux colonnes a tort — et l'outil ne sait pas laquelle. Il pose les
-deux textes l'un sous l'autre, avec leurs passages gras entre
-crochets, pour qu'on aille voir le fac-similé au bon endroit.
+The two booklets set the same thing in bold: the vocabulary word the wall
+table illustrates. When the counts differ, one of the two columns is wrong
+-- and the tool does not know which. It lays the two texts one under the
+other, with their bold passages in brackets, so that one can go and look at
+the facsimile in the right place.
 """
 import re
 import sys
