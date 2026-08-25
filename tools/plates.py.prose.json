@@ -1,0 +1,87 @@
+[
+ {
+  "id": 0,
+  "kind": "docstring",
+  "text": "\"\"\"\nplates.py — prepares the wall tables for the reading page.\n\n    python3 tools/plates.py t01-apar-1 plates/font/page1.pdf\n    python3 tools/plates.py t02-tit-0  plates/font/page2.pdf\n    python3 tools/plates.py --tuto          # what the tool does, in detail\n\nA PLATE IS FILED UNDER A BLOCK KEY, not under a table number. Most\nillustrate the opening -- \"t01-apar-1\" -- but not all: the figure of the\nhuman body goes under \"La Korpo homala.\", hence under t02-tit-0, and the\nplan of the house under the \"(Videz la plano.)\" of table 5, hence under\nt05-apar-2. It is the key that says where the engraving is laid, and a\ntable may carry several.\n\nTWO SPECIES OF PLATE. The wall tables are in two layers (see below); the\nplan of the house and the figure of the human body are pure vector\ndrawings, with neither colour nor image. We rasterise those, at 300 dots\nper inch, and the rest does not change.\n\nWHAT IS IN A TABLE'S PDF. The wall table is not a flat image: it is a\nstack of TWO LAYERS, and therein lies the whole interest.\n\n    below     the colour, in JPEG ~2270x1520\n    above     the engraved line, whose ink is PURE BLACK and whose whole\n              drawing lies in an alpha channel of ~5460x3660\n\nThe engraving is therefore intact and separate from the colour: one can\nredo either without ever touching the other. That is what makes colour\ncorrections possible -- and that is why this tool keeps the two layers\napart in plates/kovri/ before composing them.\n\nTWO OUTPUTS, BECAUSE THERE ARE TWO USES.\n\n    <key>-vido.webp     ~1000px   the overall view laid above the table's\n                                  title. It loads when the table comes\n                                  into view.\n    <key>-detalo.webp   ~2600px   the image from which the close-ups are\n                                  cut. It is fetched only at the FIRST\n                                  click on a number of the table, and then\n                                  serves all the others: a close-up is\n                                  only a re-crop of it, never a new load.\n\nWHY COMPOSE HERE, AND NOT IN THE BROWSER. One could send both layers and\nsuperimpose them on screen; that would even be convenient for redoing the\ncolour. But the measurement decides: at 2600px, the line alone weighs\n1229 kB and the colour 142, when their composite weighs 868. The line is a\nwoodcut, all in hatching, and it compresses far better once the colour is\nunderneath. So we compose here.\n\n    plates/font/     the original PDFs (not versioned: ~100 MB)\n    plates/kovri/    the two layers extracted (not versioned)\n    plates/          the two WebP per table (VERSIONED, ~1 MB)\n\"\"\""
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# The overall view does not need to be large: it fits the width of a\n# column. The detail image carries the close-ups, and it is that which\n# decides their sharpness. 2600px gives a close-up of 400px of source in a\n# box of 700: a little soft, but legible, and it weighs only 868 kB where\n# 3200px weighs 1165.\n# 1200 and not 1000: an ordinary desktop screen shows the engraving over\n# about 1090 points, and an overall view of 1000 therefore fell just\n# below -- the browser then went for the detail image, eight times\n# heavier, for a screen that did not need it. At 1200 it also covers\n# phones, whose triple-density screen calls for a thousand points; only a\n# large Retina screen goes up to the detail."
+ },
+ {
+  "id": 2,
+  "kind": "docstring",
+  "text": "\"\"\"The images of a table PDF, including those in Form XObjects.\n\n    The document must stay OPEN as long as the rendered objects are in use:\n    pikepdf destroys them with it, and one then reaps an \"object of type\n    destroyed\" at the first read.\n    \"\"\""
+ },
+ {
+  "id": 3,
+  "kind": "comment",
+  "text": "# The line is enclosed in a Form; a reading that does not descend into\n# it finds only the colour, and one believes the file is flat."
+ },
+ {
+  "id": 4,
+  "kind": "docstring",
+  "text": "\"\"\"A vector plate, rendered as a line mask.\"\"\""
+ },
+ {
+  "id": 5,
+  "kind": "comment",
+  "text": "# The rendering is black on white; the rest of the tool expects an\n# ALPHA, where white is the ink. We therefore invert, and the two\n# species of plate compose the same way afterwards."
+ },
+ {
+  "id": 6,
+  "kind": "docstring",
+  "text": "\"\"\"(RGB colour, line as alpha) of a table PDF.\"\"\""
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# A PURELY VECTOR PLATE. The plan of the house and the figure of the\n# human body have neither colour nor image: everything there is drawn.\n# We rasterise them, and the line comes out black on white."
+ },
+ {
+  "id": 8,
+  "kind": "comment",
+  "text": "# THE INK IS PURE BLACK: it has been verified, its grey channel is 0\n# everywhere. The whole drawing is therefore in the mask, and it is\n# THAT which must be kept -- at full resolution, whereas the ink\n# itself is only a low-definition black wash."
+ },
+ {
+  "id": 9,
+  "kind": "docstring",
+  "text": "\"\"\"The stretch and the offset that lay the colour on the line.\n\n    THE TWO LAYERS DO NOT SUPERIMPOSE, and the discrepancy is not a simple\n    translation: they do not have the same aspect ratio -- plate 13 gives\n    1.4902 for the colour and 1.4775 for the line. Bringing one to the\n    other's frame therefore walks the edge: the colour falls right in the\n    middle of the image and further and further out as one moves away. That\n    is what the eye sees as the flat tints spilling out of the outline.\n\n    WE MEASURE THE DISPLACEMENT, WE DO NOT GROPE FOR IT. A grid of\n    stretches tried one by one did not converge: the global correlation\n    score is flat, the colour having been painted by hand on the line and\n    not traced. But a displacement measured ZONE BY ZONE says everything:\n    if it grows steadily with x, its slope IS the missing stretch, and its\n    intercept the offset.\n\n    Each zone is registered by normalised correlation of its line with the\n    outline of the colour, and we keep only the half of the zones whose\n    peak clearly dominates the rest of the surface -- a flat of sky or a\n    bare wall says nothing about alignment. A robust line is then fitted\n    through the cloud, outliers rejected; three to five rounds suffice, and\n    we keep the round in which the residual drift and the median deviation\n    are lowest.\n\n    Returns (sx, sy, dx, dy): the colour is brought to (sx * width,\n    sy * height), then translated by (dx, dy).\n    \"\"\""
+ },
+ {
+  "id": 10,
+  "kind": "docstring",
+  "text": "\"\"\"The displacement that remains, zone by zone, with its confidence.\"\"\""
+ },
+ {
+  "id": 11,
+  "kind": "comment",
+  "text": "# The confidence is the peak's lead over the rest of the\n# surface: a wide, soft peak locates nothing."
+ },
+ {
+  "id": 12,
+  "kind": "docstring",
+  "text": "\"\"\"The colour below, the black ink above according to the line's alpha.\n\n    With no colour layer -- a vector plate -- the ground is the paper.\n    \"\"\""
+ },
+ {
+  "id": 13,
+  "kind": "comment",
+  "text": "# The uncovered edge takes up the neighbouring colour rather than\n# white, which would cut sharply under the engraving."
+ },
+ {
+  "id": 14,
+  "kind": "comment",
+  "text": "# The layers stay apart: it is on them that the colours will be redone,\n# the engraving having no need to suffer for it."
+ },
+ {
+  "id": 15,
+  "kind": "comment",
+  "text": "# The catalogue tells the page which tables have an engraving, and in\n# what proportions -- enough to reserve the room before the image is\n# even loaded, without which the page jumps on loading."
+ },
+ {
+  "id": 16,
+  "kind": "comment",
+  "text": "# The source is noted: without it, one no longer knew which plate came\n# from which file, and redoing the series meant comparing dimensions."
+ }
+]

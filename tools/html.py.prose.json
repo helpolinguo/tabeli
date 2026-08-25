@@ -1,0 +1,1452 @@
+[
+ {
+  "id": 0,
+  "kind": "docstring",
+  "text": "\"\"\"\nhtml.py — construit index.html a partir des sources LaTeX.\n\n    python3 tools/html.py\n\nLE TEXTE N'EST SAISI QU'UNE FOIS. Les fichiers de text/ sont la seule\nsource : le PDF et la page de lecture en sortent tous deux. Une\ncorrection de lecture faite dans le .tex se retrouve donc a l'ecran\nsans qu'on ait rien a reporter, et il est impossible que les deux\netats du texte divergent.\n\nCE QUE LA PAGE FAIT DU RELEVE DIPLOMATIQUE. Le PDF garde les coupures\nde ligne du fac-simile ; la page de lecture, elle, ne le peut pas —\nsa colonne n'a pas de largeur fixe. Les deux marques du releve y sont\ndonc traitees ainsi :\n    \\\\nl  (fin de ligne sans trait d'union)  ->  une espace\n    \\\\cc  (fin de ligne AVEC trait d'union)  ->  rien : le mot se\n          recolle, puisque le trait d'union n'appartenait pas au mot\n          mais a la composition.\nC'est la seule maniere de rendre le texte cherchable : « docochambro »\ncoupe en « doco-chambro » ne se trouverait pas.\n\nL'APPARIEMENT DES DEUX COLONNES ne se fait ni par page ni par ligne —\nles deux editions n'ont ni la meme pagination ni le meme nombre de\nlignes — mais par les cles « %%K » du releve, qui reprennent la\nNUMEROTATION D'ALINEA DE L'AUTEUR. Elle est la meme dans les deux\nlivrets, et c'est le seul ancrage qu'ils partagent.\n\"\"\""
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# LE TABLEAU MURAL AU-DESSUS DE SON TEXTE. Le livret explique une\n# gravure que le lecteur n'a pas sous les yeux ; la page la lui donne.\n# Le catalogue est ecrit par tools/gravuri.py, qui prepare les images :\n# il porte les dimensions, et c'est par elles que la page reserve la\n# place avant meme le chargement -- sans quoi le texte sursaute quand\n# l'image arrive."
+ },
+ {
+  "id": 2,
+  "kind": "comment",
+  "text": "# LE RENVOI QUE LA PLANCHE NE PORTE PAS. plates/corrections.json dit,\n# tableau par tableau, quel renvoi lire a la place de quel autre : au\n# tableau 5, « les plates-bandes (150) » sont gravees « 50 ». La source\n# ne bouge pas ; c'est la page de lecture qui montre le bon numero."
+ },
+ {
+  "id": 3,
+  "kind": "docstring",
+  "text": "\"\"\"Les renvois a corriger pour ce tableau : {lu: a lire}.\"\"\""
+ },
+ {
+  "id": 4,
+  "kind": "docstring",
+  "text": "\"\"\"{lu: a lire} pour UN BLOC : les corrections qui valent pour tout\n    le tableau, plus celles que ce bloc-ci porte seul.\n\n    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du\n    tableau 5 est un numero que la planche n'a nulle part : le corriger\n    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la\n    femme de chambre, lui, est un numero qui existe par ailleurs — c'est\n    le savon de l'alinea 2 — et le corriger partout ferait pointer\n    le savon sur la femme de chambre. Une entree dont la cle est celle\n    d'un BLOC ne vaut donc que dans ce bloc.\n    \"\"\""
+ },
+ {
+  "id": 5,
+  "kind": "docstring",
+  "text": "\"\"\"Le nom de l'objet DANS LA LANGUE DE LA COLONNE.\n\n    Le gros plan porte le nom de ce qu'il montre, et ce nom se lit dans\n    la langue du texte qui l'a appele : « fumeyo » a gauche, « fumoir »\n    au milieu, « smoking room » a droite. Les 1693 objets ne sont pas\n    tous nommes dans les trois -- il faut que le substantif soit en\n    gras devant le renvoi, et une edition l'oublie parfois -- d'ou le\n    repli, dans l'ordre : sa langue, l'ido, le francais.\n    \"\"\""
+ },
+ {
+  "id": 6,
+  "kind": "comment",
+  "text": "# ET LA VARIANTE LIT LE NOM DE SA COLONNE. plates/objects.json nomme\n# les objets par colonne — « en », non « en-GB » : les deux editions\n# anglaises y puisent le meme nom, que le calque regional retouche\n# ensuite s'il le faut. Sans ce detour, la variante ne trouvait rien\n# a son code et retombait sur l'ido."
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# UN PLAN N'EST PAS UNE VUE. Le tableau 5 porte, a cote de la maison en\n# coupe, le plan de ses etages : huit numeros s'y lisent, et tous les\n# huit se lisent aussi sur la maison. Le plan les grave un peu plus net,\n# et il gagnait a ce jeu — de sorte que le cabinet d'aisances (20)\n# s'ouvrait sur un rectangle vide entre deux cloisons, quand la maison\n# en coupe en montre la porte, marquee « W. C. 20 ». La nettete du\n# chiffre n'est pas ce qu'on cherche : on cherche la chose. Le plan ne\n# prend donc que les numeros que la vue n'a pas — et il se trouve qu'il\n# n'y en a aucun."
+ },
+ {
+  "id": 8,
+  "kind": "docstring",
+  "text": "\"\"\"{tabelo: {numero: (cle de gravure, x, y, l, h, noms)}}.\n\n    Les positions sont en FRACTION de la planche : la page sert la meme\n    gravure a trois definitions, et le gros plan doit tomber juste sur\n    chacune. Le nom vient du releve des substantifs en gras.\n    \"\"\""
+ },
+ {
+  "id": 9,
+  "kind": "comment",
+  "text": "# LES PLANS EN DERNIER : ils ne prennent que ce qui reste."
+ },
+ {
+  "id": 10,
+  "kind": "comment",
+  "text": "# UN TABLEAU PEUT AVOIR DEUX PLANCHES — le 5 en a deux, le\n# 12 aussi — et le meme numero peut alors etre lu sur les\n# deux. On garde la lecture la mieux etayee, non la\n# derniere venue ; mais un plan ne prend que ce que la vue\n# n'a pas, si bien etaye soit-il."
+ },
+ {
+  "id": 11,
+  "kind": "comment",
+  "text": "# LE RENVOI QUI SAIT OU IL POINTE DEVIENT UN BOUTON. Les autres restent\n# du texte : on ne promet pas un gros plan qu'on ne saurait pas montrer.\n# « 94 bis » N'EST PAS 94. Le graveur du tableau 5 a ajoute deux outils\n# apres coup et les a glisses entre les autres plutot que de renumeroter\n# la planche : le ciseau porte « 94bis », le maillet « 95bis ». Le\n# renvoi garde le mot -- en italique du cote francais, nu du cote ido --\n# et le bouton vise l'objet a part, non son voisin."
+ },
+ {
+  "id": 12,
+  "kind": "comment",
+  "text": "# Les langues de la colonne de droite. « fr » est le texte source\n# (releve sur le fac-simile) ; les autres sont des traductions, et\n# portent la mention qui convient.\n#\n# « differita » : LA TRADUCTION NE VOYAGE PAS AVEC LA PAGE. Le francais\n# est un fac-simile transcrit, il fait partie de l'objet ; l'anglais\n# n'est qu'une commodite de lecture. index.html pese deja 1,4 Mo pour\n# ses deux colonnes, et coudre une troisieme langue dedans le ferait\n# grossir d'autant pour un lecteur qui, neuf fois sur dix, ne la\n# demandera pas. Les langues marquees ici sortent donc dans un fichier\n# a part, lingui/<kodo>.json, et le navigateur ne va le chercher qu'au\n# moment ou l'on choisit la langue dans le menu. La page, elle, garde\n# les cases vides a leur place -- ce qui arrive n'a plus qu'a s'y\n# verser.\n# LES SIX LANGUES OFFICIELLES DE L'ONU, plus l'ido qui est la source.\n# Le francais est du lot par le fac-simile lui-meme ; l'anglais,\n# l'espagnol, le russe, le chinois et l'arabe sont des traductions de\n# 2026, faites sur l'ido et controlees sur le francais.\n# -------------------------------------------------------------------\n# LES VARIANTES REGIONALES : UN CALQUE, NON UNE COLONNE DE PLUS.\n# -------------------------------------------------------------------\n# Deux editions d'une meme langue ne different, dans ce livret, que par\n# quelques dizaines de mots. En faire deux colonnes de seize fichiers\n# reviendrait a recopier trente mille mots pour en changer trente, et\n# surtout a devoir corriger DEUX FOIS chaque coquille trouvee plus tard.\n# La colonne de base ne bouge donc pas, et text/variants.json dit ce\n# que l'autre edition ecrit a la place.\n#\n# ET AUCUNE DES DEUX N'EST PRIVILEGIEE AU MENU. Celle qui porte les\n# fichiers n'y parait pas sous son nom de dossier : « English (UK) » est\n# text/en telle quelle, « English (US) » est la meme passee par la\n# table, et le lecteur n'a pas a savoir laquelle est laquelle."
+ },
+ {
+  "id": 13,
+  "kind": "comment",
+  "text": "# DEUX COLONNES HORS DES DEUX LISTES. Le polonais n'est pas dans\n# les vingt-neuf d'Ethnologue -- il vient loin derriere le\n# bhojpouri -- et n'est pas non plus un des dix-sept pays de\n# l'ido ; l'afrikaans est plus loin encore. Elles sont la parce\n# qu'on les a demandees. Le menu ne les distingue pas des autres :\n# elles ont un nombre de locuteurs, elles prennent leur rang au\n# nombre, et c'est tout ce que _ordre() sait d'elles."
+ },
+ {
+  "id": 14,
+  "kind": "comment",
+  "text": "# LES DIX-SEPT LANGUES DE LA COMMUNAUTE IDISTE SONT CLOSES. Ce qui\n# suit reprend le programme des vingt-neuf langues d'Ethnologue,\n# dans l'ordre des locuteurs premiers, la ou il s'etait arrete —\n# apres le turc, et sans le wu, ecarte pour la raison inscrite\n# dans « ecartita » de text/languages.json."
+ },
+ {
+  "id": 15,
+  "kind": "comment",
+  "text": "# LE CANTONAIS S'ECRIT, ET C'EST POUR CELA QU'IL EST LA. Il n'a\n# pas d'academie, mais il a ses caracteres — 嘅, 喺, 唔, 咗, 佢,\n# 睇 — et Hong Kong les imprime tous les jours, dans ses journaux,\n# ses romans et ses sous-titres. La colonne s'ecrit donc en\n# cantonais ECRIT, non en chinois standard lu a la cantonaise :\n# sans quoi elle ferait double emploi avec « zh » a la graphie\n# pres, ce qui est exactement le motif pour lequel le WU a ete\n# ecarte."
+ },
+ {
+  "id": 16,
+  "kind": "comment",
+  "text": "# L'ARABE EGYPTIEN S'ECRIT, ET IL S'IMPRIME. Il n'a pas\n# d'academie non plus, mais il a ses romans, son theatre, ses\n# sous-titres, ses paroles de chansons et son encyclopedie ; et\n# il a une grammaire que l'arabe standard n'a pas — ده pour\n# هذا, مش pour ليس, la negation en ما...ش, le presentatif بـ\n# devant l'inaccompli, le futur en حـ, et بتاع pour l'annexion.\n# La colonne s'ecrit donc en egyptien ECRIT, non en arabe\n# standard lu au Caire : c'est la meme condition qui a fait la\n# colonne cantonaise et qui a fait ecarter le wu."
+ },
+ {
+  "id": 17,
+  "kind": "comment",
+  "text": "# LE TELOUGOU EST DRAVIDIEN, ET C'EST LA PREMIERE FOIS. Les seize\n# colonnes indiennes precedentes — hindi, bengali, pendjabi,\n# marathi — sont indo-europeennes et cousines de l'ido de loin ;\n# celle-ci ne l'est pas du tout. Elle agglutine ses cas au lieu\n# de les postposer, elle n'a pas de genre grammatical mais une\n# opposition humain / non-humain, et son verbe finit la phrase\n# sans exception. Aucune autre colonne du releve n'est batie\n# ainsi."
+ },
+ {
+  "id": 18,
+  "kind": "comment",
+  "text": "# LE COREEN N'A DE PARENTE AVEC AUCUNE AUTRE COLONNE. Le japonais\n# lui ressemble par l'ordre des mots et par rien d'autre ; le\n# chinois et le cantonais lui ont prete son ancien lexique savant\n# et pas sa grammaire. Il s'ecrit en outre dans un alphabet qui\n# n'est partage par personne, ce qui rend la colonne facile a\n# controler : un ideogramme dans text/ko est une faute, et\n# kolonoj.py le releve."
+ },
+ {
+  "id": 19,
+  "kind": "comment",
+  "text": "# LE TAMOUL EST LA DEUXIEME COLONNE DRAVIDIENNE, apres le\n# telougou, et la premiere a avoir un voisin qui LUI ressemble :\n# le telougou est de sa famille, non de son alphabet. La menace\n# n'est donc pas graphique — chaque colonne dravidienne a son\n# ecriture — mais lexicale, et kolonoj.py la prend par la ou elle\n# se voit."
+ },
+ {
+  "id": 20,
+  "kind": "comment",
+  "text": "# L'OURDOU EST LA PREMIERE COLONNE A DEUX VOISINES DE NATURES\n# DIFFERENTES. Il partage la LANGUE avec le hindi — meme\n# grammaire, meme lexique de base, deux ecritures et deux\n# registres savants — et l'ECRITURE avec le pendjabi\n# chahmoukhi, qui est une autre langue. kolonoj.py le defend\n# donc sur deux fronts a la fois."
+ },
+ {
+  "id": 21,
+  "kind": "comment",
+  "text": "# L'INDONESIEN N'A PAS DE VOISINE DANS LE RELEVE, ET C'EST\n# JUSTEMENT LA SA DIFFICULTE. Le malais de Malaisie est la meme\n# langue a un standard pres, il n'est dans aucune colonne, et\n# rien ne le signalerait a l'oeil : kolonoj.py le tient donc par\n# le LEXIQUE. S'y ajoute un second front, qui est une DATE :\n# l'orthographe d'avant la reforme de 1972 — « boekoe »,\n# « djalan », « tjelana » — est exactement celle qu'un livret de\n# 1926 aurait employee, et c'est le piege propre a cette colonne."
+ },
+ {
+  "id": 22,
+  "kind": "comment",
+  "text": "# LE JAVANAIS EST LA PREMIERE COLONNE DONT LA VOISINE VIENT\n# D'ETRE ECRITE PAR LA MEME MAIN. L'indonesien, qui manquait au\n# releve quand on defendait la colonne « id », est maintenant\n# dans text/id — et le danger s'est retourne : ce n'est plus\n# l'absence de la voisine, c'est sa presence a la ligne\n# precedente. S'y ajoute ce qu'aucune colonne n'avait encore\n# eu : des NIVEAUX DE LANGUE grammaticalises (ngoko, krama),\n# deux lexiques paralleles dans une seule langue."
+ },
+ {
+  "id": 23,
+  "kind": "comment",
+  "text": "# LE PERSAN A DEUX VOISINES DANS LE RELEVE ET ELLES SONT TOUTES\n# LES DEUX DANS SON ALPHABET : l'ourdou, qui lui a pris sa\n# graphie et la moitie de son lexique savant, et l'arabe, qui lui\n# a donne l'alphabet et l'autre moitie. La difference se joue\n# donc au CARACTERE autant qu'au mot — ی contre ي, ک contre ك,\n# ۱ contre ١ —, et ces differences-la sont invisibles a l'oeil."
+ },
+ {
+  "id": 24,
+  "kind": "comment",
+  "text": "# LE HAOUSSA EST LA PREMIERE COLONNE DU RELEVE QUI S'ECRIVE EN\n# LETTRES LATINES ET DONT LES SIGNES DIACRITIQUES SOIENT DES\n# LETTRES A PART ENTIERE. ɓ, ɗ, ƙ et ƴ ne sont pas des b, d, k, y\n# ornes : ce sont quatre lettres de l'alphabet boko, et « kofa »\n# n'est pas « ƙofa ». Un clavier ordinaire ne les donne pas, et un\n# correcteur les rend volontiers a leur forme nue : la colonne se\n# defend donc de sa propre saisie, ce qu'aucune autre n'avait eu a\n# faire."
+ },
+ {
+  "id": 25,
+  "kind": "comment",
+  "text": "# LE GUJARATI A TROIS VOISINES DANS LE RELEVE ET ELLES SONT DE\n# TROIS NATURES : le hindi, qui est la langue d'Etat et partage\n# avec lui tout son fonds sanskrit ; le marathi, qui est le\n# voisin du sud et partage la meme famille d'ecriture ; l'ourdou\n# et le persan, qui lui ont laisse le lexique du Sultanat. Mais\n# sa DIFFICULTE PROPRE est ailleurs : l'ecriture gujaratie est la\n# devanagari SANS LA BARRE, lettre pour lettre ou presque, et un\n# caractere devanagari glisse dans un mot gujarati se lit sans\n# qu'on le remarque."
+ },
+ {
+  "id": 26,
+  "kind": "comment",
+  "text": "# LA PREMIERE COLONNE DONT LES DEUX VOISINES SONT LA MEME LANGUE\n# QU'ELLE. Le persan defendait son alphabet contre deux langues\n# etrangeres qui l'avaient emprunte ; celui-ci defend un REGISTRE\n# contre deux autres registres de l'arabe, tous les trois deja\n# dans le releve : « ar » le standard, « arz » l'egyptien. Le\n# danger n'est pas qu'un mot etranger se glisse, c'est que la\n# main remonte d'elle-meme vers la forme ecrite qu'on a apprise\n# a l'ecole."
+ },
+ {
+  "id": 27,
+  "kind": "comment",
+  "text": "# LA SEULE COLONNE DONT LA VOISINE NIE QU'ELLE EXISTE. Toutes les\n# autres se defendaient contre une langue qui les reconnaissait\n# comme distinctes ; le bhojpouri, lui, est administre en Inde\n# comme un « dialecte du hindi », alors qu'il a plus de cinquante\n# millions de locuteurs. Il partage avec le hindi l'ecriture,\n# l'essentiel du lexique et une bonne part de la morphologie : il\n# n'y a donc AUCUNE defense possible au caractere. Ce qui separe\n# les deux langues, c'est le verbe — la copule बा, la negation\n# नइखे, le passe en -ल."
+ },
+ {
+  "id": 28,
+  "kind": "comment",
+  "text": "# LE FRANCAIS DU CANADA EST UNE TRADUCTION, NON UNE VARIANTE. La\n# colonne « fr » est la transcription d'un fac-simile de 1926 et la\n# source ne bouge pas : un calque regional pose sur elle donnerait un\n# livret de 1926 ecrit avec les mots du Quebec d'aujourd'hui, un\n# objet qui n'a jamais existe. Celle-ci se traduit donc de l'ido,\n# comme les trente autres, et se range avec elles."
+ },
+ {
+  "id": 29,
+  "kind": "comment",
+  "text": "# LA VARIANTE PREND SA PLACE DANS LA LISTE, JUSTE APRES SA BASE : au\n# menu les deux editions d'une langue se suivent, et la base y parait\n# sous son nom regional. Tout le reste de la page les traite comme\n# n'importe quelle autre colonne — meme sac « differita », meme\n# lingui/<kodo>.json, meme compte de blocs."
+ },
+ {
+  "id": 30,
+  "kind": "comment",
+  "text": "# LES TABLES TENUES A LA MAIN CONNAISSENT LA COLONNE, NON LA VARIANTE.\n# plates/corrections.json corrige « en » : la correction porte sur ce que le\n# releve a ecrit, et les deux editions anglaises la veulent toutes deux.\n# On traduit donc le code de la variante en code de colonne avant toute\n# consultation de table."
+ },
+ {
+  "id": 31,
+  "kind": "comment",
+  "text": "# L'ORDRE DU MENU NE SE TIENT PLUS A LA MAIN. Les langues sortaient\n# jusqu'ici dans l'ordre ou on les avait ecrites, c'est-a-dire dans\n# l'ordre ou elles avaient ete traduites : le lecteur ne pouvait pas\n# deviner ou chercher la sienne, et chaque colonne nouvelle allongeait\n# la liste par le bas. On la trie donc, et selon une regle qui se\n# verifie :\n#\n#   1. LE FRANCAIS D'ABORD, parce qu'il n'est pas une traduction. Le\n#      livret francais est l'autre original ; son fac-simile est dans\n#      ce depot comme celui de l'ido.\n#   2. PUIS LES LANGUES CONSTRUITES, dans l'ordre ou l'usage idiste les\n#      nomme : l'esperanto, puis l'interlingua. Elles n'ont pas de\n#      locuteurs premiers a compter, et ce sont les plus proches\n#      parentes de la langue du livret.\n#   3. PUIS LES COLONNES QUE LE REGISTRE PORTE « hors liste », c'est-a-dire\n#      celles qu'on ecrit sans les avoir pour langue maternelle. L'arabe\n#      standard est la seule du menu dans ce cas : Ethnologue ne lui donne\n#      pas de chiffre parce qu'il n'a presque pas de locuteurs premiers —\n#      ils sont comptes sur ses varietes, l'egyptien (83) et le levantin\n#      (55), qui sont deux colonnes de ce depot. Ce n'est donc PAS une\n#      langue sans chiffre par accident, c'est une langue declaree hors du\n#      tableau, et le registre le dit lui-meme dans son preambule.\n#   4. PUIS LES AUTRES, PAR NOMBRE DE LOCUTEURS PREMIERS, du plus grand\n#      au plus petit. Le chiffre n'est pas une opinion : il est dans\n#      text/languages.json, tire d'Ethnologue, et c'est ce meme fichier\n#      qui sert de registre a la colonne. Une langue sans chiffre passe\n#      en queue plutot qu'en tete.\n#\n# Le tri LIT le registre au lieu de le repeter : ajouter une colonne ne\n# demande donc plus de choisir sa place, et la place ne peut plus\n# mentir sur le chiffre.\n#\n# LE RANG 3 A ETE AJOUTE APRES COUP, ET IL REPARE UN DEFAUT MESURE.\n# L'arabe standard sortait DERNIER du menu, cinquante-troisieme sur\n# cinquante-trois, sous le romanche et ses quarante mille locuteurs.\n# La cause n'etait pas le registre, qui a raison de ne pas lui donner de\n# chiffre, mais un desaccord entre deux endroits du meme fichier :\n# SEN_NOMBRO, plus bas, declarait QUATRE colonnes legitimement sans\n# chiffre — fr, eo, ia, ar — mais le tri n'en plaçait que trois. Le\n# francais est pris au rang 1, l'esperanto et l'interlingua au rang 2 ;\n# l'arabe, lui, ne tombait sous aucune regle et finissait donc dans la\n# branche par defaut, « une langue sans chiffre passe en queue ».\n# UNE EXEMPTION QUI N'EST PAS AUSSI UNE PLACE N'EXEMPTE DE RIEN : elle\n# fait seulement taire le controle pendant que le defaut s'installe.\n# On lit donc « stato » comme on lisait « milioni », dans le meme\n# registre et par la meme cle, et SEN_NOMBRO se DEDUIT au lieu de se\n# tenir a la main — un rang de plus ne peut plus etre oublie."
+ },
+ {
+  "id": 32,
+  "kind": "docstring",
+  "text": "\"\"\"{kodo: valeur du champ}, d'apres text/languages.json.\"\"\""
+ },
+ {
+  "id": 33,
+  "kind": "docstring",
+  "text": "\"\"\"{kodo: millions de locuteurs premiers}, d'apres le registre.\"\"\""
+ },
+ {
+  "id": 34,
+  "kind": "docstring",
+  "text": "\"\"\"{kodo: etat de la colonne}, d'apres le registre.\"\"\""
+ },
+ {
+  "id": 35,
+  "kind": "comment",
+  "text": "# LE CHIFFRE SE CHERCHE SOUS LE CODE DE LA COLONNE, NON SOUS CELUI DE\n# L'AFFICHAGE, et c'est la faute qui a defait l'ordre du menu quand les\n# variantes regionales sont arrivees. poser_varianti() remplace le code\n# « en » par « en-GB » et « en-US » ; le registre, lui, ne connait que\n# « en ». La recherche echouait donc, les deux editions anglaises\n# passaient pour des langues sans locuteurs, et la regle « une langue\n# sans chiffre passe en queue » les y envoyait. Six langues sur sept y\n# sont tombees d'un coup — le chinois (988 millions), l'espagnol (487),\n# l'anglais (372), le portugais (252), l'allemand (76), le neerlandais\n# (25) — c'est-a-dire les quatre plus parlees du livret, rangees apres\n# le romanche.\n#\n# On cherche donc dans cet ordre :\n#   1. « dosiero », qui est le code de la COLONNE — celui des fichiers\n#      et du registre — et que poser_varianti() pose sur les deux\n#      editions ;\n#   2. a defaut le code lui-meme ;\n#   3. a defaut la sous-etiquette de langue, avant le tiret : « fr-CA »\n#      compte avec le francais. Une colonne regionale qui n'est pas une\n#      variante — le quebecois en est une — trouve ainsi sa place sans\n#      qu'on ait a l'inscrire au registre d'Ethnologue, ou elle n'a\n#      rien a faire."
+ },
+ {
+  "id": 36,
+  "kind": "comment",
+  "text": "# LES DEUX EDITIONS D'UNE LANGUE ONT LE MEME CHIFFRE et se suivent\n# donc forcement. Entre elles on tranche par le code, qui est\n# neutre : la colonne qui porte les fichiers n'a aucun privilege,\n# comme text/variants.json le pose en principe."
+ },
+ {
+  "id": 37,
+  "kind": "comment",
+  "text": "# UNE COLONNE SANS CHIFFRE TOMBE EN QUEUE SANS RIEN DIRE, et c'est\n# precisement ce qui s'est produit. Le tri ne peut pas se controler\n# lui-meme — il redonnerait le meme resultat faux — mais on peut\n# controler SA MATIERE : toute colonne doit se retrouver dans le\n# registre. Quatre n'ont pas de chiffre et c'est voulu : le francais,\n# qui passe en tete parce qu'il n'est pas une traduction ; l'esperanto\n# et l'interlingua, qui n'ont pas de locuteurs premiers a compter ;\n# l'arabe standard, qui n'en a presque pas et que text/languages.json\n# porte « hors liste ». Toute autre est une faute de branchement."
+ },
+ {
+  "id": 38,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  1. LECTURE DES SOURCES LaTeX\n# -------------------------------------------------------------------"
+ },
+ {
+  "id": 39,
+  "kind": "docstring",
+  "text": "\"\"\"Contenu de l'accolade qui commence a s[i] == '{'. Renvoie\n    (contenu, index apres l'accolade fermante). Les accolades\n    imbriquees sont comptees : \\\\VUgras{Ka\\\\cc rolus} contient lui-meme\n    des macros, et une simple recherche du prochain '}' les couperait.\"\"\""
+ },
+ {
+  "id": 40,
+  "kind": "comment",
+  "text": "# La marque d'un mot coupe par une fin de PAGE. Elle voyage dans le\n# HTML rendu jusqu'a fusionner(), qui recolle les deux moities.\n# LE GRAS MARQUE UN TERME, ET UN MOT-OUTIL N'EN EST PAS UN. Le\n# compositeur l'a parfois pose a cote : « il tenas \\VUgras{la} vishilo »\n# met le gras sur l'article et laisse le substantif maigre, « \\VUgras\n# {Ica} docisto » sur le demonstratif. On ne deplace pas le gras — le\n# fac-simile ne dit pas jusqu'ou il devrait porter —, on l'ote : la\n# page de lecture n'appuie plus sur « la », « Ica », « ta », « quale »,\n# « e ». Les cinq traductions avaient suivi l'ido mot pour mot, et\n# disaient « \\VUgras{This} teacher », « \\VUgras{Los} viejos coches »,\n# « \\VUgras{Этот} учитель » : la meme liste les corrige.\n#\n# LA REGLE S'APPLIQUE APRES LE RECOLLAGE DES BALISES, et il le faut :\n# « \\VUgras{quadra}\\cc \\VUgras{to} » finit sur un « to » qui est un\n# pronom ido — mais ce n'est pas un mot, c'est la queue de\n# « quadrato », et le recollage l'a deja rendue au sien."
+ },
+ {
+  "id": 41,
+  "kind": "comment",
+  "text": "# ido"
+ },
+ {
+  "id": 42,
+  "kind": "comment",
+  "text": "# francais"
+ },
+ {
+  "id": 43,
+  "kind": "comment",
+  "text": "# anglais"
+ },
+ {
+  "id": 44,
+  "kind": "comment",
+  "text": "# espagnol"
+ },
+ {
+  "id": 45,
+  "kind": "comment",
+  "text": "# russe"
+ },
+ {
+  "id": 46,
+  "kind": "comment",
+  "text": "# arabe"
+ },
+ {
+  "id": 47,
+  "kind": "comment",
+  "text": "# chinois : le demonstratif y traine son classificateur, et « 这位 »\n# est un mot d'un seul tenant."
+ },
+ {
+  "id": 48,
+  "kind": "docstring",
+  "text": "\"\"\"Convertit un fragment LaTeX du releve en HTML.\"\"\""
+ },
+ {
+  "id": 49,
+  "kind": "comment",
+  "text": "# LES COMMENTAIRES D'ABORD. Un « % » ouvre un commentaire jusqu'a la\n# fin de la ligne, et le releve en use : le contenu d'une note\n# s'ouvre par « {% » pour que LaTeX n'y prenne pas d'espace, et se\n# ferme par « .% » pour la meme raison. Sans les oter, le texte\n# rendu commencait par « % (*) Por la baptonomi... » — et le\n# marqueur d'appel, precede de ce pourcent, n'etait plus reconnu :\n# aucune note ne se reliait a son appel.\n# Le pourcent litteral s'ecrit « \\% » dans le releve ; on le\n# protege avant de couper, et on le rend apres."
+ },
+ {
+  "id": 50,
+  "kind": "comment",
+  "text": "# LE FAC-SIMILE NE GRASSE QUE LA SECONDE MOITIE D'UN MOT QUE LA\n# LIGNE A COUPE. « ...e ban\\cc \\VUgras{doliera vildo-sako} » : le\n# composeur ouvre son gras a la REPRISE, parce que le mot commence\n# sur la ligne d'avant et que la ligne d'avant est deja composee.\n# Le mot est un pourtant, et la page de lecture, qui ne coupe pas\n# au meme endroit, donnait « ban<b>doliera vildo-sako</b> ».\n# C'est le meme accident que « pesko-\\VUgras{barketi} », traite\n# plus bas, a ceci pres que la soudure ne se fait pas sur un trait\n# d'union mais sur une fin de ligne : le morceau de gauche n'a\n# aucune marque, et il faut donc le reconnaitre a ce qu'il TOUCHE\n# le \\VUgras qui suit, sans blanc entre eux.\n#\n# DIX ENDROITS, ET TOUS DANS LES DEUX RELEVES. « bandoliera »,\n# « damzelo », « portreto », « kulbutas », « buketo », « kabini »,\n# « dolorigas », « generalo » cote ido ; « precedent » et\n# « baigneurs » cote francais. La regle ne peut pas s'egarer dans\n# une traduction : « \\cc » n'existe que la ou l'on transcrit une\n# ligne imprimee, et les seize colonnes traduites n'en ont pas un.\n#\n# ON EXIGE UN BLANC AVANT LE MORCEAU, faute de quoi la regle\n# mordrait sur le « \\VUgras{chas}\\cc \\VUgras{gardisto} » du meme\n# tableau, ou les DEUX moities portent deja leur gras et ou c'est\n# la reunion des balises, plus bas, qui fait le travail."
+ },
+ {
+  "id": 51,
+  "kind": "comment",
+  "text": "# Les coupures : elles portent la logique du releve.\n# \\ccplein D'ABORD, ET POUR DEUX RAISONS. C'est \\cc et \\parplein a\n# la fois : la page finit sur un mot coupe, et l'alinea reprend au\n# feuillet suivant. Otee apres \\cc, la macro perdait ses deux\n# premieres lettres et laissait « plein » dans le texte — la page\n# de lecture donnait « dro plein medaro » pour « dromedaro ». Elle\n# laisse ici une marque que fusionner() lira : le mot est coupe, la\n# reprise se recolle SANS blanc."
+ },
+ {
+  "id": 52,
+  "kind": "comment",
+  "text": "# ET « \\\\cc » SUIVI DE « \\\\parplein » VAUT « \\\\ccplein ». Les deux\n# macros ecrites a la suite font ce que \\\\ccplein fait d'un coup, et\n# onze pages des deux livrets sont composees ainsi. Le PDF n'y voit\n# que du feu ; la page de lecture, elle, ne trouvait pas la marque\n# de coupure, et fusionner() recollait AVEC un blanc : « klo vagas »\n# pour « klovagas », « ma traco » pour « matraco », « tran quila »\n# pour « tranquila », « efekti gas » pour « efektigas », « par\n# ticioni » pour « particioni », « yuni no » pour « yunino »,\n# « kon servar » pour « konservar ». Sept mots de l'ido et quatre du\n# francais, coupes en deux a l'ecran par la seule fin de feuillet."
+ },
+ {
+  "id": 53,
+  "kind": "comment",
+  "text": "# UN TRAIT D'UNION EN FIN DE LIGNE NE PREND PAS DE BLANC APRES LUI.\n# \\nl marque une fin de ligne SANS trait d'union compose : le\n# fac-simile n'en ajoute pas, parce que le mot en porte deja un.\n# « mason-\\nl servisto », « pluv-\\nl kanali », « lad-(if-)\\nl isto »\n# sont un seul mot chacun, et l'espace les coupait en deux a\n# l'ecran : « lad-(if-) isto ». On soude donc quand la ligne finit\n# sur un trait d'union — le trait, lui, reste : « kroket-partio »\n# s'ecrit ainsi, et rien ne doit le souder."
+ },
+ {
+  "id": 54,
+  "kind": "comment",
+  "text": "# LE COMPOSE PREND TOUT LE GRAS. Le fac-simile n'en met parfois\n# qu'au second membre — « pesko-\\VUgras{barketi} », « (muton)-\n# \\VUgras{trupo} », et « mason-\\nl \\VUgras{servisto} » quand la\n# ligne coupe le trait. Le mot est un pourtant : deux lignes plus\n# bas le meme fac-simile compose « \\VUgras{tekto-kanali} » d'un\n# seul tenant. Le premier membre porte le sens — le troupeau est de\n# moutons, la houlette est de berger — et l'objet se nommait\n# « po », « bastono ». On etend donc le gras a gauche, apres avoir\n# ote les coupures : les deux cas se ramenent alors a un seul."
+ },
+ {
+  "id": 55,
+  "kind": "comment",
+  "text": "# Macros a PLUSIEURS arguments : on dit combien il en faut lire et\n# lequel porte le texte. \\VUcentre{corps}{interlettrage}{texte} :\n# les deux premiers sont des mesures du fac-simile, ils n'ont rien\n# a faire dans la page de lecture, mais il faut les LIRE, sinon\n# leur contenu tombe dans le texte — c'est ce qui donnait\n# « 12.6pt{120}{EXPLIKO - LIBRETO} » au premier essai.\n# Le troisieme membre est l'habillage HTML du texte garde : les\n# lignes d'apparat d'une ouverture de tableau sont des LIGNES, et\n# doivent le rester a l'ecran — sans quoi « EXPLIKO - LIBRETO DI la\n# Delmas - tabeli helpanta UNESMA SERIO » se lit d'un trait.\n# \\VUpk ne compose rien autour de son texte \\u2014 le bloc qui la porte\n# le centre deja \\u2014 mais c'est une LIGNE d'apparat, et la table des\n# matieres doit la compter comme telle : les titres des tableaux 8,\n# 11, 12, 13 et 16 passent par elle, et non par \\VUtitre. Sans\n# marque, ils etaient invisibles a la table, qui annoncait ces\n# tableaux sous leur seul numero. On la marque donc d'une classe\n# SANS STYLE, \\u00ab pk \\u00bb : le rendu ne change pas d'un pixel, mais la\n# ligne se compte. Le nom de la classe doit rester accorde a\n# LIGNE_AP, qui la relit.\n# LE CORPS DE CARACTERE SE GARDE, LUI. Les autres mesures du\n# fac-simile ne servent qu'a l'imprime, mais le corps dit si deux\n# lignes d'apparat sont une seule et meme chose : le titre du tableau\n# 6 tient sur deux lignes de 11.4pt, celui du 13 sur deux lignes de\n# 10.2pt, et la table les annoncait comme un titre suivi d'une\n# section. Une ligne de corps DIFFERENT, elle, commence autre chose\n# \\u2014 au tableau 2, \\u00ab La Korpo homala. \\u00bb est en 13.2pt sous un titre\n# en 11.4pt. On le depose donc dans data-korpo, que la table relit."
+ },
+ {
+  "id": 56,
+  "kind": "comment",
+  "text": "# \\fontsize{corps}{interligne} : deux mesures du fac-simile,\n# rien a garder. Non declaree, elle passait pour une macro\n# inconnue a UN argument : le corps tombait dans le texte et\n# l'interligne restait entre accolades \\u2014 le titre de la\n# Balneyo s'annoncait \\u00ab 10.2pt{10.2pt}[40]{La Balneyo.} \\u00bb."
+ },
+ {
+  "id": 57,
+  "kind": "comment",
+  "text": "# L'ARGUMENT OPTIONNEL SE LIT AUSSI. \\textls[40]{...}\n# porte son interlettrage entre crochets ; non lu, il\n# sortait tel quel — « [40]{La Balneyo.} ». C'est une\n# mesure du fac-simile : on la lit et on la jette."
+ },
+ {
+  "id": 58,
+  "kind": "comment",
+  "text": "# Macro inconnue : on la laisse tomber avec son argument."
+ },
+ {
+  "id": 59,
+  "kind": "comment",
+  "text": "# \\, \\; \\: — espaces fines"
+ },
+ {
+  "id": 60,
+  "kind": "comment",
+  "text": "# UN GROUPE N'EST PAS DU TEXTE. Quelques endroits du releve\n# composent a la main ce que les macros \\VU font ailleurs :\n# « {\\centering\\textit{(Videz la plano.)}\\par} ». Les accolades y\n# ouvrent une PORTEE LaTeX, elles ne s'impriment pas ; laissees\n# telles quelles, elles sortaient dans la page et dans la table\n# des matieres — « {(Videz la plano.)} ». On lit le groupe et on\n# ne garde que son contenu. L'accolade litterale, elle, s'ecrit\n# « \\{ » dans le releve, et le cas est traite juste au-dessus."
+ },
+ {
+  "id": 61,
+  "kind": "comment",
+  "text": "# UN MOT COUPE PAR LA COMPOSITION RESTE UN MOT. Quand la coupure\n# tombe a l'interieur d'un passage en gras, le releve porte deux\n# \\\\VUgras — un par ligne — et la conversion naive en rendait deux\n# balises : « <b>ar</b><b>moro</b> », soit « armoro » aux yeux mais\n# deux mots pour la recherche du navigateur, qui ne trouvait plus\n# « armoro ». On recolle donc les balises jointives. Deux appels de\n# renvoi separes par la coupure — « (9, 11, » et « 12) » — sont le\n# meme renvoi, et se reunissent de meme, l'espace en plus.\n# La regle vaut pour les balises JOINTIVES seulement. Premiere\n# version, elle tolerait l'espace entre les deux — et « une\n# \\\\VUgras{armoire}\\\\nl \\\\VUgras{vitree} », deux mots gras sur deux\n# lignes du fac-simile francais, devenait « armoirevitree ».\n# L'espace distingue les deux cas : \\\\cc n'en laisse pas, \\\\nl si."
+ },
+ {
+  "id": 62,
+  "kind": "comment",
+  "text": "# Les renvois, eux, se reunissent MEME separes : « (9, 11, » et\n# « 12) » sont un seul appel que la ligne a coupe en deux."
+ },
+ {
+  "id": 63,
+  "kind": "comment",
+  "text": "# LE TRAIT D'UNION N'A PAS D'ESPACES. Les titres du livret ido sont\n# composes en interlettrage, et l'imprimeur y a fait respirer le\n# trait d'union comme le reste : « EXPLIKO - LIBRETO »,\n# « Matur - evo ed oldeso. », « la Delmas - tabeli », « la 3 - ma ».\n# Ces espaces tiennent a la composition, non au mot ; a l'ecran, ou\n# rien n'est interlettre, ils coupent le mot en deux. Le fac-simile\n# francais n'en porte aucun. Le tiret cadratin, qui separe vraiment,\n# s'ecrit « --- » dans le releve et sort deja en « — » : ni lui ni\n# le tiret court d'un intervalle ne sont touches."
+ },
+ {
+  "id": 64,
+  "kind": "comment",
+  "text": "# UNE LANGUE SANS ESPACES N'EN VEUT PAS DE LA FIN DE LIGNE. Les\n# fichiers de traduction coupent leurs lignes pour le confort de qui\n# les edite, et \\nl / le retour simple deviennent un blanc -- ce\n# qu'il faut pour les langues latines, ou le blanc separe les mots.\n# Le chinois n'en met aucun : « 有八张\\n课桌 » sortait « 有八张 课桌 »,\n# un trou au milieu du groupe, et 848 fois dans la colonne. Un blanc\n# pose ENTRE DEUX IDEOGRAMMES n'est jamais voulu -- aucune langue\n# n'en ecrit -- et il s'ote donc partout, quelle que soit la\n# colonne. La regle se pose sur le HTML et non sur le texte nu :\n# deux lignes d'apparat voisines sont separees par leurs balises,\n# et ce blanc-la, lui, doit rester.\n# ET LE GRAS NE ROMPT PAS LE GROUPE. « 有八张\\n\\VUgras{课桌} » met\n# une balise entre les deux ideogrammes, et la premiere version de\n# la regle ne les voyait plus voisins : il restait 403 trous sur\n# 848. On saute donc les balises EN LIGNE -- b, i, sup, button --\n# mais pas « span », qui est celle des lignes d'apparat : deux\n# lignes de titre voisines sont bien separees par un blanc, et\n# celui-la doit rester."
+ },
+ {
+  "id": 65,
+  "kind": "comment",
+  "text": "# L'apostrophe des deux fac-similes est la courbe, non la droite :\n# « l'unesma », « L'Ecole ». La droite est une commodite de clavier\n# que l'imprime ne connait pas."
+ },
+ {
+  "id": 66,
+  "kind": "comment",
+  "text": "# Ponctuation du fac-simile."
+ },
+ {
+  "id": 67,
+  "kind": "comment",
+  "text": "# Le tiret cadratin colle au mot qui suit quand le compositeur\n# serre sa ligne (« 3. ---Ne omna... », folio 5). C'est une\n# contrainte de justification, non une intention : la page de\n# lecture, qui rejustifie, rend l'espace. Le PDF, lui, garde le\n# fac-simile."
+ },
+ {
+  "id": 68,
+  "kind": "comment",
+  "text": "# Espace fine insecable devant la ponctuation haute, usage francais\n# et ido de l'epoque — les deux livrets la composent."
+ },
+ {
+  "id": 69,
+  "kind": "docstring",
+  "text": "\"\"\"Renvoie la liste des blocs d'un fichier de releve.\n\n    Un bloc = {cle, tipo, folio, feuillet, html}. Tout ce qui precede\n    la premiere cle d'une page (les lignes d'apparat d'une ouverture de\n    tableau, les notes) est rattache au bloc qui suit ou porte sa\n    propre cle.\n    \"\"\""
+ },
+ {
+  "id": 70,
+  "kind": "comment",
+  "text": "# Le troisieme membre d'une cle : « suite » pour la reprise\n# d'un alinea coupe par un changement de page, « pos=<cle> »\n# pour un bloc qui SE LIT ailleurs qu'il s'imprime."
+ },
+ {
+  "id": 71,
+  "kind": "comment",
+  "text": "# La fin d'environnement n'est pas du texte. Sans cette\n# ligne-ci, « VUpage » se composait a la fin du dernier\n# alinea de chaque page : la macro inconnue tombait, son\n# nom restait."
+ },
+ {
+  "id": 72,
+  "kind": "comment",
+  "text": "# Les notes : elles sont declarees en tete de page, avant toute cle.\n# On les retrouve dans le brut de la source, on les extrait et on en\n# fait des blocs a part, poses a la fin de leur page."
+ },
+ {
+  "id": 73,
+  "kind": "comment",
+  "text": "# A quelle page appartient-elle ? La derniere \\begin{VUpage}\n# avant elle."
+ },
+ {
+  "id": 74,
+  "kind": "comment",
+  "text": "# LE MARQUEUR SE LIT SUR LE TEXTE RENDU, non sur la source. Il y est\n# parfois enferme dans une macro — « \\textit{(*) Pro ke ta vorto...} »\n# au tableau 8 — et une expression reguliere posee sur le LaTeX ne\n# le voyait pas. Le HTML, lui, a deja resolu les macros : il ne\n# reste que le texte, et le marqueur y est en tete."
+ },
+ {
+  "id": 75,
+  "kind": "comment",
+  "text": "# DEUX SOURCES POUR UNE MEME NOTE. Certains releves declarent la\n# note par une cle « %%K ... noto », d'autres la laissent porter par\n# le seul \\VUnotes, que la seconde passe ci-dessus ramasse. Quand\n# les deux coexistent, la note paraissait deux fois. On ecarte le\n# doublon sur les premiers caracteres du texte nu."
+ },
+ {
+  "id": 76,
+  "kind": "docstring",
+  "text": "\"\"\"Recolle les blocs « suite » a leur bloc d'origine.\n\n    Un alinea coupe par un changement de page porte deux fois la meme\n    cle, la seconde marquee « suite ». Dans le PDF ce sont deux pages ;\n    dans la page de lecture c'est un seul alinea, et il doit l'etre,\n    sinon la colonne d'en face — qui ne coupe pas au meme endroit —\n    ne lui repondrait plus.\n    \"\"\""
+ },
+ {
+  "id": 77,
+  "kind": "comment",
+  "text": "# UN MOT COUPE PAR LA PAGE NE PREND PAS DE BLANC. \\ccplein\n# a laisse sa marque en fin de moitie gauche : « dro » et\n# « medaro » font « dromedaro », non « dro medaro »."
+ },
+ {
+  "id": 78,
+  "kind": "comment",
+  "text": "# ET IL RESTE UN SEUL MOT POUR LA RECHERCHE. Les deux\n# moities sont chacune dans son \\VUgras : recollees\n# telles quelles, elles donnaient « <b>dro</b><b>meda\n# ro</b> » — « dromedaro » a l'oeil, deux mots pour le\n# navigateur. texte_html() reunit les balises jointives\n# a l'interieur d'un bloc ; ici la coupure passe entre\n# deux blocs, et la reunion se refait apres coup."
+ },
+ {
+  "id": 79,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  2. ASSEMBLAGE\n# -------------------------------------------------------------------"
+ },
+ {
+  "id": 80,
+  "kind": "comment",
+  "text": "# langue -> text/<...>"
+ },
+ {
+  "id": 81,
+  "kind": "comment",
+  "text": "# LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,\n# dedicace, PREFACO, AVERTISSEMENT, tables des matieres, annonces de\n# l'editeur : tout cela est dans les deux PDF, qui reproduisent les\n# volumes entiers, et n'a rien a faire dans une page dont l'objet est\n# de mettre DEUX TEXTES EN REGARD. Ces pieces-la ne se repondent pas\n# d'une edition a l'autre -- la preface de Guignon n'est pas\n# l'avertissement de Rochelle, elle en est meme le contraire par le\n# ton -- et les afficher cote a cote donnait deux colonnes qui se\n# regardaient sans rien avoir a se dire.\n#\n# Le partage se lit sur le nom du fichier : « 00- » les liminaires,\n# « 90- » la fin, et entre les deux les tableaux.\n# « pos= » : CE QUI S'IMPRIME ICI SE LIT LA. Le fac-simile compose\n# parfois un intertitre a une place que la page de lecture ne peut pas\n# garder. Au tableau 2, « LA KAPO. » est imprime AVANT l'alinea 1 -- qui\n# n'est pas la tete, mais l'annonce des trois parties du corps -- et le\n# volume francais met la, lui, le titre de section « I. Le Corps\n# Humain. ». Les deux colonnes annoncaient donc des choses differentes.\n#\n# Deplacer la macro dans le releve corrigerait la page de lecture et\n# FAUSSERAIT LE PDF, qui est la transcription diplomatique : la ligne\n# doit rester ou l'imprimeur l'a mise. On note donc le deplacement a\n# cote d'elle, et le PDF ne bouge pas d'un point."
+ },
+ {
+  "id": 82,
+  "kind": "docstring",
+  "text": "\"\"\"Repose les blocs marques « pos= » derriere le bloc qu'ils visent.\"\"\""
+ },
+ {
+  "id": 83,
+  "kind": "docstring",
+  "text": "\"\"\"Les seize tableaux d'une langue, dans l'ordre.\"\"\""
+ },
+ {
+  "id": 84,
+  "kind": "comment",
+  "text": "# LES INTERTITRES NE S'APPARIENT PAS PAR LEUR CLE. C'est deja la regle\n# du releve, et tools/controles.py la dit : « leur numerotation (tit-1,\n# tit-2...) est propre a chaque edition ». L'ido subdivise plus fin que\n# le francais -- sept intertitres au tableau 2 contre trois -- de sorte\n# que t02-tit-2 ne designe pas la meme chose des deux cotes. Le rendu,\n# lui, appariait tout par la cle : « La Torso. » se retrouvait en face\n# de « II. La Gymnastique. », et les deux colonnes annoncaient des\n# sections differentes. Dix-sept intertitres etaient ainsi mal apparies,\n# sur onze tableaux.\n#\n# CE QUI LES APPARIE, C'EST LA PLACE. Un intertitre ouvre un alinea, et\n# l'alinea, lui, porte la meme cle dans les deux editions -- c'est la\n# le pivot du releve. On groupe donc les intertitres par l'alinea qu'ils\n# precedent, et l'on apparie DANS L'ORDRE a l'interieur du groupe : la\n# ou une edition en met trois et l'autre deux, les deux premiers se\n# repondent et le troisieme reste seul. Ce qu'il doit rester."
+ },
+ {
+  "id": 85,
+  "kind": "docstring",
+  "text": "\"\"\"{cle d'intertitre ido: cle d'intertitre de l'autre edition}\"\"\""
+ },
+ {
+  "id": 86,
+  "kind": "comment",
+  "text": "# Les cles d'alinea portent leur tableau : deux groupes\n# de deux tableaux ne peuvent pas se confondre."
+ },
+ {
+  "id": 87,
+  "kind": "comment",
+  "text": "# LES INTERTITRES QUE LE LIVRET FRANCAIS N'A PAS. Rochelle coupe ses\n# tableaux en deux ou trois sections, Guignon en met sept : cent\n# vingt-huit intertitres d'un cote, trente de l'autre, et\n# quatre-vingt-dix-huit rangs ou la colonne francaise restait vide. Les\n# six traductions modernes les ont toutes, traduites de l'ido ; le\n# francais ne pouvait pas les prendre par la meme voie, text/fr etant\n# un releve et non une traduction — le PDF y reproduit son fac-simile,\n# une ligne pour une ligne, et une ligne de plus le fausserait.\n#\n# ILS SE TIENNENT DONC A COTE, dans text/fr/intertitroj.json, et la\n# page de lecture seule les affiche. Elle les marque « apud » : meme\n# corps et meme place que les autres, mais le lecteur doit pouvoir\n# distinguer ce que Rochelle a ecrit de ce que nous ajoutons."
+ },
+ {
+  "id": 88,
+  "kind": "comment",
+  "text": "# LA VARIANTE N'A PAS DE DOSSIER : elle se tire de sa base, plus\n# bas, une fois les blocs faits. « dosiero » dit ou la colonne\n# de base ecrit ses fichiers, son code ayant pris un suffixe."
+ },
+ {
+  "id": 89,
+  "kind": "comment",
+  "text": "# L'ORDRE EST CELUI DE L'IDO. C'est le livret ido qui est l'objet du\n# site ; la colonne de droite le suit.\n# Cote ido, la symetrie : un bloc ido sans vis-a-vis francais est\n# recolle au precedent LORS DU RENDU (voir plus bas), et non ici,\n# parce qu'il faut d'abord savoir lesquels sont orphelins."
+ },
+ {
+  "id": 90,
+  "kind": "comment",
+  "text": "# L'intertitre se cherche par sa place, tout le reste par sa\n# cle. Sans vis-a-vis, la case de droite reste vide : c'est\n# une subdivision que l'autre edition n'a pas."
+ },
+ {
+  "id": 91,
+  "kind": "comment",
+  "text": "# LE CORPS SE PREND SUR L'IDO, pour que les deux\n# colonnes annoncent la section a la meme force."
+ },
+ {
+  "id": 92,
+  "kind": "comment",
+  "text": "# LE DECOUPAGE EN ALINEAS N'EST PAS LE MEME DES DEUX COTES, et il\n# faut en faire quelque chose. Rochelle coupe parfois en deux un\n# alinea que Guignon laisse d'un tenant, ou l'inverse : la cle\n# « t07-c1-05-2 » existe alors d'un seul cote. Rendue telle quelle,\n# elle fabrique un rang dont une colonne est vide, et l'oeil y lit\n# un manque -- alors que le texte, lui, est bien la, deux lignes\n# plus haut.\n#\n# LE PDF GARDE LE FAC-SIMILE ; LA PAGE DE LECTURE REGROUPE. Le\n# volume est une transcription diplomatique et doit le rester : la\n# coupure d'alinea y est celle de l'imprime. La page de lecture,\n# elle, sert a COMPARER deux textes, et une comparaison veut des\n# rangs qui se repondent. On recolle donc le bloc orphelin au\n# precedent de la meme langue, avec la marque du retour a la ligne\n# qu'il portait -- rien n'est perdu, rien n'est deplace, et les\n# deux colonnes redeviennent paralleles.\n#\n# UN INTERTITRE APPARIE PAR SA PLACE N'EST PAS ORPHELIN. Ce\n# recollage juge sur la CLE, et les intertitres, eux, s'apparient sur\n# leur place : un intertitre de traduction dont la cle ne figure pas\n# cote ido tient pourtant deja sa case, en face de celui qu'il\n# traduit. Compte pour orphelin, il paraissait DEUX fois -- « Deuxième\n# scène. » a son rang, et recolle a la fin de l'alinea precedent."
+ },
+ {
+  "id": 93,
+  "kind": "comment",
+  "text": "# Il a sa case : c'est desormais lui, le precedent."
+ },
+ {
+  "id": 94,
+  "kind": "comment",
+  "text": "# LE FOLIO NE DONNE PAS LE NUMERO DE PAGE DU PDF, et la difference\n# n'est pas une constante. Le PDF ne compose que les feuillets releves,\n# et le livret ido en saute deux, vierges (48 et 76). Une soustraction\n# fixe -- ce qu'on faisait quand seul le tableau 1 existait -- envoyait\n# donc le lecteur deux pages trop loin dans tout le second tiers du\n# volume. On numerote les feuillets composes dans l'ordre, une fois."
+ },
+ {
+  "id": 95,
+  "kind": "comment",
+  "text": "# CE QUI PRECEDE UN CHIFFRE ENTRE PARENTHESES EN DIT LA NATURE. Le\n# liminaire francais pose lui-meme la regle : « Nous avons imprime en\n# caracteres gras les substantifs qui se trouvent dans le vocabulaire\n# des Tableaux EN LES FAISANT SUIVRE DE LEUR NUMERO. » Un numero\n# d'objet suit donc toujours un substantif en gras -- « la\n# \\VUgras{fumee}\\textsuperscript{(1)} » -- tandis que l'appel de note\n# suit du texte ordinaire : « qui nous fut servi \\textsuperscript{(1)} ».\n# L'exposant, lui, ne tranche rien : les deux volumes composent tantot\n# l'un tantot l'autre en exposant."
+ },
+ {
+  "id": 96,
+  "kind": "docstring",
+  "text": "\"\"\"Positions des appels de note « (marque) » dans un bloc.\n\n    Ecarte les renvois au tableau mural, reconnus a leur substantif en\n    gras. Rend des couples (debut, fin) sur le texte donne.\n    \"\"\""
+ },
+ {
+  "id": 97,
+  "kind": "comment",
+  "text": "# UNE ASTERISQUE N'EST JAMAIS UN NUMERO D'OBJET : quand la note est\n# marquee « (*) », rien n'est a departager, et le gras ne prouve\n# rien. Le tableau 1 ido pose justement son appel apres un\n# substantif en gras — « esas \\VUgras{Henrikus} (*) » — parce que la\n# note porte sur ce mot-la. La regle du gras ne vaut que pour les\n# marques chiffrees, les seules que les deux emplois partagent."
+ },
+ {
+  "id": 98,
+  "kind": "docstring",
+  "text": "\"\"\"Relie chaque appel de note, dans le texte, a sa note.\n\n    LA NOTE N'EST PAS UN BLOC COMME UN AUTRE. Au bas d'une page du\n    fac-simile elle a sa place naturelle ; dans une colonne qui defile,\n    posee entre deux alineas, elle coupe la lecture — et l'appel, lui,\n    ne mene nulle part. On la replie donc : l'appel devient un bouton,\n    la note s'ouvre sous l'alinea qui la porte, comme dans la page du\n    « Kompleta Gramatiko ».\n\n    CHAQUE LANGUE A SES NOTES, et ce sont rarement les memes : le\n    livret ido porte une note sur la latinisation des prenoms que le\n    francais ignore, et Rochelle en a que Guignon n'a pas reprises. On\n    relie donc colonne par colonne.\n\n    L'APPARIEMENT SE FAIT PAR LA PAGE ET PAR LE MARQUEUR, les deux. Un\n    « (1) » de note et un « (1) » de renvoi au tableau mural s'ecrivent\n    pareil ; seule la page les distingue, puisque la note est au bas de\n    la page ou son appel se trouve. Quand le marqueur parait plusieurs\n    fois sur la meme page, on ne lie RIEN plutot que de lier au\n    hasard : la fonction le dit, et l'oeil tranche.\n    \"\"\""
+ },
+ {
+  "id": 99,
+  "kind": "comment",
+  "text": "# PLUSIEURS NOTES SUR UNE MEME PAGE, TOUTES MARQUEES « (*) ».\n# Le folio 37 du livret ido en porte deux. Le marqueur ne les\n# distingue pas — mais l'ORDRE, si : le premier appel de la page\n# renvoie a la premiere note, le second a la seconde, et c'est\n# ainsi que le lecteur de 1926 les lisait. On compte donc, pour\n# chaque note, son rang parmi celles de sa page.\n# LE RANG SE COMPTE SUR LA PAGE ET LE MARQUEUR, rien de plus.\n# « page_de » sert a lire la page d'un RANG de la table, non\n# d'une note : pour la colonne de droite il va chercher\n# r[\"tra\"], que les notes n'ont pas. Il figurait ici en tete de\n# « cle_page », dont seuls les deux derniers membres sont lus --\n# un appel mort, mais qui levait KeyError des qu'une note de\n# traduction se presentait. Aucune ne se presentait jamais,\n# faute de cle appariee ; la premiere l'a fait tomber.\n# UNE TRADUCTION N'A PAS DE PAGES. Le francais et l'ido sont des\n# fac-similes transcrits : chaque bloc sait de quel feuillet il\n# vient, et c'est le feuillet qui rapproche une note de son\n# appel. L'anglais, lui, ne transcrit rien -- il n'a ni page ni\n# feuillet, et tous ses blocs portaient donc la meme page vide :\n# les onze notes se cherchaient un appel dans le livre entier,\n# et se le disputaient. LE TABLEAU REMPLACE ALORS LA PAGE. Il\n# est plus large qu'un feuillet, mais il suffit : aucun tableau\n# ne porte plus de deux notes, et le comptage des rangs, qui\n# departageait deja deux notes d'une meme page, les departage\n# de meme."
+ },
+ {
+  "id": 100,
+  "kind": "comment",
+  "text": "# UN « (1) » DE NOTE ET UN « (1) » D'OBJET S'ECRIVENT\n# PAREIL. Rochelle marque ses notes du meme signe que ses\n# numeros d'objets, qui vont jusqu'a 150 par planche. Au\n# tableau 13, l'alinea « au deuxieme etage (1), ou j'ai tres\n# bien dormi (1) » porte les deux, et on liait le premier :\n# le bouton s'ouvrait sur l'etage. C'est le gras qui les\n# separe (voir appels_note).\n# L'APPEL PEUT ETRE SUR LA PAGE D'AVANT. Un alinea a cheval\n# commence au verso et sa note tombe au bas du recto : le\n# releve fusionne les deux moities en un seul bloc, qui\n# porte alors le feuillet de sa PREMIERE page. On accepte\n# donc la page de la note et celle qui la precede.\n# SA PAGE D'ABORD, LA PRECEDENTE ENSUITE, et jamais les\n# deux ensemble. Chaque page a sa propre note et son propre\n# « (*) » : chercher sur deux pages a la fois rendait donc\n# deux appels pour une note, et l'outil renoncait a lier ce\n# qui n'etait pas ambigu du tout."
+ },
+ {
+  "id": 101,
+  "kind": "comment",
+  "text": "# « apar » aussi : au tableau 8, l'appel est\n# dans le titre meme de la scene, « La Rekolto\n# (*) », qui tient sur la page d'ouverture."
+ },
+ {
+  "id": 102,
+  "kind": "comment",
+  "text": "# le rang de cette note-ci"
+ },
+ {
+  "id": 103,
+  "kind": "comment",
+  "text": "# L'appel cherche est le (vise - vu)-ieme de ce bloc."
+ },
+ {
+  "id": 104,
+  "kind": "comment",
+  "text": "# UN SEUL SIGNE POUR TOUTES LES NOTES. Guignon marque\n# les siennes « (*) », Rochelle « (1) ». Garder a chacun\n# sa marque, c'etait donner deux signes differents a la\n# meme note en regard, et surtout reprendre en francais\n# le signe des renvois au tableau mural. La page de\n# lecture marque donc toutes les notes « (*) », le signe\n# que l'ido employait deja partout ; les PDF, eux,\n# gardent ce que chaque atelier a compose."
+ },
+ {
+  "id": 105,
+  "kind": "comment",
+  "text": "# Colonne de gauche."
+ },
+ {
+  "id": 106,
+  "kind": "comment",
+  "text": "# Colonnes de droite : leurs notes ne sont pas dans `rangi`, elles\n# sont restees dans les blocs de traduction. On les en tire."
+ },
+ {
+  "id": 107,
+  "kind": "comment",
+  "text": "# APRES LES BOUTONS, ET NON AVANT : le nom du gros plan se compose\n# dans le « title » du bouton, et il portait le mot recolle."
+ },
+ {
+  "id": 108,
+  "kind": "comment",
+  "text": "# EN DERNIER, ET C'EST VOULU : la variante se tire du texte FINI, une\n# fois les renvois fermes, les corrections posees, les traits d'union\n# retablis et les boutons composes. Elle herite donc de tout, et le\n# nom du gros plan suit le mot de son edition — « vest » et non\n# « waistcoat » quand on lit l'anglais des Etats-Unis."
+ },
+ {
+  "id": 109,
+  "kind": "comment",
+  "text": "# LE RENVOI AU TABLEAU MURAL, TOUJOURS COMPOSE DE LA MEME FACON.\n# On prend le numero avec ce qui le porte -- l'exposant s'il en a un --\n# et le blanc qui le precede s'il y en a un.\n# TROIS FORMES DE RENVOI, et il a fallu les trois : la forme\n# ordinaire, le GROUPE — « les tableaux muraux (9, 11, 12) », qui\n# vaut pour trois objets a la fois et dont on ne lisait aucun — et\n# « 41) », ou la parenthese ouvrante manque, en trois endroits des\n# deux livrets. On garde les parentheses TELLES QU'ON LES A\n# RELEVEES : dire si ce 41) vient d'une coquille du releve ou d'une\n# sorte cassee de l'imprimeur demanderait le fac-simile sous les\n# yeux. On uniformise l'exposant et le blanc, rien d'autre."
+ },
+ {
+  "id": 110,
+  "kind": "docstring",
+  "text": "\"\"\"Le renvoi devient un bouton quand on sait ou il pointe.\n\n    UN GROS PLAN QU'ON NE SAURAIT PAS MONTRER NE SE PROMET PAS. La\n    lecture des numeros sur les planches est partielle -- la reserve de\n    blanc qui porte le chiffre se referme des que la gravure est dense,\n    et le chiffre se perd dans les hachures. Les renvois dont la\n    position est connue prennent donc un bouton ; les autres restent du\n    texte ordinaire, exactement comme ils etaient. Rien ne bouge dans la\n    ligne : le bouton garde le corps et l'exposant du renvoi.\n\n    Le bouton porte la CLE DE LA GRAVURE et le cadre en fractions de\n    celle-ci. La page n'a plus qu'a recadrer l'image qu'elle a deja.\n    \"\"\""
+ },
+ {
+  "id": 111,
+  "kind": "comment",
+  "text": "# LA SCENE DU BLOC DECIDE DE QUEL NUMERO IL S'AGIT. Six planches\n# portent plusieurs vignettes, et chacune recommence a 1 : le\n# « (39) » d'un bloc t06-c3 ne montre pas le meme objet que\n# celui d'un bloc t06-c1. La cle du bloc le dit."
+ },
+ {
+  "id": 112,
+  "kind": "comment",
+  "text": "# Le renvoi que la planche ne porte pas : au tableau 5 le\n# « (150) » des plates-bandes, gravees « 50 ». On lit la\n# correction, on la montre, et la source ne bouge pas."
+ },
+ {
+  "id": 113,
+  "kind": "docstring",
+  "text": "\"\"\"Le debut du bouton d'un numero, ou None si l'on ignore\n            ou il se trouve : on ne promet pas un gros plan qu'on ne\n            saurait pas montrer.\"\"\""
+ },
+ {
+  "id": 114,
+  "kind": "comment",
+  "text": "# LE TABLEAU 11 N'A QU'UNE NUMEROTATION, MAIS SES CLES\n# PORTENT DEUX SCENES — ET IL A PERDU SES QUATRE-VINGT-HUIT\n# GROS PLANS PENDANT TOUT CE TEMPS, DANS LES 42 COLONNES.\n# Ses cles disent c1 et c2 parce que la NUMEROTATION DES\n# ALINEAS y repart de 1 a « L'Incendio » ; les renvois, eux,\n# continuent la meme serie — la premiere partie va de 1 a\n# 43, la seconde de 44 a 96. plates/numbers.json le sait et\n# range donc la planche 11 en numeros nus, comme les\n# planches a une seule scene. La recherche « c2:46 » ne\n# trouvait rien, aucun bouton n'etait pose, et rien ne\n# criait : ouvrir() rend None sans se plaindre, par\n# construction. On retombe donc sur le numero nu.\n#\n# C'est sans danger : releve fait, aucune planche ne mele\n# les deux formes — les numeri d'un tableau sont ou tous\n# prefixes par leur scene (3, 4, 6, 7, 8, 9) ou tous nus\n# (1, 2, 5, 10, 11, 12 a 16). Un tableau a scenes\n# veritables n'a donc aucune entree nue a offrir a ce\n# repli, et le repli ne peut pas y montrer le mauvais\n# objet."
+ },
+ {
+  "id": 115,
+  "kind": "comment",
+  "text": "# LE NOM SUIT SA COLONNE (voir nomo, plus haut)."
+ },
+ {
+  "id": 116,
+  "kind": "comment",
+  "text": "# UN GROUPE VAUT POUR PLUSIEURS OBJETS A LA FOIS. Chaque\n# numero y devient cliquable separement ; les parentheses et\n# les virgules restent du texte, et rien ne bouge dans la\n# ligne."
+ },
+ {
+  "id": 117,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  LES RENVOIS A LETTRE\n# -------------------------------------------------------------------\n#  Trois tableaux ne se contentent pas de numeros. « Ni vidas sur la\n#  tabelo la precipua figuri geometriala : rondo (a), quadrato (b) » —\n#  ces lettres sont gravees SUR le tableau noir, qui porte lui-meme le\n#  numero 1, et n'ont de sens que rapportees a lui : le « a » du tableau\n#  noir est un cercle, celui de la carte l'Amerique, celui du tableau de\n#  sciences naturelles un cheval.\n#\n#  plates/letters.json dit, bloc par bloc, de quel objet les lettres\n#  dependent — cela ne se devine pas, le texte ne le disant pas toujours\n#  — et ou chacune se trouve sur la planche.\n# LE RENVOI A LETTRE SE COMPOSE EN ITALIQUE DU COTE FRANCAIS, et nu du\n# cote ido. Sans cette italique dans le motif, les six lettres du\n# tableau d'astronomie n'etaient cliquables qu'en ido : le lecteur du\n# francais lisait « les hemispheres (d) » sans rien pouvoir en voir."
+ },
+ {
+  "id": 118,
+  "kind": "docstring",
+  "text": "\"\"\"{planche: {cle: place}} et la table des blocs.\"\"\""
+ },
+ {
+  "id": 119,
+  "kind": "comment",
+  "text": "# UN SEUL SORT POUR DEUX SIGNES. Au tableau 5, la salle de bains porte\n# un renvoi compose « (1) » — dans les deux livrets. Ce n'est pas le\n# numero 1, qui est la facade de la maison : c'est la LETTRE l, et le\n# plan le dit lui-meme, sa legende portant « l. Balneyo » entre le k des\n# enfants et le m du palier. Dans cette fonte le l bas de casse et le\n# chiffre 1 ont le meme dessin, et la casse du compositeur n'avait\n# peut-etre que l'un des deux : rien sur la page ne les separe.\n#\n# LA SOURCE NE BOUGE PAS — les deux PDF restent le fac-simile — mais la\n# page de lecture, elle, n'a pas a repeter une ambiguite que le plan\n# leve. On y lit donc « (l) », et le gros plan montre la salle de\n# bains. C'est le seul endroit du livre ou la page de lecture corrige\n# ce que la transcription conserve, et c'est pourquoi il se declare\n# dans letters.json plutot que de se deviner."
+ },
+ {
+  "id": 120,
+  "kind": "docstring",
+  "text": "\"\"\"Redirige vers sa lettre le « (1) » qui n'est pas un numero.\"\"\""
+ },
+ {
+  "id": 121,
+  "kind": "docstring",
+  "text": "\"\"\"Le renvoi a lettre devient un bouton, comme le renvoi a numero.\"\"\""
+ },
+ {
+  "id": 122,
+  "kind": "comment",
+  "text": "# UNE LETTRE AUSSI PEUT ETRE FAUSSE. Au tableau 1 les deux\n# livrets echangent l'Europe et l'Asie ; plates/corrections.json\n# le dit pour ce bloc. La lettre corrigee est celle qu'on\n# cherche sur la planche ET celle qu'on ecrit : la page de\n# lecture ne repete pas une erreur que la gravure dement.\n# LA LECTURE SE FAIT EN UN SEUL PASSAGE — chaque lettre est\n# prise dans la table d'origine — sans quoi l'echange « g se\n# lit e, e se lit g » se defairait a la seconde."
+ },
+ {
+  "id": 123,
+  "kind": "comment",
+  "text": "# LA PARENTHESE EST DU RENVOI, ET SE CLIQUE AVEC LUI. Un\n# numero seul prend tout son groupe dans le bouton —\n# « (7) » —, et la lettre n'avait que sa lettre : il\n# fallait viser un caractere large de trois points. Quand\n# la lettre est seule, elle fait donc comme le numero. Un\n# groupe de deux — le « (ab) » du tableau 1, seul de son\n# espece — garde ses parentheses hors du bouton : elles\n# n'appartiennent a aucune des deux lettres."
+ },
+ {
+  "id": 124,
+  "kind": "docstring",
+  "text": "\"\"\"Une seule facon d'ecrire « mot (N) », sur toute la page.\n\n    Les deux ateliers hesitent : 2884 renvois sont separes du substantif\n    par un blanc, 478 lui sont colles, et sept — tous ido — ne sont meme\n    pas en exposant. Rien ne distingue ces cas : c'est du flottement de\n    composition. La page de lecture les ecrit donc tous pareil, exposant\n    et blanc.\n\n    LE BLANC EST INSECABLE. Un renvoi rejeté seul en tete de ligne ne\n    veut plus rien dire ; en colonne etroite, sur telephone, cela\n    arrivait. Le numero reste desormais accroche a son substantif.\n\n    Tous les nombres entre parentheses du texte suivi sont des renvois :\n    ils vont de 1 a 150, et les appels de note portent « (*) ».\n    \"\"\""
+ },
+ {
+  "id": 125,
+  "kind": "comment",
+  "text": "# Un renvoi qui ouvre un bloc — alinea coupe par un changement\n# de page — n'a pas de mot devant lui a qui s'accrocher.\n# « \\u00a0 » et non un blanc ordinaire : ecrit en clair,\n# parce qu'a l'oeil rien ne l'aurait distingue."
+ },
+ {
+  "id": 126,
+  "kind": "comment",
+  "text": "# releve sans exposant"
+ },
+ {
+  "id": 127,
+  "kind": "comment",
+  "text": "# UN RENVOI ENTRE PARENTHESES SE FERME. Six fois dans les deux\n# livrets, une parenthese manque : « buvard 41) » et « ballots 61) » du\n# cote francais, « gobleto 13) » et « mi-sferi d) » du cote ido, un\n# « singe (10 » a qui l'on n'a pas ferme, et le renvoi au tableau de\n# l'Hotel, « n° 13) », dont le francais montre bien qu'il devait\n# s'ouvrir. Sorte cassee de l'imprimeur ou distraction du releveur, on\n# ne peut pas le dire — et cela n'a pas d'importance : la source garde\n# ce qu'elle lit, les deux PDF avec elle, et c'est la page de lecture\n# qui compose proprement.\n#\n# LE CONTROLE QUI LES A TOUS TROUVES tient en une ligne : compter les\n# parentheses de chaque alinea et signaler celles qui ne se repondent\n# pas. Six alineas sur six cent quatre-vingt-trois, et pas un de plus ;\n# aucune de ces six n'etait une vraie parenthese depareillee du texte.\n#\n# On ne touche qu'a CE QUI EST DEJA UN RENVOI : un exposant qui ne\n# porte que des chiffres, ou une lettre avec au moins une parenthese.\n# Sans cette derniere condition on ecrirait « (o) » sur les « n° » du\n# texte, qui sont aussi des exposants."
+ },
+ {
+  "id": 128,
+  "kind": "docstring",
+  "text": "\"\"\"Rend a chaque renvoi ses deux parentheses.\"\"\""
+ },
+ {
+  "id": 129,
+  "kind": "comment",
+  "text": "# ET CE QUI N'EST PAS UN RENVOI SE CORRIGE A LA MAIN. « La listo esos\n# kompletigata sur la du tabeli « La Hotelo » n° 13) e « La Merkato »\n# (n° 15) » : la seconde parenthese s'ouvre, la premiere non, et le\n# francais de la meme note les ouvre toutes deux. Ce n'est pas un renvoi\n# a un objet de la planche mais a un autre tableau ; aucune regle\n# generale ne l'attrape, et l'on ne va pas en inventer une pour un cas.\n# plates/corrections.json le dit en toutes lettres, bloc par bloc."
+ },
+ {
+  "id": 130,
+  "kind": "docstring",
+  "text": "\"\"\"Les corrections declarees a la main, bloc par bloc.\"\"\""
+ },
+ {
+  "id": 131,
+  "kind": "comment",
+  "text": "# ET LE TRAIT D'UNION QUE LE RECOLLAGE MANGEAIT. « \\\\cc » dit que la ligne\n# imprimee se casse ici avec un trait ; on l'ote et l'on recolle, parce que\n# « ler- » plus « nanti » fait « lernanti ». Mais quand la ligne se casse\n# SUR le trait d'union d'un compose -- « choux- » puis « fleurs » -- le meme\n# recollage rend « chouxfleurs », et le gros plan s'intitule ainsi.\n#\n# AUCUNE REGLE NE SEPARE LES DEUX CAS, et il ne faut pas en chercher une :\n# le fac-simile compose le meme trait des deux cotes, et le releve n'a pas\n# de quoi les distinguer. C'est la colonne qui tranche, et\n# plates/corrections.json porte ce qu'elle dit -- soit qu'elle ecrive ailleurs\n# le compose non coupe, soit qu'elle ecrive d'autres composes sur la meme\n# moitie, tous avec le trait. Ou elle hesite, on ne tranche pas :\n# « vitberi » et « teretajo » s'ecrivent des deux facons et restent colles.\n#\n# LE RETABLISSEMENT SE FAIT SUR LE TEXTE RENDU, non sur le LaTeX, et pour\n# une raison : les deux moities sont deux \\\\VUgras{} que la page a deja\n# fondus en un seul <b>. Pose ici, le trait rentre du meme coup dans le\n# « title » du bouton, donc dans le nom du gros plan.\n# ET LE NOM DU GROS PLAN SUIT LE TEXTE. Le « title » du bouton ne vient\n# pas de l'alinea mais de plates/numbers.json, releve sur la planche : la\n# correction posee sur le texte ne l'atteint donc pas, et le bouton du\n# « fourneau de cuisuine » gardait la coquille que la ligne n'avait plus.\n# On repasse la table du texte une fois les boutons composes.\n#\n# MAIS SEULEMENT LES REGLES QU'ON PEUT REPASSER SANS DOMMAGE. « (julio od »\n# devenu « (<b>julio</b> od » ne se retrouve plus : la regle ne mord pas\n# deux fois. « n<sup>o</sup> 13) » devenu « (n<sup>o</sup> 13) » se\n# retrouve LUI-MEME dans son resultat, et un second passage ouvrirait une\n# seconde parenthese. Le depart entre les deux se lit dans la regle : on\n# ne repasse que celles dont le remplacement ne contient pas ce qu'il\n# remplace."
+ },
+ {
+  "id": 132,
+  "kind": "docstring",
+  "text": "\"\"\"La table du texte, repassee sur les noms des gros plans.\"\"\""
+ },
+ {
+  "id": 133,
+  "kind": "comment",
+  "text": "# ET LA VARIANTE REGIONALE SE TIRE DE SA BASE. text/variants.json dit,\n# colonne par colonne, ce que l'autre edition ecrit a la place : une\n# soixantaine de mots pour l'anglais, la ou une colonne jumelle en aurait\n# recopie trente mille.\n#\n# DEUX SORTES DE REGLES, et la seconde est indispensable. « [avant,\n# apres] » vaut pour toute la colonne ; « [cle, avant, apres] » ne vaut\n# que dans ce bloc-la, parce qu'un mot peut avoir deux sens :\n# « biscuits » se dit « crackers » a cote du fromage et « cookies » a\n# cote du pain d'epice, « carriage » est une voiture a chevaux au\n# tableau 3 et un wagon au tableau 12. Une regle globale trancherait\n# pour les deux, et se tromperait pour l'un.\n#\n# L'ORDRE DES REGLES EST CELUI DU FICHIER : « luggage van » se traite\n# avant « luggage », sans quoi la premiere ne trouve plus rien."
+ },
+ {
+  "id": 134,
+  "kind": "docstring",
+  "text": "\"\"\"Chaque variante, calquee sur sa base.\"\"\""
+ },
+ {
+  "id": 135,
+  "kind": "docstring",
+  "text": "\"\"\"(variante, base, regles) pour chaque paire declaree.\n\n    LES REGLES SE PREPARENT UNE FOIS. Pour un calque de mots elles\n    restent une liste, appliquee dans l'ordre ; pour un calque\n    d'ECRITURE elles deviennent une expression unique, la plus longue\n    d'abord, parce qu'il faut consommer chaque caractere une seule fois.\n    \"\"\""
+ },
+ {
+  "id": 136,
+  "kind": "docstring",
+  "text": "\"\"\"Un rang, et ses variantes.\"\"\""
+ },
+ {
+  "id": 137,
+  "kind": "comment",
+  "text": "# UN SEUL BALAYAGE, LA PLUS LONGUE REGLE D'ABORD. Une\n# conversion d'ECRITURE n'est pas une liste de mots : le\n# meme caractere se rend de deux facons selon ce qui\n# l'entoure — « 里 » vaut 裏 dans « 屋里 » et reste 里 dans\n# « 莫里斯 » — et il faut donc PROTEGER certaines suites.\n# Un remplacement successif ne sait pas proteger : la\n# regle « 莫里斯 » -> « 莫里斯 » ne fait rien, et une regle\n# plus courte vient mordre dedans. Un balayage unique\n# consomme chaque caractere une fois."
+ },
+ {
+  "id": 138,
+  "kind": "docstring",
+  "text": "\"\"\"Les traits d'union lexicaux que la fin de ligne avait manges.\"\"\""
+ },
+ {
+  "id": 139,
+  "kind": "comment",
+  "text": "# LE CONTROLE QUI A TROUVE LES SIX. Compter les parentheses de chaque\n# alinea et signaler celles qui ne se repondent pas : six alineas sur\n# six cent quatre-vingt-trois, et pas un de plus — aucune n'etait une\n# vraie parenthese depareillee du texte, toutes etaient des renvois\n# estropies. On le laisse tourner a chaque fabrication : le jour ou un\n# relevé en laissera passer une, elle se dira ici."
+ },
+ {
+  "id": 140,
+  "kind": "docstring",
+  "text": "\"\"\"Marque « (*) » la note elle-meme, comme son appel.\n\n    L'appel est deja rendu « (*) » pour tout le monde ; il fallait que\n    la note ouvre sur le meme signe, sans quoi le bouton « (*) » du\n    tableau 13 depliait une note commencant par « (1) ». On ne touche\n    qu'a la marque de tete, jamais au corps de la note -- celle du\n    tableau 6 cite « la E. baby, F. bebe », et ces parentheses-la\n    doivent rester.\n    \"\"\""
+ },
+ {
+  "id": 141,
+  "kind": "comment",
+  "text": "# LES LIGNES D'APPARAT, ET LA MEME LISTE POUR TOUT LE MONDE.\n# \\VUcentre et \\VUtitre portent « ln », \\VUpk porte « pk » : les trois\n# composent une LIGNE du fac-simile. Deux endroits les relisent -- la\n# table des matieres, qui en tire ses entrees, et l'ancrage, qui pose un\n# « -lN » sur chacune -- et il faut qu'ils comptent LES MEMES, sinon les\n# renvois de la table tombent a cote de la ligne annoncee. D'ou une\n# seule liste de classes, lue par les deux."
+ },
+ {
+  "id": 142,
+  "kind": "docstring",
+  "text": "\"\"\"Le texte nu d'une ligne, pour la table des matieres.\"\"\""
+ },
+ {
+  "id": 143,
+  "kind": "comment",
+  "text": "# L'appel de note est un bouton dans la page ; dans la table il ne\n# mene nulle part. On l'ote, et on recoud : « La Rekolto (*). » sans\n# son marqueur laisserait « La Rekolto . »."
+ },
+ {
+  "id": 144,
+  "kind": "docstring",
+  "text": "\"\"\"Un marqueur de scene -- « Unesma ceno. », « Duesma ceno. ».\"\"\""
+ },
+ {
+  "id": 145,
+  "kind": "comment",
+  "text": "# LE FAC-SIMILE LES COMPOSE EN ITALIQUE, et c'est a cela qu'on les\n# reconnait : le mot, lui, change d'une langue a l'autre. On accepte\n# la ligne nue comme la ligne encore dans son span."
+ },
+ {
+  "id": 146,
+  "kind": "comment",
+  "text": "# LE ROLE SE LIT SUR LE MOT, ET LE MOT CHANGE DE LANGUE. Trois lignes\n# d'apparat se reconnaissent a leur libelle et non a leur macro : le\n# numero du tableau, la serie, la scene. Tant qu'il n'y avait que l'ido\n# et le francais, deux listes de mots suffisaient ; la colonne anglaise\n# n'y figurait pas, et ses trois lignes retombaient toutes sur le role\n# « sekc » -- « CHART No. 7 » se composait comme un intertitre, en face\n# d'un « TABELO No 7 » en grand et gras, et « First scene. » en petites\n# capitales en face d'une « Unesma ceno. » en italique. Une langue de\n# plus, c'est un mot de plus dans chacune des trois listes.\n#\n# LE NUMERO DU TABLEAU. La comparaison est SENSIBLE A LA CASSE : le\n# fac-simile compose ces trois mots en capitales, et « Charts 3 and 4\n# are arranged... » — l'alinea d'ouverture du tableau 3 — ne doit pas\n# passer pour un titre de tableau."
+ },
+ {
+  "id": 147,
+  "kind": "comment",
+  "text": "# LE CANTONAIS ECRIT EN CARACTERES\n# TRADITIONNELS : « 圖表 » est le meme mot que\n# le « 图表 » du chinois, dans l'autre graphie.\n# Les deux membres sont necessaires, car la\n# comparaison se fait sur le caractere."
+ },
+ {
+  "id": 148,
+  "kind": "comment",
+  "text": "# LE HINDI N'A PAS DE CAPITALE pour distinguer le\n# titre de la prose, et « तालिका » se lit aussi\n# dans « देल्मास सहायक तालिकाओं से », qui est le\n# titre du volume et non celui d'un tableau. On\n# exige donc le « सं. » qui suit le mot dans la\n# seule ligne qui numerote."
+ },
+ {
+  "id": 149,
+  "kind": "comment",
+  "text": "# LE MARATHI DIT « तक्ता », qui n'est pas le\n# « तालिका » du hindi : deux langues voisines,\n# deux mots, et c'est pour cela que la colonne\n# se traduit pour elle-meme. Meme raison que\n# pour le gourmoukhi et le shahmoukhi."
+ },
+ {
+  "id": 150,
+  "kind": "comment",
+  "text": "# LE TELOUGOU DIT « పట్టిక ». Comme pour le\n# hindi et le marathi, on exige le mot du\n# numero qui suit, faute de capitales."
+ },
+ {
+  "id": 151,
+  "kind": "comment",
+  "text": "# LE COREEN ecrit « 도표 제 9 호 », batie sur\n# le meme moule que le japonais « 図表第 9\n# 号 » : le mot, puis le « 제 » qui numerote."
+ },
+ {
+  "id": 152,
+  "kind": "comment",
+  "text": "# LE TAMOUL DIT « அட்டவணை எண் 1 » : le mot,\n# puis « எண் », le numero. Meme raison que\n# pour le hindi, le marathi et le telougou —\n# pas de capitales, donc on exige le mot du\n# numero qui suit."
+ },
+ {
+  "id": 153,
+  "kind": "comment",
+  "text": "# L'OURDOU DIT « جدول نمبر 1 ». Le pendjabi\n# chahmoukhi dit « نقشہ نمبر » dans le meme\n# alphabet : deux mots, deux colonnes."
+ },
+ {
+  "id": 154,
+  "kind": "comment",
+  "text": "# L'INDONESIEN ecrit « BAGAN No. 1 ». Le mot\n# ne se lit dans aucun autre membre — le\n# « TABEL » neerlandais et le « TABELO » de\n# l'ido n'en partagent pas une lettre de\n# suite — et le titre du volume, « Tabel\n# Bantu Delmas », est compose en bas de casse\n# comme au portugais et au turc."
+ },
+ {
+  "id": 155,
+  "kind": "comment",
+  "text": "# LE JAVANAIS ecrit « GAMBAR No. 1 ».\n# Le mot est celui de l'image, pas celui du\n# tableau : le javanais n'a pas de mot propre\n# pour la planche murale, et « bagan » lui\n# viendrait de l'indonesien — c'est-a-dire de\n# la voisine dont toute cette colonne se\n# defend."
+ },
+ {
+  "id": 156,
+  "kind": "comment",
+  "text": "# LE HAOUSSA ecrit « HOTO Na 1 ». Le mot est\n# celui de l'image, comme « GAMBAR » en\n# javanais et pour la meme raison : le\n# haoussa n'a pas de mot propre pour la\n# planche murale, et « tebur » ne designe que\n# le meuble. Le titre du volume, « Hotunan\n# taimako na Delmas », est compose en bas de\n# casse et ne passe pas."
+ },
+ {
+  "id": 157,
+  "kind": "comment",
+  "text": "# LE GUJARATI ecrit « કોષ્ટક નં. ૧ ».\n# « કોષ્ટક » seul se lirait dans le titre du\n# volume, qui parle des « ડેલ્માસ સહાયક\n# કોષ્ટકો » ; on exige donc le « નં » qui ne\n# suit le mot que dans la ligne qui numerote,\n# comme pour le hindi et le bengali."
+ },
+ {
+  "id": 158,
+  "kind": "comment",
+  "text": "# LE PERSAN ecrit « تابلوی شمارهٔ ۱ ».\n# « تابلو » seul se lirait dans le titre du\n# volume, qui parle des « تابلوهای کمکی » ;\n# on exige donc le « شماره » qui ne suit le\n# mot que dans la ligne qui numerote."
+ },
+ {
+  "id": 159,
+  "kind": "comment",
+  "text": "# MEME RAISON POUR LE BENGALI : « সারণি » sans\n# son « নং » se lirait dans le titre du volume."
+ },
+ {
+  "id": 160,
+  "kind": "comment",
+  "text": "# LE JAPONAIS ecrit « 図表第 1 号 » comme le\n# chinois « 图表第 1 号 », mais avec ses propres\n# caracteres : 図 n'est pas 图."
+ },
+ {
+  "id": 161,
+  "kind": "comment",
+  "text": "# LE PENDJABI CHAHMOUKHI ecrit « نقشہ », qui est\n# aussi la carte ordinaire ; on exige le\n# « نمبر » qui ne suit le mot que dans la ligne\n# qui numerote."
+ },
+ {
+  "id": 162,
+  "kind": "comment",
+  "text": "# LE GOURMOUKHI ecrit « ਸਾਰਣੀ », qui se lit\n# aussi dans le titre du volume : on exige le\n# « ਨੰ. » de la ligne qui numerote, comme pour\n# le hindi et le bengali."
+ },
+ {
+  "id": 163,
+  "kind": "comment",
+  "text": "# LE TURC ecrit « TABLO No 1 », et le mot se\n# lit aussi dans le titre du volume ;\n# mais celui-ci est compose en bas de casse\n# — « Delmas Yardimci Tablolarina » — et la\n# comparaison est sensible a la casse, comme\n# pour le portugais et l'espagnol."
+ },
+ {
+  "id": 164,
+  "kind": "comment",
+  "text": "# L'INTERLINGUA ecrit « TABELLA N-o 1 ». Le\n# mot ressemble au « TABELO » de l'ido sans\n# l'egaler — deux l, un a — et il lui faut\n# donc son propre membre. Meme parti que\n# pour le portugais : le titre du volume,\n# « Tabellas Auxiliar Delmas », est compose\n# en bas de casse et ne passe pas."
+ },
+ {
+  "id": 165,
+  "kind": "comment",
+  "text": "# LE NEERLANDAIS ecrit « TABEL Nr. 1 », et\n# « TABEL » est un morceau du « TABELO » de\n# l'ido : le membre seul attraperait les\n# deux. On exige donc le « Nr » qui ne suit\n# le mot que dans la ligne qui numerote,\n# comme pour le hindi et le bengali."
+ },
+ {
+  "id": 166,
+  "kind": "comment",
+  "text": "# LE SUEDOIS ecrit « TABELL Nr 1 ». Meme\n# difficulte que le neerlandais — le mot\n# contient le « TABEL » de l'ido — et meme\n# remede : on exige le « Nr » de la ligne\n# qui numerote."
+ },
+ {
+  "id": 167,
+  "kind": "comment",
+  "text": "# LE FINNOIS ecrit « TAULUKKO N:o 1 ». Le mot\n# ne ressemble a aucun autre et n'a besoin\n# d'aucune precaution : le titre du volume,\n# « Delmas-aputaulukot », est compose en bas\n# de casse, et la comparaison est sensible a\n# la casse."
+ },
+ {
+  "id": 168,
+  "kind": "comment",
+  "text": "# LE CATALAN ecrit « TAULA n.\\u00ba 1 ». Le mot ne\n# se confond avec aucun autre — le finnois\n# « TAULUKKO » a un U la ou celui-ci a un A —\n# et le titre du volume, « Taules auxiliars\n# Delmas », est compose en bas de casse."
+ },
+ {
+  "id": 169,
+  "kind": "comment",
+  "text": "# L'UKRAINIEN ecrit « ТАБЛИЦЯ № 1 ». Le mot ne\n# differe du russe « ТАБЛИЦА » que par sa\n# derniere lettre — Я contre А — et il lui faut\n# donc son propre membre. Aucune precaution a\n# prendre : le titre du volume, « Допоміжні\n# таблиці Дельма », est compose en bas de casse."
+ },
+ {
+  "id": 170,
+  "kind": "comment",
+  "text": "# LE ROUMAIN ecrit « TABELUL Nr. 1 », l'article\n# defini soude au nom comme il le fait partout.\n# Le mot ressemble au « TABEL » neerlandais sans\n# l'egaler, et le membre neerlandais exige un\n# « Nr » separe par un blanc, que le roumain\n# place aussi : on aurait donc pu s'en passer.\n# On lui donne pourtant son membre, parce que\n# « TABELUL » se suffit et n'a besoin d'aucune\n# precaution — le titre du volume, « Tabelele\n# auxiliare Delmas », est en bas de casse."
+ },
+ {
+  "id": 171,
+  "kind": "comment",
+  "text": "# L'IRLANDAIS ecrit « TÁBLA Uimh. 1 ». Le mot\n# porte un accent aigu sur son A, et ne se\n# confond donc avec aucun autre membre de cette\n# liste. Le titre du volume est en bas de casse."
+ },
+ {
+  "id": 172,
+  "kind": "comment",
+  "text": "# LE GALICIEN ecrit « CADRO n.º 1 ». Le mot est\n# celui de l'espagnol moins son U — CADRO contre\n# CUADRO — et ne se confond donc avec aucun\n# autre membre. Le titre du volume, « Cadros\n# auxiliares Delmas », est en bas de casse."
+ },
+ {
+  "id": 173,
+  "kind": "comment",
+  "text": "# LE TCHEQUE ecrit « TABULKA č. 1 ». Le mot\n# commence comme le « TABEL » neerlandais mais\n# s'en separe des la quatrieme lettre — TABU\n# contre TABE — et ne se confond donc avec\n# aucun autre membre. Le titre du volume,\n# « Delmasovy pomocné tabulky », est en bas de\n# casse."
+ },
+ {
+  "id": 174,
+  "kind": "comment",
+  "text": "# LE LITUANIEN ecrit « LENTELĖ Nr. 1 ». Le mot\n# porte un E surpointe, lettre que nulle autre\n# colonne n'emploie, et ne se confond donc avec\n# rien. Le titre du volume est en bas de casse."
+ },
+ {
+  "id": 175,
+  "kind": "comment",
+  "text": "# L'ESTONIEN N'AJOUTE RIEN NON PLUS, mais pour\n# une raison de composition et non de hasard :\n# il ecrit « TABEL », qui est un morceau du\n# « TABELO » de l'ido, et il lui faut donc le\n# « Nr » du neerlandais et du suedois. La\n# colonne compose donc « TABEL Nr. 1 » avec un\n# N capital, comme les deux autres, et le\n# membre « TABEL\\s+Nr » ci-dessous la prend\n# sans qu'on y touche. C'est une decision de\n# composition, pas une omission : elle est\n# ecrite dans l'en-tete de text/et.\n# LE ROMANCHE N'AJOUTE RIEN NON PLUS. Il ecrit\n# « TABELLA nr. 1 », mot pour mot le membre de\n# l'interlingua ci-dessus. Troisieme cas de la\n# serie apres le galicien et le luxembourgeois :\n# une langue qui entre sans qu'on touche au\n# motif. On le note ici pour que personne ne\n# cherche plus tard le membre manquant.\n# LE LUXEMBOURGEOIS N'AJOUTE RIEN A CETTE LISTE, et\n# c'est le second cas du genre apres le galicien.\n# Il ecrit « TABELL Nr. 1 », c'est-a-dire\n# exactement ce que le suedois ecrit, et le membre\n# suedois — qui exige le « Nr » pour ne pas\n# attraper le « TABELO » de l'ido — le couvre mot\n# pour mot. Deux langues germaniques, deux pays\n# sans frontiere commune, et la meme ligne de\n# titre.\n# LE VIETNAMIEN ecrit « BẢNG Số 1 ». Le mot ne\n# se confond avec aucun autre membre de cette\n# liste — aucune autre colonne n'ecrit un A a\n# crochet — mais il a chez lui un autre\n# emploi : « bảng » est aussi LE TABLEAU NOIR\n# de la classe, celui du tableau 1, et le\n# titre du volume dit « Bảng trợ giúp\n# Delmas ». Ni l'un ni l'autre ne passe : la\n# comparaison est sensible a la casse, et\n# seuls les titres d'apparat sont composes en\n# capitales."
+ },
+ {
+  "id": 176,
+  "kind": "comment",
+  "text": "# L'ALLEMAND ecrit « TAFEL Nr. 1 ». « Tabelle »\n# existe en allemand, mais c'est le tableau de\n# CHIFFRES ; ce que Delmas vend est une image\n# murale, et l'allemand l'appelle « Tafel »,\n# comme il appelle « Tafel » le tableau noir de\n# la classe. Le mot ne se confond avec aucun\n# autre membre — aucun ne commence par TAF — et\n# le titre du volume, « Delmas-Hilfstafeln »,\n# est compose en bas de casse."
+ },
+ {
+  "id": 177,
+  "kind": "comment",
+  "text": "# L'ITALIEN ecrit « TAVOLA N. 1 ». Le mot est\n# celui de la table et du tableau a la fois,\n# et il ne se confond avec aucun autre membre\n# de cette liste : le « TABELLA » de\n# l'interlingua et du romanche a un B la ou\n# celui-ci a un V. Le titre du volume,\n# « Tavole ausiliarie Delmas », est en bas de\n# casse, et la comparaison est sensible a la\n# casse."
+ },
+ {
+  "id": 178,
+  "kind": "comment",
+  "text": "# LE POLONAIS DIT « TABLICA », en alphabet\n# latin : le membre cyrillique « ТАБЛИЦА »,\n# pose pour le russe, ne le couvre pas."
+ },
+ {
+  "id": 179,
+  "kind": "comment",
+  "text": "# LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place\n# tout determinant. Le mot est le meme que le catalan et l'occitan, et\n# le membre « TAULA » l'attrape deja : rien a ajouter. Ce qui separe\n# les trois colonnes est le dossier — text/ca, text/oc, text/eu —\n# et non le titre.\n# L'OCCITAN ECRIT « TAULA » COMME LE CATALAN, et c'est le meme mot :\n# le membre ci-dessus les attrape tous les deux, et il n'y a rien a\n# ajouter. Les deux colonnes ne se confondent pas pour autant : ce\n# qui les separe est le dossier — text/ca et text/oc — et non le\n# titre."
+ },
+ {
+  "id": 180,
+  "kind": "comment",
+  "text": "# Les ordinaux des trois langues, pour la serie et pour la scene."
+ },
+ {
+  "id": 181,
+  "kind": "comment",
+  "text": "# L'ESPERANTO EST SI PROCHE DE L'IDO qu'il n'a pas besoin\n# d'un membre a lui : ses ordinaux entrent dans la liste\n# commune, et « serio » comme « sceno » ne demandent qu'un\n# mot de plus dans les deux groupes ci-dessous."
+ },
+ {
+  "id": 182,
+  "kind": "comment",
+  "text": "# L'INTERLINGUA, de meme : ses ordinaux sont assez\n# proches du francais pour entrer dans la liste\n# commune, et « serie » y est deja par « s[eé]rie »."
+ },
+ {
+  "id": 183,
+  "kind": "comment",
+  "text": "# LE NEERLANDAIS : ses ordinaux entrent dans la liste\n# commune, et il ne demande qu'un mot de plus dans\n# chacun des deux groupes — « reeks » et « tafereel »."
+ },
+ {
+  "id": 184,
+  "kind": "comment",
+  "text": "# LE SUEDOIS : ordinaux dans la liste commune, et un\n# mot de plus dans chacun des deux groupes — « serien »\n# et « scenen », qui portent leur article suffixe."
+ },
+ {
+  "id": 185,
+  "kind": "comment",
+  "text": "# LE FINNOIS DECLINE SON ORDINAL comme le nom qui suit,\n# mais la serie et la scene sont au nominatif : une\n# seule forme suffit donc, et deux mots de plus dans\n# les groupes — « sarja » et « kohtaus »."
+ },
+ {
+  "id": 186,
+  "kind": "comment",
+  "text": "# LE CATALAN : « primera », « tercera » et « quarta » sont\n# deja dans la liste par l'espagnol ; il ne manque que\n# « segona » et les quatre formes masculines, dont\n# l'escena catalane n'a pas besoin mais que la serie\n# emploie."
+ },
+ {
+  "id": 187,
+  "kind": "comment",
+  "text": "# L'OCCITAN : « primiera » et « segonda » ne sont pas dans\n# la liste, « tresena » et « quatrena » non plus."
+ },
+ {
+  "id": 188,
+  "kind": "comment",
+  "text": "# LE ROMANCHE (rumantsch grischun) : « quart » est deja\n# dans la liste par le catalan, et « emprim », « segund »\n# et « terz » n'y sont pas. Chacun prend son a final au\n# feminin — la seria et la scena sont feminines — mais on\n# laisse la forme masculine ouverte, comme pour le\n# catalan, parce que le motif sert aussi ailleurs."
+ },
+ {
+  "id": 189,
+  "kind": "comment",
+  "text": "# L'ESTONIEN : ses quatre ordinaux ne ressemblent a rien\n# de ce qui precede. Il ne les decline pas ici — la serie\n# et la scene sont au nominatif — et une seule forme\n# suffit donc pour chacun, comme en finnois."
+ },
+ {
+  "id": 190,
+  "kind": "comment",
+  "text": "# L'ALLEMAND : « erste » ressemble au neerlandais\n# « eerste » sans l'egaler, et « zweite », « dritte » et\n# « vierte » n'ont aucun equivalent dans la liste. Les\n# quatre sont a ajouter, avec « Reihe » dans le groupe de\n# la serie et « Szene » dans celui de la scene."
+ },
+ {
+  "id": 191,
+  "kind": "comment",
+  "text": "# L'ITALIEN : « prima », « seconda », « terza » et\n# « quarta ». « terza » est deja dans la liste par le\n# romanche — « terz[ao]? » — et « prima » ne l'est pas :\n# l'espagnol donne « primera », le catalan « primer ».\n# Les quatre s'ecrivent donc en entier, au feminin, qui\n# est le genre de « serie » comme de « scena »."
+ },
+ {
+  "id": 192,
+  "kind": "comment",
+  "text": "# L'UKRAINIEN : aucun de ses quatre ordinaux n'entre dans\n# la liste russe. « перша » n'est pas « первая »,\n# « третя » n'est pas « третья », et « четверта » n'a pas\n# le Я final de « четвёртая ». Les quatre sont a ajouter,\n# avec « серія » dans le groupe de la serie ; la scene\n# s'ecrit « сцена » comme en russe et y est deja."
+ },
+ {
+  "id": 193,
+  "kind": "comment",
+  "text": "# LE BASQUE, seule langue non indo-europeenne de ce\n# groupe. Ses ordinaux se batissent tous sur le meme\n# suffixe « -garren », sauf le premier ; ils se placent\n# AVANT le nom, comme partout ailleurs ici, de sorte que\n# « \\b...\\s+... » suffit et qu'il ne faut pas de membre\n# a part. Deux mots de plus dans les groupes ci-dessous —\n# « saila » et « agerraldia »."
+ },
+ {
+  "id": 194,
+  "kind": "comment",
+  "text": "# LE ROUMAIN accorde son ordinal en genre et le fait\n# preceder de l'article « a » ou « al » : « prima serie »,\n# « a doua scena ». Seules les formes feminines servent\n# ici, la serie et la scene etant feminines toutes deux ;\n# « prima » manque a la liste, « doua », « treia » et\n# « patra » aussi."
+ },
+ {
+  "id": 195,
+  "kind": "comment",
+  "text": "# L'IRLANDAIS place son ordinal devant le nom comme tout\n# determinant, mais il LENIFIE l'initiale apres l'article :\n# « an chéad shraith » — le premier de la serie, avec un h\n# insere dans le mot lui-meme. On ecrit donc les deux\n# etats du premier ordinal, « céad » et « chéad », et on\n# fait de meme pour la serie plus bas."
+ },
+ {
+  "id": 196,
+  "kind": "comment",
+  "text": "# LE GALICIEN N'AJOUTE RIEN A CETTE LISTE, et c'est le\n# premier cas du genre depuis l'esperanto : ses quatre\n# ordinaux feminins y sont deja, « primeira » et\n# « terceira » par le portugais, « segunda » et « cuarta »\n# par l'espagnol. Il ne demande pas davantage dans les deux\n# groupes ci-dessous : sa serie s'ecrit « serie » et sa\n# scene « escena », l'une et l'autre deja presentes.\n# LE TCHEQUE decline son ordinal comme le nom qui suit,\n# mais la serie et la scene sont toutes deux au nominatif\n# feminin : une seule forme suffit donc pour chacun des\n# quatre. « první » vaut pour les deux genres, les trois\n# autres prennent leur -á feminin."
+ },
+ {
+  "id": 197,
+  "kind": "comment",
+  "text": "# LE LITUANIEN a une forme SIMPLE et une forme DEFINIE de\n# chaque ordinal — « pirma serija » et « pirmoji serija » —\n# et l'usage prefere la seconde devant un nom precis. On\n# ecrit les deux etats, comme on avait ecrit les deux\n# etats du premier ordinal irlandais.\n# LE TROISIEME ORDINAL LITUANIEN NE SE FORME PAS COMME LES\n# TROIS AUTRES : « pirma / pirmoji », « antra / antroji »,\n# « ketvirta / ketvirtoji » gardent leur radical, mais\n# « trečia » fait « trečioji » et non « trečiaji ». Ecrit\n# d'abord sur le modele des voisins, le motif a laisse\n# passer la TREČIOJI SERIJA du tableau 11 : le controle des\n# roles l'a signalee, et c'est lui qui a rattrape la faute."
+ },
+ {
+  "id": 198,
+  "kind": "comment",
+  "text": "# LE LUXEMBOURGEOIS decline son ordinal comme l'allemand,\n# mais l'ecrit comme lui-meme : « éischt », « zweet »,\n# « drëtt », « véiert », avec l'accent aigu et le trema-e\n# qui sont a lui seul. On accepte l'accent absent pour le\n# premier et le quatrieme, que l'usage ecrit des deux\n# facons, et le E ordinaire pour le troisieme."
+ },
+ {
+  "id": 199,
+  "kind": "comment",
+  "text": "# LA SERIE. Le livre en a trois, et le fac-simile l'annonce en tete du\n# tableau qui l'ouvre : « UNESMA SERIO » au 1, « DUESMA SERIO » au 7,\n# « TRIESMA SERIO » au 11. Le volet n'en portait qu'une, ecrite en dur\n# dans le gabarit, de sorte que les seize tableaux paraissaient tous\n# sous la premiere serie.\n# TROIS LANGUES OU L'ORDINAL NE SE PLACE PAS COMME AILLEURS, et ou\n# « \\b...\\s+... » ne peut donc pas servir. Le chinois soude l'ordinal au\n# nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le\n# nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un\n# mot de plus dans la liste commune."
+ },
+ {
+  "id": 200,
+  "kind": "comment",
+  "text": "# LE CANTONAIS, meme mot, autre graphie."
+ },
+ {
+  "id": 201,
+  "kind": "comment",
+  "text": "# LE POLONAIS MET SON ORDINAL APRES LE NOM :\n# « SERIA PIERWSZA ». Le groupe commun place\n# l'ordinal devant, et aucun ordinal polonais n'y\n# est ; c'est donc un membre a lui, comme l'arabe\n# en a un pour la meme raison de place."
+ },
+ {
+  "id": 202,
+  "kind": "comment",
+  "text": "# L'ARABE EGYPTIEN FAIT PASSER SA PHONOLOGIE JUSQUE\n# DANS L'APPARAT : le ث devient ت, et « الثانية »\n# s'ecrit « التانية », « الثالثة » « التالتة ». Le\n# membre standard ne les prend pas — c'est la\n# premiere fois qu'une regle de prononciation\n# oblige a toucher au marquage des roles."
+ },
+ {
+  "id": 203,
+  "kind": "comment",
+  "text": "# LE MARATHI : « पहिली मालिका »."
+ },
+ {
+  "id": 204,
+  "kind": "comment",
+  "text": "# LE COREEN dit « 첫째 계열 »."
+ },
+ {
+  "id": 205,
+  "kind": "comment",
+  "text": "# LE TAMOUL dit « முதல் தொடர் »."
+ },
+ {
+  "id": 206,
+  "kind": "comment",
+  "text": "# L'OURDOU DIT « سلسلہ » COMME LE PENDJABI\n# CHAHMOUKHI — c'est le meme mot arabe dans le\n# meme alphabet —, mais ses ORDINAUX different :\n# دوسرا, تیسرا contre دوجا, تیجا. C'est la\n# premiere fois que deux colonnes du releve\n# partagent le nom d'un role et se separent sur\n# le mot qui le compte."
+ },
+ {
+  "id": 207,
+  "kind": "comment",
+  "text": "# L'INDONESIEN MET SON ORDINAL APRES LE NOM, comme\n# l'arabe : « Seri Pertama ». Il lui faut donc son\n# propre membre et non un mot de plus dans la\n# liste commune, que « \\b...\\s+... » gouverne dans\n# l'autre sens."
+ },
+ {
+  "id": 208,
+  "kind": "comment",
+  "text": "# LE JAVANAIS PARTAGE « seri » AVEC\n# L'INDONESIEN et s'en separe sur les ordinaux,\n# exactement comme l'ourdou et le chahmoukhi se\n# separaient sur « سلسلہ » : kapisan, kapindho,\n# katelu, kapat contre pertama, kedua, ketiga,\n# keempat."
+ },
+ {
+  "id": 209,
+  "kind": "comment",
+  "text": "# LE PERSAN dit « سری اول ». Ses ordinaux\n# ne sont ni ceux de l'ourdou (پہلا) ni ceux de\n# l'arabe (الأولى) : اول، دوم، سوم، چهارم."
+ },
+ {
+  "id": 210,
+  "kind": "comment",
+  "text": "# LE HAOUSSA MET SON ORDINAL APRES LE NOM et\n# l'introduit par « na » : « Jeri na Farko ». La\n# particule est obligatoire — « jeri farko » ne se\n# dit pas —, et c'est elle qui rend le membre sur\n# au lieu du seul mot, qui signifie aussi la file\n# d'attente ordinaire."
+ },
+ {
+  "id": 211,
+  "kind": "comment",
+  "text": "# LE GUJARATI DIT « શ્રેણી » LA OU LE MARATHI DIT\n# « मालिका » et le hindi « शृंखला » : trois langues\n# du meme fonds sanskrit et trois mots, ce qui est\n# justement pourquoi chaque colonne se traduit pour\n# elle-meme."
+ },
+ {
+  "id": 212,
+  "kind": "comment",
+  "text": "# LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT\n# « سلسلہ » : meme langue, deux lexiques, et c'est\n# justement pourquoi les deux colonnes se\n# traduisent chacune pour elle-meme."
+ },
+ {
+  "id": 213,
+  "kind": "comment",
+  "text": "# LE TURC NE SE MET PAS EN MINUSCULES SANS DEGAT.\n# Le « re.I » de Python replie « İ » sur « i »\n# suivi d'un point souscrit combinant, et\n# « İKİNCİ » cesse alors d'egaler « ikinci ».\n# On ecrit donc les deux casses a la main, dans\n# la forme exacte ou les fichiers les composent :\n# capitales pour la serie, bas de casse pour la\n# scene."
+ },
+ {
+  "id": 214,
+  "kind": "comment",
+  "text": "# LE VIETNAMIEN MET SON ORDINAL APRES LE NOM —\n# « LOẠT THỨ NHẤT », la serie ordre premier — et\n# ne peut donc pas entrer dans le groupe commun,\n# qui attend l'ordinal devant. Il lui faut un\n# membre a lui, comme au hindi, au bengali et au\n# pendjabi, qui font de meme. Le « re.I » ci-\n# dessus le prend aux deux casses : l'apparat\n# compose en capitales, ce commentaire en bas de\n# casse."
+ },
+ {
+  "id": 215,
+  "kind": "comment",
+  "text": "# LE TCHEQUE ECRIT « scéna » AVEC UN E LONG, et le groupe ne prevoyait\n# que « e » et « è ». Un accent de plus dans la classe, et le roumain\n# « scena » comme le tcheque « scéna » y entrent tous deux.\n# LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du\n# fac-simile ; mais l'italique est justement ce qui differe -- Guignon\n# compose « Unesma ceno. » en italique la ou Rochelle laisse « Première\n# scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour\n# la serie, juste au-dessus.\n# LE LUXEMBOURGEOIS DIT « Zeen », qui ne ressemble a aucun des mots de\n# ce groupe : ni au « Szene » allemand dont il vient, ni au « scena »\n# roman. Un membre de plus, donc, et non une classe elargie."
+ },
+ {
+  "id": 216,
+  "kind": "comment",
+  "text": "# LE CANTONAIS ecrit « 第一場 », que le japonais\n# ecrit deja plus bas : le membre existe, on ne le\n# double pas."
+ },
+ {
+  "id": 217,
+  "kind": "comment",
+  "text": "# LE POLONAIS, MEME RAISON QU'A LA SERIE : son\n# ordinal suit le nom. « scena » est deja dans le\n# groupe commun, mais il y attend un ordinal DEVANT\n# lui, et le polonais le met derriere."
+ },
+ {
+  "id": 218,
+  "kind": "comment",
+  "text": "# MEME RAISON QU'A LA SERIE : l'egyptien ecrit\n# « المشهد التاني » et « المشهد التالت »."
+ },
+ {
+  "id": 219,
+  "kind": "comment",
+  "text": "# LE MARATHI APPELLE UNE SCENE « प्रवेश », le mot\n# de son theatre, la ou le hindi dit « दृश्य »."
+ },
+ {
+  "id": 220,
+  "kind": "comment",
+  "text": "# LE TELOUGOU APPELLE UNE SCENE « రంగం », le mot de\n# son theatre, comme le marathi dit प्रवेश : ni l'un\n# ni l'autre ne calque le « దృశ్యం » savant."
+ },
+ {
+  "id": 221,
+  "kind": "comment",
+  "text": "# LE COREEN APPELLE UNE SCENE « 마당 », le mot de son\n# theatre — celui du 판소리 et du 마당놀이 — la ou le\n# calque sino-coreen dirait « 장 ». Troisieme colonne\n# de suite a preferer son propre mot de scene apres\n# le marathi प्रवेश et le telougou రంగం."
+ },
+ {
+  "id": 222,
+  "kind": "comment",
+  "text": "# LE TAMOUL DIT « காட்சி », le mot de son theatre.\n# Quatrieme colonne de suite a preferer le sien\n# apres le marathe प्रवेश, le telougou రంగం et le\n# coreen 마당 : la scene est justement ce qu'aucune\n# de ces langues n'emprunte."
+ },
+ {
+  "id": 223,
+  "kind": "comment",
+  "text": "# MEME CAS POUR LA SCENE : « منظر » est le mot des\n# deux colonnes, et seuls les ordinaux les\n# separent."
+ },
+ {
+  "id": 224,
+  "kind": "comment",
+  "text": "# MEME PLACE DE L'ORDINAL POUR LA SCENE\n# INDONESIENNE : « Adegan Pertama »."
+ },
+ {
+  "id": 225,
+  "kind": "comment",
+  "text": "# ET « adegan » EST UN MOT JAVANAIS QUE\n# L'INDONESIEN A EMPRUNTE — la voisine tient ici\n# son mot de la colonne dont elle se defend. Seuls\n# les ordinaux separent les deux membres."
+ },
+ {
+  "id": 226,
+  "kind": "comment",
+  "text": "# MEME CAS POUR LA SCENE PERSANE : « صحنهٔ\n# اول ». L'ourdou dit منظر, l'arabe المشهد ; صحنه\n# n'est ni l'un ni l'autre."
+ },
+ {
+  "id": 227,
+  "kind": "comment",
+  "text": "# MEME TOUR POUR LA SCENE HAOUSSA : « Fage na\n# Farko ». « fage » est l'aire ou l'on joue —\n# l'arene du lutteur, la scene du theatre — et\n# l'ordinal suit, precede de son « na »."
+ },
+ {
+  "id": 228,
+  "kind": "comment",
+  "text": "# LE GUJARATI DIT « દૃશ્ય » comme le marathi dit\n# « दृश्य » — c'est le meme mot sanskrit —, mais dans\n# son ecriture a lui, et avec ses ordinaux :\n# પ્રથમ, બીજું, ત્રીજું, ચોથું."
+ },
+ {
+  "id": 229,
+  "kind": "comment",
+  "text": "# LE TURC, aux deux casses ecrites a la main, pour\n# la raison dite plus haut a la serie."
+ },
+ {
+  "id": 230,
+  "kind": "comment",
+  "text": "# LE VIETNAMIEN, meme ordre inverse qu'a la serie :\n# « Cảnh thứ nhất », scene ordre premier."
+ },
+ {
+  "id": 231,
+  "kind": "comment",
+  "text": "# LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un\n# volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,\n# « (Simple leçon d'histoire naturelle). » chez Rochelle -- et un test\n# sur la derniere lettre laissait donc le francais de cote.\n# La parenthese chinoise est pleine chasse -- « （...） » -- et son\n# point aussi : « 。 ». Les garder ne coute qu'un caractere de plus\n# dans chacune des deux classes, et le chinois compose alors comme il\n# se doit ; les remplacer par les signes latins aurait fait, dans une\n# ligne de caracteres pleine chasse, deux trous ou l'oeil bute."
+ },
+ {
+  "id": 232,
+  "kind": "docstring",
+  "text": "\"\"\"Le corps de caractere d'une ligne d'apparat, ou rien.\"\"\""
+ },
+ {
+  "id": 233,
+  "kind": "comment",
+  "text": "# LE ROLE PREVAUT SUR LA MACRO. Les deux volumes ne composent pas de la\n# meme facon ce qui joue le meme role : le titre du tableau 8 passe par\n# \\VUpk cote ido et par \\VUtitre cote francais, de sorte que la page\n# donnait « La Rekolto. » en corps de texte en face d'un « La Moisson.\n# --- Les aspects de la campagne. » en gros et gras. De meme la scene :\n# italique d'un cote, romain de l'autre. Le PDF doit garder chaque\n# fac-simile tel qu'il est ; la page de lecture, elle, sert a COMPARER,\n# et deux choses qui se repondent doivent se ressembler.\n#\n# On marque donc chaque ligne d'apparat de son ROLE -- numero, titre,\n# serie, scene, section, sous-titre -- et c'est le role, non la macro,\n# que la feuille de style habille. Le role se lit sur la place et sur le\n# mot, les deux seules choses que les deux editions partagent."
+ },
+ {
+  "id": 234,
+  "kind": "docstring",
+  "text": "\"\"\"Marque chaque ligne d'apparat d'un data-rolo.\n\n    « porte_titre » : ce bloc n'est pas une ouverture, mais il porte le\n    titre du tableau -- aux tableaux 14 et 15 le fac-simile ne met rien\n    sous le numero et le titre ouvre le premier intertitre. Sans cela il\n    se composait en petites capitales de SECTION, si bien que le titre du\n    tableau 14 ne ressemblait pas a celui du tableau 2.\n\n    « apres_ceno » : le bloc precedent n'etait qu'un marqueur de scene,\n    et celui-ci porte donc le titre de cette scene. Aux tableaux 3, 7 et\n    9 la scene et son titre sont deux blocs ; au 4 et au 8, un seul.\n    \"\"\""
+ },
+ {
+  "id": 235,
+  "kind": "comment",
+  "text": "# UN ORNEMENT OU UN FILET SEPARE. Deux lignes de meme corps sont la\n# suite d'un meme titre -- sauf si l'imprimeur a mis une vignette ou\n# un filet entre elles, ce qui les donne pour deux choses. Les six\n# cas de l'edition sont les ouvertures de serie : « la Delmas-tabeli\n# helpanta » puis un fleuron puis « UNESMA SERIO », et de meme aux\n# deuxieme et troisieme series, ou la mention de serie precede le\n# numero du tableau. Sans cette regle on recollerait le titre du\n# volume et le nom de la serie en une seule ligne."
+ },
+ {
+  "id": 236,
+  "kind": "comment",
+  "text": "# Quelques titres sont composes a la main, sans macro \\VU, et\n# n'ont donc aucune ligne a marquer : on prend le bloc entier."
+ },
+ {
+  "id": 237,
+  "kind": "comment",
+  "text": "# OU COMMENCE LE TITRE, ET LEQUEL. Sous le numero vient le titre du\n# tableau ; mais si une scene s'intercale -- « Unesma ceno. » au\n# tableau 8 -- ce qui suit titre la SCENE, non le tableau. Un titre\n# de scene doit se composer partout de la meme facon, que le tableau\n# en compte une ou plusieurs, et plus grand qu'un simple intertitre."
+ },
+ {
+  "id": 238,
+  "kind": "comment",
+  "text": "# Les lignes de MEME CORPS qui suivent sont la suite du meme\n# titre (voir la table des matieres, qui les recolle ainsi)."
+ },
+ {
+  "id": 239,
+  "kind": "comment",
+  "text": "# L'ornement ne change pas la NATURE de la ligne : « Les\n# Bateaux. » reste un morceau du titre du tableau 12,\n# comme « La Navi. » cote ido. Il empeche seulement de\n# les recoller sur une meme ligne, plus bas."
+ },
+ {
+  "id": 240,
+  "kind": "comment",
+  "text": "# Au-dessus du numero c'est l'apparat du volume lui-meme --\n# « EXPLIKO - LIBRETO », « DI » ; au-dessous, une section."
+ },
+ {
+  "id": 241,
+  "kind": "comment",
+  "text": "# UN TITRE COUPE PAR LA COMPOSITION SE RELIT D'UN TRAIT. Le\n# fac-simile ido casse « La Homala Korpo. --- La Amuztempo. » et\n# « La Ludi. » sur deux lignes la ou le francais les unit d'un tiret.\n# On les remet donc sur une ligne, avec le tiret quand la premiere\n# s'acheve sur un point -- et sans lui quand elle s'acheve sur une\n# virgule, ou la phrase se poursuit d'elle-meme (tableau 6)."
+ },
+ {
+  "id": 242,
+  "kind": "comment",
+  "text": "# Le liant se pose DANS la ligne suivante, pour que la ligne garde sa\n# propre ancre : la table des matieres compte les memes lignes."
+ },
+ {
+  "id": 243,
+  "kind": "docstring",
+  "text": "\"\"\"Recolle les lignes d'un meme titre, comme le fait la page.\"\"\""
+ },
+ {
+  "id": 244,
+  "kind": "comment",
+  "text": "# Le meme liant qu'a l'ecran : un tiret quand la ligne precedente\n# s'acheve sur un point, rien quand elle s'acheve sur une virgule et\n# que la phrase se poursuit d'elle-meme."
+ },
+ {
+  "id": 245,
+  "kind": "docstring",
+  "text": "\"\"\"Le texte d'un bloc pour le volet, recolle comme il l'est a l'ecran.\"\"\""
+ },
+ {
+  "id": 246,
+  "kind": "comment",
+  "text": "# Deux lignes de MEME CORPS sont un seul titre coupe par la\n# composition, et se rejoignent avec le liant -- comme dans la page.\n# Un changement de corps, ou un marqueur de scene, separe deux choses\n# distinctes : « Unesma ceno. » et son titre gardent leur espace."
+ },
+ {
+  "id": 247,
+  "kind": "comment",
+  "text": "# UN SOUS-TITRE ENTRE PARENTHESES N'EST PAS LA SUITE DU TITRE,\n# meme compose au meme corps. « Gimnastiko. » et « (Naraco da un\n# de la lernanti.) » le sont tous deux en 10.2pt : le volet les\n# joignait donc d'un tiret, puis otait la parenthese -- et le\n# tiret restait tout seul, « Gimnastiko. — »."
+ },
+ {
+  "id": 248,
+  "kind": "docstring",
+  "text": "\"\"\"Le sous-titre entre parentheses ne va pas dans le volet.\"\"\""
+ },
+ {
+  "id": 249,
+  "kind": "comment",
+  "text": "# Le fac-simile precise certains titres par une parenthese --\n# « (Naraco da un de la lernanti.) » sous « Gimnastiko. »,\n# « (Simpla leciono pri naturcienco.) » sous « La Korpo homala. »,\n# « (Balno-chambro.) » sous « La Balneyo. ». Cela a sa place dans la\n# page, qui reproduit la mise en page ; dans le volet, ou l'on\n# cherche un titre du coin de l'oeil, cela double la longueur de\n# l'entree sans rien apprendre. On ne l'ote que si elle SUIT un\n# titre : une entree qui ne serait que parenthese se garde entiere,\n# faute de mieux que rien."
+ },
+ {
+  "id": 250,
+  "kind": "comment",
+  "text": "# Et le liant qui la precedait s'en va avec elle : rien ne doit rester\n# pendu au bout de l'entree."
+ },
+ {
+  "id": 251,
+  "kind": "comment",
+  "text": "# LES DEUX COLONNES DOIVENT ANNONCER LA MEME CHOSE DE LA MEME FACON.\n# Le role d'une ligne d'apparat se lit sur son libelle -- « TABELO »,\n# « UNESMA SERIO », « Unesma ceno. » -- et le libelle change de langue.\n# Quand l'anglais est arrive, ses trois mots ne figuraient dans aucune\n# des listes : « CHART No. 7 » se composait comme un intertitre en face\n# d'un « TABELO No 7 » en grand et gras, et personne ne s'en apercevait\n# a la construction. On compare donc, a chaque construction, la SUITE\n# DES ROLES des colonnes.\n#\n# LES REPETITIONS SE REPLIENT AVANT LA COMPARAISON. Un titre casse en\n# deux lignes par un atelier et d'un tenant chez l'autre donne\n# « nom, tit, tit » contre « nom, tit » : c'est la meme annonce, en\n# deux morceaux, et six ouvertures sont dans ce cas. Ce qui compte est\n# l'ENCHAINEMENT des roles, non le compte des lignes."
+ },
+ {
+  "id": 252,
+  "kind": "docstring",
+  "text": "\"\"\"La suite des roles d'un bloc, repetitions repliees.\"\"\""
+ },
+ {
+  "id": 253,
+  "kind": "docstring",
+  "text": "\"\"\"Met le meme filet dans les deux colonnes.\n\n    Le filet est une fantaisie d'imprimeur, et les deux ateliers ne\n    l'ont pas posee aux memes endroits : le francais ferme le tableau 2\n    par un filet que l'ido n'a pas, ouvre le tableau 13 par un filet que\n    l'ido n'a pas non plus, tandis que seuls les tableaux 1, 7 et 11\n    portent un filet sous leur titre dans les DEUX volumes. En regard,\n    cela donnait un trait dans une colonne et rien en face, a la meme\n    hauteur -- et un tableau qui s'ouvre autrement que le precedent.\n\n    La page de lecture n'est pas le fac-simile : les PDF gardent ce que\n    l'imprimeur a compose, la page harmonise. Deux regles suffisent :\n    tout tableau s'ouvre sur un filet sous son titre, et tout filet\n    presente dans une colonne se retrouve dans l'autre. On ne touche\n    qu'a la FIN des blocs, la ou tous ces filets se trouvent deja.\n    \"\"\""
+ },
+ {
+  "id": 254,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  CE QU'ON EFFACERAIT SANS RIEN DIRE\n# -------------------------------------------------------------------\n#  TROIS FOIS EN UN JOUR, UN CHANGEMENT ECRIT A LA MAIN DANS index.html\n#  A FAILLI DISPARAITRE : le bouton de retour vers ido.help, puis\n#  « autocapitalize » sur le champ de recherche, puis le script du meme\n#  bouton — ce dernier ajoute JUSTE SOUS le commentaire qui dit de ne\n#  pas le faire. Chaque fois la page continuait de s'afficher, et le\n#  changement n'etait plus la. Un fichier produit ne previent pas quand\n#  il oublie.\n#\n#  LA COUTURE EST NETTE, ET C'EST ELLE QUI REND LE CONTROLE EXACT. La\n#  page est le gabarit avec six substitutions, pas davantage : tout ce\n#  qui n'est pas une des six valeurs vient VERBATIM du gabarit. On\n#  decoupe donc le gabarit sur ses six marques, et l'on cherche chacun\n#  des morceaux litteraux, DANS L'ORDRE, dans la page qu'on s'apprete a\n#  remplacer. Ce qui separe deux morceaux trouves est du contenu\n#  engendre, et ne regarde pas ce controle.\n#\n#  UN MORCEAU INTROUVABLE VEUT DIRE QUE L'ARMATURE A DIVERGE, dans un\n#  sens ou dans l'autre : ou bien le gabarit a change — c'est normal,\n#  on vient peut-etre de l'editer —, ou bien la page a ete retouchee a\n#  la main. On ne signale donc pas la divergence elle-meme, mais\n#  seulement les lignes qui n'existent NI dans le gabarit NI dans la\n#  page qu'on va ecrire : celles-la, et elles seules, sont sur le point\n#  d'etre perdues.\n#\n#  APPROCHE ESSAYEE ET ABANDONNEE : comparer simplement l'ancienne page\n#  et la nouvelle, ligne a ligne, et signaler les disparues. Le releve\n#  est inutilisable — la moindre correction dans text/ en fait\n#  apparaitre des dizaines, toutes legitimes. C'est le decoupage sur\n#  les marques qui separe l'armature du contenu ; sans lui le controle\n#  crie a chaque passage, et l'on cesse de le lire.\n#\n#  IL AVERTIT, IL N'INTERROMPT PAS, et c'est voulu. Une ligne qui\n#  disparait n'est pas toujours une perte : effacer une ligne du gabarit\n#  la fait disparaitre de la page aussi, et le releve la signale de la\n#  meme facon puisqu'il ne peut pas savoir laquelle des deux mains a\n#  bouge. Arreter la generation dans ce cas empecherait la suppression\n#  volontaire d'un element. On ecrit donc la page, et l'on dit ce qu'on\n#  a emporte — c'est au lecteur de reconnaitre s'il l'avait voulu."
+ },
+ {
+  "id": 255,
+  "kind": "docstring",
+  "text": "\"\"\"Les lignes de l'ancienne page que la nouvelle n'aura plus.\"\"\""
+ },
+ {
+  "id": 256,
+  "kind": "comment",
+  "text": "# LES LANGUES DIFFEREES SE RANGENT ICI PLUTOT QUE DANS LA PAGE.\n# Tout est calcule comme pour les autres -- roles d'apparat, appels\n# de note, boutons de renvoi -- et seul le dernier geste change :\n# au lieu d'ecrire le texte dans la case, on le pose dans ce sac,\n# qui partira dans lingui/<kodo>.json, et la case reste vide."
+ },
+ {
+  "id": 257,
+  "kind": "comment",
+  "text": "# La table des matieres se tire des blocs de titre.\n# LA TABLE DES MATIERES A TROIS RANGS, parce que le livre en a\n# trois : le tableau, la scene, l'intertitre. Les tableaux a\n# plusieurs parties -- 3, 4, 7, 8, 9... -- portent « Unesma ceno »\n# et « Duesma ceno », composes en italique et non en petites\n# capitales ; c'est ce qui les distingue, et c'est au fac-simile\n# qu'on le lit, pas a la logique."
+ },
+ {
+  "id": 258,
+  "kind": "comment",
+  "text": "# LE LIBELLE COURT DE CHAQUE OUVERTURE DE TABLEAU. La recherche\n# masque tout ce qui ne repond pas, y compris les titres ; mais un\n# resultat sans son tableau ne se situe pas, et l'ouverture entiere\n# ferait quatre lignes d'apparat au-dessus de deux alineas. On garde\n# donc ici le numero et le titre, deja calcules pour la table, et la\n# page s'en sert comme titre courant de ses resultats."
+ },
+ {
+  "id": 259,
+  "kind": "comment",
+  "text": "# Un intertitre repris en titre de tableau ne s'annonce pas deux fois\n# (voir plus bas)."
+ },
+ {
+  "id": 260,
+  "kind": "comment",
+  "text": "# Un titre de scene annonce avec sa scene ne s'annonce pas deux fois."
+ },
+ {
+  "id": 261,
+  "kind": "comment",
+  "text": "# PAS UNE OUVERTURE DE TABLEAU, DONC PAS UNE ENTREE.\n# Trois blocs d'apparat tombent en cours de tableau : la\n# note de l'editeur sur les tableaux 3 et 4, le\n# « (Videz la plano.) » du tableau 5, l'alinea de\n# liaison du tableau 6. Ce sont des indications de\n# lecture, non des titres, et la table les annoncait au\n# rang des tableaux -- « (La 3 - ma e 4 - ma tabeli esas\n# tale kombinita ke li prizent ». La branche d'origine\n# visait la couverture et la dedicace ; mais celles-la\n# ne parviennent jamais ici, puisque lire_langue ecarte\n# « 00- » et « 90- ». Elle ne ramassait plus que ces\n# trois-la."
+ },
+ {
+  "id": 262,
+  "kind": "comment",
+  "text": "# LE TITRE NE SUIT PAS TOUJOURS LE NUMERO. Les tableaux a\n# plusieurs scenes glissent « Unesma ceno. » entre les deux :\n# on passe les marqueurs de scene. Et ce n'est pas non plus\n# la DERNIERE ligne du bloc -- au tableau 2 la derniere est\n# « (Simpla leciono pri naturcienco.) », le sous-titre d'une\n# lecon, sous lequel la table annoncait tout le tableau.\n# UNE SCENE AVANT LE TITRE, ET LE TABLEAU N'EN A PAS. Aux\n# tableaux 7, 8 et 9 le numero est suivi d'un « Unesma\n# ceno. » : ce qui vient ensuite titre la SCENE, non le\n# tableau, et les deux volumes le disent de meme -- le\n# francais du tableau 8 porte « Première scène. » puis « La\n# Moisson. --- Les aspects de la campagne. ». La table\n# annoncait pourtant ce titre de scene comme celui du\n# tableau, qui n'en a pas."
+ },
+ {
+  "id": 263,
+  "kind": "comment",
+  "text": "# UN TITRE PEUT TENIR SUR PLUSIEURS LIGNES, et c'est le CORPS\n# qui le dit : les lignes de meme corps que la premiere sont\n# la suite du meme titre, une ligne d'un autre corps commence\n# autre chose. Le titre du tableau 6 tient sur deux lignes de\n# 11.4pt, celui du 13 sur deux de 10.2pt, celui du 16 sur\n# deux de 13.2pt ; la table coupait apres la premiere et\n# annoncait « la Lumizado. », « La Kafeerio. », « La Ludili. »\n# comme des sections a part -- en italique, au rang des\n# scenes, alors qu'elles achevent le titre du tableau."
+ },
+ {
+  "id": 264,
+  "kind": "comment",
+  "text": "# LE TITRE EST PARFOIS HORS DU BLOC D'OUVERTURE. Aux\n# tableaux 14 et 15, le fac-simile ido ne met\n# sous le numero qu'un blanc, et le titre ouvre le\n# premier intertitre qui suit -- la ou le volume\n# francais, lui, le garde dans l'ouverture. La table\n# annoncait donc ces cinq tableaux sous leur seul\n# numero, « TABELO No 10 » et rien de plus. On va le\n# chercher au premier intertitre qui n'est pas une\n# scene, sans franchir le tableau suivant."
+ },
+ {
+  "id": 265,
+  "kind": "comment",
+  "text": "# Une scene ouvre le tableau : ce qui suit la\n# titre, elle, et le tableau reste sans titre.\n# C'est le cas des tableaux 7 et 9."
+ },
+ {
+  "id": 266,
+  "kind": "comment",
+  "text": "# ET IL NE S'ANNONCE PAS DEUX FOIS. Emprunte au\n# premier intertitre, le titre reparaissait juste\n# au-dessous en sous-entree : le volet lisait\n# « TABELO No 10 La Maro. --- La Portuo. » puis\n# « La Maro. --- La Portuo. »."
+ },
+ {
+  "id": 267,
+  "kind": "comment",
+  "text": "# LA SERIE S'ANNONCE AVANT LE TABLEAU QUI L'OUVRE, et parfois\n# dans le bloc d'AVANT : l'ouverture du tableau 1 est coupee\n# en deux pour loger la gravure, et « UNESMA SERIO » est\n# reste avec l'apparat du volume. On regarde donc aussi la ou\n# elle a pu tomber."
+ },
+ {
+  "id": 268,
+  "kind": "comment",
+  "text": "# Le point median, comme dans la ligne d'auteur de la page :\n# les titres portent deja des tirets cadratins, et un tiret\n# de plus ne se distinguerait pas d'eux."
+ },
+ {
+  "id": 269,
+  "kind": "comment",
+  "text": "# Ce qui reste du bloc -- scene, intertitre -- vaut une\n# entree a soi. Le titre en est ote : il est deja annonce\n# au-dessus. Ce qui PRECEDE le numero ne compte pas : c'est\n# l'apparat de serie, « EXPLIKO - LIBRETO », « UNESMA SERIO »."
+ },
+ {
+  "id": 270,
+  "kind": "comment",
+  "text": "# LA SCENE DE L'OUVERTURE EMPORTE SON TITRE, comme celles\n# qui ont leur bloc a elles : au tableau 8 la scene et son\n# titre sont tous deux dans l'ouverture, et le volet\n# annoncait « Unesma ceno. », « La Rekolto. » et « La\n# Aspekti di la Ruro. » en trois entrees."
+ },
+ {
+  "id": 271,
+  "kind": "comment",
+  "text": "# Une espace, non le liant : le tiret ne vaut\n# qu'entre les lignes d'un MEME titre, et la\n# scene n'en est pas une."
+ },
+ {
+  "id": 272,
+  "kind": "comment",
+  "text": "# Un intertitre : scene, ou section."
+ },
+ {
+  "id": 273,
+  "kind": "comment",
+  "text": "# LE TITRE DE LA SCENE S'ANNONCE AVEC ELLE. Aux tableaux 3, 7,\n# 8 et 9 la scene et son titre sont deux blocs ; au 4, un\n# seul. Le volet donnait donc « Unesma ceno. » toute seule\n# ici et « Unesma ceno. La Mariaj-festino. » la, pour la meme\n# chose. Quand le marqueur est seul dans son bloc, on lui\n# rattache le bloc suivant, qui porte son titre."
+ },
+ {
+  "id": 274,
+  "kind": "comment",
+  "text": "# LA GRAVURE PRECEDE LE BLOC QU'ELLE ILLUSTRE, et c'est la CLE\n# qui le dit -- non le numero du tableau. La plupart des planches\n# ouvrent leur tableau, mais pas toutes : la figure du corps\n# humain se pose sous « La Korpo homala. », le plan de la maison\n# sous le « (Videz la plano.) » du tableau 5, et le tableau 1\n# entre l'apparat du volume et son propre titre -- ce pourquoi\n# son ouverture est coupee en deux dans le releve."
+ },
+ {
+  "id": 275,
+  "kind": "comment",
+  "text": "# LE NOM DE FICHIER NE CHANGE PAS QUAND LA PLANCHE CHANGE.\n# On reprend les seize gravures une a une sur leur\n# fac-simile ; le fichier garde son nom, et le navigateur qui\n# l'a deja vu ressert l'ancienne — celle en couleur — sans\n# rien demander. Le lecteur croit alors que rien n'a bouge.\n# On accroche donc a l'adresse le POIDS du fichier, que\n# plates.json note deja : il change des que l'image change,\n# et ne bouge pas tant qu'elle ne bouge pas."
+ },
+ {
+  "id": 276,
+  "kind": "comment",
+  "text": "# DEUX DEFINITIONS, ET LE NAVIGATEUR CHOISIT. Sur un\n# ecran ordinaire la vue d'ensemble suffit ; sur un\n# Retina, ou chaque point de la page vaut deux points de\n# l'ecran, elle paraissait floue. « sizes » dit la\n# largeur reelle d'affichage : un telephone prend donc la\n# petite, et seul un grand ecran dense va chercher\n# l'image de detail -- celle-la meme qui servira au plein\n# ecran et aux gros plans, donc jamais chargee deux fois."
+ },
+ {
+  "id": 277,
+  "kind": "comment",
+  "text": "# ET LA VARIANTE SE TIRE APRES LES ROLES, pour les heriter. Les\n# roles d'apparat se lisent sur le TEXTE, par des expressions\n# liees a la langue — « TABELO », « TABLEAU », « 图表 ». Une\n# variante d'ECRITURE ne les porte plus : le chinois traditionnel\n# ecrit 圖表, qu'aucune regle ne reconnaissait, et les dix-sept\n# ouvertures perdaient leur role. La variante ne doit pas etre\n# relue : elle doit RECEVOIR ce que sa base a compris.\n# LE ROLE SE MARQUE AVANT L'ANCRAGE, et sur les deux colonnes :\n# c'est lui qui les fait se ressembler. Les ouvertures et les\n# intertitres seuls en portent ; le texte suivi n'a pas d'apparat."
+ },
+ {
+  "id": 278,
+  "kind": "comment",
+  "text": "# la variante herite, elle ne se relit pas"
+ },
+ {
+  "id": 279,
+  "kind": "comment",
+  "text": "# Le controle se fait ICI, la ou les deux colonnes\n# sont marquees : le role de l'ido n'est pose que\n# dans une variable locale, et ne survit pas au\n# rendu."
+ },
+ {
+  "id": 280,
+  "kind": "comment",
+  "text": "# Le bloc suivant porte-t-il le titre de cette scene ? Oui si\n# celui-ci s'acheve sur un marqueur de scene. C'est l'ido qui\n# en decide : la colonne de droite le suit."
+ },
+ {
+  "id": 281,
+  "kind": "comment",
+  "text": "# ET LA VARIANTE SE TIRE APRES LES ROLES, pour les heriter. Les\n# roles d'apparat se lisent sur le TEXTE, par des expressions\n# liees a la langue — « TABELO », « TABLEAU », « 图表 ». Une\n# variante d'ECRITURE ne les porte plus : le chinois traditionnel\n# ecrit 圖表, qu'aucune regle ne reconnait, et les dix-sept\n# ouvertures perdaient leur role. La variante ne doit pas etre\n# relue : elle doit RECEVOIR ce que sa base a compris."
+ },
+ {
+  "id": 282,
+  "kind": "comment",
+  "text": "# Les lignes d'apparat recoivent une ancre chacune : la table\n# des matieres renvoie a la scene, pas seulement au tableau."
+ },
+ {
+  "id": 283,
+  "kind": "comment",
+  "text": "# Les attributs de la ligne sont recopies : data-korpo\n# doit survivre a l'ancrage."
+ },
+ {
+  "id": 284,
+  "kind": "comment",
+  "text": "# OUVRE_AP, et non « ln » seul : la table compte aussi les\n# lignes « pk », et les deux numerotations doivent coincider."
+ },
+ {
+  "id": 285,
+  "kind": "comment",
+  "text": "# L'ARABE S'ECRIT DE DROITE A GAUCHE, et il faut le dire au\n# navigateur : sans « dir », les renvois entre parentheses\n# et la ponctuation finale se rangeaient du mauvais cote de\n# la ligne — « (13) » passait a gauche du mot qu'il numerote.\n# La case est marquee, non la page : les autres colonnes\n# gardent leur sens, et la marque tient sur la seule langue\n# qui en a besoin."
+ },
+ {
+  "id": 286,
+  "kind": "comment",
+  "text": "# La case est vide dans le fichier ET marquee « dif » :\n# c'est a cette marque que le CSS sait ne pas y mettre\n# le tiret des vraies lacunes, et que le script sait\n# qu'il a quelque chose a y verser."
+ },
+ {
+  "id": 287,
+  "kind": "comment",
+  "text": "# La note se rend a part : elle n'est pas un rang a deux\n# colonnes mais un depli attache a l'alinea qui l'appelle.\n# UNE NOTE PAR LANGUE, et l'identifiant porte la langue :\n# le bouton d'appel est pose dans une colonne, il doit\n# ouvrir la note de CETTE colonne. Sans la langue dans\n# l'identifiant, le bouton francais ouvrait la note ido —\n# ou, plus souvent, n'ouvrait rien du tout."
+ },
+ {
+  "id": 288,
+  "kind": "comment",
+  "text": "# La case de rang a ete construite plus haut, avant qu'on\n# sache que ce bloc etait une note : elle ne sera pas\n# rendue, et ce qu'on avait mis de cote pour elle ferait\n# double emploi avec la note elle-meme."
+ },
+ {
+  "id": 289,
+  "kind": "comment",
+  "text": "# L'ADRESSE PORTE LE POIDS DU FICHIER, comme celle des gravures :\n# le navigateur qui a deja lu une version de la traduction ne doit\n# pas la resservir quand elle a change."
+ }
+]

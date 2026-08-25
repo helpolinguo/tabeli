@@ -1,0 +1,47 @@
+[
+ {
+  "id": 0,
+  "kind": "docstring",
+  "text": "\"\"\"Draws from the Tabeli their MACHINE-READABLE versions.\n\nWHY. The page weighs 3.3 MB for 257 kB of text: thirteen bytes of markup\nfor one of text. The table carries 683 entries in 57 languages, and it is\nprecisely its richness that makes it illegible to a machine -- the 53\nlanguages other than Ido and French are EMPTY cells which the browser then\nfills from lingui/*.json.\n\nTHE POINT THAT COUNTS: the rows' keys (data-cle) are EXACTLY those of the\nlanguage files. Publishing the Ido/French pairs under those same keys\ntherefore makes the whole corpus joinable by program: whoever wants the\nIdo-Japanese pair joins tabeli.json and lingui/ja.json on the key, without\nhaving to open the page or run its JavaScript.\n\n  tabeli.json       {key: {io, fr}} — the hinge of the corpus.\n  tabeli.md         the table laid flat, Ido and French facing.\n  lingui/index.json the 57 languages offered, with their code and weight.\n\nGenerated, never edited by hand. The source stays index.html.\n\n    python3 tools/machine_readable.py\n\"\"\""
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# This directory carries its own \"html.py\", which would shadow the standard module."
+ },
+ {
+  "id": 2,
+  "kind": "comment",
+  "text": "# noqa: E402"
+ },
+ {
+  "id": 3,
+  "kind": "comment",
+  "text": "# noqa: E402"
+ },
+ {
+  "id": 4,
+  "kind": "docstring",
+  "text": "\"\"\"A fragment of HTML as plain text.\n\n    The \"ln\" are LINES of the printed book, not sentences: the original\n    table is set in narrow columns, and a sentence there runs over three or\n    four lines. We rejoin them with a space, failing which the text\n    rendered would be chopped where the book is not -- an artefact of\n    layout, not of the text.\n    \"\"\""
+ },
+ {
+  "id": 5,
+  "kind": "docstring",
+  "text": "\"\"\"Gathers the table's rows, and for each of them the Ido and the French.\n\n    We count the depth rather than looking for the closing \"/div\": a cell\n    contains \"span\"s, and sometimes other \"div\"s.\n    \"\"\""
+ },
+ {
+  "id": 6,
+  "kind": "comment",
+  "text": "# 1. The hinge of the corpus."
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# 2. The table laid flat."
+ },
+ {
+  "id": 8,
+  "kind": "comment",
+  "text": "# 3. The languages offered."
+ }
+]

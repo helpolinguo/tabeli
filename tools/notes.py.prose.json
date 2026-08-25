@@ -1,0 +1,17 @@
+[
+ {
+  "id": 0,
+  "kind": "docstring",
+  "text": "\"\"\"\nnotes.py — do the footnotes keep their place?\n\n    python3 tools/notes.py\n\nTWO POSSIBLE FAULTS, AND BOTH ARE NEEDED.\n\nThe first is COLLISION: the note prints over the text. It came from\n\\\\VUnotes laying its note in a box of NULL HEIGHT, set on the foot of the\nblock: the note fell right, and it pushed nothing. On a page whose text\ndescends to the foot, the two therefore printed one over the other -- seven\npages of the Ido booklet and one of the French. The note is now deferred\nuntil the page closes and enters the flow after the last paragraph; the\noverlap has become impossible by construction.\n\nThe second is OVERFLOW: the note passes below the edge of the leaf. It\ncomes not from the macro but from the page: six leaves carry, in the\nsurvey, more matter than the sheet holds -- the text there already fills\nthe block, and the note has only the bottom margin, which does not suffice.\nThe first fault HID it: as long as the note printed within the text, it\nnever left the paper. Correcting the first brought it to light.\n\nThis check does not decide those six pages: it names them. Deciding them\nneeds the facsimile of the booklet, which this repository does not contain\n-- we have only the sixteen plates.\n\n\nHOW THE NOTE IS SEPARATED FROM THE TEXT: by the SIZE, not by the position.\nMeasured on both booklets: the note size is 0.79 times the text size --\n9.09 against 10.93 in Ido, 8.45 against 10.70 in French -- while the\nsuperscript of a reference is 0.70. The window [0.74; 0.85] therefore\nseparates them cleanly, and it is the measurement that fixes it.\n\nAnd the LIST OF PAGES comes from the survey, not from the PDF: we look for\na note only where \\\\VUnotes lays one. A heuristic on size alone took\nsuperscripts and small capitals for notes, and returned eighty-two pages\nout of ninety-six.\n\"\"\""
+ },
+ {
+  "id": 1,
+  "kind": "docstring",
+  "text": "\"\"\"[(leaf, PDF page)] where the survey lays a note.\n\n    AND THE LEAF NUMBER IS NOT THE PDF PAGE NUMBER. That is what this check\n    believed all this time -- \"one page of the facsimile, one page of the\n    PDF\" -- and it is false: the Ido booklet skips TWO BLANK VERSOS, leaves\n    48 and 76, which are not set. The PDF page therefore falls one leaf\n    behind from 49 on, two from 77 on, and the check was looking elsewhere.\n    Leaves 49, 57, 85, 87, 89 and 106 -- six of the volume's ten pages with\n    notes -- were never checked: we measured pages without notes in their\n    place, found \"no note\", and said nothing.\n\n    The PDF page is the RANK of the page in the document, and nothing else:\n    the files are read in the order main-<lg>.tex calls them, which is\n    their alphabetical order.\n    \"\"\""
+ },
+ {
+  "id": 2,
+  "kind": "comment",
+  "text": "# the provenance watermark"
+ }
+]

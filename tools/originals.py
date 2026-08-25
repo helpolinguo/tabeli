@@ -1,32 +1,33 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  originali.py — poser une numerisation d'origine sur nos planches.
+#  originals.py — laying an original scan over our plates.
 #
-#  POURQUOI. Les gravures que sert la page viennent d'un PDF colorise :
-#  la couche de trait y est un POCHOIR — 87 pour cent de ses points sont
-#  du noir pur ou du blanc pur — parce qu'elle y servait de masque pour
-#  poser l'encre. Le demi-ton du bois grave, qui fait toute la douceur
-#  de la planche, n'y est plus, et aucune definition ne le rendra. Il
-#  faut donc repartir des numerisations d'origine (Gallica, BnF).
+#  WHY. The engravings the page serves come from a colourised PDF: the
+#  line layer there is a STENCIL — 87 per cent of its points are pure
+#  black or pure white — because it served as a mask for laying the ink.
+#  The half-tone of the wood engraving, which makes all the softness of
+#  the plate, is gone from it, and no resolution will bring it back. We
+#  must therefore start again from the original scans (Gallica, BnF).
 #
-#  CE QUI SERAIT PERDU SANS CET OUTIL. Mille cinq cents numeros ont ete
-#  releves a la main sur les planches actuelles. Ils sont enregistres EN
-#  FRACTION de la planche, non en points : pour les transporter sur une
-#  autre numerisation, il suffit de savoir quelle similitude — rotation,
-#  echelle, translation — mene de l'une a l'autre. C'est ce que cet
-#  outil mesure, et il le mesure sans qu'on lui dise rien : la
-#  correlation entre deux rendus tres differents du meme dessin suffit.
+#  WHAT WOULD BE LOST WITHOUT THIS TOOL. Fifteen hundred numbers have
+#  been picked up by hand on the present plates. They are recorded AS A
+#  FRACTION of the plate, not in points: to carry them onto another
+#  scan, it is enough to know which similarity — rotation, scale,
+#  translation — leads from one to the other. That is what this tool
+#  measures, and it measures it without being told anything: the
+#  correlation between two very different renderings of the same drawing
+#  is enough.
 #
-#  ON A VERIFIE QUE CELA MARCHE MEME DE TRES LOIN. La copie de service
-#  de Gallica ne donne a la gravure du tableau 1 que 1250 points de
-#  large, contre 5463 a notre couche de trait — quatre fois moins — et
-#  le calage tombe juste malgre tout.
+#  WE HAVE CHECKED THAT IT WORKS EVEN FROM VERY FAR AWAY. Gallica's
+#  service copy gives the engraving of table 1 only 1250 points across,
+#  against 5463 for our line layer — four times fewer — and the
+#  registration still falls right.
 #
 #  USAGE
-#      python3 tools/originali.py caler  t01-apar-1 origine.jpg
-#      python3 tools/originali.py compar t01-apar-1 origine.jpg 0.79 0.20
-#      python3 tools/originali.py netigar t01-apar-1 originals/t01.jpg
-#      python3 tools/originali.py reprendre t02-apar-1 originals/t02.jpg
+#      python3 tools/originals.py register t01-apar-1 original.jpg
+#      python3 tools/originals.py compare  t01-apar-1 original.jpg 0.79 0.20
+#      python3 tools/originals.py clean    t01-apar-1 originals/t01.jpg
+#      python3 tools/originals.py redo     t02-apar-1 originals/t02.jpg
 # ===================================================================
 
 import json
@@ -46,7 +47,7 @@ CATALOGO = RACINE / "plates" / "originals.json"
 
 
 def gris(chemin):
-    """L'image en gris, l'encre en noir, en flottant normalise."""
+    """The image in grey, the ink in black, as a normalised float."""
     im = Image.open(chemin)
     if im.mode not in ("L", "I;16"):
         im = im.convert("L")
@@ -57,7 +58,7 @@ def gris(chemin):
 
 
 def notre_trait(cle):
-    """Notre couche de trait, remise a l'endroit : l'encre en noir."""
+    """Our line layer, put back the right way round: the ink in black."""
     a = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")).astype(np.float32)
     return 255.0 - a
 
@@ -68,19 +69,19 @@ def centrer(a):
     return a / s if s > 1e-6 else a
 
 
-# LA PLANCHE PEUT ETRE COUCHEE DANS LA NUMERISATION. Les feuillets sont
-# relies dans le sens de la hauteur et la gravure y est de travers ; on
-# essaie donc les quatre quarts de tour, et l'on garde celui qui accroche.
+# THE PLATE MAY BE LYING ON ITS SIDE IN THE SCAN. The leaves are bound
+# the tall way and the engraving lies across them; we therefore try all
+# four quarter turns, and keep the one that catches.
 def orientations(a):
     for k in range(4):
         yield k, np.rot90(a, k)
 
 
 def caler(cle, chemin, large=1100, verbeux=True):
-    """La similitude qui mene de notre planche a la numerisation.
+    """The similarity that leads from our plate to the scan.
 
-    Rend (M, score, tour) : M est la matrice 2x3 qui envoie un point de
-    NOTRE planche, en points, sur la numerisation, en points.
+    Returns (M, score, turn): M is the 2x3 matrix that sends a point of
+    OUR plate, in points, onto the scan, in points.
     """
     src = notre_trait(cle)
     HS, LS = src.shape
@@ -98,8 +99,8 @@ def caler(cle, chemin, large=1100, verbeux=True):
                                      max(1, round(HD * f))),
                                interpolation=cv2.INTER_AREA)
         ech_dst = 1 / f
-        # La gravure n'occupe qu'une partie du feuillet : on cherche
-        # notre planche DANS la page, a plusieurs echelles.
+        # The engraving occupies only part of the leaf: we look for our
+        # plate WITHIN the page, at several scales.
         g = centrer(petit_dst)
         for r in np.arange(0.45, 1.02, 0.025):
             w = round(petit_src.shape[1] * r)
@@ -115,7 +116,7 @@ def caler(cle, chemin, large=1100, verbeux=True):
     if best is None:
         raise SystemExit("  rien a caler")
     score, tour, r, (x0, y0), ech_dst, w, h = best
-    # De notre planche (points) vers la numerisation TOURNEE (points).
+    # From our plate (points) to the TURNED scan (points).
     k = r / ech_src * ech_dst
     M = np.array([[k, 0.0, x0 * ech_dst],
                   [0.0, k, y0 * ech_dst]], np.float32)
@@ -134,7 +135,7 @@ def charger_tournee(chemin, tour):
 
 
 def compar(cle, chemin, cx=0.5, cy=0.5, w=0.115, h=0.095, sortie=None):
-    """Le meme detail dans les trois etats, cote a cote."""
+    """The same detail in all three states, side by side."""
     M, score, tour = caler(cle, chemin)
     ori = charger_tournee(chemin, tour)
     HS, LS = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")).shape
@@ -182,31 +183,28 @@ def compar(cle, chemin, cx=0.5, cy=0.5, w=0.115, h=0.095, sortie=None):
 
 
 # -------------------------------------------------------------------
-#  LE NETTOYAGE, ET CE QU'IL S'INTERDIT
+#  THE CLEANING, AND WHAT IT FORBIDS ITSELF
 # -------------------------------------------------------------------
-#  On redresse et l'on rogne, RIEN DE PLUS, et EN UN SEUL
-#  REECHANTILLONNAGE : la rotation et le rognage sont composes en une
-#  matrice, appliquee une fois. Deux passes a la file — tourner, puis
-#  couper — coutent une interpolation de trop, et cela se voit sur une
-#  hachure de deux points de large.
+#  We straighten and we trim, NOTHING MORE, and IN A SINGLE
+#  RESAMPLING: the rotation and the trim are composed into one matrix,
+#  applied once. Two passes in a row — turn, then cut — cost one
+#  interpolation too many, and that shows on a hatching two points wide.
 #
-#  L'ANGLE SE MESURE SUR LE FILET DU CADRE, non sur le dessin. On
-#  prend les deux filets horizontaux, qui courent sur quatre mille
-#  points et donnent l'angle a un vingtieme de degre pres ; les filets
-#  verticaux servent de controle. Au tableau 1 les deux horizontaux
-#  s'accordent sur 0.30 degre, et une fois redresses ils tombent
-#  exactement a zero.
+#  THE ANGLE IS MEASURED ON THE FRAME'S RULE, not on the drawing. We
+#  take the two horizontal rules, which run over four thousand points
+#  and give the angle to a twentieth of a degree; the vertical rules
+#  serve as a check. On table 1 the two horizontals agree on 0.30
+#  degrees, and once straightened they fall exactly to zero.
 #
-#  ON NE REDRESSE PAS LES VERTICALES. Apres redressement elles gardent
-#  un tiers de degre : la feuille a gondole, ou la planche a ete
-#  imprimee de biais. Corriger cela demanderait un cisaillement, c'est
-#  a dire d'inventer une geometrie que le fac-simile n'a pas. On
-#  l'enregistre et on la laisse.
+#  WE DO NOT STRAIGHTEN THE VERTICALS. After straightening they keep a
+#  third of a degree: the sheet has cockled, or the plate was printed
+#  askew. Correcting that would call for a shear, that is, for inventing
+#  a geometry the facsimile does not have. We record it and leave it.
 #
-#  ET L'ON NE TOUCHE PAS AU TON. Le papier est creme — son mode est a
-#  235, l'encre la plus noire a 66 — et c'est ainsi qu'il faut le
-#  garder : l'edition est diplomatique, l'eclaircissement se fera a
-#  l'affichage si on le veut, et restera reversible.
+#  AND WE DO NOT TOUCH THE TONE. The paper is cream — its mode is at
+#  235, the blackest ink at 66 — and that is how it must be kept: the
+#  edition is diplomatic, the lightening will be done at display time if
+#  wanted, and will stay reversible.
 MARGE_FILET = 8
 
 
@@ -215,7 +213,7 @@ def _tourner(a, th, centre):
 
 
 def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
-    """L'angle qui rend une droite du cadre la plus franche."""
+    """The angle that makes a line of the frame sharpest."""
     best = None
     y0, y1, x0, x1 = bande
     b = enc[y0:y1, x0:x1]
@@ -230,25 +228,25 @@ def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
     return best
 
 
-# ON N'ESSAIE PAS DE RECONNAITRE LE FILET : ON ESSAIE TOUTES LES LIGNES
-# CANDIDATES, ET L'ON GARDE CELLE QU'ON SUIT LE MIEUX.
+# WE DO NOT TRY TO RECOGNISE THE RULE: WE TRY EVERY CANDIDATE LINE,
+# AND KEEP THE ONE WE FOLLOW BEST.
 #
-# Deux fausses pistes ont ete parcourues avant celle-ci. Prendre la
-# rangee la plus encree : elle tombe sur le titre de la collection, qui
-# court en haut de chaque feuillet — « Tableaux Auxiliaires Delmas pour
-# l'Enseignement pratique des Langues vivantes par l'Image » — et qui
-# est bien plus noir que le filet ; l'ecart d'ajustement montait alors a
-# dix ou douze points sur neuf planches. Prendre le sommet le plus FIN :
-# on attrape alors une hachure du dessin, et l'on perd les trois quarts
-# des colonnes.
+# Two false trails were followed before this one. Taking the most inked
+# row: it falls on the series title, which runs along the top of every
+# leaf — « Tableaux Auxiliaires Delmas pour l'Enseignement pratique des
+# Langues vivantes par l'Image » — and which is far blacker than the
+# rule; the fitting residual then rose to ten or twelve points on nine
+# plates. Taking the THINNEST peak: one then catches a hatching of the
+# drawing, and loses three quarters of the columns.
 #
-# Ce qui distingue le filet n'est ni sa noirceur ni sa finesse, c'est
-# qu'il COURT D'UN BORD A L'AUTRE, tout droit. Cela ne se devine pas sur
-# un profil : cela se verifie en le suivant. On prend donc les huit
-# meilleurs sommets de la bande, on suit chacun, et l'on garde
-# l'ajustement le plus serre parmi ceux qui gardent assez de colonnes.
+# What distinguishes the rule is neither its blackness nor its
+# thinness, it is that it RUNS FROM ONE EDGE TO THE OTHER, dead
+# straight. That cannot be guessed from a profile: it is verified by
+# following it. We therefore take the eight best peaks of the band,
+# follow each, and keep the tightest fit among those that keep enough
+# columns.
 def meilleur_filet(enc, a0, a1, x0, x1, cand=8):
-    """Le filet d'une bande : le candidat qu'on suit le mieux."""
+    """A band's rule: the candidate we follow best."""
     prof = enc[a0:a1, round(0.20 * enc.shape[1]):
                round(0.80 * enc.shape[1])].mean(1)
     ordre = np.argsort(prof)[::-1]
@@ -270,40 +268,40 @@ def meilleur_filet(enc, a0, a1, x0, x1, cand=8):
     return best
 
 
-# LE BORD LATERAL SE MESURE DE DEUX FACONS, ET L'ON GARDE LA PLUS
-# LARGE.
+# THE SIDE EDGE IS MEASURED IN TWO WAYS, AND WE KEEP THE OUTER ONE.
 #
-# Les filets verticaux ne sont pas les horizontaux. Ceux-ci courent
-# d'un bord a l'autre et se suivent ; ceux-la sont parfois graves d'un
-# trait franc, parfois a peine, parfois pas du tout — au tableau 8 il
-# n'y a rien a gauche que la hachure de l'etang qui vient mourir au
-# bord. Chercher un sommet dans un profil ou la mediane est celle du
-# DESSIN, et non du papier, ne pouvait donner qu'un accident du
-# dessin : le rognage tombait alors cent points trop avant et coupait
-# les numeros 16, 18, 19 du tableau 8, cent trente points trop court a
-# droite du tableau 12, quatre-vingts au tableau 11 — le 76 s'y
-# retrouvait dehors.
+# The vertical rules are not the horizontals. The latter run from one
+# edge to the other and can be followed; the former are sometimes
+# engraved with a clean stroke, sometimes barely, sometimes not at all
+# — on table 8 there is nothing on the left but the hatching of the
+# pond dying away at the edge. Looking for a peak in a profile whose
+# median is that of the DRAWING, and not of the paper, could only give
+# an accident of the drawing: the trim then fell a hundred points too
+# far in and cut off numbers 16, 18, 19 of table 8, a hundred and
+# thirty points too short at the right of table 12, eighty on table 11
+# — the 76 ended up outside.
 #
-# On mesure donc deux choses, en partant de la marge :
+# We therefore measure two things, starting from the margin:
 #
-#   le FILET — le premier sommet fin qui se leve nettement au-dessus du
-#   PAPIER (et non au-dessus de la mediane du profil) ;
+#   the RULE — the first thin peak that rises clearly above the PAPER
+#   (and not above the profile's median);
 #
-#   l'ENTREE DU DESSIN — l'endroit ou l'encre passe a mi-chemin entre
-#   le papier et le plein du dessin, et n'en redescend plus.
+#   the ENTRY OF THE DRAWING — the place where the ink passes halfway
+#   between the paper and the full of the drawing, and does not come
+#   back down.
 #
-# Puis l'on garde CELLE DES DEUX QUI EST LA PLUS EXTERIEURE. Un peu de
-# marge blanche ne coute rien ; un trait de gravure coupe ne se
-# rattrape pas. Verifie sur les seize planches : les deux mesures
-# tombent l'une sur l'autre douze fois, et les quatre fois qu'elles
-# different c'est la plus exterieure qui est sur le filet.
+# Then we keep WHICHEVER OF THE TWO IS FURTHER OUT. A little white
+# margin costs nothing; a cut engraved line cannot be got back.
+# Checked on all sixteen plates: the two measurements fall on each
+# other twelve times, and the four times they differ it is the outer
+# one that is on the rule.
 def _paper(q, marge):
     m = round(marge * len(q))
     return float(np.percentile(q[:m], 20)), float(np.median(q[m:]))
 
 
 def filet_lateral(q, marge=0.30, large=20):
-    """Le premier sommet fin qui se leve au-dessus du papier."""
+    """The first thin peak that rises above the paper."""
     fond, plein = _paper(q, marge)
     haut = max(6.0, 0.25 * (plein - fond))
     for i in range(2, len(q) - 2):
@@ -320,7 +318,7 @@ def filet_lateral(q, marge=0.30, large=20):
 
 
 def entree_dessin(q, marge=0.30, tenue=20):
-    """L'endroit ou l'encre monte a mi-plein et n'en redescend plus."""
+    """The place where the ink rises to half-full and stays there."""
     fond, plein = _paper(q, marge)
     if plein - fond < 4:
         return None
@@ -332,7 +330,7 @@ def entree_dessin(q, marge=0.30, tenue=20):
 
 
 def bord_lateral(prof, sens):
-    """Le bord d'un cote : la plus exterieure des deux mesures."""
+    """One side's edge: the outer of the two measurements."""
     q = np.asarray(prof, dtype=float)
     if sens < 0:
         q = q[::-1]
@@ -343,31 +341,30 @@ def bord_lateral(prof, sens):
     return i if sens > 0 else len(q) - 1 - i
 
 
-# MESURER LE FILET, PLUTOT QUE DE CHERCHER SON ANGLE. On tournait la
-# bande d'essai par pas d'un quarantieme de degre et l'on gardait
-# l'angle qui rendait le pic le plus franc. Au tableau 1 les deux filets
-# horizontaux s'accordaient a +0.300 ; au tableau 2 ils donnaient -0.275
-# et +0.225, un demi-degre d'ecart -- l'un des deux avait accroche autre
-# chose que le filet.
+# MEASURING THE RULE, RATHER THAN LOOKING FOR ITS ANGLE. We used to
+# turn the trial band by steps of a fortieth of a degree and keep the
+# angle that made the peak sharpest. On table 1 the two horizontal rules
+# agreed at +0.300; on table 2 they gave -0.275 and +0.225, half a
+# degree apart -- one of the two had caught something other than the
+# rule.
 #
-# On mesure donc le filet LUI-MEME : pour une centaine de colonnes
-# reparties sur la largeur, la ligne la plus encree dans une fenetre
-# etroite ; puis une droite ajustee par moindres carres, en rejetant
-# d'une passe a l'autre ce qui s'ecarte trop de la precedente. La
-# pente donne l'angle, et l'ecart residuel dit si l'on a bien suivi un
-# filet ou couru apres une branche d'arbre.
+# We therefore measure the rule ITSELF: for a hundred or so columns
+# spread across the width, the most inked line within a narrow window;
+# then a line fitted by least squares, rejecting from one pass to the
+# next whatever departs too far from the previous one. The slope gives
+# the angle, and the residual says whether we have indeed followed a
+# rule or run after the branch of a tree.
 def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
-    """Suit une droite presque horizontale et rend (angle, ecart, n).
+    """Follows a nearly horizontal line and returns (angle, residual, n).
 
-    ON NE GARDE QUE LES COLONNES OU LE FILET SE VOIT. Sur une planche
-    dont le ciel ou le sol est hachure, une colonne sur trois n'offre
-    aucun pic franc, et le barycentre s'y pose n'importe ou : l'ecart
-    d'ajustement montait alors a dix ou onze points, et l'angle ne
-    valait plus rien. On mesure donc la FORCE de chaque pic -- sa
-    hauteur au-dessus du fond de la fenetre -- et l'on jette les
-    colonnes qui n'atteignent pas la moitie de la force mediane.
-    Ensuite seulement on ajuste, quatre fois, en resserrant sur l'ecart
-    absolu median.
+    WE KEEP ONLY THE COLUMNS WHERE THE RULE CAN BE SEEN. On a plate
+    whose sky or ground is hatched, one column in three offers no sharp
+    peak, and the barycentre there settles anywhere: the fitting
+    residual then rose to ten or eleven points, and the angle was worth
+    nothing any more. We therefore measure the STRENGTH of each peak --
+    its height above the floor of the window -- and throw away the
+    columns that do not reach half the median strength. Only then do we
+    fit, four times, tightening on the median absolute residual.
     """
     xs, ys, fs = [], [], []
     for x in range(x0, x1 - pas, pas):
@@ -402,16 +399,16 @@ def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
             float(np.sqrt(((Y - (m * X + c)) ** 2).mean())), int(len(X)))
 
 
-# LE CADRE : les horizontales sont donnees, les verticales se mesurent.
+# THE FRAME: the horizontals are given, the verticals are measured.
 #
-# On ne recherche plus les filets du haut et du bas : ils ont deja ete
-# SUIVIS, colonne par colonne, pour trouver l'angle de la feuille, et
-# meilleur_filet a rendu la rangee ou chacun passe. La redresser ne la
-# deplace pas — le point (W/2, y) tourne autour de (W/2, H/2), donc le
-# long de l'axe meme de la rotation. On la reprend telle quelle, avec un
-# dernier calage a vingt points pres.
+# We no longer look for the top and bottom rules: they have already been
+# FOLLOWED, column by column, to find the sheet's angle, and best_rule
+# returned the row each passes through. Straightening does not move it —
+# the point (W/2, y) turns about (W/2, H/2), hence along the very axis
+# of the rotation. We take it as it stands, with one last registration
+# to within twenty points.
 def cadre(enc, yh, yb):
-    """Le cadre d'une image deja redressee, les horizontales connues."""
+    """The frame of an already straightened image, horizontals known."""
     H, W = enc.shape
     mh, mv = round(0.045 * H), round(0.035 * W)
 
@@ -432,37 +429,36 @@ def cadre(enc, yh, yb):
 
 
 def netigar(chemin, dest=None, verbeux=True):
-    """Redresse et rogne une numerisation, en un seul rechantillonnage."""
+    """Straightens and trims a scan, in a single resampling."""
     im = Image.open(chemin)
     a = np.asarray(im.convert("L"))
-    # LA FEUILLE EST RELIEE EN HAUTEUR, la gravure y est couchee.
+    # THE SHEET IS BOUND THE TALL WAY, the engraving lies across it.
     tour = 3 if a.shape[0] > a.shape[1] else 0
     a = np.rot90(a, tour)
     H, W = a.shape
     enc = np.clip(200.0 - a.astype(np.float32), 0, None)
-    # 1. l'angle, sur les deux filets horizontaux, suivis point par point.
-    #    ON RESSERRE D'ABORD LA BANDE AUTOUR DU FILET. Au tableau 2 le sol
-    #    est hachure horizontalement jusqu'au bas de la gravure, et le
-    #    suiveur accrochait une hachure au lieu du filet : les deux
-    #    mesures se contredisaient alors d'un demi-degre. On repere donc
-    #    la ligne la plus encree de la moitie exterieure, et l'on ne suit
-    #    le filet qu'a vingt-cinq points de part et d'autre.
-    # LA BANDE OU LE FILET SE TROUVE, et nulle part ailleurs. Les seize
-    # feuillets sont imprimes de la meme facon : le filet du haut tombe
-    # entre le vingt-troisieme et le vingt-septieme centieme du feuillet,
-    # celui du bas entre le quatre-vingt-neuvieme et le quatre-vingt-
-    # onzieme. Chercher plus large, c'est attraper le bord de la feuille
-    # — plus droit que le filet, et faux.
+    # 1. the angle, on the two horizontal rules, followed point by point.
+    #    WE FIRST NARROW THE BAND AROUND THE RULE. On table 2 the ground is
+    #    hatched horizontally right down to the bottom of the engraving,
+    #    and the follower was catching a hatching instead of the rule: the
+    #    two measurements then contradicted each other by half a degree. We
+    #    therefore locate the most inked line of the outer half, and follow
+    #    the rule only within twenty-five points either side.
+    # THE BAND WHERE THE RULE IS, and nowhere else. The sixteen leaves are
+    # printed the same way: the top rule falls between the twenty-third and
+    # the twenty-seventh hundredth of the leaf, the bottom one between the
+    # eighty-ninth and the ninety-first. To search wider is to catch the
+    # edge of the sheet — straighter than the rule, and wrong.
     X0, X1 = round(0.08 * W), round(0.92 * W)
     rh = meilleur_filet(enc, round(0.045 * H), round(0.100 * H), X0, X1)
     rb = meilleur_filet(enc, round(0.875 * H), round(0.925 * H), X0, X1)
     mh, yh = rh if rh else (None, None)
     mb, yb = rb if rb else (None, None)
-    # QUAND LES DEUX FILETS SE CONTREDISENT, ON CROIT LE MIEUX MESURE.
-    # Ils s'accordent a un dixieme de degre pres sur onze planches ; sur
-    # les cinq autres l'un des deux a ete suivi sur moitie moins de
-    # colonnes, et c'est lui qui s'ecarte. Le poids d'une mesure, c'est
-    # le nombre de colonnes gardees divise par son ecart d'ajustement.
+    # WHEN THE TWO RULES CONTRADICT EACH OTHER, WE BELIEVE THE BETTER
+    # MEASURED. They agree to within a tenth of a degree on eleven plates;
+    # on the other five one of the two was followed on half as many
+    # columns, and it is that one that departs. The weight of a measurement
+    # is the number of columns kept divided by its fitting residual.
     def poids(m):
         return m[2] / (m[1] + 0.5) if m else 0.0
 
@@ -474,14 +470,14 @@ def netigar(chemin, dest=None, verbeux=True):
         th = sum(m[0] * poids(m) for m in duo) / pt
     else:
         th = 0.0
-    # 2. le cadre, mesure sur une copie redressee (jetee ensuite)
+    # 2. the frame, measured on a straightened copy (thrown away after)
     Mr = _tourner(a, th, (W / 2, H / 2))
     droit = cv2.warpAffine(enc, Mr, (W, H), flags=cv2.INTER_LINEAR,
                            borderValue=0)
     (x0, y0, x1, y1), forces = cadre(droit, yh, yb)
     x0, y0 = x0 - MARGE_FILET, y0 - MARGE_FILET
     x1, y1 = x1 + MARGE_FILET, y1 + MARGE_FILET
-    # 3. rotation ET rognage en une seule matrice, une seule passe
+    # 3. rotation AND trim in a single matrix, a single pass
     M = Mr.copy()
     M[0, 2] -= x0
     M[1, 2] -= y0
@@ -489,7 +485,7 @@ def netigar(chemin, dest=None, verbeux=True):
     src = np.rot90(np.asarray(im.convert("L")), tour)
     out = cv2.warpAffine(src, M, (LG, HT), flags=cv2.INTER_CUBIC,
                          borderMode=cv2.BORDER_REPLICATE)
-    # controle : ce qui reste de biais aux verticales
+    # check: what skew is left in the verticals
     e2 = np.clip(200.0 - out.astype(np.float32), 0, None)
     vg = angle_filet(e2, (round(.05*HT), round(.95*HT), 0, 40), 0, 1.0)[1]
     vd = angle_filet(e2, (round(.05*HT), round(.95*HT), LG-40, LG), 0, 1.0)[1]
@@ -509,36 +505,36 @@ def netigar(chemin, dest=None, verbeux=True):
             print(f"  ecrit dans {dest}")
     return out, {"tour": tour, "angulo": round(th, 4),
                  "kadro": [int(x0), int(y0), int(x1), int(y1)],
-                 # LES DEUX FILETS SEPAREMENT, avec l'ecart de leur
-                 # ajustement : c'est la seule facon de savoir plus tard
-                 # si l'on a bien suivi le cadre, et si la feuille etait
-                 # droite. Au tableau 2 ils convergent de quatre dixiemes
-                 # de degre -- la gravure y est en trapeze, et l'on ne
-                 # corrige pas cela sans inventer une geometrie.
+                 # THE TWO RULES SEPARATELY, with their fitting residual:
+                 # it is the only way to know later whether we have indeed
+                 # followed the frame, and whether the sheet was straight.
+                 # On table 2 they converge by four tenths of a degree --
+                 # the engraving there is a trapezium, and one does not
+                 # correct that without inventing a geometry.
                  "filetoj": [[round(m[0], 3), round(m[1], 2), m[2]]
                              if m else None for m in (mh, mb)],
                  "vertikali": [round(vg, 3), round(vd, 3)]}
 
 
 # -------------------------------------------------------------------
-#  LE TRANSPORT DES NUMEROS
+#  CARRYING THE NUMBERS OVER
 # -------------------------------------------------------------------
-#  Mille cinq cents numeros ont ete releves a la main sur les planches
-#  colorisees. Ils sont enregistres EN FRACTION de la planche : pour les
-#  porter sur la numerisation d'origine, il suffit de la similitude qui
-#  mene de l'une a l'autre.
+#  Fifteen hundred numbers have been picked up by hand on the
+#  colourised plates. They are recorded AS A FRACTION of the plate: to
+#  carry them onto the original scan, the similarity that leads from one
+#  to the other is enough.
 #
-#  ELLE SE MESURE PAR CORRELATION, sur une carte de densite d'encre —
-#  les deux images floutees, centrees, reduites. Le pochoir et le
-#  fac-simile ne se ressemblent pas trait pour trait, mais leurs masses
-#  d'encre, oui : au tableau 1 la correlation monte a 0.95.
+#  IT IS MEASURED BY CORRELATION, on an ink density map — the two
+#  images blurred, centred, reduced. The stencil and the facsimile do
+#  not resemble each other stroke for stroke, but their masses of ink
+#  do: on table 1 the correlation rises to 0.95.
 #
-#  ATTENTION AU SENS DE L'ENCRE. Dans la couche de trait l'encre vaut
-#  255, dans une numerisation elle est sombre. Les avoir prises dans le
-#  meme sens faisait tomber la correlation de 0.95 a 0.10, et l'on
-#  cherchait la faute ailleurs.
+#  MIND THE SENSE OF THE INK. In the line layer the ink is 255, in a
+#  scan it is dark. Having taken them in the same sense made the
+#  correlation drop from 0.95 to 0.10, and we were looking for the fault
+#  elsewhere.
 def densito(a, W, sigma=1.6):
-    """Une carte de densite d'encre, comparable d'un rendu a l'autre."""
+    """An ink density map, comparable from one rendering to another."""
     h = round(W * a.shape[0] / a.shape[1])
     s = cv2.resize(a.astype(np.float32), (W, h), interpolation=cv2.INTER_AREA)
     s = cv2.GaussianBlur(s, (0, 0), sigma)
@@ -546,19 +542,19 @@ def densito(a, W, sigma=1.6):
 
 
 def mezuri(cle, neta, W=1000, verbeux=True):
-    """La matrice qui mene de l'ancienne planche a la nouvelle."""
-    # LA REFERENCE EST LA PLANCHE PRECEDENTE, quelle qu'elle soit. La
-    # premiere fois c'est la couche de trait du PDF colorise, ou l'encre
-    # vaut 255 ; ensuite, si l'on renettoie, c'est le fac-simile deja
-    # nettoye, ou l'encre est sombre. Sans cela un second nettoyage
-    # ferait repartir les numeros du pochoir, qu'ils ont quitte.
+    """The matrix that leads from the old plate to the new one."""
+    # THE REFERENCE IS THE PREVIOUS PLATE, whatever it may be. The first
+    # time it is the line layer of the colourised PDF, where the ink is
+    # 255; afterwards, if we clean again, it is the already cleaned
+    # facsimile, where the ink is dark. Without that a second cleaning
+    # would start the numbers off from the stencil, which they have left.
     ancienne = RACINE / "originals" / "kovri" / f"{cle}-neta-antaua.png"
     if ancienne.exists():
         vieux = 255.0 - np.asarray(Image.open(ancienne).convert("L")
                                    ).astype(np.float32)
     else:
         vieux = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")
-                           ).astype(np.float32)      # l'encre y vaut 255
+                           ).astype(np.float32)      # the ink is 255 there
     neuf = 255.0 - np.asarray(Image.open(neta).convert("L")).astype(np.float32)
     LO, HO = vieux.shape[1], vieux.shape[0]
     LN, HN = neuf.shape[1], neuf.shape[0]
@@ -609,19 +605,19 @@ def _pt(T, x, y):
 
 
 def deja_porte(cle):
-    """Ce tableau a-t-il deja ete porte sur son original ?"""
+    """Has this table already been carried onto its original?"""
     if not CATALOGO.exists():
         return False
     return "transporto" in json.loads(
         CATALOGO.read_text(encoding="utf-8")).get(cle, {})
 
 
-# LE TRANSPORT NE SE FAIT QU'UNE FOIS. Le refaire appliquerait la
-# similitude a des positions qui l'ont deja subie, et les mille cinq
-# cents numeros partiraient de travers sans que rien ne le signale.
-# L'outil refuse donc de recommencer, a moins qu'on ne le lui dise.
+# THE CARRYING OVER IS DONE ONLY ONCE. Doing it again would apply the
+# similarity to positions that have already undergone it, and the
+# fifteen hundred numbers would go off askew with nothing to signal it.
+# The tool therefore refuses to start over, unless told to.
 def transporti(cle, neta, verbeux=True, force=False):
-    """Porte les numeros, les scenes et les tailles sur la nouvelle planche."""
+    """Carries the numbers, the scenes and the sizes onto the new plate."""
     if deja_porte(cle) and not force:
         raise SystemExit(
             f"  {cle} : deja porte sur son original. Recommencer "
@@ -630,16 +626,16 @@ def transporti(cle, neta, verbeux=True, force=False):
     T, korelo, (LO, HO), (LN, HN) = mezuri(cle, neta, verbeux=verbeux)
     k = float(np.hypot(T[0, 0], T[1, 0]))
 
-    # CE QUI SORT DE LA PLANCHE NE SE GARDE PAS. Le rognage ne tombe pas
-    # au meme endroit d'une reprise a l'autre — il suit les filets, et
-    # les filets se mesurent — de sorte qu'un numero pose tout au bord
-    # peut se retrouver dehors. Le garder, c'est promettre un gros plan
-    # sur du vide. On le dit, et on le laisse tomber : il sera a
-    # rechercher sur la nouvelle planche.
+    # WHAT FALLS OUTSIDE THE PLATE IS NOT KEPT. The trim does not fall in
+    # the same place from one redo to the next — it follows the rules, and
+    # the rules are measured — so that a number placed right at the edge
+    # may end up outside. To keep it is to promise a close-up on nothing.
+    # We say so, and let it drop: it will have to be looked for again on
+    # the new plate.
     perdus = []
 
     def boite(v, nom=""):
-        """(x, y, l, h) en fraction de l'ancienne -> de la nouvelle."""
+        """(x, y, w, h) as a fraction of the old -> of the new."""
         x, y = _pt(T, v[0] * LO, v[1] * HO)
         cx, cy = x + v[2] * LO * k / 2, y + v[3] * HO * k / 2
         if not (0 <= cx < LN and 0 <= cy < HN):
@@ -721,88 +717,88 @@ def transporti(cle, neta, verbeux=True, force=False):
 
 
 # -------------------------------------------------------------------
-#  SERVIR LA PLANCHE
+#  SERVING THE PLATE
 # -------------------------------------------------------------------
-#  Deux tailles, comme avant : la vue d'ensemble posee au-dessus du
-#  titre, et l'image ou l'on decoupe les gros plans. Mais celle-ci n'est
-#  plus rabotee a 2600 points : ON SERT LA PLANCHE ENTIERE.
+#  Two sizes, as before: the general view set above the title, and the
+#  image from which the close-ups are cut. But the latter is no longer
+#  planed down to 2600 points: WE SERVE THE WHOLE PLATE.
 #
-#  La mesure le demande. Le gros plan montre neuf hauteurs de chiffre,
-#  soit deux cent quatre-vingt-dix points de planche, sur deux cent
-#  cinquante points d'ecran — cinq cents sur un ecran a double densite.
-#  Meme a pleine definition on est donc en dessous du compte : rogner
-#  encore n'aurait aucun sens. A 2600 points, en outre, la hachure fine
-#  moire, ce qui ne pardonne pas sur une gravure sur bois.
+#  The measurement calls for it. The close-up shows nine figure heights,
+#  that is two hundred and ninety points of plate, on two hundred and
+#  fifty points of screen — five hundred on a double-density screen.
+#  Even at full resolution we are therefore short: trimming further
+#  would make no sense. At 2600 points, moreover, the fine hatching
+#  moirés, which is unforgivable on a wood engraving.
 #
-#  L'image ne coute qu'au PREMIER clic sur un numero du tableau, et sert
-#  ensuite a tous les autres.
+#  The image costs only at the FIRST click on a number of the table, and
+#  serves all the others afterwards.
 LARGE_VIDO = 1200
 QUAL_VIDO = 74
 QUAL_DETALO = 74
 
 
-# LA QUALITE DU DETAIL SE REGLE PAR PLANCHE. Le fac-simile a quatre
-# mille cinq cents points de large : a soixante-quatorze, le WebP a de
-# la place et n'y perd rien de visible. L'original en couleur n'en a
-# que deux mille deux cents, et la meme qualite le grumelait — le
-# « PIANOS » du batiment (10) du tableau 14 s'y lisait moins bien que
-# sur le PDF d'origine. Moins de points, plus de qualite : le fichier
-# reste plus leger que celui d'un fac-simile.
+# THE DETAIL'S QUALITY IS SET PLATE BY PLATE. The facsimile is four
+# thousand five hundred points wide: at seventy-four, the WebP has room
+# and loses nothing visible. The colour original has only two thousand
+# two hundred, and the same quality made it lumpy — the « PIANOS » of
+# building (10) on table 14 read less well there than on the original
+# PDF. Fewer points, more quality: the file stays lighter than a
+# facsimile's.
 # -------------------------------------------------------------------
-#  LE TON : RENDRE SON NOIR A LA PLANCHE
+#  THE TONE: GIVING THE PLATE ITS BLACK BACK
 # -------------------------------------------------------------------
-#  LES QUATORZE PLANCHES EN GRIS N'AVAIENT PAS DE NOIR. Leur encre la
-#  plus sombre s'arretait entre 45 et 65 sur 255, et au plus un point
-#  sur dix mille descendait sous 40 -- quand les deux planches en
-#  couleur, servies a cote d'elles dans la meme galerie, descendent a
-#  11 et 13 avec trois a quatre points sur cent vraiment noirs. C'est
-#  ce voisinage que l'oeil lisait comme de la paleur.
+#  THE FOURTEEN GREY PLATES HAD NO BLACK. Their darkest ink stopped
+#  between 45 and 65 out of 255, and at most one point in ten thousand
+#  went below 40 -- when the two colour plates, served beside them in
+#  the same gallery, go down to 11 and 13 with three or four points in a
+#  hundred truly black. It was that neighbourhood the eye read as
+#  paleness.
 #
-#  CE N'ETAIT PAS NOTRE TRAITEMENT : netigar redresse et rogne, il ne
-#  touchait pas au ton. La paleur vient des numerisations d'origine.
+#  IT WAS NOT OUR PROCESSING: clean straightens and trims, it did not
+#  touch the tone. The paleness comes from the original scans.
 #
-#  ON ETIRE DONC ENTRE DEUX CENTILES, planche par planche -- les
-#  numerisations different trop pour un reglage commun. Le point noir
-#  au centile 0,05, le point blanc au centile 99,5.
+#  WE THEREFORE STRETCH BETWEEN TWO PERCENTILES, plate by plate -- the
+#  scans differ too much for a common setting. The black point at
+#  percentile 0.05, the white point at percentile 99.5.
 #
-#  LE POINT BLANC A ETE LE POINT DISCUTE, et la mesure a tranche contre
-#  l'intuition. Le deplacer ecrase six points sur mille au blanc, contre
-#  trois avant : on a d'abord cru que c'etait le grain du papier qui
-#  partait. Le releve dit autre chose. Le gradient moyen la ou l'on
-#  ecrase vaut 16 a 18, soit celui du reste de la planche ; deux points
-#  sur mille seulement de ces points-la n'ont aucun voisin different
-#  d'eux. Ce ne sont pas des aplats de papier : c'est le bord CLAIR des
-#  traits. Les blanchir ne supprime aucune ligne, cela detache la ligne
-#  de son papier. Le compte des gradients faibles en zone claire --
-#  la hachure fine, ce qu'on risquait de perdre -- le confirme : il
-#  monte a 107-111 pour cent apres etirement, exactement comme si l'on
-#  gardait le blanc a 255.
+#  THE WHITE POINT WAS THE DISPUTED POINT, and measurement settled it
+#  against intuition. Moving it crushes six points in a thousand to
+#  white, against three before: we first thought it was the grain of the
+#  paper going. The reading says otherwise. The mean gradient where we
+#  crush is 16 to 18, that is, that of the rest of the plate; only two
+#  points in a thousand of those have no neighbour different from
+#  themselves. These are not flats of paper: they are the LIGHT edge of
+#  the strokes. Whitening them removes no line, it detaches the line
+#  from its paper. The count of weak gradients in light areas -- the
+#  fine hatching, what we risked losing -- confirms it: it rises to
+#  107-111 per cent after stretching, exactly as if we had kept the
+#  white at 255.
 #
-#  ET GARDER LE BLANC A 255 COUTAIT PLUS QUE CELA N'EPARGNAIT. Le
-#  papier median tombait alors de 227 a 217, quand le fond de la page
-#  de lecture vaut 250 : la planche se posait sur la page comme un
-#  rectangle plus gris qu'avant. Au centile 99,5 il reste a 224.
+#  AND KEEPING THE WHITE AT 255 COST MORE THAN IT SAVED. The median
+#  paper then fell from 227 to 217, when the ground of the reading page
+#  is 250: the plate settled on the page as a rectangle greyer than
+#  before. At percentile 99.5 it stays at 224.
 #
-#  APPROCHE ESSAYEE ET ABANDONNEE : un raccord souple au lieu d'un
-#  ecretage franc, pour ne rien ecraser du tout. C'est la seule des
-#  quatre variantes qui abime le trace -- la hachure fine tombe a
-#  86-93 pour cent, parce que la courbe tasse justement le haut du
-#  signal, la ou vit le trait clair. Retiree.
+#  APPROACH TRIED AND ABANDONED: a soft knee instead of a clean clip,
+#  so as to crush nothing at all. It is the only one of the four
+#  variants that harms the drawing -- the fine hatching falls to 86-93
+#  per cent, because the curve packs precisely the top of the signal,
+#  where the light stroke lives. Withdrawn.
 #
-#  ON NE VA PAS PLUS LOIN QUE LE CENTILE 99,5, et cela s'est mesure
-#  aussi : au centile 98 la hachure fine tient encore (103-108 %), au
-#  centile 96 elle commence a tomber (91 % au tableau 7), au centile 92
-#  elle s'effondre (63 %). Le gain d'ecart-type entre 99,5 et 98 ne vaut
-#  que deux pour cent. On s'arrete ou le gain cesse de payer.
+#  WE DO NOT GO BEYOND PERCENTILE 99.5, and that too was measured: at
+#  percentile 98 the fine hatching still holds (103-108 %), at
+#  percentile 96 it starts to fall (91 % on table 7), at percentile 92
+#  it collapses (63 %). The gain in standard deviation between 99.5 and
+#  98 is only two per cent. We stop where the gain ceases to pay.
 #
-#  LES DEUX PLANCHES EN COULEUR NE PASSENT PAS PAR LA : kolorigo.py
-#  appelle servir() avec tono=False. Elles ont deja leur noir.
+#  THE TWO COLOUR PLATES DO NOT GO THROUGH THIS: colourise.py calls
+#  serve() with tone=False. They already have their black.
 TONO_NOIR = 0.05
 TONO_BLANC = 99.5
 
 
 def tonigar(im):
-    """Etire le ton entre deux centiles. Rend l'image et les bornes."""
+    """Stretches the tone between two percentiles. Returns image and bounds."""
     a = np.asarray(im.convert("L")).astype(np.float32)
     noir = float(np.percentile(a, TONO_NOIR))
     blanc = float(np.percentile(a, TONO_BLANC))
@@ -816,7 +812,7 @@ def tonigar(im):
 
 
 def servir(cle, neta, verbeux=True, qual_detalo=None, tono=True):
-    """Les deux WebP, tires de la planche d'origine nettoyee."""
+    """The two WebPs, drawn from the cleaned original plate."""
     im = Image.open(neta).convert("RGB")
     par_tono = None
     if tono:
@@ -854,17 +850,18 @@ def servir(cle, neta, verbeux=True, qual_detalo=None, tono=True):
 
 
 # -------------------------------------------------------------------
-#  LA REPRISE ENTIERE, EN UNE COMMANDE
+#  THE WHOLE REDO, IN ONE COMMAND
 # -------------------------------------------------------------------
-#  Nettoyer, porter les numeros, servir les deux images : trois gestes
-#  qui vont toujours ensemble et dans cet ordre. Quinze planches
-#  restent a reprendre ; autant ne pas les taper trois fois chacune.
+#  Clean, carry the numbers over, serve the two images: three motions
+#  that always go together and in that order. Fifteen plates remain to
+#  be redone; better not to type them three times each.
 #
-#      python3 tools/originali.py reprendre t02-apar-1 originals/t02.jpg
+#      python3 tools/originals.py redo t02-apar-1 originals/t02.jpg
 def reprendre(cle, chemin, force=False):
     dest = RACINE / "originals" / "kovri" / f"{cle}-neta.png"
-    # On met de cote la planche precedente : c'est sur ELLE que les
-    # numeros sont poses, et c'est d'elle qu'il faudra les porter.
+    # We set the previous plate aside: it is on THAT one that the
+    # numbers are placed, and it is from it that they will have to be
+    # carried over.
     if dest.exists():
         dest.replace(dest.with_name(f"{cle}-neta-antaua.png"))
     out, par = netigar(chemin, dest)
@@ -882,14 +879,14 @@ def reprendre(cle, chemin, force=False):
 
 
 # -------------------------------------------------------------------
-#  REPRENDRE LE TON DES PLANCHES EN GRIS
+#  REDOING THE TONE OF THE GREY PLATES
 # -------------------------------------------------------------------
-#  Le ton se calcule a chaque service, depuis le PNG sans perte : ce
-#  verbe ne fait donc que re-servir. Il est idempotent -- on peut le
-#  relancer sans empiler deux etirements l'un sur l'autre, parce que
-#  rien n'est jamais ecrit dans le PNG d'origine.
+#  The tone is computed at each serving, from the lossless PNG: this
+#  verb therefore only re-serves. It is idempotent -- it can be run
+#  again without stacking two stretches one on the other, because
+#  nothing is ever written into the original PNG.
 #
-#      python3 tools/originali.py toni
+#      python3 tools/originals.py tone
 def toni():
     cat = json.loads((RACINE / "plates" / "plates.json")
                      .read_text(encoding="utf-8"))

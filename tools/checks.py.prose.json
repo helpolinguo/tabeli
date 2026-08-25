@@ -1,0 +1,47 @@
+[
+ {
+  "id": 0,
+  "kind": "docstring",
+  "text": "\"\"\"\nchecks.py — verifies what neither the compiler nor the eye sees.\n\n    python3 tools/checks.py\n\nA survey can compile perfectly and be wrong. These checks look for the\nfaults that do not announce themselves.\n\n  1. PAGINATION      printed folio = leaf − 2, on every page.\n  2. LEAVES          no leaf of the facsimile forgotten, none surveyed\n                     twice, within the interval covered.\n  3. MATCHING        does each %%K key of the Ido have a French\n                     counterpart, and the reverse? This is THE check of\n                     the project: an orphaned key is either a real\n                     divergence between the two editions or a fault of\n                     survey, and each must be looked at to decide.\n  4. UNIQUENESS      no key appears twice in the same language, save the\n                     second member of a paragraph cut by a change of\n                     page, which carries \"suite\".\n  5. BREAKS          each straddling end of paragraph (\\\\parplein or\n                     \\\\ccplein) has its \\\\VUcontinue resumption.\n  6. GEOMETRY        does the ink box occupy a plausible share of the\n                     page? If not, the frame of the shot falls inside\n                     the paper and the scale is wrong.\n  7. BOLD            do the two columns set the same number of passages\n                     in bold? Each is witness for the other.\n  8. SYNCHRONY       do the two columns of a row carry the same\n                     paragraph? An enormous difference of length says\n                     that the key counter has drifted.\n\nCheck 3 cannot be automated as far as a verdict: it counts and it shows.\nIt is for the surveyor to say, for each orphan, whether it is legitimate.\n\"\"\""
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# Running heads do not match: the Ido edition adds some the French does\n# not know, and their numbering (tit-1, tit-2...) is proper to each\n# edition. Counting them as orphans would drown the useful signal in\n# noise."
+ },
+ {
+  "id": 2,
+  "kind": "docstring",
+  "text": "\"\"\"{key: [(file, leaf, folio, continuation)]} and the list of pages.\"\"\""
+ },
+ {
+  "id": 3,
+  "kind": "docstring",
+  "text": "\"\"\"Leaves with no ink block, from tools/inventory-<language>.json.\"\"\""
+ },
+ {
+  "id": 4,
+  "kind": "docstring",
+  "text": "\"\"\"Does the ink box occupy a plausible share of the page?\n\n    A printed book leaves margins. When the ink box covers nearly the whole\n    height of the image, it is not that the book has no margins: it is that\n    the FRAME OF THE SHOT falls inside the paper. The image height is then\n    no longer the height of the paper, and the scale drawn from it is\n    wrong.\n\n    That is the case of the French facsimile: 96.5 % of the height, against\n    83.7 % for the Ido. The internal ratios -- pitch over measure, x-height\n    over measure -- stay good, and the composition is therefore right; only\n    the overall scale is uncertain. A rule laid on the copy corrects it at\n    a stroke.\n    \"\"\""
+ },
+ {
+  "id": 5,
+  "kind": "docstring",
+  "text": "\"\"\"Does the bold of the two columns answer?\n\n    The two booklets set THE SAME THINGS in bold: the vocabulary word the\n    wall table illustrates. \"ok \\VUgras{tabli}\" has for counterpart \"huit\n    \\VUgras{tables}\". The number of bold passages in a paragraph must\n    therefore be the same on both sides -- not on principle, but because\n    that is how the two editions are made.\n\n    When it differs, it is nearly always a fault of survey: the surveyor\n    set a word in bold that was not, or the reverse. The other column then\n    serves as witness. This check does not decide -- it does not know which\n    of the two is wrong -- it POINTS OUT the paragraphs to be looked at\n    again in the facsimile, and it ranks them by decreasing discrepancy so\n    that one begins with the most doubtful.\n    \"\"\""
+ },
+ {
+  "id": 6,
+  "kind": "docstring",
+  "text": "\"\"\"Do the two columns of a row carry the SAME paragraph?\n\n    Check 3 sees the orphaned keys — those that exist on one side only. It\n    does not see the graver fault: two keys that correspond to each other\n    while their texts have nothing to do with each other. That happens as\n    soon as the author's paragraph numbering is missing and the survey has\n    to count for itself: at table 5, a dialogue with no printed numbers,\n    the two surveyors did not cut in the same places, and the counter\n    drifted. The page then set a speech opposite the answer to the one\n    before it.\n\n    A simple signal betrays it: LENGTH. A translation is rarely less than\n    half or more than double its original; a ratio of seven to one is not a\n    translation, it is a shift. We report, and the eye verifies.\n    \"\"\""
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# A BLANK PAGE IS NOT A FORGOTTEN PAGE. The Ido booklet has two\n# blank versos (leaves 48 and 76); reporting them as missing would\n# make the check cry out at every run, and a check that cries for\n# nothing ends up unread. We consult the geometry survey: a page\n# whose ink box is degenerate is blank, and its absence is normal."
+ },
+ {
+  "id": 8,
+  "kind": "comment",
+  "text": "# Check 3, by table: we want to see WHERE the orphans concentrate.\n# Spread one per table, they are differences of edition; grouped on a\n# single one, they are a fault of survey."
+ }
+]

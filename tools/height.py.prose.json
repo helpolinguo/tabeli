@@ -1,0 +1,42 @@
+[
+ {
+  "id": 0,
+  "kind": "docstring",
+  "text": "\"\"\"\nheight.py — measures the X-HEIGHT of the facsimile, and deduces the size.\n\n    python3 tools/height.py io\n    python3 tools/height.py fr\n\nWHY. The size was until now deduced from the line pitch by a ratio set at\n1.20, the usual value for the bookwork printing of that period. It did\nroughly for the Ido booklet (294 short lines over 100 pages, that is 3 a\npage) and not at all for the French one (1179 over 84, that is 14 a page):\nthere, one line in three did not reach the margin, and TeX spread the words\nto fill.\n\nA ratio is not a measurement. The size is read from the facsimile, like the\nrest -- by the x-height, which is the most robust quantity of a printed\npage: it depends neither on ascenders nor on descenders, hence not on the\nwords the line carries.\n\nHOW. For each band of line, we take the ink profile by row of pixels. A\nline of text draws a plateau there -- the body of the letters without\nascenders -- framed by two far thinner shoulders, the ascenders above, the\ndescenders below. The height of the plateau above half the maximum IS the\nx-height, to within a pixel.\n\nThe size follows from the ratio proper to the composing font: XCharter\nplaces its x-height at 0.481 of its size. To set at a size such that the\nx-height falls right is to make the eye of the composed face coincide with\nthat of the facsimile -- which governs both the colour of the page and the\nwidth, hence the filling of the lines.\n\"\"\""
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# noqa: E402"
+ },
+ {
+  "id": 2,
+  "kind": "comment",
+  "text": "# X-height of the composing font, as a fraction of the size.\n# Measured on XCharter: \\fontcharht with the character \"x\"."
+ },
+ {
+  "id": 3,
+  "kind": "comment",
+  "text": "# Division into bands of line."
+ },
+ {
+  "id": 4,
+  "kind": "comment",
+  "text": "# THE PLATEAU, AND NOT THE WHOLE BAND. The band runs from the top\n# of the ascenders to the bottom of the descenders; the plateau is\n# where the ink is dense, that is the body of the letters. We take\n# it at half the height of the maximum: lower, we catch the\n# ascenders; higher, we clip the descenders."
+ },
+ {
+  "id": 5,
+  "kind": "comment",
+  "text": "# The plateau must be in one piece: two lines joined by an\n# ascender would give two."
+ },
+ {
+  "id": 6,
+  "kind": "comment",
+  "text": "# One sample suffices: the measurement is taken over thousands of\n# lines, not over pages."
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# THE X-HEIGHT IS RELATIVE TO THE MEASURE, not to millimetres: the\n# French facsimile is a photograph, its scale changes from one page to\n# another, and a height in pixels means nothing there outside its page.\n# The RATIO, on the other hand, is invariant."
+ }
+]

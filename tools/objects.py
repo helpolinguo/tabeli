@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  objekti.py — le nom de chaque objet numerote, dans les deux langues.
+#  objects.py — the name of each numbered object, in both languages.
 #
 #  « Nous avons imprime en caracteres gras les substantifs qui se
 #  trouvent dans le vocabulaire des Tableaux EN LES FAISANT SUIVRE DE
-#  LEUR NUMERO » : le liminaire francais donne lui-meme la regle, et
-#  c'est elle qu'on lit ici. Chaque « (N) » du texte est precede du
-#  substantif en gras qu'il numerote ; on releve donc le couple.
+#  LEUR NUMERO »: the French foreword states the rule itself, and it is
+#  that rule which is read here. Each « (N) » in the text is preceded by
+#  the bold noun it numbers; we therefore pick up the pair.
 #
-#  A QUOI CELA SERT. D'abord a savoir CE QUE montre un gros plan : un
-#  clic sur « (15) » du tableau 13 ouvre la caisse, et la page peut le
-#  dire. Ensuite, et surtout, a verifier les lectures douteuses du
-#  lecteur de numeros : quand la machine hesite, on regarde la decoupe
-#  et l'on demande si l'objet nomme s'y trouve. Un « (65) » lu sur une
-#  hachure ne montre pas de bureau de tabac ; le nom tranche la ou la
-#  forme du chiffre ne suffit plus.
+#  WHAT IT IS FOR. First, to know WHAT a close-up shows: a click on
+#  « (15) » of table 13 opens the crate, and the page can say so.
+#  Second, and above all, to check the number reader's doubtful
+#  readings: when the machine hesitates, we look at the cut-out and ask
+#  whether the named object is there. A « (65) » read on a hatching does
+#  not show a tobacconist's; the name settles it where the shape of the
+#  figure no longer suffices.
 #
-#  UN NUMERO EST APPELE PLUSIEURS FOIS. Le texte y revient — « la
-#  chambre (2) », puis « cette chambre (2) » — et pas toujours avec le
-#  meme mot. On garde toutes les formes rencontrees, la premiere en
-#  tete : c'est celle du releve initial, la plus descriptive.
+#  A NUMBER IS CALLED SEVERAL TIMES. The text comes back to it — « la
+#  chambre (2) », then « cette chambre (2) » — and not always with the
+#  same word. We keep every form encountered, the first at the head:
+#  it is the one from the initial reading, the most descriptive.
 #
 #  USAGE
-#      python3 tools/objekti.py            # ecrit plates/objects.json
-#      python3 tools/objekti.py 13         # montre le tableau 13
+#      python3 tools/objects.py            # writes plates/objects.json
+#      python3 tools/objects.py 13         # shows table 13
 # ===================================================================
 
 import json
@@ -33,16 +33,16 @@ from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
 
-# Le substantif en gras, puis son numero — avec ou sans exposant, avec
-# ou sans blanc entre les deux, le fac-simile hesitant sur les trois.
-# TROIS FORMES DE RENVOI, et il a fallu les trois : « (18) », le groupe
-# « (9, 11, 12) » qui vaut pour trois objets a la fois, et « 41) » ou la
-# parenthese ouvrante manque. Le substantif se range sous chacun des
-# numeros du groupe : « les tableaux muraux (9, 11, 12) » nomme les
-# trois.
+# The bold noun, then its number — with or without a superscript, with
+# or without a space between the two, the facsimile wavering on all
+# three. THREE FORMS OF CROSS-REFERENCE, and all three were needed:
+# « (18) », the group « (9, 11, 12) » which stands for three objects at
+# once, and « 41) » where the opening parenthesis is missing. The noun
+# is filed under each of the group's numbers: « les tableaux muraux
+# (9, 11, 12) » names all three.
 GRAS = re.compile(
     r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'      # \VUgras{...}
-    r'(?:\s|\\nl|\\cc|%|\n)*'                   # coupures de ligne
+    r'(?:\s|\\nl|\\cc|%|\n)*'                   # line breaks
     r'(?:\\textsuperscript\{'
     r'(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?'
     r'(?:\s*(?:\\textit\{)?bis\}?)?\s*\)?)\}'
@@ -50,16 +50,16 @@ GRAS = re.compile(
 CHIFRO = re.compile(r'\d{1,3}')
 BIS = re.compile(r'\bbis\b')
 
-# LES RENVOIS A LETTRE. « rondo (a), quadrato (b) » : la lettre est
-# gravee sur l'objet qui la porte -- le tableau noir, la carte -- et
-# n'a de sens que rapportee a lui. plates/letters.json dit, bloc par
-# bloc, sous quel prefixe la ranger : le « a » du tableau noir est
-# « 1a », celui de la carte « 10a ».
-# LA LETTRE SE PRESENTE DE TROIS FACONS. Le francais la met en
-# italique — « \textsuperscript{\textit{(a)}} » — l'ido la laisse nue,
-# et six fois dans les deux livrets une des deux parentheses manque :
-# « mi-sferi d) ». On accepte les trois, mais on exige AU MOINS UNE
-# PARENTHESE : sans elle on rangerait sous « o » les « n° » du texte.
+# CROSS-REFERENCES BY LETTER. « rondo (a), quadrato (b) »: the letter is
+# engraved on the object that carries it -- the blackboard, the map --
+# and means nothing except in relation to it. plates/letters.json says,
+# block by block, under which prefix to file it: the « a » of the
+# blackboard is « 1a », that of the map « 10a ».
+# THE LETTER APPEARS IN THREE GUISES. The French sets it in italic
+# — « \textsuperscript{\textit{(a)}} » — the Ido leaves it bare, and six
+# times across the two booklets one of the two parentheses is missing:
+# « mi-sferi d) ». We accept all three, but require AT LEAST ONE
+# PARENTHESIS: without it the « n° » of the text would be filed under « o ».
 GRAS_LIT = re.compile(
     r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'
     r'(?:\s|\\nl|\\cc|%|\n)*'
@@ -77,18 +77,19 @@ def literi(champo):
 
 PATRI = literi('patri')
 
-# LE « (1) » QUI EST UN l. Au tableau 5, la salle de bains porte un
-# renvoi compose « (1) » : dans cette fonte le l bas de casse et le
-# chiffre 1 ont le meme dessin, et le plan de la maison tranche — sa
-# legende porte « l. Balneyo ». Le nom irait donc se ranger sous le
-# numero 1, qui est la facade ; on le range sous la lettre.
+# THE « (1) » THAT IS AN l. On table 5, the bathroom carries a
+# cross-reference set as « (1) »: in this font the lower-case l and the
+# figure 1 have the same design, and the house plan settles it — its
+# legend reads « l. Balneyo ». The name would therefore be filed under
+# number 1, which is the facade; we file it under the letter.
 UNU_SORTO = literi('unu-sorto')
 
 
-# LE RENVOI QUE LA PLANCHE NE PORTE PAS. « les plates-bandes (150) »,
-# au tableau 5, sont gravees « 50 » : le nom doit se ranger sous le
-# numero qu'on montrera, non sous celui qu'on lit. plates/corrections.json
-# tient la table, et numeri.py la lit de meme.
+# THE CROSS-REFERENCE THE PLATE DOES NOT CARRY. « les plates-bandes
+# (150) », on table 5, are engraved « 50 »: the name must be filed under
+# the number that will be shown, not under the one that is read.
+# plates/corrections.json keeps the table, and numbers.py reads it the
+# same way.
 def korekti():
     f = RACINE / 'plates' / 'corrections.json'
     if not f.exists():
@@ -101,16 +102,16 @@ KOREKTI = korekti()
 
 
 def korekti_renvojo(tab, cle=""):
-    """{lu: a lire} pour UN BLOC : les corrections qui valent pour tout
-    le tableau, plus celles que ce bloc-ci porte seul.
+    """{read: to be read} for ONE BLOCK: the corrections that hold for the
+    whole table, plus those this block alone carries.
 
-    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du
-    tableau 5 est un numero que la planche n'a nulle part : le corriger
-    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la
-    femme de chambre, lui, est un numero qui existe par ailleurs — c'est
-    le savon de l'alinea 2 — et le corriger partout ferait pointer
-    le savon sur la femme de chambre. Une entree dont la cle est celle
-    d'un BLOC ne vaut donc que dans ce bloc.
+    A CORRECTION DOES NOT ALWAYS HOLD EVERYWHERE. The « (150) » of
+    table 5 is a number the plate has nowhere: correcting it everywhere
+    can break nothing. The « (6) » that table 6 gives the chambermaid,
+    on the other hand, is a number that exists elsewhere — it is the
+    soap of paragraph 2 — and correcting it everywhere would make the
+    soap point at the chambermaid. An entry whose key is that of a
+    BLOCK therefore holds only within that block.
     """
     t = KOREKTI.get(f"t{tab:02d}", {})
     out = {k: v for k, v in t.items() if isinstance(v, str)}
@@ -118,17 +119,17 @@ def korekti_renvojo(tab, cle=""):
         out.update(t.get(cle, {}))
     return out
 
-# LE SUBSTANTIF N'EST PAS TOUJOURS EN GRAS DEVANT UNE LETTRE. « la
-# zoologio (a), botaniko (b), geologio (c) » : trois mots nus, alors
-# que la regle du liminaire veut le gras. Les deux ateliers s'y
-# tiennent pour les numeros et l'oublient pour les lettres. On
-# reprend donc le mot qui precede, faute de mieux : sans lui le gros
-# plan s'ouvrirait sans rien dire de ce qu'il montre.
+# THE NOUN IS NOT ALWAYS BOLD BEFORE A LETTER. « la zoologio (a),
+# botaniko (b), geologio (c) »: three bare words, where the foreword's
+# rule calls for bold. Both workshops keep to it for the numbers and
+# forget it for the letters. We therefore take up the preceding word,
+# for want of better: without it the close-up would open saying nothing
+# of what it shows.
 NUD_LIT = re.compile(
     r"([\w'\u2019-]+)\s*(?:\\nl|\\cc)?\s*"
     r'\\textsuperscript\{\(([a-z]{1,2})\)\}')
 
-# Ce qui reste de balisage dans le nom releve.
+# What is left of the markup in the name picked up.
 MACROS = re.compile(r'\\(?:textit|textsc|emph|VUgras|nl|cc|hbox|,)\b\{?')
 
 
@@ -136,72 +137,70 @@ def nettoyer(brut):
     t = MACROS.sub('', brut)
     t = t.replace('\\-', '').replace('~', ' ').replace('{', '').replace('}', '')
     t = re.sub(r'\s+', ' ', t).strip(' .,;:')
-    # Un substantif coupe par un changement de ligne garde son trait
-    # d'union du fac-simile ; il n'appartient pas au mot.
+    # A noun broken by a change of line keeps its hyphen from the
+    # facsimile; it does not belong to the word.
     return re.sub(r'-\s+', '', t)
 
 
-# UN SUBSTANTIF COUPE PAR LA FIN DE LIGNE EST COMPOSE EN DEUX MORCEAUX,
-# chacun dans son \VUgras — c'est la regle du releve, une ligne du
-# fac-simile etant une ligne de la source. « \VUgras{jour}\cc /
-# \VUgras{naux} » donnait donc « naux », et « \VUgras{livre}\nl /
-# \VUgras{des voyageurs} » donnait « des voyageurs ». On recolle avant
-# de lire : \cc a coupe un mot, \nl a coupe une locution.
+# A NOUN BROKEN BY THE END OF A LINE IS SET IN TWO PIECES, each in its
+# own \VUgras — that is the rule of the transcription, a line of the
+# facsimile being a line of the source. « \VUgras{jour}\cc /
+# \VUgras{naux} » therefore gave « naux », and « \VUgras{livre}\nl /
+# \VUgras{des voyageurs} » gave « des voyageurs ». We glue back together
+# before reading: \cc has broken a word, \nl has broken a phrase.
 RECOLLE = [
     (re.compile(r'\\VUgras\{([^{}]*)\}\\cc\s*\n\s*\\VUgras\{([^{}]*)\}'),
      r'\\VUgras{\1\2}'),
-    # UN TRAIT D'UNION EN FIN DE LIGNE NE PREND PAS DE BLANC : le mot
-    # continue. « \VUgras{lad-(if-)}\nl \VUgras{isto} » est le nom du
-    # ferblantier-lampiste, et le gros plan l'intitulait
-    # « lad-(if-) isto ».
+    # A HYPHEN AT THE END OF A LINE TAKES NO SPACE: the word goes on.
+    # « \VUgras{lad-(if-)}\nl \VUgras{isto} » is the name of the tinsmith-
+    # lamplighter, and the close-up was titling it « lad-(if-) isto ».
     (re.compile(r'\\VUgras\{([^{}]*-\)?)\}\\nl\s*\n\s*\\VUgras\{([^{}]*)\}'),
      r'\\VUgras{\1\2}'),
     (re.compile(r'\\VUgras\{([^{}]*)\}\\nl\s*\n\s*\\VUgras\{([^{}]*)\}'),
      r'\\VUgras{\1 \2}'),
-    # UN COMPOSE DONT LA LIGNE COUPE LE TRAIT N'A QUE SA SECONDE MOITIE
-    # EN GRAS. Le compositeur ouvre le gras au debut de la ligne
-    # suivante : « mason-\nl \VUgras{servisto} », « pluv-\nl
-    # \VUgras{kanali} », « vitro-\nl \VUgras{kareli} ». Le mot est un
-    # pourtant, et le fac-simile le prouve lui-meme deux lignes plus
-    # bas, ou « \VUgras{tekto-kanali} » tient sur une ligne et prend
-    # tout le gras. Le gros plan disait « servisto » la ou le francais
-    # dit « aide-macon ».
+    # A COMPOUND WHOSE HYPHEN THE LINE BREAKS HAS ONLY ITS SECOND HALF
+    # IN BOLD. The compositor opens the bold at the start of the next
+    # line: « mason-\nl \VUgras{servisto} », « pluv-\nl
+    # \VUgras{kanali} », « vitro-\nl \VUgras{kareli} ». The word is one
+    # all the same, and the facsimile proves it itself two lines below,
+    # where « \VUgras{tekto-kanali} » holds on one line and takes all
+    # the bold. The close-up said « servisto » where the French says
+    # « aide-macon ».
     (re.compile(r'(?<![\\{])\b((?:[\w\'\u2019]+-)+)\\nl\s*\n\s*\\VUgras\{'),
      r'\\VUgras{\1'),
-    # ET SUR UNE SEULE LIGNE AUSSI, quand le fac-simile ouvre le gras
-    # au second membre : « pesko-\VUgras{barketi} », « (muton)-\VUgras
-    # {trupo} », « (pastor)-\VUgras{bastono} ». Le premier membre porte
-    # le sens — le troupeau est de moutons, la houlette est de berger —
-    # et le nom sans lui ne dit plus rien : « po », « bastono ».
+    # AND ON A SINGLE LINE TOO, when the facsimile opens the bold at
+    # the second member: « pesko-\VUgras{barketi} », « (muton)-\VUgras
+    # {trupo} », « (pastor)-\VUgras{bastono} ». The first member carries
+    # the sense — the flock is of sheep, the crook is a shepherd's — and
+    # without it the name says nothing any more: « po », « bastono ».
     (re.compile(r'(?<![\\{])((?:\(?[\w\'\u2019]+\)?-)+)\\VUgras\{'),
      r'\\VUgras{\1'),
-    # UN GROUPE COUPE PAR UNE FIN DE LIGNE est compose en deux exposants,
-    # « (9, 11, » puis « 12) ». Sans ce recollage, le douze restait
-    # orphelin et les tableaux muraux n'avaient que deux noms sur trois.
+    # A GROUP BROKEN BY THE END OF A LINE is set in two superscripts,
+    # « (9, 11, » then « 12) ». Without this gluing back, the twelve was
+    # left orphaned and the wall charts had only two names out of three.
     (re.compile(r'\\textsuperscript\{([^{}]*,)\}\s*(?:\\nl|\\cc)?\s*\n?\s*'
                 r'\\textsuperscript\{([^{}]*)\}'),
      r'\\textsuperscript{\1 \2}'),
 ]
 
 
-# UN MOT COUPE PAR LA FIN DE PAGE, lui, a tout l'appareil du feuillet
-# entre ses deux moities : \ccplein, la fermeture de la page, le
-# commentaire du feuillet, l'ouverture de la suivante, la cle « suite »
-# et \VUcontinue. On ramene ce cas au precedent — un simple \cc — et
-# la regle ci-dessus fait le reste : « \VUgras{dro}\ccplein ... \VUgras
-# {medaro} » donne « dromedaro », et non « medaro ».
-# DEUX ECRITURES POUR LA MEME FIN DE PAGE. \ccplein la dit d'un mot ;
-# le tableau 7 l'ecrit \cc puis \parplein sur deux lignes, et la
-# coupure du feuillet 54 echappait au recollage : le troupeau du
-# berger, « (muton)-\VUgras{tru}\cc ... \VUgras{po} », s'appelait
-# « po » dans le gros plan.
-# LE SAUT SE MESURE, IL NE SE DEVINE PAS. « .*? » entre la fin de page
-# et le bloc « suite » etait sans borne : la ou la page suivante ne
-# continuait pas l'alinea, le motif courait jusqu'au prochain « suite »
-# et emportait deux feuillets entiers du tableau 2 -- le jeu de
-# tonneau y perdait un de ses deux noms. On nomme donc ce qui separe
-# les deux moities : la fermeture de page, un commentaire de feuillet,
-# l'ouverture de la page suivante, et rien d'autre.
+# A WORD BROKEN BY THE END OF A PAGE, for its part, has the whole
+# apparatus of the leaf between its two halves: \ccplein, the closing of
+# the page, the leaf's comment, the opening of the next, the « suite »
+# key and \VUcontinue. We bring that case back to the previous one — a
+# plain \cc — and the rule above does the rest: « \VUgras{dro}\ccplein
+# ... \VUgras{medaro} » gives « dromedaro », not « medaro ».
+# TWO SPELLINGS FOR THE SAME END OF PAGE. \ccplein says it in one word;
+# table 7 writes it \cc then \parplein on two lines, and the break at
+# leaf 54 escaped the gluing: the shepherd's flock, « (muton)-\VUgras
+# {tru}\cc ... \VUgras{po} », was called « po » in the close-up.
+# THE JUMP IS MEASURED, IT IS NOT GUESSED. « .*? » between the end of
+# page and the « suite » block was unbounded: where the next page did
+# not continue the paragraph, the pattern ran to the next « suite » and
+# carried off two whole leaves of table 2 -- the game of skittles lost
+# one of its two names there. We therefore name what separates the two
+# halves: the closing of a page, a leaf comment, the opening of the next
+# page, and nothing else.
 SAUT = re.compile(
     r'(?:\\ccplein|\\cc\s*\n\\parplein)\s*\n\\end\{VUpage\}[ \t]*\n'
     r'(?:%[^\n]*\n|[ \t]*\n)*'
@@ -219,12 +218,11 @@ def recoller(texte):
     return texte
 
 
-# LES PLANCHES A PLUSIEURS SCENES. Six tableaux montrent deux vignettes
-# ou davantage, et chacune recommence sa numerotation a 1 : le « (39) »
-# de la premiere scene et celui de la quatrieme ne nomment pas le meme
-# objet. Le nom se range donc sous une cle qui porte la scene —
-# « c1:39 » —, comme dans numbers.json. plates/scenes.json dit quels
-# tableaux sont dans ce cas.
+# PLATES WITH SEVERAL SCENES. Six tables show two vignettes or more, and
+# each starts its numbering again at 1: the « (39) » of the first scene
+# and that of the fourth do not name the same object. The name is
+# therefore filed under a key carrying the scene — « c1:39 » —, as in
+# numbers.json. plates/scenes.json says which tables are in that case.
 def a_ceni():
     f = RACINE / "plates" / "scenes.json"
     if not f.exists():
@@ -237,7 +235,7 @@ CENI = a_ceni()
 
 
 def relever(dossier, motif):
-    """{numero de tableau: {cle d'objet: [noms]}} pour une langue."""
+    """{table number: {object key: [names]}} for one language."""
     out = {}
     for f in sorted((RACINE / "text" / dossier).glob(motif)):
         m = re.search(r'-(?:tabelo|tableau|table|cuadro|tablica|tubiao|lawha|talika|quadro|sarani|zuhyo|naqsha|sarni|tablo|tabella|tabel|tabell|taulukko|taula|tablycia|tabelul|tabla|cadro|tabulka|lentele)-(\d+)\.tex$', f.name)
@@ -247,21 +245,20 @@ def relever(dossier, motif):
         par = out.setdefault(tab, {})
         scenes = f"t{tab:02d}" in CENI
         texte = recoller(f.read_text(encoding="utf-8"))
-        # On coupe par cle de bloc, pour savoir de quelle scene on parle.
+        # We cut by block key, so as to know which scene is meant.
         parts = re.split(r'^%%K (\S+)', texte, flags=re.M)
         for i in range(1, len(parts), 2):
             mk = re.match(r't\d\d-(c\d)-', parts[i])
             if mk:
                 relever.scene = mk.group(1)
             sc = getattr(relever, "scene", "") if scenes else ""
-            # Les lettres du bloc, s'il en porte.
+            # The block's letters, if it carries any.
             pa = PATRI.get(parts[i])
             if pa:
-                # UNE LETTRE FAUSSE SE CORRIGE COMME UN NUMERO FAUX. Au
-                # tableau 1 les deux livrets echangent l'Europe et
-                # l'Asie ; sans cette lecture, le nom se rangeait sous
-                # la lettre du livret et le gros plan de l'Europe
-                # s'intitulait « Azia ».
+                # A WRONG LETTER IS CORRECTED LIKE A WRONG NUMBER. On
+                # table 1 the two booklets swap Europe and Asia; without
+                # this reading, the name was filed under the booklet's
+                # letter and the close-up of Europe was titled « Azia ».
                 kl = korekti_renvojo(tab, parts[i])
                 for g in GRAS_LIT.finditer(parts[i + 1]):
                     nom = nettoyer(g.group(1))
@@ -287,10 +284,10 @@ def relever(dossier, motif):
                 if not nom:
                     continue
                 brut = g.group(2) or g.group(3) or ""
-                # Le mot gras est parfois coupe en deux par la fin de
-                # ligne — « salle » puis « de bains » — et la regle ne
-                # nomme que le dernier morceau : on l'accepte en fin de
-                # nom comme en nom entier.
+                # The bold word is sometimes broken in two by the end of a
+                # line — « salle » then « de bains » — and the rule names
+                # only the last piece: we accept it at the end of a name as
+                # well as as a whole name.
                 L = next((L for m, L in uniq
                           if nom == m or nom.endswith(" " + m)), None)
                 if L:
@@ -300,7 +297,7 @@ def relever(dossier, motif):
                         noms.append(nom)
                     continue
                 ns = CHIFRO.findall(brut)
-                # « 94 bis » ne nomme pas le 94 : c'est un objet a part.
+                # « 94 bis » does not name the 94: it is a separate object.
                 if ns and BIS.search(brut):
                     ns[-1] = f"{ns[-1]}bis"
                 kor = korekti_renvojo(tab, parts[i])
@@ -320,21 +317,21 @@ def rang(k):
     return (s, int(m.group(1) or 0), m.group(2))
 
 
-# LE NOM DE L'OBJET SUIT LA COLONNE QUI L'APPELLE. Le gros plan porte
-# le nom de ce qu'il montre, et ce nom se lit dans la langue de la
-# colonne : « fumeyo » a gauche, « fumoir » au milieu, « smoking room »
-# a droite. On releve donc les trois de la meme facon -- le substantif
-# en gras qui precede le renvoi -- et la traduction anglaise, qui garde
-# exactement les memes renvois que les deux autres, se laisse relever
-# par le meme code, au nom de fichier pres.
+# THE OBJECT'S NAME FOLLOWS THE COLUMN THAT CALLS IT. The close-up
+# carries the name of what it shows, and that name is read in the
+# column's language: « fumeyo » on the left, « fumoir » in the middle,
+# « smoking room » on the right. We therefore pick up all three the same
+# way -- the bold noun preceding the cross-reference -- and the English
+# translation, which keeps exactly the same cross-references as the other
+# two, lets itself be picked up by the same code, but for the filename.
 SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
-           # Meme jeton que le francais, autre dossier : voir renvoji.py.
+           # Same token as French, another directory: see cross_refs.py.
            ("fr-CA", "*-tableau-*.tex"),
            ("en", "*-table-*.tex"), ("es", "*-cuadro-*.tex"),
            ("ru", "*-tablica-*.tex"), ("zh", "*-tubiao-*.tex"),
            ("ar", "*-lawha-*.tex"),
-           # Meme jeton que l'arabe standard, autre dossier : voir
-           # renvoji.py.
+           # Same token as Standard Arabic, another directory: see
+           # cross_refs.py.
            ("arz", "*-lawha-*.tex"), ("hi", "*-talika-*.tex"),
            ("mr", "*-takta-*.tex"),
            ("te", "*-pattika-*.tex"),
@@ -366,46 +363,44 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
     ("gl", "*-cadro-*.tex"),
     ("cs", "*-tabulka-*.tex"),
     ("lt", "*-lentele-*.tex"),
-    # LE LUXEMBOURGEOIS REPREND LE JETON DU SUEDOIS, « tabell », parce
-    # qu'il ecrit le mot de la meme facon. Le motif de nom de fichier
-    # le connait donc deja ; seul ce couple manquait. Trois langues
-    # partagent deja « taula » — le catalan, l'occitan et le basque —
-    # et le glob est enracine dans text/<langue>/ : deux dossiers
-    # differents ne se melangent pas.
+    # LUXEMBOURGISH TAKES UP SWEDISH'S TOKEN, « tabell », because it
+    # writes the word the same way. The filename pattern therefore
+    # already knows it; only this pair was missing. Three languages
+    # already share « taula » — Catalan, Occitan and Basque — and the
+    # glob is rooted in text/<language>/: two different directories do
+    # not mix.
     ("lb", "*-tabell-*.tex"),
-    # LE ROMANCHE REPREND LE JETON DE L'INTERLINGUA, « tabella ». Le
-    # motif de nom de fichier le connait donc deja, comme il
-    # connaissait « tabell » quand le luxembourgeois est arrive.
-    # Quatrieme jeton partage de la serie ; le glob restant enracine
-    # dans text/<langue>/, deux dossiers ne se melangent pas.
+    # ROMANSH TAKES UP INTERLINGUA'S TOKEN, « tabella ». The filename
+    # pattern therefore already knows it, as it knew « tabell » when
+    # Luxembourgish arrived. Fourth shared token of the series; the
+    # glob remaining rooted in text/<language>/, two directories do
+    # not mix.
     ("rm", "*-tabella-*.tex"),
-    # L'ESTONIEN REPREND LE JETON DU NEERLANDAIS, « tabel ». Cinquieme
-    # et dernier jeton partage de la serie des dix-sept ; le glob
-    # restant enracine dans text/<langue>/, text/nl et text/et ne
-    # se melangent pas.
+    # ESTONIAN TAKES UP DUTCH'S TOKEN, « tabel ». Fifth and last shared
+    # token of the series of seventeen; the glob remaining rooted in
+    # text/<language>/, text/nl and text/et do not mix.
     ("et", "*-tabel-*.tex"),
-    # LE VIETNAMIEN OUVRE LE RESTE DU PROGRAMME D'ETHNOLOGUE. Son
-    # jeton, « bang », est le mot « bảng » depouille de ses signes,
-    # comme « talika » l'est de « तालिका » et « naqsha » de « نقشہ » :
-    # les noms de fichiers restent en ASCII, et c'est le dossier —
-    # text/vi — qui porte la langue. Le jeton est neuf ; aucun des
-    # dix-sept precedents ne s'en approche.
+    # VIETNAMESE OPENS THE REST OF THE ETHNOLOGUE PROGRAMME. Its token,
+    # « bang », is the word « bảng » stripped of its marks, as « talika »
+    # is of « तालिका » and « naqsha » of « نقشہ »: filenames stay in
+    # ASCII, and it is the directory — text/vi — that carries the
+    # language. The token is new; none of the seventeen before it comes
+    # close.
     ("vi", "*-bang-*.tex"),
-    # LE CANTONAIS prend « toubiu », le jyutping de « 圖表 » sans
-    # ses tons. Le mandarin a « tubiao » : meme mot, deux lectures,
-    # deux colonnes.
+    # CANTONESE takes « toubiu », the Jyutping of « 圖表 » without its
+    # tones. Mandarin has « tubiao »: same word, two readings, two
+    # columns.
     ("yue", "*-toubiu-*.tex"),
-    # L'ALLEMAND prend « tafel », qui n'est le jeton de personne : il
-    # ressemble au « tabel » neerlandais et au « tabell » suedois sans
-    # les egaler — un F la ou ils ont un B.
+    # GERMAN takes « tafel », which is nobody's token: it resembles the
+    # Dutch « tabel » and the Swedish « tabell » without equalling them
+    # — an F where they have a B.
     ("de", "*-tafel-*.tex"),
-    # L'ITALIEN prend « tavola », qui n'est le jeton de personne. Il
-    # ressemble au « taula » que se partagent le catalan, l'occitan et
-    # le basque — un V de plus — et au « tabella » de l'interlingua et
-    # du romanche — un V au lieu d'un B.
+    # ITALIAN takes « tavola », which is nobody's token. It resembles
+    # the « taula » shared by Catalan, Occitan and Basque — one V more —
+    # and the « tabella » of Interlingua and Romansh — a V instead of a B.
     ("it", "*-tavola-*.tex"),
-           # Meme jeton que le russe et le neerlandais, autres
-           # dossiers : voir renvoji.py.
+           # Same token as Russian and Dutch, other directories: see
+           # cross_refs.py.
            ("pl", "*-tablica-*.tex"), ("af", "*-tabel-*.tex")]
 
 

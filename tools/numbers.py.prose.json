@@ -1,0 +1,327 @@
+[
+ {
+  "id": 0,
+  "kind": "comment",
+  "text": "# ===================================================================\n#  numeri.py — retrouver sur une planche murale les numeros d'objets.\n#\n#  Chaque planche porte, pose contre l'objet qu'il designe, un petit\n#  numero compose : c'est a lui que renvoient les « (N) » du texte.\n#  Pour qu'un clic sur « (12) » puisse montrer l'objet 12, il faut\n#  savoir OU se trouve le 12 sur la planche. C'est ce que fait cet\n#  outil, et il rend un rapport de ce qu'il a lu, planche par planche.\n#\n#  CE QUE L'OUTIL NE FAIT PAS. Il ne lit pas tous les numeros — loin\n#  de la. Sur les planches aerees il en trouve huit sur dix, sur les\n#  plus chargees deux ou trois. La raison tient au dessin lui-meme :\n#  le numero est pose dans une petite reserve de blanc, et quand la\n#  gravure est dense cette reserve se referme, le chiffre touche une\n#  hachure, et rien ne le distingue plus d'un fragment de dessin.\n#  On rend donc la liste de CE QU'ON A LU, avec sa planche de\n#  controle ; ce qui manque reste sans gros plan plutot que d'en\n#  recevoir un faux.\n#\n#  LA METHODE, en trois temps :\n#\n#  1. LES ILOTS. Le trait est binaire (l'outil travaille sur la\n#     couche de trait rendue par gravuri.py, ou l'encre vaut 255).\n#     On prend les composantes connexes de la taille d'un chiffre,\n#     et on garde celles qu'un anneau de blanc separe du reste :\n#     c'est la reserve de l'imprimeur qui sert de signature.\n#\n#  2. LA FORME. Chaque ilot est ramene a une vignette de 40x32 et\n#     compare aux dix modeles de tools/ciphers.npz. Ces modeles ne\n#     sont pas dessines a la main : ils sortent d'un regroupement de\n#     1429 ilots preleves sur les quinze planches, la fonte etant la\n#     meme partout. Un « 1 » n'est qu'une barre, et les hachures\n#     verticales lui ressemblent : il porte donc un seuil a part.\n#\n#  3. LE VOISINAGE. Les chiffres d'un meme nombre se suivent sur la\n#     meme ligne de base, a moins d'un demi-corps l'un de l'autre.\n#     On les recolle, puis on ne garde QUE les nombres attendus —\n#     ceux que le texte du tabelo appelle — et lus une seule fois.\n#     Un nombre lu deux fois est un nombre dont on ne sait rien.\n#\n#  USAGE\n#      python3 tools/numeri.py                  # toutes les planches\n#      python3 tools/numeri.py t05-apar-1       # une seule\n#\n#  Ecrit plates/numbers.json (les positions, en fraction de la\n#  largeur et de la hauteur de la planche, donc valables a toute\n#  echelle) et, dans plates/review/, une planche de controle par\n#  gravure : chaque numero lu y est montre dans son decoupe, avec ce\n#  que la machine a cru lire. C'est la qu'on verifie.\n# ==================================================================="
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# Un « 1 » sans empattement est une barre, et une planche gravee en\n# est pleine. On lui demande donc davantage qu'aux autres."
+ },
+ {
+  "id": 2,
+  "kind": "comment",
+  "text": "# LA PLANCHE DE TRAVAIL. Tant qu'un tableau n'a pas ete repris sur la\n# numerisation d'origine, on travaille sur la couche de trait tiree du\n# PDF colorise, ou l'encre vaut 255. Des qu'il l'a ete, c'est le\n# fac-simile lui-meme qu'on regarde, et l'encre y est SOMBRE. Les deux\n# outils qui montrent des decoupes a l'oeil passent donc par ici, et\n# n'ont plus a savoir d'ou vient l'image."
+ },
+ {
+  "id": 3,
+  "kind": "docstring",
+  "text": "\"\"\"Ce tableau a-t-il ete repris sur sa numerisation d'origine ?\"\"\""
+ },
+ {
+  "id": 4,
+  "kind": "docstring",
+  "text": "\"\"\"L'image telle que l'oeil doit la voir : l'encre en SOMBRE.\"\"\""
+ },
+ {
+  "id": 5,
+  "kind": "docstring",
+  "text": "\"\"\"La densite d'encre en flottant : fort = encre.\"\"\""
+ },
+ {
+  "id": 6,
+  "kind": "docstring",
+  "text": "\"\"\"Ramene un ilot a la vignette de reference, hauteur imposee.\"\"\""
+ },
+ {
+  "id": 7,
+  "kind": "docstring",
+  "text": "\"\"\"Composantes de la taille d'un chiffre qu'un blanc isole.\"\"\""
+ },
+ {
+  "id": 8,
+  "kind": "comment",
+  "text": "# L'anneau ne doit contenir aucune encre ETRANGERE : le chiffre\n# voisin, lui, a le droit d'y etre, sans quoi « 18 » ne serait\n# jamais vu — ses deux chiffres se tiennent a cinq points l'un de\n# l'autre."
+ },
+ {
+  "id": 9,
+  "kind": "docstring",
+  "text": "\"\"\"La hauteur des chiffres, mesuree sur la planche elle-meme.\n\n    Elle n'est pas la meme partout : 29 points sur le second plan du\n    tableau 5, 46 sur le tableau 6. La chercher evite de rater les\n    unes et de mal decouper les autres. On part de la valeur courante\n    et on converge en trois tours ; le « 1 » est ecarte de la mesure,\n    sa hauteur etant la moins sure.\n    \"\"\""
+ },
+ {
+  "id": 10,
+  "kind": "docstring",
+  "text": "\"\"\"Recolle les chiffres voisins en nombres.\"\"\""
+ },
+ {
+  "id": 11,
+  "kind": "comment",
+  "text": "# LE NOMBRE TRONQUE EST LA FAUTE LA PLUS DANGEREUSE, parce qu'elle est\n# silencieuse : sur le tableau 14 on lisait « 2 » la ou la planche porte\n# « 12 », et « 6 » la ou elle porte « 60 ». Le chiffre voisin, colle a\n# une hachure, n'avait pas ete vu, et le nombre tronque se trouvait etre\n# lui aussi dans la liste attendue. Rien ne le signalait.\n#\n# On regarde donc la case adjacente, a gauche et a droite. Non pas\n# « y a-t-il de l'encre ? » — une gravure en est pleine, et la question\n# fait rejeter les bonnes lectures autant que les mauvaises — mais\n# « y a-t-il un CHIFFRE ? », par le meme filtre adapte que partout\n# ailleurs. Si oui, le nombre continue : on essaie de le lire en entier,\n# et on ne le garde que si le nombre allonge est, lui, attendu. Sinon on\n# jette la lecture plutot que d'en garder une moitie."
+ },
+ {
+  "id": 12,
+  "kind": "comment",
+  "text": "# L'avance minimale du chiffre retenu sur son suivant, pour allonger."
+ },
+ {
+  "id": 13,
+  "kind": "comment",
+  "text": "# L'avance qu'il faut a une lecture sur sa rivale pour l'emporter."
+ },
+ {
+  "id": 14,
+  "kind": "comment",
+  "text": "# DEUX JEUX DE MODELES, parce qu'il y a deux encres. Le pochoir tire\n# du PDF colorise a des contours nets ; le fac-simile a l'encre grise,\n# les pleins qui bavent et les delies qui s'effacent. Un gabarit taille\n# dans l'un ne se pose pas dans l'autre : sur le gris, le filtre adapte\n# du pochoir marque 0.24 la ou il devrait marquer pres de 1. On tient\n# donc les deux, et GRIS dit lequel sert -- c'est l'appelant qui le\n# sait, puisque c'est lui qui sait quelle planche il regarde."
+ },
+ {
+  "id": 15,
+  "kind": "comment",
+  "text": "# ON RAMENE LE MODELE A UN PLEIN DE 1. Les modeles du\n# pochoir sont des moyennes de decoupes, ceux du gris des\n# centres de groupes DEJA NORMES : leur plein vaut cinq\n# centiemes, et le gabarit, qui prend le trait a la moitie\n# du plein, n'y trouvait plus rien du tout."
+ },
+ {
+  "id": 16,
+  "kind": "docstring",
+  "text": "\"\"\"Un chiffre, et autour de lui la reserve de blanc qui le porte.\n\n    Le modele vaut +1 sur le trait et -1 tout autour, chaque part\n    ramenee a sa surface : un chiffre parfaitement pose marque 1, une\n    case pleine d'encre 0. C'est ce qui rend le filtre insensible aux\n    hachures, qui remplissent la reserve autant que le trait.\n    \"\"\""
+ },
+ {
+  "id": 17,
+  "kind": "docstring",
+  "text": "\"\"\"Le meilleur chiffre de la case adjacente.\n\n    Rend (score, chiffre, boite, marge) — la marge etant l'avance du\n    chiffre retenu sur son suivant. Elle decide seule des allongements :\n    sur le tableau 14 on a lu « 69 » la ou la planche porte « 60 »,\n    parce que le 0 et le 9 se valaient presque. Quand deux chiffres se\n    disputent la case, on n'allonge pas.\n    \"\"\""
+ },
+ {
+  "id": 18,
+  "kind": "comment",
+  "text": "# COMMENT LE FAC-SIMILE APPELLE UN NUMERO. Trois formes, et il a fallu\n# les trois :\n#\n#   (18)              la forme ordinaire ;\n#   (9, 11, 12)       UN GROUPE — « les tableaux muraux (9, 11, 12) » —\n#                     qui vaut pour trois objets a la fois. On n'en\n#                     lisait aucun, et le 9 du tableau 1 n'etait appele\n#                     nulle part ailleurs : il manquait tout entier ;\n#   41)               une parenthese ouvrante qui manque. Trois endroits\n#                     dans les deux livrets. Coquille du releve ou sorte\n#                     cassee de l'imprimeur, on ne peut le dire sans le\n#                     fac-simile sous les yeux — alors on ne touche pas\n#                     a la source, et l'on se contente de reconnaitre le\n#                     renvoi ;\n#   94 bis            UN NUMERO QUI N'EST PAS UN NOMBRE. Le graveur a\n#                     ajoute deux outils apres coup, et plutot que de\n#                     renumeroter toute la planche il les a glisses\n#                     entre les autres : « 94bis » est grave sur le\n#                     ciseau, entre le 94 et le 95, et « 95bis » sur le\n#                     maillet. Il y en a deux dans tout l'ouvrage, tous\n#                     deux au tableau 5. Leur cle est « 94bis », et le\n#                     lecteur automatique ne les lira jamais -- il ne\n#                     connait que des chiffres.\n#\n# Un groupe coupe par une fin de ligne est compose en DEUX exposants,\n# « (9, 11, » puis « 12) ». On les recolle avant de lire."
+ },
+ {
+  "id": 19,
+  "kind": "docstring",
+  "text": "\"\"\"Tous les numeros qu'un texte appelle, sous quelque forme que ce\n    soit. Rend la liste dans l'ordre du texte, doublons compris.\"\"\""
+ },
+ {
+  "id": 20,
+  "kind": "comment",
+  "text": "# « 94 bis » ne vaut pas 94 : c'est un objet a part, glisse\n# entre le 94 et le 95. Le « bis » se rapporte au dernier\n# nombre du renvoi."
+ },
+ {
+  "id": 21,
+  "kind": "comment",
+  "text": "# Les renvois que le fac-simile n'a pas mis en exposant -- il y en a\n# sept, tous du cote ido."
+ },
+ {
+  "id": 22,
+  "kind": "comment",
+  "text": "# UNE PLANCHE PEUT PORTER PLUSIEURS SCENES, et chacune recommence sa\n# numerotation a 1 : le tableau 6 a cinq vignettes, le 3, le 4, le 7, le\n# 8 et le 9 en ont deux. Le meme « 39 » s'y lit donc deux fois, et le\n# lecteur, qui croyait chaque numero unique, en jetait l'une des deux ou\n# rendait l'autre au hasard. plates/scenes.json donne la place de chaque\n# scene ; on lit alors vignette par vignette, chacune avec les seuls\n# numeros que SON texte appelle."
+ },
+ {
+  "id": 23,
+  "kind": "docstring",
+  "text": "\"\"\"Les scenes d'une planche : [(nom, forme)], dans l'ordre d'essai.\"\"\""
+ },
+ {
+  "id": 24,
+  "kind": "docstring",
+  "text": "\"\"\"Le point (x, y), en fraction, est-il dans la forme ?\"\"\""
+ },
+ {
+  "id": 25,
+  "kind": "docstring",
+  "text": "\"\"\"Le cadre englobant d'une forme, en fraction.\"\"\""
+ },
+ {
+  "id": 26,
+  "kind": "docstring",
+  "text": "\"\"\"Le texte du tabelo, coupe par cle : [(cle, scene, corps)].\"\"\""
+ },
+ {
+  "id": 27,
+  "kind": "comment",
+  "text": "# Une note ou un titre suit la scene ou il se trouve."
+ },
+ {
+  "id": 28,
+  "kind": "comment",
+  "text": "# LE RENVOI QUI NE MONTRE RIEN. Le livret appelle parfois un numero\n# que la planche ne porte pas : au tableau 5, « les plates-bandes\n# (150) », alors que la numerotation s'arrete a 146 et que l'objet est\n# grave « 50 ». plates/corrections.json dit, tableau par tableau, quel\n# renvoi lire a la place de quel autre. La source ne bouge pas ; c'est\n# la lecture qui se corrige."
+ },
+ {
+  "id": 29,
+  "kind": "docstring",
+  "text": "\"\"\"Les renvois a corriger pour ce tableau : {lu: a lire}.\"\"\""
+ },
+ {
+  "id": 30,
+  "kind": "docstring",
+  "text": "\"\"\"{lu: a lire} pour UN BLOC : les corrections qui valent pour tout\n    le tableau, plus celles que ce bloc-ci porte seul.\n\n    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du\n    tableau 5 est un numero que la planche n'a nulle part : le corriger\n    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la\n    femme de chambre, lui, est un numero qui existe par ailleurs — c'est\n    le savon de l'alinea 2 — et le corriger partout ferait pointer\n    le savon sur la femme de chambre. Une entree dont la cle est celle\n    d'un BLOC ne vaut donc que dans ce bloc.\n    \"\"\""
+ },
+ {
+  "id": 31,
+  "kind": "docstring",
+  "text": "\"\"\"{scene: numeros appeles}. La scene est \"\" quand il n'y en a qu'une.\"\"\""
+ },
+ {
+  "id": 32,
+  "kind": "docstring",
+  "text": "\"\"\"La cle d'un numero : « 39 » sur une planche d'une scene, « c1:39 »\n    sur une planche qui en porte plusieurs.\"\"\""
+ },
+ {
+  "id": 33,
+  "kind": "docstring",
+  "text": "\"\"\"L'inverse : « c1:39 » -> (\"c1\", 39), « 94bis » -> (\"\", \"94bis\").\"\"\""
+ },
+ {
+  "id": 34,
+  "kind": "comment",
+  "text": "# TRIER DES CLES QUI NE SONT PAS TOUTES DES NOMBRES. « 94bis » se range\n# entre 94 et 95, non a la fin ni au debut : on trie sur le nombre, puis\n# sur ce qui le suit."
+ },
+ {
+  "id": 35,
+  "kind": "docstring",
+  "text": "\"\"\"La cle de tri d'un numero : sa scene, son nombre, son suffixe.\"\"\""
+ },
+ {
+  "id": 36,
+  "kind": "comment",
+  "text": "# Le balayage etait trop timide : a 0.55 il ne rendait que ce que les\n# ilots voyaient deja. Descendre a 0.42 fait passer la lecture de 60 a\n# 70 % sur les quatre planches d'essai. Le bruit qu'il laisse entrer\n# est arrete plus loin, par la liste des numeros attendus et par le\n# depart entre lectures rivales."
+ },
+ {
+  "id": 37,
+  "kind": "docstring",
+  "text": "\"\"\"Le filtre adapte passe sur la planche entiere, chiffre par chiffre.\n\n    LES ILOTS NE VOIENT QUE CE QUE LE BLANC ISOLE. Des qu'un chiffre\n    touche une hachure, sa composante fusionne avec le dessin et il\n    disparait — c'est ce qui plafonnait la lecture des planches\n    chargees. Le filtre adapte, lui, n'a pas besoin qu'on decoupe le\n    chiffre : il lui suffit que le trait soit la et la reserve vide.\n\n    Seul, il est trop bavard — une gravure offre des milliers de pics.\n    Il sert donc en RENFORT des ilots, et deux garde-fous le tiennent :\n    le score doit etre franc, et le chiffre retenu doit devancer son\n    suivant. Ce qui passe quand meme sera elimine plus loin, faute\n    d'appartenir aux nombres attendus.\n    \"\"\""
+ },
+ {
+  "id": 38,
+  "kind": "comment",
+  "text": "# LE BALAYAGE N'EMET PAS DE « 1 ». Le chiffre n'est qu'une barre,\n# et le filtre le retrouve dans la hampe d'un 4, le flanc d'un 9,\n# une hachure verticale : sur le tableau 1 il faisait lire « 13 »\n# pour 3, « 16 » pour 26, « 71 » pour 74. Les ilots, eux, le\n# reconnaissent honnetement — ils decoupent la forme au lieu de la\n# correler — et gardent la charge de le trouver."
+ },
+ {
+  "id": 39,
+  "kind": "docstring",
+  "text": "\"\"\"b n'apporte que ce que a n'a pas deja vu.\"\"\""
+ },
+ {
+  "id": 40,
+  "kind": "docstring",
+  "text": "\"\"\"Rend {numero: ((x, y, l, h), force)} en points du tableau donne.\"\"\""
+ },
+ {
+  "id": 41,
+  "kind": "comment",
+  "text": "# Le nombre continue : on l'allonge du chiffre voisin, et on ne\n# retient l'allongement que s'il donne un nombre attendu — et un\n# seul. Deux allongements possibles, c'est une ambiguite : on\n# laisse tomber."
+ },
+ {
+  "id": 42,
+  "kind": "comment",
+  "text": "# UN NOMBRE LU DEUX FOIS. Chaque numero ne parait qu'une fois par\n# vignette : deux lectures veulent dire qu'au moins l'une est fausse.\n# On les departage par la force de leur preuve : la ressemblance\n# moyenne des chiffres, et une prime a la lecture entierement tiree\n# des ilots, ou le chiffre a ete decoupe et non seulement correle.\n#\n# SI LES DEUX SE VALENT, ON NE TRANCHE PAS. On a essaye le\n# contraire, une fois les vignettes separees : puisque le numero est\n# unique DANS SA VIGNETTE, l'une des deux lectures est fausse a coup\n# sur, et prendre la mieux etayee semblait valoir mieux que perdre\n# les deux. Cela rend soixante et une lectures de plus -- dont\n# quatre bonnes. Le reste est du bruit : un « c. » et un « k. » de\n# la legende du plan, une branche de sapin, un montant de fenetre.\n# La mesure de la preuve ne sait pas departager deux faux ; on s'en\n# tient donc a l'abstention."
+ },
+ {
+  "id": 43,
+  "kind": "comment",
+  "text": "# UN NUMERO SE TIENT PRES DE CEUX QU'ON CITE AVEC LUI. Le texte decrit\n# la planche de proche en proche -- « la caissiere (14) [...] la caisse\n# (15) » -- et les objets nommes dans une meme phrase sont voisins sur\n# le dessin. La mesure le confirme : chez les lectures sures, deux\n# numeros co-cites sont de trois a huit fois plus proches que deux\n# numeros pris au hasard (0.12 fois la distance moyenne au tableau 13,\n# 0.27 au 11, 0.28 au 10).\n#\n# C'est donc un controle qui ne doit rien a la forme des chiffres, et\n# qui attrape ce qu'elle laisse passer : au tableau 13, « 14 » et « 34 »\n# tombaient a dix-huit et douze fois la distance ordinaire de leurs\n# voisins de phrase. On reste large -- six fois -- pour ne rejeter que\n# l'absurde : des lectures justes montent a quatre ou cinq quand le\n# texte saute d'un bout de la planche a l'autre."
+ },
+ {
+  "id": 44,
+  "kind": "docstring",
+  "text": "\"\"\"Les groupes de numeros cites dans une meme phrase du tabelo.\"\"\""
+ },
+ {
+  "id": 45,
+  "kind": "docstring",
+  "text": "\"\"\"Ecarte les lectures posees loin de leurs voisines de phrase.\"\"\""
+ },
+ {
+  "id": 46,
+  "kind": "comment",
+  "text": "# pas de quoi mesurer une echelle"
+ },
+ {
+  "id": 47,
+  "kind": "docstring",
+  "text": "\"\"\"Les numeros que l'oeil a poses lui-meme sur cette planche.\n\n    Le lecteur automatique plafonne la ou la reserve de blanc se\n    referme : le chiffre touche une hachure, ou se cache a demi derriere\n    un chapeau, et rien ne l'en distingue plus. Ces numeros-la se\n    relevent a la main, avec tools/manuali.py, et plates/manual.json\n    les garde. Comme verdicts.json, ce fichier ne s'ecrit pas tout seul.\n    \"\"\""
+ },
+ {
+  "id": 48,
+  "kind": "docstring",
+  "text": "\"\"\"Les lectures que l'oeil a refusees, pour cette planche.\n\n    LA MACHINE N'ECRIT PAS CE FICHIER. plates/verdicts.json se tient a\n    la main : chaque decoupe douteuse a ete relue avec, sous elle, le\n    nom que le fac-simile donne a l'objet, et l'on y a inscrit celles ou\n    le numero annonce ne se trouve pas. Si l'outil pouvait le reecrire,\n    le jugement se perdrait au premier relancement -- or c'est la seule\n    piece du dispositif qu'aucune mesure ne remplace.\n    \"\"\""
+ },
+ {
+  "id": 49,
+  "kind": "docstring",
+  "text": "\"\"\"Le nom de chaque objet numerote, s'il a ete releve.\n\n    Les cles suivent celles de numbers.json : « 39 » sur une planche d'une\n    seule scene, « c1:39 » sur une planche qui en porte plusieurs.\n    \"\"\""
+ },
+ {
+  "id": 50,
+  "kind": "docstring",
+  "text": "\"\"\"Une planche de controle : chaque numero lu, dans sa decoupe.\n\n    LE NOM DE L'OBJET EST PORTE SOUS LA DECOUPE. La forme du chiffre ne\n    suffit pas a juger une lecture douteuse -- une hachure ressemble a\n    beaucoup de choses -- mais le fac-simile dit ce que le numero\n    designe, et l'oeil tranche alors tout de suite : si « (20) » doit\n    montrer une bicyclette et que la decoupe n'en porte pas, la lecture\n    est fausse, quel qu'ait ete son score.\n\n    « seuil » ne retient que les lectures au-dessous d'une confiance\n    donnee, et « large » elargit la decoupe : c'est la planche des cas\n    douteux, ou l'on veut voir l'objet autour du numero, non le seul\n    chiffre.\n    \"\"\""
+ },
+ {
+  "id": 51,
+  "kind": "comment",
+  "text": "# LE DECOUPAGE SE FAIT TOUJOURS DANS LA PLANCHE DE TRAVAIL, et\n# celle-ci porte son encre en sombre : une feuille de controle se\n# lit comme une gravure, non comme un negatif."
+ },
+ {
+  "id": 52,
+  "kind": "comment",
+  "text": "# LA CLE DE PLANCHE SE TIRE DU NOM DE FICHIER, quel que soit le suffixe\n# que la feuille porte -- « -dubita », « -manuali », « -revizo2 ». On la\n# lit au motif, plutot que de retrancher une liste de suffixes qu'il\n# faudrait tenir a jour."
+ },
+ {
+  "id": 53,
+  "kind": "comment",
+  "text": "# LE COMPTE SE TIENT PAR TABLEAU, non par planche : le tableau 5 a\n# deux gravures — la maison et son plan — qui se partagent une seule\n# numerotation, et compter deux fois ses cent vingt-trois numeros\n# ferait mentir le total."
+ },
+ {
+  "id": 54,
+  "kind": "comment",
+  "text": "# les essais d'antan, restes dans kovri/"
+ },
+ {
+  "id": 55,
+  "kind": "comment",
+  "text": "# UNE PLANCHE REPRISE SUR SON ORIGINAL NE SE RELIT PAS. Ses\n# numeros ont ete portes par originali.py, verifies un a un, et\n# ils sont enregistres en fraction de la NOUVELLE planche : les\n# relire sur l'ancienne couche de trait, qui n'a plus ni les\n# memes dimensions ni le meme cadrage, ecraserait le travail.\n# ON A ESSAYE DE LUI APPRENDRE LE GRIS, et l'on a mesure ce\n# que cela vaut : mille cinq cents numeros deja places font\n# quatorze cents chiffres etiquetes, de quoi refaire les\n# modeles dans le medium meme (tools/chifri.py). Le lecteur\n# ainsi refait retrouve 442 numeros a leur place, en pose 132\n# AILLEURS, et en propose 45 de neufs. Un sur quatre est faux :\n# c'est trop pour entrer ici tout seul. Il sert donc a\n# PROPOSER, non a decider, et ce que l'oeil garde de ses\n# propositions entre par manual.json comme le reste."
+ },
+ {
+  "id": 56,
+  "kind": "comment",
+  "text": "# On garde les LECTURES, mais on continue d'accueillir ce que\n# l'oeil pose : un numero releve a la main sur le fac-simile\n# doit entrer, sans quoi la planche reprise serait figee."
+ },
+ {
+  "id": 57,
+  "kind": "comment",
+  "text": "# CE QUE LA MAIN A POSE, LA MAIN PEUT LE REPRENDRE. Les\n# positions relevees a l'oeil entrent ici avec une confiance\n# de 1.0 exactement -- aucune lecture automatique n'y\n# arrive -- et, une fois ecrites dans numbers.json, elles\n# devenaient indiscernables des lectures portees depuis\n# l'ancienne planche : les retirer de manual.json ne les\n# retirait plus de rien. On les jette donc toutes avant de\n# remettre celles que le fichier tient encore. Un numero\n# pose de travers se corrige alors la ou on l'a pose."
+ },
+ {
+  "id": 58,
+  "kind": "comment",
+  "text": "# LA LECTURE SE FAIT VIGNETTE PAR VIGNETTE. Sur une planche a\n# plusieurs scenes, chacune recommence a 1 : chercher « 39 » sur\n# toute la planche, c'est en trouver deux et n'en garder aucun."
+ },
+ {
+  "id": 59,
+  "kind": "comment",
+  "text": "# Le cadre englobant deborde sur les vignettes voisines --\n# celui de l'ovale du tableau 6 les chevauche toutes quatre,\n# et son « 6 » de faience tombait aussi dans le salon. La\n# PREMIERE forme qui contient le point l'emporte : l'ovale\n# est essaye avant les quatre vignettes, et rien n'est lu\n# deux fois."
+ },
+ {
+  "id": 60,
+  "kind": "comment",
+  "text": "# Un refus ecrit en clair (« 54 ») sur une planche a scenes vaut\n# pour toutes ses vignettes : le jugement date d'avant qu'on sut\n# qu'il y en avait plusieurs, et rien ne dit laquelle il visait."
+ },
+ {
+  "id": 61,
+  "kind": "comment",
+  "text": "# Ce que l'oeil a pose l'emporte sur tout le reste."
+ },
+ {
+  "id": 62,
+  "kind": "comment",
+  "text": "# LA PLANCHE DES CAS DOUTEUX, decoupee plus large et portant le\n# nom de l'objet : c'est celle qu'on relit pour trancher.\n# Quatre colonnes et non huit : a huit, le chiffre au centre de\n# la decoupe ne fait plus que quelques points a l'ecran, et l'on\n# ne peut pas juger. La planche est plus haute, elle se lit."
+ },
+ {
+  "id": 63,
+  "kind": "comment",
+  "text": "# EN FRACTION, non en points : la page sert la planche a trois\n# definitions, et le gros plan doit tomber juste sur chacune."
+ },
+ {
+  "id": 64,
+  "kind": "comment",
+  "text": "# LA CONFIANCE EST ENREGISTREE AVEC LA POSITION. Une\n# lecture entierement decoupee par les ilots est sure ;\n# une lecture ou le balayage a fourni un chiffre l'est\n# beaucoup moins, et c'est sur les planches chargees que\n# la difference se voit. La page pourra donc n'ouvrir un\n# gros plan que sur les lectures qui la meritent, sans\n# qu'il faille relancer l'outil."
+ }
+]

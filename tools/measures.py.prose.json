@@ -1,0 +1,7 @@
+[
+ {
+  "id": 0,
+  "kind": "docstring",
+  "text": "\"\"\"\nmeasures.py — draws from tools/inventory-<language>.json the CONSTANTS of\nthe LaTeX preamble: measure, line pitch, scale of the scan.\n\n    python3 tools/measures.py io\n    python3 tools/measures.py fr\n\nNothing here is invented: every constant is a median, together with its\nstandard deviation and the number of pages it is taken over. Short pages\n(fewer than `MIN_LINES` lines) are set aside: a title page or the end of a\nsection measures neither the text width nor the pitch.\n\"\"\""
+ }
+]

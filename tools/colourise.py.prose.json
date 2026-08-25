@@ -1,0 +1,127 @@
+[
+ {
+  "id": 0,
+  "kind": "comment",
+  "text": "# ===================================================================\n#  kolorigo.py — servir l'original en couleur a la place du fac-simile,\n#  cadre sur le meme cadre, pour que les numeros tombent toujours juste.\n#\n#  Deux tirages de la meme pierre nous sont parvenus. Le fac-simile de\n#  la Bibliotheque nationale est LA PIERRE NOIRE SEULE, tiree sans les\n#  couleurs : quatre mille cinq cents points de large, chaque hachure\n#  nette. L'original est la meme planche AVEC ses couleurs, mais\n#  photographie a moitie moins fin.\n#\n#  POUR CES DEUX TABLEAUX, C'EST L'ORIGINAL QU'ON SERT. On y perd de la\n#  finesse — le gros plan sur un numero est plus doux qu'ailleurs — et\n#  l'on y gagne la planche telle qu'elle etait au mur de la classe.\n#  C'est un choix d'edition, pas une mesure.\n#\n#  LE FAC-SIMILE NE DISPARAIT PAS POUR AUTANT : il reste la planche de\n#  travail, celle ou les numeros se lisent et se posent, et il sert ici\n#  de MIRE. Mille six cents numeros sont ranges en fractions de son\n#  cadre ; si l'original se pose de travers, chaque gros plan tombe a\n#  cote. On le recale donc sur lui, et l'on ne garde de lui que cela.\n#\n#  LE RECALAGE VA EN QUATRE TEMPS, du grossier au fin :\n#\n#   1. LE CADRE. Le filet de la gravure court d'un bord a l'autre ;\n#      c'est la premiere rangee, en venant du dehors, ou plus de la\n#      moitie des points sont sombres. Deux rectangles, une similitude.\n#\n#   2. ECC, sur les deux images floutees. Il descend a quelques points.\n#\n#   3. LA SIMILITUDE AJUSTEE TUILE PAR TUILE. ECC travaille sur une\n#      reduction a douze cents points : dix points d'ecart sur la\n#      planche n'en font que deux et demi chez lui, et il les laisse\n#      passer. On mesure donc, sur une grille, ou chaque morceau veut\n#      aller, et l'on ajuste la similitude qui les mene tous.\n#\n#   4. L'HOMOGRAPHIE. Il reste des ecarts, et au tableau 16 ils\n#      atteignent soixante-dix points aux angles : l'objectif n'etait\n#      pas d'aplomb sur la feuille. C'est de la perspective, et la\n#      perspective s'ecrit en huit coefficients — une homographie, qui\n#      mene toute droite sur une droite.\n#\n#      ON A ESSAYE UN CHAMP DE GLISSEMENT, et il faut dire pourquoi on\n#      l'a retire : glissements mesures sur une grille au pas de\n#      quarante, trous combles par diffusion, remappage. Le recalage\n#      tombait a moins de dix points — et les facades du tableau 14\n#      sortaient de travers. Un champ n'a aucune raison de respecter\n#      un alignement : il suit ce qu'il mesure, tuile par tuile, et une\n#      tuile qui se trompe de trois points tord tout son voisinage. Une\n#      planche gauchie se voit ; dix points d'ecart sur un gros plan,\n#      non. On garde donc les droites, et l'on rend les ecarts.\n#\n#  LE FLOU DE DOUZE POINTS, aux temps 2 a 4, n'est pas une negligence :\n#  c'est la seule echelle a laquelle les deux tirages se ressemblent.\n#  Plus fin, l'un n'a que le trait et l'autre que le lavis, et la\n#  correlation tombe a rien — mesure faite, 0.04.\n#\n#  LA RESTAURATION est legere, et elle se compte :\n#   — le papier a jauni : on lui retire deux cinquiemes de son jaune,\n#     pas davantage. Il etait ivoire, non blanc ;\n#   — la couleur a passe : on la ranime d'un sixieme. Au-dela, la\n#     planche prend un air de chromo moderne qu'elle n'a jamais eu ;\n#   — la prise de vue est molle : un leger masque flou lui rend son\n#     mordant, sans halo visible.\n#\n#  ON REND A LA DEFINITION DE L'ORIGINAL, ni plus ni moins. Le porter a\n#  celle du fac-simile ne fabriquerait pas un point de detail et\n#  doublerait le poids du fichier.\n#\n#  USAGE\n#      python3 tools/kolorigo.py t14-apar-1 originals/t14col.pdf\n#      python3 tools/kolorigo.py t14-apar-1 originals/t14col.pdf --essai\n#\n#  « --essai » ne sert rien : il ecrit dans plates/review/ une bande\n#  de comparaison — l'original brut, le rendu, le fac-simile — pour\n#  juger le reglage et le recalage a l'oeil.\n# ==================================================================="
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# noqa: E402"
+ },
+ {
+  "id": 2,
+  "kind": "comment",
+  "text": "# noqa: E402"
+ },
+ {
+  "id": 3,
+  "kind": "comment",
+  "text": "# part du jaune du papier qu'on retire"
+ },
+ {
+  "id": 4,
+  "kind": "comment",
+  "text": "# ranimation de la teinte"
+ },
+ {
+  "id": 5,
+  "kind": "comment",
+  "text": "# force du masque flou"
+ },
+ {
+  "id": 6,
+  "kind": "comment",
+  "text": "# l'echelle a laquelle les deux tirages se ressemblent"
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# qualite WebP du detail, plus haute qu'ailleurs"
+ },
+ {
+  "id": 8,
+  "kind": "docstring",
+  "text": "\"\"\"L'image telle qu'elle est DANS le PDF, sans la reechantillonner.\n\n    pdftoppm rendrait la page a une definition qu'on choisirait, et\n    l'on ajouterait un rechantillonnage a celui de la prise de vue.\n    pdfimages rend le JPEG que le fichier contient, point pour point.\n    \"\"\""
+ },
+ {
+  "id": 9,
+  "kind": "comment",
+  "text": "# LE CADRE DE L'ORIGINAL, pour le poser sur celui de la planche. Le\n# filet de la gravure court d'un bord a l'autre : c'est la premiere\n# rangee, en venant du dehors, ou plus de la moitie des points sont\n# sombres. Le titre imprime au-dessus n'en couvre pas la moitie ; le\n# filet, si."
+ },
+ {
+  "id": 10,
+  "kind": "docstring",
+  "text": "\"\"\"La matrice qui pose l'original en couleur sur la planche.\"\"\""
+ },
+ {
+  "id": 11,
+  "kind": "docstring",
+  "text": "\"\"\"Ou chaque morceau de l'original veut aller, tuile par tuile.\"\"\""
+ },
+ {
+  "id": 12,
+  "kind": "docstring",
+  "text": "\"\"\"Un tour de recalage : la similitude qui suit le mieux les tuiles.\"\"\""
+ },
+ {
+  "id": 13,
+  "kind": "comment",
+  "text": "# ON AJUSTE DEUX FOIS, DU LARGE AU SERRE. Le premier tour se mesure\n# sur de grandes tuiles floutees a douze points : c'est robuste, et\n# cela rattrape la perspective. Le second, sur des tuiles trois fois\n# plus petites et un flou de cinq points, resserre.\n#\n# On ne va pas plus fin. Sous cinq points de flou les deux tirages ne\n# se ressemblent plus assez pour se reconnaitre — l'un n'a que le\n# trait, l'autre que le lavis — et la mesure se met a suivre le bruit."
+ },
+ {
+  "id": 14,
+  "kind": "comment",
+  "text": "# UNE DROITE DE LA PIERRE DOIT RESTER DROITE. Premiere version, on\n# posait les glissements mesures sur une grille au pas de quarante, on\n# comblait les trous par diffusion et l'on remappait : le recalage\n# tombait a moins de dix points, et les facades du tableau 14 sortaient\n# de travers. Un champ de glissement n'a aucune raison de respecter\n# l'alignement — il suit ce qu'il mesure, tuile par tuile, et une tuile\n# qui se trompe de trois points tord tout son voisinage.\n#\n# LA PHOTOGRAPHIE D'UNE FEUILLE PLANE EST UNE HOMOGRAPHIE, et rien de\n# plus : l'objectif n'etait pas d'aplomb, voila tout. Huit coefficients\n# suffisent a le dire, et une homographie mene toute droite sur une\n# droite. On ajuste donc les huit sur les memes tuiles, et l'on\n# s'arrete la : ce qui reste apres elle n'est plus de la perspective\n# mais du gondolement du papier, et le redresser couterait plus cher\n# qu'il ne rapporte."
+ },
+ {
+  "id": 15,
+  "kind": "docstring",
+  "text": "\"\"\"L'homographie qui reste, en points de la planche.\"\"\""
+ },
+ {
+  "id": 16,
+  "kind": "comment",
+  "text": "# ON A ESSAYE DE PLIER SUR LES NUMEROS EUX-MEMES, et c'est pire.\n# L'idee etait bonne : on sait ou sont les mille six cent soixante-seize\n# numeros sur le fac-simile, au point pres, et ce sont eux que le gros\n# plan doit viser — pourquoi caler sur du paysage ce qu'on peut caler\n# sur eux ? Parce que le suiveur ne les retrouve pas assez surement\n# dans la photographie : sur quatre-vingt-treize numeros du tableau 14\n# il n'en reconnait franchement que quarante-huit, et le champ tire de\n# ces quarante-huit-la fait passer l'ecart median de seize a\n# vingt-quatre points. Une poignee de reperes bruyants, etires par la\n# diffusion, deforme plus qu'elle ne corrige. Mesure faite deux fois,\n# sur les deux planches.\n#\n# ET CE QUI RESTE D'ECART N'EST PAS UNE ERREUR DE MESURE : quinze a\n# vingt points, quel que soit le reglage du suiveur — fenetre de\n# quatre-vingts points ou de cent vingt, flou d'un point et demi ou de\n# trois, seuil de confiance a trois dixiemes ou a six. Ce sont DEUX\n# EXEMPLAIRES DIFFERENTS de la meme planche : tires a des dates\n# differentes, sur un papier qui n'a pas retreci pareil, et dont les\n# pierres n'etaient pas calees au meme point. Un demi pour cent sur\n# quatre mille cinq cents points fait vingt points, et c'est exactement\n# ce qu'on trouve. Aucune similitude ne rattrape cela.\n#\n# Seize points d'ecart sur une vue de gros plan qui en montre deux cent\n# quatre-vingt-dix : le numero vise n'est pas au centre au point pres,\n# il est a un vingtieme du centre. On s'en tient la."
+ },
+ {
+  "id": 17,
+  "kind": "comment",
+  "text": "# de la sortie vers la planche, en defaisant l'ajustement projectif"
+ },
+ {
+  "id": 18,
+  "kind": "comment",
+  "text": "# de la planche vers l'original"
+ },
+ {
+  "id": 19,
+  "kind": "docstring",
+  "text": "\"\"\"Le papier rendu au neutre, la teinte ranimee, le trait raffermi.\"\"\""
+ },
+ {
+  "id": 20,
+  "kind": "comment",
+  "text": "# LE TON DU PAPIER se prend sur le papier, c'est-a-dire sur ce que\n# la planche a de plus clair : le blanc de reserve entre les\n# hachures. Un cinquieme de la surface suffit a le donner."
+ },
+ {
+  "id": 21,
+  "kind": "comment",
+  "text": "# LE MORDANT SE REND A LA CLARTE SEULE. Aiguiser les trois couleurs\n# ensemble reveille le grain colore de la photographie ; sur la\n# clarte, il ne reveille que le trait.\n# (La clarte d'un Lab TIRE D'UNE IMAGE A HUIT BITS va de 0 a 255, non\n#  de 0 a 100 : la borner a cent ecrasait tout le haut du ton, et la\n#  planche sortait en aplats.)"
+ },
+ {
+  "id": 22,
+  "kind": "comment",
+  "text": "# LA DEFINITION DE SORTIE EST CELLE DE L'ORIGINAL. L'echelle de la\n# similitude dit de combien la photographie a ete grandie pour\n# tomber sur le fac-simile ; on rend l'inverse."
+ },
+ {
+  "id": 23,
+  "kind": "docstring",
+  "text": "\"\"\"L'original brut, le rendu, le fac-simile : la meme portion.\"\"\""
+ },
+ {
+  "id": 24,
+  "kind": "comment",
+  "text": "# LES DEUX PLANCHES EN COULEUR GARDENT LEUR TON. L'etirement\n# entre centiles rend son noir a une numerisation grise qui n'en\n# a pas ; celles-ci en ont deja -- elles descendent a 11 et 13,\n# avec trois a quatre points sur cent sous la valeur 40. Les\n# etirer par-dessus ne ferait que boucher les ombres."
+ }
+]

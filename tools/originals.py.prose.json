@@ -1,0 +1,232 @@
+[
+ {
+  "id": 0,
+  "kind": "comment",
+  "text": "# ===================================================================\n#  originali.py — poser une numerisation d'origine sur nos planches.\n#\n#  POURQUOI. Les gravures que sert la page viennent d'un PDF colorise :\n#  la couche de trait y est un POCHOIR — 87 pour cent de ses points sont\n#  du noir pur ou du blanc pur — parce qu'elle y servait de masque pour\n#  poser l'encre. Le demi-ton du bois grave, qui fait toute la douceur\n#  de la planche, n'y est plus, et aucune definition ne le rendra. Il\n#  faut donc repartir des numerisations d'origine (Gallica, BnF).\n#\n#  CE QUI SERAIT PERDU SANS CET OUTIL. Mille cinq cents numeros ont ete\n#  releves a la main sur les planches actuelles. Ils sont enregistres EN\n#  FRACTION de la planche, non en points : pour les transporter sur une\n#  autre numerisation, il suffit de savoir quelle similitude — rotation,\n#  echelle, translation — mene de l'une a l'autre. C'est ce que cet\n#  outil mesure, et il le mesure sans qu'on lui dise rien : la\n#  correlation entre deux rendus tres differents du meme dessin suffit.\n#\n#  ON A VERIFIE QUE CELA MARCHE MEME DE TRES LOIN. La copie de service\n#  de Gallica ne donne a la gravure du tableau 1 que 1250 points de\n#  large, contre 5463 a notre couche de trait — quatre fois moins — et\n#  le calage tombe juste malgre tout.\n#\n#  USAGE\n#      python3 tools/originali.py caler  t01-apar-1 origine.jpg\n#      python3 tools/originali.py compar t01-apar-1 origine.jpg 0.79 0.20\n#      python3 tools/originali.py netigar t01-apar-1 originals/t01.jpg\n#      python3 tools/originali.py reprendre t02-apar-1 originals/t02.jpg\n# ==================================================================="
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# noqa: E402"
+ },
+ {
+  "id": 2,
+  "kind": "docstring",
+  "text": "\"\"\"L'image en gris, l'encre en noir, en flottant normalise.\"\"\""
+ },
+ {
+  "id": 3,
+  "kind": "docstring",
+  "text": "\"\"\"Notre couche de trait, remise a l'endroit : l'encre en noir.\"\"\""
+ },
+ {
+  "id": 4,
+  "kind": "comment",
+  "text": "# LA PLANCHE PEUT ETRE COUCHEE DANS LA NUMERISATION. Les feuillets sont\n# relies dans le sens de la hauteur et la gravure y est de travers ; on\n# essaie donc les quatre quarts de tour, et l'on garde celui qui accroche."
+ },
+ {
+  "id": 5,
+  "kind": "docstring",
+  "text": "\"\"\"La similitude qui mene de notre planche a la numerisation.\n\n    Rend (M, score, tour) : M est la matrice 2x3 qui envoie un point de\n    NOTRE planche, en points, sur la numerisation, en points.\n    \"\"\""
+ },
+ {
+  "id": 6,
+  "kind": "comment",
+  "text": "# La gravure n'occupe qu'une partie du feuillet : on cherche\n# notre planche DANS la page, a plusieurs echelles."
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# De notre planche (points) vers la numerisation TOURNEE (points)."
+ },
+ {
+  "id": 8,
+  "kind": "docstring",
+  "text": "\"\"\"Le meme detail dans les trois etats, cote a cote.\"\"\""
+ },
+ {
+  "id": 9,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  LE NETTOYAGE, ET CE QU'IL S'INTERDIT\n# -------------------------------------------------------------------\n#  On redresse et l'on rogne, RIEN DE PLUS, et EN UN SEUL\n#  REECHANTILLONNAGE : la rotation et le rognage sont composes en une\n#  matrice, appliquee une fois. Deux passes a la file — tourner, puis\n#  couper — coutent une interpolation de trop, et cela se voit sur une\n#  hachure de deux points de large.\n#\n#  L'ANGLE SE MESURE SUR LE FILET DU CADRE, non sur le dessin. On\n#  prend les deux filets horizontaux, qui courent sur quatre mille\n#  points et donnent l'angle a un vingtieme de degre pres ; les filets\n#  verticaux servent de controle. Au tableau 1 les deux horizontaux\n#  s'accordent sur 0.30 degre, et une fois redresses ils tombent\n#  exactement a zero.\n#\n#  ON NE REDRESSE PAS LES VERTICALES. Apres redressement elles gardent\n#  un tiers de degre : la feuille a gondole, ou la planche a ete\n#  imprimee de biais. Corriger cela demanderait un cisaillement, c'est\n#  a dire d'inventer une geometrie que le fac-simile n'a pas. On\n#  l'enregistre et on la laisse.\n#\n#  ET L'ON NE TOUCHE PAS AU TON. Le papier est creme — son mode est a\n#  235, l'encre la plus noire a 66 — et c'est ainsi qu'il faut le\n#  garder : l'edition est diplomatique, l'eclaircissement se fera a\n#  l'affichage si on le veut, et restera reversible."
+ },
+ {
+  "id": 10,
+  "kind": "docstring",
+  "text": "\"\"\"L'angle qui rend une droite du cadre la plus franche.\"\"\""
+ },
+ {
+  "id": 11,
+  "kind": "comment",
+  "text": "# ON N'ESSAIE PAS DE RECONNAITRE LE FILET : ON ESSAIE TOUTES LES LIGNES\n# CANDIDATES, ET L'ON GARDE CELLE QU'ON SUIT LE MIEUX.\n#\n# Deux fausses pistes ont ete parcourues avant celle-ci. Prendre la\n# rangee la plus encree : elle tombe sur le titre de la collection, qui\n# court en haut de chaque feuillet — « Tableaux Auxiliaires Delmas pour\n# l'Enseignement pratique des Langues vivantes par l'Image » — et qui\n# est bien plus noir que le filet ; l'ecart d'ajustement montait alors a\n# dix ou douze points sur neuf planches. Prendre le sommet le plus FIN :\n# on attrape alors une hachure du dessin, et l'on perd les trois quarts\n# des colonnes.\n#\n# Ce qui distingue le filet n'est ni sa noirceur ni sa finesse, c'est\n# qu'il COURT D'UN BORD A L'AUTRE, tout droit. Cela ne se devine pas sur\n# un profil : cela se verifie en le suivant. On prend donc les huit\n# meilleurs sommets de la bande, on suit chacun, et l'on garde\n# l'ajustement le plus serre parmi ceux qui gardent assez de colonnes."
+ },
+ {
+  "id": 12,
+  "kind": "docstring",
+  "text": "\"\"\"Le filet d'une bande : le candidat qu'on suit le mieux.\"\"\""
+ },
+ {
+  "id": 13,
+  "kind": "comment",
+  "text": "# LE BORD LATERAL SE MESURE DE DEUX FACONS, ET L'ON GARDE LA PLUS\n# LARGE.\n#\n# Les filets verticaux ne sont pas les horizontaux. Ceux-ci courent\n# d'un bord a l'autre et se suivent ; ceux-la sont parfois graves d'un\n# trait franc, parfois a peine, parfois pas du tout — au tableau 8 il\n# n'y a rien a gauche que la hachure de l'etang qui vient mourir au\n# bord. Chercher un sommet dans un profil ou la mediane est celle du\n# DESSIN, et non du papier, ne pouvait donner qu'un accident du\n# dessin : le rognage tombait alors cent points trop avant et coupait\n# les numeros 16, 18, 19 du tableau 8, cent trente points trop court a\n# droite du tableau 12, quatre-vingts au tableau 11 — le 76 s'y\n# retrouvait dehors.\n#\n# On mesure donc deux choses, en partant de la marge :\n#\n#   le FILET — le premier sommet fin qui se leve nettement au-dessus du\n#   PAPIER (et non au-dessus de la mediane du profil) ;\n#\n#   l'ENTREE DU DESSIN — l'endroit ou l'encre passe a mi-chemin entre\n#   le papier et le plein du dessin, et n'en redescend plus.\n#\n# Puis l'on garde CELLE DES DEUX QUI EST LA PLUS EXTERIEURE. Un peu de\n# marge blanche ne coute rien ; un trait de gravure coupe ne se\n# rattrape pas. Verifie sur les seize planches : les deux mesures\n# tombent l'une sur l'autre douze fois, et les quatre fois qu'elles\n# different c'est la plus exterieure qui est sur le filet."
+ },
+ {
+  "id": 14,
+  "kind": "docstring",
+  "text": "\"\"\"Le premier sommet fin qui se leve au-dessus du papier.\"\"\""
+ },
+ {
+  "id": 15,
+  "kind": "docstring",
+  "text": "\"\"\"L'endroit ou l'encre monte a mi-plein et n'en redescend plus.\"\"\""
+ },
+ {
+  "id": 16,
+  "kind": "docstring",
+  "text": "\"\"\"Le bord d'un cote : la plus exterieure des deux mesures.\"\"\""
+ },
+ {
+  "id": 17,
+  "kind": "comment",
+  "text": "# MESURER LE FILET, PLUTOT QUE DE CHERCHER SON ANGLE. On tournait la\n# bande d'essai par pas d'un quarantieme de degre et l'on gardait\n# l'angle qui rendait le pic le plus franc. Au tableau 1 les deux filets\n# horizontaux s'accordaient a +0.300 ; au tableau 2 ils donnaient -0.275\n# et +0.225, un demi-degre d'ecart -- l'un des deux avait accroche autre\n# chose que le filet.\n#\n# On mesure donc le filet LUI-MEME : pour une centaine de colonnes\n# reparties sur la largeur, la ligne la plus encree dans une fenetre\n# etroite ; puis une droite ajustee par moindres carres, en rejetant\n# d'une passe a l'autre ce qui s'ecarte trop de la precedente. La\n# pente donne l'angle, et l'ecart residuel dit si l'on a bien suivi un\n# filet ou couru apres une branche d'arbre."
+ },
+ {
+  "id": 18,
+  "kind": "docstring",
+  "text": "\"\"\"Suit une droite presque horizontale et rend (angle, ecart, n).\n\n    ON NE GARDE QUE LES COLONNES OU LE FILET SE VOIT. Sur une planche\n    dont le ciel ou le sol est hachure, une colonne sur trois n'offre\n    aucun pic franc, et le barycentre s'y pose n'importe ou : l'ecart\n    d'ajustement montait alors a dix ou onze points, et l'angle ne\n    valait plus rien. On mesure donc la FORCE de chaque pic -- sa\n    hauteur au-dessus du fond de la fenetre -- et l'on jette les\n    colonnes qui n'atteignent pas la moitie de la force mediane.\n    Ensuite seulement on ajuste, quatre fois, en resserrant sur l'ecart\n    absolu median.\n    \"\"\""
+ },
+ {
+  "id": 19,
+  "kind": "comment",
+  "text": "# LE CADRE : les horizontales sont donnees, les verticales se mesurent.\n#\n# On ne recherche plus les filets du haut et du bas : ils ont deja ete\n# SUIVIS, colonne par colonne, pour trouver l'angle de la feuille, et\n# meilleur_filet a rendu la rangee ou chacun passe. La redresser ne la\n# deplace pas — le point (W/2, y) tourne autour de (W/2, H/2), donc le\n# long de l'axe meme de la rotation. On la reprend telle quelle, avec un\n# dernier calage a vingt points pres."
+ },
+ {
+  "id": 20,
+  "kind": "docstring",
+  "text": "\"\"\"Le cadre d'une image deja redressee, les horizontales connues.\"\"\""
+ },
+ {
+  "id": 21,
+  "kind": "docstring",
+  "text": "\"\"\"Redresse et rogne une numerisation, en un seul rechantillonnage.\"\"\""
+ },
+ {
+  "id": 22,
+  "kind": "comment",
+  "text": "# LA FEUILLE EST RELIEE EN HAUTEUR, la gravure y est couchee."
+ },
+ {
+  "id": 23,
+  "kind": "comment",
+  "text": "# 1. l'angle, sur les deux filets horizontaux, suivis point par point.\n#    ON RESSERRE D'ABORD LA BANDE AUTOUR DU FILET. Au tableau 2 le sol\n#    est hachure horizontalement jusqu'au bas de la gravure, et le\n#    suiveur accrochait une hachure au lieu du filet : les deux\n#    mesures se contredisaient alors d'un demi-degre. On repere donc\n#    la ligne la plus encree de la moitie exterieure, et l'on ne suit\n#    le filet qu'a vingt-cinq points de part et d'autre.\n# LA BANDE OU LE FILET SE TROUVE, et nulle part ailleurs. Les seize\n# feuillets sont imprimes de la meme facon : le filet du haut tombe\n# entre le vingt-troisieme et le vingt-septieme centieme du feuillet,\n# celui du bas entre le quatre-vingt-neuvieme et le quatre-vingt-\n# onzieme. Chercher plus large, c'est attraper le bord de la feuille\n# — plus droit que le filet, et faux."
+ },
+ {
+  "id": 24,
+  "kind": "comment",
+  "text": "# QUAND LES DEUX FILETS SE CONTREDISENT, ON CROIT LE MIEUX MESURE.\n# Ils s'accordent a un dixieme de degre pres sur onze planches ; sur\n# les cinq autres l'un des deux a ete suivi sur moitie moins de\n# colonnes, et c'est lui qui s'ecarte. Le poids d'une mesure, c'est\n# le nombre de colonnes gardees divise par son ecart d'ajustement."
+ },
+ {
+  "id": 25,
+  "kind": "comment",
+  "text": "# 2. le cadre, mesure sur une copie redressee (jetee ensuite)"
+ },
+ {
+  "id": 26,
+  "kind": "comment",
+  "text": "# 3. rotation ET rognage en une seule matrice, une seule passe"
+ },
+ {
+  "id": 27,
+  "kind": "comment",
+  "text": "# controle : ce qui reste de biais aux verticales"
+ },
+ {
+  "id": 28,
+  "kind": "comment",
+  "text": "# LES DEUX FILETS SEPAREMENT, avec l'ecart de leur\n# ajustement : c'est la seule facon de savoir plus tard\n# si l'on a bien suivi le cadre, et si la feuille etait\n# droite. Au tableau 2 ils convergent de quatre dixiemes\n# de degre -- la gravure y est en trapeze, et l'on ne\n# corrige pas cela sans inventer une geometrie."
+ },
+ {
+  "id": 29,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  LE TRANSPORT DES NUMEROS\n# -------------------------------------------------------------------\n#  Mille cinq cents numeros ont ete releves a la main sur les planches\n#  colorisees. Ils sont enregistres EN FRACTION de la planche : pour les\n#  porter sur la numerisation d'origine, il suffit de la similitude qui\n#  mene de l'une a l'autre.\n#\n#  ELLE SE MESURE PAR CORRELATION, sur une carte de densite d'encre —\n#  les deux images floutees, centrees, reduites. Le pochoir et le\n#  fac-simile ne se ressemblent pas trait pour trait, mais leurs masses\n#  d'encre, oui : au tableau 1 la correlation monte a 0.95.\n#\n#  ATTENTION AU SENS DE L'ENCRE. Dans la couche de trait l'encre vaut\n#  255, dans une numerisation elle est sombre. Les avoir prises dans le\n#  meme sens faisait tomber la correlation de 0.95 a 0.10, et l'on\n#  cherchait la faute ailleurs."
+ },
+ {
+  "id": 30,
+  "kind": "docstring",
+  "text": "\"\"\"Une carte de densite d'encre, comparable d'un rendu a l'autre.\"\"\""
+ },
+ {
+  "id": 31,
+  "kind": "docstring",
+  "text": "\"\"\"La matrice qui mene de l'ancienne planche a la nouvelle.\"\"\""
+ },
+ {
+  "id": 32,
+  "kind": "comment",
+  "text": "# LA REFERENCE EST LA PLANCHE PRECEDENTE, quelle qu'elle soit. La\n# premiere fois c'est la couche de trait du PDF colorise, ou l'encre\n# vaut 255 ; ensuite, si l'on renettoie, c'est le fac-simile deja\n# nettoye, ou l'encre est sombre. Sans cela un second nettoyage\n# ferait repartir les numeros du pochoir, qu'ils ont quitte."
+ },
+ {
+  "id": 33,
+  "kind": "comment",
+  "text": "# l'encre y vaut 255"
+ },
+ {
+  "id": 34,
+  "kind": "docstring",
+  "text": "\"\"\"Ce tableau a-t-il deja ete porte sur son original ?\"\"\""
+ },
+ {
+  "id": 35,
+  "kind": "comment",
+  "text": "# LE TRANSPORT NE SE FAIT QU'UNE FOIS. Le refaire appliquerait la\n# similitude a des positions qui l'ont deja subie, et les mille cinq\n# cents numeros partiraient de travers sans que rien ne le signale.\n# L'outil refuse donc de recommencer, a moins qu'on ne le lui dise."
+ },
+ {
+  "id": 36,
+  "kind": "docstring",
+  "text": "\"\"\"Porte les numeros, les scenes et les tailles sur la nouvelle planche.\"\"\""
+ },
+ {
+  "id": 37,
+  "kind": "comment",
+  "text": "# CE QUI SORT DE LA PLANCHE NE SE GARDE PAS. Le rognage ne tombe pas\n# au meme endroit d'une reprise a l'autre — il suit les filets, et\n# les filets se mesurent — de sorte qu'un numero pose tout au bord\n# peut se retrouver dehors. Le garder, c'est promettre un gros plan\n# sur du vide. On le dit, et on le laisse tomber : il sera a\n# rechercher sur la nouvelle planche."
+ },
+ {
+  "id": 38,
+  "kind": "docstring",
+  "text": "\"\"\"(x, y, l, h) en fraction de l'ancienne -> de la nouvelle.\"\"\""
+ },
+ {
+  "id": 39,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  SERVIR LA PLANCHE\n# -------------------------------------------------------------------\n#  Deux tailles, comme avant : la vue d'ensemble posee au-dessus du\n#  titre, et l'image ou l'on decoupe les gros plans. Mais celle-ci n'est\n#  plus rabotee a 2600 points : ON SERT LA PLANCHE ENTIERE.\n#\n#  La mesure le demande. Le gros plan montre neuf hauteurs de chiffre,\n#  soit deux cent quatre-vingt-dix points de planche, sur deux cent\n#  cinquante points d'ecran — cinq cents sur un ecran a double densite.\n#  Meme a pleine definition on est donc en dessous du compte : rogner\n#  encore n'aurait aucun sens. A 2600 points, en outre, la hachure fine\n#  moire, ce qui ne pardonne pas sur une gravure sur bois.\n#\n#  L'image ne coute qu'au PREMIER clic sur un numero du tableau, et sert\n#  ensuite a tous les autres."
+ },
+ {
+  "id": 40,
+  "kind": "comment",
+  "text": "# LA QUALITE DU DETAIL SE REGLE PAR PLANCHE. Le fac-simile a quatre\n# mille cinq cents points de large : a soixante-quatorze, le WebP a de\n# la place et n'y perd rien de visible. L'original en couleur n'en a\n# que deux mille deux cents, et la meme qualite le grumelait — le\n# « PIANOS » du batiment (10) du tableau 14 s'y lisait moins bien que\n# sur le PDF d'origine. Moins de points, plus de qualite : le fichier\n# reste plus leger que celui d'un fac-simile.\n# -------------------------------------------------------------------\n#  LE TON : RENDRE SON NOIR A LA PLANCHE\n# -------------------------------------------------------------------\n#  LES QUATORZE PLANCHES EN GRIS N'AVAIENT PAS DE NOIR. Leur encre la\n#  plus sombre s'arretait entre 45 et 65 sur 255, et au plus un point\n#  sur dix mille descendait sous 40 -- quand les deux planches en\n#  couleur, servies a cote d'elles dans la meme galerie, descendent a\n#  11 et 13 avec trois a quatre points sur cent vraiment noirs. C'est\n#  ce voisinage que l'oeil lisait comme de la paleur.\n#\n#  CE N'ETAIT PAS NOTRE TRAITEMENT : netigar redresse et rogne, il ne\n#  touchait pas au ton. La paleur vient des numerisations d'origine.\n#\n#  ON ETIRE DONC ENTRE DEUX CENTILES, planche par planche -- les\n#  numerisations different trop pour un reglage commun. Le point noir\n#  au centile 0,05, le point blanc au centile 99,5.\n#\n#  LE POINT BLANC A ETE LE POINT DISCUTE, et la mesure a tranche contre\n#  l'intuition. Le deplacer ecrase six points sur mille au blanc, contre\n#  trois avant : on a d'abord cru que c'etait le grain du papier qui\n#  partait. Le releve dit autre chose. Le gradient moyen la ou l'on\n#  ecrase vaut 16 a 18, soit celui du reste de la planche ; deux points\n#  sur mille seulement de ces points-la n'ont aucun voisin different\n#  d'eux. Ce ne sont pas des aplats de papier : c'est le bord CLAIR des\n#  traits. Les blanchir ne supprime aucune ligne, cela detache la ligne\n#  de son papier. Le compte des gradients faibles en zone claire --\n#  la hachure fine, ce qu'on risquait de perdre -- le confirme : il\n#  monte a 107-111 pour cent apres etirement, exactement comme si l'on\n#  gardait le blanc a 255.\n#\n#  ET GARDER LE BLANC A 255 COUTAIT PLUS QUE CELA N'EPARGNAIT. Le\n#  papier median tombait alors de 227 a 217, quand le fond de la page\n#  de lecture vaut 250 : la planche se posait sur la page comme un\n#  rectangle plus gris qu'avant. Au centile 99,5 il reste a 224.\n#\n#  APPROCHE ESSAYEE ET ABANDONNEE : un raccord souple au lieu d'un\n#  ecretage franc, pour ne rien ecraser du tout. C'est la seule des\n#  quatre variantes qui abime le trace -- la hachure fine tombe a\n#  86-93 pour cent, parce que la courbe tasse justement le haut du\n#  signal, la ou vit le trait clair. Retiree.\n#\n#  ON NE VA PAS PLUS LOIN QUE LE CENTILE 99,5, et cela s'est mesure\n#  aussi : au centile 98 la hachure fine tient encore (103-108 %), au\n#  centile 96 elle commence a tomber (91 % au tableau 7), au centile 92\n#  elle s'effondre (63 %). Le gain d'ecart-type entre 99,5 et 98 ne vaut\n#  que deux pour cent. On s'arrete ou le gain cesse de payer.\n#\n#  LES DEUX PLANCHES EN COULEUR NE PASSENT PAS PAR LA : kolorigo.py\n#  appelle servir() avec tono=False. Elles ont deja leur noir."
+ },
+ {
+  "id": 41,
+  "kind": "docstring",
+  "text": "\"\"\"Etire le ton entre deux centiles. Rend l'image et les bornes.\"\"\""
+ },
+ {
+  "id": 42,
+  "kind": "docstring",
+  "text": "\"\"\"Les deux WebP, tires de la planche d'origine nettoyee.\"\"\""
+ },
+ {
+  "id": 43,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  LA REPRISE ENTIERE, EN UNE COMMANDE\n# -------------------------------------------------------------------\n#  Nettoyer, porter les numeros, servir les deux images : trois gestes\n#  qui vont toujours ensemble et dans cet ordre. Quinze planches\n#  restent a reprendre ; autant ne pas les taper trois fois chacune.\n#\n#      python3 tools/originali.py reprendre t02-apar-1 originals/t02.jpg"
+ },
+ {
+  "id": 44,
+  "kind": "comment",
+  "text": "# On met de cote la planche precedente : c'est sur ELLE que les\n# numeros sont poses, et c'est d'elle qu'il faudra les porter."
+ },
+ {
+  "id": 45,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  REPRENDRE LE TON DES PLANCHES EN GRIS\n# -------------------------------------------------------------------\n#  Le ton se calcule a chaque service, depuis le PNG sans perte : ce\n#  verbe ne fait donc que re-servir. Il est idempotent -- on peut le\n#  relancer sans empiler deux etirements l'un sur l'autre, parce que\n#  rien n'est jamais ecrit dans le PNG d'origine.\n#\n#      python3 tools/originali.py toni"
+ }
+]

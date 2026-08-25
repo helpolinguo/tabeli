@@ -1,34 +1,34 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  manuali.py — les numeros repares a l'oeil, poses au pixel pres.
+#  manual.py — the numbers picked up by eye, placed to the pixel.
 #
-#  Le lecteur automatique plafonne : la reserve de blanc qui porte le
-#  chiffre se referme des que la gravure est dense, et le chiffre se
-#  perd alors dans les hachures. Le reste se releve donc a la main —
-#  mais a la main SEULEMENT POUR CE QUE LA MACHINE NE SAIT PAS FAIRE.
+#  The automatic reader has a ceiling: the reserve of white that carries
+#  the figure closes up as soon as the engraving is dense, and the figure
+#  is then lost in the hatching. The rest is therefore picked up by hand
+#  — but by hand ONLY FOR WHAT THE MACHINE CANNOT DO.
 #
-#  LE PARTAGE DU TRAVAIL. L'oeil lit la planche par tuiles, sur une
-#  grille dont les lignes portent la coordonnee, et dicte « 74 en
-#  2286,1326 » : le numero, et sa place. Ce qui est deja trouve est
-#  cercle sur la tuile, de sorte qu'on ne relit jamais deux fois.
+#  THE DIVISION OF LABOUR. The eye reads the plate in tiles, on a grid
+#  whose lines carry the coordinate, and dictates « 74 at 2286,1326 »:
+#  the number, and its place. What has already been found is circled on
+#  the tile, so that nothing is ever read twice.
 #
-#  ON A D'ABORD ESSAYE DE N'EN DICTER QUE LA MOITIE — la case, l'outil
-#  cherchant le nombre dedans par filtre adapte. Cela ne marche pas :
-#  « 72 » se posait sur le 71 d'a cote, « 77 » sur le 75, et resserrer
-#  la fenetre a une demi-case n'y changeait rien. Sur le tableau 1, le
-#  « 7 » de 72 est a demi cache derriere un chapeau, et le filtre ne
-#  reconnait pas un chiffre ampute meme quand on lui dit lequel
-#  chercher et ou. L'oeil, lui, lit le nombre ET sa place : autant
-#  qu'il dicte les deux.
+#  WE FIRST TRIED DICTATING ONLY HALF OF IT — the cell, the tool looking
+#  for the number inside it by matched filter. That does not work:
+#  « 72 » landed on the 71 next door, « 77 » on the 75, and narrowing
+#  the window to half a cell changed nothing. On table 1, the « 7 » of 72
+#  is half hidden behind a hat, and the filter does not recognise an
+#  amputated figure even when told which one to look for and where. The
+#  eye, for its part, reads the number AND its place: it may as well
+#  dictate both.
 #
-#  plates/manual.json se tient a la main, comme verdicts.json ;
-#  numeri.py le lit et ajoute ce qu'il nomme.
+#  plates/manual.json is kept by hand, like verdicts.json; numbers.py
+#  reads it and adds what it names.
 #
 #  USAGE
-#      python3 tools/manuali.py tuiler t01-apar-1   # fait les tuiles
-#      python3 tools/manuali.py zono   t01-apar-1   # ce qui manque, de pres
-#      python3 tools/manuali.py poser t01-apar-1 10=615,868 74=2286,1326
-#      python3 tools/manuali.py planche t01-apar-1  # le controle
+#      python3 tools/manual.py tile   t01-apar-1   # make the tiles
+#      python3 tools/manual.py zone   t01-apar-1   # what is missing, close up
+#      python3 tools/manual.py place  t01-apar-1 10=615,868 74=2286,1326
+#      python3 tools/manual.py sheet  t01-apar-1   # the check
 # ===================================================================
 
 import json
@@ -61,12 +61,12 @@ def police(taille):
 
 
 def cadres(cle, n=NX, scene=""):
-    """Le decoupage en n x n : (x0, y0, x1, y1) de chaque tuile.
+    """The division into n x n: (x0, y0, x1, y1) for each tile.
 
-    Avec une scene, on ne decoupe que sa vignette : sur une planche qui
-    en porte cinq, tuiler la planche entiere donne des tuiles a cheval
-    sur deux numerotations, et l'oeil ne sait plus lequel des deux
-    « 12 » il regarde.
+    With a scene, only its vignette is cut up: on a plate carrying five
+    of them, tiling the whole plate gives tiles straddling two
+    numberings, and the eye no longer knows which of the two
+    « 12 » it is looking at.
     """
     im = N.planche(cle)
     W, H = im.size
@@ -88,13 +88,13 @@ def cadres(cle, n=NX, scene=""):
 
 
 def restant(cle, connus):
-    """Ce que le texte appelle et que personne n'a encore trouve."""
+    """What the text calls for and nobody has found yet."""
     att = {N.kl(sc, n) for sc, ns in N.attendus(cle).items() for n in ns}
     return sorted(att - set(connus), key=N.descle)
 
 
 def tuiler(cle, n=NX, z=1.0, scene=""):
-    """Ecrit les tuiles, les numeros deja connus cercles."""
+    """Writes the tiles, the already known numbers circled."""
     TUILES.mkdir(parents=True, exist_ok=True)
     im, cads = cadres(cle, n, scene)
     W, H = im.size
@@ -102,9 +102,9 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
                    .read_text(encoding="utf-8"))[cle]
     connus = {n: (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
               for n, v in d["numeri"].items()}
-    # Ce qu'on vient de poser a la main compte aussi, sans quoi il
-    # faudrait relancer tout le lecteur entre deux tuiles pour cesser de
-    # relire ce qu'on a deja releve.
+    # What has just been placed by hand counts too, failing which the whole
+    # reader would have to be run again between two tiles to stop re-reading
+    # what has already been picked up.
     fm = RACINE / "plates" / "manual.json"
     if fm.exists():
         for n, v in json.loads(fm.read_text(encoding="utf-8")) \
@@ -112,16 +112,16 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
             connus[n] = (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
     F = police(34)
     for k, (x0, y0, x1, y1) in enumerate(cads):
-        # LE TRAIT RETOURNE. La couche porte l'encre en blanc sur fond
-        # noir ; l'oeil y perd la moitie de ce qu'il saurait lire. On la
-        # remet dans son sens, et la tuile redevient une gravure.
+        # THE LINE WORK REVERSED. The layer carries the ink white on black;
+        # the eye loses half of what it could read there. We put it back the
+        # right way round, and the tile becomes an engraving again.
         t = im.crop((x0, y0, x1, y1)).convert("RGB")
         if z != 1.0:
             t = t.resize((round(t.width * z), round(t.height * z)),
                          Image.LANCZOS)
         g = ImageDraw.Draw(t)
-        # CE QUI EST DEJA TROUVE EST CERCLE : l'oeil n'a plus qu'a lire
-        # ce qui ne l'est pas, et ne relit pas deux fois la meme chose.
+        # WHAT HAS ALREADY BEEN FOUND IS CIRCLED: the eye has only to read
+        # what is not, and does not read the same thing twice.
         for nu, (cx, cy) in connus.items():
             if x0 <= cx < x1 and y0 <= cy < y1:
                 a, b = (cx - x0) * z, (cy - y0) * z
@@ -131,14 +131,13 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
             g.line([gx * z, 0, gx * z, t.height], fill=(0, 130, 255), width=2)
         for gy in range(0, y1 - y0, PAS):
             g.line([0, gy * z, t.width, gy * z], fill=(0, 130, 255), width=2)
-        # LES LIGNES PORTENT LA COORDONNEE DE LA PLANCHE, non un nom de
-        # case. On a d'abord dicte « 74 en H4 » et laisse la machine
-        # chercher dans la case : elle n'y arrive pas. Sur cette
-        # planche, le « 7 » de 72 est a demi cache par un chapeau, celui
-        # de 77 jouxte un 75 — et le filtre adapte, deja incapable de
-        # choisir entre deux nombres de meme longueur, se trompe meme
-        # dans une demi-case. L'oeil, lui, lit le nombre ET sa place ;
-        # autant qu'il dicte les deux.
+        # THE LINES CARRY THE PLATE'S COORDINATE, not a cell name. We first
+        # dictated « 74 at H4 » and let the machine search within the cell:
+        # it cannot manage it. On this plate, the « 7 » of 72 is half hidden
+        # by a hat, that of 77 abuts a 75 — and the matched filter, already
+        # unable to choose between two numbers of the same length, goes wrong
+        # even within half a cell. The eye, for its part, reads the number AND
+        # its place; it may as well dictate both.
         for gx in range(0, x1 - x0, PAS):
             e = f"{x0 + gx}"
             g.rectangle([gx * z + 3, 3, gx * z + 26 + 17 * len(e), 46],
@@ -157,21 +156,21 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
     print(f"  {manque}")
 
 
-# LES ZONES. Les derniers numeros d'une planche dense sont ceux que
-# l'oeil n'a pas su voir sur une tuile de demi-planche : a cette
-# reduction le chiffre ne fait plus que vingt-sept points. On regarde
-# donc de plus pres, mais seulement OU IL FAUT. Le numero n se trouve,
-# neuf fois sur dix, a moins de trois cent cinquante points du milieu
-# du segment qui joint n-1 a n+1 — mesure faite sur les trente-huit
-# numeros du tableau 14 dont les deux voisins sont connus. On decoupe
-# donc autour de ce milieu, et les fenetres qui se recouvrent se
-# fondent en une seule, de sorte qu'une image serve souvent a plusieurs.
+# THE ZONES. The last numbers of a dense plate are the ones the eye
+# could not see on a half-plate tile: at that reduction the figure is no
+# more than twenty-seven points. We therefore look closer, but only
+# WHERE IT IS NEEDED. Number n lies, nine times out of ten, less than
+# three hundred and fifty points from the midpoint of the segment
+# joining n-1 to n+1 — measured on the thirty-eight numbers of table 14
+# whose two neighbours are known. We therefore cut around that midpoint,
+# and windows that overlap are merged into one, so that a single image
+# often serves several.
 ZONE_L, ZONE_H = 950, 680
-ZONE_Z = 2.1                     # le chiffre y fait quatre-vingts points
+ZONE_Z = 2.1                     # the figure is eighty points there
 
 
 def zono(cle, rayon=None):
-    """Decoupe, autour de la place presumee, ce qui manque encore."""
+    """Cuts out, around the presumed place, what is still missing."""
     TUILES.mkdir(parents=True, exist_ok=True)
     im = N.planche(cle)
     W, H = im.size
@@ -188,8 +187,8 @@ def zono(cle, rayon=None):
     if not manque:
         print(f"  {cle} : rien ne manque")
         return
-    # La place presumee : le milieu des deux voisins connus les plus
-    # proches en rang, ou le voisin unique quand il n'y en a qu'un.
+    # The presumed place: the midpoint of the two known neighbours nearest
+    # in rank, or the single neighbour when there is only one.
     def presume(k):
         sc, n = N.descle(k)
         frat = {N.descle(q)[1]: v for q, v in connus.items()
@@ -205,7 +204,7 @@ def zono(cle, rayon=None):
             return frat[haut]
         return (W / 2, H / 2)
 
-    zones = []                                  # (x0, y0, [numeros])
+    zones = []                                  # (x0, y0, [numbers])
     for n in manque:
         cx, cy = presume(n)
         for z in zones:
@@ -220,9 +219,9 @@ def zono(cle, rayon=None):
     F = police(30)
     for k, (x0, y0, ns) in enumerate(zones):
         x1, y1 = min(W, x0 + ZONE_L), min(H, y0 + ZONE_H)
-        # LE TRAIT EN NOIR SUR BLANC. La couche de trait porte l'encre en
-        # blanc sur fond noir ; a l'oeil, cela se lit mal — on la retourne,
-        # et la planche redevient ce qu'elle est, une gravure.
+        # THE LINE WORK IN BLACK ON WHITE. The line layer carries the ink white
+        # on black; to the eye that reads badly — we reverse it, and the plate
+        # becomes what it is again, an engraving.
         t = im.crop((x0, y0, x1, y1)).convert("RGB")
         t = t.resize((round(t.width * ZONE_Z), round(t.height * ZONE_Z)),
                      Image.LANCZOS)
@@ -262,7 +261,7 @@ def zono(cle, rayon=None):
 
 
 def case(cle, tuile, ref):
-    """« H4 » sur la tuile k -> (x, y) au centre de la case, en planche."""
+    """« H4 » on tile k -> (x, y) at the centre of the cell, on the plate."""
     m = re.fullmatch(r'([A-Z])(\d+)', ref.upper())
     if not m:
         raise SystemExit(f"case illisible : {ref}")
@@ -273,12 +272,12 @@ def case(cle, tuile, ref):
     return cx, cy
 
 
-# LE GABARIT NE SE TAILLE QUE DANS DES CHIFFRES. « 94bis » n'en est
-# pas un : le graveur a glisse deux outils entre les autres plutot que
-# de renumeroter la planche, et leur numero porte un mot. On taille le
-# gabarit sur les chiffres seuls -- c'est par eux qu'on le retrouvera --
-# et l'on rallonge le cadre de ce que le mot occupe, pour que le gros
-# plan le montre en entier.
+# THE TEMPLATE IS CUT FROM FIGURES ALONE. « 94bis » is not one: the
+# engraver slipped two tools in among the others rather than renumber
+# the plate, and their number carries a word. We cut the template on the
+# figures alone -- it is by them that it will be found again -- and
+# lengthen the frame by what the word occupies, so that the close-up
+# shows it whole.
 def gabarit(n, corps, marge=12, ecart=0.13):
     t = str(n)
     suite = t[len(t.rstrip("abcdefghijklmnopqrstuvwxyz")):]
@@ -302,21 +301,21 @@ def gabarit(n, corps, marge=12, ecart=0.13):
         L + round(0.62 * corps * len(suite))
 
 
-# LA FENETRE DE RECHERCHE RESTE ETROITE. A une case et demie, le filtre
-# allait chercher le numero VOISIN : « 72 » dicte en I5 se posait sur le
-# 71 d'a cote, « 73 » sur le 75. Une demi-case suffit des lors que
-# l'oeil a bien lu la grille, et elle interdit ces glissements.
+# THE SEARCH WINDOW STAYS NARROW. At a cell and a half, the filter went
+# looking for the NEIGHBOURING number: « 72 » dictated at I5 landed on
+# the 71 next door, « 73 » on the 75. Half a cell is enough once the eye
+# has read the grid properly, and it forbids those slips.
 def poser(cle, refs, rayon=0.62):
-    """Trouve chaque nombre dicte dans sa case et ses voisines.
+    """Finds each dictated number in its cell and its neighbours.
 
-    Sur une planche a plusieurs scenes le numero se dicte avec la sienne
-    — « c3:12=1840,2210 » —, sans quoi on ne saurait pas de quel douze
-    il s'agit.
+    On a plate with several scenes the number is dictated with its own
+    — « c3:12=1840,2210 » —, failing which one would not know which
+    twelve it is.
     """
-    # LE GABARIT SE TAILLE DANS L'ENCRE QU'ON REGARDE. Sur une planche
-    # reprise, les modeles du pochoir marquent 0.24 la ou ceux du gris
-    # marquent pres de 1 : le filtre glissait alors d'une dizaine de
-    # points, et le cadre tombait a cote du chiffre.
+    # THE TEMPLATE IS CUT FROM THE INK ONE IS LOOKING AT. On a re-pulled
+    # plate, the stencil models score 0.24 where the grey ones score close
+    # to 1: the filter then slipped by some ten points, and the frame fell
+    # beside the figure.
     N.GRIS = N.repris(cle)
     enc = (N.enko(cle) > 100).astype(np.float32)
     HT, LA = enc.shape
@@ -332,9 +331,9 @@ def poser(cle, refs, rayon=0.62):
     for k, tuile, ref in refs:
         n = N.descle(k)[1]
         if ref.count(",") == 2:
-            # L'oeil a vu le nombre, mais l'a montre du doigt : on cherche
-            # dans le rayon dicte, et le filtre pose le cadre au chiffre
-            # pres. Rayon court -- c'est ce qui interdit les glissements.
+            # The eye has seen the number, but pointed at it: we search
+            # within the dictated radius, and the filter sets the frame to
+            # the figure. Short radius -- that is what forbids the slips.
             cx, cy, ray = (int(v) for v in ref.split(","))
             T, M, L = gabarit(n, corps)
             x0, y0 = int(cx - L / 2) - ray, int(cy - corps / 2) - ray
@@ -350,8 +349,8 @@ def poser(cle, refs, rayon=0.62):
             print(f"  {k:>7} cale sur ({px}, {py})  score {mx:.3f}")
             continue
         if "," in ref:
-            # L'oeil a lu la place sur la grille : on la prend telle
-            # quelle, sans rien chercher. C'est le cas le plus sur.
+            # The eye has read the place off the grid: we take it as it
+            # stands, without searching for anything. This is the surest case.
             px, py = (int(v) for v in ref.split(","))
             T, M, L = gabarit(n, corps)
             par[k] = [round((px - L / 2) / LA, 6),
@@ -368,11 +367,11 @@ def poser(cle, refs, rayon=0.62):
             print(f"  {n} en {ref} : hors planche")
             continue
         r = cv2.matchTemplate(enc[y0:y1, x0:x1], T, cv2.TM_CCORR)
-        # LES PLACES DEJA PRISES SONT INTERDITES. « 77 » dicte en G5 se
-        # posait sur le 75 d'a cote — meme premier chiffre, cent trente
-        # points plus loin — et « 72 » sur le 71. Or on sait ou sont les
-        # numeros deja trouves : on efface ces places de la carte, et le
-        # filtre doit chercher ailleurs.
+        # THE PLACES ALREADY TAKEN ARE FORBIDDEN. « 77 » dictated at G5
+        # landed on the 75 next door — same first figure, a hundred and
+        # thirty points further on — and « 72 » on the 71. But we know
+        # where the numbers already found are: we erase those places from
+        # the map, and the filter has to look elsewhere.
         for b2 in occupe:
             ox, oy = b2[0] - x0 - M, b2[1] - y0 - M
             if -corps < ox < r.shape[1] + corps and \
@@ -394,7 +393,7 @@ def poser(cle, refs, rayon=0.62):
 
 
 def planche(cle):
-    """La planche de controle des numeros poses a la main."""
+    """The check sheet for the numbers placed by hand."""
     f = RACINE / "plates" / "manual.json"
     if not f.exists():
         return
@@ -416,14 +415,15 @@ def planche(cle):
           f"{N.KONTROLO / (cle + '-manuali.png')}")
 
 
-# LA RELECTURE DES LECTURES AUTOMATIQUES. Le score ne dit pas tout : le
-# filtre qui cherche « 14 » le trouve dans le « 144 » d'a cote, et rien
-# ne l'en avertit -- le morceau est parfaitement forme. Il faut donc
-# passer les lectures sous l'oeil, une planche a la fois, chacune
-# decoupee large et portant le nom que le fac-simile donne a l'objet.
-# Ce qui a ete pose a la main n'y figure pas : c'est deja juge.
+# THE RE-READING OF THE AUTOMATIC READINGS. The score does not say
+# everything: the filter looking for « 14 » finds it in the « 144 » next
+# door, and nothing warns it -- the piece is perfectly formed. The
+# readings must therefore be passed under the eye, one plate at a time,
+# each cut wide and carrying the name the facsimile gives the object.
+# What has been placed by hand does not appear there: it is already
+# judged.
 def revizo(cle, page=0, par=24, cols=6, Z=3):
-    """Les lectures automatiques d'une planche, a relire une a une."""
+    """A plate's automatic readings, to be re-read one by one."""
     d = json.loads((RACINE / "plates" / "numbers.json")
                    .read_text(encoding="utf-8"))[cle]
     LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
@@ -470,25 +470,25 @@ def revizo(cle, page=0, par=24, cols=6, Z=3):
 
 
 # -------------------------------------------------------------------
-#  LES LETTRES
+#  THE LETTERS
 # -------------------------------------------------------------------
-#  Trois tableaux portent, a cote des numeros, des lettres gravees sur
-#  un objet : les figures du tableau noir, les parties du monde sur la
-#  carte, les pieces du plan de la maison. Elles se posent comme les
-#  numeros -- l'oeil lit la place sur la grille et la dicte -- mais se
-#  rangent dans plates/letters.json, sous le prefixe de l'objet qui les
-#  porte : « 1a » est le cercle du tableau noir, « 10a » l'Amerique du
-#  Nord sur la carte.
+#  Three tables carry, beside the numbers, letters engraved on an
+#  object: the figures on the blackboard, the parts of the world on the
+#  map, the rooms on the house plan. They are placed like the numbers --
+#  the eye reads the place off the grid and dictates it -- but are filed
+#  in plates/letters.json, under the prefix of the object that carries
+#  them: « 1a » is the circle on the blackboard, « 10a » North America
+#  on the map.
 #
-#  LA BOITE EST CARREE, du corps du chiffre : une lettre n'a pas de
-#  largeur previsible, et le gros plan la prend de toute facon large.
+#  THE BOX IS SQUARE, of the figure's body: a letter has no predictable
+#  width, and the close-up takes it wide in any case.
 #
-#      python3 tools/manuali.py litero t01-apar-1 1a=91,2026 1b=239,1926
+#      python3 tools/manual.py letter t01-apar-1 1a=91,2026 1b=239,1926
 LITERI = RACINE / "plates" / "letters.json"
 
 
 def litero(cle, refs):
-    """Pose des lettres a l'oeil, comme on pose des numeros."""
+    """Places letters by eye, as one places numbers."""
     d = json.loads((RACINE / "plates" / "numbers.json")
                    .read_text(encoding="utf-8"))[cle]
     LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
@@ -505,7 +505,7 @@ def litero(cle, refs):
 
 
 def planche_literi(cle):
-    """La feuille de controle des lettres posees."""
+    """The check sheet for the letters placed."""
     tout = json.loads(LITERI.read_text(encoding="utf-8"))
     par = tout.get(cle, {})
     if not par:

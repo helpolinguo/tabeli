@@ -1,0 +1,147 @@
+[
+ {
+  "id": 0,
+  "kind": "comment",
+  "text": "# ===================================================================\n#  manuali.py — les numeros repares a l'oeil, poses au pixel pres.\n#\n#  Le lecteur automatique plafonne : la reserve de blanc qui porte le\n#  chiffre se referme des que la gravure est dense, et le chiffre se\n#  perd alors dans les hachures. Le reste se releve donc a la main —\n#  mais a la main SEULEMENT POUR CE QUE LA MACHINE NE SAIT PAS FAIRE.\n#\n#  LE PARTAGE DU TRAVAIL. L'oeil lit la planche par tuiles, sur une\n#  grille dont les lignes portent la coordonnee, et dicte « 74 en\n#  2286,1326 » : le numero, et sa place. Ce qui est deja trouve est\n#  cercle sur la tuile, de sorte qu'on ne relit jamais deux fois.\n#\n#  ON A D'ABORD ESSAYE DE N'EN DICTER QUE LA MOITIE — la case, l'outil\n#  cherchant le nombre dedans par filtre adapte. Cela ne marche pas :\n#  « 72 » se posait sur le 71 d'a cote, « 77 » sur le 75, et resserrer\n#  la fenetre a une demi-case n'y changeait rien. Sur le tableau 1, le\n#  « 7 » de 72 est a demi cache derriere un chapeau, et le filtre ne\n#  reconnait pas un chiffre ampute meme quand on lui dit lequel\n#  chercher et ou. L'oeil, lui, lit le nombre ET sa place : autant\n#  qu'il dicte les deux.\n#\n#  plates/manual.json se tient a la main, comme verdicts.json ;\n#  numeri.py le lit et ajoute ce qu'il nomme.\n#\n#  USAGE\n#      python3 tools/manuali.py tuiler t01-apar-1   # fait les tuiles\n#      python3 tools/manuali.py zono   t01-apar-1   # ce qui manque, de pres\n#      python3 tools/manuali.py poser t01-apar-1 10=615,868 74=2286,1326\n#      python3 tools/manuali.py planche t01-apar-1  # le controle\n# ==================================================================="
+ },
+ {
+  "id": 1,
+  "kind": "comment",
+  "text": "# noqa: E402"
+ },
+ {
+  "id": 2,
+  "kind": "docstring",
+  "text": "\"\"\"Le decoupage en n x n : (x0, y0, x1, y1) de chaque tuile.\n\n    Avec une scene, on ne decoupe que sa vignette : sur une planche qui\n    en porte cinq, tuiler la planche entiere donne des tuiles a cheval\n    sur deux numerotations, et l'oeil ne sait plus lequel des deux\n    « 12 » il regarde.\n    \"\"\""
+ },
+ {
+  "id": 3,
+  "kind": "docstring",
+  "text": "\"\"\"Ce que le texte appelle et que personne n'a encore trouve.\"\"\""
+ },
+ {
+  "id": 4,
+  "kind": "docstring",
+  "text": "\"\"\"Ecrit les tuiles, les numeros deja connus cercles.\"\"\""
+ },
+ {
+  "id": 5,
+  "kind": "comment",
+  "text": "# Ce qu'on vient de poser a la main compte aussi, sans quoi il\n# faudrait relancer tout le lecteur entre deux tuiles pour cesser de\n# relire ce qu'on a deja releve."
+ },
+ {
+  "id": 6,
+  "kind": "comment",
+  "text": "# LE TRAIT RETOURNE. La couche porte l'encre en blanc sur fond\n# noir ; l'oeil y perd la moitie de ce qu'il saurait lire. On la\n# remet dans son sens, et la tuile redevient une gravure."
+ },
+ {
+  "id": 7,
+  "kind": "comment",
+  "text": "# CE QUI EST DEJA TROUVE EST CERCLE : l'oeil n'a plus qu'a lire\n# ce qui ne l'est pas, et ne relit pas deux fois la meme chose."
+ },
+ {
+  "id": 8,
+  "kind": "comment",
+  "text": "# LES LIGNES PORTENT LA COORDONNEE DE LA PLANCHE, non un nom de\n# case. On a d'abord dicte « 74 en H4 » et laisse la machine\n# chercher dans la case : elle n'y arrive pas. Sur cette\n# planche, le « 7 » de 72 est a demi cache par un chapeau, celui\n# de 77 jouxte un 75 — et le filtre adapte, deja incapable de\n# choisir entre deux nombres de meme longueur, se trompe meme\n# dans une demi-case. L'oeil, lui, lit le nombre ET sa place ;\n# autant qu'il dicte les deux."
+ },
+ {
+  "id": 9,
+  "kind": "comment",
+  "text": "# LES ZONES. Les derniers numeros d'une planche dense sont ceux que\n# l'oeil n'a pas su voir sur une tuile de demi-planche : a cette\n# reduction le chiffre ne fait plus que vingt-sept points. On regarde\n# donc de plus pres, mais seulement OU IL FAUT. Le numero n se trouve,\n# neuf fois sur dix, a moins de trois cent cinquante points du milieu\n# du segment qui joint n-1 a n+1 — mesure faite sur les trente-huit\n# numeros du tableau 14 dont les deux voisins sont connus. On decoupe\n# donc autour de ce milieu, et les fenetres qui se recouvrent se\n# fondent en une seule, de sorte qu'une image serve souvent a plusieurs."
+ },
+ {
+  "id": 10,
+  "kind": "comment",
+  "text": "# le chiffre y fait quatre-vingts points"
+ },
+ {
+  "id": 11,
+  "kind": "docstring",
+  "text": "\"\"\"Decoupe, autour de la place presumee, ce qui manque encore.\"\"\""
+ },
+ {
+  "id": 12,
+  "kind": "comment",
+  "text": "# La place presumee : le milieu des deux voisins connus les plus\n# proches en rang, ou le voisin unique quand il n'y en a qu'un."
+ },
+ {
+  "id": 13,
+  "kind": "comment",
+  "text": "# (x0, y0, [numeros])"
+ },
+ {
+  "id": 14,
+  "kind": "comment",
+  "text": "# LE TRAIT EN NOIR SUR BLANC. La couche de trait porte l'encre en\n# blanc sur fond noir ; a l'oeil, cela se lit mal — on la retourne,\n# et la planche redevient ce qu'elle est, une gravure."
+ },
+ {
+  "id": 15,
+  "kind": "docstring",
+  "text": "\"\"\"« H4 » sur la tuile k -> (x, y) au centre de la case, en planche.\"\"\""
+ },
+ {
+  "id": 16,
+  "kind": "comment",
+  "text": "# LE GABARIT NE SE TAILLE QUE DANS DES CHIFFRES. « 94bis » n'en est\n# pas un : le graveur a glisse deux outils entre les autres plutot que\n# de renumeroter la planche, et leur numero porte un mot. On taille le\n# gabarit sur les chiffres seuls -- c'est par eux qu'on le retrouvera --\n# et l'on rallonge le cadre de ce que le mot occupe, pour que le gros\n# plan le montre en entier."
+ },
+ {
+  "id": 17,
+  "kind": "comment",
+  "text": "# LA FENETRE DE RECHERCHE RESTE ETROITE. A une case et demie, le filtre\n# allait chercher le numero VOISIN : « 72 » dicte en I5 se posait sur le\n# 71 d'a cote, « 73 » sur le 75. Une demi-case suffit des lors que\n# l'oeil a bien lu la grille, et elle interdit ces glissements."
+ },
+ {
+  "id": 18,
+  "kind": "docstring",
+  "text": "\"\"\"Trouve chaque nombre dicte dans sa case et ses voisines.\n\n    Sur une planche a plusieurs scenes le numero se dicte avec la sienne\n    — « c3:12=1840,2210 » —, sans quoi on ne saurait pas de quel douze\n    il s'agit.\n    \"\"\""
+ },
+ {
+  "id": 19,
+  "kind": "comment",
+  "text": "# LE GABARIT SE TAILLE DANS L'ENCRE QU'ON REGARDE. Sur une planche\n# reprise, les modeles du pochoir marquent 0.24 la ou ceux du gris\n# marquent pres de 1 : le filtre glissait alors d'une dizaine de\n# points, et le cadre tombait a cote du chiffre."
+ },
+ {
+  "id": 20,
+  "kind": "comment",
+  "text": "# L'oeil a vu le nombre, mais l'a montre du doigt : on cherche\n# dans le rayon dicte, et le filtre pose le cadre au chiffre\n# pres. Rayon court -- c'est ce qui interdit les glissements."
+ },
+ {
+  "id": 21,
+  "kind": "comment",
+  "text": "# L'oeil a lu la place sur la grille : on la prend telle\n# quelle, sans rien chercher. C'est le cas le plus sur."
+ },
+ {
+  "id": 22,
+  "kind": "comment",
+  "text": "# LES PLACES DEJA PRISES SONT INTERDITES. « 77 » dicte en G5 se\n# posait sur le 75 d'a cote — meme premier chiffre, cent trente\n# points plus loin — et « 72 » sur le 71. Or on sait ou sont les\n# numeros deja trouves : on efface ces places de la carte, et le\n# filtre doit chercher ailleurs."
+ },
+ {
+  "id": 23,
+  "kind": "docstring",
+  "text": "\"\"\"La planche de controle des numeros poses a la main.\"\"\""
+ },
+ {
+  "id": 24,
+  "kind": "comment",
+  "text": "# LA RELECTURE DES LECTURES AUTOMATIQUES. Le score ne dit pas tout : le\n# filtre qui cherche « 14 » le trouve dans le « 144 » d'a cote, et rien\n# ne l'en avertit -- le morceau est parfaitement forme. Il faut donc\n# passer les lectures sous l'oeil, une planche a la fois, chacune\n# decoupee large et portant le nom que le fac-simile donne a l'objet.\n# Ce qui a ete pose a la main n'y figure pas : c'est deja juge."
+ },
+ {
+  "id": 25,
+  "kind": "docstring",
+  "text": "\"\"\"Les lectures automatiques d'une planche, a relire une a une.\"\"\""
+ },
+ {
+  "id": 26,
+  "kind": "comment",
+  "text": "# -------------------------------------------------------------------\n#  LES LETTRES\n# -------------------------------------------------------------------\n#  Trois tableaux portent, a cote des numeros, des lettres gravees sur\n#  un objet : les figures du tableau noir, les parties du monde sur la\n#  carte, les pieces du plan de la maison. Elles se posent comme les\n#  numeros -- l'oeil lit la place sur la grille et la dicte -- mais se\n#  rangent dans plates/letters.json, sous le prefixe de l'objet qui les\n#  porte : « 1a » est le cercle du tableau noir, « 10a » l'Amerique du\n#  Nord sur la carte.\n#\n#  LA BOITE EST CARREE, du corps du chiffre : une lettre n'a pas de\n#  largeur previsible, et le gros plan la prend de toute facon large.\n#\n#      python3 tools/manuali.py litero t01-apar-1 1a=91,2026 1b=239,1926"
+ },
+ {
+  "id": 27,
+  "kind": "docstring",
+  "text": "\"\"\"Pose des lettres a l'oeil, comme on pose des numeros.\"\"\""
+ },
+ {
+  "id": 28,
+  "kind": "docstring",
+  "text": "\"\"\"La feuille de controle des lettres posees.\"\"\""
+ }
+]
