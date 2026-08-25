@@ -1,21 +1,20 @@
 % ===================================================================
-%  preamble.tex — macros communes aux deux transcriptions.
+%  preamble.tex — macros common to both transcriptions.
 %
-%  Ce fichier ne contient AUCUNE mesure. Toutes les mesures sont dans
-%  calibrate-io.tex et calibrate-fr.tex, un fichier par fac-simile : les
-%  deux livrets ne sont pas du meme format, ne sont pas composes au
-%  meme corps, et n'ont pas ete numerises de la meme maniere. Charger
-%  la calibration AVANT ce fichier ; celui-ci s'en sert et ne la
-%  redefinit jamais.
+%  This file contains NO measurement. Every measurement is in
+%  calibrate-io.tex and calibrate-fr.tex, one file per facsimile: the
+%  two booklets are not of the same format, are not set at the same
+%  size, and were not scanned the same way. Load the calibration BEFORE
+%  this file; this one uses it and never redefines it.
 %
-%  La methode est celle du projet « Kompleta Gramatiko » :
-%  UNE LIGNE DU FAC-SIMILE = UNE LIGNE DU PDF, meme pagination, memes
-%  folios, memes coupures de mot. Aucune cesure n'est decidee par TeX ;
-%  toutes sont relevees sur le scan et ecrites dans la source.
+%  The method is that of the « Kompleta Gramatiko » project:
+%  ONE LINE OF THE FACSIMILE = ONE LINE OF THE PDF, same pagination,
+%  same folios, same word breaks. No hyphenation is decided by TeX;
+%  every one is read off the scan and written into the source.
 % ===================================================================
 
 % -------------------------------------------------------------------
-% 1. PAQUETAGES
+% 1. PACKAGES
 % -------------------------------------------------------------------
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -24,15 +23,15 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{calc}
-% L'EXPANSION DE FONTE, pour combler ce que le corps ne comble pas.
-% Meme au plus grand corps qui tienne, une page garde des lignes plus
-% courtes que les autres : le corps est borne par la ligne LA PLUS
-% LONGUE de la page, et les autres s'etirent. Le compositeur de 1926
-% reglait cela a l'interlettrage -- il ouvrait ses lignes creuses.
-% L'equivalent moderne est l'expansion : chaque glyphe s'etire ou se
-% resserre de 2,5 % au plus, ce qui absorbe le manque sans toucher aux
-% blancs inter-mots, donc sans les rendre beants. Les coupures de ligne
-% ne bougent pas -- elles sont toutes forcees par le releve.
+% FONT EXPANSION, to fill what the size does not fill. Even at the
+% largest size that fits, a page keeps lines shorter than the others:
+% the size is bounded by the LONGEST line of the page, and the others
+% stretch. The compositor of 1926 settled that with letterspacing -- he
+% opened out his slack lines. The modern equivalent is expansion: each
+% glyph stretches or tightens by at most 2.5 %, which absorbs the
+% shortfall without touching the word spaces, hence without making them
+% gape. The line breaks do not move -- every one is forced by the
+% transcription.
 \usepackage[tracking=true,letterspace=0,
             expansion=true,stretch=25,shrink=25]{microtype}
 
@@ -44,47 +43,46 @@
 }
 
 % -------------------------------------------------------------------
-% 2. COUPURES DE LIGNE EXPLICITES
+% 2. EXPLICIT LINE BREAKS
 % -------------------------------------------------------------------
-% \nl : fin de ligne SANS trait d'union.
-% \cc : fin de ligne AVEC trait d'union (le trait est compose).
-% On n'utilise jamais \\ : il annule la justification de la ligne.
+% \nl : end of line WITHOUT a hyphen.
+% \cc : end of line WITH a hyphen (the hyphen is set).
+% We never use \\ : it cancels the justification of the line.
 \newcommand{\nl}{\penalty-10000\relax}
 \newcommand{\cc}{-\penalty-10000\relax}
 
-% \parplein TERMINE un alinea dont la derniere ligne court jusqu'a la
-% marge — cas d'un alinea qui se poursuit sur la page suivante.
-% \parfillskip est GLOBAL : pose une fois, il justifierait la derniere
-% ligne de tous les alineas suivants. On l'enferme dans un groupe.
+% \parplein ENDS a paragraph whose last line runs to the margin — the
+% case of a paragraph that carries on onto the next page.
+% \parfillskip is GLOBAL: laid once, it would justify the last line of
+% every following paragraph. We shut it in a group.
 \newcommand{\parplein}{{\parfillskip=0pt\relax\par}}
-% \ccplein : la page finit sur un MOT COUPE, et l'alinea continue au
-% feuillet suivant. C'est \cc et \parplein a la fois, et ni l'un ni
-% l'autre ne fait l'affaire seul :
-%   -- \cc pose « -\penalty-10000 ». En fin d'alinea, cette penalite
-%      ouvre une derniere ligne VIDE, qui prend un rang de plus sur la
-%      page : la page composee gagne une ligne que le fac-simile n'a
-%      pas, et tout ce qui suit descend d'un cran.
-%   -- \parplein seul ne compose pas le trait d'union.
-% On ecrit donc le trait, puis on termine l'alinea a la marge, sans
-% penalite. Trois pages du livret ido finissent ainsi (feuillets 66,
-% 103, 104) ; le controle 5 les avait signalees comme « \VUcontinue
-% sans \parplein », ce qui etait le symptome et non la cause.
+% \ccplein : the page ends on a BROKEN WORD, and the paragraph
+% continues on the next leaf. It is \cc and \parplein at once, and
+% neither will do alone:
+%   -- \cc lays « -\penalty-10000 ». At the end of a paragraph, that
+%      penalty opens one last EMPTY line, which takes one more row on
+%      the page: the composed page gains a line the facsimile has not,
+%      and everything after it drops by one.
+%   -- \parplein alone does not set the hyphen.
+% We therefore write the hyphen, then end the paragraph at the margin,
+% with no penalty. Three pages of the Ido booklet end so (leaves 66,
+% 103, 104); check 5 had reported them as « \VUcontinue without
+% \parplein », which was the symptom and not the cause.
 \newcommand{\ccplein}{-{\parfillskip=0pt\relax\par}}
 
-% \VUcontinue OUVRE un alinea qui continue la page precedente : pas de
-% renfoncement, la ligne reprend au fer a gauche.
+% \VUcontinue OPENS a paragraph that continues the previous page: no
+% indent, the line resumes flush left.
 \newcommand{\VUcontinue}{\noindent}
 
-% LES ESPACES-MOTS SONT INSECABLES.
-% Sans cela le modele fuit en silence : \nl force bien une coupure a la
-% fin de la ligne, mais n'empeche pas TeX d'en placer une AVANT si la
-% matiere ne tient pas. Une ligne 1 % trop large se recouperait donc
-% toute seule, sans meme produire d'« Overfull \hbox ». Les espaces
-% rendus insecables, le seul point de coupure legal est celui que le
-% releve a place : une ligne trop large devient un « Overfull \hbox »,
-% que le controle 1 inventorie. La faute passe du silence au bruit.
-% Les espaces gardent toute leur elasticite : la justification est
-% intacte.
+% THE WORD SPACES ARE NON-BREAKING.
+% Without that the model leaks in silence: \nl does force a break at the
+% end of the line, but does not stop TeX putting one BEFORE it if the
+% matter does not fit. A line 1 % too wide would therefore re-break
+% itself, without even producing an « Overfull \hbox ». With the spaces
+% made non-breaking, the only legal breakpoint is the one the
+% transcription placed: a line too wide becomes an « Overfull \hbox »,
+% which check 1 inventories. The fault passes from silence to noise.
+% The spaces keep all their elasticity: the justification is intact.
 \makeatletter\newcommand{\VUespaceMot}{%
   \ifdim\spaceskip=0pt\relax
     \@tempdimb=\f@size pt
@@ -97,37 +95,34 @@
     \def {\ifhmode\ifnum\lastnodetype>-1\relax\penalty10000\VUespaceMot\fi\fi}}%
 \endgroup
 
-% LA GRILLE DES LIGNES DE BASE EST IMPOSEE.
+% THE BASELINE GRID IS IMPOSED.
 %
-% TeX ne tient sa grille que tant que les lignes y entrent : si la
-% hauteur naturelle d'une ligne depasse \baselineskip, il abandonne le
-% pas regulier et separe les lignes par \lineskip, c'est-a-dire par
-% leur encombrement reel. Le pas devient alors une consequence du
-% texte, et non plus un reglage.
+% TeX holds its grid only as long as the lines fit in it: if the natural
+% height of a line exceeds \baselineskip, it abandons the regular pitch
+% and separates the lines by \lineskip, that is, by their real bulk. The
+% pitch then becomes a consequence of the text, and no longer a setting.
 %
-% C'est exactement ce qui se passait ici. Le fac-simile est compose
-% presque au fer -- corps 10,93 pt sur un pas de 11,68 -- et le corps
-% par page monte jusqu'a 12,43 pt pour remplir la justification. Au
-% dela de ~11,7 pt, la ligne ne tient plus dans le pas, TeX lache la
-% grille, et les pages s'allongent sans que rien ne le dise : vingt-neuf
-% d'entre elles debordaient par le bas du papier, et changer
-% l'interlignage de trois points n'y faisait presque rien -- la pente
-% mesuree valait 0,5 la ou elle aurait du valoir 40.
+% That is exactly what was happening here. The facsimile is set almost
+% solid -- size 10.93 pt on a pitch of 11.68 -- and the per-page size
+% rises to 12.43 pt to fill the measure. Beyond ~11.7 pt the line no
+% longer fits the pitch, TeX lets go of the grid, and the pages lengthen
+% with nothing to say so: twenty-nine of them overflowed the foot of the
+% paper, and changing the leading by three points did almost nothing --
+% the measured slope was 0.5 where it should have been 40.
 %
-% \lineskiplimit a -1000pt, la condition n'est jamais remplie et le pas
-% reste celui qu'on a mesure, quel que soit le corps. C'est ce que fait
-% le plomb : les lignes de base sont a distance fixe, imposee par le
-% corps des interlignes, et une lettre un peu haute ne pousse pas sa
-% voisine.
+% With \lineskiplimit at -1000pt the condition is never met and the
+% pitch stays the one that was measured, whatever the size. That is what
+% metal does: the baselines are at a fixed distance, imposed by the body
+% of the leads, and a slightly tall letter does not push its neighbour.
 %
-% LE REGLAGE SE POSE DANS LA PAGE, ET NON DANS LE PREAMBULE. Toute
-% boite de LaTeX appelle \@parboxrestore, qui appelle \normalbaselines,
-% qui remet \lineskiplimit a zero. Pose une fois pour toutes en tete du
-% document, le reglage etait donc annule a l'ouverture de chaque
-% minipage -- c'est-a-dire sur chacune des deux cent dix pages. On le
-% repose dans l'environnement VUpage, apres l'ouverture de la boite.
+% THE SETTING IS LAID IN THE PAGE, NOT IN THE PREAMBLE. Every LaTeX box
+% calls \@parboxrestore, which calls \normalbaselines, which puts
+% \lineskiplimit back to zero. Laid once and for all at the head of the
+% document, the setting was therefore cancelled at the opening of every
+% minipage -- that is, on each of the two hundred and ten pages. We lay
+% it again in the VUpage environment, after the box is opened.
 
-% Aucune cesure decidee par TeX : toutes les coupures sont relevees.
+% No hyphenation decided by TeX: every break is read off the facsimile.
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
 \pretolerance=-1
@@ -135,23 +130,22 @@
 \emergencystretch=0pt
 
 % -------------------------------------------------------------------
-% 3. PAGE FIGEE
+% 3. THE PAGE IS FROZEN
 % -------------------------------------------------------------------
-% Chaque page du fac-simile est composee dans une minipage de hauteur
-% fixe : une retouche dans un alinea ne peut pas faire migrer du texte
-% vers la page suivante.
+% Each page of the facsimile is set in a minipage of fixed height: a
+% retouch in one paragraph cannot make text migrate to the next page.
 \pagestyle{empty}
 \setlength{\parskip}{0pt}
 \setlength{\topskip}{0pt}
 \raggedbottom
 \setlength{\parindent}{\VUalinea}
 
-% LA MARQUE CACHEE, sur chaque page. Composee en MODE DE RENDU 3
-% (« 3 Tr ») : le texte entre dans le flux du PDF, il est indexe,
-% cherchable et extrait par pdftotext, mais il n'est PAS PEINT. Ce
-% n'est pas du blanc sur blanc, qui se verrait en selectionnant : c'est
-% du texte que le moteur de rendu saute. Corps 0,4 pt et boite de
-% hauteur ET de largeur nulles, par surcroit de precaution.
+% THE HIDDEN MARK, on every page. Set in RENDERING MODE 3 (« 3 Tr »):
+% the text enters the PDF's flow, it is indexed, searchable and
+% extracted by pdftotext, but it is NOT PAINTED. It is not white on
+% white, which would show when selecting: it is text the rendering
+% engine skips. Size 0.4 pt and a box of zero height AND width, for
+% good measure.
 \newcommand{\VUmarqueCachee}{%
   \vbox to 0pt{%
     \hbox to 0pt{%
@@ -161,20 +155,19 @@
     \vss}%
   \nointerlineskip}
 
-% #1 (optionnel) = numero de FEUILLET du fac-simile. Il n'est pas
-% compose : il sert aux controles a retrouver la page du scan.
-% #2 = folio imprime ; vide si la page n'en porte pas.
+% #1 (optional) = the facsimile's LEAF number. It is not set: it serves
+% the checks in finding the page of the scan again.
+% #2 = the printed folio; empty if the page carries none.
 % -------------------------------------------------------------------
-% 3 bis. LE CORPS, PAGE PAR PAGE
+% 3 bis. THE SIZE, PAGE BY PAGE
 % -------------------------------------------------------------------
-% UN CORPS UNIQUE POUR TOUT LE VOLUME NE PEUT PAS REMPLIR TOUTES LES
-% PAGES. Le corps global est celui qui, en moyenne, remplit le mieux ;
-% il est donc, sur les pages ou l'original serre un peu plus, trop
-% petit -- et les lignes s'y etirent, avec des blancs inter-mots
-% beants. Le compositeur de 1926 ne tenait pas une chasse constante
-% d'un cahier a l'autre, et la fonte d'aujourd'hui n'a pas exactement
-% la sienne. On pose donc un corps PAR PAGE, mesure par
-% outils/korpo.py : le plus grand qui ne fasse deborder aucune ligne.
+% ONE SIZE FOR THE WHOLE VOLUME CANNOT FILL EVERY PAGE. The global size
+% is the one that, on average, fills best; on the pages where the
+% original is set a little tighter it is therefore too small -- and the
+% lines stretch there, with gaping word spaces. The compositor of 1926
+% did not hold a constant set from one gathering to the next, and
+% today's font has not exactly his. We therefore lay a size PER PAGE,
+% measured by tools/body.py: the largest that makes no line overflow.
 \makeatletter
 \newcommand{\VUkorpoPage}[2]{%
   \expandafter\gdef\csname VUkorpo@#1\endcsname{#2}}
@@ -184,12 +177,12 @@
 \newcommand{\VUtextePage}[1]{%
   \edef\VU@tmp{\VUkorpoDe{#1}}%
   \fontsize{\VU@tmp}{\VUinterlignoDe{#1}}\selectfont}
-% L'INTERLIGNAGE AUSSI EST PROPRE A LA PAGE. Le pas mesure est une
-% mediane ; les pages qui portent plus de lignes que la mediane ne
-% tiennent pas dans le bloc et debordent par le bas. Le compositeur
-% « cardait » ses pages -- il serrait ou ouvrait ses lames selon la
-% matiere. outils/altezo.py mesure, page par page, le pas qui fait
-% tenir la matiere dans la hauteur relevee.
+% THE LEADING IS THE PAGE'S OWN TOO. The measured pitch is a median;
+% the pages that carry more lines than the median do not fit the block
+% and overflow at the foot. The compositor « carded » his pages -- he
+% tightened or opened his leads according to the matter. tools/height.py
+% measures, page by page, the pitch that makes the matter fit the
+% surveyed height.
 \newcommand{\VUinterlignoPage}[2]{%
   \expandafter\gdef\csname VUintl@#1\endcsname{#2}}
 \newcommand{\VUinterlignoDe}[1]{%
@@ -197,36 +190,37 @@
   \VUinterligne\fi}
 \makeatother
 
-% LA PAGE SE COMPOSE DANS UNE BOITE QU'ON MESURE. La minipage a
-% hauteur fixe se termine par un \vss, dont le retrait est INFINI :
-% une page trop pleine ne produit donc aucun « Overfull \vbox », elle
-% deborde en silence par le bas du papier. Quatre pages du livret ido
-% et trois du francais sortaient ainsi du massicot sans que rien ne le
-% signale, et c'est l'oeil qui les a trouvees.
+% THE PAGE IS SET IN A BOX THAT IS MEASURED. The fixed-height minipage
+% ends with a \vss, whose shrink is INFINITE: a page too full therefore
+% produces no « Overfull \vbox », it overflows the foot of the paper in
+% silence. Four pages of the Ido booklet and three of the French came
+% off the guillotine that way with nothing to report it, and it was the
+% eye that found them.
 %
-% On compose donc d'abord dans une boite de hauteur naturelle, on
-% annonce sa hauteur dans le journal — c'est outils/altezo.py qui la
-% lit —, puis on la pose dans la page. Rien ne change a la composition ;
-% ce qui change, c'est qu'on sait desormais ce qu'on compose.
+% We therefore set first in a box of natural height, announce its height
+% in the log -- it is tools/height.py that reads it -- then lay it in
+% the page. Nothing changes in the composition; what changes is that we
+% now know what we are composing.
 \newsavebox{\VUpagoBoxo}
 \newenvironment{VUpage}[2][]%
   {\par
-   % LE \noindent VA AVANT LA BOITE POSEE, NON AVANT LA BOITE MESUREE.
-   % Place ici, il ouvrait un alinea, la lrbox s'y inserait, et le vbox
-   % de la page venait grossir cette meme ligne : cent onze pages sur
-   % cent quatorze rendaient un « Overfull \hbox » de 11,3 pt, toujours
-   % le meme, qui ne venait d'aucun texte.
+   % THE \noindent GOES BEFORE THE BOX WHEN IT IS LAID, NOT BEFORE THE BOX
+% WHEN IT IS MEASURED. Placed here, it opened a paragraph, the lrbox
+% inserted itself into it, and the page's vbox came and swelled that
+% same line: a hundred and eleven pages out of a hundred and fourteen
+% returned an « Overfull \hbox » of 11.3 pt, always the same one, which
+% came from no text at all.
    \begin{lrbox}{\VUpagoBoxo}%
-   % LA HAUTEUR EST FIXE ICI, dans la boite mesuree elle-meme. Reglee
-   % plus loin, au moment de poser la page, elle ramenait les 111
-   % « Overfull \hbox » du renfoncement. Reglee ici, la boite sort deja
-   % a la bonne hauteur et se pose sans enveloppe.
-   % Contrepartie : \typeout{VUPAGO} rend alors toujours \textheight.
-   % Pour mesurer les hauteurs naturelles, outils/altezo.py ote
-   % temporairement le « [\textheight] » ci-dessous.
+   % THE HEIGHT IS FIXED HERE, in the measured box itself. Set later, at
+% the moment of laying the page, it brought back the 111 « Overfull
+% \hbox » of the indent. Set here, the box comes out at the right height
+% already and is laid with no wrapper.
+% The price: \typeout{VUPAGO} then always returns \textheight. To
+% measure the natural heights, tools/height.py temporarily removes the
+% « [\textheight] » below.
    \begin{minipage}[t][\textheight][t]{\textwidth}%
-     % minipage remet \parindent a zero (\@parboxrestore) : on le
-     % retablit, les deux fac-similes renfoncent tous leurs alineas.
+     % minipage puts \parindent back to zero (\@parboxrestore): we restore
+% it, both facsimiles indent every one of their paragraphs.
      \setlength{\parindent}{\VUalinea}%
      \lineskiplimit=-1000pt \lineskip=0pt
      \VUespacesInsecables
@@ -235,57 +229,56 @@
   {\VUnotoPose
    \end{minipage}%
    \end{lrbox}%
-   % HAUTEUR + PROFONDEUR. Une minipage alignee par le haut a son
-   % point de reference sur la PREMIERE ligne de base : presque toute
-   % sa matiere est donc en profondeur, et \ht seul rendait 0,0 pt
-   % pour les cent quatorze pages.
+   % HEIGHT + DEPTH. A minipage aligned by the top has its reference
+% point on the FIRST baseline: nearly all its matter is therefore in
+% depth, and \ht alone returned 0.0 pt for all hundred and fourteen
+% pages.
    \typeout{VUPAGO \the\dimexpr\ht\VUpagoBoxo+\dp\VUpagoBoxo\relax}%
-   % LA BOITE SE POSE TELLE QUELLE, sans etre reglee a \textheight.
-   % Le \vbox to \textheight qui l'enveloppait ajoutait 11,3 pt a la
-   % ligne qui la portait, sur chacune des deux cent dix pages -- un
-   % « Overfull \hbox » par page, qui noyait les vrais. Il ne servait
-   % qu'a empecher la matiere de migrer vers la page suivante, et le
-   % \penalty-10000 qui suit l'empeche deja. La page commence de toute
-   % facon a \VUmargeSup, que geometry fixe.
-   % LE \noindent EST INDISPENSABLE. Sans lui la page recoit le
-   % renfoncement d'alinea -- 11,29575 pt, soit exactement les 5 % de
-   % la justification que vaut \VUalinea -- et chacune des deux cent
-   % dix pages rendait un « Overfull \hbox » de cette largeur, toujours
-   % la meme, qui ne venait d'aucun texte et noyait les vrais.
-   % ET LA HAUTEUR RESTE FIXE. Posee a sa hauteur naturelle, une page
-   % trop pleine se deversait sur une page de plus, et le volume en
-   % gagnait une : la regle « une page du fac-simile = une page du
-   % PDF » etait rompue. La boite est donc reglee a \textheight, ce qui
-   % la garde a sa place ; les rares pages qui n'y tiennent pas sont
-   % signalees par outils/altezo.py, et c'est leur releve qu'il faut
-   % reprendre.
+   % THE BOX IS LAID AS IT STANDS, without being set to \textheight.
+% The \vbox to \textheight that wrapped it added 11.3 pt to the line
+% that carried it, on each of the two hundred and ten pages -- one
+% « Overfull \hbox » per page, which drowned the real ones. It served
+% only to stop the matter migrating to the next page, and the
+% \penalty-10000 that follows stops that already. The page begins at
+% \VUmargeSup in any case, which geometry fixes.
+% THE \noindent IS INDISPENSABLE. Without it the page receives the
+% paragraph indent -- 11.29575 pt, exactly the 5 % of the measure that
+% \VUalinea is worth -- and each of the two hundred and ten pages
+% returned an « Overfull \hbox » of that width, always the same, which
+% came from no text and drowned the real ones.
+% AND THE HEIGHT STAYS FIXED. Laid at its natural height, a page too
+% full spilled onto one page more, and the volume gained one: the rule
+% « one page of the facsimile = one page of the PDF » was broken. The
+% box is therefore set to \textheight, which keeps it in its place; the
+% few pages that do not fit are reported by tools/height.py, and it is
+% their transcription that must be looked at again.
    \noindent\usebox{\VUpagoBoxo}%
    \par\penalty-10000\relax}
 
-% Interlignage propre a une page — la « carde » du compositeur, qui
-% repartit en lames uniformes le blanc d'une page trop courte. A
-% appeler juste apres \begin{VUpage}, AVANT toute matiere. Sans appel,
-% la page garde \VUinterligne.
+% Leading proper to one page — the compositor's « carding », which
+% spreads the white of a page too short into uniform leads. To be
+% called just after \begin{VUpage}, BEFORE any matter. With no call,
+% the page keeps \VUinterligne.
 \newcommand{\VUinterlignePage}[1]{\fontsize{\VUcorps}{#1}\selectfont}
 
-% Blanc ORDINAIRE entre deux alineas. Il n'est PAS mis en \parskip : au
-% sommet d'une minipage la colle de \parskip subsiste et decalerait
-% toute la page d'autant. On l'ecrit donc, comme les sauts de ligne, la
-% ou il est.
+% ORDINARY white between two paragraphs. It is NOT put in \parskip: at
+% the top of a minipage the glue of \parskip survives and would shift
+% the whole page by that much. We therefore write it, like the line
+% breaks, where it belongs.
 \newcommand{\VUblancAlinea}{\vskip\VUblancAlineaValeur\relax}
-% Blanc plus large a une articulation. #1 = l'EXCES mesure sur le pas
-% regulier de la page, DIMINUE du blanc ordinaire quand il le remplace.
+% Wider white at an articulation. #1 = the EXCESS measured over the
+% page's regular pitch, LESS the ordinary white when it replaces it.
 \newcommand{\VUblanc}[1]{\vskip #1\relax}
 
 % -------------------------------------------------------------------
-% 4. CORPS DU TEXTE
+% 4. THE BODY OF THE TEXT
 % -------------------------------------------------------------------
 \newcommand{\VUtexte}{\fontsize{\VUcorps}{\VUinterligne}\selectfont}
-% Gras : famille propre, corps PROPORTIONNEL au corps courant — il suit
-% donc automatiquement le texte, les notes, ou tout autre corps ou il
-% apparait. Le gras des deux livrets est un demi-gras etroit qui n'est
-% pas proportionne a son romain ; le gras de XCharter, lui, est large.
-% D'ou une famille distincte et un rapport, non un corps absolu.
+% Bold: its own family, size PROPORTIONAL to the current size — it
+% therefore follows the text, the notes, or any other size in which it
+% appears, automatically. The bold of both booklets is a narrow semibold
+% not proportioned to its roman; XCharter's bold is wide. Hence a
+% distinct family and a ratio, not an absolute size.
 \makeatletter
 \newcommand{\VUgras}[1]{{%
   \@tempdima=\f@size pt
@@ -297,41 +290,41 @@
   \fontsize{\VUcorpsNote}{\VUinterligneNote}\selectfont\lsstyle}
 
 % -------------------------------------------------------------------
-% 5. LIGNES D'APPARAT
+% 5. DISPLAY LINES
 % -------------------------------------------------------------------
-% Sur ces pages aussi, UNE ligne du fac-simile = UN appel de macro : le
-% releve reste ligne a ligne, et les controles peuvent le verifier.
-% #1 = corps ; #2 = interlettrage (1/1000 de cadratin) ; #3 = texte.
-% Les deux premiers sont MESURES : le corps par la hauteur de capitale,
-% l'interlettrage par la largeur de la ligne (outils/apparat.py).
+% On these pages too, ONE line of the facsimile = ONE macro call: the
+% transcription stays line for line, and the checks can verify it.
+% #1 = size; #2 = letterspacing (1/1000 of an em); #3 = text.
+% The first two are MEASURED: the size by the height of the capitals,
+% the letterspacing by the width of the line (tools/apparat.py).
 \newcommand{\VUcentre}[3]{{\centering\fontsize{#1}{#1}\selectfont
    \textls[#2]{#3}\par}}
 \newcommand{\VUsaut}[1]{\vspace{#1}}
 
-% Titre de section : capitales grasses espacees, centrees.
+% Section title: bold letterspaced capitals, centred.
 \newcommand{\VUtitre}[3]{%
   {\centering\fontfamily{\VUfonteGras}\fontsize{#1}{#1}\selectfont\bfseries
    \textls[#2]{#3}\par}}
-% INTITULE EN PETITES CAPITALES — « DESKRIPTO GENERALA. », « LA BONA
-% LERNANTI. », « I. DESCRIPTION GÉNÉRALE. ». Ni gras ni capitales
-% pleines : c'est le romain du texte courant, dont seule la premiere
-% lettre de chaque mot garde sa haute capitale. Les deux livrets en
-% font le meme usage — c'est le rang de titre IMMEDIATEMENT SOUS celui
-% du numero de tableau.
+% HEADING IN SMALL CAPITALS — « DESKRIPTO GENERALA. », « LA BONA
+% LERNANTI. », « I. DESCRIPTION GÉNÉRALE. ». Neither bold nor full
+% capitals: it is the roman of the running text, of which only the
+% first letter of each word keeps its full capital. Both booklets use
+% it the same way — it is the rank of title IMMEDIATELY BELOW that of
+% the table number.
 \newcommand{\VUintitulo}[2]{%
   {\centering\fontsize{#1}{#1}\selectfont\textls[#2]{\scshape}\par}}
 \newcommand{\VUpk}[3]{%
   {\centering\fontsize{#1}{#1}\selectfont\textls[#2]{\scshape #3}\par}}
 
-% Filet centre : #1 = largeur.
+% Centred rule: #1 = width.
 \newcommand{\VUfilet}[1]{{\centering\rule{#1}{0.4pt}\par}}
-% Filet de note : court, cale a gauche.
+% Note rule: short, flush left.
 \newcommand{\VUfiletnote}{{\noindent\rule{\VUfiletnoteLargeur}{0.4pt}\par}}
 
-% Folio centre, entoure de deux demi-cadratins, comme « — 8 — ».
-% Place ABSOLUMENT, en hauteur nulle : il ne pousse rien. Le corps de
-% texte commence donc toujours exactement a \VUmargeSup, que la page
-% porte un folio ou non.
+% Folio centred, framed by two en dashes, as « — 8 — ». Placed
+% ABSOLUTELY, at zero height: it pushes nothing. The body of the text
+% therefore always begins exactly at \VUmargeSup, whether the page
+% carries a folio or not.
 \newcommand{\VUfolio}[1]{%
   \ifx\relax#1\relax\else
     \vbox to 0pt{\vskip\dimexpr\VUfolioY-\VUmargeSup\relax
@@ -340,104 +333,105 @@
   \fi}
 
 % -------------------------------------------------------------------
-% 7 bis. NOTES DE BAS DE PAGE
+% 7 bis. FOOTNOTES
 % -------------------------------------------------------------------
-% ELLES SE POSENT PAR LE BAS, ET NON PAR LE HAUT.
+% THEY ARE SET FROM THE FOOT, AND NOT FROM THE TOP.
 %
-% Premiere version : chaque appel donnait l'ordonnee du FILET, et la
-% consigne de releve proposait 143,2 mm « si la note est en bas d'une
-% page pleine ». Les treize releves ont tous recopie cette valeur --
-% c'est ma faute, pas la leur : une ordonnee de depart ne peut pas
-% convenir a des notes de longueurs differentes. Une note de deux
-% lignes flottait alors au milieu du blanc, et une note de douze
-% lignes -- feuillet 19 du livret ido -- sortait par le bas du papier,
-% ses trois dernieres lignes rognees au massicot.
+% First version: each call gave the ordinate of the RULE, and the
+% transcription brief suggested 143.2 mm « if the note is at the foot of
+% a full page ». All thirteen transcriptions copied that value out --
+% that is my fault, not theirs: a starting ordinate cannot suit notes of
+% different lengths. A note of two lines then floated in the middle of
+% the white, and a note of twelve lines -- leaf 19 of the Ido booklet --
+% came off the foot of the paper, its last three lines cut away at the
+% guillotine.
 %
-% Le compositeur, lui, ne fait pas cela : il cale sa note SUR LE PIED
-% du bloc, et c'est le haut du filet qui monte quand la note s'allonge.
-% On mesure donc la note dans une boite, et on la pose de facon que son
-% dernier rang tombe au bas du bloc de texte. L'ordonnee cesse d'etre
-% une donnee du releve : elle se calcule, et elle est juste pour toutes
-% les longueurs.
+% The compositor does not do that: he sets his note ON THE FOOT of the
+% block, and it is the top of the rule that rises when the note grows
+% longer. We therefore measure the note in a box, and lay it so that its
+% last row falls at the foot of the block of text. The ordinate ceases
+% to be a datum of the transcription: it is computed, and it is right
+% for every length.
 %
-% #1 est CONSERVE mais ignore : le supprimer obligerait a retoucher les
-% treize relevés sans rien y gagner, et l'argument garde trace de
-% l'ordonnee que le fac-simile montre, si on veut un jour la verifier.
-% ET LA NOTE NE SE POSE PAS EN HAUTEUR NULLE : ELLE SE DIFFERE.
+% #1 is KEPT but ignored: removing it would mean retouching the thirteen
+% transcriptions for no gain, and the argument preserves a trace of the
+% ordinate the facsimile shows, should we ever want to verify it.
+% AND THE NOTE IS NOT LAID AT ZERO HEIGHT: IT IS DEFERRED.
 %
-% Deuxieme version : la note etait posee ABSOLUMENT, dans un \vbox to
-% 0pt, cale sur le pied du bloc. Elle tombait juste -- et elle ne
-% poussait rien. Sur une page dont le texte descend jusqu'au pied, les
-% deux s'imprimaient donc l'un SUR l'autre : sept pages du livret ido
-% et une du francais, mesurees a mutool en comparant le corps des
-% lignes (la note vaut 0,79 fois le texte, l'exposant d'un renvoi 0,70
-% -- ce sont les corps qui les separent, non la position).
+% Second version: the note was laid ABSOLUTELY, in a \vbox to 0pt, set
+% on the foot of the block. It fell right -- and it pushed nothing. On a
+% page whose text runs down to the foot, the two therefore printed one
+% ON the other: seven pages of the Ido booklet and one of the French,
+% measured with mutool by comparing the size of the lines (the note is
+% 0.79 times the text, the superscript of a cross-reference 0.70 -- it
+% is the sizes that separate them, not the position).
 %
-% Le compositeur ne peut pas faire cela : sa note occupe le bas de la
-% page, et le texte s'arrete au-dessus. On differe donc la note jusqu'a
-% la FERMETURE de la page, ou elle entre dans le flux apres le dernier
-% alinea. Le chevauchement devient impossible par construction, et non
-% par un calcul qu'il faudrait refaire a chaque releve.
+% The compositor cannot do that: his note occupies the foot of the page,
+% and the text stops above it. We therefore defer the note to the
+% CLOSING of the page, where it enters the flow after the last
+% paragraph. The overlap becomes impossible by construction, and not by
+% a calculation that would have to be redone at every transcription.
 %
-% LE RESSORT EST EN « fill » ET NON EN « fil » : la minipage de
-% \VUpage porte deja un \vss au bas, et deux ressorts de meme ordre se
-% partageraient le blanc -- la note se poserait au MILIEU de ce qui
-% reste. Un ordre au-dessus prend tout, et la note descend au pied.
+% THE SPRING IS IN « fill » AND NOT IN « fil »: the minipage of \VUpage
+% already carries a \vss at the foot, and two springs of the same order
+% would share the white out -- the note would settle in the MIDDLE of
+% what is left. One order above takes everything, and the note goes down
+% to the foot.
 %
-% #1 est CONSERVE mais ignore : le supprimer obligerait a retoucher les
-% treize relevés sans rien y gagner, et l'argument garde trace de
-% l'ordonnee que le fac-simile montre, si on veut un jour la verifier.
+% #1 is KEPT but ignored: removing it would mean retouching the thirteen
+% transcriptions for no gain, and the argument preserves a trace of the
+% ordinate the facsimile shows, should we ever want to verify it.
 \newsavebox{\VUnotoBoxo}
 \newsavebox{\VUnotoUno}
 \newif\ifVUnoto
-% Pied du bloc de texte, compte depuis le bord superieur du papier.
+% Foot of the block of text, counted from the top edge of the paper.
 \newcommand{\VUnotoBas}{\dimexpr\VUfolioY+\VUtexteHauteur\relax}
-% LE PIED DE LA NOTE, QUAND LE BLOC LUI-MEME TOMBE SOUS LE PAPIER.
-% Le bloc du livret francais est calibre a 7,96 + 173,40 = 181,36 mm sur
-% un papier de 180 : son pied est DEJA hors de la feuille de 1,36 mm.
-% C'est l'erreur que le controle 6 signale depuis toujours -- le cadre du
-% scan francais tombe dans le papier, et l'echelle absolue qu'on en tire
-% est fausse (LISEZ-MOI, § 4). Tant que le texte s'arrete plus haut, cela
-% ne se voit pas ; une note posee au pied du bloc, elle, sort du
-% massicot. On la retient donc au-dessus du bord du papier, de 2 mm.
-% La valeur vaut ZERO pour le livret ido, dont le bloc finit a 161,33 mm
-% pour un papier de 180 : ce n'est pas un reglage, c'est un calcul, et il
-% ne mord que la ou la calibration est fautive.
+% THE FOOT OF THE NOTE, WHEN THE BLOCK ITSELF FALLS BELOW THE PAPER.
+% The French booklet's block is calibrated at 7.96 + 173.40 = 181.36 mm
+% on a paper of 180: its foot is ALREADY 1.36 mm off the sheet. That is
+% the error check 6 has always reported -- the frame of the French scan
+% falls inside the paper, and the absolute scale drawn from it is wrong
+% (README, § 4). As long as the text stops higher, it does not show; a
+% note laid at the foot of the block does come off the guillotine. We
+% therefore hold it 2 mm above the edge of the paper.
+% The value is ZERO for the Ido booklet, whose block ends at 161.33 mm
+% on a paper of 180: it is not a setting, it is a calculation, and it
+% bites only where the calibration is at fault.
 \newlength{\VUnotoPied}
-% LE \relax FINAL FERME L'AFFECTATION, ET IL EN FAUT UN ICI AUSSI :
-% sans lui, TeX cherchait « plus » au-dela du \dimexpr et developpait
-% pour cela le \ifdim de la ligne suivante -- qui se trouvait donc
-% evalue AVANT que le registre ait sa valeur, sur le zero du
-% \newlength. La condition etait toujours fausse, le pied restait
-% negatif, et le PDF sortait a l'octet pres identique : rien ne
-% distingue une condition qui ne mord pas d'une condition absente.
+% THE FINAL \relax CLOSES THE ASSIGNMENT, AND ONE IS NEEDED HERE TOO:
+% without it, TeX looked for « plus » beyond the \dimexpr and expanded
+% the \ifdim of the next line to find it -- which was therefore
+% evaluated BEFORE the register had its value, on the zero of the
+% \newlength. The condition was always false, the foot stayed negative,
+% and the PDF came out identical to the byte: nothing distinguishes a
+% condition that does not bite from a condition that is absent.
 \VUnotoPied=\dimexpr\VUmargeSup+\VUtexteHauteur-\VUpapierHauteur+2mm\relax\relax
-% LE \relax APRES « 0pt » N'EST PAS DECORATIF. \VUnotoPied est un
-% registre de RESSORT : apres la dimension, TeX cherche « plus » et
-% « minus », et pour les chercher il DEVELOPPE ce qui suit -- donc le
-% \fi, qui referme la condition avant que l'affectation soit faite. Sans
-% ce \relax, le livret ido gardait un pied de -47,43 pt et sa note
-% remontait dans le texte : la condition etait juste, l'affectation ne
-% l'atteignait pas.
+% THE \relax AFTER « 0pt » IS NOT DECORATIVE. \VUnotoPied is a GLUE
+% register: after the dimension, TeX looks for « plus » and « minus »,
+% and to find them it EXPANDS what follows -- hence the \fi, which
+% closes the condition before the assignment is made. Without that
+% \relax, the Ido booklet kept a foot of -47.43 pt and its note climbed
+% back into the text: the condition was right, the assignment did not
+% reach it.
 \ifdim\VUnotoPied<0pt\relax \VUnotoPied=0pt\relax \fi
-% ET « \VUnotoBas » PARTAIT DU FOLIO, QUI EST AU-DESSUS DU BLOC.
-% \VUfolioY donne la ligne de base du numero de feuillet, \VUmargeSup le
-% sommet du bloc de texte : les deux different de 4,11 mm en ido et de
-% 3,75 mm en francais. Caler la note sur \VUfolioY+\VUtexteHauteur la
-% posait donc de cette hauteur-la TROP HAUT, c'est-a-dire dans le texte.
-% Le pied du bloc est \VUmargeSup+\VUtexteHauteur, et c'est le bas de la
-% minipage : la note s'y pose d'elle-meme, sans correction. \VUnotoBas
-% n'est plus utilise que pour memoire.
+% AND « \VUnotoBas » STARTED FROM THE FOLIO, WHICH IS ABOVE THE BLOCK.
+% \VUfolioY gives the baseline of the leaf number, \VUmargeSup the top
+% of the block of text: the two differ by 4.11 mm in Ido and 3.75 mm in
+% French. Setting the note on \VUfolioY+\VUtexteHauteur therefore laid
+% it that much TOO HIGH, that is, in the text. The foot of the block is
+% \VUmargeSup+\VUtexteHauteur, and that is the bottom of the minipage:
+% the note settles there of itself, with no correction. \VUnotoBas is
+% now kept for the record only.
 \newcommand{\VUnotes}[2]{%
-  % \vtop ET NON \vbox : le point de reference d'un \vbox est sa
-  % DERNIERE ligne de base, de sorte qu'ajoute a la suite du texte il
-  % remonte de toute sa hauteur et se pose PAR-DESSUS. Celui d'un \vtop
-  % est sa premiere ligne : la note descend, comme on l'attend.
+  % \vtop AND NOT \vbox: the reference point of a \vbox is its LAST
+% baseline, so that added after the text it rises by its whole height
+% and settles ON TOP of it. A \vtop's is its first line: the note goes
+% down, as one expects.
   \sbox{\VUnotoUno}{\vtop{\hsize=\textwidth
       \VUfiletnote\vskip\VUblancNote\VUtexteNote
       \setlength{\parindent}{\VUalineaNote}#2\par}}%
-  % DEUX NOTES SUR UNE PAGE, cela arrive -- feuillet 41 du livret ido :
-  % la seconde s'empile sous la premiere, elles ne se remplacent pas.
+  % TWO NOTES ON ONE PAGE does happen -- leaf 41 of the Ido booklet: the
+% second stacks beneath the first, they do not replace each other.
   \ifVUnoto
     \sbox{\VUnotoBoxo}{\vtop{\hbox{\usebox{\VUnotoBoxo}}\hbox{\usebox{\VUnotoUno}}}}%
   \else
@@ -445,104 +439,102 @@
     \VUnototrue
   \fi
   \ignorespaces}
-% Ce que \VUpage pose au bas de la page, s'il y a une note.
+% What \VUpage lays at the foot of the page, if there is a note.
 \newcommand{\VUnotoPose}{%
   \ifVUnoto
     \par\nobreak\vskip0pt plus1fill\relax
-    % ET LA NOTE COMPTE POUR TOUTE SA HAUTEUR, NON POUR SA PREMIERE
-    % LIGNE. \VUnotoBoxo est un \vtop : sa hauteur est celle de sa
-    % PREMIERE ligne, tout le reste est en PROFONDEUR. Or la hauteur
-    % d'un \vbox s'arrete a la derniere ligne de base -- la profondeur
-    % de la note n'entrait donc pas dans le calcul, et le ressort la
-    % poussait jusqu'a ce que sa premiere ligne touche le pied du bloc.
-    % Les six autres lignes pendaient dessous, hors du feuillet, ET
-    % CELA QUELLE QUE FUT LA QUANTITE DE TEXTE : le feuillet 17, aux
-    % deux tiers vide, sortait du papier exactement comme le feuillet 9,
-    % plein a ras bord. Un \kern egal a cette profondeur ferme la liste
-    % verticale : la boite n'a plus de profondeur, sa hauteur comprend
-    % la note entiere, et le ressort pose le BAS de la note au pied du
-    % bloc -- la ou le compositeur la pose.
-    %
-    % LE \par EST INDISPENSABLE AVANT LE \kern. Le \noindent ouvre un
-    % alinea ; sans le fermer, le \kern se posait en mode HORIZONTAL,
-    % ou il ne vaut qu'un blanc de largeur nulle. Il n'y paraissait
-    % rien : le PDF sortait identique a l'octet pres.
+    % AND THE NOTE COUNTS FOR ITS WHOLE HEIGHT, NOT FOR ITS FIRST LINE.
+% \VUnotoBoxo is a \vtop: its height is that of its FIRST line, all
+% the rest is in DEPTH. But the height of a \vbox stops at the last
+% baseline -- the note's depth therefore did not enter the
+% calculation, and the spring pushed it until its first line touched
+% the foot of the block. The other six lines hung below, off the leaf,
+% AND THAT WHATEVER THE QUANTITY OF TEXT: leaf 17, two thirds empty,
+% came off the paper exactly as leaf 9 did, full to the brim. A \kern
+% equal to that depth closes the vertical list: the box has no depth
+% left, its height includes the whole note, and the spring lays the
+% FOOT of the note at the foot of the block -- where the compositor
+% lays it.
+%
+% THE \par IS INDISPENSABLE BEFORE THE \kern. The \noindent opens a
+% paragraph; without closing it, the \kern was laid in HORIZONTAL
+% mode, where it is worth only a space of zero width. Nothing showed
+% for it: the PDF came out identical to the byte.
     \noindent\hbox to \textwidth{\usebox{\VUnotoBoxo}\hss}\par
     \nobreak\kern\dimexpr\dp\VUnotoBoxo+\VUnotoPied\relax
   \fi}
 
 % -------------------------------------------------------------------
-% 7 ter. CE QUI NE SE COMPOSE PAS
+% 7 ter. WHAT IS NOT SET IN TYPE
 % -------------------------------------------------------------------
-% Deux choses, dans ces deux volumes, ne sont pas de la composition :
-% la gravure sur bois du tableau mural n^o 12, au feuillet 111 du
-% livret ido, et l'encadrement Art nouveau de la quatrieme de
-% couverture francaise. Les rendre en caracteres serait les inventer ;
-% les omettre — ce qu'on avait fait d'abord, un \VUsaut et un
-% commentaire — c'est publier une page qui ment sur ce qu'elle
-% montrait. On les preleve donc sur le scan (outils/imaji.py) et on les
-% pose a leur taille relevee.
+% Two things in these two volumes are not composition: the wood
+% engraving of wall plate no. 12, on leaf 111 of the Ido booklet, and
+% the Art Nouveau frame of the French back cover. To render them in
+% type would be to invent them; to omit them — which was done at first,
+% a \VUsaut and a comment — is to publish a page that lies about what it
+% showed. We therefore take them off the scan (tools/images.py) and lay
+% them at their surveyed size.
 %
-% #1 = fichier ; #2 = largeur, en fraction de la justification.
+% #1 = file; #2 = width, as a fraction of the measure.
 \newcommand{\VUimajo}[2]{%
   {\centering\noindent
    \includegraphics[width=#2\textwidth]{ornaments/#1}\par}}
 
 % -------------------------------------------------------------------
-% 7 quater. LIGNES D'AFFICHE ET ENCADREMENT
+% 7 quater. DISPLAY LINES AND FRAME
 % -------------------------------------------------------------------
-% \VUlineo : UNE LIGNE QUI NE SE JUSTIFIE PAS.
+% \VUlineo : A LINE THAT DOES NOT JUSTIFY.
 %
-% Les pages d'annonce et la quatrieme de couverture sont faites de
-% lignes courtes -- « 1^o En feuilles separees ; » -- que le releve
-% notait comme du texte courant termine par \nl. Or \nl force une
-% coupure DANS UN ALINEA JUSTIFIE : TeX etire alors la ligne d'une
-% marge a l'autre, et « 1^o En feuilles separees ; » barrait toute la
-% largeur en semant des blancs de deux cadratins entre ses mots. Le
-% fac-simile, lui, pose ces lignes a leur chasse naturelle.
+% The announcement pages and the back cover are made of short lines --
+% « 1^o En feuilles separees ; » -- which the transcription noted as
+% running text ended by \nl. But \nl forces a break WITHIN A JUSTIFIED
+% PARAGRAPH: TeX then stretches the line from one margin to the other,
+% and « 1^o En feuilles separees ; » barred the whole width, sowing
+% two-em spaces between its words. The facsimile lays those lines at
+% their natural set.
 %
-% Ces lignes ne sont donc pas du texte courant : ce sont des lignes
-% d'affiche, et elles se composent comme telles -- au fer a gauche, a
-% leur largeur propre, sans etirement.
-% #1 = corps ; #2 = interlettrage ; #3 = retrait a gauche ; #4 = texte.
+% Those lines are therefore not running text: they are display lines,
+% and they are set as such -- flush left, at their own width, with no
+% stretching.
+% #1 = size; #2 = letterspacing; #3 = left indent; #4 = text.
 \newcommand{\VUlineo}[4]{%
   {\fontsize{#1}{#1}\selectfont
    \noindent\hspace*{#3}\textls[#2]{#4}\hfill\par}}
-% Variante grasse, pour les egyptiennes d'affiche.
+% Bold variant, for the display slab serifs.
 \newcommand{\VUlineoG}[4]{%
   {\fontfamily{\VUfonteGras}\fontsize{#1}{#1}\selectfont\bfseries
    \noindent\hspace*{#3}\textls[#2]{#4}\hfill\par}}
 
-% \VUkadro : L'ENCADREMENT DE LA QUATRIEME DE COUVERTURE, en trace et
-% non en image. Le fac-simile porte un cadre Art nouveau : un double
-% filet dont les angles s'infléchissent en volutes. On ne le photo\-
-% graphie pas — ce serait renoncer a composer la page — on le dessine.
-% Le trace ci-dessous n'est pas une copie du bois original : c'est un
-% cadre de meme facture, double filet a angles adoucis et fleurons
-% d'angle, pose aux dimensions relevees. La difference est dite ici
-% plutot que masquee.
-% #1 = hauteur du cadre.
+% \VUkadro : THE FRAME OF THE BACK COVER, drawn and not photographed.
+% The facsimile carries an Art Nouveau frame: a double rule whose
+% corners curve away into volutes. We do not photo\-graph it — that
+% would be to give up setting the page — we draw it. The drawing below
+% is not a copy of the original block: it is a frame of the same make,
+% a double rule with softened corners and corner fleurons, laid at the
+% surveyed dimensions. The difference is stated here rather than
+% concealed.
+% #1 = height of the frame.
 \newcommand{\VUkadro}[2]{%
   \begingroup
   \setlength{\unitlength}{1pt}%
   \noindent\begin{tikzpicture}[baseline=(courant.north)]
-    % inner sep=0pt : sans lui, ce noeud vide reste cadre par la marge
-    % interne par defaut (0,333 em) et elargit la boite de 3,88 pt au
-    % dela de \textwidth -- un « Overfull \hbox » constant, identique
-    % sur toutes les pages, quel que soit leur contenu.
+    % inner sep=0pt: without it, this empty node stays framed by the
+% default inner margin (0.333 em) and widens the box by 3.88 pt beyond
+% \textwidth -- a constant « Overfull \hbox », identical on every page,
+% whatever its content.
     \node[inner sep=0pt] (courant) at (0,0) {};
-    % Le filet exterieur est trace 0,55 pt EN DEDANS de chaque bord : un
-    % trait de 1,1 pt centre sur x=0 deborde de 0,55 pt a gauche ET a
-    % droite de \textwidth, et ce dernier debord rendait un « Overfull
-    % \hbox » de 1,1 pt sur la page entiere.
+    % The outer rule is drawn 0.55 pt INSIDE each edge: a stroke of 1.1 pt
+% centred on x=0 overflows by 0.55 pt to the left AND to the right of
+% \textwidth, and that last overflow returned an « Overfull \hbox » of
+% 1.1 pt on the whole page.
     \draw[line width=1.1pt, rounded corners=7pt]
       (0.55pt,0) rectangle (\textwidth-0.55pt, -#1);
     \draw[line width=0.4pt, rounded corners=5pt]
       (4pt,-4pt) rectangle (\textwidth-4pt, -#1+4pt);
-    % Le decalage vertical se calcule A PART, par \pgfmathsetmacro : passe
-    % directement dans la clef shift={...}, pgfmath ne l'evaluait pas --
-    % les quatre fleurons se posaient tous pres du haut, deux dedans, deux
-    % dehors, et le bas du cadre restait nu.
+    % The vertical offset is computed SEPARATELY, by \pgfmathsetmacro:
+% passed directly in the shift={...} key, pgfmath did not evaluate it
+% -- all four fleurons settled near the top, two inside, two outside,
+% and the foot of the frame stayed bare.
     \foreach \x/\y/\rx/\ry in {0/0/1/-1, 1/0/-1/-1, 0/1/1/1, 1/1/-1/1} {
       \pgfmathsetmacro{\VUkadroY}{-\y*0 - (1-\y)*#1}
       \begin{scope}[shift={(\x*\textwidth, \VUkadroY pt)}]
@@ -555,35 +547,35 @@
   \end{tikzpicture}\par
   \endgroup}
 
-% Ornement typographique (le fleuron des pages de tableau). Le trace du
-% fac-simile n'est pas de la fonte : il se pose en image quand on l'a
-% releve, et se remplace par un tilde espace tant qu'on ne l'a pas.
+% Typographic ornament (the fleuron of the table pages). The
+% facsimile's drawing is not of the font: it is laid as an image once
+% surveyed, and is replaced by a tilde and a space until it is.
 \newcommand{\VUornamento}[1]{{\centering\fontsize{#1}{#1}\selectfont
   \textls[300]{\textasciitilde\textasciitilde\textasciitilde}\par}}
 
 % -------------------------------------------------------------------
-% 8. LA TABLE DES CORPS PAR PAGE
+% 8. THE TABLE OF SIZES, PAGE BY PAGE
 % -------------------------------------------------------------------
-% EN DERNIER, ET C'EST LA TOUT. Ce chargement etait d'abord place au
-% debut du fichier, avant meme \geometry. \VUkorpoPage n'y etait pas
-% encore definie : LaTeX prenait donc chaque appel pour du texte, et
-% composait « 911.60pt 1011.15pt 1111.30pt... » -- le contenu du
-% fichier de reglage imprime au fil des pages. Le symptome etait dix
-% « Overfull \hbox » inexplicables ; la cause etait un ordre.
-% Le fichier peut ne pas exister : le volume se compose alors au corps
-% global, ce qui est le comportement voulu avant la premiere mesure.
+% LAST, AND THAT IS THE WHOLE POINT. This load was at first placed at
+% the start of the file, before even \geometry. \VUkorpoPage was not yet
+% defined there: LaTeX therefore took each call for text, and set
+% « 911.60pt 1011.15pt 1111.30pt... » -- the contents of the settings
+% file printed as the pages went by. The symptom was ten inexplicable
+% « Overfull \hbox »; the cause was an order.
+% The file may not exist: the volume is then set at the global size,
+% which is the wanted behaviour before the first measurement.
 \InputIfFileExists{body-\VUlangue.tex}{}{}
-% ET LA TABLE SE CORRIGE APRES COUP, POUR LES PAGES A NOTE.
-% Le pas par page ci-dessus a ete regle pour que la matiere REMPLISSE le
-% bloc -- et la note ne comptait pas dans cette matiere : elle se differe
-% jusqu'a la fermeture de la page, et l'outil de mesure n'en voyait rien.
-% Sur une page a note, le pas obtenu remplit donc le bloc avec le TEXTE
-% SEUL, et il ne reste plus rien pour la note. Le feuillet 9 recevait
-% ainsi 15,31 pt la ou ses voisines tiennent 11,19 et 12,42, et ou le
-% fac-simile lui-meme en mesure 11,0 (inv-io.json : un pas de 72 px sur
-% un bloc de 2800 px pour 150,65 mm).
-% Le fichier ci-dessous rend a ces pages un pas qui laisse la place de la
-% note. Il est ECRIT A LA MAIN, page par page : l'outil qui a produit
-% body-*.tex n'est plus dans le depot, et le refaire pour une page
-% aurait coute plus cher que de la mesurer.
+% AND THE TABLE IS CORRECTED AFTERWARDS, FOR THE PAGES WITH A NOTE.
+% The per-page pitch above was set so that the matter FILLS the block --
+% and the note did not count as matter: it is deferred to the closing of
+% the page, and the measuring tool saw nothing of it. On a page with a
+% note, the pitch obtained therefore fills the block with the TEXT
+% ALONE, and nothing is left for the note. Leaf 9 thus received 15.31 pt
+% where its neighbours hold 11.19 and 12.42, and where the facsimile
+% itself measures 11.0 (inventory-io.json: a pitch of 72 px on a block
+% of 2800 px for 150.65 mm).
+% The file below gives those pages back a pitch that leaves room for the
+% note. It is WRITTEN BY HAND, page by page: the tool that produced
+% body-*.tex is no longer in the repository, and remaking it for one
+% page would have cost more than measuring it.
 \InputIfFileExists{body-\VUlangue-noto.tex}{}{}
