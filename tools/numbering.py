@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  numbers.py — finding the object numbers on a wall plate.
+#  numbering.py — finding the object numbers on a wall plate.
 #
 #  Each plate carries, set against the object it designates, a small
 #  composed number: it is what the « (N) » of the text refer to. For a
@@ -39,8 +39,8 @@
 #     number about which nothing is known.
 #
 #  USAGE
-#      python3 tools/numbers.py                 # every plate
-#      python3 tools/numbers.py t05-apar-1      # just one
+#      python3 tools/numbering.py                 # every plate
+#      python3 tools/numbering.py t05-apar-1      # just one
 #
 #  Writes plates/numbers.json (the positions, as a fraction of the
 #  plate's width and height, hence valid at any scale) and, in

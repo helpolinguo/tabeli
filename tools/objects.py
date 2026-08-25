@@ -88,7 +88,7 @@ UNU_SORTO = literi('unu-sorto')
 # THE CROSS-REFERENCE THE PLATE DOES NOT CARRY. « les plates-bandes
 # (150) », on table 5, are engraved « 50 »: the name must be filed under
 # the number that will be shown, not under the one that is read.
-# plates/corrections.json keeps the table, and numbers.py reads it the
+# plates/corrections.json keeps the table, and numbering.py reads it the
 # same way.
 def korekti():
     f = RACINE / 'plates' / 'corrections.json'

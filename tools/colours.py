@@ -177,7 +177,7 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex")]
 # THE REFERENCE THE PLATE DOES NOT CARRY. "les plates-bandes (150)",
 # in table 5, are engraved "50": the colour must go and fetch the
 # number that will be shown, not the one that is read.
-# plates/corrections.json holds the table, and numbers.py reads it the
+# plates/corrections.json holds the table, and numbering.py reads it the
 # same way.
 def korekti():
     f = RACINE / "plates" / "corrections.json"

@@ -7,7 +7,7 @@
 #  the line layer of the colourised PDF: a stencil, two tones, clean
 #  outlines. The sixteen plates having been redone from their facsimiles,
 #  that layer is no longer what one looks at; the ink there is grey, the
-#  stems bleed, the hairlines fade, and the reader in numbers.py, which
+#  stems bleed, the hairlines fade, and the reader in numbering.py, which
 #  compares shapes, recognises nothing any more: on table 14 it read
 #  seventy-six numbers on the stencil, it reads ten on the grey.
 #
@@ -56,7 +56,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import numbers as N                                          # noqa: E402
+import numbering as N                                          # noqa: E402
 
 RACINE = N.RACINE
 MODELES = RACINE / "tools" / "ciphers-grey.npz"

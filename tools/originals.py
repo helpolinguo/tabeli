@@ -39,7 +39,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import numbers as N                                          # noqa: E402
+import numbering as N                                          # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
 RACINE = N.RACINE

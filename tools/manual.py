@@ -21,7 +21,7 @@
 #  eye, for its part, reads the number AND its place: it may as well
 #  dictate both.
 #
-#  plates/manual.json is kept by hand, like verdicts.json; numbers.py
+#  plates/manual.json is kept by hand, like verdicts.json; numbering.py
 #  reads it and adds what it names.
 #
 #  USAGE
@@ -41,7 +41,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import numbers as N                                          # noqa: E402
+import numbering as N                                          # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
 RACINE = N.RACINE
