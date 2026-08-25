@@ -1,0 +1,60 @@
+% ===================================================================
+%  calibrate-fr.tex — TOUTES les mesures du fac-simile « Livret explicatif des Tableaux Auxiliaires Delmas ».
+%  Fichier PRODUIT par outils/kalibro.py : ne pas le modifier a la main.
+%  Une seule constante y est physique — la largeur du papier — et elle
+%  est passee en argument. Tout le reste vient de outils/inv-fr.json.
+%
+%  Releve : 65 pages de 35 lignes ou plus.
+%    justification  1343 px  (ecart-type 182)
+%    hauteur bloc   2679 px
+%    pas des lignes 58.00 px  (ecart-type 7.67)
+%    image de page  1686 x 2781 px
+%    marge gauche   149 px
+%    1re ligne a    65 px du bord
+%  Echelle retenue : 15.450 px/mm, prise sur une hauteur de papier
+%  de 180 mm (notice de bibliotheque) ; la page mesure alors
+%  109.1 mm de large.
+% ===================================================================
+
+\newcommand{\VUlangue}{fr}
+\newcommand{\VUmarque}{Gilles-Philippe Morin a concu, numerise et dirige la transcription de ce livre.}
+
+% 1. GEOMETRIE
+\newcommand{\VUpapierLargeur}{109.13mm}
+\newcommand{\VUpapierHauteur}{180.00mm}
+\newcommand{\VUtexteLargeur}{86.93mm}
+\newcommand{\VUtexteHauteur}{173.40mm}
+% LE FOLIO EST LA PREMIERE ENCRE DE LA PAGE, LE TEXTE VIENT APRES.
+% Premiere version : les deux ordonnees etaient egales, et le folio se
+% composait DANS la premiere ligne de texte — « 6 » barrait « esas » au
+% folio 6. La mesure de outils/inventaire.py donne le haut du BLOC
+% D'ENCRE, c'est-a-dire le folio sur toute page foliotee ; le corps du
+% texte commence un rang plus bas. On ajoute donc un pas de ligne, et
+% les pages sans folio (ouvertures de tableau) commencent a la meme
+% ordonnee que les autres, comme au fac-simile.
+\newcommand{\VUmargeSup}{7.96mm}
+\newcommand{\VUfolioY}{4.21mm}
+
+% 2. CORPS ET INTERLIGNAGE
+\newcommand{\VUinterligne}{10.68pt}
+\newcommand{\VUcorps}{10.70pt}
+\newcommand{\VUcorpsNote}{8.45pt}
+\newcommand{\VUinterligneNote}{9.03pt}
+% Renfoncement d'alinea : provisoire, a relever (outils/mesures.py).
+\newcommand{\VUalinea}{4.35mm}
+\newcommand{\VUalineaNote}{3.48mm}
+\newcommand{\VUblancAlineaValeur}{2.03pt}
+\newcommand{\VUblancNote}{2.67pt}
+\newcommand{\VUfiletnoteLargeur}{23.47mm}
+
+% 3. ESPACE-MOT
+% Largeur proche de celle de la fonte, elasticite large : chaque ligne
+% trouve sa mesure sans que TeX ait a couper ailleurs qu'au point releve.
+\newcommand{\VUespaceRatio}{0.32}
+\newcommand{\VUespaceEtire}{0.30}
+\newcommand{\VUespaceSerre}{0.14}
+
+% 4. FONTES
+\newcommand{\VUfonte}{XCharter-TLF}
+\newcommand{\VUfonteGras}{ntxtlf}
+\newcommand{\VUratioGras}{0.98}

@@ -1,4 +1,4 @@
-<!-- Engendre par outils/robotoj.py depuis index.html. Ne pas editer. -->
+<!-- Engendre par tools/robotoj.py depuis index.html. Ne pas editer. -->
 
 # Expliko-Libreto di la Delmas-Tabeli helpanta
 

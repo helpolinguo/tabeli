@@ -1,0 +1,22 @@
+% body-fr-noto.tex — le pas des pages qui portent une note.
+%
+% Meme cause qu'en ido (voir body-io-noto.tex et preamble.tex § 8) : le
+% pas par page a ete regle sur le texte seul, note non comprise.
+%
+% S'y ajoute, pour ce volume-ci, que son bloc est calibre a 7,96 +
+% 173,40 = 181,36 mm sur un papier de 180 : LE PIED DU BLOC EST DEJA HORS
+% DE LA FEUILLE de 1,36 mm. C'est l'erreur que le controle 6 signale
+% depuis toujours -- le cadre du scan francais tombe dans le papier
+% (LISEZ-MOI, § 4). Le calcul \VUnotoPied du preamble retient la note
+% 2 mm au-dessus du bord ; encore faut-il que la page tienne, sans quoi
+% la note suit le texte et le calcul ne mord pas.
+%
+%   feuillet   avant     apres
+%     45       12.84pt   12.00pt
+%     75       12.29pt   11.60pt
+%     91       12.99pt   12.40pt
+%
+% Le feuillet 76 n'a pas eu besoin d'etre repris : sa note tenait deja.
+\VUinterlignoPage{45}{12.00pt}
+\VUinterlignoPage{75}{11.60pt}
+\VUinterlignoPage{91}{12.40pt}

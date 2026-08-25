@@ -1,0 +1,589 @@
+% ===================================================================
+%  preamble.tex — macros communes aux deux transcriptions.
+%
+%  Ce fichier ne contient AUCUNE mesure. Toutes les mesures sont dans
+%  calibrate-io.tex et calibrate-fr.tex, un fichier par fac-simile : les
+%  deux livrets ne sont pas du meme format, ne sont pas composes au
+%  meme corps, et n'ont pas ete numerises de la meme maniere. Charger
+%  la calibration AVANT ce fichier ; celui-ci s'en sert et ne la
+%  redefinit jamais.
+%
+%  La methode est celle du projet « Kompleta Gramatiko » :
+%  UNE LIGNE DU FAC-SIMILE = UNE LIGNE DU PDF, meme pagination, memes
+%  folios, memes coupures de mot. Aucune cesure n'est decidee par TeX ;
+%  toutes sont relevees sur le scan et ecrites dans la source.
+% ===================================================================
+
+% -------------------------------------------------------------------
+% 1. PAQUETAGES
+% -------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{XCharter}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{calc}
+% L'EXPANSION DE FONTE, pour combler ce que le corps ne comble pas.
+% Meme au plus grand corps qui tienne, une page garde des lignes plus
+% courtes que les autres : le corps est borne par la ligne LA PLUS
+% LONGUE de la page, et les autres s'etirent. Le compositeur de 1926
+% reglait cela a l'interlettrage -- il ouvrait ses lignes creuses.
+% L'equivalent moderne est l'expansion : chaque glyphe s'etire ou se
+% resserre de 2,5 % au plus, ce qui absorbe le manque sans toucher aux
+% blancs inter-mots, donc sans les rendre beants. Les coupures de ligne
+% ne bougent pas -- elles sont toutes forcees par le releve.
+\usepackage[tracking=true,letterspace=0,
+            expansion=true,stretch=25,shrink=25]{microtype}
+
+\geometry{
+  paperwidth=\VUpapierLargeur, paperheight=\VUpapierHauteur,
+  textwidth=\VUtexteLargeur,   textheight=\VUtexteHauteur,
+  top=\VUmargeSup, includehead=false, includefoot=false,
+  hcentering, % les deux livrets ont des marges laterales egales
+}
+
+% -------------------------------------------------------------------
+% 2. COUPURES DE LIGNE EXPLICITES
+% -------------------------------------------------------------------
+% \nl : fin de ligne SANS trait d'union.
+% \cc : fin de ligne AVEC trait d'union (le trait est compose).
+% On n'utilise jamais \\ : il annule la justification de la ligne.
+\newcommand{\nl}{\penalty-10000\relax}
+\newcommand{\cc}{-\penalty-10000\relax}
+
+% \parplein TERMINE un alinea dont la derniere ligne court jusqu'a la
+% marge — cas d'un alinea qui se poursuit sur la page suivante.
+% \parfillskip est GLOBAL : pose une fois, il justifierait la derniere
+% ligne de tous les alineas suivants. On l'enferme dans un groupe.
+\newcommand{\parplein}{{\parfillskip=0pt\relax\par}}
+% \ccplein : la page finit sur un MOT COUPE, et l'alinea continue au
+% feuillet suivant. C'est \cc et \parplein a la fois, et ni l'un ni
+% l'autre ne fait l'affaire seul :
+%   -- \cc pose « -\penalty-10000 ». En fin d'alinea, cette penalite
+%      ouvre une derniere ligne VIDE, qui prend un rang de plus sur la
+%      page : la page composee gagne une ligne que le fac-simile n'a
+%      pas, et tout ce qui suit descend d'un cran.
+%   -- \parplein seul ne compose pas le trait d'union.
+% On ecrit donc le trait, puis on termine l'alinea a la marge, sans
+% penalite. Trois pages du livret ido finissent ainsi (feuillets 66,
+% 103, 104) ; le controle 5 les avait signalees comme « \VUcontinue
+% sans \parplein », ce qui etait le symptome et non la cause.
+\newcommand{\ccplein}{-{\parfillskip=0pt\relax\par}}
+
+% \VUcontinue OUVRE un alinea qui continue la page precedente : pas de
+% renfoncement, la ligne reprend au fer a gauche.
+\newcommand{\VUcontinue}{\noindent}
+
+% LES ESPACES-MOTS SONT INSECABLES.
+% Sans cela le modele fuit en silence : \nl force bien une coupure a la
+% fin de la ligne, mais n'empeche pas TeX d'en placer une AVANT si la
+% matiere ne tient pas. Une ligne 1 % trop large se recouperait donc
+% toute seule, sans meme produire d'« Overfull \hbox ». Les espaces
+% rendus insecables, le seul point de coupure legal est celui que le
+% releve a place : une ligne trop large devient un « Overfull \hbox »,
+% que le controle 1 inventorie. La faute passe du silence au bruit.
+% Les espaces gardent toute leur elasticite : la justification est
+% intacte.
+\makeatletter\newcommand{\VUespaceMot}{%
+  \ifdim\spaceskip=0pt\relax
+    \@tempdimb=\f@size pt
+    \hskip\VUespaceRatio\@tempdimb
+      plus\VUespaceEtire\@tempdimb minus\VUespaceSerre\@tempdimb
+  \else \hskip\spaceskip \fi}\makeatother
+\begingroup
+  \catcode`\ =\active
+  \gdef\VUespacesInsecables{\catcode`\ =\active
+    \def {\ifhmode\ifnum\lastnodetype>-1\relax\penalty10000\VUespaceMot\fi\fi}}%
+\endgroup
+
+% LA GRILLE DES LIGNES DE BASE EST IMPOSEE.
+%
+% TeX ne tient sa grille que tant que les lignes y entrent : si la
+% hauteur naturelle d'une ligne depasse \baselineskip, il abandonne le
+% pas regulier et separe les lignes par \lineskip, c'est-a-dire par
+% leur encombrement reel. Le pas devient alors une consequence du
+% texte, et non plus un reglage.
+%
+% C'est exactement ce qui se passait ici. Le fac-simile est compose
+% presque au fer -- corps 10,93 pt sur un pas de 11,68 -- et le corps
+% par page monte jusqu'a 12,43 pt pour remplir la justification. Au
+% dela de ~11,7 pt, la ligne ne tient plus dans le pas, TeX lache la
+% grille, et les pages s'allongent sans que rien ne le dise : vingt-neuf
+% d'entre elles debordaient par le bas du papier, et changer
+% l'interlignage de trois points n'y faisait presque rien -- la pente
+% mesuree valait 0,5 la ou elle aurait du valoir 40.
+%
+% \lineskiplimit a -1000pt, la condition n'est jamais remplie et le pas
+% reste celui qu'on a mesure, quel que soit le corps. C'est ce que fait
+% le plomb : les lignes de base sont a distance fixe, imposee par le
+% corps des interlignes, et une lettre un peu haute ne pousse pas sa
+% voisine.
+%
+% LE REGLAGE SE POSE DANS LA PAGE, ET NON DANS LE PREAMBULE. Toute
+% boite de LaTeX appelle \@parboxrestore, qui appelle \normalbaselines,
+% qui remet \lineskiplimit a zero. Pose une fois pour toutes en tete du
+% document, le reglage etait donc annule a l'ouverture de chaque
+% minipage -- c'est-a-dire sur chacune des deux cent dix pages. On le
+% repose dans l'environnement VUpage, apres l'ouverture de la boite.
+
+% Aucune cesure decidee par TeX : toutes les coupures sont relevees.
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\pretolerance=-1
+\tolerance=9999
+\emergencystretch=0pt
+
+% -------------------------------------------------------------------
+% 3. PAGE FIGEE
+% -------------------------------------------------------------------
+% Chaque page du fac-simile est composee dans une minipage de hauteur
+% fixe : une retouche dans un alinea ne peut pas faire migrer du texte
+% vers la page suivante.
+\pagestyle{empty}
+\setlength{\parskip}{0pt}
+\setlength{\topskip}{0pt}
+\raggedbottom
+\setlength{\parindent}{\VUalinea}
+
+% LA MARQUE CACHEE, sur chaque page. Composee en MODE DE RENDU 3
+% (« 3 Tr ») : le texte entre dans le flux du PDF, il est indexe,
+% cherchable et extrait par pdftotext, mais il n'est PAS PEINT. Ce
+% n'est pas du blanc sur blanc, qui se verrait en selectionnant : c'est
+% du texte que le moteur de rendu saute. Corps 0,4 pt et boite de
+% hauteur ET de largeur nulles, par surcroit de precaution.
+\newcommand{\VUmarqueCachee}{%
+  \vbox to 0pt{%
+    \hbox to 0pt{%
+      \pdfliteral{3 Tr}%
+      \fontsize{0.4pt}{0.4pt}\selectfont\VUmarque
+      \pdfliteral{0 Tr}\hss}%
+    \vss}%
+  \nointerlineskip}
+
+% #1 (optionnel) = numero de FEUILLET du fac-simile. Il n'est pas
+% compose : il sert aux controles a retrouver la page du scan.
+% #2 = folio imprime ; vide si la page n'en porte pas.
+% -------------------------------------------------------------------
+% 3 bis. LE CORPS, PAGE PAR PAGE
+% -------------------------------------------------------------------
+% UN CORPS UNIQUE POUR TOUT LE VOLUME NE PEUT PAS REMPLIR TOUTES LES
+% PAGES. Le corps global est celui qui, en moyenne, remplit le mieux ;
+% il est donc, sur les pages ou l'original serre un peu plus, trop
+% petit -- et les lignes s'y etirent, avec des blancs inter-mots
+% beants. Le compositeur de 1926 ne tenait pas une chasse constante
+% d'un cahier a l'autre, et la fonte d'aujourd'hui n'a pas exactement
+% la sienne. On pose donc un corps PAR PAGE, mesure par
+% outils/korpo.py : le plus grand qui ne fasse deborder aucune ligne.
+\makeatletter
+\newcommand{\VUkorpoPage}[2]{%
+  \expandafter\gdef\csname VUkorpo@#1\endcsname{#2}}
+\newcommand{\VUkorpoDe}[1]{%
+  \ifcsname VUkorpo@#1\endcsname\csname VUkorpo@#1\endcsname\else
+  \VUcorps\fi}
+\newcommand{\VUtextePage}[1]{%
+  \edef\VU@tmp{\VUkorpoDe{#1}}%
+  \fontsize{\VU@tmp}{\VUinterlignoDe{#1}}\selectfont}
+% L'INTERLIGNAGE AUSSI EST PROPRE A LA PAGE. Le pas mesure est une
+% mediane ; les pages qui portent plus de lignes que la mediane ne
+% tiennent pas dans le bloc et debordent par le bas. Le compositeur
+% « cardait » ses pages -- il serrait ou ouvrait ses lames selon la
+% matiere. outils/altezo.py mesure, page par page, le pas qui fait
+% tenir la matiere dans la hauteur relevee.
+\newcommand{\VUinterlignoPage}[2]{%
+  \expandafter\gdef\csname VUintl@#1\endcsname{#2}}
+\newcommand{\VUinterlignoDe}[1]{%
+  \ifcsname VUintl@#1\endcsname\csname VUintl@#1\endcsname\else
+  \VUinterligne\fi}
+\makeatother
+
+% LA PAGE SE COMPOSE DANS UNE BOITE QU'ON MESURE. La minipage a
+% hauteur fixe se termine par un \vss, dont le retrait est INFINI :
+% une page trop pleine ne produit donc aucun « Overfull \vbox », elle
+% deborde en silence par le bas du papier. Quatre pages du livret ido
+% et trois du francais sortaient ainsi du massicot sans que rien ne le
+% signale, et c'est l'oeil qui les a trouvees.
+%
+% On compose donc d'abord dans une boite de hauteur naturelle, on
+% annonce sa hauteur dans le journal — c'est outils/altezo.py qui la
+% lit —, puis on la pose dans la page. Rien ne change a la composition ;
+% ce qui change, c'est qu'on sait desormais ce qu'on compose.
+\newsavebox{\VUpagoBoxo}
+\newenvironment{VUpage}[2][]%
+  {\par
+   % LE \noindent VA AVANT LA BOITE POSEE, NON AVANT LA BOITE MESUREE.
+   % Place ici, il ouvrait un alinea, la lrbox s'y inserait, et le vbox
+   % de la page venait grossir cette meme ligne : cent onze pages sur
+   % cent quatorze rendaient un « Overfull \hbox » de 11,3 pt, toujours
+   % le meme, qui ne venait d'aucun texte.
+   \begin{lrbox}{\VUpagoBoxo}%
+   % LA HAUTEUR EST FIXE ICI, dans la boite mesuree elle-meme. Reglee
+   % plus loin, au moment de poser la page, elle ramenait les 111
+   % « Overfull \hbox » du renfoncement. Reglee ici, la boite sort deja
+   % a la bonne hauteur et se pose sans enveloppe.
+   % Contrepartie : \typeout{VUPAGO} rend alors toujours \textheight.
+   % Pour mesurer les hauteurs naturelles, outils/altezo.py ote
+   % temporairement le « [\textheight] » ci-dessous.
+   \begin{minipage}[t][\textheight][t]{\textwidth}%
+     % minipage remet \parindent a zero (\@parboxrestore) : on le
+     % retablit, les deux fac-similes renfoncent tous leurs alineas.
+     \setlength{\parindent}{\VUalinea}%
+     \lineskiplimit=-1000pt \lineskip=0pt
+     \VUespacesInsecables
+     \VUnotofalse
+     \VUtextePage{#1}\VUmarqueCachee\VUfolio{#2}\ignorespaces}%
+  {\VUnotoPose
+   \end{minipage}%
+   \end{lrbox}%
+   % HAUTEUR + PROFONDEUR. Une minipage alignee par le haut a son
+   % point de reference sur la PREMIERE ligne de base : presque toute
+   % sa matiere est donc en profondeur, et \ht seul rendait 0,0 pt
+   % pour les cent quatorze pages.
+   \typeout{VUPAGO \the\dimexpr\ht\VUpagoBoxo+\dp\VUpagoBoxo\relax}%
+   % LA BOITE SE POSE TELLE QUELLE, sans etre reglee a \textheight.
+   % Le \vbox to \textheight qui l'enveloppait ajoutait 11,3 pt a la
+   % ligne qui la portait, sur chacune des deux cent dix pages -- un
+   % « Overfull \hbox » par page, qui noyait les vrais. Il ne servait
+   % qu'a empecher la matiere de migrer vers la page suivante, et le
+   % \penalty-10000 qui suit l'empeche deja. La page commence de toute
+   % facon a \VUmargeSup, que geometry fixe.
+   % LE \noindent EST INDISPENSABLE. Sans lui la page recoit le
+   % renfoncement d'alinea -- 11,29575 pt, soit exactement les 5 % de
+   % la justification que vaut \VUalinea -- et chacune des deux cent
+   % dix pages rendait un « Overfull \hbox » de cette largeur, toujours
+   % la meme, qui ne venait d'aucun texte et noyait les vrais.
+   % ET LA HAUTEUR RESTE FIXE. Posee a sa hauteur naturelle, une page
+   % trop pleine se deversait sur une page de plus, et le volume en
+   % gagnait une : la regle « une page du fac-simile = une page du
+   % PDF » etait rompue. La boite est donc reglee a \textheight, ce qui
+   % la garde a sa place ; les rares pages qui n'y tiennent pas sont
+   % signalees par outils/altezo.py, et c'est leur releve qu'il faut
+   % reprendre.
+   \noindent\usebox{\VUpagoBoxo}%
+   \par\penalty-10000\relax}
+
+% Interlignage propre a une page — la « carde » du compositeur, qui
+% repartit en lames uniformes le blanc d'une page trop courte. A
+% appeler juste apres \begin{VUpage}, AVANT toute matiere. Sans appel,
+% la page garde \VUinterligne.
+\newcommand{\VUinterlignePage}[1]{\fontsize{\VUcorps}{#1}\selectfont}
+
+% Blanc ORDINAIRE entre deux alineas. Il n'est PAS mis en \parskip : au
+% sommet d'une minipage la colle de \parskip subsiste et decalerait
+% toute la page d'autant. On l'ecrit donc, comme les sauts de ligne, la
+% ou il est.
+\newcommand{\VUblancAlinea}{\vskip\VUblancAlineaValeur\relax}
+% Blanc plus large a une articulation. #1 = l'EXCES mesure sur le pas
+% regulier de la page, DIMINUE du blanc ordinaire quand il le remplace.
+\newcommand{\VUblanc}[1]{\vskip #1\relax}
+
+% -------------------------------------------------------------------
+% 4. CORPS DU TEXTE
+% -------------------------------------------------------------------
+\newcommand{\VUtexte}{\fontsize{\VUcorps}{\VUinterligne}\selectfont}
+% Gras : famille propre, corps PROPORTIONNEL au corps courant — il suit
+% donc automatiquement le texte, les notes, ou tout autre corps ou il
+% apparait. Le gras des deux livrets est un demi-gras etroit qui n'est
+% pas proportionne a son romain ; le gras de XCharter, lui, est large.
+% D'ou une famille distincte et un rapport, non un corps absolu.
+\makeatletter
+\newcommand{\VUgras}[1]{{%
+  \@tempdima=\f@size pt
+  \@tempdima=\VUratioGras\@tempdima
+  \fontfamily{\VUfonteGras}%
+  \fontsize{\@tempdima}{\f@baselineskip}\selectfont\bfseries #1}}
+\makeatother
+\newcommand{\VUtexteNote}{%
+  \fontsize{\VUcorpsNote}{\VUinterligneNote}\selectfont\lsstyle}
+
+% -------------------------------------------------------------------
+% 5. LIGNES D'APPARAT
+% -------------------------------------------------------------------
+% Sur ces pages aussi, UNE ligne du fac-simile = UN appel de macro : le
+% releve reste ligne a ligne, et les controles peuvent le verifier.
+% #1 = corps ; #2 = interlettrage (1/1000 de cadratin) ; #3 = texte.
+% Les deux premiers sont MESURES : le corps par la hauteur de capitale,
+% l'interlettrage par la largeur de la ligne (outils/apparat.py).
+\newcommand{\VUcentre}[3]{{\centering\fontsize{#1}{#1}\selectfont
+   \textls[#2]{#3}\par}}
+\newcommand{\VUsaut}[1]{\vspace{#1}}
+
+% Titre de section : capitales grasses espacees, centrees.
+\newcommand{\VUtitre}[3]{%
+  {\centering\fontfamily{\VUfonteGras}\fontsize{#1}{#1}\selectfont\bfseries
+   \textls[#2]{#3}\par}}
+% INTITULE EN PETITES CAPITALES — « DESKRIPTO GENERALA. », « LA BONA
+% LERNANTI. », « I. DESCRIPTION GÉNÉRALE. ». Ni gras ni capitales
+% pleines : c'est le romain du texte courant, dont seule la premiere
+% lettre de chaque mot garde sa haute capitale. Les deux livrets en
+% font le meme usage — c'est le rang de titre IMMEDIATEMENT SOUS celui
+% du numero de tableau.
+\newcommand{\VUintitulo}[2]{%
+  {\centering\fontsize{#1}{#1}\selectfont\textls[#2]{\scshape}\par}}
+\newcommand{\VUpk}[3]{%
+  {\centering\fontsize{#1}{#1}\selectfont\textls[#2]{\scshape #3}\par}}
+
+% Filet centre : #1 = largeur.
+\newcommand{\VUfilet}[1]{{\centering\rule{#1}{0.4pt}\par}}
+% Filet de note : court, cale a gauche.
+\newcommand{\VUfiletnote}{{\noindent\rule{\VUfiletnoteLargeur}{0.4pt}\par}}
+
+% Folio centre, entoure de deux demi-cadratins, comme « — 8 — ».
+% Place ABSOLUMENT, en hauteur nulle : il ne pousse rien. Le corps de
+% texte commence donc toujours exactement a \VUmargeSup, que la page
+% porte un folio ou non.
+\newcommand{\VUfolio}[1]{%
+  \ifx\relax#1\relax\else
+    \vbox to 0pt{\vskip\dimexpr\VUfolioY-\VUmargeSup\relax
+      \hbox to \textwidth{\hss--\,#1\,--\hss}\vss}%
+    \nointerlineskip
+  \fi}
+
+% -------------------------------------------------------------------
+% 7 bis. NOTES DE BAS DE PAGE
+% -------------------------------------------------------------------
+% ELLES SE POSENT PAR LE BAS, ET NON PAR LE HAUT.
+%
+% Premiere version : chaque appel donnait l'ordonnee du FILET, et la
+% consigne de releve proposait 143,2 mm « si la note est en bas d'une
+% page pleine ». Les treize releves ont tous recopie cette valeur --
+% c'est ma faute, pas la leur : une ordonnee de depart ne peut pas
+% convenir a des notes de longueurs differentes. Une note de deux
+% lignes flottait alors au milieu du blanc, et une note de douze
+% lignes -- feuillet 19 du livret ido -- sortait par le bas du papier,
+% ses trois dernieres lignes rognees au massicot.
+%
+% Le compositeur, lui, ne fait pas cela : il cale sa note SUR LE PIED
+% du bloc, et c'est le haut du filet qui monte quand la note s'allonge.
+% On mesure donc la note dans une boite, et on la pose de facon que son
+% dernier rang tombe au bas du bloc de texte. L'ordonnee cesse d'etre
+% une donnee du releve : elle se calcule, et elle est juste pour toutes
+% les longueurs.
+%
+% #1 est CONSERVE mais ignore : le supprimer obligerait a retoucher les
+% treize relevés sans rien y gagner, et l'argument garde trace de
+% l'ordonnee que le fac-simile montre, si on veut un jour la verifier.
+% ET LA NOTE NE SE POSE PAS EN HAUTEUR NULLE : ELLE SE DIFFERE.
+%
+% Deuxieme version : la note etait posee ABSOLUMENT, dans un \vbox to
+% 0pt, cale sur le pied du bloc. Elle tombait juste -- et elle ne
+% poussait rien. Sur une page dont le texte descend jusqu'au pied, les
+% deux s'imprimaient donc l'un SUR l'autre : sept pages du livret ido
+% et une du francais, mesurees a mutool en comparant le corps des
+% lignes (la note vaut 0,79 fois le texte, l'exposant d'un renvoi 0,70
+% -- ce sont les corps qui les separent, non la position).
+%
+% Le compositeur ne peut pas faire cela : sa note occupe le bas de la
+% page, et le texte s'arrete au-dessus. On differe donc la note jusqu'a
+% la FERMETURE de la page, ou elle entre dans le flux apres le dernier
+% alinea. Le chevauchement devient impossible par construction, et non
+% par un calcul qu'il faudrait refaire a chaque releve.
+%
+% LE RESSORT EST EN « fill » ET NON EN « fil » : la minipage de
+% \VUpage porte deja un \vss au bas, et deux ressorts de meme ordre se
+% partageraient le blanc -- la note se poserait au MILIEU de ce qui
+% reste. Un ordre au-dessus prend tout, et la note descend au pied.
+%
+% #1 est CONSERVE mais ignore : le supprimer obligerait a retoucher les
+% treize relevés sans rien y gagner, et l'argument garde trace de
+% l'ordonnee que le fac-simile montre, si on veut un jour la verifier.
+\newsavebox{\VUnotoBoxo}
+\newsavebox{\VUnotoUno}
+\newif\ifVUnoto
+% Pied du bloc de texte, compte depuis le bord superieur du papier.
+\newcommand{\VUnotoBas}{\dimexpr\VUfolioY+\VUtexteHauteur\relax}
+% LE PIED DE LA NOTE, QUAND LE BLOC LUI-MEME TOMBE SOUS LE PAPIER.
+% Le bloc du livret francais est calibre a 7,96 + 173,40 = 181,36 mm sur
+% un papier de 180 : son pied est DEJA hors de la feuille de 1,36 mm.
+% C'est l'erreur que le controle 6 signale depuis toujours -- le cadre du
+% scan francais tombe dans le papier, et l'echelle absolue qu'on en tire
+% est fausse (LISEZ-MOI, § 4). Tant que le texte s'arrete plus haut, cela
+% ne se voit pas ; une note posee au pied du bloc, elle, sort du
+% massicot. On la retient donc au-dessus du bord du papier, de 2 mm.
+% La valeur vaut ZERO pour le livret ido, dont le bloc finit a 161,33 mm
+% pour un papier de 180 : ce n'est pas un reglage, c'est un calcul, et il
+% ne mord que la ou la calibration est fautive.
+\newlength{\VUnotoPied}
+% LE \relax FINAL FERME L'AFFECTATION, ET IL EN FAUT UN ICI AUSSI :
+% sans lui, TeX cherchait « plus » au-dela du \dimexpr et developpait
+% pour cela le \ifdim de la ligne suivante -- qui se trouvait donc
+% evalue AVANT que le registre ait sa valeur, sur le zero du
+% \newlength. La condition etait toujours fausse, le pied restait
+% negatif, et le PDF sortait a l'octet pres identique : rien ne
+% distingue une condition qui ne mord pas d'une condition absente.
+\VUnotoPied=\dimexpr\VUmargeSup+\VUtexteHauteur-\VUpapierHauteur+2mm\relax\relax
+% LE \relax APRES « 0pt » N'EST PAS DECORATIF. \VUnotoPied est un
+% registre de RESSORT : apres la dimension, TeX cherche « plus » et
+% « minus », et pour les chercher il DEVELOPPE ce qui suit -- donc le
+% \fi, qui referme la condition avant que l'affectation soit faite. Sans
+% ce \relax, le livret ido gardait un pied de -47,43 pt et sa note
+% remontait dans le texte : la condition etait juste, l'affectation ne
+% l'atteignait pas.
+\ifdim\VUnotoPied<0pt\relax \VUnotoPied=0pt\relax \fi
+% ET « \VUnotoBas » PARTAIT DU FOLIO, QUI EST AU-DESSUS DU BLOC.
+% \VUfolioY donne la ligne de base du numero de feuillet, \VUmargeSup le
+% sommet du bloc de texte : les deux different de 4,11 mm en ido et de
+% 3,75 mm en francais. Caler la note sur \VUfolioY+\VUtexteHauteur la
+% posait donc de cette hauteur-la TROP HAUT, c'est-a-dire dans le texte.
+% Le pied du bloc est \VUmargeSup+\VUtexteHauteur, et c'est le bas de la
+% minipage : la note s'y pose d'elle-meme, sans correction. \VUnotoBas
+% n'est plus utilise que pour memoire.
+\newcommand{\VUnotes}[2]{%
+  % \vtop ET NON \vbox : le point de reference d'un \vbox est sa
+  % DERNIERE ligne de base, de sorte qu'ajoute a la suite du texte il
+  % remonte de toute sa hauteur et se pose PAR-DESSUS. Celui d'un \vtop
+  % est sa premiere ligne : la note descend, comme on l'attend.
+  \sbox{\VUnotoUno}{\vtop{\hsize=\textwidth
+      \VUfiletnote\vskip\VUblancNote\VUtexteNote
+      \setlength{\parindent}{\VUalineaNote}#2\par}}%
+  % DEUX NOTES SUR UNE PAGE, cela arrive -- feuillet 41 du livret ido :
+  % la seconde s'empile sous la premiere, elles ne se remplacent pas.
+  \ifVUnoto
+    \sbox{\VUnotoBoxo}{\vtop{\hbox{\usebox{\VUnotoBoxo}}\hbox{\usebox{\VUnotoUno}}}}%
+  \else
+    \sbox{\VUnotoBoxo}{\vtop{\hbox{\usebox{\VUnotoUno}}}}%
+    \VUnototrue
+  \fi
+  \ignorespaces}
+% Ce que \VUpage pose au bas de la page, s'il y a une note.
+\newcommand{\VUnotoPose}{%
+  \ifVUnoto
+    \par\nobreak\vskip0pt plus1fill\relax
+    % ET LA NOTE COMPTE POUR TOUTE SA HAUTEUR, NON POUR SA PREMIERE
+    % LIGNE. \VUnotoBoxo est un \vtop : sa hauteur est celle de sa
+    % PREMIERE ligne, tout le reste est en PROFONDEUR. Or la hauteur
+    % d'un \vbox s'arrete a la derniere ligne de base -- la profondeur
+    % de la note n'entrait donc pas dans le calcul, et le ressort la
+    % poussait jusqu'a ce que sa premiere ligne touche le pied du bloc.
+    % Les six autres lignes pendaient dessous, hors du feuillet, ET
+    % CELA QUELLE QUE FUT LA QUANTITE DE TEXTE : le feuillet 17, aux
+    % deux tiers vide, sortait du papier exactement comme le feuillet 9,
+    % plein a ras bord. Un \kern egal a cette profondeur ferme la liste
+    % verticale : la boite n'a plus de profondeur, sa hauteur comprend
+    % la note entiere, et le ressort pose le BAS de la note au pied du
+    % bloc -- la ou le compositeur la pose.
+    %
+    % LE \par EST INDISPENSABLE AVANT LE \kern. Le \noindent ouvre un
+    % alinea ; sans le fermer, le \kern se posait en mode HORIZONTAL,
+    % ou il ne vaut qu'un blanc de largeur nulle. Il n'y paraissait
+    % rien : le PDF sortait identique a l'octet pres.
+    \noindent\hbox to \textwidth{\usebox{\VUnotoBoxo}\hss}\par
+    \nobreak\kern\dimexpr\dp\VUnotoBoxo+\VUnotoPied\relax
+  \fi}
+
+% -------------------------------------------------------------------
+% 7 ter. CE QUI NE SE COMPOSE PAS
+% -------------------------------------------------------------------
+% Deux choses, dans ces deux volumes, ne sont pas de la composition :
+% la gravure sur bois du tableau mural n^o 12, au feuillet 111 du
+% livret ido, et l'encadrement Art nouveau de la quatrieme de
+% couverture francaise. Les rendre en caracteres serait les inventer ;
+% les omettre — ce qu'on avait fait d'abord, un \VUsaut et un
+% commentaire — c'est publier une page qui ment sur ce qu'elle
+% montrait. On les preleve donc sur le scan (outils/imaji.py) et on les
+% pose a leur taille relevee.
+%
+% #1 = fichier ; #2 = largeur, en fraction de la justification.
+\newcommand{\VUimajo}[2]{%
+  {\centering\noindent
+   \includegraphics[width=#2\textwidth]{ornaments/#1}\par}}
+
+% -------------------------------------------------------------------
+% 7 quater. LIGNES D'AFFICHE ET ENCADREMENT
+% -------------------------------------------------------------------
+% \VUlineo : UNE LIGNE QUI NE SE JUSTIFIE PAS.
+%
+% Les pages d'annonce et la quatrieme de couverture sont faites de
+% lignes courtes -- « 1^o En feuilles separees ; » -- que le releve
+% notait comme du texte courant termine par \nl. Or \nl force une
+% coupure DANS UN ALINEA JUSTIFIE : TeX etire alors la ligne d'une
+% marge a l'autre, et « 1^o En feuilles separees ; » barrait toute la
+% largeur en semant des blancs de deux cadratins entre ses mots. Le
+% fac-simile, lui, pose ces lignes a leur chasse naturelle.
+%
+% Ces lignes ne sont donc pas du texte courant : ce sont des lignes
+% d'affiche, et elles se composent comme telles -- au fer a gauche, a
+% leur largeur propre, sans etirement.
+% #1 = corps ; #2 = interlettrage ; #3 = retrait a gauche ; #4 = texte.
+\newcommand{\VUlineo}[4]{%
+  {\fontsize{#1}{#1}\selectfont
+   \noindent\hspace*{#3}\textls[#2]{#4}\hfill\par}}
+% Variante grasse, pour les egyptiennes d'affiche.
+\newcommand{\VUlineoG}[4]{%
+  {\fontfamily{\VUfonteGras}\fontsize{#1}{#1}\selectfont\bfseries
+   \noindent\hspace*{#3}\textls[#2]{#4}\hfill\par}}
+
+% \VUkadro : L'ENCADREMENT DE LA QUATRIEME DE COUVERTURE, en trace et
+% non en image. Le fac-simile porte un cadre Art nouveau : un double
+% filet dont les angles s'infléchissent en volutes. On ne le photo\-
+% graphie pas — ce serait renoncer a composer la page — on le dessine.
+% Le trace ci-dessous n'est pas une copie du bois original : c'est un
+% cadre de meme facture, double filet a angles adoucis et fleurons
+% d'angle, pose aux dimensions relevees. La difference est dite ici
+% plutot que masquee.
+% #1 = hauteur du cadre.
+\newcommand{\VUkadro}[2]{%
+  \begingroup
+  \setlength{\unitlength}{1pt}%
+  \noindent\begin{tikzpicture}[baseline=(courant.north)]
+    % inner sep=0pt : sans lui, ce noeud vide reste cadre par la marge
+    % interne par defaut (0,333 em) et elargit la boite de 3,88 pt au
+    % dela de \textwidth -- un « Overfull \hbox » constant, identique
+    % sur toutes les pages, quel que soit leur contenu.
+    \node[inner sep=0pt] (courant) at (0,0) {};
+    % Le filet exterieur est trace 0,55 pt EN DEDANS de chaque bord : un
+    % trait de 1,1 pt centre sur x=0 deborde de 0,55 pt a gauche ET a
+    % droite de \textwidth, et ce dernier debord rendait un « Overfull
+    % \hbox » de 1,1 pt sur la page entiere.
+    \draw[line width=1.1pt, rounded corners=7pt]
+      (0.55pt,0) rectangle (\textwidth-0.55pt, -#1);
+    \draw[line width=0.4pt, rounded corners=5pt]
+      (4pt,-4pt) rectangle (\textwidth-4pt, -#1+4pt);
+    % Le decalage vertical se calcule A PART, par \pgfmathsetmacro : passe
+    % directement dans la clef shift={...}, pgfmath ne l'evaluait pas --
+    % les quatre fleurons se posaient tous pres du haut, deux dedans, deux
+    % dehors, et le bas du cadre restait nu.
+    \foreach \x/\y/\rx/\ry in {0/0/1/-1, 1/0/-1/-1, 0/1/1/1, 1/1/-1/1} {
+      \pgfmathsetmacro{\VUkadroY}{-\y*0 - (1-\y)*#1}
+      \begin{scope}[shift={(\x*\textwidth, \VUkadroY pt)}]
+        \draw[line width=0.9pt]
+          (\rx*13pt, \ry*3pt) .. controls (\rx*7pt, \ry*10pt)
+          and (\rx*3pt, \ry*7pt) .. (\rx*3pt, \ry*13pt);
+      \end{scope}}
+    \node[inner sep=0pt, anchor=north west] at (11pt, -13pt)
+      {\begin{minipage}{\dimexpr\textwidth-22pt\relax}#2\end{minipage}};
+  \end{tikzpicture}\par
+  \endgroup}
+
+% Ornement typographique (le fleuron des pages de tableau). Le trace du
+% fac-simile n'est pas de la fonte : il se pose en image quand on l'a
+% releve, et se remplace par un tilde espace tant qu'on ne l'a pas.
+\newcommand{\VUornamento}[1]{{\centering\fontsize{#1}{#1}\selectfont
+  \textls[300]{\textasciitilde\textasciitilde\textasciitilde}\par}}
+
+% -------------------------------------------------------------------
+% 8. LA TABLE DES CORPS PAR PAGE
+% -------------------------------------------------------------------
+% EN DERNIER, ET C'EST LA TOUT. Ce chargement etait d'abord place au
+% debut du fichier, avant meme \geometry. \VUkorpoPage n'y etait pas
+% encore definie : LaTeX prenait donc chaque appel pour du texte, et
+% composait « 911.60pt 1011.15pt 1111.30pt... » -- le contenu du
+% fichier de reglage imprime au fil des pages. Le symptome etait dix
+% « Overfull \hbox » inexplicables ; la cause etait un ordre.
+% Le fichier peut ne pas exister : le volume se compose alors au corps
+% global, ce qui est le comportement voulu avant la premiere mesure.
+\InputIfFileExists{body-\VUlangue.tex}{}{}
+% ET LA TABLE SE CORRIGE APRES COUP, POUR LES PAGES A NOTE.
+% Le pas par page ci-dessus a ete regle pour que la matiere REMPLISSE le
+% bloc -- et la note ne comptait pas dans cette matiere : elle se differe
+% jusqu'a la fermeture de la page, et l'outil de mesure n'en voyait rien.
+% Sur une page a note, le pas obtenu remplit donc le bloc avec le TEXTE
+% SEUL, et il ne reste plus rien pour la note. Le feuillet 9 recevait
+% ainsi 15,31 pt la ou ses voisines tiennent 11,19 et 12,42, et ou le
+% fac-simile lui-meme en mesure 11,0 (inv-io.json : un pas de 72 px sur
+% un bloc de 2800 px pour 150,65 mm).
+% Le fichier ci-dessous rend a ces pages un pas qui laisse la place de la
+% note. Il est ECRIT A LA MAIN, page par page : l'outil qui a produit
+% body-*.tex n'est plus dans le depot, et le refaire pour une page
+% aurait coute plus cher que de la mesurer.
+\InputIfFileExists{body-\VUlangue-noto.tex}{}{}
