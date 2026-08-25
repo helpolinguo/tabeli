@@ -16,9 +16,14 @@ tableaux.pdf: main-fr.tex preamble.tex calibrate-fr.tex text/fr/*.tex
 index.html: tools/html.py text/io/*.tex text/fr/*.tex
 	python3 tools/html.py
 
+# 180 is the HEIGHT of the paper in millimetres, and it is the one
+# physical constant of the whole calibration -- the HathiTrust record for
+# the French booklet reads "90 p., 2 l. 18 cm.". This target passed 110
+# for as long as the scale was taken from the WIDTH; the scale has been
+# taken from the height since, and 110 would have rescaled both volumes.
 calibrate: tools/calibrate.py tools/inventory-io.json tools/inventory-fr.json
-	python3 tools/calibrate.py io 110
-	python3 tools/calibrate.py fr 110
+	python3 tools/calibrate.py io 180
+	python3 tools/calibrate.py fr 180
 
 inventory:
 	python3 tools/inventory.py io
