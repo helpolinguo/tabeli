@@ -1,53 +1,52 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  numeri.py — retrouver sur une planche murale les numeros d'objets.
+#  numbers.py — finding the object numbers on a wall plate.
 #
-#  Chaque planche porte, pose contre l'objet qu'il designe, un petit
-#  numero compose : c'est a lui que renvoient les « (N) » du texte.
-#  Pour qu'un clic sur « (12) » puisse montrer l'objet 12, il faut
-#  savoir OU se trouve le 12 sur la planche. C'est ce que fait cet
-#  outil, et il rend un rapport de ce qu'il a lu, planche par planche.
+#  Each plate carries, set against the object it designates, a small
+#  composed number: it is what the « (N) » of the text refer to. For a
+#  click on « (12) » to be able to show object 12, one must know WHERE
+#  the 12 is on the plate. That is what this tool does, and it returns a
+#  report of what it has read, plate by plate.
 #
-#  CE QUE L'OUTIL NE FAIT PAS. Il ne lit pas tous les numeros — loin
-#  de la. Sur les planches aerees il en trouve huit sur dix, sur les
-#  plus chargees deux ou trois. La raison tient au dessin lui-meme :
-#  le numero est pose dans une petite reserve de blanc, et quand la
-#  gravure est dense cette reserve se referme, le chiffre touche une
-#  hachure, et rien ne le distingue plus d'un fragment de dessin.
-#  On rend donc la liste de CE QU'ON A LU, avec sa planche de
-#  controle ; ce qui manque reste sans gros plan plutot que d'en
-#  recevoir un faux.
+#  WHAT THE TOOL DOES NOT DO. It does not read every number — far from
+#  it. On the airy plates it finds eight in ten, on the busiest two or
+#  three. The reason lies in the drawing itself: the number is set in a
+#  small reserve of white, and when the engraving is dense that reserve
+#  closes up, the figure touches a hatching, and nothing distinguishes
+#  it any longer from a fragment of drawing. We therefore return the
+#  list of WHAT HAS BEEN READ, with its check sheet; what is missing
+#  stays without a close-up rather than receive a false one.
 #
-#  LA METHODE, en trois temps :
+#  THE METHOD, in three stages:
 #
-#  1. LES ILOTS. Le trait est binaire (l'outil travaille sur la
-#     couche de trait rendue par gravuri.py, ou l'encre vaut 255).
-#     On prend les composantes connexes de la taille d'un chiffre,
-#     et on garde celles qu'un anneau de blanc separe du reste :
-#     c'est la reserve de l'imprimeur qui sert de signature.
+#  1. THE ISLANDS. The line work is binary (the tool works on the line
+#     layer produced by plates.py, where the ink is 255). We take the
+#     connected components the size of a figure, and keep those a ring
+#     of white separates from the rest: it is the printer's reserve
+#     that serves as a signature.
 #
-#  2. LA FORME. Chaque ilot est ramene a une vignette de 40x32 et
-#     compare aux dix modeles de tools/ciphers.npz. Ces modeles ne
-#     sont pas dessines a la main : ils sortent d'un regroupement de
-#     1429 ilots preleves sur les quinze planches, la fonte etant la
-#     meme partout. Un « 1 » n'est qu'une barre, et les hachures
-#     verticales lui ressemblent : il porte donc un seuil a part.
+#  2. THE SHAPE. Each island is reduced to a 40x32 thumbnail and
+#     compared with the ten models in tools/ciphers.npz. Those models
+#     are not drawn by hand: they come out of a clustering of 1429
+#     islands taken from the fifteen plates, the font being the same
+#     throughout. A « 1 » is only a bar, and vertical hatchings look
+#     like it: it therefore carries a threshold of its own.
 #
-#  3. LE VOISINAGE. Les chiffres d'un meme nombre se suivent sur la
-#     meme ligne de base, a moins d'un demi-corps l'un de l'autre.
-#     On les recolle, puis on ne garde QUE les nombres attendus —
-#     ceux que le texte du tabelo appelle — et lus une seule fois.
-#     Un nombre lu deux fois est un nombre dont on ne sait rien.
+#  3. THE NEIGHBOURHOOD. The figures of one number follow each other on
+#     the same baseline, less than half a body apart. We glue them back
+#     together, then keep ONLY the expected numbers — those the table's
+#     text calls for — and read once only. A number read twice is a
+#     number about which nothing is known.
 #
 #  USAGE
-#      python3 tools/numeri.py                  # toutes les planches
-#      python3 tools/numeri.py t05-apar-1       # une seule
+#      python3 tools/numbers.py                 # every plate
+#      python3 tools/numbers.py t05-apar-1      # just one
 #
-#  Ecrit plates/numbers.json (les positions, en fraction de la
-#  largeur et de la hauteur de la planche, donc valables a toute
-#  echelle) et, dans plates/review/, une planche de controle par
-#  gravure : chaque numero lu y est montre dans son decoupe, avec ce
-#  que la machine a cru lire. C'est la qu'on verifie.
+#  Writes plates/numbers.json (the positions, as a fraction of the
+#  plate's width and height, hence valid at any scale) and, in
+#  plates/review/, one check sheet per engraving: each number read is
+#  shown there in its cut-out, with what the machine thought it read.
+#  That is where one checks.
 # ===================================================================
 
 import json
@@ -64,37 +63,37 @@ KOVRI = RACINE / "plates" / "kovri"
 KONTROLO = RACINE / "plates" / "review"
 
 H, W = 40, 32
-# Un « 1 » sans empattement est une barre, et une planche gravee en
-# est pleine. On lui demande donc davantage qu'aux autres.
+# A « 1 » without a serif is a bar, and an engraved plate is full of
+# them. We therefore ask more of it than of the others.
 SEUIL = 0.80
 SEUIL_UN = 0.86
 
 
 
-# LA PLANCHE DE TRAVAIL. Tant qu'un tableau n'a pas ete repris sur la
-# numerisation d'origine, on travaille sur la couche de trait tiree du
-# PDF colorise, ou l'encre vaut 255. Des qu'il l'a ete, c'est le
-# fac-simile lui-meme qu'on regarde, et l'encre y est SOMBRE. Les deux
-# outils qui montrent des decoupes a l'oeil passent donc par ici, et
-# n'ont plus a savoir d'ou vient l'image.
+# THE WORKING PLATE. As long as a table has not been redone from the
+# original scan, we work on the line layer drawn from the colourised
+# PDF, where the ink is 255. As soon as it has been, it is the facsimile
+# itself we look at, and the ink there is DARK. The two tools that show
+# cut-outs to the eye therefore pass through here, and no longer have to
+# know where the image comes from.
 def neta(cle):
     return RACINE / "originals" / "kovri" / f"{cle}-neta.png"
 
 
 def repris(cle):
-    """Ce tableau a-t-il ete repris sur sa numerisation d'origine ?"""
+    """Has this table been redone from its original scan?"""
     return neta(cle).exists()
 
 
 def planche(cle):
-    """L'image telle que l'oeil doit la voir : l'encre en SOMBRE."""
+    """The image as the eye must see it: the ink DARK."""
     if repris(cle):
         return Image.open(neta(cle)).convert("L")
     return ImageOps.invert(Image.open(KOVRI / f"{cle}-trako.png").convert("L"))
 
 
 def enko(cle):
-    """La densite d'encre en flottant : fort = encre."""
+    """The ink density as a float: high = ink."""
     return 255.0 - np.asarray(planche(cle)).astype(np.float32)
 
 
@@ -109,7 +108,7 @@ NOMS, PILE = modeles()
 
 
 def vignette(v):
-    """Ramene un ilot a la vignette de reference, hauteur imposee."""
+    """Reduces an island to the reference thumbnail, height imposed."""
     h, w = v.shape
     nw = max(1, min(W, round(w * H / h)))
     r = cv2.resize(v.astype(np.float32), (nw, H), interpolation=cv2.INTER_AREA)
@@ -130,16 +129,15 @@ def classer(v):
 
 
 def ilots(enc, hlo, hhi, rayon=5, tolerance=0.10):
-    """Composantes de la taille d'un chiffre qu'un blanc isole."""
+    """Components the size of a figure that a white ring isolates."""
     n, lab, st, _ = cv2.connectedComponentsWithStats(enc, 8)
     cand = [i for i in range(1, n)
             if hlo <= st[i, 3] <= hhi
             and 0.14 * hlo <= st[i, 2] <= 1.3 * hhi
             and st[i, 4] >= 0.18 * st[i, 2] * st[i, 3]]
-    # L'anneau ne doit contenir aucune encre ETRANGERE : le chiffre
-    # voisin, lui, a le droit d'y etre, sans quoi « 18 » ne serait
-    # jamais vu — ses deux chiffres se tiennent a cinq points l'un de
-    # l'autre.
+    # The ring must contain no FOREIGN ink: the neighbouring figure,
+    # for its part, has the right to be there, failing which « 18 »
+    # would never be seen — its two figures stand five points apart.
     mc = np.isin(lab, cand)
     out = []
     for i in cand:
@@ -155,13 +153,13 @@ def ilots(enc, hlo, hhi, rayon=5, tolerance=0.10):
 
 
 def hauteur(enc, depart=38):
-    """La hauteur des chiffres, mesuree sur la planche elle-meme.
+    """The height of the figures, measured on the plate itself.
 
-    Elle n'est pas la meme partout : 29 points sur le second plan du
-    tableau 5, 46 sur le tableau 6. La chercher evite de rater les
-    unes et de mal decouper les autres. On part de la valeur courante
-    et on converge en trois tours ; le « 1 » est ecarte de la mesure,
-    sa hauteur etant la moins sure.
+    It is not the same everywhere: 29 points on the middle ground of
+    table 5, 46 on table 6. Looking for it avoids missing the one and
+    cutting out the other badly. We start from the current value and
+    converge in three rounds; the « 1 » is excluded from the
+    measurement, its height being the least reliable.
     """
     h = float(depart)
     for _ in range(3):
@@ -179,7 +177,7 @@ def hauteur(enc, depart=38):
 
 
 def grouper(gl):
-    """Recolle les chiffres voisins en nombres."""
+    """Glues neighbouring figures back into numbers."""
     rest = sorted(gl, key=lambda g: (g[1], g[0]))
     nums = []
     while rest:
@@ -208,34 +206,34 @@ def grouper(gl):
     return nums
 
 
-# LE NOMBRE TRONQUE EST LA FAUTE LA PLUS DANGEREUSE, parce qu'elle est
-# silencieuse : sur le tableau 14 on lisait « 2 » la ou la planche porte
-# « 12 », et « 6 » la ou elle porte « 60 ». Le chiffre voisin, colle a
-# une hachure, n'avait pas ete vu, et le nombre tronque se trouvait etre
-# lui aussi dans la liste attendue. Rien ne le signalait.
+# THE TRUNCATED NUMBER IS THE MOST DANGEROUS FAULT, because it is
+# silent: on table 14 we read « 2 » where the plate carries « 12 », and
+# « 6 » where it carries « 60 ». The neighbouring figure, stuck to a
+# hatching, had not been seen, and the truncated number happened to be
+# in the expected list as well. Nothing signalled it.
 #
-# On regarde donc la case adjacente, a gauche et a droite. Non pas
-# « y a-t-il de l'encre ? » — une gravure en est pleine, et la question
-# fait rejeter les bonnes lectures autant que les mauvaises — mais
-# « y a-t-il un CHIFFRE ? », par le meme filtre adapte que partout
-# ailleurs. Si oui, le nombre continue : on essaie de le lire en entier,
-# et on ne le garde que si le nombre allonge est, lui, attendu. Sinon on
-# jette la lecture plutot que d'en garder une moitie.
+# We therefore look at the adjacent cell, left and right. Not « is there
+# ink? » — an engraving is full of it, and the question makes good
+# readings be rejected as much as bad ones — but « is there a FIGURE? »,
+# by the same matched filter as everywhere else. If so, the number goes
+# on: we try to read it whole, and keep it only if the lengthened number
+# is itself expected. Otherwise we throw the reading away rather than
+# keep half of one.
 SEUIL_VOISIN = 0.42
-# L'avance minimale du chiffre retenu sur son suivant, pour allonger.
+# The minimum lead of the chosen figure over the next, to lengthen.
 MARGE_VOISIN = 0.05
-# L'avance qu'il faut a une lecture sur sa rivale pour l'emporter.
+# The lead a reading needs over its rival to carry the day.
 ECART_PREUVE = 0.05
 BASE = None
 
 
-# DEUX JEUX DE MODELES, parce qu'il y a deux encres. Le pochoir tire
-# du PDF colorise a des contours nets ; le fac-simile a l'encre grise,
-# les pleins qui bavent et les delies qui s'effacent. Un gabarit taille
-# dans l'un ne se pose pas dans l'autre : sur le gris, le filtre adapte
-# du pochoir marque 0.24 la ou il devrait marquer pres de 1. On tient
-# donc les deux, et GRIS dit lequel sert -- c'est l'appelant qui le
-# sait, puisque c'est lui qui sait quelle planche il regarde.
+# TWO SETS OF MODELS, because there are two inks. The stencil drawn from
+# the colourised PDF has clean outlines; the facsimile has grey ink,
+# fulls that bleed and thins that fade away. A template cut in the one
+# does not fit the other: on the grey, the stencil's matched filter
+# scores 0.24 where it should score close to 1. We therefore keep both,
+# and GREY says which is in use -- it is the caller that knows, since it
+# is the caller that knows which plate it is looking at.
 GRIS = False
 
 
@@ -248,11 +246,11 @@ def _base():
         d = np.load(RACINE / "tools" / fich)
         b = {}
         for c in d.files:
-            # ON RAMENE LE MODELE A UN PLEIN DE 1. Les modeles du
-            # pochoir sont des moyennes de decoupes, ceux du gris des
-            # centres de groupes DEJA NORMES : leur plein vaut cinq
-            # centiemes, et le gabarit, qui prend le trait a la moitie
-            # du plein, n'y trouvait plus rien du tout.
+            # WE BRING THE MODEL BACK TO A FULL OF 1. The stencil's
+            # models are means of cut-outs, the grey ones centres of
+            # clusters ALREADY NORMALISED: their full is five
+            # hundredths, and the template, which takes the stroke at
+            # half the full, found nothing at all there any more.
             m = d[c].mean(0)
             m = m / max(1e-6, float(m.max()))
             col = m.max(0) > 0.15
@@ -262,12 +260,12 @@ def _base():
 
 
 def gabarit(c, corps, marge=10):
-    """Un chiffre, et autour de lui la reserve de blanc qui le porte.
+    """A figure, and around it the reserve of white that carries it.
 
-    Le modele vaut +1 sur le trait et -1 tout autour, chaque part
-    ramenee a sa surface : un chiffre parfaitement pose marque 1, une
-    case pleine d'encre 0. C'est ce qui rend le filtre insensible aux
-    hachures, qui remplissent la reserve autant que le trait.
+    The model is +1 on the stroke and -1 all around, each part brought
+    back to its area: a perfectly set figure scores 1, a cell full of
+    ink 0. That is what makes the filter insensitive to hatchings,
+    which fill the reserve as much as the stroke.
     """
     m = _base()[c]
     g = cv2.resize(m, (max(1, round(m.shape[1] * corps / H)), corps),
@@ -280,13 +278,13 @@ def gabarit(c, corps, marge=10):
 
 
 def voisin(enc, cx, cy, corps, ray=6):
-    """Le meilleur chiffre de la case adjacente.
+    """The best figure in the adjacent cell.
 
-    Rend (score, chiffre, boite, marge) — la marge etant l'avance du
-    chiffre retenu sur son suivant. Elle decide seule des allongements :
-    sur le tableau 14 on a lu « 69 » la ou la planche porte « 60 »,
-    parce que le 0 et le 9 se valaient presque. Quand deux chiffres se
-    disputent la case, on n'allonge pas.
+    Returns (score, figure, box, lead) — the lead being that of the
+    chosen figure over the next. It alone decides the lengthenings: on
+    table 14 we read « 69 » where the plate carries « 60 », because the
+    0 and the 9 were nearly equal. When two figures contend for the
+    cell, we do not lengthen.
     """
     scores = []
     best, qui, pos = -9.0, None, None
@@ -309,32 +307,32 @@ def voisin(enc, cx, cy, corps, ray=6):
 
 
 
-# COMMENT LE FAC-SIMILE APPELLE UN NUMERO. Trois formes, et il a fallu
-# les trois :
+# HOW THE FACSIMILE CALLS A NUMBER. Three forms, and all three were
+# needed:
 #
-#   (18)              la forme ordinaire ;
-#   (9, 11, 12)       UN GROUPE — « les tableaux muraux (9, 11, 12) » —
-#                     qui vaut pour trois objets a la fois. On n'en
-#                     lisait aucun, et le 9 du tableau 1 n'etait appele
-#                     nulle part ailleurs : il manquait tout entier ;
-#   41)               une parenthese ouvrante qui manque. Trois endroits
-#                     dans les deux livrets. Coquille du releve ou sorte
-#                     cassee de l'imprimeur, on ne peut le dire sans le
-#                     fac-simile sous les yeux — alors on ne touche pas
-#                     a la source, et l'on se contente de reconnaitre le
-#                     renvoi ;
-#   94 bis            UN NUMERO QUI N'EST PAS UN NOMBRE. Le graveur a
-#                     ajoute deux outils apres coup, et plutot que de
-#                     renumeroter toute la planche il les a glisses
-#                     entre les autres : « 94bis » est grave sur le
-#                     ciseau, entre le 94 et le 95, et « 95bis » sur le
-#                     maillet. Il y en a deux dans tout l'ouvrage, tous
-#                     deux au tableau 5. Leur cle est « 94bis », et le
-#                     lecteur automatique ne les lira jamais -- il ne
-#                     connait que des chiffres.
+#   (18)              the ordinary form;
+#   (9, 11, 12)       A GROUP — « les tableaux muraux (9, 11, 12) » —
+#                     standing for three objects at once. We read none
+#                     of them, and the 9 of table 1 was called nowhere
+#                     else: it was missing entirely;
+#   41)               a missing opening parenthesis. Three places in the
+#                     two booklets. A slip in the transcription or a
+#                     broken sort at the printer's, one cannot say
+#                     without the facsimile before one's eyes — so we do
+#                     not touch the source, and content ourselves with
+#                     recognising the cross-reference;
+#   94 bis            A NUMBER THAT IS NOT A NUMBER. The engraver added
+#                     two tools after the fact, and rather than renumber
+#                     the whole plate he slipped them in among the
+#                     others: « 94bis » is engraved on the chisel,
+#                     between the 94 and the 95, and « 95bis » on the
+#                     mallet. There are two of them in the whole work,
+#                     both on table 5. Their key is « 94bis », and the
+#                     automatic reader will never read them -- it knows
+#                     only figures.
 #
-# Un groupe coupe par une fin de ligne est compose en DEUX exposants,
-# « (9, 11, » puis « 12) ». On les recolle avant de lire.
+# A group broken by the end of a line is set as TWO superscripts,
+# « (9, 11, » then « 12) ». We glue them back before reading.
 RECOLLE_EXPO = re.compile(
     r'\\textsuperscript\{([^{}]*,)\}\s*(?:\\nl|\\cc)?\s*\n?\s*'
     r'\\textsuperscript\{([^{}]*)\}')
@@ -346,8 +344,8 @@ BIS = re.compile(r'\bbis\b')
 
 
 def renvoji(texte):
-    """Tous les numeros qu'un texte appelle, sous quelque forme que ce
-    soit. Rend la liste dans l'ordre du texte, doublons compris."""
+    """Every number a text calls, in whatever form. Returns the list in
+    the order of the text, duplicates included."""
     t = texte
     for _ in range(3):
         t = RECOLLE_EXPO.sub(r'\\textsuperscript{\1 \2}', t)
@@ -355,28 +353,28 @@ def renvoji(texte):
     for c in EXPO.findall(t):
         if SUITE.fullmatch(c.strip()):
             ns = [int(x) for x in CHIFRO.findall(c)]
-            # « 94 bis » ne vaut pas 94 : c'est un objet a part, glisse
-            # entre le 94 et le 95. Le « bis » se rapporte au dernier
-            # nombre du renvoi.
+            # « 94 bis » is not 94: it is a separate object, slipped in
+            # between the 94 and the 95. The « bis » attaches to the last
+            # number of the cross-reference.
             if ns and BIS.search(c):
                 ns[-1] = f"{ns[-1]}bis"
             out += ns
-    # Les renvois que le fac-simile n'a pas mis en exposant -- il y en a
-    # sept, tous du cote ido.
+    # The cross-references the facsimile did not set as superscripts --
+    # there are seven, all on the Ido side.
     for c in re.findall(r'\((\d{1,3}(?:\s*,\s*\d{1,3})*)\)', EXPO.sub('', t)):
         out += [int(x) for x in CHIFRO.findall(c)]
     return out
 
 
-# UNE PLANCHE PEUT PORTER PLUSIEURS SCENES, et chacune recommence sa
-# numerotation a 1 : le tableau 6 a cinq vignettes, le 3, le 4, le 7, le
-# 8 et le 9 en ont deux. Le meme « 39 » s'y lit donc deux fois, et le
-# lecteur, qui croyait chaque numero unique, en jetait l'une des deux ou
-# rendait l'autre au hasard. plates/scenes.json donne la place de chaque
-# scene ; on lit alors vignette par vignette, chacune avec les seuls
-# numeros que SON texte appelle.
+# A PLATE MAY CARRY SEVERAL SCENES, and each starts its numbering again
+# at 1: table 6 has five vignettes, tables 3, 4, 7, 8 and 9 have two.
+# The same « 39 » is therefore read twice there, and the reader, which
+# believed each number unique, threw away one of the two or returned the
+# other at random. plates/scenes.json gives the place of each scene; we
+# then read vignette by vignette, each with only the numbers ITS text
+# calls for.
 def ceni(cle):
-    """Les scenes d'une planche : [(nom, forme)], dans l'ordre d'essai."""
+    """A plate's scenes: [(name, shape)], in the order to be tried."""
     f = RACINE / "plates" / "scenes.json"
     if not f.exists():
         return []
@@ -385,7 +383,7 @@ def ceni(cle):
 
 
 def dedans(forme, x, y):
-    """Le point (x, y), en fraction, est-il dans la forme ?"""
+    """Is the point (x, y), as a fraction, inside the shape?"""
     if forme[0] == "elipso":
         _, cx, cy, rx, ry = forme
         return ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1.0
@@ -394,7 +392,7 @@ def dedans(forme, x, y):
 
 
 def boite(forme):
-    """Le cadre englobant d'une forme, en fraction."""
+    """The bounding frame of a shape, as a fraction."""
     if forme[0] == "elipso":
         _, cx, cy, rx, ry = forme
         return (max(0.0, cx - rx), max(0.0, cy - ry),
@@ -403,7 +401,7 @@ def boite(forme):
 
 
 def blokoj(tab):
-    """Le texte du tabelo, coupe par cle : [(cle, scene, corps)]."""
+    """The table's text, cut by key: [(key, scene, body)]."""
     f = list((RACINE / "text" / "io").glob(f"*-tabelo-{tab}.tex"))
     if not f:
         return []
@@ -414,22 +412,22 @@ def blokoj(tab):
         m = re.match(r't\d\d-(c\d)-', parts[i])
         if m:
             sc = m.group(1)
-        # Une note ou un titre suit la scene ou il se trouve.
+        # A note or a title follows the scene it is in.
         out.append((parts[i], sc, parts[i + 1]))
     return out
 
 
-# LE RENVOI QUI NE MONTRE RIEN. Le livret appelle parfois un numero
-# que la planche ne porte pas : au tableau 5, « les plates-bandes
-# (150) », alors que la numerotation s'arrete a 146 et que l'objet est
-# grave « 50 ». plates/corrections.json dit, tableau par tableau, quel
-# renvoi lire a la place de quel autre. La source ne bouge pas ; c'est
-# la lecture qui se corrige.
+# THE CROSS-REFERENCE THAT SHOWS NOTHING. The booklet sometimes calls a
+# number the plate does not carry: on table 5, « les plates-bandes
+# (150) », when the numbering stops at 146 and the object is engraved
+# « 50 ». plates/corrections.json says, table by table, which
+# cross-reference to read in place of which other. The source does not
+# move; it is the reading that is corrected.
 _KOREKTI = None
 
 
 def korekti(tab):
-    """Les renvois a corriger pour ce tableau : {lu: a lire}."""
+    """The cross-references to correct for this table: {read: to be read}."""
     global _KOREKTI
     if _KOREKTI is None:
         f = RACINE / "plates" / "corrections.json"
@@ -439,16 +437,16 @@ def korekti(tab):
 
 
 def korekti_renvojo(tab, cle=""):
-    """{lu: a lire} pour UN BLOC : les corrections qui valent pour tout
-    le tableau, plus celles que ce bloc-ci porte seul.
+    """{read: to be read} for ONE BLOCK: the corrections that hold for the
+    whole table, plus those this block alone carries.
 
-    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du
-    tableau 5 est un numero que la planche n'a nulle part : le corriger
-    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la
-    femme de chambre, lui, est un numero qui existe par ailleurs — c'est
-    le savon de l'alinea 2 — et le corriger partout ferait pointer
-    le savon sur la femme de chambre. Une entree dont la cle est celle
-    d'un BLOC ne vaut donc que dans ce bloc.
+    A CORRECTION DOES NOT ALWAYS HOLD EVERYWHERE. The « (150) » of
+    table 5 is a number the plate has nowhere: correcting it everywhere
+    can break nothing. The « (6) » that table 6 gives the chambermaid,
+    on the other hand, is a number that exists elsewhere — it is the
+    soap of paragraph 2 — and correcting it everywhere would make the
+    soap point at the chambermaid. An entry whose key is that of a
+    BLOCK therefore holds only within that block.
     """
     t = korekti(tab)
     out = {k: v for k, v in t.items() if isinstance(v, str)}
@@ -464,7 +462,7 @@ def _lire_renvoji(corps, kor):
 
 
 def attendus(cle):
-    """{scene: numeros appeles}. La scene est "" quand il n'y en a qu'une."""
+    """{scene: numbers called}. The scene is "" when there is only one."""
     tab = cle[1:3]
     bl = blokoj(tab)
     if not bl:
@@ -481,60 +479,61 @@ def attendus(cle):
 
 
 def kl(scene, n):
-    """La cle d'un numero : « 39 » sur une planche d'une scene, « c1:39 »
-    sur une planche qui en porte plusieurs."""
+    """A number's key: « 39 » on a one-scene plate, « c1:39 » on a plate
+    that carries several."""
     return f"{scene}:{n}" if scene else str(n)
 
 
 def descle(k):
-    """L'inverse : « c1:39 » -> ("c1", 39), « 94bis » -> ("", "94bis")."""
+    """The inverse: « c1:39 » -> ("c1", 39), « 94bis » -> ("", "94bis")."""
     s, n = k.split(":", 1) if ":" in k else ("", str(k))
     return s, (int(n) if n.isdigit() else n)
 
 
-# TRIER DES CLES QUI NE SONT PAS TOUTES DES NOMBRES. « 94bis » se range
-# entre 94 et 95, non a la fin ni au debut : on trie sur le nombre, puis
-# sur ce qui le suit.
+# SORTING KEYS THAT ARE NOT ALL NUMBERS. « 94bis » is filed between 94
+# and 95, neither at the end nor at the start: we sort on the number,
+# then on what follows it.
 ORDO = re.compile(r'(\d*)(.*)$')
 
 
 def ordo(k):
-    """La cle de tri d'un numero : sa scene, son nombre, son suffixe."""
+    """A number's sort key: its scene, its number, its suffix."""
     s, n = k.split(":", 1) if ":" in str(k) else ("", str(k))
     m = ORDO.match(n)
     return s, int(m.group(1) or 0), m.group(2)
 
 
-# Le balayage etait trop timide : a 0.55 il ne rendait que ce que les
-# ilots voyaient deja. Descendre a 0.42 fait passer la lecture de 60 a
-# 70 % sur les quatre planches d'essai. Le bruit qu'il laisse entrer
-# est arrete plus loin, par la liste des numeros attendus et par le
-# depart entre lectures rivales.
+# The sweep was too timid: at 0.55 it returned only what the islands
+# already saw. Coming down to 0.42 takes the reading from 60 to 70 %
+# on the four trial plates. The noise it lets in is stopped further on,
+# by the list of expected numbers and by the parting between rival
+# readings.
 SEUIL_BAL = 0.50
 MARGE_BAL = 0.04
 
 
 def balayer(enc_f, corps, seuil=SEUIL_BAL, marge=MARGE_BAL):
-    """Le filtre adapte passe sur la planche entiere, chiffre par chiffre.
+    """The matched filter passed over the whole plate, figure by figure.
 
-    LES ILOTS NE VOIENT QUE CE QUE LE BLANC ISOLE. Des qu'un chiffre
-    touche une hachure, sa composante fusionne avec le dessin et il
-    disparait — c'est ce qui plafonnait la lecture des planches
-    chargees. Le filtre adapte, lui, n'a pas besoin qu'on decoupe le
-    chiffre : il lui suffit que le trait soit la et la reserve vide.
+    THE ISLANDS SEE ONLY WHAT WHITE ISOLATES. As soon as a figure
+    touches a hatching, its component merges with the drawing and it
+    disappears — that is what put a ceiling on the reading of busy
+    plates. The matched filter, for its part, does not need the figure
+    to be cut out: it is enough that the stroke be there and the reserve
+    empty.
 
-    Seul, il est trop bavard — une gravure offre des milliers de pics.
-    Il sert donc en RENFORT des ilots, et deux garde-fous le tiennent :
-    le score doit etre franc, et le chiffre retenu doit devancer son
-    suivant. Ce qui passe quand meme sera elimine plus loin, faute
-    d'appartenir aux nombres attendus.
+    Alone, it is too talkative — an engraving offers thousands of peaks.
+    It therefore serves as a REINFORCEMENT to the islands, and two
+    safeguards hold it: the score must be clear, and the chosen figure
+    must lead the next. Whatever gets through anyway will be eliminated
+    further on, for not belonging to the expected numbers.
     """
-    # LE BALAYAGE N'EMET PAS DE « 1 ». Le chiffre n'est qu'une barre,
-    # et le filtre le retrouve dans la hampe d'un 4, le flanc d'un 9,
-    # une hachure verticale : sur le tableau 1 il faisait lire « 13 »
-    # pour 3, « 16 » pour 26, « 71 » pour 74. Les ilots, eux, le
-    # reconnaissent honnetement — ils decoupent la forme au lieu de la
-    # correler — et gardent la charge de le trouver.
+    # THE SWEEP EMITS NO « 1 ». The figure is only a bar, and the
+    # filter finds it again in the stem of a 4, the flank of a 9, a
+    # vertical hatching: on table 1 it made us read « 13 » for 3,
+    # « 16 » for 26, « 71 » for 74. The islands, for their part,
+    # recognise it honestly — they cut the shape out instead of
+    # correlating it — and keep the charge of finding it.
     noms = [c for c in sorted(_base()) if c != "1"]
     cartes, geo, ref = [], [], None
     for c in noms:
@@ -565,7 +564,7 @@ def balayer(enc_f, corps, seuil=SEUIL_BAL, marge=MARGE_BAL):
 
 
 def fusionner(a, b, corps):
-    """b n'apporte que ce que a n'a pas deja vu."""
+    """b brings only what a has not already seen."""
     out = list(a)
     for g in b:
         if any(abs(g[0] - h[0]) < 0.5 * corps and abs(g[1] - h[1]) < 0.5 * corps
@@ -576,7 +575,7 @@ def fusionner(a, b, corps):
 
 
 def lire(a, att, haut=None):
-    """Rend {numero: ((x, y, l, h), force)} en points du tableau donne."""
+    """Returns {number: ((x, y, w, h), strength)} in points of the given table."""
     enc = (a > 128).astype(np.uint8)
     if haut is None:
         haut = hauteur(enc)
@@ -610,10 +609,10 @@ def lire(a, att, haut=None):
         if max(md if sd > SEUIL_VOISIN else 0,
                mg if sg > SEUIL_VOISIN else 0) < MARGE_VOISIN:
             continue
-        # Le nombre continue : on l'allonge du chiffre voisin, et on ne
-        # retient l'allongement que s'il donne un nombre attendu — et un
-        # seul. Deux allongements possibles, c'est une ambiguite : on
-        # laisse tomber.
+        # The number goes on: we lengthen it by the neighbouring figure,
+        # and keep the lengthening only if it gives an expected number —
+        # and only one. Two possible lengthenings is an ambiguity: we let
+        # it drop.
         prop = []
         if sd > SEUIL_VOISIN and int(t + cd) in att:
             prop.append((int(t + cd), (x0, y0, pd[0] + pd[2] - x0, y1 - y0)))
@@ -621,21 +620,20 @@ def lire(a, att, haut=None):
             prop.append((int(cg + t), (pg[0], y0, x1 - pg[0], y1 - y0)))
         if len(prop) == 1:
             lus.setdefault(prop[0][0], []).append((prop[0][1], force))
-    # UN NOMBRE LU DEUX FOIS. Chaque numero ne parait qu'une fois par
-    # vignette : deux lectures veulent dire qu'au moins l'une est fausse.
-    # On les departage par la force de leur preuve : la ressemblance
-    # moyenne des chiffres, et une prime a la lecture entierement tiree
-    # des ilots, ou le chiffre a ete decoupe et non seulement correle.
+    # A NUMBER READ TWICE. Each number appears only once per vignette:
+    # two readings mean that at least one is false. We part them by the
+    # strength of their evidence: the mean resemblance of the figures,
+    # and a bonus for a reading drawn entirely from the islands, where
+    # the figure has been cut out and not merely correlated.
     #
-    # SI LES DEUX SE VALENT, ON NE TRANCHE PAS. On a essaye le
-    # contraire, une fois les vignettes separees : puisque le numero est
-    # unique DANS SA VIGNETTE, l'une des deux lectures est fausse a coup
-    # sur, et prendre la mieux etayee semblait valoir mieux que perdre
-    # les deux. Cela rend soixante et une lectures de plus -- dont
-    # quatre bonnes. Le reste est du bruit : un « c. » et un « k. » de
-    # la legende du plan, une branche de sapin, un montant de fenetre.
-    # La mesure de la preuve ne sait pas departager deux faux ; on s'en
-    # tient donc a l'abstention.
+    # IF THE TWO ARE EQUAL, WE DO NOT DECIDE. We tried the contrary,
+    # once the vignettes were separated: since the number is unique
+    # WITHIN ITS VIGNETTE, one of the two readings is certainly false,
+    # and taking the better supported seemed worth more than losing
+    # both. That returns sixty-one more readings -- four of them good.
+    # The rest is noise: a « c. » and a « k. » from the plan's legend,
+    # a fir branch, a window upright. The measure of the evidence
+    # cannot part two false ones; we therefore keep to abstention.
     gard = {}
     for n, p in lus.items():
         if n not in att:
@@ -646,25 +644,24 @@ def lire(a, att, haut=None):
     return gard
 
 
-# UN NUMERO SE TIENT PRES DE CEUX QU'ON CITE AVEC LUI. Le texte decrit
-# la planche de proche en proche -- « la caissiere (14) [...] la caisse
-# (15) » -- et les objets nommes dans une meme phrase sont voisins sur
-# le dessin. La mesure le confirme : chez les lectures sures, deux
-# numeros co-cites sont de trois a huit fois plus proches que deux
-# numeros pris au hasard (0.12 fois la distance moyenne au tableau 13,
-# 0.27 au 11, 0.28 au 10).
+# A NUMBER STANDS NEAR THOSE CITED WITH IT. The text describes the
+# plate step by step -- « la caissiere (14) [...] la caisse (15) » --
+# and the objects named in one sentence are neighbours in the drawing.
+# Measurement confirms it: among the sure readings, two co-cited numbers
+# are three to eight times closer than two numbers taken at random (0.12
+# times the mean distance on table 13, 0.27 on 11, 0.28 on 10).
 #
-# C'est donc un controle qui ne doit rien a la forme des chiffres, et
-# qui attrape ce qu'elle laisse passer : au tableau 13, « 14 » et « 34 »
-# tombaient a dix-huit et douze fois la distance ordinaire de leurs
-# voisins de phrase. On reste large -- six fois -- pour ne rejeter que
-# l'absurde : des lectures justes montent a quatre ou cinq quand le
-# texte saute d'un bout de la planche a l'autre.
+# It is therefore a check that owes nothing to the shape of the figures,
+# and that catches what shape lets through: on table 13, « 14 » and
+# « 34 » fell at eighteen and twelve times the ordinary distance from
+# their sentence neighbours. We stay generous -- six times -- so as to
+# reject only the absurd: correct readings rise to four or five when the
+# text jumps from one end of the plate to the other.
 SEUIL_ELOIGNE = 6.0
 
 
 def phrases(tab, scene=""):
-    """Les groupes de numeros cites dans une meme phrase du tabelo."""
+    """The groups of numbers cited in one sentence of the table's text."""
     bl = blokoj(tab)
     if not bl:
         return []
@@ -681,7 +678,7 @@ def phrases(tab, scene=""):
 
 
 def coherer(cle, trouves, la, ht, scene=""):
-    """Ecarte les lectures posees loin de leurs voisines de phrase."""
+    """Discards readings set far from their sentence neighbours."""
     from itertools import combinations
     pos = {n: (v[0][0], v[0][1]) for n, v in trouves.items()}
     surs = {n: pos[n] for n, v in trouves.items() if v[1] >= 0.95}
@@ -689,7 +686,7 @@ def coherer(cle, trouves, la, ht, scene=""):
     ref = [np.hypot(surs[a][0] - surs[b][0], surs[a][1] - surs[b][1])
            for g in ph for a, b in combinations([x for x in g if x in surs], 2)]
     if len(ref) < 8:
-        return trouves, 0          # pas de quoi mesurer une echelle
+        return trouves, 0          # not enough to measure a scale
     ech = float(np.median(ref)) or 1.0
     voisins = {}
     for g in ph:
@@ -709,13 +706,13 @@ def coherer(cle, trouves, la, ht, scene=""):
 
 
 def manuali(cle, la, ht, corps):
-    """Les numeros que l'oeil a poses lui-meme sur cette planche.
+    """The numbers the eye has set itself on this plate.
 
-    Le lecteur automatique plafonne la ou la reserve de blanc se
-    referme : le chiffre touche une hachure, ou se cache a demi derriere
-    un chapeau, et rien ne l'en distingue plus. Ces numeros-la se
-    relevent a la main, avec tools/manuali.py, et plates/manual.json
-    les garde. Comme verdicts.json, ce fichier ne s'ecrit pas tout seul.
+    The automatic reader has a ceiling where the reserve of white closes
+    up: the figure touches a hatching, or hides half behind a hat, and
+    nothing distinguishes it any more. Those numbers are picked up by
+    hand, with tools/manual.py, and plates/manual.json keeps them. Like
+    verdicts.json, that file does not write itself.
     """
     f = RACINE / "plates" / "manual.json"
     if not f.exists():
@@ -727,14 +724,15 @@ def manuali(cle, la, ht, corps):
 
 
 def verdikti(cle):
-    """Les lectures que l'oeil a refusees, pour cette planche.
+    """The readings the eye has refused, for this plate.
 
-    LA MACHINE N'ECRIT PAS CE FICHIER. plates/verdicts.json se tient a
-    la main : chaque decoupe douteuse a ete relue avec, sous elle, le
-    nom que le fac-simile donne a l'objet, et l'on y a inscrit celles ou
-    le numero annonce ne se trouve pas. Si l'outil pouvait le reecrire,
-    le jugement se perdrait au premier relancement -- or c'est la seule
-    piece du dispositif qu'aucune mesure ne remplace.
+    THE MACHINE DOES NOT WRITE THIS FILE. plates/verdicts.json is kept
+    by hand: each doubtful cut-out has been re-read with, beneath it,
+    the name the facsimile gives the object, and we have entered there
+    those where the announced number is not to be found. If the tool
+    could rewrite it, the judgement would be lost at the first re-run --
+    and it is the one piece of the apparatus that no measurement
+    replaces.
     """
     f = RACINE / "plates" / "verdicts.json"
     if not f.exists():
@@ -744,10 +742,10 @@ def verdikti(cle):
 
 
 def objekti(cle):
-    """Le nom de chaque objet numerote, s'il a ete releve.
+    """The name of each numbered object, if it has been picked up.
 
-    Les cles suivent celles de numbers.json : « 39 » sur une planche d'une
-    seule scene, « c1:39 » sur une planche qui en porte plusieurs.
+    The keys follow those of numbers.json: « 39 » on a plate with a
+    single scene, « c1:39 » on a plate that carries several.
     """
     f = RACINE / "plates" / "objects.json"
     if not f.exists():
@@ -756,19 +754,19 @@ def objekti(cle):
 
 
 def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
-    """Une planche de controle : chaque numero lu, dans sa decoupe.
+    """A check sheet: each number read, in its cut-out.
 
-    LE NOM DE L'OBJET EST PORTE SOUS LA DECOUPE. La forme du chiffre ne
-    suffit pas a juger une lecture douteuse -- une hachure ressemble a
-    beaucoup de choses -- mais le fac-simile dit ce que le numero
-    designe, et l'oeil tranche alors tout de suite : si « (20) » doit
-    montrer une bicyclette et que la decoupe n'en porte pas, la lecture
-    est fausse, quel qu'ait ete son score.
+    THE OBJECT'S NAME IS CARRIED BENEATH THE CUT-OUT. The shape of the
+    figure is not enough to judge a doubtful reading -- a hatching
+    resembles many things -- but the facsimile says what the number
+    designates, and the eye then decides at once: if « (20) » is to show
+    a bicycle and the cut-out carries none, the reading is false,
+    whatever its score may have been.
 
-    « seuil » ne retient que les lectures au-dessous d'une confiance
-    donnee, et « large » elargit la decoupe : c'est la planche des cas
-    douteux, ou l'on veut voir l'objet autour du numero, non le seul
-    chiffre.
+    « threshold » keeps only the readings below a given confidence, and
+    « wide » widens the cut-out: this is the sheet of doubtful cases,
+    where one wants to see the object around the number, not the figure
+    alone.
     """
     from PIL import ImageDraw
     cle = cle_de(dest)
@@ -777,9 +775,9 @@ def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
             if seuil is None or v[1] < seuil}
     if not gard:
         return 0
-    # LE DECOUPAGE SE FAIT TOUJOURS DANS LA PLANCHE DE TRAVAIL, et
-    # celle-ci porte son encre en sombre : une feuille de controle se
-    # lit comme une gravure, non comme un negatif.
+    # THE CUTTING OUT IS ALWAYS DONE IN THE WORKING PLATE, and that
+    # one carries its ink dark: a check sheet reads like an engraving,
+    # not like a negative.
     im = planche(cle)
     marge = round(large * haut)
     cell = round(3.2 * haut * max(1.0, large / 1.1))
@@ -801,10 +799,10 @@ def controle(chemin, trouves, dest, haut, seuil=None, large=1.1, cols=12):
     return len(gard)
 
 
-# LA CLE DE PLANCHE SE TIRE DU NOM DE FICHIER, quel que soit le suffixe
-# que la feuille porte -- « -dubita », « -manuali », « -revizo2 ». On la
-# lit au motif, plutot que de retrancher une liste de suffixes qu'il
-# faudrait tenir a jour.
+# THE PLATE KEY IS DRAWN FROM THE FILENAME, whatever suffix the sheet
+# carries -- « -dubita », « -manuali », « -revizo2 ». We read it by
+# pattern, rather than strip a list of suffixes that would have to be
+# kept up to date.
 def cle_de(dest):
     m = re.match(r'(t\d\d-[a-z0-9]+-\d+)', Path(dest).stem)
     return m.group(1) if m else Path(dest).stem
@@ -816,38 +814,38 @@ def main(cles=None):
     fich = RACINE / "plates" / "numbers.json"
     if fich.exists():
         cat = json.loads(fich.read_text(encoding="utf-8"))
-    # LE COMPTE SE TIENT PAR TABLEAU, non par planche : le tableau 5 a
-    # deux gravures — la maison et son plan — qui se partagent une seule
-    # numerotation, et compter deux fois ses cent vingt-trois numeros
-    # ferait mentir le total.
+    # THE COUNT IS KEPT BY TABLE, not by plate: table 5 has two
+    # engravings — the house and its plan — which share a single
+    # numbering, and counting its hundred and twenty-three numbers twice
+    # would make the total lie.
     par_tab = {}
     for f in sorted(KOVRI.glob("*-trako.png")):
         cle = f.name[:-10]
         if not re.fullmatch(r't\d\d-[a-z0-9]+-\d+', cle):
-            continue          # les essais d'antan, restes dans kovri/
+            continue          # the trials of old, left in working/
         if cles and cle not in cles:
             continue
         att = attendus(cle)
         if not att:
             continue
-        # UNE PLANCHE REPRISE SUR SON ORIGINAL NE SE RELIT PAS. Ses
-        # numeros ont ete portes par originali.py, verifies un a un, et
-        # ils sont enregistres en fraction de la NOUVELLE planche : les
-        # relire sur l'ancienne couche de trait, qui n'a plus ni les
-        # memes dimensions ni le meme cadrage, ecraserait le travail.
-        # ON A ESSAYE DE LUI APPRENDRE LE GRIS, et l'on a mesure ce
-        # que cela vaut : mille cinq cents numeros deja places font
-        # quatorze cents chiffres etiquetes, de quoi refaire les
-        # modeles dans le medium meme (tools/chifri.py). Le lecteur
-        # ainsi refait retrouve 442 numeros a leur place, en pose 132
-        # AILLEURS, et en propose 45 de neufs. Un sur quatre est faux :
-        # c'est trop pour entrer ici tout seul. Il sert donc a
-        # PROPOSER, non a decider, et ce que l'oeil garde de ses
-        # propositions entre par manual.json comme le reste.
+        # A PLATE REDONE FROM ITS ORIGINAL IS NOT RE-READ. Its numbers
+        # have been carried over by originals.py, checked one by one, and
+        # they are recorded as a fraction of the NEW plate: re-reading
+        # them on the old line layer, which has neither the same
+        # dimensions nor the same framing, would destroy the work.
+        # WE TRIED TEACHING IT THE GREY, and measured what that is
+        # worth: fifteen hundred numbers already placed make fourteen
+        # hundred labelled figures, enough to remake the models in the
+        # medium itself (tools/ciphers.py). The reader so remade finds
+        # 442 numbers in their place, sets 132 ELSEWHERE, and proposes
+        # 45 new ones. One in four is false: too many to come in here
+        # on its own. It therefore serves to PROPOSE, not to decide,
+        # and what the eye keeps of its proposals comes in through
+        # manual.json like the rest.
         if repris(cle) and cle in cat:
-            # On garde les LECTURES, mais on continue d'accueillir ce que
-            # l'oeil pose : un numero releve a la main sur le fac-simile
-            # doit entrer, sans quoi la planche reprise serait figee.
+            # We keep the READINGS, but go on welcoming what the eye sets:
+            # a number picked up by hand on the facsimile must come in,
+            # failing which the redone plate would be frozen.
             e = cat[cle]
             la, ht, haut = e["largeur"], e["alteso"], e["corpo"]
             trouves = {n: ((round(v[0] * la), round(v[1] * ht),
@@ -857,15 +855,15 @@ def main(cles=None):
             for n in [n for n in trouves
                       if n in ref or str(descle(n)[1]) in ref]:
                 del trouves[n]
-            # CE QUE LA MAIN A POSE, LA MAIN PEUT LE REPRENDRE. Les
-            # positions relevees a l'oeil entrent ici avec une confiance
-            # de 1.0 exactement -- aucune lecture automatique n'y
-            # arrive -- et, une fois ecrites dans numbers.json, elles
-            # devenaient indiscernables des lectures portees depuis
-            # l'ancienne planche : les retirer de manual.json ne les
-            # retirait plus de rien. On les jette donc toutes avant de
-            # remettre celles que le fichier tient encore. Un numero
-            # pose de travers se corrige alors la ou on l'a pose.
+            # WHAT THE HAND HAS SET, THE HAND CAN TAKE BACK. The positions
+            # picked up by eye come in here with a confidence of exactly
+            # 1.0 -- no automatic reading reaches it -- and, once written
+            # into numbers.json, they became indistinguishable from the
+            # readings carried over from the old plate: removing them from
+            # manual.json no longer removed them from anything. We
+            # therefore throw them all away before putting back those the
+            # file still holds. A number set askew is then corrected where
+            # it was set.
             for n in [n for n, v in trouves.items() if v[1] == 1.0]:
                 del trouves[n]
             possibles = {kl(sc, n) for sc, ns in att.items() for n in ns}
@@ -888,9 +886,9 @@ def main(cles=None):
         a = np.asarray(Image.open(f))
         ht, la = a.shape
         haut = hauteur((a > 128).astype(np.uint8))
-        # LA LECTURE SE FAIT VIGNETTE PAR VIGNETTE. Sur une planche a
-        # plusieurs scenes, chacune recommence a 1 : chercher « 39 » sur
-        # toute la planche, c'est en trouver deux et n'en garder aucun.
+        # THE READING IS DONE VIGNETTE BY VIGNETTE. On a plate with
+        # several scenes, each starts again at 1: looking for « 39 » over
+        # the whole plate is to find two and keep neither.
         formes = ceni(cle) or [("", ["rekt", 0.0, 0.0, 1.0, 1.0])]
         trouves, jetes = {}, 0
         for sc, forme in formes:
@@ -902,12 +900,11 @@ def main(cles=None):
             lus = lire(a[y0:y1, x0:x1], att[sc], haut)
             lus = {n: ((b[0] + x0, b[1] + y0, b[2], b[3]), fo)
                    for n, (b, fo) in lus.items()}
-            # Le cadre englobant deborde sur les vignettes voisines --
-            # celui de l'ovale du tableau 6 les chevauche toutes quatre,
-            # et son « 6 » de faience tombait aussi dans le salon. La
-            # PREMIERE forme qui contient le point l'emporte : l'ovale
-            # est essaye avant les quatre vignettes, et rien n'est lu
-            # deux fois.
+            # The bounding frame overruns onto the neighbouring vignettes --
+            # that of the oval on table 6 overlaps all four, and its « 6 »
+            # of earthenware fell into the drawing room as well. The FIRST
+            # shape that contains the point wins: the oval is tried before
+            # the four vignettes, and nothing is read twice.
             def qui(v):
                 x = (v[0][0] + v[0][2] / 2) / la
                 y = (v[0][1] + v[0][3] / 2) / ht
@@ -918,15 +915,15 @@ def main(cles=None):
             jetes += jt
             trouves.update({kl(sc, n): v for n, v in lus.items()})
         attendu = sum(len(v) for v in att.values())
-        # Un refus ecrit en clair (« 54 ») sur une planche a scenes vaut
-        # pour toutes ses vignettes : le jugement date d'avant qu'on sut
-        # qu'il y en avait plusieurs, et rien ne dit laquelle il visait.
+        # A refusal written plainly (« 54 ») on a plate with scenes holds
+        # for all its vignettes: the judgement dates from before we knew
+        # there were several, and nothing says which one it aimed at.
         ref = verdikti(cle)
         refuses = {n for n in trouves
                    if n in ref or str(descle(n)[1]) in ref}
         for n in refuses:
             del trouves[n]
-        # Ce que l'oeil a pose l'emporte sur tout le reste.
+        # What the eye has set outweighs everything else.
         possibles = {kl(sc, n) for sc, ns in att.items() for n in ns}
         mains = manuali(cle, la, ht, haut)
         trouves.update({n: v for n, v in mains.items() if n in possibles})
@@ -934,23 +931,22 @@ def main(cles=None):
         t[0].update(trouves)
         t[1] = max(t[1], attendu)
         controle(f, trouves, KONTROLO / f"{cle}.png", haut)
-        # LA PLANCHE DES CAS DOUTEUX, decoupee plus large et portant le
-        # nom de l'objet : c'est celle qu'on relit pour trancher.
-        # Quatre colonnes et non huit : a huit, le chiffre au centre de
-        # la decoupe ne fait plus que quelques points a l'ecran, et l'on
-        # ne peut pas juger. La planche est plus haute, elle se lit.
+        # THE SHEET OF DOUBTFUL CASES, cut wider and carrying the name of
+        # the object: that is the one re-read to decide. Four columns and
+        # not eight: at eight, the figure at the centre of the cut-out is
+        # no more than a few points on screen, and one cannot judge. The
+        # sheet is taller, and it can be read.
         n_d = controle(f, trouves, KONTROLO / f"{cle}-dubita.png", haut,
                        seuil=0.95, large=3.4, cols=4)
-        # EN FRACTION, non en points : la page sert la planche a trois
-        # definitions, et le gros plan doit tomber juste sur chacune.
+        # AS A FRACTION, not in points: the page serves the plate at three
+        # resolutions, and the close-up must fall right on each.
         cat[cle] = {"corpo": haut, "largeur": la, "alteso": ht,
-                    # LA CONFIANCE EST ENREGISTREE AVEC LA POSITION. Une
-                    # lecture entierement decoupee par les ilots est sure ;
-                    # une lecture ou le balayage a fourni un chiffre l'est
-                    # beaucoup moins, et c'est sur les planches chargees que
-                    # la difference se voit. La page pourra donc n'ouvrir un
-                    # gros plan que sur les lectures qui la meritent, sans
-                    # qu'il faille relancer l'outil.
+                    # THE CONFIDENCE IS RECORDED WITH THE POSITION. A reading
+                    # entirely cut out by the islands is sure; a reading where
+                    # the sweep supplied a figure is much less so, and it is on
+                    # the busy plates that the difference shows. The page will
+                    # therefore be able to open a close-up only on the readings
+                    # that deserve it, without the tool having to be re-run.
                     "numeri": {str(n): [round(x / la, 6), round(y / ht, 6),
                                         round(w / la, 6), round(h / ht, 6), f]
                                for n, ((x, y, w, h), f)

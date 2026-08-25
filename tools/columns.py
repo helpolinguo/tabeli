@@ -1,49 +1,48 @@
 #!/usr/bin/env python3
 # ===================================================================
-#  kolonoj.py — la forme et la langue des colonnes traduites
+#  columns.py — the form and the language of the translated columns
 #
-#  UN CONTROLE PAR COLONNE, ET IL NE CONTROLE PAS LA MEME CHOSE QUE
-#  LES AUTRES. renvoji.py verifie que les renvois visent les memes
-#  objets dans le meme ordre ; objekti.py, que chaque objet de chaque
-#  planche est nomme ; controles.py, la pagination et l'appariement
-#  des cles. Aucun ne regarde la MATIERE d'un fichier de traduction :
-#  ses macros, ses coupures, et — pour les colonnes qui existent parce
-#  qu'elles ne sont pas leur voisine — sa langue.
+#  ONE CHECK PER COLUMN, AND IT DOES NOT CHECK THE SAME THING AS THE
+#  OTHERS. cross_refs.py verifies that the cross-references aim at the
+#  same objects in the same order; objects.py, that each object of each
+#  plate is named; checks.py, the pagination and the pairing of keys.
+#  None of them looks at the SUBSTANCE of a translation file: its
+#  macros, its breaks, and — for the columns that exist because they are
+#  not their neighbour — its language.
 #
-#  CE QUI L'A RENDU NECESSAIRE, une faute a la fois :
+#  WHAT MADE IT NECESSARY, one fault at a time:
 #
-#   * « \textuperscript{(74)} », un s manquant, au tableau 11
-#     cantonais. renvoji.py ne pouvait PAS la voir : il releve aussi
-#     les renvois composes « (74) » a plein corps, parce que le releve
-#     ido en compose ainsi au tableau 5. Le renvoi sortait donc juste
-#     et le fichier composait faux.
-#   * quatre « \nl » restes dans le tcheque, l'irlandais et le
-#     galicien — une traduction ne suit aucune ligne du fac-simile.
-#   * une accolade ouverte en fin de ligne, qui met une espace DEDANS
-#     le groupe gras.
-#   * un renvoi mis en gras au lieu d'en exposant, au tableau 10
-#     egyptien : meme angle mort que le premier.
-#   * trois blocs marathis ampute d'un fragment de phrase par une
-#     reprise faite au numero de ligne. renvoji.py n'en a signale
-#     qu'un — celui qui avait perdu un renvoi.
+#   * « \textuperscript{(74)} », a missing s, on Cantonese table 11.
+#     cross_refs.py could NOT see it: it also picks up cross-references
+#     set as « (74) » at full size, because the Ido transcription sets
+#     them so on table 5. The cross-reference therefore came out right
+#     and the file set wrong.
+#   * four « \nl » left in the Czech, the Irish and the Galician — a
+#     translation follows no line of the facsimile.
+#   * a brace opened at the end of a line, which puts a space INSIDE
+#     the bold group.
+#   * a cross-reference set in bold instead of as a superscript, on
+#     Egyptian table 10: the same blind spot as the first.
+#   * three Marathi blocks amputated of a fragment of a sentence by a
+#     repair made by line number. cross_refs.py signalled only one of
+#     them — the one that had lost a cross-reference.
 #
-#  ET LA LANGUE, pour trois colonnes qui doivent se justifier d'exister
-#  a cote d'une voisine : le cantonais contre le chinois, l'arabe
-#  egyptien contre l'arabe standard, le marathi contre le hindi. Si
-#  l'une d'elles ecrivait la langue de sa voisine, elle ferait double
-#  emploi — et c'est le motif exact qui a fait ecarter le wu. On releve
-#  donc les formes que la colonne NE DOIT PAS porter.
+#  AND THE LANGUAGE, for three columns that must justify existing
+#  beside a neighbour: Cantonese against Chinese, Egyptian Arabic
+#  against Standard Arabic, Marathi against Hindi. If one of them wrote
+#  its neighbour's language, it would be redundant — and that is the
+#  exact reason Wu was set aside. We therefore pick up the forms the
+#  column MUST NOT carry.
 #
-#  UN SIGNALEMENT DE LANGUE N'EST PAS TOUJOURS UNE FAUTE, et deux
-#  l'ont prouve : le vieux cordonnier du tableau 7 egyptien oppose
-#  lui-meme « صانع أحذية » a « جزمجي », et « طاولة » au tableau 13
-#  n'est pas une table mais le trictrac. Les deux sont exemptes par
-#  leur forme EXACTE, jamais par le mot : un controle qu'on desarme en
-#  bloc ne controle plus rien.
+#  A LANGUAGE REPORT IS NOT ALWAYS A FAULT, and two have proved it:
+#  the old cobbler of Egyptian table 7 himself sets « صانع أحذية »
+#  against « جزمجي », and « طاولة » on table 13 is not a table but
+#  backgammon. Both are exempted by their EXACT form, never by the
+#  word: a check disarmed wholesale checks nothing any more.
 #
 #  USAGE
-#      python3 tools/kolonoj.py            # toutes les colonnes
-#      python3 tools/kolonoj.py yue mr     # celles-la
+#      python3 tools/columns.py            # every column
+#      python3 tools/columns.py yue mr     # just those
 # ===================================================================
 
 import re
@@ -54,37 +53,37 @@ RACINE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE / "tools"))
 import cross_refs                                              # noqa: E402
 
-LARGO = 94          # caracteres, non octets : l'arabe et le devanagari
-#                     en mettent beaucoup dans peu de largeur.
+LARGO = 94          # characters, not bytes: Arabic and Devanagari
+#                     put a great many into little width.
 
-# LES MACROS QU'UNE TRADUCTION A LE DROIT D'ECRIRE. Tout le reste est
-# une coquille — ou une macro de TRANSCRIPTION, qui n'a rien a faire
-# ici : \nl, \cc et VUpage suivent les lignes et les feuillets du
-# fac-simile, qu'une traduction ne suit pas.
+# THE MACROS A TRANSLATION IS ENTITLED TO WRITE. All the rest is a
+# slip — or a TRANSCRIPTION macro, which has no business here: \nl,
+# \cc and VUpage follow the lines and the leaves of the facsimile,
+# which a translation does not follow.
 CONNUES = {"VUgras", "VUnotes", "VUsaut", "VUcentre", "VUfilet", "VUtitre",
            "VUpk", "VUcontinue", "VUblancAlinea", "VUornamento",
            "textsuperscript", "textit", "textsc", "parplein",
            "centering", "par", "fontsize", "selectfont", "textls",
            "scshape"}
 
-# LES DEUX COLONNES QUE CET OUTIL NE REGARDE PAS. io et fr ne sont pas
-# des traductions mais des TRANSCRIPTIONS : elles suivent les lignes et
-# les feuillets du fac-simile, donc elles ecrivent legitimement \nl,
-# \cc et VUpage, et leurs lignes sont aussi longues que celles de 1926.
-# Les leur reprocher reviendrait a leur reprocher d'etre fideles.
+# THE TWO COLUMNS THIS TOOL DOES NOT LOOK AT. io and fr are not
+# translations but TRANSCRIPTIONS: they follow the lines and the leaves
+# of the facsimile, so they legitimately write \nl, \cc and VUpage, and
+# their lines are as long as those of 1926. To reproach them with it
+# would be to reproach them with being faithful.
 TRANSCRIPTIONS = {"io", "fr"}
 
 DEVA = r"[\u0900-\u097F]"
 
 
 def _deva(*formes):
-    """Frontiere de mot en devanagari, faute de pouvoir compter sur \\b.
+    """Word boundary in Devanagari, for want of being able to rely on \\b.
 
-    LE \\b DE PYTHON EST INUTILISABLE EN DEVANAGARI : le virama « ् »
-    et les matras sont des marques combinantes, que str.isalnum()
-    rejette. Python voit donc une frontiere AU MILIEU de « प्रत्येक »,
-    et « \\bये\\b » y trouve un pronom hindi qui n'existe pas — douze
-    signalements, tous faux, au premier jet du tableau 1 marathi.
+    PYTHON'S \\b IS UNUSABLE IN DEVANAGARI: the virama « ् » and the
+    matras are combining marks, which str.isalnum() rejects. Python
+    therefore sees a boundary IN THE MIDDLE of « प्रत्येक », and
+    « \\bये\\b » finds there a Hindi pronoun that does not exist —
+    twelve reports, all false, on the first pass of Marathi table 1.
     """
     return "|".join(f"(?<!{DEVA}){re.escape(f)}(?!{DEVA})" for f in formes)
 
@@ -93,11 +92,11 @@ GUJ = r"[\u0A80-\u0AFF]"
 
 
 def _guj(*formes):
-    """Frontiere de mot en gujarati, pour la meme raison qu'en devanagari.
+    """Word boundary in Gujarati, for the same reason as in Devanagari.
 
-    Le gujarati a les memes matras combinantes que le devanagari et le
-    \\b de Python y est tout aussi inutilisable : voir _deva, plus
-    haut, et les douze faux signalements du premier jet marathi.
+    Gujarati has the same combining matras as Devanagari and Python's
+    \\b is just as unusable there: see _deva, above, and the twelve
+    false reports of the first Marathi pass.
     """
     return "|".join(f"(?<!{GUJ}){re.escape(f)}(?!{GUJ})" for f in formes)
 
@@ -106,93 +105,89 @@ def _mot(*formes):
     return "|".join(rf"\b{re.escape(f)}\b" for f in formes)
 
 
-# LE DOMAINE COUVRE LES MARQUES AUTANT QUE LES LETTRES, et c'est
-# la seconde moitie de la lecon. Ferme sur les seules lettres, la
-# regle « هل » se declenchait DANS « هلّق » : la chadda U+0651 est
-# une marque, le \b se referme donc juste avant elle, et le mot
-# levantin le plus ordinaire du releve criait comme une particule
-# standard. Le meme defaut manque un mot par la fin et en invente
-# un par le milieu.
+# THE RANGE COVERS THE MARKS AS MUCH AS THE LETTERS, and that is
+# the second half of the lesson. Closed on the letters alone, the
+# rule « هل » fired INSIDE « هلّق »: the shadda U+0651 is a mark, so
+# the \b closes just before it, and the most ordinary Levantine word
+# of the transcription cried out like a standard particle. The same
+# defect misses a word by its end and invents one in its middle.
 ARAB = r"[\u0621-\u065F\u0670-\u06FF]"
 
 
 def _arb(*formes):
-    """Frontiere de mot en arabe, quand le mot FINIT PAR UNE MARQUE.
+    """Word boundary in Arabic, when the word ENDS IN A MARK.
 
-    LE \\b DE PYTHON NE SE REFERME PAS APRES UN TANWIN, et c'est la
-    meme lecon qu'en devanagari, sur un troisieme alphabet. « اً »
-    s'ecrit alef puis U+064B, qui est une marque combinante de
-    categorie Mn : str.isalnum() la rejette, il n'y a donc aucune
-    frontiere de mot apres elle, et « \\bأيضاً\\b » ne trouve JAMAIS
-    rien. Mesure faite avant d'ecrire une ligne de levantin :
-    « أيضًا » (tanwin puis alef) passait, « أيضاً » (alef puis tanwin)
-    ne passait pas — et la colonne egyptienne portait la meme regle
-    morte depuis le debut, pour أيضاً et pour جداً.
+    PYTHON'S \\b DOES NOT CLOSE AFTER A TANWIN, and it is the same
+    lesson as in Devanagari, on a third alphabet. « اً » is written
+    alef then U+064B, which is a combining mark of category Mn:
+    str.isalnum() rejects it, so there is no word boundary after it,
+    and « \\bأيضاً\\b » NEVER finds anything. Measured before a line of
+    Levantine was written: « أيضًا » (tanwin then alef) passed,
+    « أيضاً » (alef then tanwin) did not — and the Egyptian column had
+    carried the same dead rule from the start, for أيضاً and for جداً.
 
-    ET LE \\b NE S'OUVRE PAS DAVANTAGE QU'IL NE SE FERME. Corrige d'un
-    seul cote, l'outil a tenu deux tableaux puis a crie « فين » DANS
-    « مجدّفين » : la chadda precede le ف, le \\b s'ouvre donc juste
-    apres elle, et le mot pour rameur passait pour l'interrogatif
-    egyptien. Trois manifestations d'un seul defaut — un silence par
-    la fin, un faux par le milieu, un faux par le debut — avant que
-    la forme juste soit ecrite.
+    AND THE \\b OPENS NO BETTER THAN IT CLOSES. Corrected on one side
+    only, the tool held for two tables then cried « فين » INSIDE
+    « مجدّفين »: the shadda precedes the ف, so the \\b opens just after
+    it, and the word for oarsman passed for the Egyptian
+    interrogative. Three manifestations of a single defect — a silence
+    by the end, a false one by the middle, a false one by the start —
+    before the right form was written.
 
-    On encadre donc par DEUX NEGATIONS, sans \\b du tout, exactement
-    comme _deva et _guj le font depuis le debut. La reponse etait
-    deja dans le fichier, deux helpers plus haut.
+    We therefore bracket with TWO NEGATIONS, with no \\b at all,
+    exactly as _deva and _guj have done from the start. The answer was
+    already in the file, two helpers above.
     """
     return "|".join(
         f"(?<!{ARAB}){re.escape(f)}(?!{ARAB})" for f in formes)
 
 
 # -------------------------------------------------------------------
-#  LES COLONNES QUI ONT UNE LANGUE A DEFENDRE
+#  THE COLUMNS THAT HAVE A LANGUAGE TO DEFEND
 # -------------------------------------------------------------------
-#  {kodo: {"mot": [(motif, ce qu'il faut ecrire)], "exemptes": [...],
-#          "narracio": [(motif, ...)]}}
+#  {code: {"word": [(pattern, what should be written)], "exempt": [...],
+#          "narration": [(pattern, ...)]}}
 #
-#  « narracio » PORTE LES REGLES QUI NE VALENT QUE HORS DIALOGUE.
-#  Une seule colonne en a besoin, le javanais, et une seule raison
-#  la lui donne : ses niveaux de langue ne se choisissent pas par
-#  texte mais par QUI PARLE A QUI. La narration du livret tient le
-#  ngoko ; mais au tableau 5, qui est un dialogue d'un bout a
-#  l'autre, l'enfant s'adresse a son oncle, et un enfant javanais
-#  parle krama a son oncle. « kula », « mboten », « sampun » y sont
-#  donc les formes JUSTES, et les relever serait crier sur la
-#  politesse meme que l'alinea decrit.
+#  « narration » CARRIES THE RULES THAT HOLD ONLY OUTSIDE DIALOGUE.
+#  Only one column needs it, Javanese, and only one reason gives it
+#  that need: its speech levels are chosen not by text but by WHO IS
+#  SPEAKING TO WHOM. The booklet's narration holds to ngoko; but on
+#  table 5, which is a dialogue from end to end, the child addresses
+#  his uncle, and a Javanese child speaks krama to his uncle.
+#  « kula », « mboten », « sampun » are therefore the RIGHT forms
+#  there, and to report them would be to cry out at the very
+#  politeness the paragraph describes.
 #
-#  LE DIALOGUE SE RECONNAIT AU FICHIER, ET LA MESURE EST NETTE.
-#  Les attributions de parole s'ecrivent « \textsc{...}. --- » : le
-#  tableau 5 en compte TRENTE-SIX, le tableau 12 en compte UNE (et
-#  c'est « Noto. », pas un locuteur), les quatorze autres n'en ont
-#  aucune. Le seuil est pose a cinq, ou il n'y a rien a departager.
+#  DIALOGUE IS RECOGNISED BY THE FILE, AND THE MEASUREMENT IS CLEAR.
+#  Speech attributions are written « \textsc{...}. --- »: table 5 has
+#  THIRTY-SIX of them, table 12 has ONE (and it is « Noto. », not a
+#  speaker), the other fourteen have none. The threshold is set at
+#  five, where there is nothing to decide between.
 #
-#  Les colonnes absentes de cette table ne subissent que le controle de
-#  forme, qui vaut pour toutes.
+#  The columns absent from this table undergo only the form check,
+#  which holds for all.
 LINGUI = {
 
-    # L'ESPERANTO CONTRE SES PROPRES NEOLOGISMES. La colonne n'avait
-    # aucun controle : elle est la seule langue construite du releve dont
-    # la voisine n'est pas une autre langue mais UNE AUTRE ECOLE DE LA
-    # MEME. « La Bona Lingvo » — le livre de Claude Piron, 1989, et le
-    # site labonalingvo.org — tient que l'esperanto dit deja tout par
-    # composition et derivation, et qu'un radical emprunte de plus est
-    # un mot de plus a apprendre pour rien. On releve donc ici les
-    # neologismes que cette ecole remplace par « mal- » ou par un
-    # compose.
+    # ESPERANTO AGAINST ITS OWN NEOLOGISMS. The column had no check at
+    # all: it is the only constructed language of the transcription whose
+    # neighbour is not another language but ANOTHER SCHOOL OF THE SAME.
+    # « La Bona Lingvo » — Claude Piron's book, 1989, and the site
+    # labonalingvo.org — holds that Esperanto already says everything by
+    # composition and derivation, and that one more borrowed root is one
+    # more word to learn for nothing. We therefore pick up here the
+    # neologisms that school replaces with « mal- » or with a compound.
     #
-    # LES FORMES SONT ECRITES ENTIERES, terminaison comprise, et c'est
-    # necessaire : « kurt- » attraperait « kurteno », le rideau, et
-    # « led- » attraperait « ledo », le cuir, qui sont l'un et l'autre
-    # de bons mots. Un radical ne se cherche pas par son debut dans une
-    # langue agglutinante.
+    # THE FORMS ARE WRITTEN WHOLE, ending included, and that is
+    # necessary: « kurt- » would catch « kurteno », the curtain, and
+    # « led- » would catch « ledo », leather, which are both good words.
+    # A root is not looked for by its beginning in an agglutinative
+    # language.
     #
-    # LES DEUX DERNIERS NE SONT PAS DES NEOLOGISMES mais des radicaux
-    # savants officiels, que la colonne employait une et deux fois :
-    # « hospitalo » et « karcero ». Ils sont remplaces par
-    # « malsanulejo » et « malliberejo », qui ne demandent aucun radical
-    # neuf. La colonne faisait deja ce choix ailleurs — elle ecrit
-    # « lernejo » la ou l'ido ecrit « skolo ».
+    # THE LAST TWO ARE NOT NEOLOGISMS but official learned roots, which
+    # the column used once and twice: « hospitalo » and « karcero ». They
+    # are replaced by « malsanulejo » and « malliberejo », which call for
+    # no new root. The column was already making that choice elsewhere —
+    # it writes « lernejo » where Ido writes « skolo ».
     "eo": {"mot": [
         (_mot("olda", "oldaj", "oldan", "oldajn", "olde", "oldulo"),
          "maljuna"),
@@ -212,9 +207,9 @@ LINGUI = {
          "malliberejo"),
     ]},
 
-    # LE CANTONAIS CONTRE LE CHINOIS STANDARD. Les quatorze marqueurs
-    # sont poses en tete de text/yue/10-toubiu-01.tex ; on releve ici
-    # les formes du nord qui les remplaceraient.
+    # CANTONESE AGAINST STANDARD CHINESE. The fourteen markers are set
+    # at the head of text/yue/10-toubiu-01.tex; we pick up here the
+    # northern forms that would replace them.
     "yue": {"mot": [
         (_mot("是"), "係"), (_mot("在"), "喺"), (_mot("的"), "嘅"),
         (_mot("不"), "唔"), (_mot("了"), "咗"), (_mot("他"), "佢"),
@@ -222,7 +217,7 @@ LINGUI = {
         (_mot("給"), "畀"), (_mot("很"), "好"), (_mot("們"), "哋"),
     ]},
 
-    # L'ARABE EGYPTIEN CONTRE L'ARABE STANDARD.
+    # EGYPTIAN ARABIC AGAINST STANDARD ARABIC.
     "arz": {"mot": [
         (_arb("هذه"), "دي"), (_arb("هذا"), "ده"), (_arb("هؤلاء"), "دول"),
         (_arb("ذلك"), "ده"), (_arb("تلك"), "دي"),
@@ -249,22 +244,21 @@ LINGUI = {
         (_arb("معطف", "معاطف"), "بالطو"),
         (_arb("ممحاة"), "أستيكة"), (_arb("مصباح"), "لمبة"),
     ], "exemptes": [
-        # LA CHUTE DU VIEUX CORDONNIER, tableau 7 : « en ville je
-        # m'appelais صانع أحذية et je n'avais pas de clients ; ici je
-        # m'appelle جزمجي et le travail ne manque pas ». Le mot savant
-        # EST la plaisanterie, et l'ido l'a deja sous la forme
-        # « shuifisto » / « shureparisto ».
+        # THE OLD COBBLER'S PUNCHLINE, table 7: « in town I was called
+        # صانع أحذية and I had no customers; here I am called جزمجي
+        # and there is no shortage of work ». The learned word IS the
+        # joke, and Ido already has it in the form « shuifisto » /
+        # « shureparisto ».
         "(صانع أحذية)",
-        # AU TABLEAU 13, « طاولة » N'EST PAS UNE TABLE : c'est le
-        # trictrac, qui porte ce nom-la en egyptien et pas un autre. Le
-        # signalement ordinaire est juste PRECISEMENT parce que le mot
-        # est pris ailleurs.
+        # ON TABLE 13, « طاولة » IS NOT A TABLE: it is backgammon, which
+        # bears that name in Egyptian and no other. The ordinary report
+        # is right PRECISELY because the word is taken elsewhere.
         "طاولة} \\textsuperscript{(81)",
     ], "virgule": True},
 
-    # LE MARATHI CONTRE LE HINDI. Deux langues, un meme alphabet.
-    # « हो », « का » et « की » ne sont PAS releves : le marathi dit हो
-    # pour « oui », का pour « pourquoi » et की pour « que ».
+    # MARATHI AGAINST HINDI. Two languages, one alphabet. « हो »,
+    # « का » and « की » are NOT reported: Marathi says हो for « yes »,
+    # का for « why » and की for « that ».
     "mr": {"mot": [
         (_deva("है", "हैं", "हूँ"), "आहे / आहेत"),
         (_deva("था", "थे", "थी"), "होता / होते / होती"),
@@ -285,51 +279,50 @@ LINGUI = {
         (_deva("किताब"), "पुस्तक"),
         (_deva("आँख", "आंख", "आँखें"), "डोळा / डोळे"),
         (_deva("सड़क"), "रस्ता"),
-        # LES TROIS MOTS D'APPARAT NE SE RELEVENT QUE SOUS LEUR
-        # FORME D'APPARAT. « दृश्य » est du marathi parfaitement
-        # ordinaire — une vue, un spectacle — et le tableau 10
-        # l'emploie deux fois a bon droit ; ce qui serait fautif
-        # est « पहिले दृश्य » a la place de « पहिला प्रवेश ». On vise
-        # donc le mot PRECEDE DE SON ORDINAL, jamais le mot seul :
-        # un controle trop large se fait desarmer, et un controle
-        # desarme ne controle plus rien.
+        # THE THREE FORMAL WORDS ARE REPORTED ONLY IN THEIR FORMAL
+        # FORM. « दृश्य » is perfectly ordinary Marathi — a view, a
+        # spectacle — and table 10 uses it twice by right; what would
+        # be at fault is « पहिले दृश्य » in place of « पहिला प्रवेश ». We
+        # therefore aim at the word PRECEDED BY ITS ORDINAL, never at
+        # the word alone: too broad a check gets itself disarmed, and
+        # a disarmed check checks nothing any more.
         (_deva("तालिका क्रमांक"), "तक्ता क्रमांक"),
         (_deva("पहिले दृश्य", "दुसरे दृश्य", "तिसरे दृश्य",
                "चौथे दृश्य"), "पहिला प्रवेश ..."),
         (_deva("पहिली शृंखला", "दुसरी शृंखला", "तिसरी शृंखला",
                "चौथी शृंखला"), "पहिली मालिका ..."),
     ], "exemptes": [
-        # « ये » EST AUSSI L'IMPERATIF MARATHI DE « VENIR ». Le hindi
-        # ecrit ये pour « ceux-ci » ; le marathi, lui, conjugue येणे et
-        # dit « ये रे » — viens donc. Deux langues, un meme alphabet, et
-        # cette fois les deux mots s'ecrivent avec exactement les memes
-        # signes : aucune frontiere, aucune matra ne les separe. On
-        # exempte la forme suivie de sa particule, jamais le mot seul.
+        # « ये » IS ALSO THE MARATHI IMPERATIVE OF « TO COME ». Hindi
+        # writes ये for « these »; Marathi conjugates येणे and says
+        # « ये रे » — do come. Two languages, one alphabet, and this time
+        # the two words are written with exactly the same signs: no
+        # boundary, no matra separates them. We exempt the form followed
+        # by its particle, never the word alone.
         "ये रे",
-        # « ये-जा », LE VA-ET-VIENT : meme verbe येणे, meme deux
-        # signes que le pronom hindi. Le tableau 9 l'ecrit de la
-        # chaussee qui facilite les communications.
+        # « ये-जा », THE COMING AND GOING: the same verb येणे, the same
+        # two signs as the Hindi pronoun. Table 9 writes it of the
+        # roadway that eases communications.
         "ये-जा",
-        # « दरवाजा » N'EST PAS TOUJOURS DU HINDI. Le marathi dit दार
-        # pour la porte d'une maison — c'est la regle, et la colonne
-        # l'applique partout — mais दरवाजा pour la GRANDE porte
-        # d'un fort, celle qu'on appelle महादरवाजा au Maharashtra.
-        # Le tableau 11 parle de la porte du vieux chateau fortifie
-        # flanquee de ses deux tours : c'est ce mot-la et pas
-        # l'autre. Exemptee par sa forme exacte, avec son renvoi ;
-        # la graphie hindi दरवाज़ा, avec son nukta, reste relevee
-        # partout, et दरवाजा aussi ailleurs qu'ici.
+        # « दरवाजा » IS NOT ALWAYS HINDI. Marathi says दार for the
+        # door of a house — that is the rule, and the column applies
+        # it everywhere — but दरवाजा for the GREAT gate of a fort, the
+        # one called महादरवाजा in Maharashtra. Table 11 speaks of the
+        # gate of the old fortified castle flanked by its two towers:
+        # it is that word and not the other. Exempted by its exact
+        # form, with its cross-reference; the Hindi spelling दरवाज़ा,
+        # with its nukta, stays reported everywhere, and दरवाजा too
+        # anywhere but here.
         r"\VUgras{दरवाजा} \textsuperscript{(8)}",
     ]},
 
-    # LE TELOUGOU CONTRE LE HINDI, ET LE CAS EST DIFFERENT DES TROIS
-    # AUTRES. Le cantonais, l'egyptien et le marathi devaient se
-    # defendre contre une voisine PROCHE ; le telougou est dravidien
-    # et n'a aucune parente avec les colonnes indiennes du releve. Le
-    # risque n'est donc pas de derailler vers le hindi mais d'y
-    # puiser un mot savant la ou le telougou en a un a lui — ce que
-    # font les traductions pressees. On releve les formes hindi et
-    # sanskrites que le telougou courant ne dit pas.
+    # TELUGU AGAINST HINDI, AND THE CASE DIFFERS FROM THE OTHER
+    # THREE. Cantonese, Egyptian and Marathi had to defend themselves
+    # against a CLOSE neighbour; Telugu is Dravidian and has no
+    # kinship with the Indian columns of the transcription. The risk
+    # is therefore not of drifting into Hindi but of drawing a learned
+    # word from it where Telugu has one of its own — which is what
+    # hurried translations do. We pick up the Hindi and Sanskrit forms
+    # that everyday Telugu does not say.
     "te": {"mot": [
         (_mot("है", "हैं", "था", "थे"), "ఉంది / ఉన్నాయి"),
         (_mot("नहीं"), "లేదు / కాదు"),
@@ -337,45 +330,45 @@ LINGUI = {
         (_mot("क्योंकि"), "ఎందుకంటే"), (_mot("बहुत"), "చాలా"),
         (_mot("यह", "वह"), "ఇది / అది"),
         (_mot("क्या", "कैसे", "कहाँ"), "ఏమిటి / ఎలా / ఎక్కడ"),
-        # LES MOTS D'APPARAT, VISES SOUS LEUR SEULE FORME D'APPARAT,
-        # comme pour le marathi : « దృశ్యం » est du telougou
-        # parfaitement ordinaire pour une vue.
+        # THE FORMAL WORDS, AIMED AT ONLY IN THEIR FORMAL FORM,
+        # as for Marathi: « దృశ్యం » is perfectly ordinary Telugu
+        # for a view.
         (_mot("తాలికా", "తాలిక"), "పట్టిక"),
         (_mot("మొదటి దృశ్యం", "రెండవ దృశ్యం", "మూడవ దృశ్యం",
               "నాలుగవ దృశ్యం"), "మొదటి రంగం ..."),
     ]},
 
-    # LE COREEN CONTRE LE HANJA. Les autres colonnes se defendent
-    # contre une langue VOISINE qui partage leur alphabet — le
-    # cantonais contre le mandarin, le marathi contre le hindi. Le
-    # coreen n'a pas de voisin de ce genre : le hangul n'est partage
-    # par personne. Ce qui le guette est autre chose, et plus simple :
-    # le mot sino-coreen ecrit en ideogrammes, comme on l'imprimait
-    # encore en 1926. Le coreen de 2026 s'ecrit tout en hangul ; un
-    # seul ideogramme dans text/ko est donc une faute, quel qu'il
-    # soit, et la regle tient en une classe de caracteres.
+    # KOREAN AGAINST HANJA. The other columns defend themselves
+    # against a NEIGHBOURING language that shares their alphabet —
+    # Cantonese against Mandarin, Marathi against Hindi. Korean has no
+    # neighbour of that kind: hangul is shared by nobody. What
+    # threatens it is something else, and simpler: the Sino-Korean
+    # word written in ideograms, as it was still printed in 1926. The
+    # Korean of 2026 is written wholly in hangul; a single ideogram in
+    # text/ko is therefore a fault, whichever it may be, and the rule
+    # fits in one character class.
     "ko": {"mot": [
         (r"[\u4E00-\u9FFF]", "hangul seul — le coreen de 2026 "
                               "n'imprime plus le hanja"),
     ]},
 
-    # LE TAMOUL CONTRE LUI-MEME. C'est la premiere colonne du releve
-    # dont l'adversaire n'est ni une langue voisine ni une ecriture
-    # ancienne, mais un REGISTRE. Le tamoul est diglossique pour de
-    # bon : la langue parlee et la langue ecrite different jusque dans
-    # la conjugaison, et personne n'imprime la premiere. Un livret de
-    # 1926 rendu en tamoul parle serait aussi faux qu'un livret rendu
-    # en argot — non pas trop moderne, mais d'un autre usage. On
-    # releve donc les marques du parle les plus sures, celles qui ne
-    # peuvent pas etre autre chose.
+    # TAMIL AGAINST ITSELF. It is the first column of the
+    # transcription whose adversary is neither a neighbouring language
+    # nor an old script, but a REGISTER. Tamil is diglossic in
+    # earnest: the spoken and the written language differ down to the
+    # conjugation, and nobody prints the first. A booklet of 1926
+    # rendered in spoken Tamil would be as wrong as a booklet rendered
+    # in slang — not too modern, but of another use. We therefore pick
+    # up the surest marks of the spoken language, those that cannot be
+    # anything else.
     #
-    # Deux d'entre elles demandent une precaution. « இருக்கு » est la
-    # forme parlee de « இருக்கிறது », mais elle est aussi la fin de
-    # « கிடைக்கு » et de quelques autres : on l'exige donc precedee
-    # d'un blanc. « இல்ல » est le parle de « இல்லை » et le debut de
-    # « இல்லாத » : on exige la fin de mot. Un controle qui se declenche
-    # sur un mot honnete finit desarme, et un controle desarme ne
-    # controle plus rien.
+    # Two of them call for a precaution. « இருக்கு » is the spoken form
+    # of « இருக்கிறது », but it is also the end of « கிடைக்கு » and of a
+    # few others: we therefore require it preceded by a space.
+    # « இல்ல » is the spoken form of « இல்லை » and the beginning of
+    # « இல்லாத »: we require the end of a word. A check that fires on an
+    # honest word ends up disarmed, and a disarmed check checks nothing
+    # any more.
     "ta": {"mot": [
         (r"(?<![\u0B80-\u0BFF])இருக்கு(?![\u0B80-\u0BFF])",
          "இருக்கிறது — la colonne s'imprime, elle ne se parle pas"),
@@ -385,51 +378,48 @@ LINGUI = {
         (r"(?<![\u0B80-\u0BFF])ஏன்னா(?![\u0B80-\u0BFF])", "ஏனெனில்"),
         (r"(?<![\u0B80-\u0BFF])இப்ப(?![\u0B80-\u0BFF])", "இப்போது"),
         (r"(?<![\u0B80-\u0BFF])அப்ப(?![\u0B80-\u0BFF])", "அப்போது"),
-        # LES CHIFFRES TAMOULS SONT DE L'EPIGRAPHIE. Le tamoul de 2026
-        # compte en chiffres arabes, dans la prose comme dans
-        # l'apparat — « அட்டவணை எண் 1 » et non « எண் ௧ ». Les
-        # ௰ ௱ ௲ (dix, cent, mille) sont dans la meme plage et tombent
-        # sous la meme regle.
+        # TAMIL NUMERALS ARE EPIGRAPHY. The Tamil of 2026 counts in
+        # Arabic figures, in prose as in formal matter — « அட்டவணை எண் 1 »
+        # and not « எண் ௧ ». The ௰ ௱ ௲ (ten, hundred, thousand) are in
+        # the same range and fall under the same rule.
         (r"[\u0BE6-\u0BF2]", "chiffres arabes — les chiffres tamouls "
                               "ne servent plus qu'en epigraphie"),
     ]},
 
-    # L'OURDOU CONTRE DEUX VOISINES A LA FOIS, ET C'EST UN CAS NEUF.
-    # Toutes les colonnes defendues jusqu'ici l'etaient sur UN front :
-    # le cantonais contre le mandarin, le marathi contre le hindi, le
-    # coreen contre le hanja, le tamoul contre son propre parle.
-    # L'ourdou en a deux, et de natures differentes :
+    # URDU AGAINST TWO NEIGHBOURS AT ONCE, AND IT IS A NEW CASE.
+    # Every column defended so far was defended on ONE front:
+    # Cantonese against Mandarin, Marathi against Hindi, Korean
+    # against hanja, Tamil against its own spoken form. Urdu has two,
+    # and of different natures:
     #
-    #   * il partage l'ECRITURE avec le pendjabi chahmoukhi (pnb),
-    #     qui est une AUTRE LANGUE. Le risque est le meme que pour le
-    #     cantonais : la voisine s'ecrit dans le meme alphabet et
-    #     passerait inapercue.
-    #   * il partage la LANGUE avec le hindi — meme grammaire, meme
-    #     lexique de base — et n'en differe que par l'ecriture et par
-    #     le REGISTRE SAVANT : sanskrit d'un cote, persan et arabe de
-    #     l'autre. Le hindi ne peut pas s'infiltrer en devanagari,
-    #     mais son vocabulaire savant TRANSLITTERE, si.
+    #   * it shares its SCRIPT with Shahmukhi Punjabi (pnb), which is
+    #     ANOTHER LANGUAGE. The risk is the same as for Cantonese: the
+    #     neighbour is written in the same alphabet and would go
+    #     unnoticed.
+    #   * it shares its LANGUAGE with Hindi — same grammar, same basic
+    #     lexicon — and differs from it only by script and by LEARNED
+    #     REGISTER: Sanskrit on one side, Persian and Arabic on the
+    #     other. Hindi cannot slip in in Devanagari, but its learned
+    #     vocabulary TRANSLITERATED can.
     #
-    # LE PREMIER FRONT SE TIENT PAR LA GRAMMAIRE. Le genitif pendjabi
-    # « دا » n'existe pas en ourdou, qui dit « کا » : c'est le
-    # marqueur le plus frequent et le plus sur de la langue voisine.
-    # On NE releve PAS « دی » ni « دے », qui sont pourtant les deux
-    # autres formes du meme genitif : ce sont aussi des mots ourdous
-    # ordinaires — « دی » est le passe de donner, « دے » son
-    # imperatif. Un controle qui les prendrait crierait a chaque
-    # page, et un controle qui crie finit desarme.
+    # THE FIRST FRONT IS HELD BY GRAMMAR. The Punjabi genitive « دا »
+    # does not exist in Urdu, which says « کا »: it is the most
+    # frequent and surest marker of the neighbouring language. We do
+    # NOT report « دی » or « دے », which are however the two other
+    # forms of the same genitive: they are also ordinary Urdu words —
+    # « دی » is the past of to give, « دے » its imperative. A check
+    # that took them would cry out on every page, and a check that
+    # cries out ends up disarmed.
     #
-    # LE SECOND SE TIENT PAR LE LEXIQUE, et les mots vises sont des
-    # tatsama que l'ourdou imprime n'emploie jamais — non parce
-    # qu'ils seraient trop savants, mais parce que sa colonne savante
-    # est l'autre.
+    # THE SECOND IS HELD BY THE LEXICON, and the words aimed at are
+    # tatsama that printed Urdu never uses — not because they would be
+    # too learned, but because its learned column is the other one.
     "ur": {"mot": [
         (_mot("دا"), "کا — genitif pendjabi"),
         (_mot("دوجا", "تیجا"), "دوسرا / تیسرا"),
-        # « اوہ » EST LE « اوہ » PENDJABI (« lui ») ET L'INTERJECTION
-        # OURDOUE (« oh ! ») : deux mots pour une seule graphie. On
-        # ne le releve pas, et l'on garde « ایہہ », qui n'est que
-        # pendjabi.
+        # « اوہ » IS THE PUNJABI « اوہ » (« he ») AND THE URDU
+        # INTERJECTION (« oh! »): two words for one spelling. We do
+        # not report it, and keep « ایہہ », which is Punjabi only.
         (_mot("ایہہ"), "یہ"),
         (_mot("نئیں"), "نہیں"),
         (_mot("کیتا"), "کیا"),
@@ -437,7 +427,7 @@ LINGUI = {
         (_mot("کول"), "پاس"),
         (_mot("جیہڑا", "جیہڑی"), "جو"),
         (_mot("ساڈا", "تہاڈا"), "ہمارا / تمہارا"),
-        # LES TATSAMA DU HINDI, VISES SOUS LEUR FORME TRANSLITTEREE.
+        # THE TATSAMA OF HINDI, AIMED AT IN THEIR TRANSLITERATED FORM.
         (_mot("ودیالیہ"), "اسکول / مدرسہ"),
         (_mot("ودیارتھی"), "طالب علم"),
         (_mot("ادھیاپک"), "استاد"),
@@ -448,46 +438,45 @@ LINGUI = {
         (_mot("ناری"), "عورت"),
         (_mot("کاریہ"), "کام"),
     ]},
-    # L'INDONESIEN SE DEFEND SUR DEUX FRONTS, ET AUCUN DES DEUX N'EST
-    # UNE COLONNE VOISINE. Sa voisine reelle — le malais de Malaisie —
-    # n'est dans aucun dossier de text/, et rien ne la signalerait a
-    # l'oeil : les deux standards s'ecrivent du meme alphabet et se
-    # lisent l'un l'autre sans peine. On ne peut donc pas comparer, on
-    # doit RELEVER.
+    # INDONESIAN DEFENDS ITSELF ON TWO FRONTS, AND NEITHER IS A
+    # NEIGHBOURING COLUMN. Its real neighbour — Malaysian Malay — is in
+    # no directory of text/, and nothing would signal it to the eye:
+    # the two standards are written in the same alphabet and read each
+    # other without difficulty. We cannot compare, therefore; we must
+    # REPORT.
     #
-    # PREMIER FRONT, LE LEXIQUE. Les deux standards se separent sur une
-    # liste courte et tres connue de mots quotidiens. On ne prend que
-    # ceux dont la forme malaisienne n'existe pas du tout en
-    # indonesien standard.
+    # FIRST FRONT, THE LEXICON. The two standards part company over a
+    # short and very well known list of everyday words. We take only
+    # those whose Malaysian form does not exist at all in standard
+    # Indonesian.
     #
-    # SECOND FRONT, UNE DATE. L'orthographe d'avant la reforme de 1972
-    # employait « dj », « tj », « oe », « sj » la ou l'on ecrit
-    # aujourd'hui j, c, u, sy — et c'est exactement l'orthographe qu'un
-    # imprimeur aurait employee en 1926, l'annee du fac-simile. C'est
-    # le seul piege du releve ou la faute serait CONTEMPORAINE de la
+    # SECOND FRONT, A DATE. The spelling before the 1972 reform used
+    # « dj », « tj », « oe », « sj » where today one writes j, c, u,
+    # sy — and that is exactly the spelling a printer would have used
+    # in 1926, the year of the facsimile. It is the one trap of the
+    # transcription where the fault would be CONTEMPORARY with the
     # source.
     #
-    # LA MESURE AVANT LA REGLE, ET ELLE A DEJA CHANGE LA LISTE. Passe
-    # sur le corps des trois premiers tableaux : zero mot malaisien,
-    # zero « dj », zero « tj », zero « oe », zero « sj » — mais VINGT
-    # ET TROIS « nj », tous dans « menjadi », « menjaga », « menjual »,
-    # ou le n ferme un prefixe et le j ouvre la racine. « nj » est donc
-    # exclu, comme le danda l'a ete du controle des ecritures melees.
+    # MEASUREMENT BEFORE THE RULE, AND IT HAS ALREADY CHANGED THE LIST.
+    # Run over the body of the first three tables: zero Malaysian
+    # words, zero « dj », zero « tj », zero « oe », zero « sj » — but
+    # TWENTY-THREE « nj », all in « menjadi », « menjaga », « menjual »,
+    # where the n closes a prefix and the j opens the root. « nj » is
+    # therefore excluded, as the danda was from the mixed-script check.
     #
-    # TOUS LES MOTIFS SONT INSENSIBLES A LA CASSE, et cela n'est pas
-    # un detail : le premier essai n'a pas vu « Djalan » en tete de
-    # phrase parce que « Dj » n'est pas « dj ». Les fautes de graphie
-    # d'avant 1972 tombent justement sur des noms propres et des
-    # debuts de phrase — c'est la ou l'ancienne orthographe survit le
-    # plus longtemps.
+    # ALL THE PATTERNS ARE CASE-INSENSITIVE, and that is no detail: the
+    # first attempt did not see « Djalan » at the head of a sentence
+    # because « Dj » is not « dj ». Spelling faults from before 1972
+    # fall precisely on proper nouns and sentence openings — that is
+    # where the old orthography survives longest.
     #
-    # ET CINQ MOTS NE SONT PAS RELEVES, EXPRES, PARCE QU'ILS SONT DES
-    # FAUX AMIS : « pejabat » est le bureau la-bas et le fonctionnaire
-    # ici ; « budak » l'enfant la-bas et l'esclave ici ; « polis » la
-    # police la-bas et la police d'assurance ici — et le tableau 7 met
-    # justement en scene un agent d'assurances ; « kedai » et « lori »
-    # vivent des deux cotes avec des emplois differents. Un controle
-    # qui crie sur un mot juste finit desarme.
+    # AND FIVE WORDS ARE NOT REPORTED, DELIBERATELY, BECAUSE THEY ARE
+    # FALSE FRIENDS: « pejabat » is the office over there and the
+    # official here; « budak » the child over there and the slave here;
+    # « polis » the police over there and the insurance policy here —
+    # and table 7 stages precisely an insurance agent; « kedai » and
+    # « lori » live on both sides with different uses. A check that
+    # cries out at a right word ends up disarmed.
     "id": {"mot": [
         (r"(?i)(?<![A-Za-z])cikgu(?![A-Za-z])", "guru"),
         (r"(?i)(?<![A-Za-z])tandas(?![A-Za-z])", "toilet"),
@@ -513,38 +502,38 @@ LINGUI = {
                                   "note « sy » depuis la reforme"),
     ]},
 
-    # LE JAVANAIS EST LE CAS INVERSE DE L'INDONESIEN, ET C'EST LA
-    # MEME PAIRE DE LANGUES. Quand on defendait « id », la voisine
-    # n'etait dans aucun dossier et il fallait relever sans pouvoir
-    # comparer. Maintenant elle y est, ecrite par la meme main, la
-    # ligne au-dessus — et c'est justement ce qui rend la derive
-    # facile : l'indonesien est la langue d'ecole de tout locuteur du
-    # javanais, celle dans laquelle il ecrit tout le reste de sa
-    # journee. On releve donc les mots-outils indonesiens, qui sont
-    # ceux qui glissent en premier, et jamais les mots de chose, que
-    # les deux langues partagent par centaines.
+    # JAVANESE IS THE INVERSE OF INDONESIAN, AND IT IS THE SAME PAIR
+    # OF LANGUAGES. When « id » was being defended, the neighbour was
+    # in no directory and we had to report without being able to
+    # compare. Now it is there, written by the same hand, the line
+    # above — and that is precisely what makes the drift easy:
+    # Indonesian is the school language of every Javanese speaker, the
+    # one in which he writes all the rest of his day. We therefore
+    # report the Indonesian function words, which are the ones that
+    # slip in first, and never the words for things, which the two
+    # languages share by the hundred.
     #
-    # ET UN SECOND FRONT QU'AUCUNE AUTRE COLONNE N'A EU : LES NIVEAUX
-    # DE LANGUE. Le javanais a deux lexiques paralleles — ngoko et
-    # krama — et il faut en tenir un. La colonne tient le NGOKO ALUS :
-    # narration en ngoko, et verbes krama inggil pour ce que fait le
-    # grand-pere. C'est ce qu'un enfant javanais ecrit et ce qu'un
-    # livre javanais de 2026 imprime.
+    # AND A SECOND FRONT NO OTHER COLUMN HAS HAD: THE SPEECH LEVELS.
+    # Javanese has two parallel lexicons — ngoko and krama — and one
+    # must hold to one of them. The column holds to NGOKO ALUS:
+    # narration in ngoko, and krama inggil verbs for what the
+    # grandfather does. That is what a Javanese child writes and what
+    # a Javanese book of 2026 prints.
     #
-    # ON RELEVE DONC LE KRAMA ORDINAIRE — kula, mboten, menika,
-    # ingkang, sampun, kaliyan, griya, toya —, qui signale une main
-    # passee au niveau poli d'un bout a l'autre. ET ON NE RELEVE PAS
-    # LES VERBES KRAMA INGGIL — dhahar, tindak, kondur, ngendika,
-    # priksa, sare —, qui sont exactement ce que la regle de la
-    # colonne EXIGE pour le grand-pere. Un controle qui crie sur la
-    # forme que la consigne demande est pire qu'un controle absent :
-    # c'est la lecon de « دی » et « دے », prise avant d'ecrire.
+    # WE THEREFORE REPORT ORDINARY KRAMA — kula, mboten, menika,
+    # ingkang, sampun, kaliyan, griya, toya —, which signals a hand
+    # gone over to the polite level from end to end. AND WE DO NOT
+    # REPORT THE KRAMA INGGIL VERBS — dhahar, tindak, kondur,
+    # ngendika, priksa, sare —, which are exactly what the column's
+    # rule REQUIRES for the grandfather. A check that cries out at the
+    # form the instruction calls for is worse than no check at all:
+    # that is the lesson of « دی » and « دے », taken before writing.
     #
-    # FAUX AMIS ECARTES EXPRES : « bisa », « anak », « sekolah »,
-    # « meja », « kursi », « jendela », « lawang » vivent dans les
-    # deux langues avec le meme sens — les deux les tiennent souvent
-    # du meme portugais ou du meme neerlandais. Les relever ferait
-    # crier le controle sur chaque page.
+    # FALSE FRIENDS SET ASIDE DELIBERATELY: « bisa », « anak »,
+    # « sekolah », « meja », « kursi », « jendela », « lawang » live in
+    # both languages with the same sense — both often hold them from
+    # the same Portuguese or the same Dutch. Reporting them would make
+    # the check cry out on every page.
     "jv": {"mot": [
         (r"(?i)(?<![A-Za-z])tidak(?![A-Za-z])", "ora"),
         (r"(?i)(?<![A-Za-z])dan(?![A-Za-z])", "lan"),
@@ -559,26 +548,25 @@ LINGUI = {
         (r"(?i)(?<![A-Za-z])besar(?![A-Za-z])", "gedhe"),
         (r"(?i)(?<![A-Za-z])kecil(?![A-Za-z])", "cilik"),
         (r"(?i)(?<![A-Za-z])orang(?![A-Za-z])", "wong"),
-        # « rumah sakit » N'EST PAS RELEVE, ET C'EST UN NOM
-        # D'INSTITUTION, PAS UN MOT. Le javanais dit omah pour la
-        # maison, et « rumah » y est bien un indonesianisme — sauf
-        # dans l'hopital, que Java appelle rumah sakit et pas
-        # autrement. La seule autre forme possible est « griya
-        # sakit », qui est du KRAMA : elle serait relevee par la
-        # regle de niveau. Un mot emprunte peut donc etre la seule
-        # forme juste, et le controle doit le savoir.
+        # « rumah sakit » IS NOT REPORTED, AND IT IS AN INSTITUTION'S
+        # NAME, NOT A WORD. Javanese says omah for the house, and
+        # « rumah » is indeed an Indonesianism there — except in the
+        # hospital, which Java calls rumah sakit and nothing else. The
+        # only other possible form is « griya sakit », which is KRAMA:
+        # it would be reported by the level rule. A borrowed word can
+        # therefore be the only right form, and the check must know
+        # it.
         (r"(?i)(?<![A-Za-z])rumah(?!\s+sakit)(?![A-Za-z])", "omah"),
-        # « banyak » A ETE RELEVE ICI, PUIS OTE AU TABLEAU 3. Le mot
-        # indonesien veut dire « beaucoup » et le javanais dit akeh —
-        # la regle semblait bonne. Mais « banyak » est AUSSI un mot
-        # javanais, et c'est l'OIE : elle parait au tableau 3, ou les
-        # enfants du village font fuir les oies (25). Les deux mots
-        # s'ecrivent pareil et ne sont pas le meme mot. Le controle
-        # criait donc sur une forme juste, et il a fallu le desarmer
-        # — comme pour « دی » et « دے » a la colonne ourdoue, et pour
-        # les cinq faux amis ecartes d'avance a la colonne
-        # indonesienne. Ici la lecon a servi CONTRE une regle qu'on
-        # venait d'ecrire soi-meme.
+        # « banyak » WAS REPORTED HERE, THEN WITHDRAWN AT TABLE 3. The
+        # Indonesian word means « many » and Javanese says akeh — the
+        # rule seemed good. But « banyak » is ALSO a Javanese word, and
+        # it is the GOOSE: it appears on table 3, where the village
+        # children put the geese to flight (25). The two words are
+        # written alike and are not the same word. The check therefore
+        # cried out at a right form, and it had to be disarmed — as for
+        # « دی » and « دے » in the Urdu column, and for the five false
+        # friends set aside in advance in the Indonesian one. Here the
+        # lesson served AGAINST a rule we had just written ourselves.
         (r"(?i)(?<![A-Za-z])semua(?![A-Za-z])", "kabeh"),
         (r"(?i)(?<![A-Za-z])atau(?![A-Za-z])", "utawa"),
         (r"(?i)(?<![A-Za-z])hanya(?![A-Za-z])", "mung"),
@@ -586,15 +574,15 @@ LINGUI = {
         (r"(?i)(?<![A-Za-z])kemudian(?![A-Za-z])", "banjur"),
         (r"(?i)(?<![A-Za-z])se(?:buah|orang|ekor)(?![A-Za-z])",
          "le javanais ne compte pas avec le classificateur indonesien"),
-        # ET LE PIEGE DE LA DATE VAUT ICI AUSSI : la reforme de 1972
-        # a refait l'orthographe latine de l'indonesien ET celle du
-        # javanais d'un seul coup. « djaran », « tjilik », « boekoe »
-        # sont donc exactement ce qu'un imprimeur aurait compose en
-        # 1926, et c'est la seconde colonne ou la faute serait
-        # CONTEMPORAINE de la source. On ne releve pas « sj », qui
-        # n'a jamais servi au javanais ; on ne touche pas non plus a
-        # « dh » et « th », qui sont des lettres retroflexes de la
-        # langue et non des restes de graphie.
+        # AND THE TRAP OF THE DATE HOLDS HERE TOO: the 1972 reform
+        # remade the Latin orthography of Indonesian AND that of
+        # Javanese at one stroke. « djaran », « tjilik », « boekoe » are
+        # therefore exactly what a printer would have set in 1926, and
+        # this is the second column where the fault would be
+        # CONTEMPORARY with the source. We do not report « sj », which
+        # has never served Javanese; nor do we touch « dh » and « th »,
+        # which are retroflex letters of the language and not remnants
+        # of spelling.
         (r"(?i)[A-Za-z]*dj[A-Za-z]*", "graphie d'avant 1972 — « dj » se "
                                   "note « j » depuis la reforme"),
         (r"(?i)[A-Za-z]*tj[A-Za-z]*", "graphie d'avant 1972 — « tj » se "
@@ -602,15 +590,15 @@ LINGUI = {
         (r"(?i)[A-Za-z]*oe[A-Za-z]*", "graphie d'avant 1972 — « oe » se "
                                   "note « u » depuis la reforme"),
     ],
-     # LES REGLES DE NIVEAU NE VALENT QUE HORS DIALOGUE, et il a fallu
-     # le tableau 5 pour le comprendre. Elles etaient d'abord dans
-     # « mot », avec les autres, et c'etait juste tant que le livret
-     # racontait. Le tableau 5 est un dialogue entier : Ioannes y parle
-     # a son oncle, et un enfant javanais parle KRAMA a son oncle —
-     # « kula » y est la forme juste, et l'alinea dit meme que l'enfant
-     # est poli. La regle a donc ete deplacee, non otee : hors dialogue
-     # elle vaut toujours, et le krama y signale bien que le niveau
-     # entier a glisse.
+     # THE LEVEL RULES HOLD ONLY OUTSIDE DIALOGUE, and it took table 5
+     # to understand it. They were at first in « word », with the
+     # others, and that was right as long as the booklet was narrating.
+     # Table 5 is one whole dialogue: Ioannes speaks there to his uncle,
+     # and a Javanese child speaks KRAMA to his uncle — « kula » is the
+     # right form there, and the paragraph even says the child is
+     # polite. The rule was therefore moved, not withdrawn: outside
+     # dialogue it still holds, and krama there does signal that the
+     # whole level has slipped.
      "narracio": [
         (r"(?i)(?<![A-Za-z])kula(?![A-Za-z])",
          "aku — la narration tient le ngoko, non le krama"),
@@ -630,40 +618,41 @@ LINGUI = {
          "banyu — la narration tient le ngoko, non le krama"),
     ]},
 
-    # LE PERSAN A DEUX VOISINES DANS LE RELEVE ET ELLES SONT TOUTES LES
-    # DEUX DANS SON ALPHABET. L'ourdou lui a pris sa graphie et la
-    # moitie de son lexique savant ; l'arabe lui a donne l'alphabet et
-    # l'autre moitie. C'est la premiere colonne dont la defense se joue
-    # au CARACTERE plus qu'au mot — et c'est justement la que l'oeil ne
-    # voit rien : ی et ي, ک et ك, ۱ et ١ se dessinent presque pareil, et
-    # la ligne reste bien formee, le LaTeX compile, html.py publie.
+    # PERSIAN HAS TWO NEIGHBOURS IN THE TRANSCRIPTION AND BOTH ARE IN
+    # ITS ALPHABET. Urdu took from it its script and half its learned
+    # lexicon; Arabic gave it the alphabet and the other half. It is the
+    # first column whose defence is played out at the level of the
+    # CHARACTER rather than the word — and that is precisely where the
+    # eye sees nothing: ی and ي, ک and ك, ۱ and ١ are drawn almost
+    # alike, and the line stays well formed, the LaTeX compiles,
+    # html.py publishes.
     #
-    # LES LETTRES QUE LE PERSAN N'A PAS. Six sont ourdoues — les
-    # retroflexes ٹ ڈ ڑ, le noun ghunna ں, le bari yeh ے et le do-chashmi
-    # heh ھ — et quatre sont arabes : le yeh ي, le kaf ك, la ta marbuta ة
-    # et l'alef maqsura ى. Le persan ecrit ی, ک, ه et ی a leur place. Ce
-    # ne sont pas des variantes de style : ce sont d'autres points de
-    # code, et un texte persan n'en contient aucun.
+    # THE LETTERS PERSIAN DOES NOT HAVE. Six are Urdu — the retroflexes
+    # ٹ ڈ ڑ, the noon ghunna ں, the bari yeh ے and the do-chashmi heh ھ
+    # — and four are Arabic: the yeh ي, the kaf ك, the ta marbuta ة and
+    # the alef maqsura ى. Persian writes ی, ک, ه and ی in their place.
+    # These are not variants of style: they are other code points, and a
+    # Persian text contains none of them.
     #
-    # ET LES CHIFFRES SE SEPARENT DE MEME. Le persan compose ۰۱۲۳۴۵۶۷۸۹
-    # (U+06F0..U+06F9), l'arabe ٠١٢٣٤٥٦٧٨٩ (U+0660..U+0669). Le releve
-    # arabe ecrit « اللوحة رقم ١ », l'ourdou « جدول نمبر 1 » en chiffres
-    # latins : trois colonnes du meme alphabet et trois series de
-    # chiffres.
+    # AND THE FIGURES PART COMPANY LIKEWISE. Persian sets ۰۱۲۳۴۵۶۷۸۹
+    # (U+06F0..U+06F9), Arabic ٠١٢٣٤٥٦٧٨٩ (U+0660..U+0669). The Arabic
+    # transcription writes « اللوحة رقم ١ », the Urdu « جدول نمبر 1 » in
+    # Latin figures: three columns of the same alphabet and three series
+    # of figures.
     #
-    # ON NE RELEVE PAS أ NI إ, qui paraissent dans quelques emprunts
-    # arabes que le persan imprime encore ainsi, ni ؤ ni ئ, qui sont
-    # persans (مسئله, مؤسسه), ni ۀ (U+06C0), qui est la forme persane du
-    # he suivi de hamza. Un controle qui crie sur une forme juste finit
-    # desarme.
+    # WE DO NOT REPORT أ OR إ, which appear in a few Arabic borrowings
+    # that Persian still prints so, nor ؤ or ئ, which are Persian
+    # (مسئله, مؤسسه), nor ۀ (U+06C0), which is the Persian form of he
+    # followed by hamza. A check that cries out at a right form ends up
+    # disarmed.
     #
-    # ET UN SECOND FRONT, QUI EST UNE DATE COMME EN INDONESIEN : LE
-    # DEMI-ESPACE. L'orthographe persane de 2026 exige un U+200C apres
-    # le prefixe negatif-duratif « نمی » — نمی‌رود et non نمیرود. On ne
-    # releve QUE « نمی », et non « می » seul, parce que می ouvre aussi
-    # میز, میوه, میان, میدان, میلیون, ou il n'y a rien a couper :
-    # « نمی » en tete de mot est toujours le prefixe, et jamais autre
-    # chose.
+    # AND A SECOND FRONT, WHICH IS A DATE AS IN INDONESIAN: THE
+    # ZERO-WIDTH NON-JOINER. The Persian orthography of 2026 requires a
+    # U+200C after the negative-durative prefix « نمی » — نمی‌رود and not
+    # نمیرود. We report ONLY « نمی », and not « می » alone, because می
+    # also opens میز, میوه, میان, میدان, میلیون, where there is nothing
+    # to break: « نمی » at the head of a word is always the prefix, and
+    # never anything else.
     "fa": {"mot": [
         (r"[\u0679\u0688\u0691]", "lettre retroflexe ourdoue — le persan "
                                     "ne les a pas"),
@@ -680,34 +669,35 @@ LINGUI = {
                            "ecrit نمی\u200cرود"),
     ]},
 
-    # LE HAOUSSA REPREND LE FRONT DU PERSAN — le CARACTERE et non le
-    # mot — MAIS EN LETTRES LATINES, ET C'EST PIRE. Le persan se
-    # defendait de deux langues voisines logees dans son alphabet ;
-    # celle-ci se defend de sa PROPRE SAISIE. ɓ, ɗ, ƙ et ƴ sont quatre
-    # lettres pleines de l'alphabet boko, non des b, d, k, y ornes :
-    # « kofa » n'est pas « ƙofa », et la difference est celle d'un mot
-    # a rien du tout. Or aucun clavier ordinaire ne les donne, tout
-    # correcteur les rend a leur forme nue, et une ligne ainsi
-    # depouillee reste bien formee : le LaTeX compile, html.py publie.
+    # HAUSA TAKES UP PERSIAN'S FRONT — the CHARACTER and not the word
+    # — BUT IN LATIN LETTERS, AND IT IS WORSE. Persian was defending
+    # itself from two neighbouring languages lodged in its alphabet;
+    # this one defends itself from its OWN TYPING. ɓ, ɗ, ƙ and ƴ are
+    # four full letters of the boko alphabet, not b, d, k, y with
+    # ornaments: « kofa » is not « ƙofa », and the difference is that
+    # between a word and nothing at all. Yet no ordinary keyboard
+    # gives them, every spell-checker returns them to their bare form,
+    # and a line so stripped stays well formed: the LaTeX compiles,
+    # html.py publishes.
     #
-    # ON NE RELEVE QUE LES MOTS DONT LA FORME NUE N'EXISTE PAS. kofa,
-    # karfe, karshe, kauye, daya, daki, dauka, yan ne sont rien en
-    # haoussa ; leur trouver un sens demande de supposer une faute. On
-    # NE RELEVE PAS « kasa », qui est un mot — « en bas », « echouer »
-    # — la ou « ƙasa » est le pays et le sol : la regle aurait raison
-    # sur la lettre et tort sur le mot, et c'est exactement le cas du
-    # « rumah sakit » javanais, paye une fois.
+    # WE REPORT ONLY THE WORDS WHOSE BARE FORM DOES NOT EXIST. kofa,
+    # karfe, karshe, kauye, daya, daki, dauka, yan are nothing in
+    # Hausa; finding a sense for them calls for supposing a fault. We
+    # do NOT report « kasa », which is a word — « below », « to fail »
+    # — where « ƙasa » is the country and the ground: the rule would
+    # be right about the letter and wrong about the word, and that is
+    # exactly the case of the Javanese « rumah sakit », paid for once.
     #
-    # ET UN SECOND FRONT, QUI EST UN ALPHABET FERME : le boko n'a ni
-    # p, ni q, ni v, ni x. Ce qui vient d'ailleurs se refait a la
-    # bouche haoussa — « bitamin », « fensir », « kwafi » — et un p
-    # laisse dans un mot est toujours la trace d'une langue qui n'a
-    # pas ete traduite. La regle ne vise que les mots a INITIALE
-    # MINUSCULE : les noms propres gardent leur orthographe, Paris
-    # reste Paris, et la capitale suffit a les mettre hors de portee.
-    # Le lookbehind ecarte de meme les noms de macro — la lettre qui
-    # suit un « \\ » ou une autre lettre n'ouvre aucun mot — et les
-    # unites de \\VUcentre, ou le « pt » suit un chiffre.
+    # AND A SECOND FRONT, WHICH IS A CLOSED ALPHABET: boko has no p,
+    # no q, no v, no x. What comes from elsewhere is remade in the
+    # Hausa mouth — « bitamin », « fensir », « kwafi » — and a p left
+    # in a word is always the trace of a language that has not been
+    # translated. The rule aims only at words with a LOWER-CASE
+    # INITIAL: proper nouns keep their spelling, Paris stays Paris,
+    # and the capital suffices to put them out of reach. The
+    # lookbehind likewise sets aside macro names — the letter
+    # following a « \\ » or another letter opens no word — and the
+    # units of \\VUcentre, where the « pt » follows a figure.
     "ha": {"mot": [
         (r"[\u0600-\u06FF]", "lettre arabe — cette colonne s'ecrit en "
                               "boko, non en ajami"),
@@ -719,81 +709,77 @@ LINGUI = {
         (r"(?<![A-Za-z])kauye(?![A-Za-z])", "ƙauye"),
         (r"(?<![A-Za-z])k(?:arami|anana)(?![A-Za-z])", "ƙarami / ƙanana"),
         (r"(?<![A-Za-z])daya(?![A-Za-z])", "ɗaya"),
-        # « daki-daki » A FAIT CRIER CETTE REGLE AU TABLEAU 2, ET LA
-        # REGLE AVAIT TORT. « ɗaki » est la chambre ; « daki-daki »,
-        # sans crochet et redouble, est l'adverbe « en detail » — il
-        # parait au N.-B. du tableau 2, ou le maitre est invite a
-        # decrire chaque jeu daki-daki. Deux mots differents, et le
-        # trait d'union les separe : on n'ouvre donc plus la regle sur
-        # un mot qui touche un trait d'union, des deux cotes.
+        # « daki-daki » MADE THIS RULE CRY OUT AT TABLE 2, AND THE
+        # RULE WAS WRONG. « ɗaki » is the room; « daki-daki », without a
+        # hook and doubled, is the adverb « in detail » — it appears in
+        # the N.B. of table 2, where the master is invited to describe
+        # each game daki-daki. Two different words, and the hyphen
+        # separates them: we therefore no longer open the rule on a word
+        # touching a hyphen, on either side.
         (r"(?<![A-Za-z-])daki(?![A-Za-z-])", "ɗaki"),
         (r"(?<![A-Za-z])dauka(?![A-Za-z])", "ɗauka"),
-        # LE HAOUSSA A DEUX ORTHOGRAPHES POUR UNE SEULE LETTRE, ET
-        # C'EST UNE FRONTIERE : le Niger ecrit ƴan, le Nigeria ’yan.
-        # Les deux sont justes chez eux. La colonne prend ƴ, pour que
-        # son alphabet tienne en quatre crochets et non en trois
-        # crochets plus une apostrophe — et la regle tient ce choix,
-        # puisqu'elle s'ouvre aussi bien apres une apostrophe qu'apres
-        # une espace. Ce n'est pas une faute qu'elle releve alors,
-        # c'est un melange.
+        # HAUSA HAS TWO SPELLINGS FOR A SINGLE LETTER, AND IT IS A
+        # BORDER: Niger writes ƴan, Nigeria ’yan. Both are right at
+        # home. The column takes ƴ, so that its alphabet holds in four
+        # hooks and not in three hooks plus an apostrophe — and the
+        # rule holds to that choice, since it opens after an apostrophe
+        # as readily as after a space. What it reports then is not a
+        # fault, it is a mixture.
         (r"(?<![A-Za-z])yan(?![A-Za-z])", "ƴan (et non ’yan : la "
                                           "colonne ecrit le crochet)"),
         (r"'", "apostrophe droite — le haoussa de 2026 ecrit ’ (U+2019)"),
     ], "exemptes": [
-        # LA NOTE « Balk-o » DU TABLEAU 5 EST LE SEUL ENDROIT DU
-        # LIVRET QUI CITE D'AUTRES LANGUES MOT POUR MOT, et l'ido les
-        # met lui-meme en italique pour dire qu'elles sont
-        # etrangeres : « Balk-o = D. Balken, E. joist, F. solive, I.
-        # travicello, R. balka, S. Port. viga ». La regle des lettres
-        # absentes du boko a donc crie quatre fois, et elle avait
-        # raison a la lettre : solive, poutre et viga ne sont pas du
-        # haoussa, et ne doivent surtout pas le devenir. On ne
-        # resserre donc rien — une citation n'est pas une faute
-        # d'orthographe, c'est un autre texte —, on exempte les trois
-        # lignes qui la portent, comme la colonne arabe egyptienne
-        # exempte la plaisanterie du vieux cordonnier.
+        # THE « Balk-o » NOTE OF TABLE 5 IS THE ONE PLACE IN THE
+        # BOOKLET THAT QUOTES OTHER LANGUAGES WORD FOR WORD, and Ido
+        # itself sets them in italic to say they are foreign:
+        # « Balk-o = D. Balken, E. joist, F. solive, I. travicello, R.
+        # balka, S. Port. viga ». The rule of the letters absent from
+        # boko therefore cried out four times, and it was right to the
+        # letter: solive, poutre and viga are not Hausa, and must
+        # above all not become so. We therefore tighten nothing — a
+        # quotation is not a spelling fault, it is another text —, we
+        # exempt the three lines that carry it, as the Egyptian Arabic
+        # column exempts the old cobbler's joke.
         "\\textit{solive}",
         "\\textit{poutre}",
         "\\textit{viga}",
-        # ET LA NOTE « Lambrequino » DU TABLEAU 6 EST DE LA MEME
-        # ESPECE, ce qui confirme la lecture faite au tableau 5 : ce
-        # ne sont pas les italiques qui portent les citations, ce sont
-        # les NOTES. Celle-ci gloses le mot par ses formes francaise,
-        # espagnole, portugaise, allemande et anglaise —
-        # « lambrequin, lambrequines, lambrequins » —, et l'ido ne les
-        # met meme pas en italique. Le haoussa du texte, lui, ecrit
-        # « lambarkin », sans q : la regle continue donc de mordre
-        # partout ailleurs dans ce fichier.
+        # AND THE « Lambrequino » NOTE OF TABLE 6 IS OF THE SAME
+        # KIND, which confirms the reading made at table 5: it is not
+        # the italics that carry the quotations, it is the NOTES. This
+        # one glosses the word by its French, Spanish, Portuguese,
+        # German and English forms — « lambrequin, lambrequines,
+        # lambrequins » —, and Ido does not even set them in italic.
+        # The Hausa of the text, for its part, writes « lambarkin »,
+        # without a q: the rule therefore goes on biting everywhere
+        # else in this file.
         "lambrequin",
     ]},
 
-    # LE GUJARATI CONTRE LE HINDI, ET LA DIFFICULTE N'EST PAS CELLE DU
-    # MARATHI. Le marathi partageait l'ECRITURE du hindi et s'en
-    # separait par le lexique ; le gujarati a son ecriture a lui —
-    # c'est la devanagari sans la barre du haut — et l'on croirait donc
-    # les deux langues a l'abri l'une de l'autre. Elles ne le sont pas
-    # du tout : l'ecriture gujaratie transcrit N'IMPORTE QUEL mot
-    # hindi sans effort, et « બહુત » ou « લેકિન » composes en gujarati
-    # se lisent aussi bien que dans leur alphabet. Ce qu'il faut
-    # relever n'est donc pas une lettre etrangere mais un MOT
-    # etranger transcrit, ce qui ramene exactement au probleme
-    # marathi.
+    # GUJARATI AGAINST HINDI, AND THE DIFFICULTY IS NOT MARATHI'S.
+    # Marathi shared Hindi's SCRIPT and parted from it by the lexicon;
+    # Gujarati has a script of its own — it is Devanagari without the
+    # top bar — and one would therefore think the two languages safe
+    # from each other. They are not at all: the Gujarati script
+    # transcribes ANY Hindi word effortlessly, and « બહુત » or
+    # « લેકિન » set in Gujarati read as well as in their own alphabet.
+    # What must be reported is therefore not a foreign letter but a
+    # foreign WORD transcribed, which brings us back exactly to the
+    # Marathi problem.
     #
-    # ET UNE REGLE DE CARACTERE QUAND MEME, LA PREMIERE : un signe
-    # devanagari glisse au milieu d'un mot gujarati. Les deux
-    # ecritures ont les memes matras aux memes places et presque les
-    # memes formes de lettres ; seule la barre les separe, et elle ne
-    # se voit qu'a la ligne entiere. C'est le meme piege que ی contre
-    # ي dans la colonne persane, dans une autre famille d'ecriture.
+    # AND A CHARACTER RULE ALL THE SAME, THE FIRST: a Devanagari sign
+    # slipped into the middle of a Gujarati word. The two scripts have
+    # the same matras in the same places and almost the same letter
+    # forms; only the bar separates them, and it is visible only on the
+    # whole line. It is the same trap as ی against ي in the Persian
+    # column, in another family of script.
     #
-    # ON NE RELEVE PAS « નહીં », QUI EST DU GUJARATI. Le hindi l'ecrit
-    # de meme et le gujarati s'en sert tous les jours — « હું નહીં
-    # જાઉં » —, la ou « નથી » est la copule negative. Deux mots
-    # differents, pas deux langues. On ne releve pas non plus « કે »,
-    # qui est la conjonction gujaratie ordinaire, ni « મેં », qui est
-    # le pronom sujet a l'ergatif : ces deux-la sont hindi ET
-    # gujarati, et une regle qui crierait dessus se ferait desarmer
-    # au premier alinea.
+    # WE DO NOT REPORT « નહીં », WHICH IS GUJARATI. Hindi writes it the
+    # same way and Gujarati uses it every day — « હું નહીં જાઉં » —,
+    # where « નથી » is the negative copula. Two different words, not
+    # two languages. Nor do we report « કે », which is the ordinary
+    # Gujarati conjunction, or « મેં », which is the ergative subject
+    # pronoun: those two are Hindi AND Gujarati, and a rule crying out
+    # at them would get itself disarmed at the first paragraph.
     "gu": {"mot": [
         (r"[\u0900-\u097F]", "signe devanagari — cette colonne s'ecrit "
                               "en gujarati (U+0A80..U+0AFF)"),
@@ -811,33 +797,32 @@ LINGUI = {
         (_guj("લડકી"), "છોકરી"),
     ]},
 
-    # L'ARABE LEVANTIN CONTRE DEUX VOISINES QUI SONT LA MEME LANGUE
-    # QUE LUI. Toutes les colonnes precedentes se defendaient contre
-    # une langue etrangere : le marathi contre le hindi, le persan
-    # contre l'ourdou, le gujarati contre le hindi. Celle-ci se
-    # defend contre l'arabe standard, qui est la forme ECRITE de sa
-    # propre langue, et contre l'arabe egyptien, qui en est une autre
-    # forme parlee. Le danger n'est donc pas qu'un mot etranger se
-    # glisse : c'est que la main, en ecrivant, remonte toute seule
-    # vers le registre qu'on lui a appris a l'ecole. Les regles
-    # visent les deux cotes a la fois — DOUZE contre le standard,
-    # SEPT contre l'egyptien, une contre les lettres persanes, vingt
-    # en tout. (Ce commentaire a d'abord annonce « huit » et « cinq » :
-    # c'etait le compte du brouillon, avant que les tableaux 1 a 16
-    # n'en fassent ajouter. Recompte a la main sur la liste
-    # ci-dessous.)
+    # LEVANTINE ARABIC AGAINST TWO NEIGHBOURS THAT ARE THE SAME
+    # LANGUAGE AS ITSELF. Every previous column defended itself against
+    # a foreign language: Marathi against Hindi, Persian against Urdu,
+    # Gujarati against Hindi. This one defends itself against Standard
+    # Arabic, which is the WRITTEN form of its own language, and
+    # against Egyptian Arabic, which is another spoken form of it. The
+    # danger is therefore not that a foreign word should slip in: it is
+    # that the hand, in writing, should climb of its own accord back
+    # towards the register it was taught at school. The rules aim at
+    # both sides at once — TWELVE against the standard, SEVEN against
+    # the Egyptian, one against the Persian letters, twenty in all.
+    # (This comment first announced « eight » and « five »: that was
+    # the draft's count, before tables 1 to 16 caused more to be added.
+    # Recounted by hand from the list below.)
     #
-    # TROIS FORMES NE SONT DELIBEREMENT PAS RELEVEES, et il faut le
-    # dire ici sous peine de les reprendre plus tard. « كيف » est
-    # levantin ET standard ; « بس » est levantin ET egyptien ;
-    # « في » est l'existentiel levantin et la preposition standard.
-    # Une regle sur l'une des trois crierait a chaque tableau, et un
-    # controle qu'on desarme ne controle plus rien — lecon du
-    # marathi, tableau 10.
+    # THREE FORMS ARE DELIBERATELY NOT REPORTED, and it must be said
+    # here on pain of taking them up again later. « كيف » is Levantine
+    # AND standard; « بس » is Levantine AND Egyptian; « في » is the
+    # Levantine existential and the standard preposition. A rule on any
+    # of the three would cry out at every table, and a check one
+    # disarms checks nothing any more — the lesson of Marathi, table
+    # 10.
     "apc": {"mot": [
-        # LES QUATRE LETTRES QUE L'ARABE N'A PAS. پ چ ژ گ sont
-        # persanes et ourdoues ; la colonne persane du releve se
-        # defendait contre l'arabe, celle-ci se defend contre elle.
+        # THE FOUR LETTERS ARABIC DOES NOT HAVE. پ چ ژ گ are Persian
+        # and Urdu; the Persian column of the transcription defended
+        # itself against Arabic, this one defends itself against it.
         (r"[\u067E\u0686\u0698\u06AF]", "lettre persane — cette "
                                           "colonne s'ecrit en arabe"),
         (_arb("ليس", "ليست", "ليسوا"), "ما / مش"),
@@ -850,10 +835,10 @@ LINGUI = {
                                             "particule interrogative"),
         (_arb("يوجد", "توجد"), "في"),
         (_arb("أيضًا", "أيضاً"), "كمان"),
-        # LES SEPT EGYPTIENNES. « ده » et « دي » sont les
-        # demonstratifs du Caire, « إزاي » son comment, « دلوقتي »
-        # son maintenant, « عايز » son vouloir : rien de tout cela
-        # ne se dit de Beyrouth a Amman.
+        # THE SEVEN EGYPTIAN ONES. « ده » and « دي » are Cairo's
+        # demonstratives, « إزاي » its how, « دلوقتي » its now,
+        # « عايز » its wanting: none of that is said from Beirut to
+        # Amman.
         (_arb("ده", "دي", "دول"), "هاد / هاي / هدول"),
         (_arb("إزاي"), "كيف"), (_arb("فين"), "وين"),
         (_arb("دلوقتي"), "هلّق"), (_arb("كده"), "هيك"),
@@ -861,31 +846,31 @@ LINGUI = {
         (_arb("بتاع", "بتاعة"), "تبع"),
     ], "virgule": True},
 
-    # LE BHOJPOURI CONTRE LE HINDI, ET C'EST LA SEULE COLONNE DU
-    # RELEVE DONT LA VOISINE NIE QU'ELLE EXISTE. Le marathi, le
-    # gujarati et l'ourdou se defendaient contre une langue qui les
-    # tenait pour des langues ; le bhojpouri est administre en Inde
-    # comme un « dialecte du hindi » et n'est dans aucune des annexes
-    # officielles, avec cinquante millions de locuteurs.
+    # BHOJPURI AGAINST HINDI, AND IT IS THE ONLY COLUMN OF THE
+    # TRANSCRIPTION WHOSE NEIGHBOUR DENIES THAT IT EXISTS. Marathi,
+    # Gujarati and Urdu defended themselves against a language that
+    # held them to be languages; Bhojpuri is administered in India as a
+    # « dialect of Hindi » and is in none of the official schedules,
+    # with fifty million speakers.
     #
-    # IL N'Y A DONC AUCUNE DEFENSE POSSIBLE AU CARACTERE, et c'est la
-    # premiere fois. Le persan surveillait ی contre ي, le haoussa ses
-    # quatre lettres crochues, le gujarati le devanagari glisse dans
-    # son alphabet. Ici l'ecriture est la meme, le lexique est le meme
-    # aux trois quarts, et la morphologie nominale se ressemble. CE
-    # QUI SEPARE LES DEUX LANGUES, C'EST LE VERBE : la copule बा /
-    # बानी / बाड़ें contre है / हैं, la negation existentielle नइखे
-    # contre नहीं है, le passe en -ल contre le passe en -आ. Les regles
-    # visent donc d'abord la conjugaison, ensuite les pronoms, et le
-    # lexique en dernier.
+    # THERE IS THEREFORE NO POSSIBLE DEFENCE AT THE CHARACTER, and it
+    # is the first time. Persian watched ی against ي, Hausa its four
+    # hooked letters, Gujarati the Devanagari slipped into its
+    # alphabet. Here the script is the same, the lexicon is the same
+    # for three quarters of it, and the nominal morphology is alike.
+    # WHAT SEPARATES THE TWO LANGUAGES IS THE VERB: the copula बा /
+    # बानी / बाड़ें against है / हैं, the existential negation नइखे
+    # against नहीं है, the past in -ल against the past in -आ. The rules
+    # therefore aim first at the conjugation, then at the pronouns, and
+    # at the lexicon last.
     #
-    # QUATRE FORMES NE SONT DELIBEREMENT PAS RELEVEES, et il faut le
-    # dire ici sous peine de les reprendre plus tard. « का » est le
-    # genitif hindi ET le mot bhojpouri pour « quoi » : une regle
-    # dessus crierait a chaque page. « के » est le genitif bhojpouri
-    # ET un oblique hindi. « पानी » et « हाथ » sont le meme mot dans
-    # les deux langues. Un controle qu'on desarme ne controle plus
-    # rien — lecon du marathi, tableau 10.
+    # FOUR FORMS ARE DELIBERATELY NOT REPORTED, and it must be said
+    # here on pain of taking them up again later. « का » is the Hindi
+    # genitive AND the Bhojpuri word for « what »: a rule on it would
+    # cry out on every page. « के » is the Bhojpuri genitive AND a
+    # Hindi oblique. « पानी » and « हाथ » are the same word in both
+    # languages. A check one disarms checks nothing any more — the
+    # lesson of Marathi, table 10.
     "bho": {"mot": [
         (_deva("है", "हैं", "हूँ", "हूं"), "बा / बानी / बाड़ें"),
         (_deva("था", "थे", "थी"), "रहे / रहलें / रहली"),
@@ -897,11 +882,11 @@ LINGUI = {
         (_deva("और"), "आ / अउर"), (_deva("लेकिन"), "बाकिर"),
         (_deva("क्या"), "का"), (_deva("क्यों"), "काहे"),
         (_deva("कैसे"), "कइसे"),
-        # « कहाँ » A ETE CABLE PUIS RETIRE AVANT LE PREMIER EMPLOI.
-        # Sa reparation portait la forme signalee — « कहाँ -> कहाँ /
-        # कहवाँ » —, ce qui est un ordre impossible a suivre : le mot
-        # est bhojpouri autant que hindi, et une regle dont le remede
-        # repete la faute n'apprend rien a qui la lit.
+        # « कहाँ » WAS WIRED IN THEN WITHDRAWN BEFORE ITS FIRST USE.
+        # Its repair carried the reported form — « कहाँ -> कहाँ /
+        # कहवाँ » —, which is an impossible instruction to follow: the
+        # word is Bhojpuri as much as Hindi, and a rule whose remedy
+        # repeats the fault teaches nothing to whoever reads it.
         (_deva("बहुत"), "बहुते / खूब"),
         (_deva("किया", "किये", "किए"), "कइल / कइलें"),
         (_deva("गया", "गये", "गए"), "गइल / गइलें"),
@@ -914,45 +899,45 @@ LINGUI = {
         (_deva("अभी", "अब"), "अबहीं"),
         (_deva("यहाँ", "वहाँ", "यहां", "वहां"), "इहाँ / ओहिजा"),
     ], "exemptes": [
-        # « आया » LA BONNE D'ENFANTS N'EST PAS « आया » LE PASSE DE
-        # « VENIR ». Le premier est un nom, portugais (aia), et il est
-        # bhojpouri autant que hindi ; le second est la forme hindi que
-        # la regle vise, la ou le bhojpouri dit आइल. Les deux s'ecrivent
-        # pareil. Trouve au tableau 14, ou le renvoi (98) est la bonne
-        # d'enfants — et ce n'est pas une raison de desarmer la regle,
-        # qui reste juste partout ailleurs : c'est une raison d'exempter
-        # LE MOT EN GRAS, qui est le seul endroit ou le nom apparait.
+        # « आया » THE NURSEMAID IS NOT « आया » THE PAST OF « TO COME ».
+        # The first is a noun, Portuguese (aia), and it is Bhojpuri as
+        # much as Hindi; the second is the Hindi form the rule aims at,
+        # where Bhojpuri says आइल. The two are written alike. Found on
+        # table 14, where cross-reference (98) is the nursemaid — and that
+        # is no reason to disarm the rule, which stays right everywhere
+        # else: it is a reason to exempt THE WORD IN BOLD, which is the
+        # only place the noun appears.
         "\\VUgras{आया}",
     ]},
 
-    # L'AFRIKAANS CONTRE LE NEERLANDAIS, ET C'EST LE CAS D'ECOLE.
-    # Les deux voisines de ce releve sont la meme langue a un siecle et
-    # demi de distance : l'afrikaans sort du neerlandais des colons du
-    # Cap, et text/nl est dans le meme dossier. Une phrase neerlandaise
-    # se lit sans effort par qui ecrit l'afrikaans, et c'est exactement
-    # la situation du bhojpouri devant le hindi -- a une difference
-    # pres, decisive : ICI, LA DEFENSE SE JOUE AUSSI A LA LETTRE.
+    # AFRIKAANS AGAINST DUTCH, AND IT IS THE TEXTBOOK CASE.
+    # The two neighbours of this transcription are the same language a
+    # century and a half apart: Afrikaans comes out of the Dutch of the
+    # Cape settlers, and text/nl is in the same directory. A Dutch
+    # sentence is read effortlessly by whoever writes Afrikaans, and
+    # that is exactly the situation of Bhojpuri before Hindi -- with
+    # one difference, and it is decisive: HERE, THE DEFENCE IS ALSO
+    # PLAYED OUT AT THE LETTER.
     #
-    # LE DIGRAMME « ij » N'EXISTE PAS EN AFRIKAANS. Le neerlandais en a
-    # partout -- zijn, mijn, wij, tijd, altijd, vrij, kijken --, et
-    # l'afrikaans ecrit y : sy, my, ons, tyd, altyd, vry, kyk. Une seule
-    # regle de deux caracteres releve donc toute une classe de calques,
-    # comme le q de « quince » l'avait fait pour le haoussa.
+    # THE DIGRAPH « ij » DOES NOT EXIST IN AFRIKAANS. Dutch has it
+    # everywhere -- zijn, mijn, wij, tijd, altijd, vrij, kijken --, and
+    # Afrikaans writes y: sy, my, ons, tyd, altyd, vry, kyk. A single
+    # rule of two characters therefore reports a whole class of calques,
+    # as the q of « quince » did for Hausa.
     #
-    # LE « z » INITIAL NON PLUS. Le neerlandais dit zijn, zitten, zien,
-    # zon, zee ; l'afrikaans dit is, sit, sien, son, see. Le z ne lui
-    # reste que dans les noms propres et quelques emprunts.
+    # NOR THE INITIAL « z ». Dutch says zijn, zitten, zien, zon, zee;
+    # Afrikaans says is, sit, sien, son, see. The z is left to it only
+    # in proper nouns and a few borrowings.
     #
-    # ET « sch » AU DEBUT D'UN MOT EST DU NEERLANDAIS : school, schoen,
-    # schrijven donnent skool, skoen, skryf.
+    # AND « sch » AT THE START OF A WORD IS DUTCH: school, schoen,
+    # schrijven give skool, skoen, skryf.
     #
-    # ON NE RELEVE PAS « het », QUI EST DE L'AFRIKAANS. C'est
-    # l'auxiliaire du passe -- « ek het gesien » --, la ou le
-    # neerlandais l'emploie comme article. Les deux s'ecrivent pareil et
-    # une regle dessus crierait a chaque page. On ne releve pas « een »
-    # non plus : c'est le NUMERAL afrikaans, quand l'article est « 'n ».
-    # Deux mots que la graphie confond ; c'est la meme raison qui a fait
-    # exempter « आया » plus haut.
+    # WE DO NOT REPORT « het », WHICH IS AFRIKAANS. It is the auxiliary
+    # of the past -- « ek het gesien » --, where Dutch uses it as an
+    # article. The two are written alike and a rule on it would cry out
+    # on every page. Nor do we report « een »: it is the Afrikaans
+    # NUMERAL, where the article is « 'n ». Two words the spelling
+    # confuses; it is the same reason that exempted « आया » above.
     "af": {"mot": [
         (r"(?<![A-Za-z])[A-Za-z]*ij[A-Za-z]*(?![A-Za-z])",
          "digramme « ij » — l'afrikaans ecrit y (zijn/is, tijd/tyd)"),
@@ -973,35 +958,34 @@ LINGUI = {
          "diminutif neerlandais — l'afrikaans ecrit -tjie / -jie"),
         (r"(?<![A-Za-z])ook(?=\s+niet)", "ook nie"),
     ], "exemptes": [
-        # « strooijonker » N'A PAS DE DIGRAMME : IL A UNE SOUDURE.
-        # La regle du « ij » a crie au tableau 4 sur le garcon d'honneur
-        # — et elle avait raison a la lettre et tort au mot. Le compose
-        # est « strooi » plus « jonker » : le i ferme le premier membre,
-        # le j ouvre le second, et les deux ne se touchent que par
-        # accident de soudure. C'est le meme genre de piege que « piec »
-        # en polonais, a ceci pres qu'ici la regle reste juste partout
-        # ailleurs — elle vise un digramme, et il n'y en a pas ici. On
-        # exempte donc LA FORME, non la regle.
-        # « strooimeisie », la demoiselle d'honneur, ne pose pas la
-        # question : sa soudure tombe entre deux voyelles.
+        # « strooijonker » HAS NO DIGRAPH: IT HAS A JOIN.
+        # The « ij » rule cried out at table 4 over the best man — and it
+        # was right to the letter and wrong about the word. The compound
+        # is « strooi » plus « jonker »: the i closes the first member,
+        # the j opens the second, and the two touch only by accident of
+        # the join. It is the same kind of trap as « piec » in Polish,
+        # except that here the rule stays right everywhere else — it aims
+        # at a digraph, and there is none here. We therefore exempt THE
+        # FORM, not the rule.
+        # « strooimeisie », the bridesmaid, does not raise the question:
+        # its join falls between two vowels.
         "strooijonker",
     ]},
 
-    # LE POLONAIS, ET SA DEFENSE N'EST PAS CELLE DE L'AFRIKAANS.
-    # Aucune de ses voisines ne lui ressemble assez pour le contaminer :
-    # le tcheque est ouest-slave comme lui, mais leurs alphabets se
-    # separent a l'oeil -- ě, ř, ů, č, š, ž, ď, ť, ň d'un cote ; ą, ę,
-    # ł, ń, ó, ś, ź, ż, cz, sz, rz de l'autre. Un mot tcheque dans cette
-    # colonne se verrait.
+    # POLISH, AND ITS DEFENCE IS NOT AFRIKAANS'S.
+    # None of its neighbours resembles it enough to contaminate it:
+    # Czech is West Slavic as it is, but their alphabets part company to
+    # the eye -- ě, ř, ů, č, š, ž, ď, ť, ň on one side; ą, ę, ł, ń, ó,
+    # ś, ź, ż, cz, sz, rz on the other. A Czech word in this column
+    # would be seen.
     #
-    # LE DANGER EST AILLEURS, ET C'EST CELUI DU HAOUSSA : LE CLAVIER.
-    # Neuf lettres du polonais ne s'obtiennent pas sans combinaison, et
-    # une main pressee ecrit ksiazka, zolty, dzien, reka, stol la ou il
-    # faut książka, żółty, dzień, ręka, stół. La faute ne se voit pas :
-    # le mot reste lisible, il est seulement faux. On releve donc les
-    # formes NUES des mots que ce livret emploie, et la liste s'allonge
-    # tableau par tableau -- c'est ainsi que celle du haoussa s'est
-    # faite.
+    # THE DANGER IS ELSEWHERE, AND IT IS HAUSA'S: THE KEYBOARD.
+    # Nine letters of Polish cannot be got without a combination, and a
+    # hurried hand writes ksiazka, zolty, dzien, reka, stol where it
+    # should be książka, żółty, dzień, ręka, stół. The fault does not
+    # show: the word stays legible, it is merely wrong. We therefore
+    # report the BARE forms of the words this booklet uses, and the list
+    # lengthens table by table -- that is how the Hausa one was made.
     "pl": {"mot": [
         (r"[ěřůďťňĚŘŮ]",
          "lettre tcheque — cette colonne s'ecrit en polonais"),
@@ -1019,40 +1003,40 @@ LINGUI = {
         (r"(?<![A-Za-z])glow\w*(?![A-Za-z])", "głowa"),
         (r"(?<![A-Za-z])wiecej(?![A-Za-z])", "więcej"),
         (r"(?<![A-Za-z])czesc(?![A-Za-z])", "część"),
-        # « piec » N'EST PAS « pięć » AMPUTE : C'EST LE POELE.
-        # La regle a crie des le premier tableau, sur « \VUgras{piec}
-        # \textsuperscript{(46)} » — et elle avait tort. « piec » est un
-        # mot polonais entier, le poele et le verbe cuire ; « pięć » est
-        # cinq. Deux mots que la perte des accents ne relie pas, puisque
-        # le premier n'en a jamais eu.
-        # LA REGLE DES ACCENTS PERDUS N'EST SURE QUE LA OU LA FORME NUE
-        # N'EST PAS DEJA UN MOT. C'est le cas de stol, dzien, reka,
-        # ksiazka, czesc, glowa — aucun n'existe sans ses accents. Ce
-        # n'etait pas le cas de piec, et il n'y a rien a exempter : la
-        # regle elle-meme etait fausse, on l'ote.
+        # « piec » IS NOT « pięć » AMPUTATED: IT IS THE STOVE.
+        # The rule cried out at the very first table, over « \VUgras{piec}
+        # \textsuperscript{(46)} » — and it was wrong. « piec » is a whole
+        # Polish word, the stove and the verb to bake; « pięć » is five.
+        # Two words that the loss of accents does not connect, since the
+        # first never had any.
+        # THE RULE OF LOST ACCENTS IS SURE ONLY WHERE THE BARE FORM IS NOT
+        # ALREADY A WORD. That is the case of stol, dzien, reka, ksiazka,
+        # czesc, glowa — none of them exists without its accents. It was
+        # not the case of piec, and there is nothing to exempt: the rule
+        # itself was wrong, we take it out.
     ]},
 }
 
-# LE SEUIL AU-DELA DUQUEL UN FICHIER EST UN DIALOGUE. Mesure sur les
-# seize tableaux ido : 36 attributions de parole au tableau 5, 1 au
-# tableau 12 — et c'est « Noto. » —, 0 partout ailleurs. Cinq laisse
-# donc les deux cas de part et d'autre sans rien serrer.
+# THE THRESHOLD BEYOND WHICH A FILE IS A DIALOGUE. Measured on the
+# sixteen Ido tables: 36 speech attributions on table 5, 1 on table
+# 12 — and it is « Noto. » —, 0 everywhere else. Five therefore
+# leaves the two cases on either side without pinching anything.
 PAROLI = 5
 
 
-# LES ECRITURES QUI NE SE MELENT PAS DANS UN MOT. Deux lettres de
-# deux ecritures non latines ne se rencontrent jamais a l'interieur
-# d'un meme mot : on n'ecrit pas un mot moitie arabe moitie tamoul.
-# Quand cela arrive, c'est une faute de frappe qu'aucun autre controle
-# ne peut voir — la ligne reste bien formee, le LaTeX compile, et
-# l'oeil qui ne lit pas les deux ecritures passe dessus.
+# THE SCRIPTS THAT DO NOT MIX WITHIN A WORD. Two letters of two
+# non-Latin scripts never meet inside one word: nobody writes a word
+# half Arabic and half Tamil. When it happens, it is a typing fault
+# that no other check can see — the line stays well formed, the
+# LaTeX compiles, and the eye that does not read both scripts passes
+# over it.
 #
-# LA MESURE AVANT LA REGLE : passe sur les 42 colonnes de text/,
-# le controle releve ZERO mot, une fois le danda « । » rendu neutre.
-# Ce signe vit dans le bloc devanagari mais sert au bengali, au
-# gujarati, au telougou et au marathe : sans cette exception le
-# controle criait sur presque chaque phrase bengalie. Les liants
-# U+200C et U+200D sont neutres pour la meme raison.
+# MEASUREMENT BEFORE THE RULE: run over the 42 columns of text/, the
+# check reports ZERO words, once the danda « । » is made neutral.
+# That sign lives in the Devanagari block but serves Bengali,
+# Gujarati, Telugu and Marathi: without this exception the check
+# cried out at almost every Bengali sentence. The joiners U+200C and
+# U+200D are neutral for the same reason.
 ECRITURES = [
     ("arabe", 0x0600, 0x06FF), ("devanagari", 0x0900, 0x097F),
     ("bengali", 0x0980, 0x09FF), ("gourmoukhi", 0x0A00, 0x0A7F),
@@ -1076,15 +1060,15 @@ def ecriture(c):
 
 
 def octet(f, i, l, mauvais):
-    """Ce qui ne peut pas etre du texte, en-tetes compris."""
-    # LE CARACTERE DE REMPLACEMENT. Un U+FFFD s'est glisse dans le
-    # bloc c4-08-1 de text/ur/15-jadval-06.tex, a la place d'un
-    # point ourdou. Aucun des cinq outils ne l'a vu : renvoji.py ne
-    # lit que l'ordre des renvois, kolonoj.py ne lisait que les
-    # macros et les mots, html.py l'aurait publie tel quel. Un
-    # caractere de remplacement n'est jamais voulu : c'est la trace
-    # d'un octet perdu au passage d'un encodage a un autre. On releve
-    # avec lui les caracteres de controle C0, sauf la tabulation.
+    """What cannot be text, headers included."""
+    # THE REPLACEMENT CHARACTER. A U+FFFD slipped into block c4-08-1
+    # of text/ur/15-jadval-06.tex, in place of an Urdu full stop.
+    # None of the five tools saw it: cross_refs.py reads only the
+    # order of the cross-references, columns.py read only the macros
+    # and the words, html.py would have published it as it stood. A
+    # replacement character is never intended: it is the trace of a
+    # byte lost in passing from one encoding to another. We report
+    # with it the C0 control characters, except the tab.
     for m in re.finditer(r"[\ufffd\x00-\x08\x0b-\x1f\x7f]", l):
         mauvais.append(f"{f}:{i} caractere impossible "
                        f"U+{ord(m.group(0)):04X} — octet perdu"
@@ -1099,52 +1083,50 @@ def octet(f, i, l, mauvais):
 
 
 def formo(f, lg, mauvais):
-    """Les controles de forme, qui valent pour toutes les colonnes."""
+    """The form checks, which hold for every column."""
     regle = LINGUI.get(lg, {})
     mots = regle.get("mot", [])
     exemptes = regle.get("exemptes", [])
     lignes = f.read_text(encoding="utf-8").split("\n")
-    # UN FICHIER QUI PARLE N'EST PAS UN FICHIER QUI RACONTE. Les
-    # regles de « narracio » ne s'appliquent qu'aux tableaux narres :
-    # voir PAROLI, plus haut, et l'en-tete de LINGUI.
+    # A FILE THAT SPEAKS IS NOT A FILE THAT NARRATES. The
+    # « narration » rules apply only to the narrated tables: see
+    # SPEECH, above, and the header of LANGUAGES.
     dialogo = sum(x.count("\\textsc{") for x in lignes
                   if not x.startswith("%")) >= PAROLI
     if not dialogo:
         mots = mots + regle.get("narracio", [])
-    # LE MOT DE BROUILLON LAISSE DANS LE TEXTE. Trois fois dans la
-    # seule colonne ourdoue, deux fois dans la tamoule, on a tape un
-    # mot francais seul sur sa ligne — « Wait », « Ordre » — en
-    # cherchant sa phrase, et on ne l'a pas efface. renvoji.py ne le
-    # voit que si le brouillon portait un renvoi ; kolonoj.py ne le
-    # voyait pas du tout ; html.py l'aurait publie au milieu d'un
-    # alinea ourdou.
+    # THE DRAFT WORD LEFT IN THE TEXT. Three times in the Urdu column
+    # alone, twice in the Tamil, a French word was typed alone on its
+    # line — « Wait », « Ordre » — while looking for its sentence, and
+    # was not erased. cross_refs.py sees it only if the draft carried a
+    # cross-reference; columns.py did not see it at all; html.py would
+    # have published it in the middle of an Urdu paragraph.
     #
-    # Une ligne entierement latine, seule, sans macro ni ponctuation,
-    # ne peut pas etre du texte dans une colonne qui ne s'ecrit pas
-    # en lettres latines. On ne le dit pas d'apres une liste de
-    # langues mais d'apres le FICHIER : s'il compte moins d'un
-    # dixieme de lettres latines, il n'est pas latin. Passe sur les
-    # 42 colonnes, le controle rend ZERO signalement — les noms
-    # propres et les citations du fac-simile sont toujours dans une
-    # phrase, jamais seuls sur leur ligne.
-    #  Les noms de macro sont latins et il y en a partout : on les
-    #  ote avant de compter, sans quoi aucun fichier ne serait juge
-    #  non latin. Le premier essai de ce controle est tombe dans ce
-    #  piege et n'a rien releve du tout.
+    # A wholly Latin line, alone, with neither macro nor punctuation,
+    # cannot be text in a column that is not written in Latin letters.
+    # We say so not from a list of languages but from the FILE: if it
+    # has fewer than a tenth Latin letters, it is not Latin. Run over
+    # the 42 columns, the check returns ZERO reports — the proper nouns
+    # and the quotations of the facsimile are always inside a sentence,
+    # never alone on their line.
+    #  Macro names are Latin and there are some everywhere: we take
+    #  them out before counting, failing which no file would be judged
+    #  non-Latin. The first attempt at this check fell into that trap
+    #  and reported nothing at all.
     corps = "\n".join(x for x in lignes if not x.startswith("%"))
     corps = re.sub(r"\\[A-Za-z]+", "", corps)
     lettres = [c for c in corps if c.isalpha()]
     latines = sum(1 for c in lettres if ord(c) < 0x250)
     nolatina = bool(lettres) and latines < len(lettres) // 10
     for i, l in enumerate(lignes, 1):
-        # LES DEUX CONTROLES QUI SUIVENT REGARDENT L'OCTET, PAS LA
-        # LANGUE, ET ILS PASSENT DONC AUSSI SUR LES COMMENTAIRES.
-        # C'est la seule difference avec tout le reste du fichier, et
-        # elle a ete payee deux fois : un U+FFFD dans le corps de
-        # text/ur/15-jadval-06.tex, puis un ک arabe glisse au milieu
-        # d'un mot tamoul cite dans l'EN-TETE de
-        # text/ur/17-jadval-08.tex. Un en-tete se lit ; il doit donc
-        # se controler.
+        # THE TWO CHECKS THAT FOLLOW LOOK AT THE BYTE, NOT THE
+        # LANGUAGE, AND THEY THEREFORE PASS OVER THE COMMENTS TOO.
+        # It is the only difference with all the rest of the file, and
+        # it has been paid for twice: a U+FFFD in the body of
+        # text/ur/15-jadval-06.tex, then an Arabic ک slipped into the
+        # middle of a Tamil word quoted in the HEADER of
+        # text/ur/17-jadval-08.tex. A header is read; it must
+        # therefore be checked.
         octet(f, i, l, mauvais)
         if l.startswith("%"):
             continue
@@ -1158,13 +1140,13 @@ def formo(f, lg, mauvais):
             mauvais.append(f"{f}:{i} « {l.strip()} » seul sur sa "
                            f"ligne dans une colonne non latine — "
                            f"mot de brouillon oublie ?")
-        # UNE ACCOLADE OUVERTE EN FIN DE LIGNE : le retour a la ligne se
-        # rend par une espace, et l'espace tombe alors DEDANS le groupe.
+        # A BRACE OPENED AT THE END OF A LINE: the line break is rendered
+        # as a space, and the space then falls INSIDE the group.
         if re.search(r"\{\s*$", l):
             mauvais.append(f"{f}:{i} accolade ouverte en fin de ligne")
-        # UN RENVOI MIS EN GRAS AU LIEU D'EN EXPOSANT. On ne vise que la
-        # parenthese de RENVOI : le tableau 1 met legitimement en gras
-        # « (ألماني وإنجليزي...) », parenthese comprise.
+        # A CROSS-REFERENCE SET IN BOLD INSTEAD OF AS A SUPERSCRIPT. We
+        # aim only at the CROSS-REFERENCE parenthesis: table 1 legitimately
+        # sets « (ألماني وإنجليزي...) » in bold, parenthesis included.
         if re.search(r"\\VUgras\{\((?:\d{1,3}|[a-z])\)", l):
             mauvais.append(f"{f}:{i} renvoi en gras au lieu d'exposant")
         for pat, bon in mots:
@@ -1172,8 +1154,8 @@ def formo(f, lg, mauvais):
             if m and not any(e in l for e in exemptes):
                 mauvais.append(f"{f}:{i} forme etrangere « {m.group(0)} »"
                                f" -> {bon}")
-        # LA VIRGULE LATINE DANS DE LA PROSE ARABE : elle ne se voit pas
-        # a l'oeil dans un texte retourne de droite a gauche.
+        # THE LATIN COMMA IN ARABIC PROSE: it cannot be seen by eye in a
+        # text turned from right to left.
         if regle.get("virgule") and re.search(r"\}\s*,\s*$", l):
             mauvais.append(f"{f}:{i} virgule latine en arabe -> ،")
         if l.lstrip().startswith(("\\", "{")):
@@ -1185,20 +1167,21 @@ def formo(f, lg, mauvais):
 
 
 def plenajo(lg, mot, mauvais):
-    """Un bloc a-t-il perdu du texte ?
+    """Has a block lost text?
 
-    LA CHIRURGIE PAR NUMERO DE LIGNE EST CE QUI A RENDU CE CONTROLE
-    NECESSAIRE : trois blocs marathis y ont perdu un fragment de
-    phrase, et renvoji.py n'en a vu qu'un — celui qui avait perdu un
-    renvoi. On compare donc la LONGUEUR de chaque bloc a celle de son
-    homologue ido, en caracteres, et l'on se cale sur la mediane de la
-    colonne : le rapport varie beaucoup d'une ecriture a l'autre — le
-    chinois dit en cent signes ce que le marathi dit en trois cents —
-    mais il varie peu d'un bloc a l'autre DANS une meme colonne. Un
-    bloc tombe sous la moitie de la mediane a perdu quelque chose.
+    SURGERY BY LINE NUMBER IS WHAT MADE THIS CHECK NECESSARY: three
+    Marathi blocks lost a fragment of a sentence to it, and
+    cross_refs.py saw only one of them — the one that had lost a
+    cross-reference. We therefore compare the LENGTH of each block with
+    that of its Ido counterpart, in characters, and take our bearings
+    from the column's median: the ratio varies a great deal from one
+    script to another — Chinese says in a hundred signs what Marathi
+    says in three hundred — but it varies little from one block to
+    another WITHIN one column. A block fallen below half the median has
+    lost something.
     """
-    io = renvoji.blocs("io", "tabelo")
-    tr = renvoji.blocs(lg, mot)
+    io = cross_refs.blocs("io", "tabelo")
+    tr = cross_refs.blocs(lg, mot)
     if not tr:
         return
     def net(t):
@@ -1215,22 +1198,22 @@ def plenajo(lg, mot, mauvais):
 
 
 def main(args):
-    lgs = args or sorted(set(renvoji.DOSSIER) - TRANSCRIPTIONS)
+    lgs = args or sorted(set(cross_refs.DOSSIER) - TRANSCRIPTIONS)
     total = 0
     for lg in lgs:
-        if lg not in renvoji.DOSSIER:
+        if lg not in cross_refs.DOSSIER:
             raise SystemExit(f"  langue inconnue : {lg}")
         if lg in TRANSCRIPTIONS:
             raise SystemExit(f"  {lg} est une transcription, pas une "
                              f"traduction : elle suit le fac-simile.")
         d = RACINE / "text" / lg
-        fichiers = sorted(d.glob(f"*-{renvoji.DOSSIER[lg]}-*.tex"))
+        fichiers = sorted(d.glob(f"*-{cross_refs.DOSSIER[lg]}-*.tex"))
         if not fichiers:
             continue
         mauvais = []
         for f in fichiers:
             formo(f, lg, mauvais)
-        plenajo(lg, renvoji.DOSSIER[lg], mauvais)
+        plenajo(lg, cross_refs.DOSSIER[lg], mauvais)
         for m in mauvais:
             print(m)
         total += len(mauvais)

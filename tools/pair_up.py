@@ -187,7 +187,7 @@ def paires(corps):
 
 
 def main(args):
-    io = renvoji.blocs("io", "tabelo")
+    io = cross_refs.blocs("io", "tabelo")
     vises = set(args)
     total = 0
     for cle in sorted(io):
