@@ -33,7 +33,7 @@ that moves without a reason is a defect, not a detail.
     python3 tools/cross_refs.py  # 683 blocks, 0 divergence, 3 declared exceptions
     python3 tools/columns.py     # 16 files, 0 reports, per column
     python3 tools/objects.py     # 1708/1694 = 100 %
-    python3 tools/html.py        # 683 bloki, 524 alinei
+    python3 tools/html.py        # 683 blocks, 524 paragraphs
     python3 tools/checks.py      # 1 report (the frame of the « fra 6 » scan)
     python3 tools/notes.py       # 0 and 0
 
