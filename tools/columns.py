@@ -49,18 +49,18 @@ import re
 import sys
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(RACINE / "tools"))
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
 import cross_refs                                              # noqa: E402
 
-LARGO = 94          # characters, not bytes: Arabic and Devanagari
+WIDTH_ = 94          # characters, not bytes: Arabic and Devanagari
 #                     put a great many into little width.
 
 # THE MACROS A TRANSLATION IS ENTITLED TO WRITE. All the rest is a
 # slip — or a TRANSCRIPTION macro, which has no business here: \nl,
 # \cc and VUpage follow the lines and the leaves of the facsimile,
 # which a translation does not follow.
-CONNUES = {"VUgras", "VUnotes", "VUsaut", "VUcentre", "VUfilet", "VUtitre",
+KNOWN = {"VUgras", "VUnotes", "VUsaut", "VUcentre", "VUfilet", "VUtitre",
            "VUpk", "VUcontinue", "VUblancAlinea", "VUornamento",
            "textsuperscript", "textit", "textsc", "parplein",
            "centering", "par", "fontsize", "selectfont", "textls",
@@ -76,7 +76,7 @@ TRANSCRIPTIONS = {"io", "fr"}
 DEVA = r"[\u0900-\u097F]"
 
 
-def _deva(*formes):
+def _deva(*shapes):
     """Word boundary in Devanagari, for want of being able to rely on \\b.
 
     PYTHON'S \\b IS UNUSABLE IN DEVANAGARI: the virama « ् » and the
@@ -85,24 +85,24 @@ def _deva(*formes):
     « \\bये\\b » finds there a Hindi pronoun that does not exist —
     twelve reports, all false, on the first pass of Marathi table 1.
     """
-    return "|".join(f"(?<!{DEVA}){re.escape(f)}(?!{DEVA})" for f in formes)
+    return "|".join(f"(?<!{DEVA}){re.escape(f)}(?!{DEVA})" for f in shapes)
 
 
 GUJ = r"[\u0A80-\u0AFF]"
 
 
-def _guj(*formes):
+def _guj(*shapes):
     """Word boundary in Gujarati, for the same reason as in Devanagari.
 
     Gujarati has the same combining matras as Devanagari and Python's
     \\b is just as unusable there: see _deva, above, and the twelve
     false reports of the first Marathi pass.
     """
-    return "|".join(f"(?<!{GUJ}){re.escape(f)}(?!{GUJ})" for f in formes)
+    return "|".join(f"(?<!{GUJ}){re.escape(f)}(?!{GUJ})" for f in shapes)
 
 
-def _mot(*formes):
-    return "|".join(rf"\b{re.escape(f)}\b" for f in formes)
+def _word(*shapes):
+    return "|".join(rf"\b{re.escape(f)}\b" for f in shapes)
 
 
 # THE RANGE COVERS THE MARKS AS MUCH AS THE LETTERS, and that is
@@ -114,7 +114,7 @@ def _mot(*formes):
 ARAB = r"[\u0621-\u065F\u0670-\u06FF]"
 
 
-def _arb(*formes):
+def _arb(*shapes):
     """Word boundary in Arabic, when the word ENDS IN A MARK.
 
     PYTHON'S \\b DOES NOT CLOSE AFTER A TANWIN, and it is the same
@@ -139,7 +139,7 @@ def _arb(*formes):
     already in the file, two helpers above.
     """
     return "|".join(
-        f"(?<!{ARAB}){re.escape(f)}(?!{ARAB})" for f in formes)
+        f"(?<!{ARAB}){re.escape(f)}(?!{ARAB})" for f in shapes)
 
 
 # -------------------------------------------------------------------
@@ -166,7 +166,7 @@ def _arb(*formes):
 #
 #  The columns absent from this table undergo only the form check,
 #  which holds for all.
-LINGUI = {
+REGISTER = {
 
     # ESPERANTO AGAINST ITS OWN NEOLOGISMS. The column had no check at
     # all: it is the only constructed language of the transcription whose
@@ -189,21 +189,21 @@ LINGUI = {
     # no new root. The column was already making that choice elsewhere —
     # it writes « lernejo » where Ido writes « skolo ».
     "eo": {"mot": [
-        (_mot("olda", "oldaj", "oldan", "oldajn", "olde", "oldulo"),
+        (_word("olda", "oldaj", "oldan", "oldajn", "olde", "oldulo"),
          "maljuna"),
-        (_mot("kurta", "kurtaj", "kurtan", "kurtajn", "kurte"),
+        (_word("kurta", "kurtaj", "kurtan", "kurtajn", "kurte"),
          "mallonga"),
-        (_mot("povra", "povraj", "povran", "povrajn", "povre"),
+        (_word("povra", "povraj", "povran", "povrajn", "povre"),
          "malricha (kompatinda)"),
-        (_mot("mava", "mavaj", "mavan", "mavajn", "mave"),
+        (_word("mava", "mavaj", "mavan", "mavajn", "mave"),
          "malbona"),
-        (_mot("pigra", "pigraj", "pigran", "pigrajn", "pigre"),
+        (_word("pigra", "pigraj", "pigran", "pigrajn", "pigre"),
          "maldiligenta"),
-        (_mot("spita", "spitaj", "spitan", "spitajn", "spite"),
+        (_word("spita", "spitaj", "spitan", "spitajn", "spite"),
          "malgrau"),
-        (_mot("hospitalo", "hospitaloj", "hospitalon", "hospitalojn"),
+        (_word("hospitalo", "hospitaloj", "hospitalon", "hospitalojn"),
          "malsanulejo"),
-        (_mot("karcero", "karceroj", "karceron", "karcerojn"),
+        (_word("karcero", "karceroj", "karceron", "karcerojn"),
          "malliberejo"),
     ]},
 
@@ -211,10 +211,10 @@ LINGUI = {
     # at the head of text/yue/10-toubiu-01.tex; we pick up here the
     # northern forms that would replace them.
     "yue": {"mot": [
-        (_mot("是"), "係"), (_mot("在"), "喺"), (_mot("的"), "嘅"),
-        (_mot("不"), "唔"), (_mot("了"), "咗"), (_mot("他"), "佢"),
-        (_mot("沒有"), "冇"), (_mot("看"), "睇"), (_mot("拿"), "攞"),
-        (_mot("給"), "畀"), (_mot("很"), "好"), (_mot("們"), "哋"),
+        (_word("是"), "係"), (_word("在"), "喺"), (_word("的"), "嘅"),
+        (_word("不"), "唔"), (_word("了"), "咗"), (_word("他"), "佢"),
+        (_word("沒有"), "冇"), (_word("看"), "睇"), (_word("拿"), "攞"),
+        (_word("給"), "畀"), (_word("很"), "好"), (_word("們"), "哋"),
     ]},
 
     # EGYPTIAN ARABIC AGAINST STANDARD ARABIC.
@@ -324,17 +324,17 @@ LINGUI = {
     # hurried translations do. We pick up the Hindi and Sanskrit forms
     # that everyday Telugu does not say.
     "te": {"mot": [
-        (_mot("है", "हैं", "था", "थे"), "ఉంది / ఉన్నాయి"),
-        (_mot("नहीं"), "లేదు / కాదు"),
-        (_mot("और"), "మరియు"), (_mot("लेकिन"), "కానీ"),
-        (_mot("क्योंकि"), "ఎందుకంటే"), (_mot("बहुत"), "చాలా"),
-        (_mot("यह", "वह"), "ఇది / అది"),
-        (_mot("क्या", "कैसे", "कहाँ"), "ఏమిటి / ఎలా / ఎక్కడ"),
+        (_word("है", "हैं", "था", "थे"), "ఉంది / ఉన్నాయి"),
+        (_word("नहीं"), "లేదు / కాదు"),
+        (_word("और"), "మరియు"), (_word("लेकिन"), "కానీ"),
+        (_word("क्योंकि"), "ఎందుకంటే"), (_word("बहुत"), "చాలా"),
+        (_word("यह", "वह"), "ఇది / అది"),
+        (_word("क्या", "कैसे", "कहाँ"), "ఏమిటి / ఎలా / ఎక్కడ"),
         # THE FORMAL WORDS, AIMED AT ONLY IN THEIR FORMAL FORM,
         # as for Marathi: « దృశ్యం » is perfectly ordinary Telugu
         # for a view.
-        (_mot("తాలికా", "తాలిక"), "పట్టిక"),
-        (_mot("మొదటి దృశ్యం", "రెండవ దృశ్యం", "మూడవ దృశ్యం",
+        (_word("తాలికా", "తాలిక"), "పట్టిక"),
+        (_word("మొదటి దృశ్యం", "రెండవ దృశ్యం", "మూడవ దృశ్యం",
               "నాలుగవ దృశ్యం"), "మొదటి రంగం ..."),
     ]},
 
@@ -415,28 +415,28 @@ LINGUI = {
     # tatsama that printed Urdu never uses — not because they would be
     # too learned, but because its learned column is the other one.
     "ur": {"mot": [
-        (_mot("دا"), "کا — genitif pendjabi"),
-        (_mot("دوجا", "تیجا"), "دوسرا / تیسرا"),
+        (_word("دا"), "کا — genitif pendjabi"),
+        (_word("دوجا", "تیجا"), "دوسرا / تیسرا"),
         # « اوہ » IS THE PUNJABI « اوہ » (« he ») AND THE URDU
         # INTERJECTION (« oh! »): two words for one spelling. We do
         # not report it, and keep « ایہہ », which is Punjabi only.
-        (_mot("ایہہ"), "یہ"),
-        (_mot("نئیں"), "نہیں"),
-        (_mot("کیتا"), "کیا"),
-        (_mot("توں"), "سے"),
-        (_mot("کول"), "پاس"),
-        (_mot("جیہڑا", "جیہڑی"), "جو"),
-        (_mot("ساڈا", "تہاڈا"), "ہمارا / تمہارا"),
+        (_word("ایہہ"), "یہ"),
+        (_word("نئیں"), "نہیں"),
+        (_word("کیتا"), "کیا"),
+        (_word("توں"), "سے"),
+        (_word("کول"), "پاس"),
+        (_word("جیہڑا", "جیہڑی"), "جو"),
+        (_word("ساڈا", "تہاڈا"), "ہمارا / تمہارا"),
         # THE TATSAMA OF HINDI, AIMED AT IN THEIR TRANSLITERATED FORM.
-        (_mot("ودیالیہ"), "اسکول / مدرسہ"),
-        (_mot("ودیارتھی"), "طالب علم"),
-        (_mot("ادھیاپک"), "استاد"),
-        (_mot("پستک"), "کتاب"),
-        (_mot("پرارتھنا"), "دعا"),
-        (_mot("سمے"), "وقت"),
-        (_mot("ورش"), "سال"),
-        (_mot("ناری"), "عورت"),
-        (_mot("کاریہ"), "کام"),
+        (_word("ودیالیہ"), "اسکول / مدرسہ"),
+        (_word("ودیارتھی"), "طالب علم"),
+        (_word("ادھیاپک"), "استاد"),
+        (_word("پستک"), "کتاب"),
+        (_word("پرارتھنا"), "دعا"),
+        (_word("سمے"), "وقت"),
+        (_word("ورش"), "سال"),
+        (_word("ناری"), "عورت"),
+        (_word("کاریہ"), "کام"),
     ]},
     # INDONESIAN DEFENDS ITSELF ON TWO FRONTS, AND NEITHER IS A
     # NEIGHBOURING COLUMN. Its real neighbour — Malaysian Malay — is in
@@ -1021,7 +1021,7 @@ LINGUI = {
 # sixteen Ido tables: 36 speech attributions on table 5, 1 on table
 # 12 — and it is « Noto. » —, 0 everywhere else. Five therefore
 # leaves the two cases on either side without pinching anything.
-PAROLI = 5
+SPEECH = 5
 
 
 # THE SCRIPTS THAT DO NOT MIX WITHIN A WORD. Two letters of two
@@ -1037,7 +1037,7 @@ PAROLI = 5
 # Gujarati, Telugu and Marathi: without this exception the check
 # cried out at almost every Bengali sentence. The joiners U+200C and
 # U+200D are neutral for the same reason.
-ECRITURES = [
+SCRIPTS = [
     ("arabe", 0x0600, 0x06FF), ("devanagari", 0x0900, 0x097F),
     ("bengali", 0x0980, 0x09FF), ("gourmoukhi", 0x0A00, 0x0A7F),
     ("gujarati", 0x0A80, 0x0AFF), ("tamoul", 0x0B80, 0x0BFF),
@@ -1046,20 +1046,20 @@ ECRITURES = [
     ("cyrillique", 0x0400, 0x04FF), ("hebreu", 0x0590, 0x05FF),
     ("han", 0x4E00, 0x9FFF), ("hangul", 0xAC00, 0xD7AF),
 ]
-NEUTRES = {0x0964, 0x0965, 0x200C, 0x200D}
+NEUTRAL = {0x0964, 0x0965, 0x200C, 0x200D}
 
 
-def ecriture(c):
+def script_(c):
     o = ord(c)
-    if o in NEUTRES:
+    if o in NEUTRAL:
         return None
-    for nom, debut, fin in ECRITURES:
-        if debut <= o <= fin:
-            return nom
+    for name_, start_, end_ in SCRIPTS:
+        if start_ <= o <= end_:
+            return name_
     return None
 
 
-def octet(f, i, l, mauvais):
+def byte(f, i, l, bad):
     """What cannot be text, headers included."""
     # THE REPLACEMENT CHARACTER. A U+FFFD slipped into block c4-08-1
     # of text/ur/15-jadval-06.tex, in place of an Urdu full stop.
@@ -1070,31 +1070,31 @@ def octet(f, i, l, mauvais):
     # byte lost in passing from one encoding to another. We report
     # with it the C0 control characters, except the tab.
     for m in re.finditer(r"[\ufffd\x00-\x08\x0b-\x1f\x7f]", l):
-        mauvais.append(f"{f}:{i} caractere impossible "
+        bad.append(f"{f}:{i} caractere impossible "
                        f"U+{ord(m.group(0)):04X} — octet perdu"
                        f" a la conversion")
-    for mot in l.split():
-        vues = {ecriture(c) for c in mot}
-        vues.discard(None)
-        if len(vues) > 1:
-            mauvais.append(f"{f}:{i} « {mot} » mele "
-                           f"{' et '.join(sorted(vues))} dans un seul "
+    for word in l.split():
+        views = {script_(c) for c in word}
+        views.discard(None)
+        if len(views) > 1:
+            bad.append(f"{f}:{i} « {word} » mele "
+                           f"{' et '.join(sorted(views))} dans un seul "
                            f"mot — faute de frappe")
 
 
-def formo(f, lg, mauvais):
+def form(f, lg, bad):
     """The form checks, which hold for every column."""
-    regle = LINGUI.get(lg, {})
-    mots = regle.get("mot", [])
-    exemptes = regle.get("exemptes", [])
-    lignes = f.read_text(encoding="utf-8").split("\n")
+    rule = REGISTER.get(lg, {})
+    words = rule.get("mot", [])
+    exempt = rule.get("exemptes", [])
+    lines = f.read_text(encoding="utf-8").split("\n")
     # A FILE THAT SPEAKS IS NOT A FILE THAT NARRATES. The
     # « narration » rules apply only to the narrated tables: see
     # SPEECH, above, and the header of LANGUAGES.
-    dialogo = sum(x.count("\\textsc{") for x in lignes
-                  if not x.startswith("%")) >= PAROLI
-    if not dialogo:
-        mots = mots + regle.get("narracio", [])
+    dialogue = sum(x.count("\\textsc{") for x in lines
+                  if not x.startswith("%")) >= SPEECH
+    if not dialogue:
+        words = words + rule.get("narracio", [])
     # THE DRAFT WORD LEFT IN THE TEXT. Three times in the Urdu column
     # alone, twice in the Tamil, a French word was typed alone on its
     # line — « Wait », « Ordre » — while looking for its sentence, and
@@ -1113,12 +1113,12 @@ def formo(f, lg, mauvais):
     #  them out before counting, failing which no file would be judged
     #  non-Latin. The first attempt at this check fell into that trap
     #  and reported nothing at all.
-    corps = "\n".join(x for x in lignes if not x.startswith("%"))
-    corps = re.sub(r"\\[A-Za-z]+", "", corps)
-    lettres = [c for c in corps if c.isalpha()]
-    latines = sum(1 for c in lettres if ord(c) < 0x250)
-    nolatina = bool(lettres) and latines < len(lettres) // 10
-    for i, l in enumerate(lignes, 1):
+    size = "\n".join(x for x in lines if not x.startswith("%"))
+    size = re.sub(r"\\[A-Za-z]+", "", size)
+    letters = [c for c in size if c.isalpha()]
+    latin = sum(1 for c in letters if ord(c) < 0x250)
+    non_latin = bool(letters) and latin < len(letters) // 10
+    for i, l in enumerate(lines, 1):
         # THE TWO CHECKS THAT FOLLOW LOOK AT THE BYTE, NOT THE
         # LANGUAGE, AND THEY THEREFORE PASS OVER THE COMMENTS TOO.
         # It is the only difference with all the rest of the file, and
@@ -1127,46 +1127,46 @@ def formo(f, lg, mauvais):
         # middle of a Tamil word quoted in the HEADER of
         # text/ur/17-jadval-08.tex. A header is read; it must
         # therefore be checked.
-        octet(f, i, l, mauvais)
+        byte(f, i, l, bad)
         if l.startswith("%"):
             continue
         for m in re.finditer(r"\\([A-Za-z]+)", l):
-            if m.group(1) not in CONNUES:
-                mauvais.append(f"{f}:{i} macro inconnue : \\{m.group(1)}")
+            if m.group(1) not in KNOWN:
+                bad.append(f"{f}:{i} macro inconnue : \\{m.group(1)}")
         if "\\VUgras{}" in l:
-            mauvais.append(f"{f}:{i} \\VUgras vide")
-        if nolatina and re.fullmatch(r"[A-Za-z\u00c0-\u024f'\u2019-]+",
+            bad.append(f"{f}:{i} \\VUgras vide")
+        if non_latin and re.fullmatch(r"[A-Za-z\u00c0-\u024f'\u2019-]+",
                                      l.rstrip()):
-            mauvais.append(f"{f}:{i} « {l.strip()} » seul sur sa "
+            bad.append(f"{f}:{i} « {l.strip()} » seul sur sa "
                            f"ligne dans une colonne non latine — "
                            f"mot de brouillon oublie ?")
         # A BRACE OPENED AT THE END OF A LINE: the line break is rendered
         # as a space, and the space then falls INSIDE the group.
         if re.search(r"\{\s*$", l):
-            mauvais.append(f"{f}:{i} accolade ouverte en fin de ligne")
+            bad.append(f"{f}:{i} accolade ouverte en fin de ligne")
         # A CROSS-REFERENCE SET IN BOLD INSTEAD OF AS A SUPERSCRIPT. We
         # aim only at the CROSS-REFERENCE parenthesis: table 1 legitimately
         # sets « (ألماني وإنجليزي...) » in bold, parenthesis included.
         if re.search(r"\\VUgras\{\((?:\d{1,3}|[a-z])\)", l):
-            mauvais.append(f"{f}:{i} renvoi en gras au lieu d'exposant")
-        for pat, bon in mots:
+            bad.append(f"{f}:{i} renvoi en gras au lieu d'exposant")
+        for pat, good in words:
             m = re.search(pat, l)
-            if m and not any(e in l for e in exemptes):
-                mauvais.append(f"{f}:{i} forme etrangere « {m.group(0)} »"
-                               f" -> {bon}")
+            if m and not any(e in l for e in exempt):
+                bad.append(f"{f}:{i} forme etrangere « {m.group(0)} »"
+                               f" -> {good}")
         # THE LATIN COMMA IN ARABIC PROSE: it cannot be seen by eye in a
         # text turned from right to left.
-        if regle.get("virgule") and re.search(r"\}\s*,\s*$", l):
-            mauvais.append(f"{f}:{i} virgule latine en arabe -> ،")
+        if rule.get("virgule") and re.search(r"\}\s*,\s*$", l):
+            bad.append(f"{f}:{i} virgule latine en arabe -> ،")
         if l.lstrip().startswith(("\\", "{")):
             continue
         if re.search(r"[^-]-$", l):
-            mauvais.append(f"{f}:{i} trait d'union en fin de ligne")
-        if len(l) > LARGO:
-            mauvais.append(f"{f}:{i} ligne de {len(l)} caracteres")
+            bad.append(f"{f}:{i} trait d'union en fin de ligne")
+        if len(l) > WIDTH_:
+            bad.append(f"{f}:{i} ligne de {len(l)} caracteres")
 
 
-def plenajo(lg, mot, mauvais):
+def report_column(lg, word, bad):
     """Has a block lost text?
 
     SURGERY BY LINE NUMBER IS WHAT MADE THIS CHECK NECESSARY: three
@@ -1180,47 +1180,47 @@ def plenajo(lg, mot, mauvais):
     another WITHIN one column. A block fallen below half the median has
     lost something.
     """
-    io = cross_refs.blocs("io", "tabelo")
-    tr = cross_refs.blocs(lg, mot)
+    io = cross_refs.blocks("io", "tabelo")
+    tr = cross_refs.blocks(lg, word)
     if not tr:
         return
-    def net(t):
+    def clean(t):
         return len(re.sub(r"\\[A-Za-z]+|[{}\s]|---", "", t))
-    rap = {k: net(v) / net(io[k]) for k, v in tr.items()
-           if k in io and net(io[k]) > 60}
+    rap = {k: clean(v) / clean(io[k]) for k, v in tr.items()
+           if k in io and clean(io[k]) > 60}
     if len(rap) < 20:
         return
     med = sorted(rap.values())[len(rap) // 2]
     for k, r in sorted(rap.items()):
         if r < med / 2:
-            mauvais.append(f"  {k} : bloc a {r / med:.0%} de la longueur "
+            bad.append(f"  {k} : bloc a {r / med:.0%} de la longueur "
                            f"mediane de la colonne — texte perdu ?")
 
 
-def main(args):
-    lgs = args or sorted(set(cross_refs.DOSSIER) - TRANSCRIPTIONS)
+def hand(args):
+    lgs = args or sorted(set(cross_refs.FOLDER) - TRANSCRIPTIONS)
     total = 0
     for lg in lgs:
-        if lg not in cross_refs.DOSSIER:
+        if lg not in cross_refs.FOLDER:
             raise SystemExit(f"  langue inconnue : {lg}")
         if lg in TRANSCRIPTIONS:
             raise SystemExit(f"  {lg} est une transcription, pas une "
                              f"traduction : elle suit le fac-simile.")
-        d = RACINE / "text" / lg
-        fichiers = sorted(d.glob(f"*-{cross_refs.DOSSIER[lg]}-*.tex"))
-        if not fichiers:
+        d = ROOT / "text" / lg
+        files_ = sorted(d.glob(f"*-{cross_refs.FOLDER[lg]}-*.tex"))
+        if not files_:
             continue
-        mauvais = []
-        for f in fichiers:
-            formo(f, lg, mauvais)
-        plenajo(lg, cross_refs.DOSSIER[lg], mauvais)
-        for m in mauvais:
+        bad = []
+        for f in files_:
+            form(f, lg, bad)
+        report_column(lg, cross_refs.FOLDER[lg], bad)
+        for m in bad:
             print(m)
-        total += len(mauvais)
-        print(f"  {lg} : {len(fichiers):2d} fichiers, "
-              f"{len(mauvais)} signalement{'s' if len(mauvais) > 1 else ''}")
+        total += len(bad)
+        print(f"  {lg} : {len(files_):2d} fichiers, "
+              f"{len(bad)} signalement{'s' if len(bad) > 1 else ''}")
     return 1 if total else 0
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(hand(sys.argv[1:]))

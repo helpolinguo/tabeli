@@ -45,12 +45,12 @@ import numpy as np
 from PIL import Image
 
 Image.MAX_IMAGE_PIXELS = None
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 
 # THE NAMED COLOURS, and the tone asked of them. The tone is given in
 # degrees on the hue wheel, with the expected saturation and lightness;
 # "blanka" and "nigra" have no hue and are judged on lightness alone.
-TONS = {
+TONES = {
     "reda":     (0, 0.30, None),
     "oranjea":  (25, 0.30, None),
     "flava":    (50, 0.30, None),
@@ -64,7 +64,7 @@ TONS = {
     "nigra":    (None, None, 0.30),
     "blanka":   (None, None, 0.80),
 }
-FRANCAIS = {
+FRENCH = {
     "reda": "rouge", "oranjea": "orange", "flava": "jaune",
     "verda": "vert", "blua": "bleu", "violea": "violet",
     "purpurea": "pourpre", "rozea": "rose", "bruna": "brun",
@@ -75,16 +75,16 @@ FRANCAIS = {
 # taken in LOWER CASE: "Blanko" is a person's name (Jacques's father, in
 # table 5), "Blank Urso" the sign of an inn.
 ADJ = re.compile(
-    r'(?<![A-Za-z])(' + '|'.join(sorted(TONS, key=len, reverse=True))
+    r'(?<![A-Za-z])(' + '|'.join(sorted(TONES, key=len, reverse=True))
     .replace('a|', '|') + r')(?=\b)')
-MOTS = re.compile(r'(?<![\w-])(' +
-                  '|'.join(k[:-1] for k in sorted(TONS, key=len, reverse=True)) +
+WORDS = re.compile(r'(?<![\w-])(' +
+                  '|'.join(k[:-1] for k in sorted(TONES, key=len, reverse=True)) +
                   r')(?:a|e|i)(?![\w-])')
 NUM = re.compile(r'\((\d+)\)')
-BALISE = re.compile(r'\\[A-Za-z]+\*?(?:\{[^{}]*\})?|[{}]|%.*')
+TAG = re.compile(r'\\[A-Za-z]+\*?(?:\{[^{}]*\})?|[{}]|%.*')
 
 
-def texte(t):
+def text_(t):
     t = re.sub(r'%.*', '', t)
     # \textsuperscript{(12)} must keep its number.
     t = re.sub(r'\\textsuperscript\{(\([0-9]+\))\}', r'\1', t)
@@ -100,7 +100,7 @@ def texte(t):
     t = t.replace("\\ccplein\n", "").replace("\\ccplein", "")
     t = t.replace("\\cc\n", "").replace("\\cc", "")
     t = re.sub(r'\\nl\b', ' ', t)
-    t = BALISE.sub(' ', t)
+    t = TAG.sub(' ', t)
     return re.sub(r'\s+', ' ', t)
 
 
@@ -129,16 +129,16 @@ def texte(t):
 # verte" for the stand of trees (25) in table 9 -- and the Ido names
 # some the French passes over. We survey both, therefore, and say which
 # one speaks.
-ANTE = re.compile(r"^\s*(?:[\w'\u2019-]+\s+){0,2}[\w'\u2019-]*\s*\((\d+)\)")
-POST = re.compile(r"\((\d+)\)(?:[\s,]*(?:[\w'\u2019-]+[\s,]+){0,3})$")
+BEFORE_ = re.compile(r"^\s*(?:[\w'\u2019-]+\s+){0,2}[\w'\u2019-]*\s*\((\d+)\)")
+AFTER_ = re.compile(r"\((\d+)\)(?:[\s,]*(?:[\w'\u2019-]+[\s,]+){0,3})$")
 COORD = re.compile(r"\((\d+)\)(?:[^.()]{0,40}?\b(?:et|ed?)\b[^.()]{0,40}?)$")
-ETRE = re.compile(r"\b(?:esas|sont|est|semblas|semble)\b")
+COPULA = re.compile(r"\b(?:esas|sont|est|semblas|semble)\b")
 # THE RELATIVE PRONOUN CUTS THE COORDINATION. "seglo-navi (64) ed
 # enorma paketboto (65) DI QUA la nigra silueto": the black belongs to
 # the liner's silhouette, and the coordination preceding it does not
 # claim it. Without this barrier, the survey gave the black to the
 # sailing ships as well.
-RELATIF = re.compile(r"\b(?:qua|qui|que|quan|dont|donta|kies)\b")
+RELATIVE = re.compile(r"\b(?:qua|qui|que|quan|dont|donta|kies)\b")
 
 # THE FRENCH PREPOSES TOO, AND ITS DETERMINER SAYS SO. "emportait en
 # NOIRS tourbillons la fumée (1)": the adjective looks ahead of itself,
@@ -147,7 +147,7 @@ RELATIF = re.compile(r"\b(?:qua|qui|que|quan|dont|donta|kies)\b")
 # form; a noun -- "à la croûte rouge", "nuages (56) noirs" -- marks the
 # postposed one. "tout" is not on the list: "deux ramoneurs (91) TOUT
 # noirs de suie" is indeed a postposed epithet.
-DEVANT = re.compile(
+AHEAD = re.compile(
     r"\b(?:de|du|des|en|par|avec|sans|au|aux|le|la|les|l|d|un|une|ce|ces"
     r"|cet|cette|son|sa|ses|leur|leurs|mon|ma|mes|nos|vos|deux|trois"
     r"|quelques|plusieurs|gros|grosse|petits?|petites?)['\u2019\s]+$",
@@ -159,15 +159,15 @@ RAD = {
     "fr": ["rouge", "orang", "jaune", "vert", "bleu", "violet", "pourpre",
            "ros", "brun", "gris", "noir", "blanc", "blanch"],
 }
-FIN = {"io": r"(?:a|e|i)", "fr": r"(?:e?s?)"}
-VERS_IO = {"rouge": "reda", "orang": "oranjea", "jaune": "flava",
+END = {"io": r"(?:a|e|i)", "fr": r"(?:e?s?)"}
+TO_IO = {"rouge": "reda", "orang": "oranjea", "jaune": "flava",
            "vert": "verda", "bleu": "blua", "violet": "violea",
            "pourpre": "purpurea", "ros": "rozea", "brun": "bruna",
            "gris": "griza", "noir": "nigra", "blanc": "blanka",
            "blanch": "blanka"}
-MOTS = {lg: re.compile(r"(?<![\w-])(" +
+WORDS = {lg: re.compile(r"(?<![\w-])(" +
                        "|".join(sorted(r, key=len, reverse=True)) +
-                       r")" + FIN[lg] + r"(?![\w-])",
+                       r")" + END[lg] + r"(?![\w-])",
                        0 if lg == "io" else re.I)
         for lg, r in RAD.items()}
 
@@ -179,25 +179,25 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex")]
 # number that will be shown, not the one that is read.
 # plates/corrections.json holds the table, and numbering.py reads it the
 # same way.
-def korekti():
-    f = RACINE / "plates" / "corrections.json"
+def corrections():
+    f = ROOT / "plates" / "corrections.json"
     if not f.exists():
         return {}
     return {k: v for k, v in json.loads(
         f.read_text(encoding="utf-8")).items() if not k.startswith("_")}
 
 
-KOREKTI = korekti()
+CORRECTIONS = corrections()
 
 
-def korekti_renvojo(tab, cle=""):
+def correct_xref(tab, key=""):
     """{read: to be read} for ONE BLOCK: the corrections that hold for the
     whole table, plus those this block alone carries.
     """
-    t = KOREKTI.get(f"t{tab:02d}", {})
+    t = CORRECTIONS.get(f"t{tab:02d}", {})
     out = {k: v for k, v in t.items() if isinstance(v, str)}
-    if cle:
-        out.update(t.get(cle, {}))
+    if key:
+        out.update(t.get(key, {}))
     return out
 
 
@@ -207,34 +207,34 @@ def korekti_renvojo(tab, cle=""):
 # scene, the twenty-eight colours of tables 3, 4, 6, 7, 8 and 9 found
 # no box on the plate, numbers.json filing them under "c1:18".
 # plates/scenes.json says which tables are in this case.
-def a_ceni():
-    f = RACINE / "plates" / "scenes.json"
+def has_scenes():
+    f = ROOT / "plates" / "scenes.json"
     if not f.exists():
         return set()
     return {c[:3] for c in json.loads(f.read_text(encoding="utf-8"))
             if not c.startswith("_")}
 
 
-CENI = a_ceni()
+SCENES = has_scenes()
 
 # THE PAGE THAT CUTS A WORD. \ccplein closes the page on a cut word,
 # and four service lines come between it and the continuation. We erase
 # them first, or the word stays in two pieces -- and a "continuation"
 # block would come and cut a sentence that nothing cuts.
-SAUT = re.compile(
+JUMP = re.compile(
     r'\\ccplein\s*\n\\end\{VUpage\}.*?'
     r'^%%K\s+\S+\s+\S+\s+suite\s*\n\\VUcontinue\s*\n',
     re.S | re.M)
 
 
-def koloroj():
-    f = RACINE / "plates" / "colours.json"
+def colours_():
+    f = ROOT / "plates" / "colours.json"
     return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
 
 
-def ecartes():
+def set_aside():
     """{table: [(word, fragment)]} — see plates/colours.json."""
-    return koloroj().get("ecarte", {})
+    return colours_().get("ecarte", {})
 
 
 # WHAT THE EYE HAS SEEN PREVAILS OVER WHAT THE RING MEASURES. The
@@ -243,28 +243,28 @@ def ecartes():
 # seen nothing. The verdict held by hand in colours.json decides:
 # "planche" when it is the plate that must be redone, "mesure" when the
 # plate already says what the booklet says.
-VERDIKTO = {"planche": "A REPEINDRE",
+VERDICT = {"planche": "A REPEINDRE",
             "mesure": "la mesure a tort",
             "akordo": "vu, et la planche dit vrai"}
 
 
-def vidita():
+def seen_at():
     """{"t13/65": (verdict, what was seen)}."""
-    return {k: tuple(v) for k, v in koloroj().get("vidita", {}).items()}
+    return {k: tuple(v) for k, v in colours_().get("vidita", {}).items()}
 
 
-def anteposee(apres):
+def preposed(after):
     """The number the preposed epithet looks ahead to."""
-    m = ANTE.match(apres)
+    m = BEFORE_.match(after)
     return [int(m.group(1))] if m else []
 
 
-def postposee(avant, lg="io", mot=""):
+def postposed(before, lg="io", word=""):
     """The numbers the postposed epithet claims behind it."""
-    m = POST.search(avant)
+    m = AFTER_.search(before)
     if not m:
         return []
-    if lg == "fr" and DEVANT.search(avant):
+    if lg == "fr" and AHEAD.search(before):
         return []
     ns = [int(m.group(1))]
     # THE COORDINATION GOES BACK UP: "la robe (42) et à la pèlerine (41)
@@ -273,7 +273,7 @@ def postposee(avant, lg="io", mot=""):
     # end of the preceding text, m.end() designated its end and the slice
     # was always empty -- the relative's barrier never rose, and the
     # sailing ships (64) stayed black.
-    if RELATIF.search(avant[m.end(1):]):
+    if RELATIVE.search(before[m.end(1):]):
         return ns
     # IN IDO, THE POSTPOSED FORM EXISTS ONLY BEHIND A RELATIVE. The
     # language preposes its epithet: when the adjective follows a number
@@ -292,21 +292,21 @@ def postposee(avant, lg="io", mot=""):
     # the pink does not belong to the fern. The agreement alone says how
     # far the epithet reaches -- "gris", invariable, is the only word that
     # lies, and it appears nowhere.
-    if not mot.lower().endswith("s"):
+    if not word.lower().endswith("s"):
         return ns
-    reste = avant[:m.start()]
+    left = before[:m.start()]
     while True:
-        c = COORD.search(reste)
+        c = COORD.search(left)
         if not c:
             break
         ns.append(int(c.group(1)))
-        reste = reste[:c.start()]
+        left = left[:c.start()]
     return ns
 
 
-def numeros(t, i, j, lg="io"):
+def numbers(t, i, j, lg="io"):
     """The numbers a colour reaches from position (i, j)."""
-    avant, apres = t[max(0, i - 90):i], t[j:j + 90]
+    before, after = t[max(0, i - 90):i], t[j:j + 90]
     # THE PREDICATE FIRST: if there is a copula close by, the colour
     # bears on the whole enumeration, and not on the first noun that
     # comes.
@@ -321,13 +321,13 @@ def numeros(t, i, j, lg="io"):
     # that nothing fall between the adjective and its verb, neither
     # reference nor semicolon -- and "la reda lanterno (25) e la grosa pipo
     # qua ESAS uzata kom insigno (26)" stops painting the sign.
-    for m in ETRE.finditer(t[max(0, i - 40):j + 40]):
+    for m in COPULA.finditer(t[max(0, i - 40):j + 40]):
         d, g = max(0, i - 40) + m.start(), max(0, i - 40) + m.end()
-        entre = t[min(g, i):max(d, j)]
-        if any(c in entre for c in "(;:."):
+        between = t[min(g, i):max(d, j)]
+        if any(c in between for c in "(;:."):
             continue
-        phrase = apres.split(".")[0]
-        ns = [int(x) for x in re.findall(r"\((\d+)\)", phrase)]
+        sentence = after.split(".")[0]
+        ns = [int(x) for x in re.findall(r"\((\d+)\)", sentence)]
         if ns:
             return ns
         break
@@ -338,17 +338,17 @@ def numeros(t, i, j, lg="io"):
     # when it belongs to what precedes it. Each language therefore begins
     # with its own construction, and falls back on the other: the French
     # also says "en noirs tourbillons la fumée (1)".
-    tour = [lambda: anteposee(apres), lambda: postposee(avant, lg, t[i:j])]
+    turn = [lambda: preposed(after), lambda: postposed(before, lg, t[i:j])]
     if lg == "fr":
-        tour.reverse()
-    for f in tour:
+        turn.reverse()
+    for f in turn:
         ns = f()
         if ns:
             return ns
     return []
 
 
-def relever():
+def collect():
     """The (table, number, colour) triples the booklets state.
 
     WE READ BLOCK BY BLOCK, and not the file at a stroke: it is the
@@ -356,45 +356,45 @@ def relever():
     table 3 designates nothing. The division has another merit: a colour
     will not claim a number from the neighbouring paragraph.
     """
-    hors = ecartes()
-    par = {}
-    for lg, motif in SOURCES:
-        for f in sorted((RACINE / "text" / lg).glob(motif)):
+    outside_ = set_aside()
+    per = {}
+    for lg, pattern in SOURCES:
+        for f in sorted((ROOT / "text" / lg).glob(pattern)):
             tab = int(re.search(r"-(\d+)\.tex$", f.name).group(1))
-            cle = f"t{tab:02d}"
-            brut = SAUT.sub("\\\\cc\\n", f.read_text(encoding="utf-8"))
-            sceno = ""
-            parts = re.split(r"^%%K (\S+)", brut, flags=re.M)
+            key = f"t{tab:02d}"
+            raw = JUMP.sub("\\\\cc\\n", f.read_text(encoding="utf-8"))
+            scene_ = ""
+            parts = re.split(r"^%%K (\S+)", raw, flags=re.M)
             for i in range(1, len(parts), 2):
                 mk = re.match(r"t\d\d-(c\d+)-", parts[i])
                 if mk:
-                    sceno = mk.group(1)
-                kor = korekti_renvojo(tab, parts[i])
-                t = texte(parts[i + 1])
-                for m in MOTS[lg].finditer(t):
-                    mot = m.group(0)
+                    scene_ = mk.group(1)
+                corr = correct_xref(tab, parts[i])
+                t = text_(parts[i + 1])
+                for m in WORDS[lg].finditer(t):
+                    word = m.group(0)
                     kunteksto = re.sub(
                         r"\s+", " ",
                         t[max(0, m.start() - 45):m.end() + 55]).strip()
-                    if any(a.lower() == mot.lower() and b in kunteksto
-                           for a, b in hors.get(cle, [])):
+                    if any(a.lower() == word.lower() and b in kunteksto
+                           for a, b in outside_.get(key, [])):
                         continue
-                    coul = (m.group(1) + "a") if lg == "io" \
-                        else VERS_IO[m.group(1).lower()]
-                    for n in numeros(t, m.start(), m.end(), lg):
-                        n = kor.get(str(n), str(n))
-                        k = f"{sceno}:{n}" if cle in CENI and sceno else n
-                        d = par.setdefault((tab, k, coul),
+                    col_ = (m.group(1) + "a") if lg == "io" \
+                        else TO_IO[m.group(1).lower()]
+                    for n in numbers(t, m.start(), m.end(), lg):
+                        n = corr.get(str(n), str(n))
+                        k = f"{scene_}:{n}" if key in SCENES and scene_ else n
+                        d = per.setdefault((tab, k, col_),
                                            {"tabelo": tab, "numero": k,
-                                            "koloro": coul, "dit": [],
+                                            "koloro": col_, "dit": [],
                                             "kunteksto": kunteksto})
                         if lg not in d["dit"]:
                             d["dit"].append(lg)
-    return sorted(par.values(),
+    return sorted(per.values(),
                   key=lambda r: (r["tabelo"], str(r["numero"])))
 
 
-def teinte(rgb):
+def hue(rgb):
     """(hue in degrees, saturation, lightness) of an RGB 0-255 array."""
     a = rgb.astype(np.float32) / 255.0
     mx = a.max(1)
@@ -413,119 +413,119 @@ def teinte(rgb):
     return h, s, mx
 
 
-def lire_couronne(couleur, x, y, w, h, corps, dedans=1.0, dehors=3.0):
+def read_ring(colour, x, y, w, h, size, inside=1.0, outside=3.0):
     """The dominant colour around a number, the reserve excluded."""
     cx, cy = x + w / 2, y + h / 2
-    R = round(dehors * corps)
+    R = round(outside * size)
     x0, y0 = max(0, round(cx) - R), max(0, round(cy) - R)
-    x1 = min(couleur.shape[1], round(cx) + R)
-    y1 = min(couleur.shape[0], round(cy) + R)
+    x1 = min(colour.shape[1], round(cx) + R)
+    y1 = min(colour.shape[0], round(cy) + R)
     if x1 - x0 < 8 or y1 - y0 < 8:
         return None
-    f = couleur[y0:y1, x0:x1]
+    f = colour[y0:y1, x0:x1]
     yy, xx = np.mgrid[y0:y1, x0:x1]
     d = np.hypot(xx - cx, yy - cy)
-    m = (d >= dedans * corps) & (d <= dehors * corps)
+    m = (d >= inside * size) & (d <= outside * size)
     pix = f[m]
     if len(pix) < 40:
         return None
-    hh, ss, vv = teinte(pix)
+    hh, ss, vv = hue(pix)
     # THE LINE IS NOT COLOUR, nor the paper the reserve.
-    bon = (vv > 0.14) & (vv < 0.97)
-    if bon.sum() < 30:
+    good = (vv > 0.14) & (vv < 0.97)
+    if good.sum() < 30:
         return None
-    hh, ss, vv = hh[bon], ss[bon], vv[bon]
+    hh, ss, vv = hh[good], ss[good], vv[good]
     # The hue is averaged circularly, or red cancels itself out on
     # either side of zero.
     a = np.deg2rad(hh)
-    poids = ss
-    if poids.sum() < 1e-6:
-        poids = np.ones_like(ss)
-    hm = np.rad2deg(np.arctan2((np.sin(a) * poids).sum(),
-                               (np.cos(a) * poids).sum())) % 360
+    weight = ss
+    if weight.sum() < 1e-6:
+        weight = np.ones_like(ss)
+    hm = np.rad2deg(np.arctan2((np.sin(a) * weight).sum(),
+                               (np.cos(a) * weight).sum())) % 360
     return float(hm), float(np.median(ss)), float(np.median(vv))
 
 
-def accord(coul, mesure, tol=45):
+def agreement(col_, measurement, tol=45):
     """Does the measured tone answer the named tone?"""
-    h, s, v = mesure
-    t, smin, vmax = TONS[coul]
-    if coul == "nigra":
+    h, s, v = measurement
+    t, smin, vmax = TONES[col_]
+    if col_ == "nigra":
         return v <= 0.34, f"clarte {v:.2f}"
-    if coul == "blanka":
+    if col_ == "blanka":
         return v >= 0.72, f"clarte {v:.2f}"
-    if coul == "griza":
+    if col_ == "griza":
         return s <= 0.16, f"saturation {s:.2f}"
     if s < smin:
         return False, f"trop pale (saturation {s:.2f}, teinte {h:.0f}°)"
-    ecart = min(abs(h - t), 360 - abs(h - t))
-    return ecart <= tol, f"teinte {h:.0f}° au lieu de {t}° (ecart {ecart:.0f}°)"
+    gap = min(abs(h - t), 360 - abs(h - t))
+    return gap <= tol, f"teinte {h:.0f}° au lieu de {t}° (ecart {gap:.0f}°)"
 
 
-def main(args):
-    releve = relever()
+def hand(args):
+    survey = collect()
     if "--tabelo" in args:
         n = int(args[args.index("--tabelo") + 1])
-        releve = [r for r in releve if r["tabelo"] == n]
-    num = json.loads((RACINE / "plates" / "numbers.json")
+        survey = [r for r in survey if r["tabelo"] == n]
+    num = json.loads((ROOT / "plates" / "numbers.json")
                      .read_text(encoding="utf-8"))
-    obj = json.loads((RACINE / "plates" / "objects.json")
+    obj = json.loads((ROOT / "plates" / "objects.json")
                      .read_text(encoding="utf-8"))
-    par_tab = {}
-    for cle, v in num.items():
-        par_tab.setdefault(cle[:3], []).append((cle, v))
-    vu = vidita()
-    caches = {}
-    accords = desaccords = sans = 0
-    lignes = []
-    for r in releve:
+    by_table_ = {}
+    for key, v in num.items():
+        by_table_.setdefault(key[:3], []).append((key, v))
+    seen_ = seen_at()
+    hidden = {}
+    agreements = disagreements = without = 0
+    lines = []
+    for r in survey:
         tab = f"t{r['tabelo']:02d}"
-        trouve = None
-        for cle, v in par_tab.get(tab, []):
+        found = None
+        for key, v in by_table_.get(tab, []):
             b = v["numeri"].get(r["numero"])
             if b:
-                trouve = (cle, v, b)
+                found = (key, v, b)
                 break
-        if not trouve:
-            sans += 1
+        if not found:
+            without += 1
             continue
-        cle, v, b = trouve
-        if cle not in caches:
-            im = Image.open(RACINE / "plates" / "kovri" /
-                            f"{cle}-koloro.png").convert("RGB")
-            caches[cle] = np.asarray(
+        key, v, b = found
+        if key not in hidden:
+            im = Image.open(ROOT / "plates" / "kovri" /
+                            f"{key}-koloro.png").convert("RGB")
+            hidden[key] = np.asarray(
                 im.resize((v["largeur"], v["alteso"]), Image.LANCZOS))
-        C = caches[cle]
-        m = lire_couronne(C, b[0] * v["largeur"], b[1] * v["alteso"],
+        C = hidden[key]
+        m = read_ring(C, b[0] * v["largeur"], b[1] * v["alteso"],
                           b[2] * v["largeur"], b[3] * v["alteso"], v["corpo"])
         if m is None:
-            sans += 1
+            without += 1
             continue
-        ok, dit = accord(r["koloro"], m)
-        accords += ok
-        desaccords += not ok
+        ok, says = agreement(r["koloro"], m)
+        agreements += ok
+        disagreements += not ok
         # A NUMBER SOMETIMES CARRIES TWO NAMES. The "(19)" of table 3 is
         # the presbytery in one paragraph and the apricot trees in another;
         # showing only one gave "rose presbytery" to read.
         n_obj = obj.get(tab, {}).get(r["numero"], {})
-        nom = n_obj.get("fr") or n_obj.get("io") or ["—"]
-        v = vu.get(f"{tab}/{r['numero']}")
-        lignes.append((ok, tab, r["numero"], r["koloro"],
-                       " / ".join(nom), dit, v))
-    for ok, tab, n, c, nom, dit, v in sorted(lignes,
+        name_ = n_obj.get("fr") or n_obj.get("io") or ["—"]
+        v = seen_.get(f"{tab}/{r['numero']}")
+        lines.append((ok, tab, r["numero"], r["koloro"],
+                       " / ".join(name_), says, v))
+    for ok, tab, n, c, name_, says, v in sorted(lines,
                                              key=lambda x: (x[0], x[1])):
         print(f"  {'  ' if ok else 'NON'}  {tab} ({str(n):>5})  "
-              f"{FRANCAIS[c]:<8} {nom:<34} {dit}")
+              f"{FRENCH[c]:<8} {name_:<34} {says}")
         if v:
-            print(f"        {VERDIKTO[v[0]]} : {v[1]}")
-    a_reprendre = sum(1 for l in lignes if l[6] and l[6][0] == "planche")
-    print(f"\n  {accords} accords, {desaccords} desaccords, "
-          f"{sans} sans position sur la planche "
-          f"(sur {len(releve)} couleurs enoncees)")
-    print(f"  {a_reprendre} endroits ou la planche dement le livret, "
-          f"{len(lignes) - sum(1 for l in lignes if l[6])} pas encore regardes")
+            print(f"        {VERDICT[v[0]]} : {v[1]}")
+    to_redo = sum(1 for l in lines if l[6] and l[6][0] == "planche")
+    print(f"\n  {agreements} accords, {disagreements} desaccords, "
+          f"{without} sans position sur la planche "
+          f"(sur {len(survey)} couleurs enoncees)")
+    print(f"  {to_redo} endroits ou la planche dement le livret, "
+          f"{len(lines) - sum(1 for l in lines if l[6])} pas encore regardes")
 
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    hand(sys.argv[1:])

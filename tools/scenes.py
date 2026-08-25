@@ -41,69 +41,69 @@ import re
 import sys
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 # t<NN>-<NN>-<R>, with no scene index already set.
-CLE = re.compile(r"^(%%K\s+t(\d\d)-)(\d\d)(-\d+[a-z]?)(\s+\S+.*)$")
+KEY = re.compile(r"^(%%K\s+t(\d\d)-)(\d\d)(-\d+[a-z]?)(\s+\S+.*)$")
 
 
-def traiter(chemin, ecrire=True):
-    lignes = chemin.read_text(encoding="utf-8").splitlines(keepends=True)
+def process(path, write_=True):
+    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
 
     # First pass: is there a reset? If not, we touch nothing.
-    precedent = None
-    derniere = None
-    reprise = False
-    for l in lignes:
-        m = CLE.match(l.rstrip("\n"))
+    previous = None
+    last_ = None
+    resumption = False
+    for l in lines:
+        m = KEY.match(l.rstrip("\n"))
         if not m:
             continue
-        cle = m.group(1) + m.group(3) + m.group(4)
-        if cle == derniere:      # a "continuation" block: same key, not a new paragraph
+        key = m.group(1) + m.group(3) + m.group(4)
+        if key == last_:      # a "continuation" block: same key, not a new paragraph
             continue
-        derniere = cle
+        last_ = key
         n = int(m.group(3))
-        if precedent is not None and n < precedent:
-            reprise = True
-        precedent = n
-    if not reprise:
+        if previous is not None and n < previous:
+            resumption = True
+        previous = n
+    if not resumption:
         return 0
 
     # Second pass: we set the index.
     scene = 1
-    precedent = None
-    derniere = None
+    previous = None
+    last_ = None
     out = []
-    n_touches = 0
-    for l in lignes:
-        m = CLE.match(l.rstrip("\n"))
+    n_touching = 0
+    for l in lines:
+        m = KEY.match(l.rstrip("\n"))
         if not m:
             out.append(l)
             continue
-        cle = m.group(1) + m.group(3) + m.group(4)
+        key = m.group(1) + m.group(3) + m.group(4)
         n = int(m.group(3))
-        if cle != derniere:
-            if precedent is not None and n < precedent:
+        if key != last_:
+            if previous is not None and n < previous:
                 scene += 1
-            precedent = n
-            derniere = cle
-        fin = "\n" if l.endswith("\n") else ""
+            previous = n
+            last_ = key
+        end_ = "\n" if l.endswith("\n") else ""
         out.append(f"{m.group(1)}c{scene}-{m.group(3)}{m.group(4)}"
-                   f"{m.group(5)}{fin}")
-        n_touches += 1
-    if ecrire:
-        chemin.write_text("".join(out), encoding="utf-8")
-    return n_touches
+                   f"{m.group(5)}{end_}")
+        n_touching += 1
+    if write_:
+        path.write_text("".join(out), encoding="utf-8")
+    return n_touching
 
 
-def main():
-    cibles = [Path(a) for a in sys.argv[1:]]
-    if not cibles:
-        cibles = sorted((RACINE / "text").glob("*/*.tex"))
-    for c in cibles:
-        n = traiter(c if c.is_absolute() else RACINE / c)
+def hand():
+    targets = [Path(a) for a in sys.argv[1:]]
+    if not targets:
+        targets = sorted((ROOT / "text").glob("*/*.tex"))
+    for c in targets:
+        n = process(c if c.is_absolute() else ROOT / c)
         if n:
             print(f"{c} : {n} clés indicées par scène")
 
 
 if __name__ == "__main__":
-    main()
+    hand()

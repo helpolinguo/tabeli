@@ -48,15 +48,15 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 
-_KOR = RACINE / "plates" / "corrections.json"
-KOREKTI = ({k: v for k, v in
-            json.loads(_KOR.read_text(encoding="utf-8")).items()
-            if not k.startswith("_")} if _KOR.exists() else {})
+_CORR = ROOT / "plates" / "corrections.json"
+CORRECTIONS = ({k: v for k, v in
+            json.loads(_CORR.read_text(encoding="utf-8")).items()
+            if not k.startswith("_")} if _CORR.exists() else {})
 
 # The name each column gives to "table" in its files.
-DOSSIER = {"fr": "tableau",
+FOLDER = {"fr": "tableau",
            # THE SAME TOKEN AS THE FRENCH: the word is the same on both
            # sides of the Atlantic, and the glob is done WITHIN the
            # language's directory — text/fr and text/fr-CA do not mix.
@@ -131,10 +131,10 @@ DOSSIER = {"fr": "tableau",
 # meaning: the French stayed the only one unchecked, and seven
 # substitutions lived there until task 3. It has its own,
 # substitui(), and main() runs it with the others.
-TRADUKTI = [k for k in DOSSIER if k != "fr"]
+TRANSLATED = [k for k in FOLDER if k != "fr"]
 
 # DECLARED DIVERGENCES: {block key: reason}
-APARTA = {
+APART = {
     "t06-c1-06-1":
         "le fac-simile ido ouvre sur « (6) », qui est le savon ; c'est la "
         "femme de chambre « (16) », comme le porte le francais",
@@ -146,22 +146,22 @@ APARTA = {
         "le fac-simile la grave pourtant",
 }
 
-RENVOJO = re.compile(r"\\textsuperscript\{\(([^)]*)\)\}"
+XREF_ = re.compile(r"\\textsuperscript\{\(([^)]*)\)\}"
                      r"|\((\d{1,3}(?:\s*(?:\\textit\{)?bis\}?)?)\)")
 
 
-def renvois(t):
+def xrefs(t):
     return [re.sub(r"\\[a-z]+|[{}\s]", "", m.group(1) or m.group(2))
-            for m in RENVOJO.finditer(t)]
+            for m in XREF_.finditer(t)]
 
 
-def blocs(dossier, mot):
+def blocks(folder, word):
     """{block key: body}, the "continuation" blocks rejoined to the first."""
     out = {}
-    d = RACINE / "text" / dossier
+    d = ROOT / "text" / folder
     if not d.is_dir():
         return out
-    for f in sorted(d.glob(f"*-{mot}-*.tex")):
+    for f in sorted(d.glob(f"*-{word}-*.tex")):
         # The comment is stripped, but "%%K" is a key, not a comment:
         # removing it erased the whole division.
         t = re.sub(r"^%(?!%K).*\n", "", f.read_text(encoding="utf-8"),
@@ -172,17 +172,17 @@ def blocs(dossier, mot):
     return {k: "\n".join(v) for k, v in out.items()}
 
 
-def korekti_renvojo(cle):
+def correct_xref(key):
     """{read: to be read} for ONE BLOCK — the same reading html.py makes of
     plates/corrections.json: the corrections for the whole table, plus
     those this block alone carries."""
-    t = KOREKTI.get(cle[:3], {})
+    t = CORRECTIONS.get(key[:3], {})
     out = {k: v for k, v in t.items() if isinstance(v, str)}
-    out.update(t.get(cle, {}))
+    out.update(t.get(key, {}))
     return out
 
 
-def substitui(verbeux=True):
+def substitute(verbose=True):
     """The numbers where the French and the Ido do not show the same object.
 
     THE SAME COUNT AND NOT THE SAME VALUES is a substitution. That is the
@@ -201,67 +201,67 @@ def substitui(verbeux=True):
     passing the correction over the French alone made what had just been
     corrected reappear as a substitution.
     """
-    io = blocs("io", "tabelo")
-    fr = blocs("fr", "tableau")
-    faux = []
+    io = blocks("io", "tabelo")
+    fr = blocks("fr", "tableau")
+    false_ = []
     for k, v in fr.items():
-        if k in APARTA or k not in io:
+        if k in APART or k not in io:
             continue
-        m = korekti_renvojo(k)
-        a = Counter(m.get(x, x) for x in renvois(io[k]))
-        b = Counter(m.get(x, x) for x in renvois(v))
+        m = correct_xref(k)
+        a = Counter(m.get(x, x) for x in xrefs(io[k]))
+        b = Counter(m.get(x, x) for x in xrefs(v))
         if sum(a.values()) == sum(b.values()) and a != b:
-            faux.append((k, sorted(a - b), sorted(b - a)))
-    if verbeux:
-        for k, a, b in faux:
+            false_.append((k, sorted(a - b), sorted(b - a)))
+    if verbose:
+        for k, a, b in false_:
             print(f"  {k}\n     io {a}\n     fr {b}")
-    return len(fr), len(faux)
+    return len(fr), len(false_)
 
 
-def controlar(lg, verbeux=True):
-    io = blocs("io", "tabelo")
-    tr = blocs(lg, DOSSIER[lg])
+def check_(lg, verbose=True):
+    io = blocks("io", "tabelo")
+    tr = blocks(lg, FOLDER[lg])
     if not tr:
         return None
-    faux = []
+    false_ = []
     for k, v in tr.items():
-        if k in APARTA:
+        if k in APART:
             continue
         if k not in io:
-            faux.append((k, None, renvois(v)))
+            false_.append((k, None, xrefs(v)))
             continue
-        a, b = renvois(io[k]), renvois(v)
+        a, b = xrefs(io[k]), xrefs(v)
         if a != b:
-            faux.append((k, a, b))
-    faits = {k[:3] for k in tr}
-    manq = [k for k in io if k[:3] in faits and k not in tr]
-    if verbeux:
-        for k, a, b in faux:
+            false_.append((k, a, b))
+    dones = {k[:3] for k in tr}
+    miss = [k for k in io if k[:3] in dones and k not in tr]
+    if verbose:
+        for k, a, b in false_:
             print(f"  {k}\n     io {a if a is not None else '— cle inconnue'}"
                   f"\n     {lg} {b}")
-        for k in manq:
+        for k in miss:
             print(f"  {k} : bloc absent de la colonne {lg}")
-    return len(tr), len(faux) + len(manq), len(faits)
+    return len(tr), len(false_) + len(miss), len(dones)
 
 
-def main(args):
-    lgs = args or TRADUKTI
+def hand(args):
+    lgs = args or TRANSLATED
     total = 0
     # THE FRENCH GOES FIRST AND BY ANOTHER CHECK. We name it like the
     # others — "cross_refs.py fr" — but what we ask of it is not order:
     # it is that the two editions show the same object.
     if not args or "fr" in args:
-        n, f = substitui()
+        n, f = substitute()
         print(f"  fr : {n:4d} blocs, {f} substitution{'s' if f > 1 else ''}")
         total += f
         lgs = [lg for lg in lgs if lg != "fr"]
         if args and not lgs:
-            print(f"\n  {len(APARTA)} ecarts declares, passes sans rien dire.")
+            print(f"\n  {len(APART)} ecarts declares, passes sans rien dire.")
             return 1 if total else 0
     for lg in lgs:
-        if lg not in DOSSIER:
+        if lg not in FOLDER:
             raise SystemExit(f"  langue inconnue : {lg}")
-        r = controlar(lg)
+        r = check_(lg)
         if r is None:
             print(f"  {lg} : rien a controler")
             continue
@@ -269,9 +269,9 @@ def main(args):
         total += f
         print(f"  {lg} : {n:4d} blocs sur {tab:2d} tableaux, "
               f"{f} divergence{'s' if f > 1 else ''}")
-    print(f"\n  {len(APARTA)} ecarts declares, passes sans rien dire.")
+    print(f"\n  {len(APART)} ecarts declares, passes sans rien dire.")
     return 1 if total else 0
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(hand(sys.argv[1:]))

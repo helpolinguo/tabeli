@@ -21,20 +21,20 @@ import numpy as np
 from PIL import Image, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from inventory import bloc, otsu  # noqa: E402
+from inventory import block, otsu  # noqa: E402
 
-RACINE = Path(__file__).resolve().parent.parent
-SORTIE = RACINE / "tools" / ".lekto"
-LARGEUR = 1500
-AIR = 0.035          # air left around the block, as a fraction of its width
+ROOT = Path(__file__).resolve().parent.parent
+OUT_PATH = ROOT / "tools" / ".lekto"
+WIDTH = 1500
+AREA = 0.035          # air left around the block, as a fraction of its width
 
 
-def prepare(langue, n, moitie=False, largeur=LARGEUR):
-    src = RACINE / "skan" / langue / f"f-{n:03d}.jpg"
+def prepared(lang, n, half=False, width_=WIDTH):
+    src = ROOT / "skan" / lang / f"f-{n:03d}.jpg"
     im = Image.open(src).convert("L")
     g = np.asarray(im)
-    encre = g < otsu(g)
-    b = bloc(encre)
+    ink = g < otsu(g)
+    b = block(ink)
     if b is None:
         return []
     x0, y0, x1, y1 = b
@@ -44,13 +44,13 @@ def prepare(langue, n, moitie=False, largeur=LARGEUR):
     # and scaling that to 1500 px of width made an image of a billion
     # pixels, which PIL refused to open. We say so rather than suffer it.
     if (x1 - x0) < 0.25 * g.shape[1] or (y1 - y0) < 0.10 * g.shape[0]:
-        print(f"  {langue} {n} : feuillet vierge (aucun bloc d'encre)")
+        print(f"  {lang} {n} : feuillet vierge (aucun bloc d'encre)")
         return []
-    air = int(AIR * (x1 - x0))
-    x0 = max(0, x0 - air)
-    y0 = max(0, y0 - air)
-    x1 = min(g.shape[1] - 1, x1 + air)
-    y1 = min(g.shape[0] - 1, y1 + air)
+    area = int(AREA * (x1 - x0))
+    x0 = max(0, x0 - area)
+    y0 = max(0, y0 - area)
+    x1 = min(g.shape[1] - 1, x1 + area)
+    y1 = min(g.shape[0] - 1, y1 + area)
     im = im.crop((x0, y0, x1 + 1, y1 + 1))
     # The contrast is taken from the PERCENTILES and not from the extremes:
     # a speck of black and a fleck of white would suffice to cancel the
@@ -62,34 +62,34 @@ def prepare(langue, n, moitie=False, largeur=LARGEUR):
     a = np.clip((a - lo) * 255.0 / (hi - lo), 0, 255)
     im = Image.fromarray(a.astype("uint8"))
     im = ImageOps.autocontrast(im, cutoff=0)
-    SORTIE.mkdir(exist_ok=True)
-    morceaux = [(im, "")]
-    if moitie:
+    OUT_PATH.mkdir(exist_ok=True)
+    pieces = [(im, "")]
+    if half:
         h = im.size[1]
         rec = int(h * 0.54)          # overlap: two lines in common
-        morceaux = [(im.crop((0, 0, im.size[0], rec)), "a"),
+        pieces = [(im.crop((0, 0, im.size[0], rec)), "a"),
                     (im.crop((0, h - rec, im.size[0], h)), "b")]
-    chemins = []
-    for morceau, suf in morceaux:
-        w, h = morceau.size
-        morceau = morceau.resize((largeur, int(h * largeur / w)),
+    paths = []
+    for piece, suf in pieces:
+        w, h = piece.size
+        piece = piece.resize((width_, int(h * width_ / w)),
                                  Image.LANCZOS)
-        p = SORTIE / f"{langue}-{n:03d}{suf}.png"
-        morceau.save(p)
-        chemins.append(p)
-    return chemins
+        p = OUT_PATH / f"{lang}-{n:03d}{suf}.png"
+        piece.save(p)
+        paths.append(p)
+    return paths
 
 
-def main():
+def hand():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    moitie = "--moitie" in sys.argv
-    langue = args[0]
-    debut = int(args[1])
-    fin = int(args[2]) if len(args) > 2 else debut
-    for n in range(debut, fin + 1):
-        for p in prepare(langue, n, moitie):
+    half = "--moitie" in sys.argv
+    lang = args[0]
+    start_ = int(args[1])
+    end_ = int(args[2]) if len(args) > 2 else start_
+    for n in range(start_, end_ + 1):
+        for p in prepared(lang, n, half):
             print(p)
 
 
 if __name__ == "__main__":
-    main()
+    hand()

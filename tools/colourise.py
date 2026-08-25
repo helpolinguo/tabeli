@@ -92,18 +92,18 @@ import numbering as N                                          # noqa: E402
 import originals as O                                       # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
-RACINE = N.RACINE
-KOVRI = RACINE / "originals" / "kovri"
+ROOT = N.ROOT
+WORKING = ROOT / "originals" / "kovri"
 
-BLANKESO = 0.40   # share of the paper's yellow that is removed
-VIVECO = 1.15     # revival of the hue
-NETESO = 0.65     # strength of the unsharp mask
-MARGE = O.MARGE_FILET
-FLOU = 12.0       # the scale at which the two impressions resemble each other
-QUAL_KOLORO = 92  # WebP quality of the detail, higher than elsewhere
+WHITENESS = 0.40   # share of the paper's yellow that is removed
+VIVIDNESS = 1.15     # revival of the hue
+SHARPNESS = 0.65     # strength of the unsharp mask
+MARGIN = O.RULE_MARGIN
+BLUR = 12.0       # the scale at which the two impressions resemble each other
+COLOUR_QUALITY = 92  # WebP quality of the detail, higher than elsewhere
 
 
-def tirar(pdf):
+def draw_(pdf):
     """The image as it is IN the PDF, without resampling it.
 
     pdftoppm would render the page at a definition of our choosing, and we
@@ -123,48 +123,48 @@ def tirar(pdf):
 # engraving's rule runs from edge to edge: it is the first row, coming
 # from outside, in which more than half the points are dark. The title
 # printed above does not cover half of it; the rule does.
-def kadro(gris, seuil=0.55, bord=0.15):
-    H, W = gris.shape
-    noir = gris < (np.percentile(gris, 92) - 45)
-    my0, my1 = round(bord * H), round((1 - bord) * H)
-    mx0, mx1 = round(bord * W), round((1 - bord) * W)
-    col, lig = noir[my0:my1].mean(0), noir[:, mx0:mx1].mean(1)
+def frame_(grey_, threshold=0.55, edge=0.15):
+    H, W = grey_.shape
+    black = grey_ < (np.percentile(grey_, 92) - 45)
+    my0, my1 = round(edge * H), round((1 - edge) * H)
+    mx0, mx1 = round(edge * W), round((1 - edge) * W)
+    col, lig = black[my0:my1].mean(0), black[:, mx0:mx1].mean(1)
 
-    def prem(p, sens):
-        q = p if sens > 0 else p[::-1]
+    def first(p, way):
+        q = p if way > 0 else p[::-1]
         for i in range(len(q)):
-            if q[i] >= seuil:
-                return i if sens > 0 else len(q) - 1 - i
+            if q[i] >= threshold:
+                return i if way > 0 else len(q) - 1 - i
         raise SystemExit("  cadre introuvable dans l'original en couleur")
 
-    return prem(col, 1), prem(lig, 1), prem(col, -1), prem(lig, -1)
+    return first(col, 1), first(lig, 1), first(col, -1), first(lig, -1)
 
 
-def poser(cle, col, verbeux=True):
+def place(key, col, verbose=True):
     """The matrix that lays the colour original on the plate."""
-    gp = np.asarray(N.planche(cle)).astype(np.float32)
+    gp = np.asarray(N.plate(key)).astype(np.float32)
     HN, LN = gp.shape
     cg = cv2.cvtColor(col, cv2.COLOR_RGB2GRAY).astype(np.float32)
-    x0, y0, x1, y1 = kadro(cg)
-    kx = (LN - 2 * MARGE) / (x1 - x0)
-    ky = (HN - 2 * MARGE) / (y1 - y0)
-    T0 = np.array([[kx, 0.0, MARGE - kx * x0],
-                   [0.0, ky, MARGE - ky * y0]], np.float32)
-    if verbeux:
+    x0, y0, x1, y1 = frame_(cg)
+    kx = (LN - 2 * MARGIN) / (x1 - x0)
+    ky = (HN - 2 * MARGIN) / (y1 - y0)
+    T0 = np.array([[kx, 0.0, MARGIN - kx * x0],
+                   [0.0, ky, MARGIN - ky * y0]], np.float32)
+    if verbose:
         print(f"  cadre de l'original ({x0}, {y0})-({x1}, {y1}), "
               f"echelles {kx:.4f} et {ky:.4f}")
     W2 = 1200
     s = W2 / LN
 
-    def lisse(a):
+    def smooth(a):
         h = max(1, round(a.shape[0] * W2 / a.shape[1]))
         d = cv2.resize(a, (W2, h), interpolation=cv2.INTER_AREA)
         d = cv2.GaussianBlur(d, (0, 0), 1.5)
         return (d - d.mean()) / max(1e-6, d.std())
 
-    grand = cv2.warpAffine(255.0 - cg, T0, (LN, HN),
+    big = cv2.warpAffine(255.0 - cg, T0, (LN, HN),
                            flags=cv2.INTER_LINEAR, borderValue=0)
-    B, A = lisse(255.0 - gp), lisse(grand)
+    B, A = smooth(255.0 - gp), smooth(big)
     warp = np.eye(2, 3, dtype=np.float32)
     crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 200, 1e-6)
     try:
@@ -176,49 +176,49 @@ def poser(cle, col, verbeux=True):
           @ np.diag([s, s, 1.0]))
     T = (Wp @ np.vstack([T0, [0, 0, 1]]))[:2].astype(np.float32)
     for _ in range(3):
-        T, n, co = afini(T, col, gp)
-    if verbeux:
+        T, n, co = affine(T, col, gp)
+    if verbose:
         print(f"  recalage : correlation {cc:.4f} puis {co:.3f} "
               f"sur {n} tuiles")
     return T, gp
 
 
-def tuili(pose, gp, sigma, marge, cases, R, seuil):
+def tiles_(placed, gp, sigma, margin, cells, R, threshold):
     """Where each piece of the original wants to go, tile by tile."""
     HN, LN = gp.shape
-    a = cv2.GaussianBlur(cv2.cvtColor(pose, cv2.COLOR_RGB2GRAY)
+    a = cv2.GaussianBlur(cv2.cvtColor(placed, cv2.COLOR_RGB2GRAY)
                          .astype(np.float32), (0, 0), sigma)
     b = cv2.GaussianBlur(gp, (0, 0), sigma)
     out = []
-    for j in range(cases[0]):
-        for i in range(cases[1]):
-            y = round((j + 0.5) * HN / cases[0])
-            x = round((i + 0.5) * LN / cases[1])
-            if (y - R - marge < 0 or y + R + marge > HN
-                    or x - R - marge < 0 or x + R + marge > LN):
+    for j in range(cells[0]):
+        for i in range(cells[1]):
+            y = round((j + 0.5) * HN / cells[0])
+            x = round((i + 0.5) * LN / cells[1])
+            if (y - R - margin < 0 or y + R + margin > HN
+                    or x - R - margin < 0 or x + R + margin > LN):
                 continue
             u = a[y - R:y + R, x - R:x + R]
-            v = b[y - R - marge:y + R + marge, x - R - marge:x + R + marge]
+            v = b[y - R - margin:y + R + margin, x - R - margin:x + R + margin]
             u = (u - u.mean()) / max(1e-6, u.std())
             v = (v - v.mean()) / max(1e-6, v.std())
             r = cv2.matchTemplate(v, u, cv2.TM_CCOEFF_NORMED)
             _, mx, _, loc = cv2.minMaxLoc(r)
-            if mx >= seuil:
-                out.append((x, y, loc[0] - marge, loc[1] - marge, float(mx)))
+            if mx >= threshold:
+                out.append((x, y, loc[0] - margin, loc[1] - margin, float(mx)))
     return out
 
 
-def afini(T, col, gp, sigma=FLOU, marge=90, cases=(5, 7), R=280, seuil=0.35):
+def affine(T, col, gp, sigma=BLUR, margin=90, cells=(5, 7), R=280, threshold=0.35):
     """One round of registration: the similarity that best follows the tiles."""
     HN, LN = gp.shape
-    pose = cv2.warpAffine(col, T, (LN, HN), flags=cv2.INTER_LINEAR,
+    placed = cv2.warpAffine(col, T, (LN, HN), flags=cv2.INTER_LINEAR,
                           borderValue=(255, 255, 255))
-    t = tuili(pose, gp, sigma, marge, cases, R, seuil)
+    t = tiles_(placed, gp, sigma, margin, cells, R, threshold)
     if len(t) < 6:
         return T, len(t), float(np.median([q[4] for q in t])) if t else float("nan")
-    ici = np.float32([(q[0], q[1]) for q in t])
+    here = np.float32([(q[0], q[1]) for q in t])
     la = np.float32([(q[0] + q[2], q[1] + q[3]) for q in t])
-    M, _ = cv2.estimateAffinePartial2D(ici, la, method=cv2.RANSAC,
+    M, _ = cv2.estimateAffinePartial2D(here, la, method=cv2.RANSAC,
                                        ransacReprojThreshold=12.0)
     co = float(np.median([q[4] for q in t]))
     if M is None:
@@ -236,7 +236,7 @@ def afini(T, col, gp, sigma=FLOU, marge=90, cases=(5, 7), R=280, seuil=0.35):
 # longer resemble each other enough to be recognised — one has only the
 # line, the other only the wash — and the measurement starts following
 # the noise.
-PLIADI = ((FLOU, 70, (7, 10), 190, 0.35),
+FOLDS = ((BLUR, 70, (7, 10), 190, 0.35),
           (5.0, 40, (12, 16), 110, 0.30))
 
 
@@ -254,27 +254,27 @@ PLIADI = ((FLOU, 70, (7, 10), 190, 0.35),
 # We therefore fit the eight on the same tiles, and stop there: what
 # remains after it is no longer perspective but cockling of the paper,
 # and straightening that would cost more than it returns.
-def projekti(T, col, gp, verbeux=True):
+def project_(T, col, gp, verbose=True):
     """The homography that remains, in points of the plate."""
     HN, LN = gp.shape
     H = np.eye(3, dtype=np.float32)
-    for sigma, marge, cases, R, seuil in PLIADI:
-        pose = rendre(col, T, H, (LN, HN), 1.0, cv2.INTER_LINEAR)
-        t = tuili(pose, gp, sigma, marge, cases, R, seuil)
+    for sigma, margin, cells, R, threshold in FOLDS:
+        placed = render(col, T, H, (LN, HN), 1.0, cv2.INTER_LINEAR)
+        t = tiles_(placed, gp, sigma, margin, cells, R, threshold)
         if len(t) < 12:
-            if verbeux:
+            if verbose:
                 print(f"  flou {sigma:.0f} : {len(t)} tuiles seulement, "
                       f"on passe")
             continue
-        ici = np.float32([(q[0], q[1]) for q in t])
+        here = np.float32([(q[0], q[1]) for q in t])
         la = np.float32([(q[0] + q[2], q[1] + q[3]) for q in t])
-        M, bon = cv2.findHomography(la, ici, cv2.RANSAC, 8.0)
+        M, good = cv2.findHomography(la, here, cv2.RANSAC, 8.0)
         if M is None:
             continue
         H = (M @ H).astype(np.float32)
-        if verbeux:
+        if verbose:
             d = np.array([(q[2], q[3]) for q in t], float)
-            n = int(bon.sum()) if bon is not None else len(t)
+            n = int(good.sum()) if good is not None else len(t)
             print(f"  ajustement au flou {sigma:.0f} : {len(t)} tuiles, "
                   f"{n} retenues, reprise de {np.abs(d).max():.0f} "
                   f"points au plus")
@@ -307,11 +307,11 @@ def projekti(T, col, gp, verbeux=True):
 # point, it is a twentieth off centre. We stop there.
 
 
-def rendre(col, T, H, taille, echelo, interp=cv2.INTER_LANCZOS4):
-    LT, HT = taille
+def render(col, T, H, size_, scale, interp=cv2.INTER_LANCZOS4):
+    LT, HT = size_
     ys, xs = np.mgrid[0:HT, 0:LT].astype(np.float32)
     # from the output to the plate, undoing the projective fit
-    px, py = xs / echelo, ys / echelo
+    px, py = xs / scale, ys / scale
     w = H[2, 0] * px + H[2, 1] * py + H[2, 2]
     px, py = ((H[0, 0] * px + H[0, 1] * py + H[0, 2]) / w,
               (H[1, 0] * px + H[1, 1] * py + H[1, 2]) / w)
@@ -324,8 +324,8 @@ def rendre(col, T, H, taille, echelo, interp=cv2.INTER_LANCZOS4):
                      borderValue=(255, 255, 255))
 
 
-def restaurar(im, blankeso=BLANKESO, viveco=VIVECO, neteso=NETESO,
-              verbeux=True):
+def restore(im, whiteness=WHITENESS, vividness=VIVIDNESS, sharpness=SHARPNESS,
+              verbose=True):
     """The paper brought back to neutral, the hue revived, the line firmed."""
     lab = cv2.cvtColor(im, cv2.COLOR_RGB2LAB).astype(np.float32)
     L, A, B = lab[..., 0], lab[..., 1] - 128, lab[..., 2] - 128
@@ -334,73 +334,73 @@ def restaurar(im, blankeso=BLANKESO, viveco=VIVECO, neteso=NETESO,
     # A fifth of the surface suffices to give it.
     pap = L > np.percentile(L, 80)
     ca, cb = float(np.median(A[pap])), float(np.median(B[pap]))
-    if verbeux:
+    if verbose:
         print(f"  le papier tire sur a={ca:+.1f} b={cb:+.1f} ; "
-              f"on lui en retire {blankeso:.0%}")
-    A = (A - blankeso * ca) * viveco
-    B = (B - blankeso * cb) * viveco
+              f"on lui en retire {whiteness:.0%}")
+    A = (A - whiteness * ca) * vividness
+    B = (B - whiteness * cb) * vividness
     # THE BITE IS GIVEN TO THE LIGHTNESS ALONE. Sharpening the three
     # channels together wakes the coloured grain of the photograph; on the
     # lightness, it wakes only the line.
     # (The lightness of a Lab DRAWN FROM AN EIGHT-BIT IMAGE runs from 0 to
     #  255, not from 0 to 100: bounding it at a hundred crushed the whole
     #  top of the tone, and the plate came out in flat tints.)
-    if neteso > 0:
-        L = np.clip(L + neteso * (L - cv2.GaussianBlur(L, (0, 0), 1.1)),
+    if sharpness > 0:
+        L = np.clip(L + sharpness * (L - cv2.GaussianBlur(L, (0, 0), 1.1)),
                     0, 255)
     return cv2.cvtColor(np.dstack([L, np.clip(A + 128, 0, 255),
                                    np.clip(B + 128, 0, 255)]).astype(np.uint8),
                         cv2.COLOR_LAB2RGB)
 
 
-def kolorigi(cle, pdf, essai=False, **kw):
-    col = tirar(pdf)
+def colourise_(key, pdf, trial=False, **kw):
+    col = draw_(pdf)
     print(f"  {Path(pdf).name} : {col.shape[1]} x {col.shape[0]} points")
-    T, gp = poser(cle, col)
+    T, gp = place(key, col)
     HN, LN = gp.shape
-    H = projekti(T, col, gp)
+    H = project_(T, col, gp)
     # THE OUTPUT DEFINITION IS THE ORIGINAL'S. The scale of the similarity
     # says by how much the photograph was enlarged to fall on the
     # facsimile; we render the inverse.
     k = float(np.hypot(T[0, 0], T[1, 0]))
-    echelo = 1.0 / k
-    LT, HT = round(LN * echelo), round(HN * echelo)
-    out = restaurar(rendre(col, T, H, (LT, HT), echelo), **kw)
+    scale = 1.0 / k
+    LT, HT = round(LN * scale), round(HN * scale)
+    out = restore(render(col, T, H, (LT, HT), scale), **kw)
     print(f"  rendu {LT} x {HT} points, la planche en faisant {LN} x {HN}")
-    KOVRI.mkdir(parents=True, exist_ok=True)
-    dest = KOVRI / f"{cle}-koloro.png"
+    WORKING.mkdir(parents=True, exist_ok=True)
+    dest = WORKING / f"{key}-koloro.png"
     Image.fromarray(out).save(dest)
     print(f"  ecrit dans {dest}")
-    if essai:
-        bande(cle, col, T, H, out, gp)
+    if trial:
+        band(key, col, T, H, out, gp)
     return dest
 
 
-def bande(cle, col, T, H, out, gp, boite=None):
+def band(key, col, T, H, out, gp, box=None):
     """The raw original, the rendering, the facsimile: the same portion."""
     HN, LN = gp.shape
-    if boite is None:
+    if box is None:
         x, y = round(0.72 * LN), round(0.37 * HN)
-        boite = (x, y, x + 600, y + 400)
-    x0, y0, x1, y1 = boite
-    brut = rendre(col, T, np.eye(3, dtype=np.float32),
+        box = (x, y, x + 600, y + 400)
+    x0, y0, x1, y1 = box
+    raw = render(col, T, np.eye(3, dtype=np.float32),
                   (LN, HN), 1.0)
     o = np.asarray(Image.fromarray(out).resize((LN, HN), Image.LANCZOS))
-    trio = [brut[y0:y1, x0:x1], o[y0:y1, x0:x1],
+    trio = [raw[y0:y1, x0:x1], o[y0:y1, x0:x1],
             np.dstack([gp[y0:y1, x0:x1].astype(np.uint8)] * 3)]
     sep = np.full((y1 - y0, 6, 3), 255, np.uint8)
     im = np.hstack([q for p in zip(trio, [sep] * 3) for q in p][:-1])
-    d = N.KONTROLO / f"{cle}-koloro.png"
+    d = N.REVIEW / f"{key}-koloro.png"
     d.parent.mkdir(parents=True, exist_ok=True)
     Image.fromarray(im).save(d)
     print(f"  l'original, le rendu et le fac-simile dans {d}")
 
 
-def main(args):
+def hand(args):
     if len(args) < 2:
         raise SystemExit(__doc__ or "kolorigo.py <cle> <original.pdf>")
-    cle, pdf = args[0], args[1]
-    dest = kolorigi(cle, pdf, essai="--essai" in args)
+    key, pdf = args[0], args[1]
+    dest = colourise_(key, pdf, trial="--essai" in args)
     if "--essai" in args:
         return
     # THE TWO COLOUR PLATES KEEP THEIR TONE. Stretching between
@@ -408,14 +408,14 @@ def main(args):
     # these have one already -- they go down to 11 and 13, with three to
     # four points in a hundred below value 40. Stretching them on top
     # would only block up the shadows.
-    O.servir(cle, dest, qual_detalo=QUAL_KOLORO, tono=False)
-    cat = RACINE / "plates" / "plates.json"
-    tout = json.loads(cat.read_text(encoding="utf-8"))
-    tout[cle]["koloro"] = True
-    cat.write_text(json.dumps(tout, indent=1, sort_keys=True,
+    O.serve(key, dest, detail_quality=COLOUR_QUALITY, tone=False)
+    cat = ROOT / "plates" / "plates.json"
+    everything = json.loads(cat.read_text(encoding="utf-8"))
+    everything[key]["koloro"] = True
+    cat.write_text(json.dumps(everything, indent=1, sort_keys=True,
                               ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"  {cle} : servi en couleur.")
+    print(f"  {key} : servi en couleur.")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    hand(sys.argv[1:])

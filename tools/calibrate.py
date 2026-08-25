@@ -39,11 +39,11 @@ from pathlib import Path
 
 import numpy as np
 
-RACINE = Path(__file__).resolve().parent.parent
-MINLIGNES = 35          # full pages: those that measure the pitch
-MM_PAR_PT = 25.4 / 72.27
+ROOT = Path(__file__).resolve().parent.parent
+MIN_LINES = 35          # full pages: those that measure the pitch
+MM_PER_PT = 25.4 / 72.27
 
-LIVRE = {
+BOOK = {
     "io": {
         "titre": "Expliko-Libreto di la Delmas-Tabeli helpanta",
         "auteur": "J. Guignon",
@@ -65,11 +65,11 @@ LIVRE = {
 }
 
 
-def releve(langue):
+def survey(lang):
     inv = json.loads(
-        (RACINE / "tools" / f"inv-{langue}.json").read_text(encoding="utf-8"))
+        (ROOT / "tools" / f"inv-{lang}.json").read_text(encoding="utf-8"))
     p = {int(k): v for k, v in inv.items()
-         if not v.get("vide") and v.get("lignes", 0) >= MINLIGNES}
+         if not v.get("vide") and v.get("lignes", 0) >= MIN_LINES}
     L = np.array([v["largeur"] for v in p.values()], float)
     H = np.array([v["hauteur"] for v in p.values()], float)
     P = np.array([v["pas"] for v in p.values() if v.get("pas")], float)
@@ -87,34 +87,34 @@ def releve(langue):
     }
 
 
-def ecrire(langue, hauteur_mm):
-    r = releve(langue)
-    liv = LIVRE[langue]
+def write_(lang, height_mm):
+    r = survey(lang)
+    bk = BOOK[lang]
     # THE SCALE IS TAKEN FROM THE HEIGHT. In the first version it was taken
     # from the width, because it is the width that carries the measure; but
     # the width of the paper is nowhere to be found, whereas its height is in
     # every record.
-    pxmm = r["page_h"] / hauteur_mm
-    papier_mm = r["page_l"] / pxmm
+    pxmm = r["page_h"] / height_mm
+    paper_mm = r["page_l"] / pxmm
 
     def mm(px):
         return px / pxmm
 
-    pas_mm = mm(r["pas"])
-    pas_pt = pas_mm / MM_PAR_PT
+    step_mm = mm(r["pas"])
+    step_pt = step_mm / MM_PER_PT
     # The size follows from the pitch. The current leading of the bookwork
     # printing of that period is 1.20 times the size; the ratio is verified
     # page by page by check 11, which compares the composed baseline with the
     # surveyed baseline.
-    corps_pt = pas_pt / 1.20
+    size_pt = step_pt / 1.20
 
     txt = f"""% ===================================================================
-%  kalibro-{langue}.tex — TOUTES les mesures du fac-simile « {liv['titre']} ».
+%  kalibro-{lang}.tex — TOUTES les mesures du fac-simile « {bk['titre']} ».
 %  Fichier PRODUIT par tools/kalibro.py : ne pas le modifier a la main.
 %  Une seule constante y est physique — la largeur du papier — et elle
-%  est passee en argument. Tout le reste vient de tools/inv-{langue}.json.
+%  est passee en argument. Tout le reste vient de tools/inv-{lang}.json.
 %
-%  Releve : {r['n']} pages de {MINLIGNES} lignes ou plus.
+%  Releve : {r['n']} pages de {MIN_LINES} lignes ou plus.
 %    justification  {r['largeur']:.0f} px  (ecart-type {r['largeur_et']:.0f})
 %    hauteur bloc   {r['hauteur']:.0f} px
 %    pas des lignes {r['pas']:.2f} px  (ecart-type {r['pas_et']:.2f})
@@ -122,14 +122,14 @@ def ecrire(langue, hauteur_mm):
 %    marge gauche   {r['marge_g']:.0f} px
 %    1re ligne a    {r['haut']:.0f} px du bord
 %  Echelle retenue : {pxmm:.3f} px/mm, prise sur une hauteur de papier
-%  de {hauteur_mm:.0f} mm (notice de bibliotheque) ; la page mesure alors
-%  {papier_mm:.1f} mm de large.
+%  de {height_mm:.0f} mm (notice de bibliotheque) ; la page mesure alors
+%  {paper_mm:.1f} mm de large.
 % ===================================================================
 
-\\newcommand{{\\VUmarque}}{{{liv['marque']}}}
+\\newcommand{{\\VUmarque}}{{{bk['marque']}}}
 
 % 1. GEOMETRIE
-\\newcommand{{\\VUpapierLargeur}}{{{papier_mm:.2f}mm}}
+\\newcommand{{\\VUpapierLargeur}}{{{paper_mm:.2f}mm}}
 \\newcommand{{\\VUpapierHauteur}}{{{mm(r['page_h']):.2f}mm}}
 \\newcommand{{\\VUtexteLargeur}}{{{mm(r['largeur']):.2f}mm}}
 \\newcommand{{\\VUtexteHauteur}}{{{mm(r['hauteur']):.2f}mm}}
@@ -141,19 +141,19 @@ def ecrire(langue, hauteur_mm):
 % texte commence un rang plus bas. On ajoute donc un pas de ligne, et
 % les pages sans folio (ouvertures de tableau) commencent a la meme
 % ordonnee que les autres, comme au fac-simile.
-\\newcommand{{\\VUmargeSup}}{{{mm(r['haut']) + pas_mm:.2f}mm}}
+\\newcommand{{\\VUmargeSup}}{{{mm(r['haut']) + step_mm:.2f}mm}}
 \\newcommand{{\\VUfolioY}}{{{mm(r['haut']):.2f}mm}}
 
 % 2. CORPS ET INTERLIGNAGE
-\\newcommand{{\\VUinterligne}}{{{pas_pt:.2f}pt}}
-\\newcommand{{\\VUcorps}}{{{corps_pt:.2f}pt}}
-\\newcommand{{\\VUcorpsNote}}{{{corps_pt * 0.77:.2f}pt}}
-\\newcommand{{\\VUinterligneNote}}{{{pas_pt * 0.80:.2f}pt}}
+\\newcommand{{\\VUinterligne}}{{{step_pt:.2f}pt}}
+\\newcommand{{\\VUcorps}}{{{size_pt:.2f}pt}}
+\\newcommand{{\\VUcorpsNote}}{{{size_pt * 0.77:.2f}pt}}
+\\newcommand{{\\VUinterligneNote}}{{{step_pt * 0.80:.2f}pt}}
 % Renfoncement d'alinea : provisoire, a relever (tools/mesures.py).
 \\newcommand{{\\VUalinea}}{{{mm(r['largeur']) * 0.05:.2f}mm}}
 \\newcommand{{\\VUalineaNote}}{{{mm(r['largeur']) * 0.04:.2f}mm}}
-\\newcommand{{\\VUblancAlineaValeur}}{{{pas_pt * 0.19:.2f}pt}}
-\\newcommand{{\\VUblancNote}}{{{pas_pt * 0.25:.2f}pt}}
+\\newcommand{{\\VUblancAlineaValeur}}{{{step_pt * 0.19:.2f}pt}}
+\\newcommand{{\\VUblancNote}}{{{step_pt * 0.25:.2f}pt}}
 \\newcommand{{\\VUfiletnoteLargeur}}{{{mm(r['largeur']) * 0.27:.2f}mm}}
 
 % 3. ESPACE-MOT
@@ -164,17 +164,17 @@ def ecrire(langue, hauteur_mm):
 \\newcommand{{\\VUespaceSerre}}{{0.14}}
 
 % 4. FONTES
-\\newcommand{{\\VUfonte}}{{{liv['fonte']}}}
-\\newcommand{{\\VUfonteGras}}{{{liv['gras']}}}
+\\newcommand{{\\VUfonte}}{{{bk['fonte']}}}
+\\newcommand{{\\VUfonteGras}}{{{bk['gras']}}}
 \\newcommand{{\\VUratioGras}}{{0.98}}
 """
     # The file is written as it stands: it is a product, not a source.
-    (RACINE / f"kalibro-{langue}.tex").write_text(txt, encoding="utf-8")
-    print(f"kalibro-{langue}.tex ecrit  ({pxmm:.3f} px/mm ; "
-          f"corps {corps_pt:.2f} pt sur {pas_pt:.2f} pt)")
+    (ROOT / f"kalibro-{lang}.tex").write_text(txt, encoding="utf-8")
+    print(f"kalibro-{lang}.tex ecrit  ({pxmm:.3f} px/mm ; "
+          f"corps {size_pt:.2f} pt sur {step_pt:.2f} pt)")
 
 
 if __name__ == "__main__":
-    langue = sys.argv[1] if len(sys.argv) > 1 else "io"
-    papier = float(sys.argv[2]) if len(sys.argv) > 2 else 180.0
-    ecrire(langue, papier)
+    lang = sys.argv[1] if len(sys.argv) > 1 else "io"
+    paper = float(sys.argv[2]) if len(sys.argv) > 2 else 180.0
+    write_(lang, paper)

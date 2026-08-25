@@ -44,8 +44,8 @@ import re
 import sys
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(RACINE / "tools"))
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
 import cross_refs                                              # noqa: E402
 
 # THE WORDS THAT ATTACH. "di / dil" is the genitive, "de" origin or
@@ -53,7 +53,7 @@ import cross_refs                                              # noqa: E402
 # the prepositions of place make the second term the setting of the
 # first. All produce, in a head-final language, a modifier BEFORE its
 # head.
-LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
+LINK_TPL = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
          r"super|proxim|avan|dop|inter|tra|per"
          # AND "ube", THE RELATIVE ADVERB OF PLACE, which is of the same
          # family as "qua" and which the first draft had forgotten: "la
@@ -135,7 +135,7 @@ LIENO = (r"\b(?:di|dil|de|kun|qua|quan|quin|qui|por|sur|en|an|sub|"
 # cross_refs.py remains the authority. This one saves time, not
 # certainty.
 
-PORTEO = 45
+SCOPE = 45
 
 
 # "\cc" IS NOT A BREAK, IT IS A WELD. The facsimile breaks its words at
@@ -156,13 +156,13 @@ PORTEO = 45
 # that this remnant was irreducible for a morphological reason; the
 # reason was good but it was not the only one, and this one could be
 # corrected.)
-_SOLDO = re.compile(r"\}?\\cc(?:plein)?(?![A-Za-z])[ \t\n]*"
+_BYTES = re.compile(r"\}?\\cc(?:plein)?(?![A-Za-z])[ \t\n]*"
                     r"(?:\\(?:VUgras|textit|textbf)\{)?")
 
 
 def _nu(t):
     """The text without its macros, to measure a real distance."""
-    t = _SOLDO.sub("", t)
+    t = _BYTES.sub("", t)
     t = re.sub(r"\\textsuperscript\{\(([^)]*)\)\}", r" ⟨\1⟩ ", t)
     t = re.sub(r"(?<!\w)\((\d{1,3}(?: bis)?|[a-z]{1,2})\)", r" ⟨\1⟩ ", t)
     t = re.sub(r"\\[A-Za-z]+", " ", t)
@@ -170,42 +170,42 @@ def _nu(t):
     return re.sub(r"[ \t\n]+", " ", t)
 
 
-def paires(corps):
+def pairs(size):
     """[(a, b, the word that attaches them)] for a block of Ido."""
-    t = _nu(corps)
-    marques = [(m.start(), m.end(), m.group(1))
+    t = _nu(size)
+    marks = [(m.start(), m.end(), m.group(1))
                for m in re.finditer(r"⟨([^⟩]*)⟩", t)]
     out = []
-    for (_a, fin, a), (deb, _b, b) in zip(marques, marques[1:]):
-        entre = t[fin:deb]
-        if len(entre) > PORTEO:
+    for (_a, end_, a), (beg, _b, b) in zip(marks, marks[1:]):
+        between = t[end_:beg]
+        if len(between) > SCOPE:
             continue
-        lien = re.search(LIENO, entre)
-        if lien:
-            out.append((a, b, lien.group(0)))
+        link_ = re.search(LINK_TPL, between)
+        if link_:
+            out.append((a, b, link_.group(0)))
     return out
 
 
-def main(args):
-    io = cross_refs.blocs("io", "tabelo")
-    vises = set(args)
+def hand(args):
+    io = cross_refs.blocks("io", "tabelo")
+    aimed_ = set(args)
     total = 0
-    for cle in sorted(io):
-        num = cle[1:3]
-        if vises and num.lstrip("0") not in vises:
+    for key in sorted(io):
+        num = key[1:3]
+        if aimed_ and num.lstrip("0") not in aimed_:
             continue
-        p = paires(io[cle])
+        p = pairs(io[key])
         if not p:
             continue
-        print(f"  {cle}")
-        for a, b, lien in p:
-            print(f"      ({a}) ← {lien} ← ({b})"
+        print(f"  {key}")
+        for a, b, link_ in p:
+            print(f"      ({a}) ← {link_} ← ({b})"
                   f"      poser ({a}) d'abord, rejeter ({b}) derriere")
         total += len(p)
     print(f"\n  {total} paires a retourner"
-          f"{' pour le tableau ' + ', '.join(sorted(vises)) if vises else ''}.")
+          f"{' pour le tableau ' + ', '.join(sorted(aimed_)) if aimed_ else ''}.")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(hand(sys.argv[1:]))

@@ -34,12 +34,12 @@ sys.path[:] = [d for d in sys.path
 import html as modul_html  # noqa: E402
 from html.parser import HTMLParser  # noqa: E402
 
-RACINO = Path(__file__).resolve().parent.parent
-ENTETE = '<!-- Engendre par tools/robotoj.py depuis index.html. Ne pas editer. -->\n'
-FONTO = 'Transskribita de https://ido.help/tabeli/\n'
+ROOT = Path(__file__).resolve().parent.parent
+HEADER = '<!-- Engendre par tools/robotoj.py depuis index.html. Ne pas editer. -->\n'
+SOURCE = 'Transskribita de https://ido.help/tabeli/\n'
 
 
-def texto(h: str) -> str:
+def text_(h: str) -> str:
     """A fragment of HTML as plain text.
 
     The "ln" are LINES of the printed book, not sentences: the original
@@ -56,7 +56,7 @@ def texto(h: str) -> str:
     return re.sub(r'\s+', ' ', h).strip()
 
 
-class Rangi(HTMLParser):
+class Rows(HTMLParser):
     """Gathers the table's rows, and for each of them the Ido and the French.
 
     We count the depth rather than looking for the closing "/div": a cell
@@ -65,102 +65,102 @@ class Rangi(HTMLParser):
 
     def __init__(self):
         super().__init__(convert_charrefs=False)
-        self.rangi, self.nuna, self.profundo = [], None, 0
-        self.celo, self.peci = None, []
+        self.rows, self.current_state, self.depth = [], None, 0
+        self.target_, self.pieces_ = None, []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         kl = (a.get('class') or '').split()
-        if self.nuna is None:
+        if self.current_state is None:
             if tag == 'div' and 'r' in kl and a.get('data-cle'):
-                self.nuna = {'cle': a['data-cle'],
+                self.current_state = {'cle': a['data-cle'],
                              'speco': next((k for k in kl if k != 'r'), ''),
                              'io': '', 'fr': ''}
-                self.profundo = 1
+                self.depth = 1
             return
         if tag == 'div':
-            self.profundo += 1
+            self.depth += 1
             if 'k' in kl and 'vaka' not in kl:
-                self.celo = 'io' if 'io' in kl else (
+                self.target_ = 'io' if 'io' in kl else (
                     'fr' if a.get('data-lg') == 'fr' else None)
-                self.peci = []
+                self.pieces_ = []
                 return
-        if self.celo:
-            self.peci.append(self.get_starttag_text() or '')
+        if self.target_:
+            self.pieces_.append(self.get_starttag_text() or '')
 
     def handle_endtag(self, tag):
-        if self.nuna is None:
+        if self.current_state is None:
             return
         if tag == 'div':
-            self.profundo -= 1
-            if self.celo and self.profundo >= 1:
-                self.nuna[self.celo] = texto(''.join(self.peci))
-                self.celo = None
+            self.depth -= 1
+            if self.target_ and self.depth >= 1:
+                self.current_state[self.target_] = text_(''.join(self.pieces_))
+                self.target_ = None
                 return
-            if self.profundo == 0:
-                self.rangi.append(self.nuna)
-                self.nuna = None
+            if self.depth == 0:
+                self.rows.append(self.current_state)
+                self.current_state = None
                 return
-        if self.celo:
-            self.peci.append('</%s>' % tag)
+        if self.target_:
+            self.pieces_.append('</%s>' % tag)
 
     def handle_data(self, d):
-        if self.celo:
-            self.peci.append(d)
+        if self.target_:
+            self.pieces_.append(d)
 
     def handle_entityref(self, n):
-        if self.celo:
-            self.peci.append('&%s;' % n)
+        if self.target_:
+            self.pieces_.append('&%s;' % n)
 
     def handle_charref(self, n):
-        if self.celo:
-            self.peci.append('&#%s;' % n)
+        if self.target_:
+            self.pieces_.append('&#%s;' % n)
 
 
-def main() -> None:
-    s = (RACINO / 'index.html').read_text(encoding='utf-8')
-    korpo = re.search(r'<main\b.*?</main>', s, re.S)
-    p = Rangi()
-    p.feed(korpo.group(0) if korpo else s)
-    rangi = [r for r in p.rangi if r['io'] or r['fr']]
+def hand() -> None:
+    s = (ROOT / 'index.html').read_text(encoding='utf-8')
+    body_m = re.search(r'<main\b.*?</main>', s, re.S)
+    p = Rows()
+    p.feed(body_m.group(0) if body_m else s)
+    rows = [r for r in p.rows if r['io'] or r['fr']]
 
     # 1. The hinge of the corpus.
-    (RACINO / 'tabeli.json').write_text(
-        json.dumps({r['cle']: {'io': r['io'], 'fr': r['fr']} for r in rangi},
+    (ROOT / 'tabeli.json').write_text(
+        json.dumps({r['cle']: {'io': r['io'], 'fr': r['fr']} for r in rows},
                    ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 
     # 2. The table laid flat.
-    lin = [ENTETE, '# Expliko-Libreto di la Delmas-Tabeli helpanta\n',
+    lin = [HEADER, '# Expliko-Libreto di la Delmas-Tabeli helpanta\n',
            'J. Guignon · Ido-Kontoro, Thaon-les-Vosges, 1926 · '
-           'E. Rochelle · G. Delmas, Bordeaux\n', FONTO,
+           'E. Rochelle · G. Delmas, Bordeaux\n', SOURCE,
            'Ido e Franca en regardo. La 55 altra lingui esas en lingui/*.json, '
            'kun la sama klefi.\n', '---\n',
            '| klefo | Ido | Franca |', '| --- | --- | --- |']
-    for r in rangi:
+    for r in rows:
         io = r['io'].replace('|', '\\|')
         fr = r['fr'].replace('|', '\\|')
         lin.append('| `%s` | %s | %s |' % (r['cle'], io, fr))
-    (RACINO / 'tabeli.md').write_text('\n'.join(lin) + '\n', encoding='utf-8')
+    (ROOT / 'tabeli.md').write_text('\n'.join(lin) + '\n', encoding='utf-8')
 
     # 3. The languages offered.
-    lingui = RACINO / 'lingui'
-    listo = sorted(f.name[:-5] for f in lingui.glob('*.json')
+    langs_dir = ROOT / 'lingui'
+    list_ = sorted(f.name[:-5] for f in langs_dir.glob('*.json')
                    if f.name != 'index.json')
-    (lingui / 'index.json').write_text(json.dumps(
+    (langs_dir / 'index.json').write_text(json.dumps(
         {'pri': 'Lingui dil Delmas-Tabeli. La klefi esas ti di tabeli.json.',
          'fonto': 'https://ido.help/tabeli/',
          'enshaltita': {'io': 'en index.html e tabeli.json',
                         'fr': 'en index.html e tabeli.json'},
          'lingui': [{'kodexo': k,
-                     'okteti': (lingui / (k + '.json')).stat().st_size}
-                    for k in listo]},
+                     'okteti': (langs_dir / (k + '.json')).stat().st_size}
+                    for k in list_]},
         ensure_ascii=False, indent=1), encoding='utf-8')
 
-    print('  %d rangees' % len(rangi))
+    print('  %d rangees' % len(rows))
     for n in ('tabeli.json', 'tabeli.md'):
-        print('  %-16s %10s octets' % (n, format((RACINO / n).stat().st_size, ',')))
-    print('  lingui/index.json  %d langues' % len(listo))
+        print('  %-16s %10s octets' % (n, format((ROOT / n).stat().st_size, ',')))
+    print('  lingui/index.json  %d langues' % len(list_))
 
 
 if __name__ == '__main__':
-    main()
+    hand()

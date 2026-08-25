@@ -63,8 +63,8 @@ from PIL import Image
 from pikepdf import PdfImage
 
 Image.MAX_IMAGE_PIXELS = None
-RACINE = Path(__file__).resolve().parent.parent
-GRAVURI = RACINE / "plates"
+ROOT = Path(__file__).resolve().parent.parent
+PLATES = ROOT / "plates"
 
 # The overall view does not need to be large: it fits the width of a
 # column. The detail image carries the close-ups, and it is that which
@@ -77,13 +77,13 @@ GRAVURI = RACINE / "plates"
 # heavier, for a screen that did not need it. At 1200 it also covers
 # phones, whose triple-density screen calls for a thousand points; only a
 # large Retina screen goes up to the detail.
-LARGE_VIDO = 1200
-LARGE_DETALO = 2600
-QUAL_VIDO = 72
-QUAL_DETALO = 72
+VIEW_WIDTH = 1200
+DETAIL_WIDTH = 2600
+VIEW_QUALITY = 72
+DETAIL_QUALITY = 72
 
 
-def kovri(pdf):
+def working(pdf):
     """The images of a table PDF, including those in Form XObjects.
 
     The document must stay OPEN as long as the rendered objects are in use:
@@ -92,32 +92,32 @@ def kovri(pdf):
     """
     # The line is enclosed in a Form; a reading that does not descend into
     # it finds only the colour, and one believes the file is flat.
-    trouve = []
-    vus = set()
+    found = []
+    seen = set()
 
     def descendre(res):
-        for nom, obj in dict(res.get("/XObject", {})).items():
-            if obj.objgen in vus:
+        for name_, obj in dict(res.get("/XObject", {})).items():
+            if obj.objgen in seen:
                 continue
-            vus.add(obj.objgen)
+            seen.add(obj.objgen)
             if obj.get("/Subtype") == "/Image":
-                trouve.append(obj)
+                found.append(obj)
             elif obj.get("/Subtype") == "/Form":
                 descendre(obj.get("/Resources", {}))
 
     for page in pdf.pages:
         descendre(page.get("/Resources", {}))
-    return trouve
+    return found
 
 
-def rasterer(chemin, dpi=300):
+def rasterer(path, dpi=300):
     """A vector plate, rendered as a line mask."""
     import subprocess
     import tempfile
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / "p"
         subprocess.run(["pdftoppm", "-r", str(dpi), "-png", "-singlefile",
-                        str(chemin), str(base)], check=True,
+                        str(path), str(base)], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         im = Image.open(str(base) + ".png").convert("L")
         im.load()
@@ -127,33 +127,33 @@ def rasterer(chemin, dpi=300):
     return Image.eval(im, lambda v: 255 - v)
 
 
-def separer(chemin):
+def split_layers(path):
     """(RGB colour, line as alpha) of a table PDF."""
-    couleur = trait = None
-    pdf = pikepdf.open(chemin)
-    images = kovri(pdf)
+    colour = line_layer = None
+    pdf = pikepdf.open(path)
+    images = working(pdf)
     if not images:
         # A PURELY VECTOR PLATE. The plan of the house and the figure of the
         # human body have neither colour nor image: everything there is drawn.
         # We rasterise them, and the line comes out black on white.
-        return None, rasterer(chemin)
+        return None, rasterer(path)
     for obj in images:
         if "/SMask" in obj:
             # THE INK IS PURE BLACK: it has been verified, its grey channel is 0
             # everywhere. The whole drawing is therefore in the mask, and it is
             # THAT which must be kept -- at full resolution, whereas the ink
             # itself is only a low-definition black wash.
-            trait = PdfImage(obj.SMask).as_pil_image().convert("L")
+            line_layer = PdfImage(obj.SMask).as_pil_image().convert("L")
         else:
-            couleur = PdfImage(obj).as_pil_image().convert("RGB")
-    if trait is None or couleur is None:
-        raise SystemExit(f"{chemin} : couche manquante "
-                         f"(trait={trait is not None}, "
-                         f"couleur={couleur is not None})")
-    return couleur, trait
+            colour = PdfImage(obj).as_pil_image().convert("RGB")
+    if line_layer is None or colour is None:
+        raise SystemExit(f"{path} : couche manquante "
+                         f"(trait={line_layer is not None}, "
+                         f"couleur={colour is not None})")
+    return colour, line_layer
 
 
-def recaler(couleur, trait):
+def re_register(colour, line_layer):
     """The stretch and the offset that lay the colour on the line.
 
     THE TWO LAYERS DO NOT SUPERIMPOSE, and the discrepancy is not a simple
@@ -184,13 +184,13 @@ def recaler(couleur, trait):
     import cv2
     import numpy as np
 
-    W, HT = trait.width, trait.height
-    T = np.asarray(trait, np.float32)
-    gris = couleur.convert("L")
+    W, HT = line_layer.width, line_layer.height
+    T = np.asarray(line_layer, np.float32)
+    grey_ = colour.convert("L")
 
-    def champ(sx, sy, dx, dy, nx=12, ny=8, cote=430, ray=24, garde=0.5):
+    def field_(sx, sy, dx, dy, nx=12, ny=8, side=430, rad=24, keep=0.5):
         """The displacement that remains, zone by zone, with its confidence."""
-        g = np.asarray(gris.resize((max(2, round(W * sx)),
+        g = np.asarray(grey_.resize((max(2, round(W * sx)),
                                     max(2, round(HT * sy))), Image.LANCZOS),
                        np.float32)
         a = np.zeros((HT, W), np.float32)
@@ -206,139 +206,139 @@ def recaler(couleur, trait):
         pts = []
         for iy in range(ny):
             for ix in range(nx):
-                x0 = max(ray, min(W - cote - ray,
-                                  round(W * (ix + .5) / nx) - cote // 2))
-                y0 = max(ray, min(HT - cote - ray,
-                                  round(HT * (iy + .5) / ny) - cote // 2))
-                tt = T[y0:y0 + cote, x0:x0 + cote]
+                x0 = max(rad, min(W - side - rad,
+                                  round(W * (ix + .5) / nx) - side // 2))
+                y0 = max(rad, min(HT - side - rad,
+                                  round(HT * (iy + .5) / ny) - side // 2))
+                tt = T[y0:y0 + side, x0:x0 + side]
                 if tt.std() < 1:
                     continue
                 r = cv2.matchTemplate(
-                    cont[y0 - ray:y0 + cote + ray, x0 - ray:x0 + cote + ray],
+                    cont[y0 - rad:y0 + side + rad, x0 - rad:x0 + side + rad],
                     tt - tt.mean(), cv2.TM_CCOEFF_NORMED)
                 _, mx, _, loc = cv2.minMaxLoc(r)
                 # The confidence is the peak's lead over the rest of the
                 # surface: a wide, soft peak locates nothing.
                 m = r.copy()
                 cv2.circle(m, loc, 6, -1, -1)
-                pts.append((x0 + cote / 2, y0 + cote / 2,
-                            loc[0] - ray, loc[1] - ray, mx - m.max()))
+                pts.append((x0 + side / 2, y0 + side / 2,
+                            loc[0] - rad, loc[1] - rad, mx - m.max()))
         p = np.array(pts, float)
         if not len(p):
             return p
-        return p[p[:, 4] >= np.quantile(p[:, 4], 1 - garde)]
+        return p[p[:, 4] >= np.quantile(p[:, 4], 1 - keep)]
 
-    def droite(v, d):
+    def right_(v, d):
         for _ in range(3):
             a, b = np.polyfit(v, d, 1)
             r = d - (a * v + b)
-            bons = np.abs(r) <= max(1.2, 2.2 * r.std())
-            if bons.all() or bons.sum() < 4:
+            goods = np.abs(r) <= max(1.2, 2.2 * r.std())
+            if goods.all() or goods.sum() < 4:
                 break
-            v, d = v[bons], d[bons]
+            v, d = v[goods], d[goods]
         return a, b
 
     sx = sy = 1.0
     dx = dy = 0
-    meilleur = None
+    best_ = None
     for _ in range(5):
-        p = champ(sx, sy, dx, dy)
+        p = field_(sx, sy, dx, dy)
         if len(p) < 6:
             break
-        ax, bx = droite(p[:, 0], p[:, 2])
-        ay, by = droite(p[:, 1], p[:, 3])
-        cout = (abs(ax * W) + abs(ay * HT)
+        ax, bx = right_(p[:, 0], p[:, 2])
+        ay, by = right_(p[:, 1], p[:, 3])
+        cost = (abs(ax * W) + abs(ay * HT)
                 + np.median(np.abs(p[:, 2])) + np.median(np.abs(p[:, 3])))
-        if meilleur is None or cout < meilleur[0]:
-            meilleur = (cout, sx, sy, dx, dy)
+        if best_ is None or cost < best_[0]:
+            best_ = (cost, sx, sy, dx, dy)
         sx, sy = sx * (1 - ax), sy * (1 - ay)
         dx, dy = round(dx * (1 - ax) - bx), round(dy * (1 - ay) - by)
-    if meilleur is None:
+    if best_ is None:
         return 1.0, 1.0, 0, 0
     print(f"  alignement : derive residuelle et ecart median, "
-          f"somme {meilleur[0]:.1f} px")
-    return meilleur[1], meilleur[2], meilleur[3], meilleur[4]
+          f"somme {best_[0]:.1f} px")
+    return best_[1], best_[2], best_[3], best_[4]
 
 
-def composer(couleur, trait):
+def compose(colour, line_layer):
     """The colour below, the black ink above according to the line's alpha.
 
     With no colour layer -- a vector plate -- the ground is the paper.
     """
     import numpy as np
 
-    if couleur is None:
-        fond = Image.new("RGB", trait.size, (255, 255, 255))
+    if colour is None:
+        floor = Image.new("RGB", line_layer.size, (255, 255, 255))
     else:
-        sx, sy, dx, dy = recaler(couleur, trait)
+        sx, sy, dx, dy = re_register(colour, line_layer)
         print(f"  recalage de la couleur : etirement {sx:.4f} x {sy:.4f}, "
               f"decalage {dx:+d}, {dy:+d} px")
-        etire = couleur.resize((max(2, round(trait.width * sx)),
-                                max(2, round(trait.height * sy))),
+        stretched = colour.resize((max(2, round(line_layer.width * sx)),
+                                max(2, round(line_layer.height * sy))),
                                Image.LANCZOS)
         # The uncovered edge takes up the neighbouring colour rather than
         # white, which would cut sharply under the engraving.
-        a = np.asarray(etire.convert("RGB"))
-        g = np.zeros((trait.height, trait.width, 3), a.dtype)
-        hh = min(trait.height, a.shape[0])
-        ww = min(trait.width, a.shape[1])
+        a = np.asarray(stretched.convert("RGB"))
+        g = np.zeros((line_layer.height, line_layer.width, 3), a.dtype)
+        hh = min(line_layer.height, a.shape[0])
+        ww = min(line_layer.width, a.shape[1])
         g[:hh, :ww] = a[:hh, :ww]
-        if hh < trait.height:
+        if hh < line_layer.height:
             g[hh:] = g[hh - 1]
-        if ww < trait.width:
+        if ww < line_layer.width:
             g[:, ww:] = g[:, ww - 1:ww]
         if dx or dy:
             g = np.roll(g, (dy, dx), (0, 1))
-        fond = Image.fromarray(g)
-    return Image.composite(Image.new("RGB", trait.size, (0, 0, 0)), fond, trait)
+        floor = Image.fromarray(g)
+    return Image.composite(Image.new("RGB", line_layer.size, (0, 0, 0)), floor, line_layer)
 
 
-def poser(im, chemin, largeur, qualite):
-    h = round(largeur * im.height / im.width)
-    petite = im.resize((largeur, h), Image.LANCZOS)
-    chemin.parent.mkdir(parents=True, exist_ok=True)
-    petite.save(chemin, format="WEBP", quality=qualite, method=6)
-    return petite.size, chemin.stat().st_size
+def place(im, path, width_, quality_):
+    h = round(width_ * im.height / im.width)
+    small = im.resize((width_, h), Image.LANCZOS)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    small.save(path, format="WEBP", quality=quality_, method=6)
+    return small.size, path.stat().st_size
 
 
-def preparer(cle, chemin):
-    couleur, trait = separer(chemin)
-    print(f"  couleur {couleur.size if couleur else '(aucune)'}"
-          f"   trait {trait.size}")
+def prepare_(key, path):
+    colour, line_layer = split_layers(path)
+    print(f"  couleur {colour.size if colour else '(aucune)'}"
+          f"   trait {line_layer.size}")
 
     # The layers stay apart: it is on them that the colours will be redone,
     # the engraving having no need to suffer for it.
-    kov = GRAVURI / "kovri"
-    kov.mkdir(parents=True, exist_ok=True)
-    if couleur is not None:
-        couleur.save(kov / f"{cle}-koloro.png")
-    trait.save(kov / f"{cle}-trako.png")
+    work = PLATES / "kovri"
+    work.mkdir(parents=True, exist_ok=True)
+    if colour is not None:
+        colour.save(work / f"{key}-koloro.png")
+    line_layer.save(work / f"{key}-trako.png")
 
-    plein = composer(couleur, trait)
-    taille = {}
-    for nom, largeur, qualite in (("vido", LARGE_VIDO, QUAL_VIDO),
-                                  ("detalo", LARGE_DETALO, QUAL_DETALO)):
-        dim, octets = poser(plein, GRAVURI / f"{cle}-{nom}.webp", largeur, qualite)
-        taille[nom] = {"largeur": dim[0], "alteso": dim[1], "okteti": octets}
-        print(f"  {cle}-{nom}.webp  {dim[0]}x{dim[1]}  {octets/1024:.0f} Ko")
+    solid = compose(colour, line_layer)
+    size_ = {}
+    for name_, width_, quality_ in (("vido", VIEW_WIDTH, VIEW_QUALITY),
+                                  ("detalo", DETAIL_WIDTH, DETAIL_QUALITY)):
+        dim, bytes_ = place(solid, PLATES / f"{key}-{name_}.webp", width_, quality_)
+        size_[name_] = {"largeur": dim[0], "alteso": dim[1], "okteti": bytes_}
+        print(f"  {key}-{name_}.webp  {dim[0]}x{dim[1]}  {bytes_/1024:.0f} Ko")
 
     # The catalogue tells the page which tables have an engraving, and in
     # what proportions -- enough to reserve the room before the image is
     # even loaded, without which the page jumps on loading.
-    cat = GRAVURI / "plates.json"
-    tout = json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
+    cat = PLATES / "plates.json"
+    everything = json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
     # The source is noted: without it, one no longer knew which plate came
     # from which file, and redoing the series meant comparing dimensions.
-    tout[cle] = {"largeur": plein.width, "alteso": plein.height,
-                 "koloro": couleur is not None, "fonto": Path(chemin).name,
-                 "vido": taille["vido"], "detalo": taille["detalo"]}
-    cat.write_text(json.dumps(tout, indent=1, sort_keys=True,
+    everything[key] = {"largeur": solid.width, "alteso": solid.height,
+                 "koloro": colour is not None, "fonto": Path(path).name,
+                 "vido": size_["vido"], "detalo": size_["detalo"]}
+    cat.write_text(json.dumps(everything, indent=1, sort_keys=True,
                               ensure_ascii=False) + "\n", encoding="utf-8")
-    return plein
+    return solid
 
 
 if __name__ == "__main__":
     if "--tuto" in sys.argv or len(sys.argv) < 3:
         print(__doc__)
         raise SystemExit(0)
-    preparer(sys.argv[1], Path(sys.argv[2]))
+    prepare_(sys.argv[1], Path(sys.argv[2]))

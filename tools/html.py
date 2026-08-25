@@ -34,7 +34,7 @@ import json
 import re
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 
 
 # THE WALL PLATE ABOVE ITS TEXT. The booklet explains an engraving the
@@ -43,8 +43,8 @@ RACINE = Path(__file__).resolve().parent.parent
 # it carries the dimensions, and it is by them that the page reserves
 # the space before the image has even loaded -- failing which the text
 # jumps when it arrives.
-def gravuri():
-    cat = RACINE / "plates" / "plates.json"
+def plates_():
+    cat = ROOT / "plates" / "plates.json"
     return json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
 
 
@@ -53,20 +53,20 @@ def gravuri():
 # other: on table 5, « les plates-bandes (150) » are engraved « 50 ».
 # The source does not move; it is the reading page that shows the right
 # number.
-_KOREKTI = None
+_CORRECTIONS = None
 
 
-def korekti(tab):
+def corrections(tab):
     """The cross-references to correct for this table: {read: to be read}."""
-    global _KOREKTI
-    if _KOREKTI is None:
-        f = RACINE / "plates" / "corrections.json"
-        _KOREKTI = (json.loads(f.read_text(encoding="utf-8"))
+    global _CORRECTIONS
+    if _CORRECTIONS is None:
+        f = ROOT / "plates" / "corrections.json"
+        _CORRECTIONS = (json.loads(f.read_text(encoding="utf-8"))
                     if f.exists() else {})
-    return _KOREKTI.get(tab, {})
+    return _CORRECTIONS.get(tab, {})
 
 
-def korekti_renvojo(tab, cle=""):
+def correct_xref(tab, key=""):
     """{read: to be read} for ONE BLOCK: the corrections that hold for the
     whole table, plus those this block alone carries.
 
@@ -78,14 +78,14 @@ def korekti_renvojo(tab, cle=""):
     soap point at the chambermaid. An entry whose key is that of a
     BLOCK therefore holds only within that block.
     """
-    t = korekti(tab)
+    t = corrections(tab)
     out = {k: v for k, v in t.items() if isinstance(v, str)}
-    if cle:
-        out.update(t.get(cle, {}))
+    if key:
+        out.update(t.get(key, {}))
     return out
 
 
-def nomo(nm, langue):
+def name_of(nm, lang):
     """The object's name IN THE LANGUAGE OF THE COLUMN.
 
     The close-up carries the name of what it shows, and that name is
@@ -100,7 +100,7 @@ def nomo(nm, langue):
     # editions draw the same name from it, which the regional overlay then
     # retouches if it must. Without that detour, the variant found nothing
     # under its code and fell back on Ido.
-    for k in (TABLO.get(langue, langue), "io", "fr"):
+    for k in (TABLE.get(lang, lang), "io", "fr"):
         v = nm.get(k)
         if v:
             return v[0]
@@ -116,41 +116,41 @@ def nomo(nm, langue):
 # of the figure is not what we are after: we are after the thing. The
 # plan therefore takes only the numbers the view does not have — and it
 # turns out there are none.
-PLANOJ = {"t05-apar-2"}
+PLANS = {"t05-apar-2"}
 
 
-def numeri():
+def numbering_():
     """{table: {number: (engraving key, x, y, w, h, names)}}.
 
     The positions are a FRACTION of the plate: the page serves the same
     engraving at three resolutions, and the close-up must fall right on
     each. The name comes from the transcription of the bold nouns.
     """
-    f = RACINE / "plates" / "numbers.json"
+    f = ROOT / "plates" / "numbers.json"
     if not f.exists():
         return {}
-    o = RACINE / "plates" / "objects.json"
-    noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
+    o = ROOT / "plates" / "objects.json"
+    names = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
     out, force = {}, {}
-    tout = json.loads(f.read_text(encoding="utf-8"))
+    everything = json.loads(f.read_text(encoding="utf-8"))
     # THE PLANS LAST: they take only what is left.
-    for cle in sorted(tout, key=lambda c: c in PLANOJ):
-        v = tout[cle]
-        tab, plano = cle[:3], cle in PLANOJ
+    for key in sorted(everything, key=lambda c: c in PLANS):
+        v = everything[key]
+        tab, plan = key[:3], key in PLANS
         for n, b in v["numeri"].items():
             # A TABLE MAY HAVE TWO PLATES — table 5 has two, table 12
             # too — and the same number may then be read on both. We
             # keep the better supported reading, not the last to
             # arrive; but a plan takes only what the view does not
             # have, however well supported it may be.
-            if plano and (tab, n) in force:
+            if plan and (tab, n) in force:
                 continue
             if force.get((tab, n), -1) >= b[4]:
                 continue
             force[(tab, n)] = b[4]
             out.setdefault(tab, {})[n] = (
-                cle, b[0], b[1], b[2], b[3],
-                noms.get(tab, {}).get(n, {}))
+                key, b[0], b[1], b[2], b[3],
+                names.get(tab, {}).get(n, {}))
     return out
 
 
@@ -163,7 +163,7 @@ def numeri():
 # cross-reference keeps the word -- in italic on the French side, bare
 # on the Ido side -- and the button aims at the separate object, not at
 # its neighbour.
-RENVOI_REND = re.compile(
+XREF_RENDERED = re.compile(
     r'<sup>(\(?)\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)'
     r'(\s*(?:<i>)?bis(?:</i>)?)?\s*(\)?)</sup>')
 
@@ -200,18 +200,18 @@ RENVOI_REND = re.compile(
 # « English (UK) » is text/en as it stands, « English (US) » is the same
 # passed through the table, and the reader does not have to know which
 # is which.
-def varianti():
-    f = RACINE / "text" / "variants.json"
+def variants():
+    f = ROOT / "text" / "variants.json"
     if not f.exists():
         return {}
     d = json.loads(f.read_text(encoding="utf-8"))
     return {k: v for k, v in d.items() if k != "_"}
 
 
-VARIANTI = varianti()
+VARIANTS = variants()
 
 
-LANGUES = [
+LANGS = [
     {"kodo": "fr", "nomo": "Français", "dir": "ltr", "fonto": "fac-similé"},
     {"kodo": "en", "nomo": "English", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
@@ -429,10 +429,10 @@ LANGUES = [
 # appears there under its regional name. All the rest of the page
 # treats them like any other column — same « differita » bag, same
 # lingui/<kodo>.json, same count of blocks.
-def poser_varianti(langues):
+def apply_variants(langs):
     out = []
-    for lg in langues:
-        v = VARIANTI.get(lg["kodo"])
+    for lg in langs:
+        v = VARIANTS.get(lg["kodo"])
         if not v:
             out.append(lg)
             continue
@@ -444,15 +444,15 @@ def poser_varianti(langues):
     return out
 
 
-LANGUES = poser_varianti(LANGUES)
+LANGS = apply_variants(LANGS)
 
 # THE HAND-KEPT TABLES KNOW THE COLUMN, NOT THE VARIANT.
 # plates/corrections.json corrects « en »: the correction bears on what
 # the transcription wrote, and both English editions want it. We
 # therefore translate the variant's code into a column code before any
 # consultation of a table.
-TABLO = {lg["kodo"]: lg.get("dosiero", lg["kodo"]) for lg in LANGUES}
-TABLO["io"] = "io"
+TABLE = {lg["kodo"]: lg.get("dosiero", lg["kodo"]) for lg in LANGS}
+TABLE["io"] = "io"
 
 
 # THE ORDER OF THE MENU IS NO LONGER KEPT BY HAND. The languages came
@@ -503,26 +503,26 @@ TABLO["io"] = "io"
 # « stato » as we read « milioni », in the same register and by the
 # same key, and NO_FIGURE is DEDUCED instead of being kept by hand — one
 # more rank can no longer be forgotten.
-KONSTRUKTITA = ["eo", "ia"]
+BUILT = ["eo", "ia"]
 
 
-def _lire_registre(champ):
+def _read_register(field_):
     """{kodo: value of the field}, from text/languages.json."""
-    f = RACINE / "text" / "languages.json"
+    f = ROOT / "text" / "languages.json"
     if not f.is_file():
         return {}
     reg = json.loads(f.read_text(encoding="utf-8"))
-    return {l[0]: l[champ] for l in reg.get("lingui", []) if len(l) > champ}
+    return {l[0]: l[field_] for l in reg.get("lingui", []) if len(l) > field_}
 
 
-def _rango_lingui():
+def _rank_of_lang():
     """{kodo: millions of first-language speakers}, from the register."""
-    return _lire_registre(2)
+    return _read_register(2)
 
 
-def _stato_lingui():
+def _state_of_lang():
     """{kodo: state of the column}, from the register."""
-    return _lire_registre(4)
+    return _read_register(4)
 
 
 # THE FIGURE IS LOOKED UP UNDER THE COLUMN'S CODE, NOT UNDER THE
@@ -545,25 +545,25 @@ def _stato_lingui():
 #      counts with French. A regional column that is not a variant —
 #      Quebec French is one — thus finds its place without having to be
 #      entered in Ethnologue's register, where it has no business.
-def _sub_registre(lg, table):
+def _register_field(lg, table):
     for k in (lg.get("dosiero"), lg["kodo"], lg["kodo"].split("-")[0]):
         if k in table:
             return table[k]
     return None
 
 
-def _milioni(lg, rango):
-    return _sub_registre(lg, rango)
+def _millions(lg, rank):
+    return _register_field(lg, rank)
 
 
-def _ordre(lg, milioni, statoj):
+def _order(lg, millions, states):
     if lg["kodo"] == "fr":
         return (0, 0, "")
-    if lg["kodo"] in KONSTRUKTITA:
-        return (1, KONSTRUKTITA.index(lg["kodo"]), "")
-    if _sub_registre(lg, statoj) == "hors liste":
+    if lg["kodo"] in BUILT:
+        return (1, BUILT.index(lg["kodo"]), "")
+    if _register_field(lg, states) == "hors liste":
         return (2, 0, lg["kodo"])
-    m = _milioni(lg, milioni)
+    m = _millions(lg, millions)
     # THE TWO EDITIONS OF A LANGUAGE HAVE THE SAME FIGURE and therefore
     # necessarily follow each other. Between them we decide by the code,
     # which is neutral: the column that carries the files has no
@@ -571,9 +571,9 @@ def _ordre(lg, milioni, statoj):
     return (3, -(m if m is not None else -1), lg["kodo"])
 
 
-_RANGO = _rango_lingui()
-_STATOJ = _stato_lingui()
-LANGUES.sort(key=lambda lg: _ordre(lg, _RANGO, _STATOJ))
+_RANK = _rank_of_lang()
+_STATES = _state_of_lang()
+LANGS.sort(key=lambda lg: _order(lg, _RANK, _STATES))
 
 # A COLUMN WITHOUT A FIGURE FALLS TO THE TAIL SAYING NOTHING, and that
 # is precisely what happened. The sort cannot check itself — it would
@@ -583,27 +583,27 @@ LANGUES.sort(key=lambda lg: _ordre(lg, _RANGO, _STATOJ))
 # translation; Esperanto and Interlingua, which have no first-language
 # speakers to count; Standard Arabic, which has almost none and which
 # text/languages.json marks « off list ». Any other is a wiring fault.
-SEN_NOMBRO = ({"fr"} | set(KONSTRUKTITA)
-              | {k for k, v in _STATOJ.items() if v == "hors liste"})
-_orfa = [lg["kodo"] for lg in LANGUES
-         if lg["kodo"] not in SEN_NOMBRO and _milioni(lg, _RANGO) is None]
-if _orfa:
+NO_FIGURE = ({"fr"} | set(BUILT)
+              | {k for k, v in _STATES.items() if v == "hors liste"})
+_orphan = [lg["kodo"] for lg in LANGS
+         if lg["kodo"] not in NO_FIGURE and _millions(lg, _RANK) is None]
+if _orphan:
     print("  COLONNES ABSENTES DU REGISTRE, rangees en queue du menu "
-          "faute de chiffre : " + ", ".join(_orfa))
+          "faute de chiffre : " + ", ".join(_orphan))
 
-TITRO = "Expliko-Libreto di la Delmas-Tabeli helpanta"
-SUBTITRO = ("J. Guignon &middot; Ido-Kontoro, Thaon-les-Vosges, 1926 "
+TITLE = "Expliko-Libreto di la Delmas-Tabeli helpanta"
+SUBTITLE_ = ("J. Guignon &middot; Ido-Kontoro, Thaon-les-Vosges, 1926 "
             "&middot; E. Rochelle &middot; G. Delmas, Bordeaux")
 
 
 # -------------------------------------------------------------------
 #  1. READING THE LaTeX SOURCES
 # -------------------------------------------------------------------
-CLE = re.compile(r"^%%K\s+(\S+)\s+(\S+)(?:\s+(\S+))?\s*$")
+KEY = re.compile(r"^%%K\s+(\S+)\s+(\S+)(?:\s+(\S+))?\s*$")
 PAGE = re.compile(r"\\begin\{VUpage\}(?:\[(\d+)\])?\{([^}]*)\}")
 
 
-def accolade(s, i):
+def brace(s, i):
     """Contents of the brace beginning at s[i] == '{'. Returns
     (contents, index after the closing brace). Nested braces are
     counted: \\VUgras{Ka\\cc rolus} itself contains macros, and a plain
@@ -638,7 +638,7 @@ def accolade(s, i):
 # « \VUgras{quadra}\cc \VUgras{to} » ends on a « to » which is an Ido
 # pronoun — but it is not a word, it is the tail of « quadrato », and
 # the gluing has already returned it to its own.
-MOTOJ_VAKA = {
+EMPTY_WORDS = {
     # Ido
     "la", "l'", "ica", "ta", "ico", "to", "il", "el", "ol", "li", "lu",
     "un", "una", "mea", "sua", "lia", "nia", "via", "quale", "e", "ed",
@@ -661,12 +661,12 @@ MOTOJ_VAKA = {
     # « 这位 » is a word of one piece.
     "这", "那", "这位", "那位", "这个", "那个", "这些", "那些", "和", "或",
 }
-PONKTO = " .,;:!?»«\u202f\u2019'\u3001\u3002\uff08\uff09"
+PUNCT = " .,;:!?»«\u202f\u2019'\u3001\u3002\uff08\uff09"
 
-COUPE = "\x02"
+CUT = "\x02"
 
 
-def texte_html(t):
+def html_text(t):
     """Converts a LaTeX fragment of the transcription into HTML."""
     # THE COMMENTS FIRST. A « % » opens a comment to the end of the line,
     # and the transcription uses it: a note's content opens with « {% » so
@@ -713,7 +713,7 @@ def texte_html(t):
     # left « plein » in the text — the reading page gave « dro plein
     # medaro » for « dromedaro ». It leaves here a mark that merge() will
     # read: the word is broken, the resumption glues back WITHOUT a space.
-    t = t.replace("\\ccplein\n", COUPE).replace("\\ccplein", COUPE)
+    t = t.replace("\\ccplein\n", CUT).replace("\\ccplein", CUT)
     # AND « \\cc » FOLLOWED BY « \\parplein » IS WORTH « \\ccplein ». The two
     # macros written one after the other do what \\ccplein does at a stroke,
     # and eleven pages of the two booklets are set that way. The PDF sees
@@ -724,7 +724,7 @@ def texte_html(t):
     # « particioni », « yuni no » for « yunino », « kon servar » for
     # « konservar ». Seven words of the Ido and four of the French, cut in
     # two on screen by the end of a leaf alone.
-    t = re.sub(r"\\cc\n(?=\\parplein\b)", COUPE, t)
+    t = re.sub(r"\\cc\n(?=\\parplein\b)", CUT, t)
     t = t.replace("\\cc\n", "").replace("\\cc", "")
     # A HYPHEN AT THE END OF A LINE TAKES NO SPACE AFTER IT. \nl marks an
     # end of line WITHOUT a composed hyphen: the facsimile adds none,
@@ -754,7 +754,7 @@ def texte_html(t):
 
     out = []
     i = 0
-    balises = {"\\VUgras": "b", "\\textit": "i", "\\textsuperscript": "sup",
+    tags = {"\\VUgras": "b", "\\textit": "i", "\\textsuperscript": "sup",
                "\\emph": "i", "\\textbf": "b"}
     # Macros with SEVERAL arguments: we say how many are to be read and
     # which one carries the text. \VUcentre{body}{letterspacing}{text}:
@@ -784,7 +784,7 @@ def texte_html(t):
     # — on table 2, « La Korpo homala. » is in 13.2pt beneath a title in
     # 11.4pt. We therefore deposit it in data-korpo, which the table of
     # contents reads back.
-    arite = {"\\VUcentre": (3, 2, '<span class="ln" data-korpo="%(korpo)s">'
+    arity = {"\\VUcentre": (3, 2, '<span class="ln" data-korpo="%(korpo)s">'
                                   '%(text)s</span>'),
              "\\VUtitre": (3, 2, '<span class="ln lg" data-korpo="%(korpo)s">'
                                  '%(text)s</span>'),
@@ -805,8 +805,8 @@ def texte_html(t):
         if t[i] == "\\":
             m = re.match(r"\\[A-Za-z]+", t[i:])
             if m:
-                nom = m.group(0)
-                j = i + len(nom)
+                name_ = m.group(0)
+                j = i + len(name_)
                 while j < len(t) and t[j] == " ":
                     j += 1
                 # THE OPTIONAL ARGUMENT IS READ TOO. \textls[40]{...} carries
@@ -814,46 +814,46 @@ def texte_html(t):
                 # stood — « [40]{La Balneyo.} ». It is a measurement of the
                 # facsimile: we read it and throw it away.
                 while j < len(t) and t[j] == "[":
-                    ferme = t.find("]", j)
-                    if ferme < 0:
+                    closes = t.find("]", j)
+                    if closes < 0:
                         break
-                    j = ferme + 1
+                    j = closes + 1
                     while j < len(t) and t[j] == " ":
                         j += 1
-                if nom in arite:
-                    n, garde, habit = arite[nom]
+                if name_ in arity:
+                    n, keep, wrap = arity[name_]
                     args = []
                     k = j
                     for _ in range(n):
                         while k < len(t) and t[k] in " \n":
                             k += 1
                         if k < len(t) and t[k] == "{":
-                            a, k = accolade(t, k)
+                            a, k = brace(t, k)
                             args.append(a)
                         else:
                             args.append("")
-                    if garde is None:
-                        out.append(habit)
-                    elif garde < len(args):
-                        out.append(habit % {
-                            "text": texte_html(args[garde]),
+                    if keep is None:
+                        out.append(wrap)
+                    elif keep < len(args):
+                        out.append(wrap % {
+                            "text": html_text(args[keep]),
                             "korpo": args[0] if args else ""})
                     i = k
                     continue
-                if nom in balises and j < len(t) and t[j] == "{":
-                    dedans, k = accolade(t, j)
-                    out.append(f"<{balises[nom]}>{texte_html(dedans)}"
-                               f"</{balises[nom]}>")
+                if name_ in tags and j < len(t) and t[j] == "{":
+                    inside, k = brace(t, j)
+                    out.append(f"<{tags[name_]}>{html_text(inside)}"
+                               f"</{tags[name_]}>")
                     i = k
                     continue
-                if nom == "\\textasciitilde":
+                if name_ == "\\textasciitilde":
                     out.append("~")
                     i = j
                     continue
                 # Unknown macro: we let it drop with its argument.
                 if j < len(t) and t[j] == "{":
-                    dedans, k = accolade(t, j)
-                    out.append(texte_html(dedans))
+                    inside, k = brace(t, j)
+                    out.append(html_text(inside))
                     i = k
                     continue
                 i = j
@@ -875,8 +875,8 @@ def texte_html(t):
         # its part, is written « \{ » in the transcription, and that case is
         # handled just above.
         if t[i] == "{":
-            dedans, k = accolade(t, i)
-            out.append(texte_html(dedans))
+            inside, k = brace(t, i)
+            out.append(html_text(inside))
             i = k
             continue
         out.append(t[i])
@@ -900,7 +900,7 @@ def texte_html(t):
         t = re.sub(rf"</{b}><{b}>", "", t)
     t = re.sub(r"<b>([^<>]*)</b>",
                lambda m: (m.group(1)
-                          if m.group(1).strip(PONKTO).lower() in MOTOJ_VAKA
+                          if m.group(1).strip(PUNCT).lower() in EMPTY_WORDS
                           else m.group(0)), t)
     # The cross-references, for their part, are reunited EVEN when
     # separated: « (9, 11, » and « 12) » are a single call the line has cut
@@ -960,7 +960,7 @@ def texte_html(t):
     return t
 
 
-def lire(chemin):
+def read_file(path):
     """Returns the list of blocks of a transcription file.
 
     A block = {key, type, folio, leaf, html}. Everything preceding a
@@ -968,83 +968,83 @@ def lire(chemin):
     notes) is attached to the block that follows or carries its own
     key.
     """
-    src = chemin.read_text(encoding="utf-8")
-    blocs = []
+    src = path.read_text(encoding="utf-8")
+    blocks = []
     folio = ""
-    feuillet = ""
-    courant = None
+    leaf = ""
+    current = None
     notes = []
-    dans_note = False
-    accolades = 0
-    for ligne in src.splitlines():
-        mp = PAGE.search(ligne)
+    in_note = False
+    braces = 0
+    for line in src.splitlines():
+        mp = PAGE.search(line)
         if mp:
-            feuillet = mp.group(1) or ""
+            leaf = mp.group(1) or ""
             folio = mp.group(2) or ""
             continue
-        m = CLE.match(ligne.strip())
+        m = KEY.match(line.strip())
         if m:
-            if courant:
-                blocs.append(courant)
+            if current:
+                blocks.append(current)
             # The third member of a key: « suite » for the resumption of a
             # paragraph broken by a change of page, « pos=<key> » for a
             # block that IS READ elsewhere than it is printed.
             extra = m.group(3) or ""
-            courant = {"cle": m.group(1), "tipo": m.group(2),
+            current = {"cle": m.group(1), "tipo": m.group(2),
                        "suite": extra == "suite",
                        "apres": extra[4:] if extra.startswith("pos=") else "",
-                       "folio": folio, "feuillet": feuillet, "brut": []}
+                       "folio": folio, "feuillet": leaf, "brut": []}
             continue
-        if ligne.startswith("%"):
+        if line.startswith("%"):
             continue
-        if "\\end{VUpage}" in ligne:
+        if "\\end{VUpage}" in line:
             # The end of an environment is not text. Without this very
             # line, « VUpage » was set at the end of each page's last
             # paragraph: the unknown macro dropped, its name stayed.
-            courant = None if courant is None else courant
-            if courant is not None:
-                courant["brut"].append(
-                    ligne.replace("\\end{VUpage}", ""))
+            current = None if current is None else current
+            if current is not None:
+                current["brut"].append(
+                    line.replace("\\end{VUpage}", ""))
             continue
-        if courant is not None:
-            courant["brut"].append(ligne)
-        elif ligne.strip().startswith("\\VUnotes"):
-            notes.append(ligne)
-    if courant:
-        blocs.append(courant)
+        if current is not None:
+            current["brut"].append(line)
+        elif line.strip().startswith("\\VUnotes"):
+            notes.append(line)
+    if current:
+        blocks.append(current)
 
     # The notes: they are declared at the head of the page, before any
     # key. We find them again in the raw source, extract them and make
     # separate blocks of them, set at the end of their page.
-    entier = src
-    for mo in re.finditer(r"\\VUnotes\{[^}]*\}\{", entier):
-        deb = mo.end() - 1
-        dedans, _ = accolade(entier, deb)
+    whole = src
+    for mo in re.finditer(r"\\VUnotes\{[^}]*\}\{", whole):
+        beg = mo.end() - 1
+        inside, _ = brace(whole, beg)
         # Which page does it belong to? The last \begin{VUpage}
         # before it.
-        avant = entier[:mo.start()]
-        pages = list(PAGE.finditer(avant))
+        before = whole[:mo.start()]
+        pages = list(PAGE.finditer(before))
         f = pages[-1].group(2) if pages else ""
         fe = pages[-1].group(1) if pages else ""
-        blocs.append({"cle": f"noto-f{fe}", "tipo": "noto", "suite": False,
+        blocks.append({"cle": f"noto-f{fe}", "tipo": "noto", "suite": False,
                       "folio": f, "feuillet": fe,
-                      "brut": [dedans]})
+                      "brut": [inside]})
 
 
-    for b in blocs:
-        b["html"] = texte_html("\n".join(b["brut"]))
+    for b in blocks:
+        b["html"] = html_text("\n".join(b["brut"]))
         del b["brut"]
     # THE MARKER IS READ ON THE RENDERED TEXT, not on the source. There it
     # is sometimes shut inside a macro — « \textit{(*) Pro ke ta vorto...} »
     # on table 8 — and a regular expression laid on the LaTeX did not see
     # it. The HTML, for its part, has already resolved the macros: only the
     # text is left, and the marker is at its head.
-    for b in blocs:
+    for b in blocks:
         if b["tipo"] != "noto":
             b["apelo"] = ""
             continue
-        nu = re.sub(r"<[^>]+>", "", b["html"]).strip()
-        m2 = re.match(r"\(([^)]{1,3})\)", nu)
+        bare_ = re.sub(r"<[^>]+>", "", b["html"]).strip()
+        m2 = re.match(r"\(([^)]{1,3})\)", bare_)
         b["apelo"] = m2.group(1) if m2 else ""
 
     # TWO SOURCES FOR ONE NOTE. Some transcriptions declare the note by
@@ -1052,19 +1052,19 @@ def lire(chemin):
     # which the second pass above gathers up. When the two coexist, the
     # note appeared twice. We discard the duplicate on the first
     # characters of the bare text.
-    vus = set()
-    net = []
-    for b in blocs:
+    seen = set()
+    clean = []
+    for b in blocks:
         if b["tipo"] == "noto":
-            empreinte = re.sub(r"<[^>]+>|\s+", "", b["html"])[:40]
-            if empreinte in vus:
+            footprint = re.sub(r"<[^>]+>|\s+", "", b["html"])[:40]
+            if footprint in seen:
                 continue
-            vus.add(empreinte)
-        net.append(b)
-    return [b for b in net if b["html"]]
+            seen.add(footprint)
+        clean.append(b)
+    return [b for b in clean if b["html"]]
 
 
-def fusionner(blocs):
+def merge(blocks):
     """Glues « suite » blocks back to the block they came from.
 
     A paragraph broken by a change of page carries the same key twice,
@@ -1075,14 +1075,14 @@ def fusionner(blocs):
     """
     out = []
     par_cle = {}
-    for b in blocs:
+    for b in blocks:
         if b["suite"] and b["cle"] in par_cle:
             a = par_cle[b["cle"]]
             # A WORD BROKEN BY THE PAGE TAKES NO SPACE. \ccplein has
             # left its mark at the end of the left-hand half: « dro »
             # and « medaro » make « dromedaro », not « dro medaro ».
-            if a["html"].rstrip().endswith(COUPE):
-                joint = (a["html"].rstrip()[:-len(COUPE)]
+            if a["html"].rstrip().endswith(CUT):
+                joined = (a["html"].rstrip()[:-len(CUT)]
                          + b["html"].lstrip()).strip()
                 # AND IT REMAINS ONE WORD FOR SEARCHING. The two halves
                 # are each in their own \VUgras: glued back as they
@@ -1092,8 +1092,8 @@ def fusionner(blocs):
                 # here the break falls between two blocks, and the
                 # reunion is done again afterwards.
                 for q in ("b", "i"):
-                    joint = joint.replace(f"</{q}><{q}>", "")
-                a["html"] = joint
+                    joined = joined.replace(f"</{q}><{q}>", "")
+                a["html"] = joined
             else:
                 a["html"] = (a["html"] + " " + b["html"]).strip()
             a["folio2"] = b["folio"]
@@ -1106,7 +1106,7 @@ def fusionner(blocs):
 # -------------------------------------------------------------------
 #  2. ASSEMBLY
 # -------------------------------------------------------------------
-DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
+FOLDER = {"fr": "fr", "fr-CA": "fr-CA",
            "en": "en", "es": "es", "ru": "ru", "zh": "zh",
            "ar": "ar", "hi": "hi", "pt": "pt",
            "bn": "bn", "ja": "ja", "pnb": "pnb", "pa": "pa",
@@ -1150,10 +1150,10 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
 # and FALSIFY THE PDF, which is the diplomatic transcription: the line
 # must stay where the printer put it. We therefore note the move beside
 # it, and the PDF does not budge by a point.
-def deplacer(blocs):
+def move_(blocks):
     """Sets the blocks marked « pos= » back behind the block they aim at."""
-    fixes = [b for b in blocs if not b.get("apres")]
-    for b in [b for b in blocs if b.get("apres")]:
+    fixes = [b for b in blocks if not b.get("apres")]
+    for b in [b for b in blocks if b.get("apres")]:
         i = next((k for k, x in enumerate(fixes) if x["cle"] == b["apres"]),
                  None)
         if i is None:
@@ -1162,15 +1162,15 @@ def deplacer(blocs):
     return fixes
 
 
-def lire_langue(sous_dossier):
+def read_lang(subfolder):
     """The sixteen tables of a language, in order."""
-    d = RACINE / "text" / sous_dossier
-    blocs = []
+    d = ROOT / "text" / subfolder
+    blocks = []
     for f in sorted(d.glob("*.tex")):
         if f.name.startswith(("00-", "90-")):
             continue
-        blocs.extend(deplacer(fusionner(lire(f))))
-    return blocs
+        blocks.extend(move_(merge(read_file(f))))
+    return blocks
 
 
 # SUBHEADINGS ARE NOT PAIRED BY THEIR KEY. That is already the rule of
@@ -1189,28 +1189,28 @@ def lire_langue(sous_dossier):
 # paragraph they precede, and pair them IN ORDER within the group:
 # where one edition puts three and the other two, the first two answer
 # each other and the third stays alone. As it must.
-def apparier_subs(io_blocs, autre_blocs):
+def pair_subheadings(io_blocks, other_blocks):
     """{Ido subheading key: subheading key of the other edition}"""
-    def groupes(blocs):
-        g, courant = {}, []
-        for b in blocs:
+    def groups(blocks):
+        g, current = {}, []
+        for b in blocks:
             if b["tipo"] == "sub":
-                courant.append(b["cle"])
-            elif b["tipo"] == "p" and courant:
+                current.append(b["cle"])
+            elif b["tipo"] == "p" and current:
                 # Paragraph keys carry their table: two groups from two
                 # tables cannot be confused.
-                g[b["cle"]] = courant
-                courant = []
+                g[b["cle"]] = current
+                current = []
         return g
 
-    ici, la = groupes(io_blocs), groupes(autre_blocs)
-    lien = {}
-    for alinea, subs_io in ici.items():
-        subs_la = la.get(alinea, [])
-        for i, cle in enumerate(subs_io):
-            if i < len(subs_la):
-                lien[cle] = subs_la[i]
-    return lien
+    here, la = groups(io_blocks), groups(other_blocks)
+    link_ = {}
+    for para, subs_io in here.items():
+        subs_lang = la.get(para, [])
+        for i, key in enumerate(subs_io):
+            if i < len(subs_lang):
+                link_[key] = subs_lang[i]
+    return link_
 
 
 # THE SUBHEADINGS THE FRENCH BOOKLET DOES NOT HAVE. Rochelle cuts his
@@ -1227,59 +1227,59 @@ def apparier_subs(io_blocs, autre_blocs):
 # only the reading page displays them. It marks them « apud »: the same
 # size and the same place as the others, but the reader must be able to
 # tell what Rochelle wrote from what we add.
-def intertitroj_fr():
-    f = RACINE / "text" / "fr" / "intertitroj.json"
+def subheadings_fr():
+    f = ROOT / "text" / "fr" / "intertitroj.json"
     if not f.exists():
         return {}
     return {k: v for k, v in json.loads(f.read_text(encoding="utf-8")).items()
             if not k.startswith("_")}
 
 
-APUD_FR = intertitroj_fr()
+APUD_FR = subheadings_fr()
 
 
-def paro():
-    io = lire_langue("io")
-    autres, liens = {}, {}
-    for lg in LANGUES:
+def pair():
+    io = read_lang("io")
+    others, links = {}, {}
+    for lg in LANGS:
         # THE VARIANT HAS NO DIRECTORY: it is drawn from its base, below,
         # once the blocks are made. « dosiero » says where the base column
         # writes its files, its own code having taken a suffix.
-        sd = DOSSIER.get(lg.get("dosiero", lg["kodo"]))
-        if sd and (RACINE / "text" / sd).is_dir():
-            bl = lire_langue(sd)
-            autres[lg["kodo"]] = {b["cle"]: b for b in bl}
-            liens[lg["kodo"]] = apparier_subs(io, bl)
+        sd = FOLDER.get(lg.get("dosiero", lg["kodo"]))
+        if sd and (ROOT / "text" / sd).is_dir():
+            bl = read_lang(sd)
+            others[lg["kodo"]] = {b["cle"]: b for b in bl}
+            links[lg["kodo"]] = pair_subheadings(io, bl)
         else:
-            autres[lg["kodo"]] = {}
-            liens[lg["kodo"]] = {}
+            others[lg["kodo"]] = {}
+            links[lg["kodo"]] = {}
 
     # THE ORDER IS THE IDO'S. It is the Ido booklet that is the object of
     # the site; the right-hand column follows it.
     # On the Ido side, the symmetry: an Ido block with no French
     # counterpart is glued back to the previous one AT RENDERING TIME (see
     # below), and not here, because one must first know which are orphans.
-    rangi = []
+    rows = []
     for b in io:
         r = {"cle": b["cle"], "tipo": b["tipo"], "io": b["html"],
              "apelo": b.get("apelo", ""),
              "folio": b["folio"], "folio2": b.get("folio2", ""),
              "feuillet": b["feuillet"], "tra": {}}
-        for lg in LANGUES:
+        for lg in LANGS:
             # The subheading is looked up by its place, everything else by
             # its key. With no counterpart, the right-hand cell stays
             # empty: it is a subdivision the other edition does not have.
-            cible = (liens[lg["kodo"]].get(b["cle"]) if b["tipo"] == "sub"
+            target = (links[lg["kodo"]].get(b["cle"]) if b["tipo"] == "sub"
                      else b["cle"])
-            o = autres[lg["kodo"]].get(cible) if cible else None
+            o = others[lg["kodo"]].get(target) if target else None
             if o is None and lg["kodo"] == "fr" and b["tipo"] == "sub":
                 # THE SIZE IS TAKEN FROM THE IDO, so that the two
                 # columns announce the section at the same strength.
                 t = APUD_FR.get(b["cle"])
                 if t:
-                    korpo = re.search(r'data-korpo="([^"]+)"', b["html"])
+                    body_m = re.search(r'data-korpo="([^"]+)"', b["html"])
                     o = {"html": (f'<span class="apud" data-korpo='
-                                  f'"{korpo.group(1) if korpo else "10.2pt"}" '
+                                  f'"{body_m.group(1) if body_m else "10.2pt"}" '
                                   f'title="Intertitre absent du Livret '
                                   f'français ; traduit de l\u2019ido">'
                                   f'{t}</span>'),
@@ -1289,7 +1289,7 @@ def paro():
                                         "f2": o.get("folio2", ""),
                                         "fe": o["feuillet"],
                                         "apelo": o.get("apelo", "")}
-        rangi.append(r)
+        rows.append(r)
 
     # THE DIVISION INTO PARAGRAPHS IS NOT THE SAME ON THE TWO SIDES, and
     # something must be made of it. Rochelle sometimes cuts in two a
@@ -1313,27 +1313,27 @@ def paro():
     # its cell all the same, facing the one it translates. Counted as an
     # orphan, it appeared TWICE -- « Deuxième scène. » at its rank, and
     # glued to the end of the previous paragraph.
-    par_cle = {r["cle"]: i for i, r in enumerate(rangi)}
-    for lg in LANGUES:
+    par_cle = {r["cle"]: i for i, r in enumerate(rows)}
+    for lg in LANGS:
         k = lg["kodo"]
-        pris = {tra: io for io, tra in liens[k].items()}
-        precedent = None
-        for cle, o in autres[k].items():
-            if cle in par_cle:
-                precedent = par_cle[cle]
+        taken = {tra: io for io, tra in links[k].items()}
+        previous = None
+        for key, o in others[k].items():
+            if key in par_cle:
+                previous = par_cle[key]
                 continue
-            if cle in pris:
+            if key in taken:
                 # It has its cell: from now on it is the previous one.
-                precedent = par_cle.get(pris[cle], precedent)
+                previous = par_cle.get(taken[key], previous)
                 continue
-            if precedent is None:
+            if previous is None:
                 continue
-            cible = rangi[precedent]["tra"].get(k)
-            if cible is None:
+            target = rows[previous]["tra"].get(k)
+            if target is None:
                 continue
-            cible["t"] = (cible["t"] + ' <span class="nal"></span> '
+            target["t"] = (target["t"] + ' <span class="nal"></span> '
                           + o["html"])
-    return rangi
+    return rows
 
 
 # THE FOLIO DOES NOT GIVE THE PDF'S PAGE NUMBER, and the difference is
@@ -1342,19 +1342,19 @@ def paro():
 # done when table 1 alone existed -- therefore sent the reader two
 # pages too far through the whole second third of the volume. We number
 # the composed leaves in order, once.
-_RANGS = {}
+_ROWS = {}
 
 
-def rang_pdf(langue, feuillet):
-    sd = "io" if langue == "io" else DOSSIER.get(langue, langue)
-    if sd not in _RANGS:
+def pdf_page(lang, leaf):
+    sd = "io" if lang == "io" else FOLDER.get(lang, lang)
+    if sd not in _ROWS:
         table = {}
-        for f in sorted((RACINE / "text" / sd).glob("*.tex")):
+        for f in sorted((ROOT / "text" / sd).glob("*.tex")):
             for m in PAGE.finditer(f.read_text(encoding="utf-8")):
                 if m.group(1):
                     table[m.group(1)] = len(table) + 1
-        _RANGS[sd] = table
-    return _RANGS[sd].get(str(feuillet), 1)
+        _ROWS[sd] = table
+    return _ROWS[sd].get(str(leaf), 1)
 
 
 # WHAT PRECEDES A FIGURE IN PARENTHESES SAYS WHAT IT IS. The French
@@ -1366,16 +1366,16 @@ def rang_pdf(langue, feuillet):
 # ordinary text: « qui nous fut servi \textsuperscript{(1)} ». The
 # superscript settles nothing: both volumes set now one, now the other
 # as a superscript.
-AVANT_OBJET = re.compile(r'</b>\s*(?:<sup>\s*)?$')
+BEFORE_OBJECT = re.compile(r'</b>\s*(?:<sup>\s*)?$')
 
 
-def appels_note(texte, marque):
+def note_calls(text_, mark):
     """Positions of the note calls « (mark) » within a block.
 
     Discards cross-references to the wall plate, recognised by their
     bold noun. Returns pairs (start, end) on the given text.
     """
-    if not texte:
+    if not text_:
         return []
     # AN ASTERISK IS NEVER AN OBJECT NUMBER: when the note is marked
     # « (*) », there is nothing to decide between, and the bold proves
@@ -1383,20 +1383,20 @@ def appels_note(texte, marque):
     # « esas \VUgras{Henrikus} (*) » — because the note bears on that
     # word. The bold rule holds only for the figured marks, the only
     # ones the two uses share.
-    chiffree = marque.isdigit()
+    figured = mark.isdigit()
     out = []
-    for m in re.finditer(re.escape(f"({marque})"), texte):
-        if chiffree and AVANT_OBJET.search(texte[:m.start()]):
+    for m in re.finditer(re.escape(f"({mark})"), text_):
+        if figured and BEFORE_OBJECT.search(text_[:m.start()]):
             continue
         out.append((m.start(), m.end()))
     return out
 
 
-def ancro(cle):
-    return cle
+def anchor_(key):
+    return key
 
 
-def lier_notes(rangi):
+def link_notes(rows):
     """Links each note call, in the text, to its note.
 
     A NOTE IS NOT A BLOCK LIKE ANY OTHER. At the foot of a page of the
@@ -1418,9 +1418,9 @@ def lier_notes(rangi):
     several times on the same page, we link NOTHING rather than link at
     random: the function says so, and the eye decides.
     """
-    rapport = {"lies": 0, "echecs": []}
+    ratio_ = {"lies": 0, "echecs": []}
 
-    def relier(notes, lire_texte, ecrire_texte, page_de, langue):
+    def link_up(notes, read_text_, write_text_, page_of, lang):
         # SEVERAL NOTES ON ONE PAGE, ALL MARKED « (*) ». Folio 37 of the
         # Ido booklet carries two. The marker does not distinguish them —
         # but the ORDER does: the page's first call refers to the first
@@ -1445,19 +1445,19 @@ def lier_notes(rangi):
         # leaf, but it is enough: no table carries more than two notes, and
         # the counting of ranks, which already parted two notes of one
         # page, parts them likewise.
-        def zono(n):
+        def zone(n):
             return (n.get("feuillet") or "").strip() or n["cle"][:3]
 
-        rang = {}
+        row = {}
         for n in notes:
-            cle_page = (zono(n), n.get("apelo"))
-            rang[id(n)] = rang.get(cle_page, 0)
-            rang[cle_page] = rang.get(cle_page, 0) + 1
+            page_key = (zone(n), n.get("apelo"))
+            row[id(n)] = row.get(page_key, 0)
+            row[page_key] = row.get(page_key, 0) + 1
         for n in notes:
-            marque = (n.get("apelo") or "").strip()
-            if not marque:
-                rapport["echecs"].append(
-                    (langue, n["cle"], "?", "marqueur illisible en tete"))
+            mark = (n.get("apelo") or "").strip()
+            if not mark:
+                ratio_["echecs"].append(
+                    (lang, n["cle"], "?", "marqueur illisible en tete"))
                 continue
             # A NOTE'S « (1) » AND AN OBJECT'S « (1) » ARE WRITTEN ALIKE.
             # Rochelle marks his notes with the same sign as his object
@@ -1475,42 +1475,42 @@ def lier_notes(rangi):
             # searching two pages at once therefore returned two calls for one
             # note, and the tool gave up linking what was not ambiguous at
             # all.
-            reperer = page_de
+            locate = page_of
             try:
                 f = int(n["feuillet"])
-                essais = [{str(f)}, {str(f - 1)}]
+                trials = [{str(f)}, {str(f - 1)}]
             except (TypeError, ValueError):
-                essais = [{zono(n)}]
-                reperer = lambda r: r["cle"][:3]
+                trials = [{zone(n)}]
+                locate = lambda r: r["cle"][:3]
             cands, total = [], 0
-            for pages in essais:
-                cands = [r for r in rangi
+            for pages in trials:
+                cands = [r for r in rows
                          # « apar » too: on table 8, the call is in the very
                          # title of the scene, « La Rekolto (*) », which holds
                          # on the opening page.
                          if r["tipo"] in ("p", "sub", "apar")
-                         and reperer(r) in pages
-                         and lire_texte(r) is not None]
-                total = sum(len(appels_note(lire_texte(r), marque))
+                         and locate(r) in pages
+                         and read_text_(r) is not None]
+                total = sum(len(note_calls(read_text_(r), mark))
                             for r in cands)
                 if total:
                     break
-            vise = rang.get(id(n), 0)      # the rank of this particular note
-            if total == 0 or vise >= total:
-                rapport["echecs"].append(
-                    (langue, n["cle"], marque,
+            aimed = row.get(id(n), 0)      # the rank of this particular note
+            if total == 0 or aimed >= total:
+                ratio_["echecs"].append(
+                    (lang, n["cle"], mark,
                      "aucun appel sur la page" if total == 0
-                     else f"{total} appels pour {vise + 1} notes"))
+                     else f"{total} appels pour {aimed + 1} notes"))
                 continue
-            vu = 0
+            seen_ = 0
             for r in cands:
-                t = lire_texte(r)
-                places = appels_note(t, marque)
-                if vu + len(places) <= vise:
-                    vu += len(places)
+                t = read_text_(r)
+                places = note_calls(t, mark)
+                if seen_ + len(places) <= aimed:
+                    seen_ += len(places)
                     continue
                 # The call sought is the (aimed - seen)-th of this block.
-                a, b = places[vise - vu]
+                a, b = places[aimed - seen_]
                 # ONE SIGN FOR ALL THE NOTES. Guignon marks his « (*) »,
                 # Rochelle « (1) ». To keep each his own mark was to give two
                 # different signs to the same note set face to face, and above
@@ -1518,53 +1518,53 @@ def lier_notes(rangi):
                 # cross-references. The reading page therefore marks every note
                 # « (*) », the sign the Ido already used everywhere; the PDFs,
                 # for their part, keep what each workshop composed.
-                bouton = (f'<button class="apel" '
-                          f'data-noto="{langue}-{n["cle"]}" '
+                button = (f'<button class="apel" '
+                          f'data-noto="{lang}-{n["cle"]}" '
                           f'aria-expanded="false">(*)</button>')
-                ecrire_texte(r, t[:a] + bouton + t[b:])
+                write_text_(r, t[:a] + button + t[b:])
                 n["porte"] = r["cle"]
-                n["langue"] = langue
-                rapport["lies"] += 1
+                n["langue"] = lang
+                ratio_["lies"] += 1
                 break
 
     # Left-hand column.
-    relier([r for r in rangi if r["tipo"] == "noto"],
+    link_up([r for r in rows if r["tipo"] == "noto"],
            lambda r: r["io"],
            lambda r, v: r.__setitem__("io", v),
            lambda r: r["feuillet"], "io")
 
     # Right-hand columns: their notes are not in `rangi`, they have
     # stayed in the translation blocks. We draw them out of them.
-    for lg in LANGUES:
+    for lg in LANGS:
         k = lg["kodo"]
         notes = []
-        for r in rangi:
+        for r in rows:
             o = r["tra"].get(k)
             if o and o.get("apelo") and r["tipo"] == "noto":
                 notes.append({"cle": r["cle"], "apelo": o["apelo"],
                               "feuillet": o["fe"], "html": o["t"]})
-        relier(notes,
+        link_up(notes,
                lambda r, k=k: (r["tra"].get(k) or {}).get("t"),
                lambda r, v, k=k: r["tra"][k].__setitem__("t", v),
                lambda r, k=k: (r["tra"].get(k) or {}).get("fe"), k)
 
-    uniformiser_notes(rangi)
-    uniformiser_renvois(rangi)
-    rapport["fermes"] = fermer_renvois(rangi)
-    rapport["korektiti"] = korekti_teksto(rangi)
-    boutons_renvois(rangi)
-    boutons_literi(rangi)
+    unify_notes(rows)
+    unify_xrefs(rows)
+    ratio_["fermes"] = close_xrefs(rows)
+    ratio_["korektiti"] = correct_text(rows)
+    xref_buttons(rows)
+    letter_buttons(rows)
     # AFTER THE BUTTONS, AND NOT BEFORE: the close-up's name is set in
     # the button's « title », and it carried the glued-together word.
-    rapport["tratiti"] = retablir_trati(rangi)
-    rapport["korektiti"] += korekti_nomi(rangi)
+    ratio_["tratiti"] = retablir_trati(rows)
+    ratio_["korektiti"] += correct_names(rows)
     # LAST, AND DELIBERATELY SO: the variant is drawn from the FINISHED
     # text, once the cross-references are closed, the corrections laid, the
     # hyphens restored and the buttons composed. It therefore inherits
     # everything, and the close-up's name follows the word of its own
     # edition — « vest » and not « waistcoat » when one is reading the
     # English of the United States.
-    return rapport
+    return ratio_
 
 
 # THE WALL-PLATE CROSS-REFERENCE, ALWAYS SET THE SAME WAY.
@@ -1579,13 +1579,13 @@ def lier_notes(rangi):
 # or from a broken sort at the printer's would call for the facsimile
 # before one's eyes. We make the superscript and the space uniform,
 # nothing else.
-RENVOI = re.compile(
+XREF = re.compile(
     r'(\s*)'
     r'(?:<sup>\s*(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*\)?)\s*</sup>'
     r'|\((\d{1,3}(?:\s*,\s*\d{1,3})*)\))')
 
 
-def boutons_renvois(rangi):
+def xref_buttons(rows):
     """The cross-reference becomes a button when we know where it points.
 
     A CLOSE-UP WE WOULD NOT KNOW HOW TO SHOW IS NOT PROMISED. The
@@ -1599,14 +1599,14 @@ def boutons_renvois(rangi):
     The button carries the ENGRAVING'S KEY and the frame as fractions of
     it. The page has then only to re-frame the image it already has.
     """
-    num = numeri()
+    num = numbering_()
     if not num:
         return 0
-    pose = 0
-    for r in rangi:
+    placed = 0
+    for r in rows:
         tab = r["cle"][:3]
-        par = num.get(tab)
-        if not par:
+        per = num.get(tab)
+        if not per:
             continue
         # THE BLOCK'S SCENE DECIDES WHICH NUMBER IT IS. Six plates carry
         # several vignettes, and each starts again at 1: the « (39) » of a
@@ -1617,13 +1617,13 @@ def boutons_renvois(rangi):
         # The cross-reference the plate does not carry: on table 5 the
         # « (150) » of the flower beds, engraved « 50 ». We read the
         # correction, we show it, and the source does not move.
-        kor = korekti_renvojo(tab, r["cle"])
+        corr = correct_xref(tab, r["cle"])
 
-        def ouvrir(n, langue, nu):
+        def open_at(n, lang, bare_):
             """The start of a number's button, or None if we do not know
             where it is: we do not promise a close-up we would not know
             how to show."""
-            v = par.get(f"{scene}:{n}" if scene else str(n))
+            v = per.get(f"{scene}:{n}" if scene else str(n))
             # TABLE 11 HAS ONLY ONE NUMBERING, BUT ITS KEYS CARRY TWO
             # SCENES — AND IT LOST ITS EIGHTY-EIGHT CLOSE-UPS FOR ALL
             # THAT TIME, ACROSS THE 42 COLUMNS. Its keys say c1 and c2
@@ -1644,53 +1644,53 @@ def boutons_renvois(rangi):
             # no bare entry to offer this fallback, and the fallback
             # cannot show the wrong object there.
             if not v and scene:
-                v = par.get(str(n))
+                v = per.get(str(n))
             if not v:
                 return None
-            cle, x, y, w, h, nm = v
+            key, x, y, w, h, nm = v
             # THE NAME FOLLOWS ITS COLUMN (see nomo, above).
-            titre = nomo(nm, langue).replace('"', "&quot;")
-            return (f'<button class="lupo{chr(32) + "nuda" if nu else ""}" '
-                    f'data-g="{cle}" data-c="{x},{y},{w},{h}" data-n="{n}" '
-                    f'title="{titre}" aria-expanded="false">')
+            title = name_of(nm, lang).replace('"', "&quot;")
+            return (f'<button class="lupo{chr(32) + "nuda" if bare_ else ""}" '
+                    f'data-g="{key}" data-c="{x},{y},{w},{h}" data-n="{n}" '
+                    f'title="{title}" aria-expanded="false">')
 
-        def bouton(m, par=par, langue="io", scene=scene):
-            nonlocal pose
-            ouv, corps, bis, fer = (m.group(1), m.group(2),
+        def button(m, per=per, lang="io", scene=scene):
+            nonlocal placed
+            open_br, size, bis, close_br = (m.group(1), m.group(2),
                                     m.group(3) or "", m.group(4))
-            ns = [int(kor.get(x, x)) for x in re.findall(r"\d+", corps)]
+            ns = [int(corr.get(x, x)) for x in re.findall(r"\d+", size)]
             # A GROUP STANDS FOR SEVERAL OBJECTS AT ONCE. Each number in
             # it becomes clickable separately; the parentheses and the
             # commas stay text, and nothing moves in the line.
             if len(ns) > 1:
-                bouts, fait = [], 0
+                ends, done = [], 0
                 for n in ns:
-                    d = ouvrir(n, langue, True)
-                    bouts.append(f"{d}{n}</button>" if d else str(n))
-                    fait += 1 if d else 0
-                if not fait:
+                    d = open_at(n, lang, True)
+                    ends.append(f"{d}{n}</button>" if d else str(n))
+                    done += 1 if d else 0
+                if not done:
                     return m.group(0)
-                pose += fait
-                return f"<sup>{ouv}" + ", ".join(bouts) + f"{bis}{fer}</sup>"
-            d = ouvrir(f"{ns[0]}bis" if bis else ns[0], langue, False)
+                placed += done
+                return f"<sup>{open_br}" + ", ".join(ends) + f"{bis}{close_br}</sup>"
+            d = open_at(f"{ns[0]}bis" if bis else ns[0], lang, False)
             if not d:
                 return m.group(0)
-            pose += 1
-            return f"{d}<sup>{ouv}{ns[0]}{bis}{fer}</sup></button>"
+            placed += 1
+            return f"{d}<sup>{open_br}{ns[0]}{bis}{close_br}</sup></button>"
 
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
-            texte = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
-            if not texte:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
+            text_ = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
+            if not text_:
                 continue
-            neuf = RENVOI_REND.sub(
-                lambda m, k=k: bouton(m, langue=k), texte)
-            if neuf == texte:
+            fresh = XREF_RENDERED.sub(
+                lambda m, k=k: button(m, lang=k), text_)
+            if fresh == text_:
                 continue
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
-    return pose
+                r["tra"][k]["t"] = fresh
+    return placed
 
 
 # -------------------------------------------------------------------
@@ -1711,12 +1711,12 @@ def boutons_renvois(rangi):
 # letters of the astronomy table were clickable only in Ido: the reader
 # of the French read « les hemispheres (d) » without being able to see
 # anything of it.
-RENVOI_LIT = re.compile(r'<sup>(<i>)?\(([a-z]{1,2})\)(</i>)?</sup>')
+XREF_LETTER = re.compile(r'<sup>(<i>)?\(([a-z]{1,2})\)(</i>)?</sup>')
 
 
-def literi():
+def letters_():
     """{plate: {key: place}} and the table of blocks."""
-    f = RACINE / "plates" / "letters.json"
+    f = ROOT / "plates" / "letters.json"
     if not f.exists():
         return {}, {}
     d = json.loads(f.read_text(encoding="utf-8"))
@@ -1738,49 +1738,49 @@ def literi():
 # bathroom. It is the only place in the book where the reading page
 # corrects what the transcription preserves, and that is why it is
 # declared in letters.json rather than guessed.
-BOUTON_UN = re.compile(
+BUTTON_ONE = re.compile(
     r'<button class="lupo" data-g="[^"]*" data-c="[^"]*" data-n="1" '
     r'title="[^"]*" aria-expanded="false"><sup>\(1\)</sup></button>')
 
 
-def sorto_unika(t, regles, planche, places, noms, langue):
+def unique_sort(t, rules, plate, places, names, lang):
     """Redirects to its letter the « (1) » that is not a number."""
-    for mot, L in regles:
-        i = t.find(f"{mot}</b>")
+    for word, L in rules:
+        i = t.find(f"{word}</b>")
         v = places.get(L)
         if i < 0 or not v:
             continue
-        m = BOUTON_UN.search(t, i, i + 400)
+        m = BUTTON_ONE.search(t, i, i + 400)
         if not m:
             continue
-        nm = noms.get(planche[:3], {}).get(L, {})
+        nm = names.get(plate[:3], {}).get(L, {})
         io = (nm.get("io") or nm.get("fr") or [""])[0]
         fr = (nm.get("fr") or nm.get("io") or [""])[0]
-        titre = ((io if langue == "io" else fr) or io or fr)
+        title = ((io if lang == "io" else fr) or io or fr)
         t = t[:m.start()] + (
-            f'<button class="lupo" data-g="{planche}" '
+            f'<button class="lupo" data-g="{plate}" '
             f'data-c="{v[0]},{v[1]},{v[2]},{v[3]}" data-n="{L}" '
-            f'title="{titre.replace(chr(34), "&quot;")}" '
+            f'title="{title.replace(chr(34), "&quot;")}" '
             f'aria-expanded="false"><sup>({L})</sup></button>'
         ) + t[m.end():]
     return t
 
 
-def boutons_literi(rangi):
+def letter_buttons(rows):
     """The cross-reference by letter becomes a button, like the one by number."""
-    tout, patri = literi()
-    if not patri:
+    everything, fathers = letters_()
+    if not fathers:
         return 0
-    uniq = tout.get("unu-sorto", {})
-    o = RACINE / "plates" / "objects.json"
-    noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
-    pose = 0
-    for r in rangi:
-        pa = patri.get(r["cle"])
+    uniq = everything.get("unu-sorto", {})
+    o = ROOT / "plates" / "objects.json"
+    names = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
+    placed = 0
+    for r in rows:
+        pa = fathers.get(r["cle"])
         if not pa:
             continue
-        planche, prefixo = pa
-        places = tout.get(planche, {})
+        plate, prefix = pa
+        places = everything.get(plate, {})
         # A LETTER TOO MAY BE WRONG. On table 1 the two booklets swap
         # Europe and Asia; plates/corrections.json says so for that
         # block. The corrected letter is the one looked for on the plate
@@ -1789,29 +1789,29 @@ def boutons_literi(rangi):
         # THE READING IS DONE IN A SINGLE PASS — each letter is taken
         # from the original table — failing which the swap « g reads e,
         # e reads g » would undo itself at the second.
-        kor = korekti_renvojo(r["cle"][:3], r["cle"])
+        corr = correct_xref(r["cle"][:3], r["cle"])
 
-        def bouton(m, langue="io"):
-            nonlocal pose
-            bouts, fait = [], 0
+        def button(m, lang="io"):
+            nonlocal placed
+            ends, done = [], 0
             ita = "<i>" if m.group(1) else ""
-            for brut in m.group(2):
-                L = kor.get(brut, brut)
-                v = places.get(prefixo + L)
+            for raw in m.group(2):
+                L = corr.get(raw, raw)
+                v = places.get(prefix + L)
                 if not v:
-                    bouts.append(L)
+                    ends.append(L)
                     continue
-                nm = noms.get(planche[:3], {}).get(prefixo + L, {})
-                titre = nomo(nm, langue).replace('"', "&quot;")
-                nu = "" if len(m.group(2)) == 1 else " nuda"
-                bouts.append(
-                    f'<button class="lupo{nu}" data-g="{planche}" '
+                nm = names.get(plate[:3], {}).get(prefix + L, {})
+                title = name_of(nm, lang).replace('"', "&quot;")
+                bare_ = "" if len(m.group(2)) == 1 else " nuda"
+                ends.append(
+                    f'<button class="lupo{bare_}" data-g="{plate}" '
                     f'data-c="{v[0]},{v[1]},{v[2]},{v[3]}" data-n="{L}" '
-                    f'title="{titre}" aria-expanded="false">{L}</button>')
-                fait += 1
-            if not fait:
+                    f'title="{title}" aria-expanded="false">{L}</button>')
+                done += 1
+            if not done:
                 return m.group(0)
-            pose += fait
+            placed += done
             # THE PARENTHESIS BELONGS TO THE CROSS-REFERENCE, AND IS
             # CLICKED WITH IT. A number alone takes its whole group into
             # the button — « (7) » —, and the letter had only its letter:
@@ -1820,32 +1820,32 @@ def boutons_literi(rangi):
             # group of two — the « (ab) » of table 1, the only one of its
             # kind — keeps its parentheses outside the button: they belong
             # to neither of the two letters.
-            if len(bouts) == 1 and fait == 1:
-                dedans = bouts[0]
-                i = dedans.index(">") + 1
-                return (dedans[:i] + f"<sup>{ita}(" + dedans[i:-len("</button>")]
+            if len(ends) == 1 and done == 1:
+                inside = ends[0]
+                i = inside.index(">") + 1
+                return (inside[:i] + f"<sup>{ita}(" + inside[i:-len("</button>")]
                         + ")" + ("</i>" if ita else "") + "</sup></button>")
-            return (f"<sup>{ita}(" + "".join(bouts)
+            return (f"<sup>{ita}(" + "".join(ends)
                     + ")" + ("</i>" if ita else "") + "</sup>")
 
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            neuf = RENVOI_LIT.sub(lambda m, k=k: bouton(m, k), t)
+            fresh = XREF_LETTER.sub(lambda m, k=k: button(m, k), t)
             if uniq.get(r["cle"]):
-                neuf = sorto_unika(neuf, uniq[r["cle"]], planche,
-                                   places, noms, k)
-            if neuf == t:
+                fresh = unique_sort(fresh, uniq[r["cle"]], plate,
+                                   places, names, k)
+            if fresh == t:
                 continue
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
-    return pose
+                r["tra"][k]["t"] = fresh
+    return placed
 
 
-def uniformiser_renvois(rangi):
+def unify_xrefs(rows):
     """One way of writing « word (N) », across the whole page.
 
     The two workshops waver: 2884 cross-references are separated from
@@ -1863,30 +1863,30 @@ def uniformiser_renvois(rangi):
     """
     n = 0
 
-    def poser(m):
+    def place(m):
         # A cross-reference that opens a block — a paragraph broken by a
         # change of page — has no word before it to attach itself to.
         # «   » and not an ordinary space: written out in full,
         # because to the eye nothing would have distinguished it.
-        blanc = "\u00a0" if m.start() else ""
-        corps = m.group(2)
-        if corps is None:                    # transcribed without a superscript
-            corps = f"({m.group(3)})"
-        return f'{blanc}<sup>{corps.strip()}</sup>'
+        white = "\u00a0" if m.start() else ""
+        size = m.group(2)
+        if size is None:                    # transcribed without a superscript
+            size = f"({m.group(3)})"
+        return f'{white}<sup>{size.strip()}</sup>'
 
-    for r in rangi:
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+    for r in rows:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            neuf, combien = RENVOI.subn(poser, t)
-            if not combien or neuf == t:
+            fresh, how_many = XREF.subn(place, t)
+            if not how_many or fresh == t:
                 continue
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
-            n += combien
+                r["tra"][k]["t"] = fresh
+            n += how_many
     return n
 
 
@@ -1909,43 +1909,43 @@ def uniformiser_renvois(rangi):
 # carrying figures only, or a letter with at least one parenthesis.
 # Without that last condition we would write « (o) » on the « n° » of
 # the text, which are superscripts too.
-FERME_NUM = re.compile(
+CLOSE_NUM = re.compile(
     r'<sup>\(?\s*(\d{1,3}(?:\s*,\s*\d{1,3})*(?:\s*(?:<i>)?bis(?:</i>)?)?)'
     r'\s*\)?</sup>')
-FERME_LIT = re.compile(
+CLOSE_LETTER = re.compile(
     r'<sup>(<i>)?(?:\(([a-z]{1,2})\)?|([a-z]{1,2})\))(</i>)?</sup>')
 
 
-def fermer_renvois(rangi):
+def close_xrefs(rows):
     """Gives each cross-reference back its two parentheses."""
     n = 0
 
     def num(m):
         nonlocal n
-        neuf = f"<sup>({m.group(1)})</sup>"
-        n += neuf != m.group(0)
-        return neuf
+        fresh = f"<sup>({m.group(1)})</sup>"
+        n += fresh != m.group(0)
+        return fresh
 
     def lit(m):
         nonlocal n
         ita = "<i>" if m.group(1) or m.group(4) else ""
-        neuf = (f"<sup>{ita}({m.group(2) or m.group(3)})"
+        fresh = (f"<sup>{ita}({m.group(2) or m.group(3)})"
                 + ("</i>" if ita else "") + "</sup>")
-        n += neuf != m.group(0)
-        return neuf
+        n += fresh != m.group(0)
+        return fresh
 
-    for r in rangi:
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+    for r in rows:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            neuf = FERME_LIT.sub(lit, FERME_NUM.sub(num, t))
-            if neuf == t:
+            fresh = CLOSE_LETTER.sub(lit, CLOSE_NUM.sub(num, t))
+            if fresh == t:
                 continue
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
+                r["tra"][k]["t"] = fresh
     return n
 
 
@@ -1957,31 +1957,31 @@ def fermer_renvois(rangi):
 # general rule catches it, and we are not going to invent one for a
 # single case. plates/corrections.json says so in so many words, block
 # by block.
-def korekti_teksto(rangi):
+def correct_text(rows):
     """The corrections declared by hand, block by block."""
-    tab = korekti("teksto")
+    tab = corrections("teksto")
     if not tab:
         return 0
     n = 0
-    for r in rangi:
-        regles = tab.get(r["cle"])
-        if not regles:
+    for r in rows:
+        rules = tab.get(r["cle"])
+        if not rules:
             continue
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            neuf = t
-            for lg, avant, apres in regles:
-                if lg == TABLO.get(k, k):
-                    neuf = neuf.replace(avant, apres)
-            if neuf == t:
+            fresh = t
+            for lg, before, after in rules:
+                if lg == TABLE.get(k, k):
+                    fresh = fresh.replace(before, after)
+            if fresh == t:
                 continue
             n += 1
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
+                r["tra"][k]["t"] = fresh
     return n
 
 
@@ -2018,31 +2018,31 @@ def korekti_teksto(rangi):
 # parenthesis. The parting between the two is read off the rule itself:
 # we pass again only those whose replacement does not contain what it
 # replaces.
-def korekti_nomi(rangi):
+def correct_names(rows):
     """The text's table, passed again over the names of the close-ups."""
-    tab = korekti("teksto")
+    tab = corrections("teksto")
     if not tab:
         return 0
     n = 0
-    for r in rangi:
-        regles = tab.get(r["cle"])
-        if not regles:
+    for r in rows:
+        rules = tab.get(r["cle"])
+        if not rules:
             continue
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            neuf = t
-            for lg, avant, apres in regles:
-                if lg == TABLO.get(k, k) and avant not in apres:
-                    neuf = neuf.replace(avant, apres)
-            if neuf == t:
+            fresh = t
+            for lg, before, after in rules:
+                if lg == TABLE.get(k, k) and before not in after:
+                    fresh = fresh.replace(before, after)
+            if fresh == t:
                 continue
             n += 1
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
+                r["tra"][k]["t"] = fresh
     return n
 
 
@@ -2062,17 +2062,17 @@ def korekti_nomi(rangi):
 # THE ORDER OF THE RULES IS THAT OF THE FILE: « luggage van » is dealt
 # with before « luggage », failing which the first finds nothing any
 # more.
-def deriver_varianti(rangi):
+def derive_variants(rows):
     """Each variant, cast on its base."""
-    if not VARIANTI:
+    if not VARIANTS:
         return 0
     n = 0
-    for r in rangi:
-        n += deriver_rango(r, PAROJ)
+    for r in rows:
+        n += derive_rank(r, PAIRS)
     return n
 
 
-def paroj_varianti():
+def variant_pairs():
     """(variant, base, rules) for each declared pair.
 
     THE RULES ARE PREPARED ONCE. For an overlay of words they stay a
@@ -2081,33 +2081,33 @@ def paroj_varianti():
     consumed once only.
     """
     out = []
-    for lg in LANGUES:
+    for lg in LANGS:
         if not lg.get("kalko"):
             continue
-        v = VARIANTI[lg["dosiero"]]
-        regles = v["remplaci"]
+        v = VARIANTS[lg["dosiero"]]
+        rules = v["remplaci"]
         if v.get("unpase"):
-            tab = {a: b for a, b in regles}
+            tab = {a: b for a, b in rules}
             rx = re.compile("|".join(re.escape(a) for a in
                                      sorted(tab, key=len, reverse=True)))
-            regles = (rx, tab)
-        out.append((lg["kodo"], lg["kalko"], regles))
+            rules = (rx, tab)
+        out.append((lg["kodo"], lg["kalko"], rules))
     return out
 
 
-PAROJ = paroj_varianti()
+PAIRS = variant_pairs()
 
 
-def deriver_rango(r, paroj):
+def derive_rank(r, pairs_):
     """A row, and its variants."""
     n = 0
     if True:
-        for kalko, bazo, regles in paroj:
-            o = r["tra"].get(bazo)
+        for overlay, base_, rules in pairs_:
+            o = r["tra"].get(base_)
             if not o or not o.get("t"):
                 continue
             t = o["t"]
-            if isinstance(regles, tuple):
+            if isinstance(rules, tuple):
                 # A SINGLE SWEEP, THE LONGEST RULE FIRST. A conversion of
                 # SCRIPT is not a list of words: the same character is
                 # rendered two ways according to what surrounds it —
@@ -2117,47 +2117,47 @@ def deriver_rango(r, paroj):
                 # « 莫里斯 » does nothing, and a shorter rule comes and
                 # bites into it. A single sweep consumes each character
                 # once.
-                rx, tab = regles
+                rx, tab = rules
                 t = rx.sub(lambda m: tab[m.group(0)], t)
             else:
-                for regle in regles:
-                    if len(regle) == 3:
-                        cle, avant, apres = regle
-                        if cle != r["cle"]:
+                for rule in rules:
+                    if len(rule) == 3:
+                        key, before, after = rule
+                        if key != r["cle"]:
                             continue
                     else:
-                        avant, apres = regle
-                    t = t.replace(avant, apres)
-            r["tra"][kalko] = dict(o, t=t)
+                        before, after = rule
+                    t = t.replace(before, after)
+            r["tra"][overlay] = dict(o, t=t)
             if t != o["t"]:
                 n += 1
     return n
 
 
-def retablir_trati(rangi):
+def retablir_trati(rows):
     """The lexical hyphens the end of a line had eaten."""
-    tab = korekti("trati")
+    tab = corrections("trati")
     if not tab:
         return 0
     n = 0
-    for r in rangi:
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
-            regles = tab.get(TABLO.get(k, k))
-            if not regles:
+    for r in rows:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
+            rules = tab.get(TABLE.get(k, k))
+            if not rules:
                 continue
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            neuf = t
-            for colle, trait in regles:
-                neuf = neuf.replace(colle, trait)
-            if neuf == t:
+            fresh = t
+            for stuck, line_layer in rules:
+                fresh = fresh.replace(stuck, line_layer)
+            if fresh == t:
                 continue
             n += 1
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
+                r["tra"][k]["t"] = fresh
     return n
 
 
@@ -2167,21 +2167,21 @@ def retablir_trati(rangi):
 # none was a genuine odd parenthesis of the text, all were maimed
 # cross-references. We let it run at every build: the day a
 # transcription lets one through, it will say so here.
-def depareillees(rangi):
-    for r in rangi:
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+def unmatched(rows):
+    for r in rows:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            nu = re.sub(r'<[^>]+>', '', t)
-            if nu.count("(") != nu.count(")"):
-                yield r["cle"], k, re.sub(r'\s+', ' ', nu)[:110]
+            bare_ = re.sub(r'<[^>]+>', '', t)
+            if bare_.count("(") != bare_.count(")"):
+                yield r["cle"], k, re.sub(r'\s+', ' ', bare_)[:110]
 
 
-TETE_NOTE = re.compile(r'^((?:<[^>]+>)*)\((?:\*+|\d+)\)')
+NOTE_HEAD = re.compile(r'^((?:<[^>]+>)*)\((?:\*+|\d+)\)')
 
 
-def uniformiser_notes(rangi):
+def unify_notes(rows):
     """Marks the note itself « (*) », as its call is marked.
 
     The call is already rendered « (*) » for everyone; the note had to
@@ -2191,20 +2191,20 @@ def uniformiser_notes(rangi):
     baby, F. bebe », and those parentheses must stay.
     """
     n = 0
-    for r in rangi:
+    for r in rows:
         if r["tipo"] != "noto":
             continue
-        for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
+        for k in ["io"] + [lg["kodo"] for lg in LANGS]:
             t = r["io"] if k == "io" else (r["tra"].get(k) or {}).get("t")
             if not t:
                 continue
-            neuf, combien = TETE_NOTE.subn(r"\1(*)", t, count=1)
-            if not combien or neuf == t:
+            fresh, how_many = NOTE_HEAD.subn(r"\1(*)", t, count=1)
+            if not how_many or fresh == t:
                 continue
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
+                r["tra"][k]["t"] = fresh
             n += 1
     return n
 
@@ -2216,12 +2216,12 @@ def uniformiser_notes(rangi):
 # lays a « -lN » on each -- and they must count THE SAME ONES, or the
 # table's references fall beside the line announced. Hence a single list
 # of classes, read by both.
-CLASSE_AP = r'ln[^"]*|pk'
-ATTRS_AP = r'(?: [a-z-]+="[^"]*")*'
-LIGNE_AP = re.compile(
-    rf'<span class="(?:{CLASSE_AP})"({ATTRS_AP})>(.*?)</span>', re.S)
-OUVRE_AP = re.compile(rf'<span class="({CLASSE_AP})"({ATTRS_AP})>')
-KORPO = re.compile(r'data-korpo="([^"]*)"')
+DISPLAY_CLASS = r'ln[^"]*|pk'
+DISPLAY_ATTRS = r'(?: [a-z-]+="[^"]*")*'
+DISPLAY_LINE = re.compile(
+    rf'<span class="(?:{DISPLAY_CLASS})"({DISPLAY_ATTRS})>(.*?)</span>', re.S)
+OPENS_DISPLAY = re.compile(rf'<span class="({DISPLAY_CLASS})"({DISPLAY_ATTRS})>')
+BODY = re.compile(r'data-korpo="([^"]*)"')
 
 
 def net_tdm(x):
@@ -2235,12 +2235,12 @@ def net_tdm(x):
     return re.sub(r" +([.,;:])", r"\1", x).strip()
 
 
-def est_ceno(x):
+def is_scene(x):
     """A scene marker -- « Unesma ceno. », « Duesma ceno. »."""
     # THE FACSIMILE SETS THEM IN ITALIC, and that is how they are
     # recognised: the word itself changes from one language to another. We
     # accept the bare line as well as the line still in its span.
-    x = re.sub(rf'^\s*<span class="(?:{CLASSE_AP})"{ATTRS_AP}>', "", x)
+    x = re.sub(rf'^\s*<span class="(?:{DISPLAY_CLASS})"{DISPLAY_ATTRS}>', "", x)
     return bool(re.match(r"\s*<i>", x))
 
 
@@ -2258,7 +2258,7 @@ def est_ceno(x):
 # sets those three words in capitals, and « Charts 3 and 4 are
 # arranged... » — the opening paragraph of table 3 — must not pass for
 # a table title.
-NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
+TABLE_NUMBER = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         r"|图表|لوحة"
                         # CANTONESE IS WRITTEN IN TRADITIONAL
                         # CHARACTERS: « 圖表 » is the same word as
@@ -2502,7 +2502,7 @@ NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
 # directory — text/ca and text/oc — and not the title.
 
 # The ordinals of the three languages, for the series and for the scene.
-ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
+ORDINAL = (r"(?:unesma|duesma|triesma|quaresma"
             # ESPERANTO IS SO CLOSE TO IDO that it needs no member of
             # its own: its ordinals go into the common list, and
             # « serio » like « sceno » calls for only one more word in
@@ -2635,7 +2635,7 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
 # ordinal to the noun and has no space: « 第一组 ». Arabic puts the
 # ordinal AFTER the noun: « السلسلة الأولى ». Each therefore has its
 # own member, and not one more word in the common list.
-SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|seeria|reihe|серия|серія|saila|sh?raith)\b"
+SERIES = re.compile(rf"\b{ORDINAL}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|seeria|reihe|серия|серія|saila|sh?raith)\b"
                    r"|第[一二三四]组"
                    # CANTONESE, the same word, another spelling.
                    r"|第[一二三四]組"
@@ -2741,7 +2741,7 @@ SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks
 # this group: neither the German « Szene » it comes from, nor the
 # Romance « scena ». One more member, therefore, and not a widened
 # class.
-CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|stseen|szene|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
+SCENE = re.compile(rf"\b{ORDINAL}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|stseen|szene|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
                   r"|第[一二三四]场"
                   # CANTONESE writes « 第一場 », which Japanese
                   # already writes below: the member exists, we do
@@ -2826,12 +2826,12 @@ CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|
 # of the two classes, and the Chinese then sets as it should; replacing
 # them with the Latin signs would have made, in a line of full-width
 # characters, two holes where the eye stumbles.
-SUBT = re.compile(r"[(（].*[)）][\s\u3000]*[.,;:!?。、；：！？]?")
+SUBTITLE = re.compile(r"[(（].*[)）][\s\u3000]*[.,;:!?。、；：！？]?")
 
 
-def korpo_de(attrs):
+def size_of(attrs):
     """The type size of a display line, or nothing."""
-    m = KORPO.search(attrs)
+    m = BODY.search(attrs)
     return m.group(1) if m else ""
 
 
@@ -2848,7 +2848,7 @@ def korpo_de(attrs):
 # series, scene, section, subtitle -- and it is the role, not the macro,
 # that the style sheet dresses. The role is read off the place and off
 # the word, the only two things the two editions share.
-def roles_ap(html, porte_titre=False, apres_ceno=False):
+def display_roles(html, carries_title=False, after_scene=False):
     """Marks each display line with a data-rolo.
 
     « porte_titre »: this block is not an opening, but it carries the
@@ -2861,8 +2861,8 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
     one therefore carries that scene's title. On tables 3, 7 and 9 the
     scene and its title are two blocks; on 4 and 8, a single one.
     """
-    trouves = list(LIGNE_AP.finditer(html))
-    lignes = [(m.group(1), m.group(2)) for m in trouves]
+    found_ = list(DISPLAY_LINE.finditer(html))
+    lines = [(m.group(1), m.group(2)) for m in found_]
     # AN ORNAMENT OR A RULE SEPARATES. Two lines of the same size are the
     # continuation of one title -- unless the printer has put a vignette or
     # a rule between them, which gives them as two things. The six cases in
@@ -2871,30 +2871,30 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
     # third series, where the mention of the series precedes the table's
     # number. Without this rule we would glue the volume's title and the
     # name of the series into a single line.
-    coupe = [False] * len(trouves)
-    for k in range(1, len(trouves)):
-        entre = html[trouves[k - 1].end():trouves[k].start()]
-        coupe[k] = 'class="orn"' in entre or 'class="fil"' in entre
-    if not lignes:
+    cut = [False] * len(found_)
+    for k in range(1, len(found_)):
+        between = html[found_[k - 1].end():found_[k].start()]
+        cut[k] = 'class="orn"' in between or 'class="fil"' in between
+    if not lines:
         # A few titles are set by hand, without a \VU macro, and therefore
         # have no line to mark: we take the whole block.
-        nu = net_tdm(html)
-        if not nu:
+        bare_ = net_tdm(html)
+        if not bare_:
             return html
         return f'<span class="pk" data-rolo="sekc">{html}</span>'
 
-    role = [None] * len(lignes)
-    numero = next((k for k, (_, t) in enumerate(lignes)
-                   if NUMERO_TAB.search(t)), None)
-    for k, (_, t) in enumerate(lignes):
-        nu = net_tdm(t)
-        if k == numero:
+    role = [None] * len(lines)
+    number = next((k for k, (_, t) in enumerate(lines)
+                   if TABLE_NUMBER.search(t)), None)
+    for k, (_, t) in enumerate(lines):
+        bare_ = net_tdm(t)
+        if k == number:
             role[k] = "nom"
-        elif SERIO.search(nu):
+        elif SERIES.search(bare_):
             role[k] = "serio"
-        elif CENO.search(nu):
+        elif SCENE.search(bare_):
             role[k] = "ceno"
-        elif SUBT.fullmatch(nu):
+        elif SUBTITLE.fullmatch(bare_):
             role[k] = "subt"
 
     # WHERE THE TITLE BEGINS, AND WHICH TITLE. Under the number comes the
@@ -2902,43 +2902,43 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
     # table 8 -- what follows titles the SCENE, not the table. A scene
     # title must be set the same way everywhere, whether the table has one
     # or several, and larger than a mere subheading.
-    depart, ceno_avant = None, apres_ceno
-    if numero is not None:
-        depart = numero + 1
-        ceno_avant = False
+    split_, scene_before = None, after_scene
+    if number is not None:
+        split_ = number + 1
+        scene_before = False
     elif any(r == "ceno" for r in role):
-        depart = max(k for k, r in enumerate(role) if r == "ceno") + 1
-        ceno_avant = True
-    elif porte_titre or apres_ceno:
-        depart = 0
-    if depart is not None:
-        ti = next((k for k in range(depart, len(lignes))
-                   if role[k] is None and net_tdm(lignes[k][1])), None)
-        if ti is not None and (numero is not None or porte_titre or ceno_avant):
-            if numero is not None:
-                ceno_avant = any(role[k] == "ceno"
-                                 for k in range(numero + 1, ti))
-            quel = "titceno" if ceno_avant else "tit"
-            role[ti] = quel
+        split_ = max(k for k, r in enumerate(role) if r == "ceno") + 1
+        scene_before = True
+    elif carries_title or after_scene:
+        split_ = 0
+    if split_ is not None:
+        ti = next((k for k in range(split_, len(lines))
+                   if role[k] is None and net_tdm(lines[k][1])), None)
+        if ti is not None and (number is not None or carries_title or scene_before):
+            if number is not None:
+                scene_before = any(role[k] == "ceno"
+                                 for k in range(number + 1, ti))
+            which = "titceno" if scene_before else "tit"
+            role[ti] = which
             # The lines of the SAME SIZE that follow are the continuation of
             # the same title (see the table of contents, which glues them so).
-            for k in range(ti + 1, len(lignes)):
-                if not net_tdm(lignes[k][1]):
+            for k in range(ti + 1, len(lines)):
+                if not net_tdm(lines[k][1]):
                     continue
                 # The ornament does not change the NATURE of the line: « Les
                 # Bateaux. » remains a piece of the title of table 12, as
                 # « La Navi. » does on the Ido side. It only prevents them
                 # from being glued onto one line, below.
                 if role[k] is not None or \
-                        korpo_de(lignes[k][0]) != korpo_de(lignes[ti][0]):
+                        size_of(lines[k][0]) != size_of(lines[ti][0]):
                     break
-                role[k] = quel
+                role[k] = which
 
-    for k in range(len(lignes)):
+    for k in range(len(lines)):
         if role[k] is None:
             # Above the number it is the display matter of the volume itself --
             # « EXPLIKO - LIBRETO », « DI »; below it, a section.
-            role[k] = "avan" if (numero is not None and k < numero) else "sekc"
+            role[k] = "avan" if (number is not None and k < number) else "sekc"
 
     # A TITLE BROKEN BY THE COMPOSITION IS READ AGAIN IN ONE BREATH. The
     # Ido facsimile breaks « La Homala Korpo. --- La Amuztempo. » and
@@ -2946,54 +2946,54 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
     # We therefore put them back on one line, with the dash when the first
     # ends on a full stop -- and without it when it ends on a comma, where
     # the sentence carries on of itself (table 6).
-    joint = [False] * len(lignes)
+    joined = [False] * len(lines)
     k = 0
-    while k < len(lignes):
+    while k < len(lines):
         if role[k] in ("tit", "titceno"):
-            fin = k
-            while fin + 1 < len(lignes) and role[fin + 1] == role[k] \
-                    and not coupe[fin + 1]:
-                fin += 1
-            if fin > k:
-                for j in range(k, fin + 1):
-                    joint[j] = True
-            k = fin + 1
+            end_ = k
+            while end_ + 1 < len(lines) and role[end_ + 1] == role[k] \
+                    and not cut[end_ + 1]:
+                end_ += 1
+            if end_ > k:
+                for j in range(k, end_ + 1):
+                    joined[j] = True
+            k = end_ + 1
         else:
             k += 1
 
     n = [0]
 
-    def poser(m):
+    def place(m):
         k = n[0]
         n[0] += 1
         att = f' data-rolo="{role[k]}"'
-        if joint[k]:
+        if joined[k]:
             att += ' data-kunligita="1"'
         return f'{m.group(0)[:-1]}{att}>'
-    html = OUVRE_AP.sub(poser, html)
+    html = OPENS_DISPLAY.sub(place, html)
 
     # The joiner is laid IN the following line, so that the line keeps its
     # own anchor: the table of contents counts the same lines.
     n = [0]
 
-    def lier(m):
+    def link(m):
         k = n[0]
         n[0] += 1
-        if k == 0 or not (joint[k] and joint[k - 1]):
+        if k == 0 or not (joined[k] and joined[k - 1]):
             return m.group(0)
-        avant = net_tdm(lignes[k - 1][1])
-        liant = " — " if avant.endswith((".", ")", "!", "?")) else " "
-        return f'{m.group(0)}{liant}'
-    return OUVRE_AP.sub(lier, html)
+        before = net_tdm(lines[k - 1][1])
+        joiner = " — " if before.endswith((".", ")", "!", "?")) else " "
+        return f'{m.group(0)}{joiner}'
+    return OPENS_DISPLAY.sub(link, html)
 
 
-def joindre(morceaux):
+def join_(pieces):
     """Glues the lines of one title back together, as the page does."""
     # The same joiner as on screen: a dash when the previous line ends on
     # a full stop, nothing when it ends on a comma and the sentence carries
     # on of itself.
     out = ""
-    for m in morceaux:
+    for m in pieces:
         if not out:
             out = m
         elif out.endswith((".", ")", "!", "?")):
@@ -3003,33 +3003,33 @@ def joindre(morceaux):
     return out
 
 
-def libelle_bloc(brut):
+def block_label(raw):
     """A block's text for the panel, glued as it is on screen."""
     # Two lines of the SAME SIZE are one title broken by the composition,
     # and are rejoined with the joiner -- as in the page. A change of size,
     # or a scene marker, separates two distinct things: « Unesma ceno. »
     # and its title keep their space.
-    paires = [(korpo_de(m.group(1)), net_tdm(m.group(2)))
-              for m in LIGNE_AP.finditer(brut)]
-    paires = [(c, t) for c, t in paires if t]
-    if not paires:
-        return net_tdm(brut)
-    out = paires[0][1]
-    for (corps, texte), (corps_av, texte_av) in zip(paires[1:], paires):
+    pairs = [(size_of(m.group(1)), net_tdm(m.group(2)))
+              for m in DISPLAY_LINE.finditer(raw)]
+    pairs = [(c, t) for c, t in pairs if t]
+    if not pairs:
+        return net_tdm(raw)
+    out = pairs[0][1]
+    for (size, text_), (size_before, text_before) in zip(pairs[1:], pairs):
         # A SUBTITLE IN PARENTHESES IS NOT THE CONTINUATION OF THE TITLE,
         # even set at the same size. « Gimnastiko. » and « (Naraco da un
         # de la lernanti.) » are both in 10.2pt: the panel therefore joined
         # them with a dash, then took the parenthesis off -- and the dash
         # was left all alone, « Gimnastiko. — ».
-        if corps == corps_av and not CENO.search(texte_av) \
-                and not CENO.search(texte) and not SUBT.fullmatch(texte):
-            out = joindre([out, texte])
+        if size == size_before and not SCENE.search(text_before) \
+                and not SCENE.search(text_) and not SUBTITLE.fullmatch(text_):
+            out = join_([out, text_])
         else:
-            out = f"{out} {texte}"
+            out = f"{out} {text_}"
     return out
 
 
-def sen_subtitro(t):
+def without_subtitle(t):
     """The subtitle in parentheses does not go into the panel."""
     # The facsimile qualifies certain titles with a parenthesis --
     # « (Naraco da un de la lernanti.) » under « Gimnastiko. »,
@@ -3040,14 +3040,14 @@ def sen_subtitro(t):
     # entry without teaching anything. We take it off only if it FOLLOWS a
     # title: an entry that would be nothing but a parenthesis is kept
     # whole, for want of anything better than nothing.
-    court = re.sub(r"\s*\([^()]*\)\s*$", "", t).strip()
+    short = re.sub(r"\s*\([^()]*\)\s*$", "", t).strip()
     # And the joiner that preceded it goes with it: nothing must be left
     # hanging at the end of the entry.
-    court = re.sub(r"\s*[—–-]\s*$", "", court).strip()
-    return court or t
+    short = re.sub(r"\s*[—–-]\s*$", "", short).strip()
+    return short or t
 
 
-FILET = '<span class="fil"></span>'
+RULE = '<span class="fil"></span>'
 
 
 # THE TWO COLUMNS MUST ANNOUNCE THE SAME THING IN THE SAME WAY.
@@ -3064,13 +3064,13 @@ FILET = '<span class="fil"></span>'
 # « nom, tit, tit » against « nom, tit »: it is the same announcement,
 # in two pieces, and six openings are in that case. What counts is the
 # SEQUENCE of roles, not the count of lines.
-def suito_rolo(t):
+def role_run(t):
     """The sequence of a block's roles, repetitions folded."""
     return [k for k, _ in itertools.groupby(
         re.findall(r'data-rolo="([^"]+)"', t or ""))]
 
 
-def uniformiser_filets(rangi):
+def unify_rules(rows):
     """Puts the same rule in both columns.
 
     The rule is a printer's fancy, and the two workshops did not lay it
@@ -3087,33 +3087,33 @@ def uniformiser_filets(rangi):
     one column is found in the other. We touch only the END of the
     blocks, where all these rules already are.
     """
-    pose = 0
-    for r in rangi:
+    placed = 0
+    for r in rows:
         if r["tipo"] == "noto":
             continue
         cels = [("io", r)] + [(lg["kodo"], r["tra"].get(lg["kodo"]))
-                              for lg in LANGUES]
-        textes = {k: (o["io"] if k == "io" else o["t"])
+                              for lg in LANGS]
+        texts = {k: (o["io"] if k == "io" else o["t"])
                   for k, o in cels if o}
-        pleins = {k: t for k, t in textes.items() if t and t.strip()}
-        if not pleins:
+        solids = {k: t for k, t in texts.items() if t and t.strip()}
+        if not solids:
             continue
-        ouverture = r["tipo"] == "apar" and any(
-            NUMERO_TAB.search(t) for t in pleins.values())
-        veut = ouverture or any(t.rstrip().endswith(FILET)
-                                for t in pleins.values())
-        if not veut:
+        opening = r["tipo"] == "apar" and any(
+            TABLE_NUMBER.search(t) for t in solids.values())
+        wants = opening or any(t.rstrip().endswith(RULE)
+                                for t in solids.values())
+        if not wants:
             continue
-        for k, t in pleins.items():
-            if t.rstrip().endswith(FILET):
+        for k, t in solids.items():
+            if t.rstrip().endswith(RULE):
                 continue
-            neuf = t.rstrip() + FILET
+            fresh = t.rstrip() + RULE
             if k == "io":
-                r["io"] = neuf
+                r["io"] = fresh
             else:
-                r["tra"][k]["t"] = neuf
-            pose += 1
-    return pose
+                r["tra"][k]["t"] = fresh
+            placed += 1
+    return placed
 
 
 # -------------------------------------------------------------------
@@ -3156,35 +3156,35 @@ def uniformiser_filets(rangi):
 #  removal of an element. We therefore write the page, and say what we
 #  have carried off — it is for the reader to recognise whether he
 #  wanted it.
-MARQUES = ("TITRO", "SUBTITRO", "NAV", "LINGUI", "KONTENO", "LINGUIJSON")
+MARKS = ("TITRO", "SUBTITRO", "NAV", "LINGUI", "KONTENO", "LINGUIJSON")
 
 
-def perdues(gabarito, ancienne, nouvelle):
+def lost_lines(template, old_, new_page):
     """The lines of the old page the new one will no longer have."""
-    morceaux = [m for m in re.split(
-        r"\{\{(?:" + "|".join(MARQUES) + r")\}\}", gabarito) if m]
+    pieces = [m for m in re.split(
+        r"\{\{(?:" + "|".join(MARKS) + r")\}\}", template) if m]
     pos = 0
-    for m in morceaux:
-        i = ancienne.find(m, pos)
+    for m in pieces:
+        i = old_.find(m, pos)
         if i < 0:
             break
         pos = i + len(m)
     else:
         return []
-    return [l for l in dict.fromkeys(ancienne.splitlines())
-            if l.strip() and l not in gabarito and l not in nouvelle]
+    return [l for l in dict.fromkeys(old_.splitlines())
+            if l.strip() and l not in template and l not in new_page]
 
 
-def rendre(rangi):
+def render(rows):
     # THE DEFERRED LANGUAGES ARE FILED HERE RATHER THAN IN THE PAGE.
     # Everything is computed as for the others -- display roles, note
     # calls, cross-reference buttons -- and only the last motion changes:
     # instead of writing the text into the cell, we put it in this bag,
     # which will go off into lingui/<kodo>.json, and the cell stays
     # empty.
-    differe = {lg["kodo"]: {"k": {}, "noto": {}}
-               for lg in LANGUES if lg.get("differita")}
-    diskordi = []
+    deferred = {lg["kodo"]: {"k": {}, "noto": {}}
+               for lg in LANGS if lg.get("differita")}
+    discordant = []
 
     # The table of contents is drawn from the title blocks.
     # THE TABLE OF CONTENTS HAS THREE RANKS, because the book has
@@ -3193,7 +3193,7 @@ def rendre(rangi):
     # and « Duesma ceno », set in italic and not in small capitals;
     # that is what distinguishes them, and it is read off the
     # facsimile, not off logic.
-    def texte_de(r):
+    def text_of(r):
         return r["io"] or next(iter(r["tra"].values()), {}).get("t", "")
 
     tdm = []
@@ -3203,25 +3203,25 @@ def rendre(rangi):
     # four display lines above two paragraphs. We therefore keep here the
     # number and the title, already computed for the table of contents, and
     # the page uses it as a running head for its results.
-    tetes = {}
+    heads = {}
     # A subheading taken up as a table title is not announced twice
     # (see below).
-    empruntes = set()
+    borrowed = set()
     # A scene title announced with its scene is not announced twice.
-    fusionnes = set()
-    net = net_tdm
-    for idx, r in enumerate(rangi):
+    merged = set()
+    clean = net_tdm
+    for idx, r in enumerate(rows):
         if r["tipo"] not in ("sub", "apar"):
             continue
-        brut = texte_de(r)
-        paires = [(m.group(2), korpo_de(m.group(1)))
-                  for m in LIGNE_AP.finditer(brut)]
-        lignes_ap = [texte for texte, _ in paires]
-        corps = [c for _, c in paires]
+        raw = text_of(r)
+        pairs = [(m.group(2), size_of(m.group(1)))
+                  for m in DISPLAY_LINE.finditer(raw)]
+        display_lines = [text_ for text_, _ in pairs]
+        size = [c for _, c in pairs]
 
         if r["tipo"] == "apar":
-            i = next((k for k, l in enumerate(lignes_ap)
-                      if NUMERO_TAB.search(l)), None)
+            i = next((k for k, l in enumerate(display_lines)
+                      if TABLE_NUMBER.search(l)), None)
             if i is None:
                 # NOT A TABLE OPENING, THEREFORE NOT AN ENTRY.
                 # Three display blocks fall in mid-table: the publisher's
@@ -3235,7 +3235,7 @@ def rendre(rangi):
                 # discards « 00- » and « 90- ». It was picking up only these
                 # three.
                 continue
-            num = net(lignes_ap[i])
+            num = clean(display_lines[i])
             # THE TITLE DOES NOT ALWAYS FOLLOW THE NUMBER. The tables with
             # several scenes slip « Unesma ceno. » between the two: we skip
             # the scene markers. And neither is it the LAST line of the
@@ -3249,11 +3249,11 @@ def rendre(rangi):
             # « Première scène. » then « La Moisson. --- Les aspects de la
             # campagne. ». The table of contents nevertheless announced
             # that scene title as the table's, which has none.
-            premiere = next((k for k in range(i + 1, len(lignes_ap))
-                             if net(lignes_ap[k])), None)
-            ceno_dabord = premiere is not None and \
-                bool(CENO.search(net(lignes_ap[premiere])))
-            ti = None if ceno_dabord else premiere
+            first_ = next((k for k in range(i + 1, len(display_lines))
+                             if clean(display_lines[k])), None)
+            scene_first = first_ is not None and \
+                bool(SCENE.search(clean(display_lines[first_])))
+            ti = None if scene_first else first_
             # A TITLE MAY RUN TO SEVERAL LINES, and it is the SIZE that
             # says so: the lines of the same size as the first are the
             # continuation of the same title, a line of another size begins
@@ -3263,18 +3263,18 @@ def rendre(rangi):
             # and announced « la Lumizado. », « La Kafeerio. », « La
             # Ludili. » as separate sections -- in italic, at the rank of
             # the scenes, when they finish the table's title.
-            suites = []
+            conts = []
             if ti is not None:
-                for k in range(ti + 1, len(lignes_ap)):
-                    if not net(lignes_ap[k]):
+                for k in range(ti + 1, len(display_lines)):
+                    if not clean(display_lines[k]):
                         continue
-                    if corps[k] != corps[ti] or est_ceno(lignes_ap[k]):
+                    if size[k] != size[ti] or is_scene(display_lines[k]):
                         break
-                    suites.append(k)
-            titre = joindre([net(lignes_ap[ti])] +
-                            [net(lignes_ap[k]) for k in suites]) \
+                    conts.append(k)
+            title = join_([clean(display_lines[ti])] +
+                            [clean(display_lines[k]) for k in conts]) \
                 if ti is not None else ""
-            if not titre and not ceno_dabord:
+            if not title and not scene_first:
                 # THE TITLE IS SOMETIMES OUTSIDE THE OPENING BLOCK. On
                 # tables 14 and 15, the Ido facsimile puts nothing but a
                 # blank under the number, and the title opens the first
@@ -3284,88 +3284,88 @@ def rendre(rangi):
                 # « TABELO No 10 » and nothing more. We go and fetch it at
                 # the first subheading that is not a scene, without
                 # crossing into the next table.
-                for q in rangi[idx + 1:]:
+                for q in rows[idx + 1:]:
                     if q["tipo"] == "apar":
                         break
                     if q["tipo"] != "sub":
                         continue
-                    suite = texte_de(q)
-                    if est_ceno(suite) or CENO.search(net(suite)):
+                    cont = text_of(q)
+                    if is_scene(cont) or SCENE.search(clean(cont)):
                         # A scene opens the table: what follows titles
                         # it, and the table is left without a title.
                         # That is the case of tables 7 and 9.
                         break
-                    titre = net(suite)
+                    title = clean(cont)
                     # AND IT IS NOT ANNOUNCED TWICE. Borrowed from the
                     # first subheading, the title reappeared just
                     # below as a sub-entry: the panel read
                     # « TABELO No 10 La Maro. --- La Portuo. » then
                     # « La Maro. --- La Portuo. ».
-                    empruntes.add(q["cle"])
+                    borrowed.add(q["cle"])
                     break
             # THE SERIES IS ANNOUNCED BEFORE THE TABLE THAT OPENS IT, and
             # sometimes in the PREVIOUS block: the opening of table 1 is
             # cut in two to make room for the engraving, and « UNESMA
             # SERIO » stayed with the volume's display matter. We
             # therefore look also where it may have fallen.
-            avant = lignes_ap[:i]
-            if idx and rangi[idx - 1]["tipo"] == "apar":
-                avant = [m.group(2) for m in
-                         LIGNE_AP.finditer(texte_de(rangi[idx - 1]))] + avant
-            serie = next((SERIO.search(net(l)) for l in avant
-                          if SERIO.search(net(l))), None)
-            if serie:
-                tdm.append((None, serie.group(0).capitalize(), "parto"))
-            tdm.append((r["cle"], f"<b>{num}</b> {titre}".strip(), "tt"))
+            before = display_lines[:i]
+            if idx and rows[idx - 1]["tipo"] == "apar":
+                before = [m.group(2) for m in
+                         DISPLAY_LINE.finditer(text_of(rows[idx - 1]))] + before
+            series = next((SERIES.search(clean(l)) for l in before
+                          if SERIES.search(clean(l))), None)
+            if series:
+                tdm.append((None, series.group(0).capitalize(), "parto"))
+            tdm.append((r["cle"], f"<b>{num}</b> {title}".strip(), "tt"))
             # The middle dot, as in the page's byline: the titles
             # already carry em dashes, and one more dash would not be
             # distinguished from them.
-            tetes[r["cle"]] = f"{num} · {titre}" if titre else num
+            heads[r["cle"]] = f"{num} · {title}" if title else num
             # What is left of the block -- scene, subheading -- is worth
             # an entry of its own. The title is taken out of it: it is
             # already announced above. What PRECEDES the number does not
             # count: it is the series display matter, « EXPLIKO -
             # LIBRETO », « UNESMA SERIO ».
-            absorbe = set()
-            for j in range(i + 1, len(lignes_ap)):
-                if j == ti or j in suites or j in absorbe \
-                        or not net(lignes_ap[j]):
+            absorbed = set()
+            for j in range(i + 1, len(display_lines)):
+                if j == ti or j in conts or j in absorbed \
+                        or not clean(display_lines[j]):
                     continue
-                lib = net(lignes_ap[j])
+                lib = clean(display_lines[j])
                 # THE OPENING'S SCENE CARRIES ITS TITLE WITH IT, like those
                 # that have a block of their own: on table 8 the scene and
                 # its title are both in the opening, and the panel
                 # announced « Unesma ceno. », « La Rekolto. » and « La
                 # Aspekti di la Ruro. » as three entries.
-                if CENO.search(lib):
+                if SCENE.search(lib):
                     parts, k, base = [], j + 1, None
-                    while k < len(lignes_ap):
-                        if not net(lignes_ap[k]):
+                    while k < len(display_lines):
+                        if not clean(display_lines[k]):
                             k += 1
                             continue
-                        if k in (ti,) or k in suites \
-                                or CENO.search(net(lignes_ap[k])):
+                        if k in (ti,) or k in conts \
+                                or SCENE.search(clean(display_lines[k])):
                             break
                         if base is None:
-                            base = corps[k]
-                        elif corps[k] != base:
+                            base = size[k]
+                        elif size[k] != base:
                             break
-                        parts.append(net(lignes_ap[k]))
-                        absorbe.add(k)
+                        parts.append(clean(display_lines[k]))
+                        absorbed.add(k)
                         k += 1
                     if parts:
                         # A space, not the joiner: the dash is worth
                         # something only between the lines of ONE title,
                         # and the scene is not one of them.
-                        lib = f"{lib} {joindre(parts)}"
+                        lib = f"{lib} {join_(parts)}"
                 tdm.append((f'{r["cle"]}-l{j}', lib, "sc"))
             continue
 
         # A subheading: scene, or section.
-        if r["cle"] in fusionnes:
+        if r["cle"] in merged:
             continue
-        nues = [net(t) for t in lignes_ap if net(t)] or [net(brut)]
-        if est_ceno(brut):
+        bare = [clean(t) for t in display_lines if clean(t)] or [clean(raw)]
+        if is_scene(raw):
             # THE SCENE'S TITLE IS ANNOUNCED WITH IT. On tables 3, 7, 8
             # and 9 the scene and its title are two blocks; on 4, a
             # single one. The panel therefore gave « Unesma ceno. » all
@@ -3373,28 +3373,28 @@ def rendre(rangi):
             # for the same thing. When the marker is alone in its block,
             # we attach to it the following block, which carries its
             # title.
-            libelle = libelle_bloc(brut)
-            if all(CENO.search(x) for x in nues):
-                for q in rangi[idx + 1:]:
+            label = block_label(raw)
+            if all(SCENE.search(x) for x in bare):
+                for q in rows[idx + 1:]:
                     if q["tipo"] == "p":
                         break
                     if q["tipo"] != "sub":
                         continue
-                    suite = texte_de(q)
-                    if not est_ceno(suite):
-                        libelle = f"{libelle} {libelle_bloc(suite)}"
-                        fusionnes.add(q["cle"])
+                    cont = text_of(q)
+                    if not is_scene(cont):
+                        label = f"{label} {block_label(cont)}"
+                        merged.add(q["cle"])
                     break
-            tdm.append((r["cle"], libelle, "sc"))
+            tdm.append((r["cle"], label, "sc"))
             continue
-        if r["cle"] in empruntes:
+        if r["cle"] in borrowed:
             continue
-        tdm.append((r["cle"], libelle_bloc(brut), "st"))
+        tdm.append((r["cle"], block_label(raw), "st"))
 
-    lignes = []
-    apres_ceno = False
-    gravo = gravuri()
-    for r in rangi:
+    lines = []
+    after_scene = False
+    plate_ = plates_()
+    for r in rows:
         cl = ["r", r["tipo"]]
         io = r["io"]
         # THE ENGRAVING PRECEDES THE BLOCK IT ILLUSTRATES, and it is the
@@ -3404,7 +3404,7 @@ def rendre(rangi):
         # « (Videz la plano.) » of table 5, and table 1 between the
         # volume's display matter and its own title -- which is why its
         # opening is cut in two in the transcription.
-        g = gravo.get(r["cle"])
+        g = plate_.get(r["cle"])
         if g:
             v, d = g["vido"], g["detalo"]
             # THE FILENAME DOES NOT CHANGE WHEN THE PLATE CHANGES.
@@ -3416,7 +3416,7 @@ def rendre(rangi):
             # plates.json already notes: it changes as soon as the image
             # changes, and does not move as long as it does not.
             qv, qd = f"?v={v['okteti']}", f"?v={d['okteti']}"
-            lignes.append(
+            lines.append(
                 f'<figure class="gravuro" data-cle="{r["cle"]}" '
                 f'data-detalo="plates/{r["cle"]}-detalo.webp{qd}" '
                 f'data-dl="{d["largeur"]}" data-dh="{d["alteso"]}">'
@@ -3437,14 +3437,14 @@ def rendre(rangi):
                 f'loading="lazy" decoding="async" '
                 f'width="{v["largeur"]}" height="{v["alteso"]}">'
                 f'</figure>')
-        att = f' id="{ancro(r["cle"])}" data-cle="{r["cle"]}"'
-        if r["cle"] in tetes:
-            tete = (tetes[r["cle"]].replace("&", "&amp;")
+        att = f' id="{anchor_(r["cle"])}" data-cle="{r["cle"]}"'
+        if r["cle"] in heads:
+            head = (heads[r["cle"]].replace("&", "&amp;")
                     .replace('"', "&quot;").replace("<", "&lt;"))
-            att += f' data-tete="{tete}"'
+            att += f' data-tete="{head}"'
         fol = ""
         if r["folio"]:
-            pg = rang_pdf("io", r["feuillet"])
+            pg = pdf_page("io", r["feuillet"])
             fol = (f'<a class="fol" href="tabeli.pdf#page={pg}" '
                    f'title="Folio {r["folio"]} en la PDF">{r["folio"]}</a>')
         # AND THE VARIANT IS DRAWN AFTER THE ROLES, so as to inherit
@@ -3458,27 +3458,27 @@ def rendre(rangi):
         # it is what makes them look alike. Only the openings and the
         # subheadings carry any; running text has no display matter.
         if r["tipo"] in ("apar", "sub"):
-            porte = r["cle"] in empruntes
-            io = roles_ap(io, porte, apres_ceno)
-            for lg in LANGUES:
+            carries = r["cle"] in borrowed
+            io = display_roles(io, carries, after_scene)
+            for lg in LANGS:
                 if lg.get("kalko"):
                     continue        # the variant inherits, it is not read again
                 o = r["tra"].get(lg["kodo"])
                 if o and o["t"]:
-                    o["t"] = roles_ap(o["t"], porte, apres_ceno)
+                    o["t"] = display_roles(o["t"], carries, after_scene)
                     # The check is done HERE, where both columns are
                     # marked: the Ido's role is laid only in a local
                     # variable, and does not survive the rendering.
-                    a, b = suito_rolo(io), suito_rolo(o["t"])
+                    a, b = role_run(io), role_run(o["t"])
                     if a and b and a != b:
-                        diskordi.append((r["cle"], lg["kodo"], a, b))
+                        discordant.append((r["cle"], lg["kodo"], a, b))
             # Does the following block carry this scene's title? Yes if
             # this one ends on a scene marker. It is the Ido that
             # decides: the right-hand column follows it.
-            derniers = re.findall(r'data-rolo="([^"]*)"', io)
-            apres_ceno = bool(derniers) and derniers[-1] == "ceno"
+            lasts = re.findall(r'data-rolo="([^"]*)"', io)
+            after_scene = bool(lasts) and lasts[-1] == "ceno"
         elif r["tipo"] == "p":
-            apres_ceno = False
+            after_scene = False
         # AND THE VARIANT IS DRAWN AFTER THE ROLES, so as to inherit
         # them. The display roles are read off the TEXT, by expressions
         # tied to the language — « TABELO », « TABLEAU », « 图表 ». A
@@ -3486,13 +3486,13 @@ def rendre(rangi):
         # writes 圖表, which no rule recognises, and the seventeen
         # openings lost their role. The variant must not be read again:
         # it must RECEIVE what its base has understood.
-        deriver_rango(r, PAROJ)
+        derive_rank(r, PAIRS)
         # The display lines each receive an anchor: the table of
         # contents refers to the scene, not only to the table.
         if r["tipo"] == "apar":
             n = [0]
 
-            def ancrer(m):
+            def anchor(m):
                 n[0] += 1
                 # The line's attributes are copied over: data-korpo
                 # must survive the anchoring.
@@ -3500,11 +3500,11 @@ def rendre(rangi):
                         f'class="{m.group(1)}"{m.group(2)}>')
             # OUVRE_AP, and not « ln » alone: the table of contents also
             # counts the « pk » lines, and the two numberings must coincide.
-            io = OUVRE_AP.sub(ancrer, io)
+            io = OPENS_DISPLAY.sub(anchor, io)
         cel_io = f'<div class="k io" lang="io">{fol}{io}</div>' if io else \
                  '<div class="k io vaka" lang="io"></div>'
         cel = [cel_io]
-        for lg in LANGUES:
+        for lg in LANGS:
             k = lg["kodo"]
             # ARABIC IS WRITTEN FROM RIGHT TO LEFT, and the browser must
             # be told: without « dir », the cross-references in
@@ -3513,28 +3513,28 @@ def rendre(rangi):
             # word it numbers. The cell is marked, not the page: the
             # other columns keep their direction, and the mark holds on
             # the one language that needs it.
-            sens = "" if lg["dir"] == "ltr" else f' dir="{lg["dir"]}"'
+            way = "" if lg["dir"] == "ltr" else f' dir="{lg["dir"]}"'
             o = r["tra"].get(k)
             if o:
                 f2 = ""
                 if o["f"]:
-                    pg2 = rang_pdf(k, o["fe"])
+                    pg2 = pdf_page(k, o["fe"])
                     f2 = (f'<a class="fol fd" href="tableaux.pdf#page={pg2}" '
                           f'title="Folio {o["f"]} dans le PDF">{o["f"]}</a>')
-                if k in differe:
+                if k in deferred:
                     # The cell is empty in the file AND marked « dif »: it is
                     # by that mark that the CSS knows not to put in it the
                     # dash of the real gaps, and that the script knows it has
                     # something to pour into it.
-                    differe[k]["k"][r["cle"]] = f2 + o["t"]
+                    deferred[k]["k"][r["cle"]] = f2 + o["t"]
                     cel.append(f'<div class="k tra vaka dif" '
-                               f'data-lg="{k}" lang="{k}"{sens}></div>')
+                               f'data-lg="{k}" lang="{k}"{way}></div>')
                 else:
                     cel.append(f'<div class="k tra" data-lg="{k}" '
-                               f'lang="{k}"{sens}>{f2}{o["t"]}</div>')
+                               f'lang="{k}"{way}>{f2}{o["t"]}</div>')
             else:
                 cel.append(f'<div class="k tra vaka" data-lg="{k}" '
-                           f'lang="{k}"{sens}></div>')
+                           f'lang="{k}"{way}></div>')
         if r["tipo"] == "noto":
             # The note is rendered apart: it is not a two-column row but
             # a fold-out attached to the paragraph that calls it.
@@ -3545,39 +3545,39 @@ def rendre(rangi):
             # more often, opened nothing at all.
             for k, txt in [("io", r["io"])] + [
                     (lg["kodo"], (r["tra"].get(lg["kodo"]) or {}).get("t"))
-                    for lg in LANGUES]:
+                    for lg in LANGS]:
                 # The row's cell was built above, before we knew this
                 # block was a note: it will not be rendered, and what we
                 # had set aside for it would be redundant with the note
                 # itself.
-                if k in differe:
-                    differe[k]["k"].pop(r["cle"], None)
+                if k in deferred:
+                    deferred[k]["k"].pop(r["cle"], None)
                 if txt:
-                    if k in differe:
-                        differe[k]["noto"][r["cle"]] = txt
+                    if k in deferred:
+                        deferred[k]["noto"][r["cle"]] = txt
                         txt = ""
-                    lignes.append(
+                    lines.append(
                         f'<div class="noto" id="noto-{k}-{r["cle"]}" '
                         f'data-lg="{k}" lang="{k}" hidden>{txt}</div>')
             continue
-        lignes.append(f'<div class="{" ".join(cl)}"{att}>' +
+        lines.append(f'<div class="{" ".join(cl)}"{att}>' +
                       "".join(cel) + "</div>")
 
     nav = "".join(
         f'<div class="parto">{t}</div>' if k == "parto"
-        else f'<a href="#{c}" data-ch="{c}" class="{k}">{sen_subtitro(t)}</a>'
+        else f'<a href="#{c}" data-ch="{c}" class="{k}">{without_subtitle(t)}</a>'
         for c, t, k in tdm)
-    opcioni = "".join(
+    options = "".join(
         f'<option value="{lg["kodo"]}">{lg["nomo"]}</option>'
-        for lg in LANGUES)
+        for lg in LANGS)
 
     # THE ADDRESS CARRIES THE FILE'S SIZE, like that of the engravings:
     # the browser that has already read one version of the translation must
     # not serve it again when it has changed.
-    dos = RACINE / "lingui"
+    dos = ROOT / "lingui"
     dos.mkdir(exist_ok=True)
-    for lg in LANGUES:
-        d = differe.get(lg["kodo"])
+    for lg in LANGS:
+        d = deferred.get(lg["kodo"])
         if d is None:
             continue
         f = dos / f'{lg["kodo"]}.json'
@@ -3585,52 +3585,52 @@ def rendre(rangi):
                                 separators=(",", ":")) + "\n",
                      encoding="utf-8")
         lg["adreso"] = f'lingui/{lg["kodo"]}.json?v={f.stat().st_size}'
-        print(f'  {f.relative_to(RACINE)} : {len(d["k"])} bloki, '
+        print(f'  {f.relative_to(ROOT)} : {len(d["k"])} bloki, '
               f'{f.stat().st_size // 1024} Ko')
 
-    gabarito = (RACINE / "tools" / "template.html").read_text(encoding="utf-8")
-    page = (gabarito
-            .replace("{{TITRO}}", TITRO)
-            .replace("{{SUBTITRO}}", SUBTITRO)
+    template = (ROOT / "tools" / "template.html").read_text(encoding="utf-8")
+    page = (template
+            .replace("{{TITRO}}", TITLE)
+            .replace("{{SUBTITRO}}", SUBTITLE_)
             .replace("{{NAV}}", nav)
-            .replace("{{LINGUI}}", opcioni)
-            .replace("{{KONTENO}}", "\n".join(lignes))
-            .replace("{{LINGUIJSON}}", json.dumps(LANGUES, ensure_ascii=False)))
-    cible = RACINE / "index.html"
-    if cible.exists():
-        perdu = perdues(gabarito, cible.read_text(encoding="utf-8"), page)
-        if perdu:
+            .replace("{{LINGUI}}", options)
+            .replace("{{KONTENO}}", "\n".join(lines))
+            .replace("{{LINGUIJSON}}", json.dumps(LANGS, ensure_ascii=False)))
+    target = ROOT / "index.html"
+    if target.exists():
+        lost = lost_lines(template, target.read_text(encoding="utf-8"), page)
+        if lost:
             print("\n" + "=" * 64)
             print("  CE QUI DISPARAIT DE index.html, ET N'EST PAS DANS LE GABARIT")
             print("=" * 64)
-            for l in perdu[:20]:
+            for l in lost[:20]:
                 print("  " + l.strip()[:98])
-            if len(perdu) > 20:
-                print(f"  ... et {len(perdu) - 20} autres")
+            if len(lost) > 20:
+                print(f"  ... et {len(lost) - 20} autres")
             print("  Si l'une de ces lignes a ete ecrite a la main dans")
             print("  index.html, elle est perdue : sa place est dans")
             print("  tools/gabarito.html, qui seul survit a la generation.")
             print("=" * 64 + "\n")
-    cible.write_text(page, encoding="utf-8")
-    for cle, lg, a, b in diskordi:
-        print(f"  ROLES DISCORDANTS {cle} : io {a} / {lg} {b}")
-    print(f"index.html ecrit : {len(rangi)} bloki, "
-          f"{sum(1 for r in rangi if r['tipo'] == 'p')} alinei")
+    target.write_text(page, encoding="utf-8")
+    for key, lg, a, b in discordant:
+        print(f"  ROLES DISCORDANTS {key} : io {a} / {lg} {b}")
+    print(f"index.html ecrit : {len(rows)} bloki, "
+          f"{sum(1 for r in rows if r['tipo'] == 'p')} alinei")
 
 
 if __name__ == "__main__":
-    r = paro()
-    rap = lier_notes(r)
+    r = pair()
+    rap = link_notes(r)
     print(f"  filets ajoutes pour egaliser les colonnes : "
-          f"{uniformiser_filets(r)}")
-    rendre(r)
+          f"{unify_rules(r)}")
+    render(r)
     print(f"  notes reliees a leur appel : {rap['lies']}")
     if rap.get("fermes") or rap.get("korektiti"):
         print(f"  parentheses rendues a des renvois : {rap['fermes']}"
               f", corrections declarees : {rap['korektiti']}")
     if rap.get("tratiti"):
         print(f"  traits d'union lexicaux retablis : {rap['tratiti']}")
-    for cle, lg, t in depareillees(r):
-        print(f"  PARENTHESE DEPAREILLEE [{lg}] {cle} : {t}")
-    for langue, cle, marque, pourquoi in rap["echecs"]:
-        print(f"  NON RELIEE [{langue}] {cle} « ({marque}) » : {pourquoi}")
+    for key, lg, t in unmatched(r):
+        print(f"  PARENTHESE DEPAREILLEE [{lg}] {key} : {t}")
+    for lang, key, mark, why in rap["echecs"]:
+        print(f"  NON RELIEE [{lang}] {key} « ({mark}) » : {why}")

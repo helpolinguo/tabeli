@@ -31,7 +31,7 @@ import re
 import sys
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 
 # The bold noun, then its number — with or without a superscript, with
 # or without a space between the two, the facsimile wavering on all
@@ -40,14 +40,14 @@ RACINE = Path(__file__).resolve().parent.parent
 # once, and « 41) » where the opening parenthesis is missing. The noun
 # is filed under each of the group's numbers: « les tableaux muraux
 # (9, 11, 12) » names all three.
-GRAS = re.compile(
+BOLD = re.compile(
     r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'      # \VUgras{...}
     r'(?:\s|\\nl|\\cc|%|\n)*'                   # line breaks
     r'(?:\\textsuperscript\{'
     r'(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*,?'
     r'(?:\s*(?:\\textit\{)?bis\}?)?\s*\)?)\}'
     r'|\((\d{1,3}(?:\s*,\s*\d{1,3})*)\))')
-CHIFRO = re.compile(r'\d{1,3}')
+FIGURE = re.compile(r'\d{1,3}')
 BIS = re.compile(r'\bbis\b')
 
 # CROSS-REFERENCES BY LETTER. « rondo (a), quadrato (b) »: the letter is
@@ -60,7 +60,7 @@ BIS = re.compile(r'\bbis\b')
 # times across the two booklets one of the two parentheses is missing:
 # « mi-sferi d) ». We accept all three, but require AT LEAST ONE
 # PARENTHESIS: without it the « n° » of the text would be filed under « o ».
-GRAS_LIT = re.compile(
+BOLD_LETTER = re.compile(
     r'\\VUgras\{((?:[^{}]|\{[^{}]*\})*)\}'
     r'(?:\s|\\nl|\\cc|%|\n)*'
     r'(?:\\textsuperscript\{(?:\\textit\{)?'
@@ -68,21 +68,21 @@ GRAS_LIT = re.compile(
     r'|\(([a-z]{1,2})\))')
 
 
-def literi(champo):
-    f = RACINE / 'plates' / 'letters.json'
+def letters_(field):
+    f = ROOT / 'plates' / 'letters.json'
     if not f.exists():
         return {}
-    return json.loads(f.read_text(encoding='utf-8')).get(champo, {})
+    return json.loads(f.read_text(encoding='utf-8')).get(field, {})
 
 
-PATRI = literi('patri')
+FATHERS = letters_('patri')
 
 # THE « (1) » THAT IS AN l. On table 5, the bathroom carries a
 # cross-reference set as « (1) »: in this font the lower-case l and the
 # figure 1 have the same design, and the house plan settles it — its
 # legend reads « l. Balneyo ». The name would therefore be filed under
 # number 1, which is the facade; we file it under the letter.
-UNU_SORTO = literi('unu-sorto')
+ONE_SORT = letters_('unu-sorto')
 
 
 # THE CROSS-REFERENCE THE PLATE DOES NOT CARRY. « les plates-bandes
@@ -90,18 +90,18 @@ UNU_SORTO = literi('unu-sorto')
 # the number that will be shown, not under the one that is read.
 # plates/corrections.json keeps the table, and numbering.py reads it the
 # same way.
-def korekti():
-    f = RACINE / 'plates' / 'corrections.json'
+def corrections():
+    f = ROOT / 'plates' / 'corrections.json'
     if not f.exists():
         return {}
     return {k: v for k, v in json.loads(
         f.read_text(encoding='utf-8')).items() if not k.startswith('_')}
 
 
-KOREKTI = korekti()
+CORRECTIONS = corrections()
 
 
-def korekti_renvojo(tab, cle=""):
+def correct_xref(tab, key=""):
     """{read: to be read} for ONE BLOCK: the corrections that hold for the
     whole table, plus those this block alone carries.
 
@@ -113,10 +113,10 @@ def korekti_renvojo(tab, cle=""):
     soap point at the chambermaid. An entry whose key is that of a
     BLOCK therefore holds only within that block.
     """
-    t = KOREKTI.get(f"t{tab:02d}", {})
+    t = CORRECTIONS.get(f"t{tab:02d}", {})
     out = {k: v for k, v in t.items() if isinstance(v, str)}
-    if cle:
-        out.update(t.get(cle, {}))
+    if key:
+        out.update(t.get(key, {}))
     return out
 
 # THE NOUN IS NOT ALWAYS BOLD BEFORE A LETTER. « la zoologio (a),
@@ -125,7 +125,7 @@ def korekti_renvojo(tab, cle=""):
 # forget it for the letters. We therefore take up the preceding word,
 # for want of better: without it the close-up would open saying nothing
 # of what it shows.
-NUD_LIT = re.compile(
+BARE_LETTER = re.compile(
     r"([\w'\u2019-]+)\s*(?:\\nl|\\cc)?\s*"
     r'\\textsuperscript\{\(([a-z]{1,2})\)\}')
 
@@ -133,8 +133,8 @@ NUD_LIT = re.compile(
 MACROS = re.compile(r'\\(?:textit|textsc|emph|VUgras|nl|cc|hbox|,)\b\{?')
 
 
-def nettoyer(brut):
-    t = MACROS.sub('', brut)
+def clean_plate(raw):
+    t = MACROS.sub('', raw)
     t = t.replace('\\-', '').replace('~', ' ').replace('{', '').replace('}', '')
     t = re.sub(r'\s+', ' ', t).strip(' .,;:')
     # A noun broken by a change of line keeps its hyphen from the
@@ -148,7 +148,7 @@ def nettoyer(brut):
 # \VUgras{naux} » therefore gave « naux », and « \VUgras{livre}\nl /
 # \VUgras{des voyageurs} » gave « des voyageurs ». We glue back together
 # before reading: \cc has broken a word, \nl has broken a phrase.
-RECOLLE = [
+REGLUE = [
     (re.compile(r'\\VUgras\{([^{}]*)\}\\cc\s*\n\s*\\VUgras\{([^{}]*)\}'),
      r'\\VUgras{\1\2}'),
     # A HYPHEN AT THE END OF A LINE TAKES NO SPACE: the word goes on.
@@ -201,21 +201,21 @@ RECOLLE = [
 # one of its two names there. We therefore name what separates the two
 # halves: the closing of a page, a leaf comment, the opening of the next
 # page, and nothing else.
-SAUT = re.compile(
+JUMP = re.compile(
     r'(?:\\ccplein|\\cc\s*\n\\parplein)\s*\n\\end\{VUpage\}[ \t]*\n'
     r'(?:%[^\n]*\n|[ \t]*\n)*'
     r'\\begin\{VUpage\}[^\n]*\n'
     r'%%K\s+\S+\s+\S+\s+suite[ \t]*\n\\VUcontinue[ \t]*\n')
 
 
-def recoller(texte):
-    texte = SAUT.sub('\\\\cc\n', texte)
-    for motif, remplacement in RECOLLE:
-        avant = None
-        while avant != texte:
-            avant = texte
-            texte = motif.sub(remplacement, texte)
-    return texte
+def reglue(text_):
+    text_ = JUMP.sub('\\\\cc\n', text_)
+    for pattern, remplacement in REGLUE:
+        before = None
+        while before != text_:
+            before = text_
+            text_ = pattern.sub(remplacement, text_)
+    return text_
 
 
 # PLATES WITH SEVERAL SCENES. Six tables show two vignettes or more, and
@@ -223,95 +223,95 @@ def recoller(texte):
 # and that of the fourth do not name the same object. The name is
 # therefore filed under a key carrying the scene — « c1:39 » —, as in
 # numbers.json. plates/scenes.json says which tables are in that case.
-def a_ceni():
-    f = RACINE / "plates" / "scenes.json"
+def has_scenes():
+    f = ROOT / "plates" / "scenes.json"
     if not f.exists():
         return set()
     return {c[:3] for c in json.loads(f.read_text(encoding="utf-8"))
             if not c.startswith("_")}
 
 
-CENI = a_ceni()
+SCENES = has_scenes()
 
 
-def relever(dossier, motif):
+def collect(folder, pattern):
     """{table number: {object key: [names]}} for one language."""
     out = {}
-    for f in sorted((RACINE / "text" / dossier).glob(motif)):
+    for f in sorted((ROOT / "text" / folder).glob(pattern)):
         m = re.search(r'-(?:tabelo|tableau|table|cuadro|tablica|tubiao|lawha|talika|quadro|sarani|zuhyo|naqsha|sarni|tablo|tabella|tabel|tabell|taulukko|taula|tablycia|tabelul|tabla|cadro|tabulka|lentele)-(\d+)\.tex$', f.name)
         if not m:
             continue
         tab = int(m.group(1))
-        par = out.setdefault(tab, {})
-        scenes = f"t{tab:02d}" in CENI
-        texte = recoller(f.read_text(encoding="utf-8"))
+        per = out.setdefault(tab, {})
+        scenes = f"t{tab:02d}" in SCENES
+        text_ = reglue(f.read_text(encoding="utf-8"))
         # We cut by block key, so as to know which scene is meant.
-        parts = re.split(r'^%%K (\S+)', texte, flags=re.M)
+        parts = re.split(r'^%%K (\S+)', text_, flags=re.M)
         for i in range(1, len(parts), 2):
             mk = re.match(r't\d\d-(c\d)-', parts[i])
             if mk:
-                relever.scene = mk.group(1)
-            sc = getattr(relever, "scene", "") if scenes else ""
+                collect.scene = mk.group(1)
+            sc = getattr(collect, "scene", "") if scenes else ""
             # The block's letters, if it carries any.
-            pa = PATRI.get(parts[i])
+            pa = FATHERS.get(parts[i])
             if pa:
                 # A WRONG LETTER IS CORRECTED LIKE A WRONG NUMBER. On
                 # table 1 the two booklets swap Europe and Asia; without
                 # this reading, the name was filed under the booklet's
                 # letter and the close-up of Europe was titled « Azia ».
-                kl = korekti_renvojo(tab, parts[i])
-                for g in GRAS_LIT.finditer(parts[i + 1]):
-                    nom = nettoyer(g.group(1))
-                    if not nom:
+                kl = correct_xref(tab, parts[i])
+                for g in BOLD_LETTER.finditer(parts[i + 1]):
+                    name_ = clean_plate(g.group(1))
+                    if not name_:
                         continue
                     for L in (g.group(2) or g.group(3)
                               or g.group(4) or ""):
                         k = pa[1] + kl.get(L, L)
-                        noms = par.setdefault(k, [])
-                        if nom not in noms:
-                            noms.append(nom)
-                for g in NUD_LIT.finditer(parts[i + 1]):
+                        names = per.setdefault(k, [])
+                        if name_ not in names:
+                            names.append(name_)
+                for g in BARE_LETTER.finditer(parts[i + 1]):
                     for L in g.group(2):
                         k = pa[1] + kl.get(L, L)
-                        if par.get(k):
+                        if per.get(k):
                             continue
-                        nom = nettoyer(g.group(1))
-                        if nom:
-                            par.setdefault(k, []).append(nom)
-            uniq = UNU_SORTO.get(parts[i], [])
-            for g in GRAS.finditer(parts[i + 1]):
-                nom = nettoyer(g.group(1))
-                if not nom:
+                        name_ = clean_plate(g.group(1))
+                        if name_:
+                            per.setdefault(k, []).append(name_)
+            uniq = ONE_SORT.get(parts[i], [])
+            for g in BOLD.finditer(parts[i + 1]):
+                name_ = clean_plate(g.group(1))
+                if not name_:
                     continue
-                brut = g.group(2) or g.group(3) or ""
+                raw = g.group(2) or g.group(3) or ""
                 # The bold word is sometimes broken in two by the end of a
                 # line — « salle » then « de bains » — and the rule names
                 # only the last piece: we accept it at the end of a name as
                 # well as as a whole name.
                 L = next((L for m, L in uniq
-                          if nom == m or nom.endswith(" " + m)), None)
+                          if name_ == m or name_.endswith(" " + m)), None)
                 if L:
                     k = pa[1] + L if pa else L
-                    noms = par.setdefault(k, [])
-                    if nom not in noms:
-                        noms.append(nom)
+                    names = per.setdefault(k, [])
+                    if name_ not in names:
+                        names.append(name_)
                     continue
-                ns = CHIFRO.findall(brut)
+                ns = FIGURE.findall(raw)
                 # « 94 bis » does not name the 94: it is a separate object.
-                if ns and BIS.search(brut):
+                if ns and BIS.search(raw):
                     ns[-1] = f"{ns[-1]}bis"
-                kor = korekti_renvojo(tab, parts[i])
+                corr = correct_xref(tab, parts[i])
                 for n in ns:
-                    n = kor.get(str(n), n)
+                    n = corr.get(str(n), n)
                     k = f"{sc}:{n}" if sc else n
-                    noms = par.setdefault(k, [])
-                    if nom not in noms:
-                        noms.append(nom)
-        relever.scene = ""
+                    names = per.setdefault(k, [])
+                    if name_ not in names:
+                        names.append(name_)
+        collect.scene = ""
     return out
 
 
-def rang(k):
+def row(k):
     s, n = k.split(":", 1) if ":" in k else ("", k)
     m = re.match(r'(\d*)([a-z]*)$', n)
     return (s, int(m.group(1) or 0), m.group(2))
@@ -404,44 +404,44 @@ SOURCES = [("io", "*-tabelo-*.tex"), ("fr", "*-tableau-*.tex"),
            ("pl", "*-tablica-*.tex"), ("af", "*-tabel-*.tex")]
 
 
-def construire():
-    par_langue = {k: (relever(k, m) if (RACINE / "text" / k).is_dir() else {})
+def build():
+    by_lang = {k: (collect(k, m) if (ROOT / "text" / k).is_dir() else {})
                   for k, m in SOURCES}
-    tabs = sorted({t for d in par_langue.values() for t in d})
-    tout = {}
-    for tab in tabs:
-        cles = sorted({k for d in par_langue.values()
-                       for k in d.get(tab, {})}, key=rang)
-        tout[f"t{tab:02d}"] = {
-            k: {lg: d.get(tab, {}).get(k, []) for lg, d in par_langue.items()}
-            for k in cles}
-    return tout
+    tables = sorted({t for d in by_lang.values() for t in d})
+    everything = {}
+    for tab in tables:
+        keys = sorted({k for d in by_lang.values()
+                       for k in d.get(tab, {})}, key=row)
+        everything[f"t{tab:02d}"] = {
+            k: {lg: d.get(tab, {}).get(k, []) for lg, d in by_lang.items()}
+            for k in keys}
+    return everything
 
 
-def attendus(tab):
-    return set(relever("io", f"*-tabelo-{tab:02d}.tex").get(tab, {}))
+def expected(tab):
+    return set(collect("io", f"*-tabelo-{tab:02d}.tex").get(tab, {}))
 
 
-def main(args):
-    tout = construire()
+def hand(args):
+    everything = build()
     if args:
         tab = f"t{int(args[0]):02d}"
-        for n, v in sorted(tout[tab].items(), key=lambda kv: rang(kv[0])):
+        for n, v in sorted(everything[tab].items(), key=lambda kv: row(kv[0])):
             print("  " + f"{n:>6}  " + "  ".join(
                 f"{' / '.join(v.get(k, [])) or '—':28s}" for k, _ in SOURCES))
         return
-    (RACINE / "plates" / "objects.json").write_text(
-        json.dumps(tout, ensure_ascii=False, indent=1) + "\n",
+    (ROOT / "plates" / "objects.json").write_text(
+        json.dumps(everything, ensure_ascii=False, indent=1) + "\n",
         encoding="utf-8")
-    for tab, par in sorted(tout.items()):
-        att = attendus(int(tab[1:]))
-        tout_ = sum(1 for v in par.values() if all(v.get(k) for k, _ in SOURCES))
-        print(f"  {tab}  {len(par):3d}/{len(att):3d} objets nommes, "
-              f"dont {tout_:3d} dans les {len(SOURCES)} langues")
-    n = sum(len(p) for p in tout.values())
-    a = sum(len(attendus(int(t[1:]))) for t in tout)
+    for tab, per in sorted(everything.items()):
+        att = expected(int(tab[1:]))
+        all__ = sum(1 for v in per.values() if all(v.get(k) for k, _ in SOURCES))
+        print(f"  {tab}  {len(per):3d}/{len(att):3d} objets nommes, "
+              f"dont {all__:3d} dans les {len(SOURCES)} langues")
+    n = sum(len(p) for p in everything.values())
+    a = sum(len(expected(int(t[1:]))) for t in everything)
     print(f"  TOTAL {n}/{a} = {100 * n // a} %")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    hand(sys.argv[1:])

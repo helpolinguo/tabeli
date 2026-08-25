@@ -21,33 +21,33 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import html as h  # noqa: E402
 
 
-def crochets(t):
+def brackets(t):
     t = re.sub(r"<b>(.*?)</b>", r"[\1]", t)
     t = re.sub(r"<[^>]+>", "", t)
     return re.sub(r"\s+", " ", t).strip()
 
 
-def main():
-    tableau = sys.argv[1] if len(sys.argv) > 1 else "t01"
-    tout = "--tout" in sys.argv
-    rangi = h.paro()
+def hand():
+    table_ = sys.argv[1] if len(sys.argv) > 1 else "t01"
+    everything = "--tout" in sys.argv
+    rows = h.pair()
     n = 0
-    for r in rangi:
-        if r["tipo"] != "p" or not r["cle"].startswith(tableau):
+    for r in rows:
+        if r["tipo"] != "p" or not r["cle"].startswith(table_):
             continue
         o = r["tra"].get("fr")
         if not o or not r["io"] or not o["t"]:
             continue
         a, b = r["io"].count("<b>"), o["t"].count("<b>")
-        if a == b and not tout:
+        if a == b and not everything:
             continue
         n += 1
         print(f"\n--- {r['cle']}   ido {a} gras / français {b} gras "
               f"  (feuillets io {r['feuillet']}, fr {o['fe']})")
-        print(f"  IDO : {crochets(r['io'])}")
-        print(f"  FRA : {crochets(o['t'])}")
-    print(f"\n{n} alinéas à revoir dans {tableau}.")
+        print(f"  IDO : {brackets(r['io'])}")
+        print(f"  FRA : {brackets(o['t'])}")
+    print(f"\n{n} alinéas à revoir dans {table_}.")
 
 
 if __name__ == "__main__":
-    main()
+    hand()

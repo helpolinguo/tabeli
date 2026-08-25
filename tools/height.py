@@ -38,38 +38,38 @@ import numpy as np
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from inventory import bloc, otsu  # noqa: E402
+from inventory import block, otsu  # noqa: E402
 
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 # X-height of the composing font, as a fraction of the size.
 # Measured on XCharter: \fontcharht with the character "x".
 XCHARTER = 0.481
 
 
-def hauteur_x_page(chemin):
-    g = np.asarray(Image.open(chemin).convert("L"))
-    encre = g < otsu(g)
-    b = bloc(encre)
+def x_height_of_page(path):
+    g = np.asarray(Image.open(path).convert("L"))
+    ink = g < otsu(g)
+    b = block(ink)
     if b is None:
         return []
     x0, y0, x1, y1 = b
     if (x1 - x0) < 0.25 * g.shape[1]:
         return []
-    bande = encre[y0:y1 + 1, x0:x1 + 1]
-    prof = bande.sum(1).astype(float)
-    seuil = 0.04 * (x1 - x0)
-    plein = prof > seuil
+    band = ink[y0:y1 + 1, x0:x1 + 1]
+    prof = band.sum(1).astype(float)
+    threshold = 0.04 * (x1 - x0)
+    solid = prof > threshold
 
     # Division into bands of line.
-    hauteurs = []
+    heights = []
     i = 0
-    n = len(plein)
+    n = len(solid)
     while i < n:
-        if not plein[i]:
+        if not solid[i]:
             i += 1
             continue
         j = i
-        while j < n and plein[j]:
+        while j < n and solid[j]:
             j += 1
         seg = prof[i:j]
         if len(seg) >= 8:
@@ -78,37 +78,37 @@ def hauteur_x_page(chemin):
             # where the ink is dense, that is the body of the letters. We take
             # it at half the height of the maximum: lower, we catch the
             # ascenders; higher, we clip the descenders.
-            dedans = seg > 0.5 * seg.max()
-            k = np.where(dedans)[0]
+            inside = seg > 0.5 * seg.max()
+            k = np.where(inside)[0]
             if len(k):
                 # The plateau must be in one piece: two lines joined by an
                 # ascender would give two.
                 h = k[-1] - k[0] + 1
                 if 4 <= h <= 0.75 * len(seg):
-                    hauteurs.append(h)
+                    heights.append(h)
         i = j
-    return hauteurs
+    return heights
 
 
-def main():
-    langue = sys.argv[1] if len(sys.argv) > 1 else "io"
-    inv = json.loads((RACINE / "tools" / f"inv-{langue}.json")
+def hand():
+    lang = sys.argv[1] if len(sys.argv) > 1 else "io"
+    inv = json.loads((ROOT / "tools" / f"inv-{lang}.json")
                      .read_text(encoding="utf-8"))
-    pleines = sorted(int(k) for k, v in inv.items()
+    solid_ = sorted(int(k) for k, v in inv.items()
                      if not v.get("vide") and v.get("lignes", 0) >= 35)
     # One sample suffices: the measurement is taken over thousands of
     # lines, not over pages.
-    echantillon = pleines[::max(1, len(pleines) // 20)][:20]
+    sample = solid_[::max(1, len(solid_) // 20)][:20]
 
-    toutes = []
-    par_page = {}
-    for n in echantillon:
-        h = hauteur_x_page(RACINE / "skan" / langue / f"f-{n:03d}.jpg")
+    all_ = []
+    by_page = {}
+    for n in sample:
+        h = x_height_of_page(ROOT / "skan" / lang / f"f-{n:03d}.jpg")
         if h:
-            par_page[n] = float(np.median(h))
-            toutes.extend(h)
+            by_page[n] = float(np.median(h))
+            all_.extend(h)
 
-    if not toutes:
+    if not all_:
         print("aucune mesure")
         return
 
@@ -116,30 +116,30 @@ def main():
     # French facsimile is a photograph, its scale changes from one page to
     # another, and a height in pixels means nothing there outside its page.
     # The RATIO, on the other hand, is invariant.
-    rapports = []
-    for n, h in par_page.items():
-        rapports.append(h / inv[str(n)]["largeur"])
-    r = float(np.median(rapports))
+    ratios = []
+    for n, h in by_page.items():
+        ratios.append(h / inv[str(n)]["largeur"])
+    r = float(np.median(ratios))
 
     import re as _re
-    kal = (RACINE / f"kalibro-{langue}.tex").read_text(encoding="utf-8")
-    largeur_mm = float(_re.search(
+    kal = (ROOT / f"kalibro-{lang}.tex").read_text(encoding="utf-8")
+    width_mm = float(_re.search(
         r"\\VUtexteLargeur\}\{([\d.]+)mm", kal).group(1))
-    hx_mm = r * largeur_mm
-    hx_pt = hx_mm / (25.4 / 72.27)
-    corps = hx_pt / XCHARTER
+    xh_mm = r * width_mm
+    xh_pt = xh_mm / (25.4 / 72.27)
+    size = xh_pt / XCHARTER
 
-    print(f"langue            : {langue}")
-    print(f"pages echantillon : {len(par_page)}  ({len(toutes)} lignes)")
-    print(f"hauteur d'x       : {np.median(toutes):.2f} px "
-          f"(ecart-type {np.std(toutes):.2f})")
+    print(f"langue            : {lang}")
+    print(f"pages echantillon : {len(by_page)}  ({len(all_)} lignes)")
+    print(f"hauteur d'x       : {np.median(all_):.2f} px "
+          f"(ecart-type {np.std(all_):.2f})")
     print(f"  / justification : {r:.5f}")
-    print(f"justification     : {largeur_mm:.2f} mm")
-    print(f"hauteur d'x       : {hx_mm:.3f} mm = {hx_pt:.2f} pt")
+    print(f"justification     : {width_mm:.2f} mm")
+    print(f"hauteur d'x       : {xh_mm:.3f} mm = {xh_pt:.2f} pt")
     print()
-    print(f"CORPS DEDUIT      : {corps:.2f} pt "
+    print(f"CORPS DEDUIT      : {size:.2f} pt "
           f"(hauteur d'x XCharter = {XCHARTER} du corps)")
 
 
 if __name__ == "__main__":
-    main()
+    hand()

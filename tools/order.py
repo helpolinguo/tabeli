@@ -52,67 +52,67 @@ import sys
 #  the second is the bare parenthesis, which the printer sometimes leaves
 #  without a superscript -- "(58)", "13)" -- and which html.py also renders
 #  as a reference. Both count for the order.
-RENVOJO = re.compile(r"\\textsuperscript\{\(([^)]*)\)\}"
+XREF_ = re.compile(r"\\textsuperscript\{\(([^)]*)\)\}"
                      r"|(?<!\w)\((\d{1,3}(?: bis)?|[a-z]{1,2})\)")
 
-CLE = re.compile(r"%%K (\S+) (\S+)(.*)")
+KEY = re.compile(r"%%K (\S+) (\S+)(.*)")
 
 
-def blocs(tabelo):
+def blocks(tabelo):
     """The blocks of this table, with their run of references."""
-    fonto = ""
-    for chemin in sorted(glob.glob("text/io/*.tex")):
-        texto = open(chemin, encoding="utf-8").read()
-        if "%%K " + tabelo + "-" in texto:
-            fonto = texto
+    source_ = ""
+    for path in sorted(glob.glob("text/io/*.tex")):
+        text_ = open(path, encoding="utf-8").read()
+        if "%%K " + tabelo + "-" in text_:
+            source_ = text_
             break
-    if not fonto:
+    if not source_:
         return []
 
-    listo, kuranta = [], None
-    for ligno in fonto.split("\n"):
-        m = CLE.match(ligno)
+    list_, current_ = [], None
+    for ligno in source_.split("\n"):
+        m = KEY.match(ligno)
         if m:
-            kuranta = m.group(1)
+            current_ = m.group(1)
             #  "p suite" does not open a block: it continues the previous
             #  one, cut by a page break.
-            if not (listo and listo[-1][0] == kuranta
+            if not (list_ and list_[-1][0] == current_
                     and "suite" in m.group(3)):
-                listo.append([kuranta, [], 0])
+                list_.append([current_, [], 0])
             continue
-        if kuranta is None or ligno.startswith("%"):
+        if current_ is None or ligno.startswith("%"):
             continue
-        listo[-1][2] += ligno.count("\\VUblancAlinea")
-        for a, b in RENVOJO.findall(ligno):
-            valoro = (a or b).strip()
+        list_[-1][2] += ligno.count("\\VUblancAlinea")
+        for a, b in XREF_.findall(ligno):
+            value = (a or b).strip()
             #  The asterisk of note calls is not a reference.
-            if valoro and valoro != "*":
-                listo[-1][1].append(valoro)
-    return [(c, r, n) for c, r, n in listo
+            if value and value != "*":
+                list_[-1][1].append(value)
+    return [(c, r, n) for c, r, n in list_
             if c.startswith(tabelo + "-")]
 
 
-def main():
+def hand():
     if len(sys.argv) != 2:
         print("usage : python3 tools/ordo.py t10")
         return
     tabelo = sys.argv[1]
     if not tabelo.startswith("t"):
         tabelo = "t%02d" % int(tabelo)
-    trovita = blocs(tabelo)
+    trovita = blocks(tabelo)
     if not trovita:
         print("  %s : aucun bloc dans text/io" % tabelo)
         return
-    for cle, renvoji, alinei in trovita:
-        marko = "¶%d " % alinei if alinei > 1 else "   "
-        print("  %s%-22s %s" % (marko, cle, " ".join(renvoji)))
-    duobli = sum(1 for _, _, a in trovita if a > 1)
+    for key, xrefs_, paras in trovita:
+        mark_ = "¶%d " % paras if paras > 1 else "   "
+        print("  %s%-22s %s" % (mark_, key, " ".join(xrefs_)))
+    doubles = sum(1 for _, _, a in trovita if a > 1)
     print("\n  %d blocs, %d renvois."
           % (len(trovita), sum(len(r) for _, r, _ in trovita)))
-    if duobli:
+    if doubles:
         print("  %d bloc(s) marque(s) ¶ : une seule cle, plusieurs "
-              "alineas — ne pas en ouvrir une seconde." % duobli)
+              "alineas — ne pas en ouvrir une seconde." % doubles)
 
 
 if __name__ == "__main__":
-    main()
+    hand()

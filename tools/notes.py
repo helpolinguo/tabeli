@@ -48,12 +48,12 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 MM = 72.0 / 25.4
 VOLUMES = (("io", "tabeli.pdf"), ("fr", "tableaux.pdf"))
 
 
-def feuillets_a_note(lg):
+def leaves_with_notes(lg):
     """[(leaf, PDF page)] where the survey lays a note.
 
     AND THE LEAF NUMBER IS NOT THE PDF PAGE NUMBER. That is what this check
@@ -70,24 +70,24 @@ def feuillets_a_note(lg):
     their alphabetical order.
     """
     out = []
-    rang = 0
-    for p in sorted(glob.glob(str(RACINE / "text" / lg / "*.tex"))):
+    row = 0
+    for p in sorted(glob.glob(str(ROOT / "text" / lg / "*.tex"))):
         t = _io.open(p, encoding="utf-8").read()
         for m in re.finditer(r"\\begin\{VUpage\}\[(\d+)\][^\n]*\n(.*?)\\end\{VUpage\}",
                              t, re.S):
-            rang += 1
-            corps = "\n".join(l for l in m.group(2).split("\n")
+            row += 1
+            size = "\n".join(l for l in m.group(2).split("\n")
                               if not l.startswith("%"))
-            if "\\VUnotes" in corps:
-                out.append((int(m.group(1)), rang))
+            if "\\VUnotes" in size:
+                out.append((int(m.group(1)), row))
     return sorted(set(out))
 
 
-def lignes(pdf, page):
+def lines(pdf, page):
     x = subprocess.run(["mutool", "draw", "-F", "stext", "-o", "-", str(pdf), str(page)],
                        capture_output=True, text=True).stdout
     r = ET.fromstring(x)
-    haut = float(r.find("page").get("height"))
+    top = float(r.find("page").get("height"))
     out = []
     for ln in r.iter("line"):
         f = ln.find("font")
@@ -97,48 +97,48 @@ def lignes(pdf, page):
         if t < 1.0:            # the provenance watermark
             continue
         out.append((t, [float(v) for v in ln.get("bbox").split()]))
-    return haut, out
+    return top, out
 
 
-def controlar(lg, pdf):
-    pdf = RACINE / pdf
+def check_(lg, pdf):
+    pdf = ROOT / pdf
     if not pdf.exists():
         print(f"  {pdf.name} : absent, rien a controler")
         return 0, 0
-    heurte = deborde = 0
-    for fe, pg in feuillets_a_note(lg):
-        haut, ls = lignes(pdf, pg)
+    touches = overflows = 0
+    for fe, pg in leaves_with_notes(lg):
+        top, ls = lines(pdf, pg)
         if len(ls) < 4:
             continue
-        corps = statistics.median(t for t, _ in ls)
-        note = [b for t, b in ls if 0.74 * corps <= t <= 0.85 * corps]
-        texte = [b for t, b in ls if t > 0.88 * corps]
+        size = statistics.median(t for t, _ in ls)
+        note = [b for t, b in ls if 0.74 * size <= t <= 0.85 * size]
+        text_ = [b for t, b in ls if t > 0.88 * size]
         if not note:
             continue
         for bn in note:
-            for bc in texte:
+            for bc in text_:
                 iy = min(bn[3], bc[3]) - max(bn[1], bc[1])
                 ix = min(bn[2], bc[2]) - max(bn[0], bc[0])
                 if iy > 1.0 and ix > 5.0:
-                    heurte += 1
+                    touches += 1
                     print(f"  NOTE SUR LE TEXTE  {pdf.name} f{fe} (page {pg})")
                     break
             else:
                 continue
             break
-        bas = max(b[3] for b in note)
-        if bas > haut:
-            deborde += 1
+        bottom = max(b[3] for b in note)
+        if bottom > top:
+            overflows += 1
             print(f"  NOTE HORS DU FEUILLET  {pdf.name} f{fe} (page {pg}) : "
-                  f"{(bas - haut) / MM:.1f} mm sous le bord — cette page porte "
+                  f"{(bottom - top) / MM:.1f} mm sous le bord — cette page porte "
                   f"plus de matiere que la feuille n'en tient")
-    return heurte, deborde
+    return touches, overflows
 
 
-def main():
+def hand():
     h = d = 0
     for lg, pdf in VOLUMES:
-        a, b = controlar(lg, pdf)
+        a, b = check_(lg, pdf)
         h += a
         d += b
     print()
@@ -147,4 +147,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(hand())

@@ -37,50 +37,50 @@ import sys
 import tempfile
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 PAGE = re.compile(r"\\begin\{VUpage\}(?:\[(\d+)\])?\{([^}]*)\}")
-BOITE = re.compile(
+BOX = re.compile(
     r"(Overfull|Underfull) \\hbox \(([\d.]+)pt too wide|"
     r"(Underfull) \\hbox \(badness (\d+)\)")
-LIGNES = re.compile(r"in paragraph at lines (\d+)--(\d+)")
+LINES = re.compile(r"in paragraph at lines (\d+)--(\d+)")
 
 # The sweep: around the global size, upwards above all, since that is the
 # average and half the pages want more.
-ECART = [-0.30, -0.15, 0.0, 0.15, 0.30, 0.45, 0.60, 0.75, 0.90,
+GAP = [-0.30, -0.15, 0.0, 0.15, 0.30, 0.45, 0.60, 0.75, 0.90,
          1.05, 1.20, 1.35, 1.50]
 
 
-def corps_global(langue):
-    kal = (RACINE / f"kalibro-{langue}.tex").read_text(encoding="utf-8")
+def global_size(lang):
+    kal = (ROOT / f"kalibro-{lang}.tex").read_text(encoding="utf-8")
     return float(re.search(r"\\VUcorps\}\{([\d.]+)pt", kal).group(1))
 
 
-def pages_du_fichier(chemin):
+def pages_of_file(path):
     """[(leaf, first line, last line)] of the file."""
-    lignes = chemin.read_text(encoding="utf-8").splitlines()
-    bornes = []
-    for i, l in enumerate(lignes, 1):
+    lines = path.read_text(encoding="utf-8").splitlines()
+    bounds = []
+    for i, l in enumerate(lines, 1):
         m = PAGE.search(l)
         if m and m.group(1):
-            bornes.append((m.group(1), i))
+            bounds.append((m.group(1), i))
     out = []
-    for k, (f, deb) in enumerate(bornes):
-        fin = bornes[k + 1][1] - 1 if k + 1 < len(bornes) else len(lignes)
-        out.append((f, deb, fin))
+    for k, (f, beg) in enumerate(bounds):
+        end_ = bounds[k + 1][1] - 1 if k + 1 < len(bounds) else len(lines)
+        out.append((f, beg, end_))
     return out
 
 
-def essai(langue, fichier, corps, tmp):
+def trial(lang, file_, size, tmp):
     """{leaf: (maximum overflow in pt, number of loose lines)}."""
     env = tmp / "essai.tex"
     env.write_text(
         f"\\documentclass{{article}}\n"
-        f"\\input{{{RACINE}/kalibro-{langue}}}\n"
-        f"\\renewcommand{{\\VUcorps}}{{{corps:.2f}pt}}\n"
-        f"\\input{{{RACINE}/preambule}}\n"
+        f"\\input{{{ROOT}/kalibro-{lang}}}\n"
+        f"\\renewcommand{{\\VUcorps}}{{{size:.2f}pt}}\n"
+        f"\\input{{{ROOT}/preambule}}\n"
         f"\\hbadness=0 \\hfuzz=0pt\n"
         f"\\begin{{document}}\n"
-        f"\\input{{{fichier}}}\n"
+        f"\\input{{{file_}}}\n"
         f"\\end{{document}}\n", encoding="utf-8")
     subprocess.run(["pdflatex", "-interaction=nonstopmode",
                     "-halt-on-error", "essai.tex"],
@@ -88,23 +88,23 @@ def essai(langue, fichier, corps, tmp):
     log = (tmp / "essai.log")
     if not log.exists():
         return {}
-    texte = log.read_text(encoding="utf-8", errors="ignore")
+    text_ = log.read_text(encoding="utf-8", errors="ignore")
 
-    pages = pages_du_fichier(Path(fichier))
+    pages = pages_of_file(Path(file_))
     res = {f: [0.0, 0] for f, _, _ in pages}
 
-    def page_de(ligne):
-        for f, deb, fin in pages:
-            if deb <= ligne <= fin:
+    def page_of(line):
+        for f, beg, end_ in pages:
+            if beg <= line <= end_:
                 return f
         return None
 
-    for bloc in texte.split("\n\n"):
-        mb = BOITE.search(bloc)
-        ml = LIGNES.search(bloc)
+    for block in text_.split("\n\n"):
+        mb = BOX.search(block)
+        ml = LINES.search(block)
         if not mb or not ml:
             continue
-        f = page_de(int(ml.group(1)))
+        f = page_of(int(ml.group(1)))
         if f is None:
             continue
         if mb.group(1) == "Overfull":
@@ -114,49 +114,49 @@ def essai(langue, fichier, corps, tmp):
     return res
 
 
-def main():
-    langue = sys.argv[1] if len(sys.argv) > 1 else "io"
-    base = corps_global(langue)
-    sous = "io" if langue == "io" else "fr"
-    fichiers = sorted((RACINE / "text" / sous).glob("*.tex"))
+def hand():
+    lang = sys.argv[1] if len(sys.argv) > 1 else "io"
+    base = global_size(lang)
+    under = "io" if lang == "io" else "fr"
+    files_ = sorted((ROOT / "text" / under).glob("*.tex"))
 
     # {leaf: {size: (overflow, loose)}}
-    releve = {}
+    survey = {}
     with tempfile.TemporaryDirectory() as d:
         tmp = Path(d)
-        for f in fichiers:
-            for e in ECART:
+        for f in files_:
+            for e in GAP:
                 c = round(base + e, 2)
-                for feuillet, (deb, lach) in essai(langue, f, c, tmp).items():
-                    releve.setdefault(feuillet, {})[c] = (deb, lach)
+                for leaf, (beg, lach) in trial(lang, f, c, tmp).items():
+                    survey.setdefault(leaf, {})[c] = (beg, lach)
             print(f"  {f.name}", flush=True)
 
-    lignes = []
+    lines = []
     choisis = {}
-    for feuillet, par_corps in releve.items():
+    for leaf, by_size in survey.items():
         # The largest size WITH NO OVERFLOW. A page all of whose values
         # overflow (which happens when a single line of the survey is a little
         # too long) keeps the smallest trial: better a loose page than a line
         # that leaves the measure.
-        sans = [c for c, (deb, _) in par_corps.items() if deb == 0.0]
-        c = max(sans) if sans else min(par_corps)
-        choisis[feuillet] = c
+        without = [c for c, (beg, _) in by_size.items() if beg == 0.0]
+        c = max(without) if without else min(by_size)
+        choisis[leaf] = c
         if abs(c - base) > 0.001:
-            lignes.append(f"\\VUkorpoPage{{{feuillet}}}{{{c:.2f}pt}}")
+            lines.append(f"\\VUkorpoPage{{{leaf}}}{{{c:.2f}pt}}")
 
-    entete = (
-        f"% korpi-{langue}.tex — corps propre a chaque page.\n"
+    header = (
+        f"% korpi-{lang}.tex — corps propre a chaque page.\n"
         f"% Fichier PRODUIT par tools/korpo.py : ne pas le modifier a la\n"
         f"% main. Pour chaque page, le plus grand corps qui ne fasse\n"
         f"% deborder aucune de ses lignes. Corps global : {base:.2f}pt.\n"
-        f"% {len(lignes)} pages sur {len(choisis)} recoivent une valeur\n"
+        f"% {len(lines)} pages sur {len(choisis)} recoivent une valeur\n"
         f"% propre ; les autres gardent le corps global.\n\n")
-    (RACINE / f"korpi-{langue}.tex").write_text(
-        entete + "\n".join(lignes) + "\n", encoding="utf-8")
+    (ROOT / f"korpi-{lang}.tex").write_text(
+        header + "\n".join(lines) + "\n", encoding="utf-8")
 
     import statistics
     v = sorted(choisis.values())
-    print(f"\nkorpi-{langue}.tex : {len(lignes)}/{len(choisis)} pages "
+    print(f"\nkorpi-{lang}.tex : {len(lines)}/{len(choisis)} pages "
           f"ont un corps propre")
     print(f"  corps global {base:.2f}pt ; par page : "
           f"min {v[0]:.2f}  mediane {statistics.median(v):.2f}  "
@@ -164,4 +164,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    hand()

@@ -44,23 +44,23 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numbering as N                                          # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
-RACINE = N.RACINE
-TUILES = RACINE / "plates" / "tuili"
-LETTRES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+ROOT = N.ROOT
+TILES = ROOT / "plates" / "tuili"
+LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 PAS = 290
 NX = NY = 2
-MARGE = 0.02
+MARGIN = 0.02
 
 
-def police(taille):
+def font_(size_):
     try:
         return ImageFont.truetype(
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", taille)
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", size_)
     except Exception:
         return ImageFont.load_default()
 
 
-def cadres(cle, n=NX, scene=""):
+def frames(key, n=NX, scene=""):
     """The division into n x n: (x0, y0, x1, y1) for each tile.
 
     With a scene, only its vignette is cut up: on a plate carrying five
@@ -68,49 +68,49 @@ def cadres(cle, n=NX, scene=""):
     numberings, and the eye no longer knows which of the two
     « 12 » it is looking at.
     """
-    im = N.planche(cle)
+    im = N.plate(key)
     W, H = im.size
     bx0, by0, bx1, by1 = 0.0, 0.0, 1.0, 1.0
     if scene:
-        forme = dict(N.ceni(cle))[scene]
-        bx0, by0, bx1, by1 = N.boite(forme)
+        shape_ = dict(N.scenes_(key))[scene]
+        bx0, by0, bx1, by1 = N.box(shape_)
     X0, Y0 = bx0 * W, by0 * H
     LG, HT = (bx1 - bx0) * W, (by1 - by0) * H
     out = []
     for iy in range(n):
         for ix in range(n):
-            x0 = max(0, round(X0 + LG * ix / n - LG * MARGE))
-            y0 = max(0, round(Y0 + HT * iy / n - HT * MARGE))
-            x1 = min(W, round(X0 + LG * (ix + 1) / n + LG * MARGE))
-            y1 = min(H, round(Y0 + HT * (iy + 1) / n + HT * MARGE))
+            x0 = max(0, round(X0 + LG * ix / n - LG * MARGIN))
+            y0 = max(0, round(Y0 + HT * iy / n - HT * MARGIN))
+            x1 = min(W, round(X0 + LG * (ix + 1) / n + LG * MARGIN))
+            y1 = min(H, round(Y0 + HT * (iy + 1) / n + HT * MARGIN))
             out.append((x0, y0, x1, y1))
     return im, out
 
 
-def restant(cle, connus):
+def remaining(key, known):
     """What the text calls for and nobody has found yet."""
-    att = {N.kl(sc, n) for sc, ns in N.attendus(cle).items() for n in ns}
-    return sorted(att - set(connus), key=N.descle)
+    att = {N.kl(sc, n) for sc, ns in N.expected(key).items() for n in ns}
+    return sorted(att - set(known), key=N.unkey)
 
 
-def tuiler(cle, n=NX, z=1.0, scene=""):
+def tile(key, n=NX, z=1.0, scene=""):
     """Writes the tiles, the already known numbers circled."""
-    TUILES.mkdir(parents=True, exist_ok=True)
-    im, cads = cadres(cle, n, scene)
+    TILES.mkdir(parents=True, exist_ok=True)
+    im, cads = frames(key, n, scene)
     W, H = im.size
-    d = json.loads((RACINE / "plates" / "numbers.json")
-                   .read_text(encoding="utf-8"))[cle]
-    connus = {n: (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
+    d = json.loads((ROOT / "plates" / "numbers.json")
+                   .read_text(encoding="utf-8"))[key]
+    known = {n: (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
               for n, v in d["numeri"].items()}
     # What has just been placed by hand counts too, failing which the whole
     # reader would have to be run again between two tiles to stop re-reading
     # what has already been picked up.
-    fm = RACINE / "plates" / "manual.json"
+    fm = ROOT / "plates" / "manual.json"
     if fm.exists():
         for n, v in json.loads(fm.read_text(encoding="utf-8")) \
-                .get(cle, {}).items():
-            connus[n] = (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
-    F = police(34)
+                .get(key, {}).items():
+            known[n] = (v[0] * W + v[2] * W / 2, v[1] * H + v[3] * H / 2)
+    F = font_(34)
     for k, (x0, y0, x1, y1) in enumerate(cads):
         # THE LINE WORK REVERSED. The layer carries the ink white on black;
         # the eye loses half of what it could read there. We put it back the
@@ -122,7 +122,7 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
         g = ImageDraw.Draw(t)
         # WHAT HAS ALREADY BEEN FOUND IS CIRCLED: the eye has only to read
         # what is not, and does not read the same thing twice.
-        for nu, (cx, cy) in connus.items():
+        for bare_, (cx, cy) in known.items():
             if x0 <= cx < x1 and y0 <= cy < y1:
                 a, b = (cx - x0) * z, (cy - y0) * z
                 g.ellipse([a - 34 * z, b - 34 * z, a + 34 * z, b + 34 * z],
@@ -148,12 +148,12 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
             g.rectangle([3, gy * z + 3, 26 + 17 * len(e), gy * z + 46],
                         fill=(0, 0, 0))
             g.text((8, gy * z + 2), e, fill=(0, 190, 255), font=F)
-        t.save(TUILES / f"{cle}{'-' + scene if scene else ''}-{k}.png")
-    manque = restant(cle, connus)
+        t.save(TILES / f"{key}{'-' + scene if scene else ''}-{k}.png")
+    missing = remaining(key, known)
     if scene:
-        manque = [q for q in manque if N.descle(q)[0] == scene]
-    print(f"  {cle} : {len(cads)} tuiles, {len(manque)} numeros manquants")
-    print(f"  {manque}")
+        missing = [q for q in missing if N.unkey(q)[0] == scene]
+    print(f"  {key} : {len(cads)} tuiles, {len(missing)} numeros manquants")
+    print(f"  {missing}")
 
 
 # THE ZONES. The last numbers of a dense plate are the ones the eye
@@ -165,60 +165,60 @@ def tuiler(cle, n=NX, z=1.0, scene=""):
 # whose two neighbours are known. We therefore cut around that midpoint,
 # and windows that overlap are merged into one, so that a single image
 # often serves several.
-ZONE_L, ZONE_H = 950, 680
+ZONE_W, ZONE_H = 950, 680
 ZONE_Z = 2.1                     # the figure is eighty points there
 
 
-def zono(cle, rayon=None):
+def zone(key, radius=None):
     """Cuts out, around the presumed place, what is still missing."""
-    TUILES.mkdir(parents=True, exist_ok=True)
-    im = N.planche(cle)
+    TILES.mkdir(parents=True, exist_ok=True)
+    im = N.plate(key)
     W, H = im.size
-    d = json.loads((RACINE / "plates" / "numbers.json")
-                   .read_text(encoding="utf-8"))[cle]
-    connus = {n: ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
+    d = json.loads((ROOT / "plates" / "numbers.json")
+                   .read_text(encoding="utf-8"))[key]
+    known = {n: ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
               for n, v in d["numeri"].items()}
-    fm = RACINE / "plates" / "manual.json"
+    fm = ROOT / "plates" / "manual.json"
     if fm.exists():
         for n, v in json.loads(fm.read_text(encoding="utf-8")) \
-                .get(cle, {}).items():
-            connus[n] = ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
-    manque = restant(cle, connus)
-    if not manque:
-        print(f"  {cle} : rien ne manque")
+                .get(key, {}).items():
+            known[n] = ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
+    missing = remaining(key, known)
+    if not missing:
+        print(f"  {key} : rien ne manque")
         return
     # The presumed place: the midpoint of the two known neighbours nearest
     # in rank, or the single neighbour when there is only one.
-    def presume(k):
-        sc, n = N.descle(k)
-        frat = {N.descle(q)[1]: v for q, v in connus.items()
-                if N.descle(q)[0] == sc}
-        bas = max((k for k in frat if k < n), default=None)
-        haut = min((k for k in frat if k > n), default=None)
-        if bas is not None and haut is not None:
-            return ((frat[bas][0] + frat[haut][0]) / 2,
-                    (frat[bas][1] + frat[haut][1]) / 2)
-        if bas is not None:
-            return frat[bas]
-        if haut is not None:
-            return frat[haut]
+    def presumed(k):
+        sc, n = N.unkey(k)
+        frat = {N.unkey(q)[1]: v for q, v in known.items()
+                if N.unkey(q)[0] == sc}
+        bottom = max((k for k in frat if k < n), default=None)
+        top = min((k for k in frat if k > n), default=None)
+        if bottom is not None and top is not None:
+            return ((frat[bottom][0] + frat[top][0]) / 2,
+                    (frat[bottom][1] + frat[top][1]) / 2)
+        if bottom is not None:
+            return frat[bottom]
+        if top is not None:
+            return frat[top]
         return (W / 2, H / 2)
 
     zones = []                                  # (x0, y0, [numbers])
-    for n in manque:
-        cx, cy = presume(n)
+    for n in missing:
+        cx, cy = presumed(n)
         for z in zones:
-            if abs(z[0] + ZONE_L / 2 - cx) < ZONE_L * 0.35 and \
+            if abs(z[0] + ZONE_W / 2 - cx) < ZONE_W * 0.35 and \
                abs(z[1] + ZONE_H / 2 - cy) < ZONE_H * 0.35:
                 z[2].append(n)
                 break
         else:
-            x0 = min(max(0, round(cx - ZONE_L / 2)), max(0, W - ZONE_L))
+            x0 = min(max(0, round(cx - ZONE_W / 2)), max(0, W - ZONE_W))
             y0 = min(max(0, round(cy - ZONE_H / 2)), max(0, H - ZONE_H))
             zones.append([x0, y0, [n]])
-    F = police(30)
+    F = font_(30)
     for k, (x0, y0, ns) in enumerate(zones):
-        x1, y1 = min(W, x0 + ZONE_L), min(H, y0 + ZONE_H)
+        x1, y1 = min(W, x0 + ZONE_W), min(H, y0 + ZONE_H)
         # THE LINE WORK IN BLACK ON WHITE. The line layer carries the ink white
         # on black; to the eye that reads badly — we reverse it, and the plate
         # becomes what it is again, an engraving.
@@ -227,7 +227,7 @@ def zono(cle, rayon=None):
                      Image.LANCZOS)
         g = ImageDraw.Draw(t)
         Z = ZONE_Z
-        for n, (cx, cy) in connus.items():
+        for n, (cx, cy) in known.items():
             if x0 <= cx < x1 and y0 <= cy < y1:
                 a, b = (cx - x0) * Z, (cy - y0) * Z
                 g.ellipse([a - 34 * Z, b - 34 * Z, a + 34 * Z, b + 34 * Z],
@@ -236,38 +236,38 @@ def zono(cle, rayon=None):
         dx = (-x0) % pas
         dy = (-y0) % pas
         for gx in range(dx, x1 - x0, pas):
-            fort = (x0 + gx) % 500 == 0
+            strong = (x0 + gx) % 500 == 0
             g.line([gx * Z, 0, gx * Z, t.height],
-                   fill=(0, 130, 255) if fort else (120, 190, 235),
-                   width=3 if fort else 1)
-            if fort:
+                   fill=(0, 130, 255) if strong else (120, 190, 235),
+                   width=3 if strong else 1)
+            if strong:
                 e = f"{x0 + gx}"
                 g.rectangle([gx * Z + 3, 3, gx * Z + 22 + 15 * len(e), 40],
                             fill=(0, 0, 0))
                 g.text((gx * Z + 7, 2), e, fill=(0, 190, 255), font=F)
         for gy in range(dy, y1 - y0, pas):
-            fort = (y0 + gy) % 500 == 0
+            strong = (y0 + gy) % 500 == 0
             g.line([0, gy * Z, t.width, gy * Z],
-                   fill=(0, 130, 255) if fort else (120, 190, 235),
-                   width=3 if fort else 1)
-            if fort:
+                   fill=(0, 130, 255) if strong else (120, 190, 235),
+                   width=3 if strong else 1)
+            if strong:
                 e = f"{y0 + gy}"
                 g.rectangle([3, gy * Z + 3, 22 + 15 * len(e), gy * Z + 40],
                             fill=(0, 0, 0))
                 g.text((7, gy * Z + 2), e, fill=(0, 190, 255), font=F)
-        t.save(TUILES / f"{cle}-z{k}.png")
+        t.save(TILES / f"{key}-z{k}.png")
         print(f"  z{k} ({x0},{y0}) : {ns}")
-    print(f"  {cle} : {len(zones)} zones, {len(manque)} numeros manquants")
+    print(f"  {key} : {len(zones)} zones, {len(missing)} numeros manquants")
 
 
-def case(cle, tuile, ref):
+def cell_(key, tile_, ref):
     """« H4 » on tile k -> (x, y) at the centre of the cell, on the plate."""
     m = re.fullmatch(r'([A-Z])(\d+)', ref.upper())
     if not m:
         raise SystemExit(f"case illisible : {ref}")
-    _, cads = cadres(cle)
-    x0, y0, _, _ = cads[tuile]
-    cx = x0 + LETTRES.index(m.group(1)) * PAS + PAS / 2
+    _, cads = frames(key)
+    x0, y0, _, _ = cads[tile_]
+    cx = x0 + LETTERS.index(m.group(1)) * PAS + PAS / 2
     cy = y0 + int(m.group(2)) * PAS + PAS / 2
     return cx, cy
 
@@ -278,34 +278,34 @@ def case(cle, tuile, ref):
 # figures alone -- it is by them that it will be found again -- and
 # lengthen the frame by what the word occupies, so that the close-up
 # shows it whole.
-def gabarit(n, corps, marge=12, ecart=0.13):
+def template_(n, size, margin=12, gap=0.13):
     t = str(n)
-    suite = t[len(t.rstrip("abcdefghijklmnopqrstuvwxyz")):]
+    cont = t[len(t.rstrip("abcdefghijklmnopqrstuvwxyz")):]
     parts = []
-    for c in t[:len(t) - len(suite)]:
+    for c in t[:len(t) - len(cont)]:
         m = N._base()[c]
-        parts.append(cv2.resize(m, (max(1, round(m.shape[1] * corps / N.H)),
-                                    corps), interpolation=cv2.INTER_AREA))
-    e = max(1, round(ecart * corps))
+        parts.append(cv2.resize(m, (max(1, round(m.shape[1] * size / N.H)),
+                                    size), interpolation=cv2.INTER_AREA))
+    e = max(1, round(gap * size))
     L = sum(p.shape[1] for p in parts) + e * (len(parts) - 1)
-    g = np.zeros((corps, L), np.float32)
+    g = np.zeros((size, L), np.float32)
     x = 0
     for p in parts:
         g[:, x:x + p.shape[1]] = p
         x += p.shape[1] + e
-    q = np.zeros((corps + 2 * marge, L + 2 * marge), np.float32)
-    q[marge:marge + corps, marge:marge + L] = g
+    q = np.zeros((size + 2 * margin, L + 2 * margin), np.float32)
+    q[margin:margin + size, margin:margin + L] = g
     pos = (q >= 0.5).astype(np.float32)
     neg = 1.0 - pos
-    return pos / pos.sum() - neg / neg.sum(), marge, \
-        L + round(0.62 * corps * len(suite))
+    return pos / pos.sum() - neg / neg.sum(), margin, \
+        L + round(0.62 * size * len(cont))
 
 
 # THE SEARCH WINDOW STAYS NARROW. At a cell and a half, the filter went
 # looking for the NEIGHBOURING number: « 72 » dictated at I5 landed on
 # the 71 next door, « 73 » on the 75. Half a cell is enough once the eye
 # has read the grid properly, and it forbids those slips.
-def poser(cle, refs, rayon=0.62):
+def place(key, refs, radius=0.62):
     """Finds each dictated number in its cell and its neighbours.
 
     On a plate with several scenes the number is dictated with its own
@@ -316,103 +316,103 @@ def poser(cle, refs, rayon=0.62):
     # plate, the stencil models score 0.24 where the grey ones score close
     # to 1: the filter then slipped by some ten points, and the frame fell
     # beside the figure.
-    N.GRIS = N.repris(cle)
-    enc = (N.enko(cle) > 100).astype(np.float32)
-    HT, LA = enc.shape
-    d = json.loads((RACINE / "plates" / "numbers.json")
-                   .read_text(encoding="utf-8"))[cle]
-    corps = d["corpo"]
-    f = RACINE / "plates" / "manual.json"
-    tout = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
-    par = tout.setdefault(cle, {})
-    occupe = [(round(v[0] * LA), round(v[1] * HT))
+    N.GREY = N.redone(key)
+    ink_ = (N.enko(key) > 100).astype(np.float32)
+    HT, LA = ink_.shape
+    d = json.loads((ROOT / "plates" / "numbers.json")
+                   .read_text(encoding="utf-8"))[key]
+    size = d["corpo"]
+    f = ROOT / "plates" / "manual.json"
+    everything = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+    per = everything.setdefault(key, {})
+    occupies = [(round(v[0] * LA), round(v[1] * HT))
               for v in d["numeri"].values()]
-    occupe += [(round(v[0] * LA), round(v[1] * HT)) for v in par.values()]
-    for k, tuile, ref in refs:
-        n = N.descle(k)[1]
+    occupies += [(round(v[0] * LA), round(v[1] * HT)) for v in per.values()]
+    for k, tile_, ref in refs:
+        n = N.unkey(k)[1]
         if ref.count(",") == 2:
             # The eye has seen the number, but pointed at it: we search
             # within the dictated radius, and the filter sets the frame to
             # the figure. Short radius -- that is what forbids the slips.
-            cx, cy, ray = (int(v) for v in ref.split(","))
-            T, M, L = gabarit(n, corps)
-            x0, y0 = int(cx - L / 2) - ray, int(cy - corps / 2) - ray
-            x1 = int(cx - L / 2) + ray + T.shape[1]
-            y1 = int(cy - corps / 2) + ray + T.shape[0]
+            cx, cy, rad = (int(v) for v in ref.split(","))
+            T, M, L = template_(n, size)
+            x0, y0 = int(cx - L / 2) - rad, int(cy - size / 2) - rad
+            x1 = int(cx - L / 2) + rad + T.shape[1]
+            y1 = int(cy - size / 2) + rad + T.shape[0]
             x0, y0 = max(0, x0), max(0, y0)
             x1, y1 = min(LA, x1), min(HT, y1)
-            r = cv2.matchTemplate(enc[y0:y1, x0:x1], T, cv2.TM_CCORR)
+            r = cv2.matchTemplate(ink_[y0:y1, x0:x1], T, cv2.TM_CCORR)
             _, mx, _, loc = cv2.minMaxLoc(r)
             px, py = x0 + loc[0] + M, y0 + loc[1] + M
-            par[k] = [round(px / LA, 6), round(py / HT, 6),
-                      round(L / LA, 6), round(corps / HT, 6), 1.0]
+            per[k] = [round(px / LA, 6), round(py / HT, 6),
+                      round(L / LA, 6), round(size / HT, 6), 1.0]
             print(f"  {k:>7} cale sur ({px}, {py})  score {mx:.3f}")
             continue
         if "," in ref:
             # The eye has read the place off the grid: we take it as it
             # stands, without searching for anything. This is the surest case.
             px, py = (int(v) for v in ref.split(","))
-            T, M, L = gabarit(n, corps)
-            par[k] = [round((px - L / 2) / LA, 6),
-                      round((py - corps / 2) / HT, 6),
-                      round(L / LA, 6), round(corps / HT, 6), 1.0]
+            T, M, L = template_(n, size)
+            per[k] = [round((px - L / 2) / LA, 6),
+                      round((py - size / 2) / HT, 6),
+                      round(L / LA, 6), round(size / HT, 6), 1.0]
             print(f"  {k:>7} pose a l'oeil en ({px}, {py})")
             continue
-        cx, cy = case(cle, tuile, ref)
-        T, M, L = gabarit(n, corps)
-        R = round(rayon * PAS)
+        cx, cy = cell_(key, tile_, ref)
+        T, M, L = template_(n, size)
+        R = round(radius * PAS)
         x0, y0 = int(cx) - R, int(cy) - R
         x1, y1 = int(cx) + R + T.shape[1], int(cy) + R + T.shape[0]
         if x0 < 0 or y0 < 0 or x1 > LA or y1 > HT:
             print(f"  {n} en {ref} : hors planche")
             continue
-        r = cv2.matchTemplate(enc[y0:y1, x0:x1], T, cv2.TM_CCORR)
+        r = cv2.matchTemplate(ink_[y0:y1, x0:x1], T, cv2.TM_CCORR)
         # THE PLACES ALREADY TAKEN ARE FORBIDDEN. « 77 » dictated at G5
         # landed on the 75 next door — same first figure, a hundred and
         # thirty points further on — and « 72 » on the 71. But we know
         # where the numbers already found are: we erase those places from
         # the map, and the filter has to look elsewhere.
-        for b2 in occupe:
+        for b2 in occupies:
             ox, oy = b2[0] - x0 - M, b2[1] - y0 - M
-            if -corps < ox < r.shape[1] + corps and \
-               -corps < oy < r.shape[0] + corps:
-                a0 = max(0, int(oy - 0.7 * corps))
-                a1 = min(r.shape[0], int(oy + 0.7 * corps) + 1)
-                b0 = max(0, int(ox - 0.7 * corps))
-                b1 = min(r.shape[1], int(ox + 0.7 * corps) + 1)
+            if -size < ox < r.shape[1] + size and \
+               -size < oy < r.shape[0] + size:
+                a0 = max(0, int(oy - 0.7 * size))
+                a1 = min(r.shape[0], int(oy + 0.7 * size) + 1)
+                b0 = max(0, int(ox - 0.7 * size))
+                b1 = min(r.shape[1], int(ox + 0.7 * size) + 1)
                 if a1 > a0 and b1 > b0:
                     r[a0:a1, b0:b1] = -9
         _, mx, _, loc = cv2.minMaxLoc(r)
         px, py = x0 + loc[0] + M, y0 + loc[1] + M
-        par[k] = [round(px / LA, 6), round(py / HT, 6),
-                  round(L / LA, 6), round(corps / HT, 6), round(mx, 3)]
-        print(f"  {k:>7} en {ref} (tuile {tuile}) -> "
+        per[k] = [round(px / LA, 6), round(py / HT, 6),
+                  round(L / LA, 6), round(size / HT, 6), round(mx, 3)]
+        print(f"  {k:>7} en {ref} (tuile {tile_}) -> "
               f"({px}, {py})  score {mx:.3f}")
-    f.write_text(json.dumps(tout, ensure_ascii=False, indent=1) + "\n",
+    f.write_text(json.dumps(everything, ensure_ascii=False, indent=1) + "\n",
                  encoding="utf-8")
 
 
-def planche(cle):
+def plate(key):
     """The check sheet for the numbers placed by hand."""
-    f = RACINE / "plates" / "manual.json"
+    f = ROOT / "plates" / "manual.json"
     if not f.exists():
         return
-    par = json.loads(f.read_text(encoding="utf-8")).get(cle, {})
-    if not par:
-        print(f"  {cle} : rien de pose a la main")
+    per = json.loads(f.read_text(encoding="utf-8")).get(key, {})
+    if not per:
+        print(f"  {key} : rien de pose a la main")
         return
-    d = json.loads((RACINE / "plates" / "numbers.json")
-                   .read_text(encoding="utf-8"))[cle]
-    LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
-    trouves = {n: ((round(v[0] * LA), round(v[1] * HT),
+    d = json.loads((ROOT / "plates" / "numbers.json")
+                   .read_text(encoding="utf-8"))[key]
+    LA, HT, size = d["largeur"], d["alteso"], d["corpo"]
+    found_ = {n: ((round(v[0] * LA), round(v[1] * HT),
                     round(v[2] * LA), round(v[3] * HT)), v[4])
-               for n, v in par.items()}
-    N.KONTROLO.mkdir(parents=True, exist_ok=True)
-    n = N.controle(cle, trouves,
-                   N.KONTROLO / f"{cle}-manuali.png", corps,
-                   large=1.5, cols=10)
-    print(f"  {cle} : {n} decoupes dans "
-          f"{N.KONTROLO / (cle + '-manuali.png')}")
+               for n, v in per.items()}
+    N.REVIEW.mkdir(parents=True, exist_ok=True)
+    n = N.check(key, found_,
+                   N.REVIEW / f"{key}-manuali.png", size,
+                   wide=1.5, cols=10)
+    print(f"  {key} : {n} decoupes dans "
+          f"{N.REVIEW / (key + '-manuali.png')}")
 
 
 # THE RE-READING OF THE AUTOMATIC READINGS. The score does not say
@@ -422,24 +422,24 @@ def planche(cle):
 # each cut wide and carrying the name the facsimile gives the object.
 # What has been placed by hand does not appear there: it is already
 # judged.
-def revizo(cle, page=0, par=24, cols=6, Z=3):
+def review(key, page=0, per=24, cols=6, Z=3):
     """A plate's automatic readings, to be re-read one by one."""
-    d = json.loads((RACINE / "plates" / "numbers.json")
-                   .read_text(encoding="utf-8"))[cle]
-    LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
-    fm = RACINE / "plates" / "manual.json"
-    mains = (json.loads(fm.read_text(encoding="utf-8")).get(cle, {})
+    d = json.loads((ROOT / "plates" / "numbers.json")
+                   .read_text(encoding="utf-8"))[key]
+    LA, HT, size = d["largeur"], d["alteso"], d["corpo"]
+    fm = ROOT / "plates" / "manual.json"
+    hands = (json.loads(fm.read_text(encoding="utf-8")).get(key, {})
              if fm.exists() else {})
-    noms = N.objekti(cle)
-    tout = [(n, v) for n, v in d["numeri"].items() if n not in mains]
-    tout.sort(key=lambda q: N.descle(q[0]))
-    lot = tout[page * par:(page + 1) * par]
+    names = N.objects_(key)
+    everything = [(n, v) for n, v in d["numeri"].items() if n not in hands]
+    everything.sort(key=lambda q: N.unkey(q[0]))
+    lot = everything[page * per:(page + 1) * per]
     if not lot:
-        print(f"  {cle} : plus rien a relire")
+        print(f"  {key} : plus rien a relire")
         return 0
-    im = N.planche(cle)
-    w, h = round(corps * 4.4), round(corps * 3.0)
-    F = police(20)
+    im = N.plate(key)
+    w, h = round(size * 4.4), round(size * 3.0)
+    F = font_(20)
     F2 = ImageFont.truetype(
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 17)
     lig = (len(lot) + cols - 1) // cols
@@ -454,19 +454,19 @@ def revizo(cle, page=0, par=24, cols=6, Z=3):
         X, Y = 10 + (i % cols) * (w * Z + 10), 10 + (i // cols) * (h * Z + 52)
         pl.paste(c, (X, Y))
         g.rectangle([X, Y, X + w * Z, Y + h * Z], outline=(200, 0, 0))
-        nm = noms.get(str(n), {})
-        nom = (nm.get("fr") or nm.get("io") or [""])[0]
-        g.text((X + 2, Y + h * Z + 3), f"{n} — {nom[:24]}",
+        nm = names.get(str(n), {})
+        name_ = (nm.get("fr") or nm.get("io") or [""])[0]
+        g.text((X + 2, Y + h * Z + 3), f"{n} — {name_[:24]}",
                fill=(0, 0, 0), font=F)
         g.text((X + 2, Y + h * Z + 26),
                f"{v[4]:.2f}   {round(cx)},{round(cy)}",
                fill=(90, 90, 90), font=F2)
-    N.KONTROLO.mkdir(parents=True, exist_ok=True)
-    dest = N.KONTROLO / f"{cle}-revizo{page}.png"
+    N.REVIEW.mkdir(parents=True, exist_ok=True)
+    dest = N.REVIEW / f"{key}-revizo{page}.png"
     pl.save(dest)
-    print(f"  {cle} : page {page}, {len(lot)} lectures sur {len(tout)} "
+    print(f"  {key} : page {page}, {len(lot)} lectures sur {len(everything)} "
           f"-> {dest}")
-    return len(tout)
+    return len(everything)
 
 
 # -------------------------------------------------------------------
@@ -484,45 +484,45 @@ def revizo(cle, page=0, par=24, cols=6, Z=3):
 #  width, and the close-up takes it wide in any case.
 #
 #      python3 tools/manual.py letter t01-apar-1 1a=91,2026 1b=239,1926
-LITERI = RACINE / "plates" / "letters.json"
+LETTERS_ = ROOT / "plates" / "letters.json"
 
 
-def litero(cle, refs):
+def letter(key, refs):
     """Places letters by eye, as one places numbers."""
-    d = json.loads((RACINE / "plates" / "numbers.json")
-                   .read_text(encoding="utf-8"))[cle]
-    LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
-    tout = json.loads(LITERI.read_text(encoding="utf-8"))
-    par = tout.setdefault(cle, {})
+    d = json.loads((ROOT / "plates" / "numbers.json")
+                   .read_text(encoding="utf-8"))[key]
+    LA, HT, size = d["largeur"], d["alteso"], d["corpo"]
+    everything = json.loads(LETTERS_.read_text(encoding="utf-8"))
+    per = everything.setdefault(key, {})
     for k, ref in refs:
         px, py = (int(v) for v in ref.split(","))
-        par[k] = [round((px - corps / 2) / LA, 6),
-                  round((py - corps / 2) / HT, 6),
-                  round(corps / LA, 6), round(corps / HT, 6), 1.0]
+        per[k] = [round((px - size / 2) / LA, 6),
+                  round((py - size / 2) / HT, 6),
+                  round(size / LA, 6), round(size / HT, 6), 1.0]
         print(f"  {k:>6} pose a l'oeil en ({px}, {py})")
-    LITERI.write_text(json.dumps(tout, ensure_ascii=False, indent=1) + "\n",
+    LETTERS_.write_text(json.dumps(everything, ensure_ascii=False, indent=1) + "\n",
                       encoding="utf-8")
 
 
-def planche_literi(cle):
+def letters_sheet(key):
     """The check sheet for the letters placed."""
-    tout = json.loads(LITERI.read_text(encoding="utf-8"))
-    par = tout.get(cle, {})
-    if not par:
-        print(f"  {cle} : aucune lettre posee")
+    everything = json.loads(LETTERS_.read_text(encoding="utf-8"))
+    per = everything.get(key, {})
+    if not per:
+        print(f"  {key} : aucune lettre posee")
         return
-    d = json.loads((RACINE / "plates" / "numbers.json")
-                   .read_text(encoding="utf-8"))[cle]
-    LA, HT, corps = d["largeur"], d["alteso"], d["corpo"]
-    im = N.planche(cle).convert("RGB")
+    d = json.loads((ROOT / "plates" / "numbers.json")
+                   .read_text(encoding="utf-8"))[key]
+    LA, HT, size = d["largeur"], d["alteso"], d["corpo"]
+    im = N.plate(key).convert("RGB")
     cols, Z = 8, 3
-    w = h = round(corps * 3.0)
-    lot = sorted(par.items())
+    w = h = round(size * 3.0)
+    lot = sorted(per.items())
     lig = (len(lot) + cols - 1) // cols
     pl = Image.new("RGB", (cols * (w * Z + 8) + 8, lig * (h * Z + 30) + 8),
                    (255, 255, 255))
     g = ImageDraw.Draw(pl)
-    F = police(19)
+    F = font_(19)
     for i, (k, v) in enumerate(lot):
         cx, cy = (v[0] + v[2] / 2) * LA, (v[1] + v[3] / 2) * HT
         c = im.crop((round(cx - w / 2), round(cy - h / 2),
@@ -532,44 +532,44 @@ def planche_literi(cle):
         pl.paste(c, (X, Y))
         g.rectangle([X, Y, X + w * Z, Y + h * Z], outline=(200, 0, 0))
         g.text((X + 2, Y + h * Z + 4), k, fill=(0, 0, 0), font=F)
-    N.KONTROLO.mkdir(parents=True, exist_ok=True)
-    dest = N.KONTROLO / f"{cle}-literi.png"
+    N.REVIEW.mkdir(parents=True, exist_ok=True)
+    dest = N.REVIEW / f"{key}-literi.png"
     pl.save(dest)
-    print(f"  {cle} : {len(lot)} lettres dans {dest}")
+    print(f"  {key} : {len(lot)} lettres dans {dest}")
 
 
 
-def main(args):
+def hand(args):
     if not args:
         raise SystemExit(__doc__)
-    verbe, cle = args[0], args[1]
-    if verbe == "tuiler":
-        tuiler(cle, int(args[2]) if len(args) > 2 else NX,
+    verb, key = args[0], args[1]
+    if verb == "tuiler":
+        tile(key, int(args[2]) if len(args) > 2 else NX,
                float(args[3]) if len(args) > 3 else 1.0,
                args[4] if len(args) > 4 else "")
-    elif verbe == "zono":
-        zono(cle)
-    elif verbe == "litero":
-        litero(cle, [tuple(a.split("=")) for a in args[2:]])
-    elif verbe == "literi":
-        planche_literi(cle)
-    elif verbe == "revizo":
-        revizo(cle, int(args[2]) if len(args) > 2 else 0)
-    elif verbe == "planche":
-        planche(cle)
-    elif verbe == "poser":
+    elif verb == "zono":
+        zone(key)
+    elif verb == "litero":
+        letter(key, [tuple(a.split("=")) for a in args[2:]])
+    elif verb == "literi":
+        letters_sheet(key)
+    elif verb == "revizo":
+        review(key, int(args[2]) if len(args) > 2 else 0)
+    elif verb == "planche":
+        plate(key)
+    elif verb == "poser":
         refs = []
-        tuile = 0
+        tile_ = 0
         for a in args[2:]:
             if a.startswith("t="):
-                tuile = int(a[2:])
+                tile_ = int(a[2:])
                 continue
             k, ref = a.split("=")
-            refs.append((k, tuile, ref))
-        poser(cle, refs)
+            refs.append((k, tile_, ref))
+        place(key, refs)
     else:
         raise SystemExit(__doc__)
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    hand(sys.argv[1:])

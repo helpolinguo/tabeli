@@ -20,8 +20,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-RACINE = Path(__file__).resolve().parent.parent
-SKAN = RACINE / "skan"
+ROOT = Path(__file__).resolve().parent.parent
+SCAN = ROOT / "skan"
 
 # Binarisation threshold. Both scans are greyscale; the paper of the Ido
 # booklet is speckled, that of the French booklet dirty and cockled. A
@@ -30,11 +30,11 @@ SKAN = RACINE / "skan"
 def otsu(g):
     hist = np.bincount(g.ravel(), minlength=256).astype(float)
     tot = hist.sum()
-    som = np.dot(np.arange(256), hist)
+    sm = np.dot(np.arange(256), hist)
     somB = 0.0
     wB = 0.0
     mx = -1.0
-    seuil = 128
+    threshold = 128
     for t in range(256):
         wB += hist[t]
         if wB == 0:
@@ -44,24 +44,24 @@ def otsu(g):
             break
         somB += t * hist[t]
         mB = somB / wB
-        mF = (som - somB) / wF
+        mF = (sm - somB) / wF
         v = wB * wF * (mB - mF) ** 2
         if v > mx:
             mx = v
-            seuil = t
-    return seuil
+            threshold = t
+    return threshold
 
 
-def profils(chemin, dpi):
+def profiles(path, dpi):
     """Returns (ink, height, width, dpi) — ink = boolean array."""
-    im = Image.open(chemin).convert("L")
+    im = Image.open(path).convert("L")
     g = np.asarray(im)
     s = otsu(g)
-    encre = g < s
-    return encre
+    ink = g < s
+    return ink
 
 
-def _plage_centrale(profil, seuil, ecart):
+def _central_range(profile, threshold, gap):
     """Longest continuous run above the threshold, gaps of fewer than `gap`
     pixels ignored, and which contains the middle of the profile.
 
@@ -73,36 +73,36 @@ def _plage_centrale(profil, seuil, ecart):
     that contains the middle of the page: the edge band is separated from
     it by the white margin, wider than `gap`.
     """
-    plein = profil > seuil
-    n = len(plein)
-    plages = []
+    solid = profile > threshold
+    n = len(solid)
+    ranges = []
     i = 0
     while i < n:
-        if plein[i]:
+        if solid[i]:
             j = i
             k = i
             while j < n:
-                if plein[j]:
+                if solid[j]:
                     k = j
                     j += 1
-                elif j - k <= ecart:
+                elif j - k <= gap:
                     j += 1
                 else:
                     break
-            plages.append((i, k))
+            ranges.append((i, k))
             i = j
         else:
             i += 1
-    if not plages:
+    if not ranges:
         return None
     mil = n // 2
-    dedans = [p for p in plages if p[0] <= mil <= p[1]]
-    if dedans:
-        return max(dedans, key=lambda p: p[1] - p[0])
-    return max(plages, key=lambda p: p[1] - p[0])
+    inside = [p for p in ranges if p[0] <= mil <= p[1]]
+    if inside:
+        return max(inside, key=lambda p: p[1] - p[0])
+    return max(ranges, key=lambda p: p[1] - p[0])
 
 
-def bloc(encre, marge_bruit=0.010, ecart=60):
+def block(ink, noise_margin=0.010, gap=60):
     """Box of the ink block, the edge of the scan set aside.
 
     In TWO stages, and the order matters. The columns first: it is the
@@ -114,21 +114,21 @@ def bloc(encre, marge_bruit=0.010, ecart=60):
     cut the page at the first slightly wide white window (title space, end
     of section) and the box began in the middle of the text.
     """
-    h, w = encre.shape
-    colonne = encre.sum(0) / h
-    px = _plage_centrale(colonne, marge_bruit, ecart)
+    h, w = ink.shape
+    column = ink.sum(0) / h
+    px = _central_range(column, noise_margin, gap)
     if px is None:
         return None
     x0, x1 = px
-    bande = encre[:, x0:x1 + 1]
-    ligne = bande.sum(1) / max(1, x1 - x0 + 1)
-    ys = np.where(ligne > marge_bruit)[0]
+    band = ink[:, x0:x1 + 1]
+    line = band.sum(1) / max(1, x1 - x0 + 1)
+    ys = np.where(line > noise_margin)[0]
     if len(ys) == 0:
         return None
     return int(x0), int(ys[0]), int(x1), int(ys[-1])
 
 
-def lignes_de_base(encre, x0, x1, y0, y1, seuil=0.02):
+def baselines(ink, x0, x1, y0, y1, threshold=0.02):
     """Ordinates of the baselines.
 
     The baseline is not the top of a line: the top depends on the ascenders
@@ -137,18 +137,18 @@ def lignes_de_base(encre, x0, x1, y0, y1, seuil=0.02):
     in the minority. We therefore take, for each band of ink, the ordinate
     at which the profile falls back below the threshold.
     """
-    bande = encre[y0:y1 + 1, x0:x1 + 1]
-    prof = bande.sum(1) / max(1, x1 - x0)
-    plein = prof > seuil
+    band = ink[y0:y1 + 1, x0:x1 + 1]
+    prof = band.sum(1) / max(1, x1 - x0)
+    solid = prof > threshold
     bases = []
-    dans = False
-    for i, p in enumerate(plein):
-        if p and not dans:
-            dans = True
-        elif not p and dans:
-            dans = False
+    in_ = False
+    for i, p in enumerate(solid):
+        if p and not in_:
+            in_ = True
+        elif not p and in_:
+            in_ = False
             bases.append(y0 + i)
-    if dans:
+    if in_:
         bases.append(y1)
     return bases
 
@@ -161,25 +161,25 @@ def pas(bases):
     return float(np.median(d)) if len(d) else None
 
 
-def main():
-    langue = sys.argv[1] if len(sys.argv) > 1 else "io"
-    debut = int(sys.argv[2]) if len(sys.argv) > 2 else 1
-    fin = int(sys.argv[3]) if len(sys.argv) > 3 else 999
-    dossier = SKAN / langue
-    fichiers = sorted(dossier.glob("f-*.jpg"))
+def hand():
+    lang = sys.argv[1] if len(sys.argv) > 1 else "io"
+    start_ = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+    end_ = int(sys.argv[3]) if len(sys.argv) > 3 else 999
+    folder = SCAN / lang
+    files_ = sorted(folder.glob("f-*.jpg"))
     out = {}
-    for f in fichiers:
+    for f in files_:
         n = int(f.stem.split("-")[1])
-        if not (debut <= n <= fin):
+        if not (start_ <= n <= end_):
             continue
-        encre = profils(f, None)
-        h, w = encre.shape
-        b = bloc(encre)
+        ink = profiles(f, None)
+        h, w = ink.shape
+        b = block(ink)
         if b is None:
             out[n] = {"vide": True, "px": [w, h]}
             continue
         x0, y0, x1, y1 = b
-        bases = lignes_de_base(encre, x0, x1, y0, y1)
+        bases = baselines(ink, x0, x1, y0, y1)
         out[n] = {
             "px": [w, h],
             "bloc": [x0, y0, x1, y1],
@@ -192,9 +192,9 @@ def main():
         print(f"{n:3d}  bloc {x0:5d},{y0:5d} → {x1:5d},{y1:5d}"
               f"  l={x1-x0+1:5d}  lignes={len(bases):3d}"
               f"  pas={out[n]['pas']}")
-    (RACINE / "tools" / f"inv-{langue}.json").write_text(
+    (ROOT / "tools" / f"inv-{lang}.json").write_text(
         json.dumps(out, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":
-    main()
+    hand()

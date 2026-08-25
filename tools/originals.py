@@ -42,13 +42,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numbering as N                                          # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
-RACINE = N.RACINE
-CATALOGO = RACINE / "plates" / "originals.json"
+ROOT = N.ROOT
+CATALOGUE = ROOT / "plates" / "originals.json"
 
 
-def gris(chemin):
+def grey_(path):
     """The image in grey, the ink in black, as a normalised float."""
-    im = Image.open(chemin)
+    im = Image.open(path)
     if im.mode not in ("L", "I;16"):
         im = im.convert("L")
     a = np.asarray(im).astype(np.float32)
@@ -57,13 +57,13 @@ def gris(chemin):
     return a
 
 
-def notre_trait(cle):
+def our_line_layer(key):
     """Our line layer, put back the right way round: the ink in black."""
-    a = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")).astype(np.float32)
+    a = np.asarray(Image.open(N.WORKING / f"{key}-trako.png")).astype(np.float32)
     return 255.0 - a
 
 
-def centrer(a):
+def centre_(a):
     a = a - a.mean()
     s = a.std()
     return a / s if s > 1e-6 else a
@@ -77,87 +77,87 @@ def orientations(a):
         yield k, np.rot90(a, k)
 
 
-def caler(cle, chemin, large=1100, verbeux=True):
+def register_scan(key, path, wide=1100, verbose=True):
     """The similarity that leads from our plate to the scan.
 
     Returns (M, score, turn): M is the 2x3 matrix that sends a point of
     OUR plate, in points, onto the scan, in points.
     """
-    src = notre_trait(cle)
+    src = our_line_layer(key)
     HS, LS = src.shape
-    dst0 = gris(chemin)
-    petit_src = cv2.resize(src, (large, round(large * HS / LS)),
+    dst0 = grey_(path)
+    small_src = cv2.resize(src, (wide, round(wide * HS / LS)),
                            interpolation=cv2.INTER_AREA)
-    ech_src = LS / large
+    sc_src = LS / wide
     best = None
-    for tour, dst in orientations(dst0):
+    for turn, dst in orientations(dst0):
         HD, LD = dst.shape
         if LD < 200 or HD < 200:
             continue
-        f = large / max(LD, HD)
-        petit_dst = cv2.resize(dst, (max(1, round(LD * f)),
+        f = wide / max(LD, HD)
+        small_dst = cv2.resize(dst, (max(1, round(LD * f)),
                                      max(1, round(HD * f))),
                                interpolation=cv2.INTER_AREA)
-        ech_dst = 1 / f
+        sc_dst = 1 / f
         # The engraving occupies only part of the leaf: we look for our
         # plate WITHIN the page, at several scales.
-        g = centrer(petit_dst)
+        g = centre_(small_dst)
         for r in np.arange(0.45, 1.02, 0.025):
-            w = round(petit_src.shape[1] * r)
-            h = round(petit_src.shape[0] * r)
+            w = round(small_src.shape[1] * r)
+            h = round(small_src.shape[0] * r)
             if w < 80 or h < 80 or w > g.shape[1] or h > g.shape[0]:
                 continue
-            s = centrer(cv2.resize(petit_src, (w, h),
+            s = centre_(cv2.resize(small_src, (w, h),
                                    interpolation=cv2.INTER_AREA))
             m = cv2.matchTemplate(g, s, cv2.TM_CCOEFF_NORMED)
             _, mx, _, loc = cv2.minMaxLoc(m)
             if best is None or mx > best[0]:
-                best = (mx, tour, r, loc, ech_dst, w, h)
+                best = (mx, turn, r, loc, sc_dst, w, h)
     if best is None:
         raise SystemExit("  rien a caler")
-    score, tour, r, (x0, y0), ech_dst, w, h = best
+    score, turn, r, (x0, y0), sc_dst, w, h = best
     # From our plate (points) to the TURNED scan (points).
-    k = r / ech_src * ech_dst
-    M = np.array([[k, 0.0, x0 * ech_dst],
-                  [0.0, k, y0 * ech_dst]], np.float32)
-    if verbeux:
-        print(f"  {cle} : quart de tour {tour}, echelle {k:.4f}, "
-              f"coin ({round(x0 * ech_dst)}, {round(y0 * ech_dst)}), "
+    k = r / sc_src * sc_dst
+    M = np.array([[k, 0.0, x0 * sc_dst],
+                  [0.0, k, y0 * sc_dst]], np.float32)
+    if verbose:
+        print(f"  {key} : quart de tour {turn}, echelle {k:.4f}, "
+              f"coin ({round(x0 * sc_dst)}, {round(y0 * sc_dst)}), "
               f"correlation {score:.3f}")
         print(f"  la gravure y mesure {round(LS * k)} x {round(HS * k)} "
               f"points (nous : {LS} x {HS})")
-    return M, score, tour
+    return M, score, turn
 
 
-def charger_tournee(chemin, tour):
-    a = gris(chemin)
-    return np.rot90(a, tour)
+def load_turned(path, turn):
+    a = grey_(path)
+    return np.rot90(a, turn)
 
 
-def compar(cle, chemin, cx=0.5, cy=0.5, w=0.115, h=0.095, sortie=None):
+def compare(key, path, cx=0.5, cy=0.5, w=0.115, h=0.095, out_path=None):
     """The same detail in all three states, side by side."""
-    M, score, tour = caler(cle, chemin)
-    ori = charger_tournee(chemin, tour)
-    HS, LS = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")).shape
+    M, score, turn = register_scan(key, path)
+    ori = load_turned(path, turn)
+    HS, LS = np.asarray(Image.open(N.WORKING / f"{key}-trako.png")).shape
     x0f, y0f = cx - w / 2, cy - h / 2
 
-    def coupe_ori():
+    def cut_orig():
         p = np.array([[x0f * LS, y0f * HS, 1.0],
                       [(x0f + w) * LS, (y0f + h) * HS, 1.0]]).T
         q = M @ p
         return Image.fromarray(ori.astype(np.uint8)).crop(
             (round(q[0, 0]), round(q[1, 0]), round(q[0, 1]), round(q[1, 1])))
 
-    vues = [(coupe_ori(), "la numerisation d'origine")]
-    for nom, im, quoi in (
-            ("detalo", Image.open(RACINE / "plates" / f"{cle}-detalo.webp")
+    views = [(cut_orig(), "la numerisation d'origine")]
+    for name_, im, what in (
+            ("detalo", Image.open(ROOT / "plates" / f"{key}-detalo.webp")
              .convert("L"), "ce que la page sert"),
-            ("trako", ImageOps.invert(Image.open(N.KOVRI / f"{cle}-trako.png")
+            ("trako", ImageOps.invert(Image.open(N.WORKING / f"{key}-trako.png")
                                       .convert("L")), "notre couche de trait")):
         W_, H_ = im.size
-        vues.append((im.crop((round(x0f * W_), round(y0f * H_),
+        views.append((im.crop((round(x0f * W_), round(y0f * H_),
                               round((x0f + w) * W_), round((y0f + h) * H_))),
-                     quoi))
+                     what))
     OUT = (1000, round(1000 * h / w * (HS / LS) / 1.0))
     F = ImageFont.truetype(
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 21)
@@ -166,7 +166,7 @@ def compar(cle, chemin, cx=0.5, cy=0.5, w=0.115, h=0.095, sortie=None):
     pl = Image.new("RGB", (3 * (OUT[0] + 16) + 16, OUT[1] + 90),
                    (255, 255, 255))
     d = ImageDraw.Draw(pl)
-    for i, (c, t) in enumerate(vues):
+    for i, (c, t) in enumerate(views):
         n = f"{c.width} x {c.height} points pour ce detail"
         c = c.resize(OUT, Image.LANCZOS).convert("RGB")
         X = 16 + i * (OUT[0] + 16)
@@ -175,11 +175,11 @@ def compar(cle, chemin, cx=0.5, cy=0.5, w=0.115, h=0.095, sortie=None):
                     width=2)
         d.text((X, OUT[1] + 26), t, fill=(0, 0, 0), font=F)
         d.text((X, OUT[1] + 54), n, fill=(90, 90, 90), font=F2)
-    sortie = Path(sortie or (RACINE / "plates" / "review" /
-                             f"{cle}-origino.png"))
-    sortie.parent.mkdir(parents=True, exist_ok=True)
-    pl.save(sortie)
-    print(f"  comparaison dans {sortie}")
+    out_path = Path(out_path or (ROOT / "plates" / "review" /
+                             f"{key}-origino.png"))
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    pl.save(out_path)
+    print(f"  comparaison dans {out_path}")
 
 
 # -------------------------------------------------------------------
@@ -205,20 +205,20 @@ def compar(cle, chemin, cx=0.5, cy=0.5, w=0.115, h=0.095, sortie=None):
 #  235, the blackest ink at 66 — and that is how it must be kept: the
 #  edition is diplomatic, the lightening will be done at display time if
 #  wanted, and will stay reversible.
-MARGE_FILET = 8
+RULE_MARGIN = 8
 
 
-def _tourner(a, th, centre):
+def _turn(a, th, centre):
     return cv2.getRotationMatrix2D(centre, th, 1.0)
 
 
-def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
+def rule_angle(ink_, band, axe, ampl=1.2, pas=0.025):
     """The angle that makes a line of the frame sharpest."""
     best = None
-    y0, y1, x0, x1 = bande
-    b = enc[y0:y1, x0:x1]
+    y0, y1, x0, x1 = band
+    b = ink_[y0:y1, x0:x1]
     for th in np.arange(-ampl, ampl + 1e-9, pas):
-        M = _tourner(b, th, (b.shape[1] / 2, b.shape[0] / 2))
+        M = _turn(b, th, (b.shape[1] / 2, b.shape[0] / 2))
         r = cv2.warpAffine(b, M, (b.shape[1], b.shape[0]),
                            flags=cv2.INTER_LINEAR, borderValue=0)
         p = r.mean(axis=axe)
@@ -245,21 +245,21 @@ def angle_filet(enc, bande, axe, ampl=1.2, pas=0.025):
 # following it. We therefore take the eight best peaks of the band,
 # follow each, and keep the tightest fit among those that keep enough
 # columns.
-def meilleur_filet(enc, a0, a1, x0, x1, cand=8):
+def best_rule(ink_, a0, a1, x0, x1, cand=8):
     """A band's rule: the candidate we follow best."""
-    prof = enc[a0:a1, round(0.20 * enc.shape[1]):
-               round(0.80 * enc.shape[1])].mean(1)
-    ordre = np.argsort(prof)[::-1]
-    pris = []
-    for i in ordre:
-        if all(abs(int(i) - j) > 25 for j in pris):
-            pris.append(int(i))
-        if len(pris) >= cand:
+    prof = ink_[a0:a1, round(0.20 * ink_.shape[1]):
+               round(0.80 * ink_.shape[1])].mean(1)
+    order_ = np.argsort(prof)[::-1]
+    taken = []
+    for i in order_:
+        if all(abs(int(i) - j) > 25 for j in taken):
+            taken.append(int(i))
+        if len(taken) >= cand:
             break
     best = None
-    for i in pris:
+    for i in taken:
         y = a0 + i
-        m = suivre_filet(enc, max(0, y - 22), min(enc.shape[0], y + 23),
+        m = follow_rule(ink_, max(0, y - 22), min(ink_.shape[0], y + 23),
                          x0, x1)
         if not m or m[2] < 40:
             continue
@@ -295,50 +295,50 @@ def meilleur_filet(enc, a0, a1, x0, x1, cand=8):
 # Checked on all sixteen plates: the two measurements fall on each
 # other twelve times, and the four times they differ it is the outer
 # one that is on the rule.
-def _paper(q, marge):
-    m = round(marge * len(q))
+def _paper(q, margin):
+    m = round(margin * len(q))
     return float(np.percentile(q[:m], 20)), float(np.median(q[m:]))
 
 
-def filet_lateral(q, marge=0.30, large=20):
+def side_rule(q, margin=0.30, wide=20):
     """The first thin peak that rises above the paper."""
-    fond, plein = _paper(q, marge)
-    haut = max(6.0, 0.25 * (plein - fond))
+    floor, solid = _paper(q, margin)
+    top = max(6.0, 0.25 * (solid - floor))
     for i in range(2, len(q) - 2):
-        if q[i] >= q[i - 1] and q[i] > q[i + 1] and q[i] - fond >= haut:
-            mi = fond + (q[i] - fond) / 2
+        if q[i] >= q[i - 1] and q[i] > q[i + 1] and q[i] - floor >= top:
+            mi = floor + (q[i] - floor) / 2
             a, b = i, i
             while a > 0 and q[a] > mi:
                 a -= 1
             while b < len(q) - 1 and q[b] > mi:
                 b += 1
-            if b - a <= large:
+            if b - a <= wide:
                 return i
     return None
 
 
-def entree_dessin(q, marge=0.30, tenue=20):
+def drawing_entry(q, margin=0.30, tenue=20):
     """The place where the ink rises to half-full and stays there."""
-    fond, plein = _paper(q, marge)
-    if plein - fond < 4:
+    floor, solid = _paper(q, margin)
+    if solid - floor < 4:
         return None
-    seuil = fond + 0.40 * (plein - fond)
+    threshold = floor + 0.40 * (solid - floor)
     for i in range(len(q) - tenue):
-        if (q[i:i + tenue] > seuil).all():
+        if (q[i:i + tenue] > threshold).all():
             return i
     return None
 
 
-def bord_lateral(prof, sens):
+def side_edge(prof, way):
     """One side's edge: the outer of the two measurements."""
     q = np.asarray(prof, dtype=float)
-    if sens < 0:
+    if way < 0:
         q = q[::-1]
-    duo = [i for i in (filet_lateral(q), entree_dessin(q)) if i is not None]
-    if not duo:
+    pair_ = [i for i in (side_rule(q), drawing_entry(q)) if i is not None]
+    if not pair_:
         return None
-    i = min(duo)
-    return i if sens > 0 else len(q) - 1 - i
+    i = min(pair_)
+    return i if way > 0 else len(q) - 1 - i
 
 
 # MEASURING THE RULE, RATHER THAN LOOKING FOR ITS ANGLE. We used to
@@ -354,7 +354,7 @@ def bord_lateral(prof, sens):
 # next whatever departs too far from the previous one. The slope gives
 # the angle, and the residual says whether we have indeed followed a
 # rule or run after the branch of a tree.
-def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
+def follow_rule(ink_, y0, y1, x0, x1, pas=40, window=14):
     """Follows a nearly horizontal line and returns (angle, residual, n).
 
     WE KEEP ONLY THE COLUMNS WHERE THE RULE CAN BE SEEN. On a plate
@@ -368,11 +368,11 @@ def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
     """
     xs, ys, fs = [], [], []
     for x in range(x0, x1 - pas, pas):
-        col = enc[y0:y1, x:x + pas].mean(1)
+        col = ink_[y0:y1, x:x + pas].mean(1)
         if col.max() < 8:
             continue
         i = int(np.argmax(col))
-        a0, b0 = max(0, i - fenetre), min(len(col), i + fenetre + 1)
+        a0, b0 = max(0, i - window), min(len(col), i + window + 1)
         w = col[a0:b0]
         if w.sum() <= 0:
             continue
@@ -382,16 +382,16 @@ def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
     if len(xs) < 8:
         return None
     X, Y, F = np.array(xs), np.array(ys), np.array(fs)
-    garde = F >= 0.5 * float(np.median(F))
-    if garde.sum() >= 8:
-        X, Y = X[garde], Y[garde]
+    keep = F >= 0.5 * float(np.median(F))
+    if keep.sum() >= 8:
+        X, Y = X[keep], Y[keep]
     m = c = 0.0
     for _ in range(4):
         A = np.vstack([X, np.ones_like(X)]).T
         (m, c), *_ = np.linalg.lstsq(A, Y, rcond=None)
         r = np.abs(Y - (m * X + c))
-        seuil = max(2.0, 3.0 * float(np.median(r)))
-        g = r <= seuil
+        threshold = max(2.0, 3.0 * float(np.median(r)))
+        g = r <= threshold
         if g.sum() < 8 or g.all():
             break
         X, Y = X[g], Y[g]
@@ -407,36 +407,36 @@ def suivre_filet(enc, y0, y1, x0, x1, pas=40, fenetre=14):
 # the point (W/2, y) turns about (W/2, H/2), hence along the very axis
 # of the rotation. We take it as it stands, with one last registration
 # to within twenty points.
-def cadre(enc, yh, yb):
+def frame(ink_, yh, yb):
     """The frame of an already straightened image, horizontals known."""
-    H, W = enc.shape
+    H, W = ink_.shape
     mh, mv = round(0.045 * H), round(0.035 * W)
 
-    def caler(y, r=20):
+    def register_scan(y, r=20):
         a, b = max(0, y - r), min(H, y + r + 1)
-        p = enc[a:b, mv:W - mv].mean(1)
+        p = ink_[a:b, mv:W - mv].mean(1)
         return a + int(np.argmax(p)), float(p.max() - np.median(p))
 
-    haut, fh = caler(yh) if yh is not None else (round(0.055 * H), 0.0)
-    bas, fb = caler(yb) if yb is not None else (round(0.905 * H), 0.0)
-    pg = enc[mh:H - mh, 0:round(0.12 * W)].mean(0)
-    pd = enc[mh:H - mh, round(0.88 * W):W].mean(0)
-    g = bord_lateral(pg, +1)
-    d = bord_lateral(pd, -1)
-    gau = 0 if g is None else g
-    dro = W - 1 if d is None else round(0.88 * W) + d
-    return (gau, haut, dro, bas), (0.0, fh, 0.0, fb)
+    top, fh = register_scan(yh) if yh is not None else (round(0.055 * H), 0.0)
+    bottom, fb = register_scan(yb) if yb is not None else (round(0.905 * H), 0.0)
+    pg = ink_[mh:H - mh, 0:round(0.12 * W)].mean(0)
+    pd = ink_[mh:H - mh, round(0.88 * W):W].mean(0)
+    g = side_edge(pg, +1)
+    d = side_edge(pd, -1)
+    lef = 0 if g is None else g
+    rig = W - 1 if d is None else round(0.88 * W) + d
+    return (lef, top, rig, bottom), (0.0, fh, 0.0, fb)
 
 
-def netigar(chemin, dest=None, verbeux=True):
+def clean_up(path, dest=None, verbose=True):
     """Straightens and trims a scan, in a single resampling."""
-    im = Image.open(chemin)
+    im = Image.open(path)
     a = np.asarray(im.convert("L"))
     # THE SHEET IS BOUND THE TALL WAY, the engraving lies across it.
-    tour = 3 if a.shape[0] > a.shape[1] else 0
-    a = np.rot90(a, tour)
+    turn = 3 if a.shape[0] > a.shape[1] else 0
+    a = np.rot90(a, turn)
     H, W = a.shape
-    enc = np.clip(200.0 - a.astype(np.float32), 0, None)
+    ink_ = np.clip(200.0 - a.astype(np.float32), 0, None)
     # 1. the angle, on the two horizontal rules, followed point by point.
     #    WE FIRST NARROW THE BAND AROUND THE RULE. On table 2 the ground is
     #    hatched horizontally right down to the bottom of the engraving,
@@ -450,8 +450,8 @@ def netigar(chemin, dest=None, verbeux=True):
     # eighty-ninth and the ninety-first. To search wider is to catch the
     # edge of the sheet — straighter than the rule, and wrong.
     X0, X1 = round(0.08 * W), round(0.92 * W)
-    rh = meilleur_filet(enc, round(0.045 * H), round(0.100 * H), X0, X1)
-    rb = meilleur_filet(enc, round(0.875 * H), round(0.925 * H), X0, X1)
+    rh = best_rule(ink_, round(0.045 * H), round(0.100 * H), X0, X1)
+    rb = best_rule(ink_, round(0.875 * H), round(0.925 * H), X0, X1)
     mh, yh = rh if rh else (None, None)
     mb, yb = rb if rb else (None, None)
     # WHEN THE TWO RULES CONTRADICT EACH OTHER, WE BELIEVE THE BETTER
@@ -459,51 +459,51 @@ def netigar(chemin, dest=None, verbeux=True):
     # on the other five one of the two was followed on half as many
     # columns, and it is that one that departs. The weight of a measurement
     # is the number of columns kept divided by its fitting residual.
-    def poids(m):
+    def weight(m):
         return m[2] / (m[1] + 0.5) if m else 0.0
 
-    duo = [m for m in (mh, mb) if m]
-    if len(duo) == 2 and abs(mh[0] - mb[0]) > 0.35:
-        th = max(duo, key=poids)[0]
-    elif duo:
-        pt = sum(poids(m) for m in duo)
-        th = sum(m[0] * poids(m) for m in duo) / pt
+    pair_ = [m for m in (mh, mb) if m]
+    if len(pair_) == 2 and abs(mh[0] - mb[0]) > 0.35:
+        th = max(pair_, key=weight)[0]
+    elif pair_:
+        pt = sum(weight(m) for m in pair_)
+        th = sum(m[0] * weight(m) for m in pair_) / pt
     else:
         th = 0.0
     # 2. the frame, measured on a straightened copy (thrown away after)
-    Mr = _tourner(a, th, (W / 2, H / 2))
-    droit = cv2.warpAffine(enc, Mr, (W, H), flags=cv2.INTER_LINEAR,
+    Mr = _turn(a, th, (W / 2, H / 2))
+    right = cv2.warpAffine(ink_, Mr, (W, H), flags=cv2.INTER_LINEAR,
                            borderValue=0)
-    (x0, y0, x1, y1), forces = cadre(droit, yh, yb)
-    x0, y0 = x0 - MARGE_FILET, y0 - MARGE_FILET
-    x1, y1 = x1 + MARGE_FILET, y1 + MARGE_FILET
+    (x0, y0, x1, y1), strengths = frame(right, yh, yb)
+    x0, y0 = x0 - RULE_MARGIN, y0 - RULE_MARGIN
+    x1, y1 = x1 + RULE_MARGIN, y1 + RULE_MARGIN
     # 3. rotation AND trim in a single matrix, a single pass
     M = Mr.copy()
     M[0, 2] -= x0
     M[1, 2] -= y0
     LG, HT = x1 - x0, y1 - y0
-    src = np.rot90(np.asarray(im.convert("L")), tour)
+    src = np.rot90(np.asarray(im.convert("L")), turn)
     out = cv2.warpAffine(src, M, (LG, HT), flags=cv2.INTER_CUBIC,
                          borderMode=cv2.BORDER_REPLICATE)
     # check: what skew is left in the verticals
     e2 = np.clip(200.0 - out.astype(np.float32), 0, None)
-    vg = angle_filet(e2, (round(.05*HT), round(.95*HT), 0, 40), 0, 1.0)[1]
-    vd = angle_filet(e2, (round(.05*HT), round(.95*HT), LG-40, LG), 0, 1.0)[1]
-    if verbeux:
-        def dire(m):
+    vg = rule_angle(e2, (round(.05*HT), round(.95*HT), 0, 40), 0, 1.0)[1]
+    vd = rule_angle(e2, (round(.05*HT), round(.95*HT), LG-40, LG), 0, 1.0)[1]
+    if verbose:
+        def say(m):
             return (f"{m[0]:+.3f} (ecart {m[1]:.2f} sur {m[2]} points)"
                     if m else "introuvable")
-        print(f"  quart de tour {tour}, redressement {th:+.3f} deg")
-        print(f"    filet du haut : {dire(mh)}")
-        print(f"    filet du bas  : {dire(mb)}")
+        print(f"  quart de tour {turn}, redressement {th:+.3f} deg")
+        print(f"    filet du haut : {say(mh)}")
+        print(f"    filet du bas  : {say(mb)}")
         print(f"  cadre en ({x0}, {y0})-({x1}, {y1}) : {LG} x {HT} points")
         print(f"  verticales laissees de biais : {vg:+.3f} et {vd:+.3f} deg")
     if dest:
         Path(dest).parent.mkdir(parents=True, exist_ok=True)
         Image.fromarray(out).save(dest)
-        if verbeux:
+        if verbose:
             print(f"  ecrit dans {dest}")
-    return out, {"tour": tour, "angulo": round(th, 4),
+    return out, {"tour": turn, "angulo": round(th, 4),
                  "kadro": [int(x0), int(y0), int(x1), int(y1)],
                  # THE TWO RULES SEPARATELY, with their fitting residual:
                  # it is the only way to know later whether we have indeed
@@ -533,7 +533,7 @@ def netigar(chemin, dest=None, verbeux=True):
 #  scan it is dark. Having taken them in the same sense made the
 #  correlation drop from 0.95 to 0.10, and we were looking for the fault
 #  elsewhere.
-def densito(a, W, sigma=1.6):
+def ink_density(a, W, sigma=1.6):
     """An ink density map, comparable from one rendering to another."""
     h = round(W * a.shape[0] / a.shape[1])
     s = cv2.resize(a.astype(np.float32), (W, h), interpolation=cv2.INTER_AREA)
@@ -541,27 +541,27 @@ def densito(a, W, sigma=1.6):
     return (s - s.mean()) / (s.std() + 1e-6)
 
 
-def mezuri(cle, neta, W=1000, verbeux=True):
+def measure_shift(key, clean_, W=1000, verbose=True):
     """The matrix that leads from the old plate to the new one."""
     # THE REFERENCE IS THE PREVIOUS PLATE, whatever it may be. The first
     # time it is the line layer of the colourised PDF, where the ink is
     # 255; afterwards, if we clean again, it is the already cleaned
     # facsimile, where the ink is dark. Without that a second cleaning
     # would start the numbers off from the stencil, which they have left.
-    ancienne = RACINE / "originals" / "kovri" / f"{cle}-neta-antaua.png"
-    if ancienne.exists():
-        vieux = 255.0 - np.asarray(Image.open(ancienne).convert("L")
+    old_ = ROOT / "originals" / "kovri" / f"{key}-neta-antaua.png"
+    if old_.exists():
+        old = 255.0 - np.asarray(Image.open(old_).convert("L")
                                    ).astype(np.float32)
     else:
-        vieux = np.asarray(Image.open(N.KOVRI / f"{cle}-trako.png")
+        old = np.asarray(Image.open(N.WORKING / f"{key}-trako.png")
                            ).astype(np.float32)      # the ink is 255 there
-    neuf = 255.0 - np.asarray(Image.open(neta).convert("L")).astype(np.float32)
-    LO, HO = vieux.shape[1], vieux.shape[0]
-    LN, HN = neuf.shape[1], neuf.shape[0]
+    fresh = 255.0 - np.asarray(Image.open(clean_).convert("L")).astype(np.float32)
+    LO, HO = old.shape[1], old.shape[0]
+    LN, HN = fresh.shape[1], fresh.shape[0]
     sO, sN = W / LO, W / LN
-    A, B = densito(vieux, W), densito(neuf, W)
+    A, B = ink_density(old, W), ink_density(fresh, W)
 
-    def essai(k, th, m=0.14):
+    def trial(k, th, m=0.14):
         hA, wA = A.shape
         M = cv2.getRotationMatrix2D((wA / 2, hA / 2), th, k)
         r = cv2.warpAffine(A, M, (wA, hA), flags=cv2.INTER_LINEAR,
@@ -578,12 +578,12 @@ def mezuri(cle, neta, W=1000, verbeux=True):
     best = None
     for k in np.arange(0.90, 1.101, 0.005):
         for th in np.arange(-1.0, 1.01, 0.1):
-            e = essai(k, th)
+            e = trial(k, th)
             if e and (best is None or e[0] > best[0]):
                 best = e
     for k in np.arange(best[1] - 0.006, best[1] + 0.0061, 0.0005):
         for th in np.arange(best[2] - 0.12, best[2] + 0.121, 0.01):
-            e = essai(k, th)
+            e = trial(k, th)
             if e and e[0] > best[0]:
                 best = e
     mx, k, th, loc, (gx, gy) = best
@@ -591,8 +591,8 @@ def mezuri(cle, neta, W=1000, verbeux=True):
     M3 = np.vstack([cv2.getRotationMatrix2D((wA / 2, hA / 2), th, k), [0, 0, 1]])
     D = np.array([[1, 0, loc[0] - gx], [0, 1, loc[1] - gy], [0, 0, 1]], float)
     T = np.diag([1 / sN, 1 / sN, 1.0]) @ D @ M3 @ np.diag([sO, sO, 1.0])
-    if verbeux:
-        print(f"  {cle} : correlation {mx:.4f}, echelle {T[0, 0]:.5f}, "
+    if verbose:
+        print(f"  {key} : correlation {mx:.4f}, echelle {T[0, 0]:.5f}, "
               f"rotation {th:+.2f} deg")
         print(f"  l'ancienne planche ({LO} x {HO}) se pose en "
               f"({T[0, 2]:.0f}, {T[1, 2]:.0f}) de la nouvelle ({LN} x {HN})")
@@ -604,26 +604,26 @@ def _pt(T, x, y):
     return float(q[0]), float(q[1])
 
 
-def deja_porte(cle):
+def already_carried(key):
     """Has this table already been carried onto its original?"""
-    if not CATALOGO.exists():
+    if not CATALOGUE.exists():
         return False
     return "transporto" in json.loads(
-        CATALOGO.read_text(encoding="utf-8")).get(cle, {})
+        CATALOGUE.read_text(encoding="utf-8")).get(key, {})
 
 
 # THE CARRYING OVER IS DONE ONLY ONCE. Doing it again would apply the
 # similarity to positions that have already undergone it, and the
 # fifteen hundred numbers would go off askew with nothing to signal it.
 # The tool therefore refuses to start over, unless told to.
-def transporti(cle, neta, verbeux=True, force=False):
+def carry_over(key, clean_, verbose=True, force=False):
     """Carries the numbers, the scenes and the sizes onto the new plate."""
-    if deja_porte(cle) and not force:
+    if already_carried(key) and not force:
         raise SystemExit(
-            f"  {cle} : deja porte sur son original. Recommencer "
+            f"  {key} : deja porte sur son original. Recommencer "
             f"deplacerait les numeros une seconde fois.\n"
             f"  Si c'est bien ce qu'on veut : ajouter « force ».")
-    T, korelo, (LO, HO), (LN, HN) = mezuri(cle, neta, verbeux=verbeux)
+    T, correlation, (LO, HO), (LN, HN) = measure_shift(key, clean_, verbose=verbose)
     k = float(np.hypot(T[0, 0], T[1, 0]))
 
     # WHAT FALLS OUTSIDE THE PLATE IS NOT KEPT. The trim does not fall in
@@ -632,56 +632,56 @@ def transporti(cle, neta, verbeux=True, force=False):
     # may end up outside. To keep it is to promise a close-up on nothing.
     # We say so, and let it drop: it will have to be looked for again on
     # the new plate.
-    perdus = []
+    losts = []
 
-    def boite(v, nom=""):
+    def box(v, name_=""):
         """(x, y, w, h) as a fraction of the old -> of the new."""
         x, y = _pt(T, v[0] * LO, v[1] * HO)
         cx, cy = x + v[2] * LO * k / 2, y + v[3] * HO * k / 2
         if not (0 <= cx < LN and 0 <= cy < HN):
-            perdus.append(nom)
+            losts.append(name_)
             return None
         return [round(x / LN, 6), round(y / HN, 6),
                 round(v[2] * LO * k / LN, 6), round(v[3] * HO * k / HN, 6)] \
             + list(v[4:])
 
     n = 0
-    f = RACINE / "plates" / "numbers.json"
+    f = ROOT / "plates" / "numbers.json"
     d = json.loads(f.read_text(encoding="utf-8"))
-    if cle in d:
-        e = d[cle]
+    if key in d:
+        e = d[key]
         e["numeri"] = {q: b for q, v in e["numeri"].items()
-                       if (b := boite(v, q)) is not None}
+                       if (b := box(v, q)) is not None}
         e["largeur"], e["alteso"] = LN, HN
         e["corpo"] = max(1, round(e["corpo"] * k))
         n += len(e["numeri"])
         f.write_text(json.dumps(d, ensure_ascii=False, indent=1),
                      encoding="utf-8")
     m = 0
-    f = RACINE / "plates" / "manual.json"
+    f = ROOT / "plates" / "manual.json"
     if f.exists():
         d = json.loads(f.read_text(encoding="utf-8"))
-        if cle in d:
-            d[cle] = {q: b for q, v in d[cle].items()
-                      if (b := boite(v, q)) is not None}
-            m = len(d[cle])
+        if key in d:
+            d[key] = {q: b for q, v in d[key].items()
+                      if (b := box(v, q)) is not None}
+            m = len(d[key])
             f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
                          encoding="utf-8")
     c = 0
-    f = RACINE / "plates" / "scenes.json"
+    f = ROOT / "plates" / "scenes.json"
     if f.exists():
         d = json.loads(f.read_text(encoding="utf-8"))
-        if cle in d:
-            for sc, forme in d[cle].items():
-                if forme[0] == "elipso":
-                    x, y = _pt(T, forme[1] * LO, forme[2] * HO)
-                    d[cle][sc] = ["elipso", round(x / LN, 6), round(y / HN, 6),
-                                  round(forme[3] * LO * k / LN, 6),
-                                  round(forme[4] * HO * k / HN, 6)]
+        if key in d:
+            for sc, shape_ in d[key].items():
+                if shape_[0] == "elipso":
+                    x, y = _pt(T, shape_[1] * LO, shape_[2] * HO)
+                    d[key][sc] = ["elipso", round(x / LN, 6), round(y / HN, 6),
+                                  round(shape_[3] * LO * k / LN, 6),
+                                  round(shape_[4] * HO * k / HN, 6)]
                 else:
-                    x0, y0 = _pt(T, forme[1] * LO, forme[2] * HO)
-                    x1, y1 = _pt(T, forme[3] * LO, forme[4] * HO)
-                    d[cle][sc] = ["rekt", round(max(0.0, x0 / LN), 6),
+                    x0, y0 = _pt(T, shape_[1] * LO, shape_[2] * HO)
+                    x1, y1 = _pt(T, shape_[3] * LO, shape_[4] * HO)
+                    d[key][sc] = ["rekt", round(max(0.0, x0 / LN), 6),
                                   round(max(0.0, y0 / HN), 6),
                                   round(min(1.0, x1 / LN), 6),
                                   round(min(1.0, y1 / HN), 6)]
@@ -689,30 +689,30 @@ def transporti(cle, neta, verbeux=True, force=False):
             f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
                          encoding="utf-8")
     lt = 0
-    f = RACINE / "plates" / "letters.json"
+    f = ROOT / "plates" / "letters.json"
     if f.exists():
         d = json.loads(f.read_text(encoding="utf-8"))
-        if d.get(cle):
-            d[cle] = {q: b for q, v in d[cle].items()
-                      if (b := boite(v, q)) is not None}
-            lt = len(d[cle])
+        if d.get(key):
+            d[key] = {q: b for q, v in d[key].items()
+                      if (b := box(v, q)) is not None}
+            lt = len(d[key])
             f.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n",
                          encoding="utf-8")
-    cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
-           if CATALOGO.exists() else {})
-    e = cat.setdefault(cle, {})
+    cat = (json.loads(CATALOGUE.read_text(encoding="utf-8"))
+           if CATALOGUE.exists() else {})
+    e = cat.setdefault(key, {})
     e["transporto"] = {"matrico": [[float(v) for v in r] for r in T[:2]],
-                       "korelo": round(korelo, 4),
+                       "korelo": round(correlation, 4),
                        "de": [LO, HO], "a": [LN, HN]}
-    CATALOGO.write_text(json.dumps(cat, ensure_ascii=False, indent=1) + "\n",
+    CATALOGUE.write_text(json.dumps(cat, ensure_ascii=False, indent=1) + "\n",
                         encoding="utf-8")
-    if verbeux:
+    if verbose:
         print(f"  {n} numeros portes, dont {m} poses a la main"
               + (f", {c} scenes" if c else "")
               + (f", {lt} lettres" if lt else ""))
-        if perdus:
-            print(f"  ATTENTION : {len(perdus)} sortis de la planche au "
-                  f"rognage, a rechercher — {', '.join(sorted(perdus))}")
+        if losts:
+            print(f"  ATTENTION : {len(losts)} sortis de la planche au "
+                  f"rognage, a rechercher — {', '.join(sorted(losts))}")
     return T
 
 
@@ -732,9 +732,9 @@ def transporti(cle, neta, verbeux=True, force=False):
 #
 #  The image costs only at the FIRST click on a number of the table, and
 #  serves all the others afterwards.
-LARGE_VIDO = 1200
-QUAL_VIDO = 74
-QUAL_DETALO = 74
+VIEW_WIDTH = 1200
+VIEW_QUALITY = 74
+DETAIL_QUALITY = 74
 
 
 # THE DETAIL'S QUALITY IS SET PLATE BY PLATE. The facsimile is four
@@ -793,59 +793,59 @@ QUAL_DETALO = 74
 #
 #  THE TWO COLOUR PLATES DO NOT GO THROUGH THIS: colourise.py calls
 #  serve() with tone=False. They already have their black.
-TONO_NOIR = 0.05
-TONO_BLANC = 99.5
+TONE_BLACK = 0.05
+TONE_WHITE = 99.5
 
 
-def tonigar(im):
+def stretch_tone(im):
     """Stretches the tone between two percentiles. Returns image and bounds."""
     a = np.asarray(im.convert("L")).astype(np.float32)
-    noir = float(np.percentile(a, TONO_NOIR))
-    blanc = float(np.percentile(a, TONO_BLANC))
-    if blanc - noir < 1.0:
+    black = float(np.percentile(a, TONE_BLACK))
+    white = float(np.percentile(a, TONE_WHITE))
+    if white - black < 1.0:
         return im, None
-    b = np.clip((np.asarray(im).astype(np.float32) - noir) / (blanc - noir),
+    b = np.clip((np.asarray(im).astype(np.float32) - black) / (white - black),
                 0, 1) * 255.0
     return (Image.fromarray(np.round(b).astype(np.uint8), mode=im.mode),
-            {"noir": round(noir, 1), "blanc": round(blanc, 1),
-             "faktoro": round(255.0 / (blanc - noir), 4)})
+            {"noir": round(black, 1), "blanc": round(white, 1),
+             "faktoro": round(255.0 / (white - black), 4)})
 
 
-def servir(cle, neta, verbeux=True, qual_detalo=None, tono=True):
+def serve(key, clean_, verbose=True, detail_quality=None, tone=True):
     """The two WebPs, drawn from the cleaned original plate."""
-    im = Image.open(neta).convert("RGB")
-    par_tono = None
-    if tono:
-        im, par_tono = tonigar(im)
-        if verbeux and par_tono:
-            print(f"  ton : noir {par_tono['noir']:.0f}, "
-                  f"blanc {par_tono['blanc']:.0f}, "
-                  f"facteur x{par_tono['faktoro']:.3f}")
-    GRAVURI = RACINE / "plates"
-    taille = {}
-    for nom, largeur, qualite in (("vido", LARGE_VIDO, QUAL_VIDO),
+    im = Image.open(clean_).convert("RGB")
+    by_tone = None
+    if tone:
+        im, by_tone = stretch_tone(im)
+        if verbose and by_tone:
+            print(f"  ton : noir {by_tone['noir']:.0f}, "
+                  f"blanc {by_tone['blanc']:.0f}, "
+                  f"facteur x{by_tone['faktoro']:.3f}")
+    PLATES = ROOT / "plates"
+    size_ = {}
+    for name_, width_, quality_ in (("vido", VIEW_WIDTH, VIEW_QUALITY),
                                   ("detalo", im.width,
-                                   qual_detalo or QUAL_DETALO)):
-        h = round(largeur * im.height / im.width)
-        petite = im if largeur == im.width else im.resize((largeur, h),
+                                   detail_quality or DETAIL_QUALITY)):
+        h = round(width_ * im.height / im.width)
+        small = im if width_ == im.width else im.resize((width_, h),
                                                           Image.LANCZOS)
-        dest = GRAVURI / f"{cle}-{nom}.webp"
-        petite.save(dest, format="WEBP", quality=qualite, method=6)
+        dest = PLATES / f"{key}-{name_}.webp"
+        small.save(dest, format="WEBP", quality=quality_, method=6)
         o = dest.stat().st_size
-        taille[nom] = {"largeur": petite.width, "alteso": petite.height,
+        size_[name_] = {"largeur": small.width, "alteso": small.height,
                        "okteti": o}
-        if verbeux:
-            print(f"  {cle}-{nom}.webp  {petite.width}x{petite.height}  "
+        if verbose:
+            print(f"  {key}-{name_}.webp  {small.width}x{small.height}  "
                   f"{o / 1024:.0f} Ko")
-    cat = GRAVURI / "plates.json"
-    tout = json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
-    tout[cle] = {"largeur": im.width, "alteso": im.height,
-                 "koloro": False, "fonto": Path(neta).name,
+    cat = PLATES / "plates.json"
+    everything = json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
+    everything[key] = {"largeur": im.width, "alteso": im.height,
+                 "koloro": False, "fonto": Path(clean_).name,
                  "origino": True,
-                 "vido": taille["vido"], "detalo": taille["detalo"]}
-    if par_tono:
-        tout[cle]["tono"] = par_tono
-    cat.write_text(json.dumps(tout, indent=1, sort_keys=True,
+                 "vido": size_["vido"], "detalo": size_["detalo"]}
+    if by_tone:
+        everything[key]["tono"] = by_tone
+    cat.write_text(json.dumps(everything, indent=1, sort_keys=True,
                               ensure_ascii=False) + "\n", encoding="utf-8")
 
 
@@ -857,24 +857,24 @@ def servir(cle, neta, verbeux=True, qual_detalo=None, tono=True):
 #  be redone; better not to type them three times each.
 #
 #      python3 tools/originals.py redo t02-apar-1 originals/t02.jpg
-def reprendre(cle, chemin, force=False):
-    dest = RACINE / "originals" / "kovri" / f"{cle}-neta.png"
+def redo(key, path, force=False):
+    dest = ROOT / "originals" / "kovri" / f"{key}-neta.png"
     # We set the previous plate aside: it is on THAT one that the
     # numbers are placed, and it is from it that they will have to be
     # carried over.
     if dest.exists():
-        dest.replace(dest.with_name(f"{cle}-neta-antaua.png"))
-    out, par = netigar(chemin, dest)
-    cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
-           if CATALOGO.exists() else {})
-    e = cat.setdefault(cle, {})
-    e["fonto"] = str(chemin)
-    e["netigo"] = par
-    CATALOGO.write_text(json.dumps(cat, ensure_ascii=False, indent=1) + "\n",
+        dest.replace(dest.with_name(f"{key}-neta-antaua.png"))
+    out, per = clean_up(path, dest)
+    cat = (json.loads(CATALOGUE.read_text(encoding="utf-8"))
+           if CATALOGUE.exists() else {})
+    e = cat.setdefault(key, {})
+    e["fonto"] = str(path)
+    e["netigo"] = per
+    CATALOGUE.write_text(json.dumps(cat, ensure_ascii=False, indent=1) + "\n",
                         encoding="utf-8")
-    transporti(cle, dest, force=force)
-    servir(cle, dest)
-    print(f"  {cle} : repris. Verifier la planche de controle, "
+    carry_over(key, dest, force=force)
+    serve(key, dest)
+    print(f"  {key} : repris. Verifier la planche de controle, "
           f"puis relancer numeri.py et html.py.")
 
 
@@ -887,66 +887,66 @@ def reprendre(cle, chemin, force=False):
 #  nothing is ever written into the original PNG.
 #
 #      python3 tools/originals.py tone
-def toni():
-    cat = json.loads((RACINE / "plates" / "plates.json")
+def tone_all():
+    cat = json.loads((ROOT / "plates" / "plates.json")
                      .read_text(encoding="utf-8"))
-    kovri = RACINE / "originals" / "kovri"
+    working = ROOT / "originals" / "kovri"
     n = 0
-    for cle in sorted(cat):
-        if cat[cle].get("koloro"):
-            print(f"{cle} : en couleur, laissee telle quelle")
+    for key in sorted(cat):
+        if cat[key].get("koloro"):
+            print(f"{key} : en couleur, laissee telle quelle")
             continue
-        neta = kovri / f"{cle}-neta.png"
-        if not neta.exists():
-            print(f"{cle} : {neta.name} introuvable, passee")
+        clean_ = working / f"{key}-neta.png"
+        if not clean_.exists():
+            print(f"{key} : {clean_.name} introuvable, passee")
             continue
-        print(f"{cle} :")
-        servir(cle, neta)
+        print(f"{key} :")
+        serve(key, clean_)
         n += 1
     print(f"\n{n} planches re-servies avec leur ton redresse.")
 
 
-def main(args):
+def hand(args):
     if args and args[0] == "toni":
-        return toni()
+        return tone_all()
     if len(args) < 2:
         raise SystemExit(__doc__)
-    verbe, cle, chemin = args[0], args[1], args[2]
-    if verbe == "reprendre":
-        reprendre(cle, chemin, force="force" in args)
-    elif verbe == "netigar":
-        cle_ = cle
-        out, par = netigar(chemin, RACINE / "originals" / "kovri" /
-                           f"{cle_}-neta.png")
-        cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
-               if CATALOGO.exists() else {})
-        e = cat.setdefault(cle_, {})
-        e["fonto"] = str(chemin)
-        e["netigo"] = par
-        CATALOGO.write_text(json.dumps(cat, ensure_ascii=False, indent=1)
+    verb, key, path = args[0], args[1], args[2]
+    if verb == "reprendre":
+        redo(key, path, force="force" in args)
+    elif verb == "netigar":
+        key_ = key
+        out, per = clean_up(path, ROOT / "originals" / "kovri" /
+                           f"{key_}-neta.png")
+        cat = (json.loads(CATALOGUE.read_text(encoding="utf-8"))
+               if CATALOGUE.exists() else {})
+        e = cat.setdefault(key_, {})
+        e["fonto"] = str(path)
+        e["netigo"] = per
+        CATALOGUE.write_text(json.dumps(cat, ensure_ascii=False, indent=1)
                             + "\n", encoding="utf-8")
-    elif verbe == "servir":
-        servir(cle, chemin)
-    elif verbe == "toni":
-        toni()
-    elif verbe == "transporti":
-        transporti(cle, chemin, force="force" in args)
-    elif verbe == "caler":
-        M, score, tour = caler(cle, chemin)
-        cat = (json.loads(CATALOGO.read_text(encoding="utf-8"))
-               if CATALOGO.exists() else {})
-        cat[cle] = {"fonto": str(chemin), "tour": tour,
+    elif verb == "servir":
+        serve(key, path)
+    elif verb == "toni":
+        tone_all()
+    elif verb == "transporti":
+        carry_over(key, path, force="force" in args)
+    elif verb == "caler":
+        M, score, turn = register_scan(key, path)
+        cat = (json.loads(CATALOGUE.read_text(encoding="utf-8"))
+               if CATALOGUE.exists() else {})
+        cat[key] = {"fonto": str(path), "tour": turn,
                     "matrico": [[float(v) for v in r] for r in M],
                     "korelo": round(float(score), 4)}
-        CATALOGO.write_text(json.dumps(cat, ensure_ascii=False, indent=1)
+        CATALOGUE.write_text(json.dumps(cat, ensure_ascii=False, indent=1)
                             + "\n", encoding="utf-8")
-    elif verbe == "compar":
+    elif verb == "compar":
         cx = float(args[3]) if len(args) > 3 else 0.5
         cy = float(args[4]) if len(args) > 4 else 0.5
-        compar(cle, chemin, cx, cy)
+        compare(key, path, cx, cy)
     else:
         raise SystemExit(__doc__)
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    hand(sys.argv[1:])

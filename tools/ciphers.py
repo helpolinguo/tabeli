@@ -58,36 +58,36 @@ from PIL import Image, ImageDraw, ImageFont
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numbering as N                                          # noqa: E402
 
-RACINE = N.RACINE
-MODELES = RACINE / "tools" / "ciphers-grey.npz"
-PROPONI = RACINE / "plates" / "proponi.png"
-PLACES = RACINE / "plates" / "proponi.json"
-GROUPES = 8            # groups by class
+ROOT = N.ROOT
+MODELS = ROOT / "tools" / "ciphers-grey.npz"
+PROPOSALS = ROOT / "plates" / "proponi.png"
+PLACES = ROOT / "plates" / "proponi.json"
+GROUPS = 8            # groups by class
 RARE = 0.05            # a group below this weight does not make a model
 
 
-def moissonar():
+def harvest():
     """Cuts out, on the grey plates, the figures of the sure numbers."""
-    cat = json.loads((RACINE / "plates" / "numbers.json")
+    cat = json.loads((ROOT / "plates" / "numbers.json")
                      .read_text(encoding="utf-8"))
     rec = {str(c): [] for c in range(10)}
     tot = ok = 0
-    for cle in sorted(cat):
-        if not N.repris(cle):
+    for key in sorted(cat):
+        if not N.redone(key):
             continue
-        enc = (N.enko(cle) > 128).astype(np.uint8)
-        ht, la = enc.shape
-        e = cat[cle]
+        ink_ = (N.enko(key) > 128).astype(np.uint8)
+        ht, la = ink_.shape
+        e = cat[key]
         h = e["corpo"]
         for q, v in e["numeri"].items():
-            txt = str(N.descle(q)[1])
+            txt = str(N.unkey(q)[1])
             cx, cy = (v[0] + v[2] / 2) * la, (v[1] + v[3] / 2) * ht
             L, m = v[2] * la, 8
             x0, x1 = max(0, int(cx - L / 2 - m)), min(la, int(cx + L / 2 + m))
             y0, y1 = max(0, int(cy - h * 0.8)), min(ht, int(cy + h * 0.8))
             tot += 1
             n, lab, st, cen = cv2.connectedComponentsWithStats(
-                enc[y0:y1, x0:x1], 8)
+                ink_[y0:y1, x0:x1], 8)
             # A FIGURE IS A COMPONENT THE SIZE OF A FIGURE.
             # We learn only from numbers that separate of themselves into as
             # many pieces as they have figures, all sitting on the same
@@ -112,126 +112,126 @@ def moissonar():
     return rec
 
 
-def aprendar():
+def learn():
     """Groups the harvest: the centres of the groups are the models."""
-    rec = moissonar()
+    rec = harvest()
     out = {}
     for c in "0123456789":
         v = np.stack(rec[c]).astype(np.float32)
         v /= np.linalg.norm(v, axis=1, keepdims=True)
-        k = min(GROUPES, len(v))
+        k = min(GROUPS, len(v))
         crit = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 40, 1e-4)
         _, lab, cen = cv2.kmeans(v, k, None, crit, 8, cv2.KMEANS_PP_CENTERS)
         lab = lab.ravel()
-        gard = [i for i in range(k) if (lab == i).sum() >= RARE * len(v)]
-        out[c] = np.stack([cen[i].reshape(N.H, N.W) for i in gard])
-        print(f"  {c} : {len(v):4d} exemplaires, {len(gard)} modeles "
-              f"{[int((lab == i).sum()) for i in gard]}")
-    np.savez_compressed(MODELES, **out)
-    print(f"  ecrit dans {MODELES}")
+        kept = [i for i in range(k) if (lab == i).sum() >= RARE * len(v)]
+        out[c] = np.stack([cen[i].reshape(N.H, N.W) for i in kept])
+        print(f"  {c} : {len(v):4d} exemplaires, {len(kept)} modeles "
+              f"{[int((lab == i).sum()) for i in kept]}")
+    np.savez_compressed(MODELS, **out)
+    print(f"  ecrit dans {MODELS}")
 
 
-def charger():
+def load_():
     """Puts the grey models in place of the stencil's."""
-    d = np.load(MODELES)
-    noms = [c for c in d.files for _ in range(len(d[c]))]
-    pile = np.stack([m for c in d.files for m in d[c]]).reshape(len(noms), -1)
-    N.NOMS = noms
-    N.PILE = pile / np.linalg.norm(pile, axis=1, keepdims=True)
-    N.GRIS = True
+    d = np.load(MODELS)
+    names = [c for c in d.files for _ in range(len(d[c]))]
+    stack_ = np.stack([m for c in d.files for m in d[c]]).reshape(len(names), -1)
+    N.NAMES = names
+    N.STACK = stack_ / np.linalg.norm(stack_, axis=1, keepdims=True)
+    N.GREY = True
 
 
-def proponar(cles=None):
+def propose(keys=None):
     """Re-reads the grey plates, but returns ONLY what is missing."""
-    charger()
-    cat = json.loads((RACINE / "plates" / "numbers.json")
+    load_()
+    cat = json.loads((ROOT / "plates" / "numbers.json")
                      .read_text(encoding="utf-8"))
     prop = {}
-    for cle in sorted(cat):
-        if not N.repris(cle) or (cles and cle not in cles):
+    for key in sorted(cat):
+        if not N.redone(key) or (keys and key not in keys):
             continue
-        a = N.enko(cle)
+        a = N.enko(key)
         ht, la = a.shape
-        haut = cat[cle]["corpo"]
-        att = N.attendus(cle)
+        top = cat[key]["corpo"]
+        att = N.expected(key)
         if not att:
             continue
-        connus = set(cat[cle]["numeri"])
-        manque = {N.kl(sc, n) for sc, ns in att.items() for n in ns} - connus
+        known = set(cat[key]["numeri"])
+        missing = {N.kl(sc, n) for sc, ns in att.items() for n in ns} - known
         out = {}
-        for sc, forme in (N.ceni(cle) or [("", ["rekt", 0., 0., 1., 1.])]):
+        for sc, shape_ in (N.scenes_(key) or [("", ["rekt", 0., 0., 1., 1.])]):
             if sc not in att:
                 continue
-            fx0, fy0, fx1, fy1 = N.boite(forme)
+            fx0, fy0, fx1, fy1 = N.box(shape_)
             x0, y0 = int(fx0 * la), int(fy0 * ht)
             x1 = min(la, int(fx1 * la) + 1)
             y1 = min(ht, int(fy1 * ht) + 1)
-            for n, (b, fo) in N.lire(a[y0:y1, x0:x1], att[sc], haut).items():
+            for n, (b, fo) in N.read_file(a[y0:y1, x0:x1], att[sc], top).items():
                 q = N.kl(sc, n)
-                if q in manque:
+                if q in missing:
                     out[q] = [int(b[0] + x0), int(b[1] + y0),
                               int(b[2]), int(b[3]), round(float(fo), 3)]
         if out:
-            prop[cle] = out
-            print(f"  {cle} : {len(out)} propositions sur "
-                  f"{len(manque)} manquants")
+            prop[key] = out
+            print(f"  {key} : {len(out)} propositions sur "
+                  f"{len(missing)} manquants")
     PLACES.write_text(json.dumps(prop, ensure_ascii=False, indent=1) + "\n",
                       encoding="utf-8")
     feuille(prop, cat)
     print(f"  {sum(len(v) for v in prop.values())} propositions — "
-          f"a relire dans {PROPONI}")
+          f"a relire dans {PROPOSALS}")
 
 
-def feuille(prop, cat, cols=6, cote=330, pied=66, rayon=62):
+def feuille(prop, cat, cols=6, side=330, foot=66, radius=62):
     """The proofing sheet: the cut-out, the object's name, the place."""
-    obj = json.loads((RACINE / "plates" / "objects.json")
+    obj = json.loads((ROOT / "plates" / "objects.json")
                      .read_text(encoding="utf-8"))
-    def fonte(f, t):
+    def font_face(f, t):
         try:
             return ImageFont.truetype(
                 f"/usr/share/fonts/truetype/dejavu/DejaVuSans{f}.ttf", t)
         except Exception:
             return ImageFont.load_default()
-    F, G = fonte("-Bold", 26), fonte("", 19)
+    F, G = font_face("-Bold", 26), font_face("", 19)
     cel = []
-    for cle in sorted(prop):
-        im = N.planche(cle)
-        for q, (x, y, w, h, fo) in sorted(prop[cle].items()):
+    for key in sorted(prop):
+        im = N.plate(key)
+        for q, (x, y, w, h, fo) in sorted(prop[key].items()):
             cx, cy = x + w / 2, y + h / 2
-            t = im.crop((int(cx - rayon), int(cy - rayon),
-                         int(cx + rayon), int(cy + rayon))).convert("RGB")
-            c = Image.new("RGB", (cote, cote + pied), (255, 255, 255))
-            c.paste(t.resize((cote, cote), Image.LANCZOS), (0, 0))
+            t = im.crop((int(cx - radius), int(cy - radius),
+                         int(cx + radius), int(cy + radius))).convert("RGB")
+            c = Image.new("RGB", (side, side + foot), (255, 255, 255))
+            c.paste(t.resize((side, side), Image.LANCZOS), (0, 0))
             g = ImageDraw.Draw(c)
-            Z = cote / (2 * rayon)
-            g.rectangle([cote / 2 - w * Z / 2 - 3, cote / 2 - h * Z / 2 - 3,
-                         cote / 2 + w * Z / 2 + 3, cote / 2 + h * Z / 2 + 3],
+            Z = side / (2 * radius)
+            g.rectangle([side / 2 - w * Z / 2 - 3, side / 2 - h * Z / 2 - 3,
+                         side / 2 + w * Z / 2 + 3, side / 2 + h * Z / 2 + 3],
                         outline=(255, 60, 0), width=3)
-            n = N.descle(q)[1]
-            nom = (obj.get(cle[:3], {}).get(str(n), {}).get("fr") or ["?"])[0]
-            g.text((6, cote + 3), f"{cle[:3]} {q}  ({fo})",
+            n = N.unkey(q)[1]
+            name_ = (obj.get(key[:3], {}).get(str(n), {}).get("fr") or ["?"])[0]
+            g.text((6, side + 3), f"{key[:3]} {q}  ({fo})",
                    fill=(0, 0, 0), font=F)
-            g.text((6, cote + 34), nom[:34], fill=(80, 80, 80), font=G)
+            g.text((6, side + 34), name_[:34], fill=(80, 80, 80), font=G)
             cel.append(c)
     if not cel:
         return
     lig = [cel[i:i + cols] for i in range(0, len(cel), cols)]
-    out = Image.new("RGB", (cols * cote, len(lig) * (cote + pied)),
+    out = Image.new("RGB", (cols * side, len(lig) * (side + foot)),
                     (255, 255, 255))
     for j, l in enumerate(lig):
         for i, c in enumerate(l):
-            out.paste(c, (i * cote, j * (cote + pied)))
-    out.save(PROPONI)
+            out.paste(c, (i * side, j * (side + foot)))
+    out.save(PROPOSALS)
 
 
-def main(args):
+def hand(args):
     if not args or args[0] == "aprendar":
-        aprendar()
+        learn()
     elif args[0] == "proponar":
-        proponar(args[1:] or None)
+        propose(args[1:] or None)
     else:
         raise SystemExit(__doc__ or "aprendar | proponar")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    hand(sys.argv[1:])
