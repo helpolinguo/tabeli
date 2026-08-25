@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="io"><meta charset="utf-8">
-<title>{{TITRO}}</title>
+<title>{{TITLE}}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <!-- ===================================================================
@@ -804,8 +804,8 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 <header>
 <div class="tito">
 <div>
-<h1>{{TITRO}}</h1>
-<div class="sub">{{SUBTITRO}}</div>
+<h1>{{TITLE}}</h1>
+<div class="sub">{{SUBTITLE}}</div>
 </div>
 <div class="dls">
 <a class="dl" href="tabeli.pdf" download title="Deskargar la Ido-versiono (PDF)">
@@ -827,7 +827,7 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
  </span>
  <span class="lgu">
   <svg class="ikon glob" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9s1.4-6.6 3.9-9z"/></svg>
-  <select id="lg" aria-label="Linguo dil dextra kolono">{{LINGUI}}</select>
+  <select id="lg" aria-label="Linguo dil dextra kolono">{{LANGUAGES}}</select>
   <svg class="ikon shevro" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg>
  </span>
 </div>
@@ -842,7 +842,7 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
      copied into this comment -- eleven invisible kilobytes. -->
 <nav id="nav">{{NAV}}</nav>
 <div><div id="kont">
-{{KONTENO}}
+{{CONTENT}}
 </div>
 <p class="nulo" id="nulo" role="status"></p>
 <div class="plena" id="plena" role="dialog" aria-modal="true" aria-label="Tabelo">
@@ -861,17 +861,17 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 
 <script>
 "use strict";
-var LANGUES = {{LINGUIJSON}};
+var LANGS = {{LANGS_JSON}};
 
 /* The header's height is not a constant: two lines of title on a
    telephone, one on a computer. We measure it at load and at every
    resize, and deposit it in --kapo; the hard values in the CSS serve
    only as a fallback before the script has run. */
-function kapo(){
+function headerBox(){
   var h = document.querySelector("header").offsetHeight;
   document.documentElement.style.setProperty("--kapo", h + "px");
 }
-addEventListener("resize", kapo); kapo();
+addEventListener("resize", headerBox); headerBox();
 
 /* The table-of-contents panel, on a narrow screen. */
 var nav = document.getElementById("nav");
@@ -915,63 +915,63 @@ var q = document.getElementById("q");
    is the only reason this is script. The setting itself is below, in
    serBarilo(): it depends on the width the language selector leaves the
    field, and the selector does not exist yet here. --- */
-var qLarga = q.getAttribute("placeholder");
-var qKurta = "Serchez\u2026";
-var qEtroita = window.matchMedia("(max-width:700px)");
-var rangi = [].slice.call(document.querySelectorAll(".r"));
-var origine = rangi.map(function(r){
+var qWide = q.getAttribute("placeholder");
+var qShort = "Serchez\u2026";
+var qNarrow = window.matchMedia("(max-width:700px)");
+var rows = [].slice.call(document.querySelectorAll(".r"));
+var pristine = rows.map(function(r){
   return [].map.call(r.querySelectorAll(".k"), function(k){ return k.innerHTML; });
 });
-function sansAccent(s){
+function withoutAccent(s){
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
-function surligner(el, brut, terme){
-  if (!terme) { el.innerHTML = brut; return false; }
+function highlight(el, raw, term){
+  if (!term) { el.innerHTML = raw; return false; }
   /* We highlight in the TEXT, not in the tags: without that a term
      falling inside an attribute (href, title) would break the page.
      We therefore walk the fragment's text nodes. */
   var d = document.createElement("div");
-  d.innerHTML = brut;
-  var trouve = false;
+  d.innerHTML = raw;
+  var found = false;
   var it = document.createTreeWalker(d, NodeFilter.SHOW_TEXT);
-  var noeuds = [], n;
-  while ((n = it.nextNode())) noeuds.push(n);
-  noeuds.forEach(function(t){
-    var s = t.nodeValue, plat = sansAccent(s), i = plat.indexOf(terme);
+  var nodes = [], n;
+  while ((n = it.nextNode())) nodes.push(n);
+  nodes.forEach(function(t){
+    var s = t.nodeValue, flat = withoutAccent(s), i = flat.indexOf(term);
     if (i < 0) return;
-    trouve = true;
+    found = true;
     var frag = document.createDocumentFragment(), pos = 0;
     while (i >= 0){
       frag.appendChild(document.createTextNode(s.slice(pos, i)));
       var m = document.createElement("mark");
-      m.textContent = s.slice(i, i + terme.length);
+      m.textContent = s.slice(i, i + term.length);
       frag.appendChild(m);
-      pos = i + terme.length;
-      i = plat.indexOf(terme, pos);
+      pos = i + term.length;
+      i = flat.indexOf(term, pos);
     }
     frag.appendChild(document.createTextNode(s.slice(pos)));
     t.parentNode.replaceChild(frag, t);
   });
   el.innerHTML = d.innerHTML;
-  return trouve;
+  return found;
 }
-var minuteur = null;
+var timer = null;
 q.addEventListener("input", function(){
-  clearTimeout(minuteur);
-  minuteur = setTimeout(chercher, 110);
+  clearTimeout(timer);
+  timer = setTimeout(search, 110);
 });
 /* The table openings. The table of contents knows them already --
    they are its first-rank entries -- and we use that rather than mark
    them a second time in the page. */
-var ouvertures = {};
+var openings = {};
 document.querySelectorAll("nav a.tt").forEach(function(a){
-  ouvertures[a.dataset.ch] = 1;
+  openings[a.dataset.ch] = 1;
 });
-var nulo = document.getElementById("nulo");
-var gravuri = [].slice.call(document.querySelectorAll(".gravuro"));
+var zero = document.getElementById("nulo");
+var plates = [].slice.call(document.querySelectorAll(".gravuro"));
 
-function chercher(){
-  var terme = sansAccent(q.value.trim());
+function search(){
+  var term = withoutAccent(q.value.trim());
   /* WHAT DOES NOT ANSWER DISAPPEARS, OF WHATEVER RANK. The condition
      carried « && r.classList.contains("p") »: only the paragraphs were
      filtered, and the book's hundred and forty-nine titles -- table
@@ -980,30 +980,30 @@ function chercher(){
      fifty-one blocks; a search with no answer changed nothing at all in
      the page, and one thought the field dead. A block's rank does not
      say whether it answers: only its text says so. */
-  var trouves = rangi.map(function(r, i){
-    var trouve = false;
+  var founds = rows.map(function(r, i){
+    var found = false;
     [].slice.call(r.querySelectorAll(".k")).forEach(function(k, j){
-      if (surligner(k, origine[i][j], terme)) trouve = true;
+      if (highlight(k, pristine[i][j], term)) found = true;
     });
-    r.classList.toggle("for", !!terme && !trouve);
+    r.classList.toggle("for", !!term && !found);
     r.classList.remove("tete");
-    return trouve;
+    return found;
   });
 
   /* BUT A RESULT WITHOUT ITS TABLE CANNOT BE PLACED. We therefore keep
      the opening of any table that keeps at least one answer: it serves
      as a running head for its results. One per table, and none for the
      tables that have nothing. */
-  if (terme){
-    var tete = null;
-    rangi.forEach(function(r, i){
+  if (term){
+    var head = null;
+    rows.forEach(function(r, i){
       // If the opening answers itself, it stays a whole result
       // and does not have to fold back to its label.
-      if (ouvertures[r.dataset.cle]) tete = trouves[i] ? null : r;
-      else if (trouves[i] && tete){
-        tete.classList.remove("for");
-        tete.classList.add("tete");
-        tete = null;
+      if (openings[r.dataset.cle]) head = founds[i] ? null : r;
+      else if (founds[i] && head){
+        head.classList.remove("for");
+        head.classList.add("tete");
+        head = null;
       }
     });
   }
@@ -1014,13 +1014,13 @@ function chercher(){
      wide; between two results it separates them more than it lights
      them. The list of results is a view of TEXT, and the plate is
      looked at in its own place, in the reading. */
-  gravuri.forEach(function(f){ f.classList.toggle("for", !!terme); });
+  plates.forEach(function(f){ f.classList.toggle("for", !!term); });
 
-  var rien = !trouves.some(function(v){ return v; });
-  nulo.textContent = terme
+  var nothing = !founds.some(function(v){ return v; });
+  zero.textContent = term
     ? "Nula rezulto por « " + q.value.trim() + " »." : "";
-  nulo.classList.toggle("mont", !!terme && rien);
-  poserLangue(sel.value);
+  zero.classList.toggle("mont", !!term && nothing);
+  placeLanguage(sel.value);
 }
 
 /* --- THE CHOICE OF LANGUAGE. One right-hand column at a time; the
@@ -1041,52 +1041,52 @@ function chercher(){
    typed would not be highlighted in the language that has just
    arrived. --- */
 var sel = document.getElementById("lg");
-var venus = {};                      /* kodo -> promise of loading */
+var arrived = {};                      /* kodo -> promise of loading */
 
-function verser(code, d){
-  rangi.forEach(function(r, i){
-    var cases = [].slice.call(r.querySelectorAll(".k"));
-    cases.forEach(function(k, j){
+function pour(code, d){
+  rows.forEach(function(r, i){
+    var cells = [].slice.call(r.querySelectorAll(".k"));
+    cells.forEach(function(k, j){
       if (k.dataset.lg !== code) return;
       var t = d.k[r.dataset.cle];
       if (t == null) return;
       k.classList.remove("vaka", "dif");
-      origine[i][j] = t;
+      pristine[i][j] = t;
       k.innerHTML = t;
     });
   });
-  var tete = "noto-" + code + "-";
+  var head = "noto-" + code + "-";
   document.querySelectorAll('.noto[data-lg="' + code + '"]').forEach(function(n){
-    var t = d.noto[n.id.slice(tete.length)];
+    var t = d.noto[n.id.slice(head.length)];
     if (t != null) n.innerHTML = t;
   });
-  chercher();
+  search();
 }
 
-function chargerLangue(code){
-  if (venus[code]) return venus[code];
-  var lg = LANGUES.filter(function(l){ return l.kodo === code; })[0];
+function loadLanguage(code){
+  if (arrived[code]) return arrived[code];
+  var lg = LANGS.filter(function(l){ return l.kodo === code; })[0];
   if (!lg || !lg.differita || !lg.adreso) return null;
-  venus[code] = fetch(lg.adreso)
+  arrived[code] = fetch(lg.adreso)
     .then(function(r){ return r.json(); })
-    .then(function(d){ verser(code, d); })
-    .catch(function(){ delete venus[code]; });
-  return venus[code];
+    .then(function(d){ pour(code, d); })
+    .catch(function(){ delete arrived[code]; });
+  return arrived[code];
 }
 
-function poserLangue(code){
-  chargerLangue(code);
+function placeLanguage(code){
+  loadLanguage(code);
   document.querySelectorAll(".k.tra").forEach(function(k){
     k.style.display = (k.dataset.lg === code) ? "" : "none";
   });
   try { localStorage.setItem("tabeli-lg", code); } catch(e){}
 }
-sel.onchange = function(){ poserLangue(sel.value); serBarilo(); };
+sel.onchange = function(){ placeLanguage(sel.value); setBar(); };
 var memo = null;
 try { memo = localStorage.getItem("tabeli-lg"); } catch(e){}
 if (memo && [].some.call(sel.options, function(o){ return o.value === memo; }))
   sel.value = memo;
-poserLangue(sel.value);
+placeLanguage(sel.value);
 
 /* --- THE BAR IS SHARED OUT BY MEASUREMENT, AND IN THIS ORDER: THE
    SELECTOR TAKES WHAT IT SHOWS, THE FIELD TAKES THE REST, AND THE
@@ -1113,40 +1113,40 @@ poserLangue(sel.value);
 
    The measurement is made on the canvas, in the COMPUTED font of the two
    fields -- never in a supposed font: it has already changed once. --- */
-var mezurilo = document.createElement("canvas").getContext("2d");
-function policoDe(e){
+var gauge = document.createElement("canvas").getContext("2d");
+function fontOf(e){
   var st = getComputedStyle(e);
   return [st.fontStyle, st.fontWeight, st.fontSize, st.fontFamily].join(" ");
 }
-function serBarilo(){
-  if (qEtroita.matches){
+function setBar(){
+  if (qNarrow.matches){
     var st = getComputedStyle(sel);
-    mezurilo.font = policoDe(sel);
+    gauge.font = fontOf(sel);
     var o = sel.options[sel.selectedIndex];
-    sel.style.width = (Math.ceil(mezurilo.measureText(o ? o.textContent : "").width)
+    sel.style.width = (Math.ceil(gauge.measureText(o ? o.textContent : "").width)
       + parseFloat(st.paddingLeft) + parseFloat(st.paddingRight) + 2) + "px";
   } else {
     sel.style.width = "";
   }
   var sq = getComputedStyle(q);
-  mezurilo.font = policoDe(q);
-  var loko = q.clientWidth - parseFloat(sq.paddingLeft) - parseFloat(sq.paddingRight);
-  var texto = qEtroita.matches ? qKurta : qLarga;
-  if (mezurilo.measureText(texto).width > loko) texto = qKurta;
-  if (mezurilo.measureText(texto).width > loko) texto = "";
-  q.setAttribute("placeholder", texto);
+  gauge.font = fontOf(q);
+  var place = q.clientWidth - parseFloat(sq.paddingLeft) - parseFloat(sq.paddingRight);
+  var text = qNarrow.matches ? qShort : qWide;
+  if (gauge.measureText(text).width > place) text = qShort;
+  if (gauge.measureText(text).width > place) text = "";
+  q.setAttribute("placeholder", text);
 }
-serBarilo();
-if (qEtroita.addEventListener) qEtroita.addEventListener("change", serBarilo);
-else qEtroita.addListener(serBarilo);
+setBar();
+if (qNarrow.addEventListener) qNarrow.addEventListener("change", setBar);
+else qNarrow.addListener(setBar);
 /* The width can change without crossing the threshold -- a folding
    screen, a window being dragged. We therefore hook onto the resize as
    well, but once per frame: the measurement reads clientWidth, and
    reading it at every pixel would set the layout working for nothing. */
-var barilo0 = 0;
+var bar0 = 0;
 window.addEventListener("resize", function(){
-  if (barilo0) return;
-  barilo0 = requestAnimationFrame(function(){ barilo0 = 0; serBarilo(); });
+  if (bar0) return;
+  bar0 = requestAnimationFrame(function(){ bar0 = 0; setBar(); });
 });
 
 /* --- THE PLATE FULL SCREEN. On a click, the engraving opens over the
@@ -1154,33 +1154,33 @@ window.addEventListener("resize", function(){
    general view but the DETAIL IMAGE: it is the one to be looked at close
    to, and it is the same one the close-ups will be cut from -- once
    loaded, it is never loaded again. --- */
-var plena = document.getElementById("plena");
-var plenaBildo = document.getElementById("plena-bildo");
-var plenaVenis = null;
+var full = document.getElementById("plena");
+var fullImage = document.getElementById("plena-bildo");
+var fullArrived = null;
 
-function ouvrirPlena(fig){
+function openFull(fig){
   var url = fig.dataset.detalo;
-  if (plenaBildo.getAttribute("src") !== url){
-    plenaBildo.width = fig.dataset.dl;
-    plenaBildo.height = fig.dataset.dh;
+  if (fullImage.getAttribute("src") !== url){
+    fullImage.width = fig.dataset.dl;
+    fullImage.height = fig.dataset.dh;
     /* The general view is displayed while the detail arrives: one is not
        left in front of an empty rectangle. */
-    plenaBildo.src = fig.querySelector("img").currentSrc
+    fullImage.src = fig.querySelector("img").currentSrc
                   || fig.querySelector("img").src;
-    var grand = new Image();
-    grand.onload = function(){ plenaBildo.src = url; };
-    grand.src = url;
+    var big = new Image();
+    big.onload = function(){ fullImage.src = url; };
+    big.src = url;
   }
-  plenaVenis = fig.querySelector("img");
-  plena.classList.add("mont");
+  fullArrived = fig.querySelector("img");
+  full.classList.add("mont");
   document.body.style.overflow = "hidden";
-  poserVue(1, 0, 0);
+  placeView(1, 0, 0);
   document.getElementById("fermi").focus();
 }
-function fermarPlena(){
-  plena.classList.remove("mont");
+function closeFull(){
+  full.classList.remove("mont");
   document.body.style.overflow = "";
-  if (plenaVenis) plenaVenis.focus({preventScroll:true});
+  if (fullArrived) fullArrived.focus({preventScroll:true});
 }
 
 /* --- THE PLATE ENLARGES. Full screen shows the whole plate; at that
@@ -1199,58 +1199,58 @@ function fermarPlena(){
    soon as one aims at a corner, the object aimed at runs away. The
    anchor point is therefore the one being pointed at — the mouse, or the
    midpoint of the two fingers. --- */
-var vuo = {k:1, x:0, y:0};
-var VUO_MAX = 6;
+var view = {k:1, x:0, y:0};
+var VIEW_MAX = 6;
 
-function poserVue(k, x, y){
-  vuo.k = Math.min(VUO_MAX, Math.max(1, k));
+function placeView(k, x, y){
+  view.k = Math.min(VIEW_MAX, Math.max(1, k));
   /* THE MARGIN FOR MOVEMENT is what overflows the window once the image
      is enlarged. At scale 1 it is nil on both sides: the image fits
      whole, and nothing can make it slide. */
-  var b = plena.getBoundingClientRect();
-  var mx = Math.max(0, (plenaBildo.offsetWidth * vuo.k - b.width) / 2);
-  var my = Math.max(0, (plenaBildo.offsetHeight * vuo.k - b.height) / 2);
-  vuo.x = Math.min(mx, Math.max(-mx, x));
-  vuo.y = Math.min(my, Math.max(-my, y));
-  plenaBildo.style.transform = "translate(" + vuo.x + "px," + vuo.y + "px) scale("
-                             + vuo.k + ")";
-  plena.classList.toggle("prox", vuo.k > 1.001);
+  var b = full.getBoundingClientRect();
+  var mx = Math.max(0, (fullImage.offsetWidth * view.k - b.width) / 2);
+  var my = Math.max(0, (fullImage.offsetHeight * view.k - b.height) / 2);
+  view.x = Math.min(mx, Math.max(-mx, x));
+  view.y = Math.min(my, Math.max(-my, y));
+  fullImage.style.transform = "translate(" + view.x + "px," + view.y + "px) scale("
+                             + view.k + ")";
+  full.classList.toggle("prox", view.k > 1.001);
   var g = document.getElementById("plena-grado");
-  if (g) g.textContent = (Math.round(vuo.k * 10) / 10) + "\u00d7";
+  if (g) g.textContent = (Math.round(view.k * 10) / 10) + "\u00d7";
 }
 
 /* Magnification about a point of the window: that point does not move,
    everything else moves away from it. */
-function grossir(nk, px, py){
-  var b = plena.getBoundingClientRect();
+function zoom(nk, px, py){
+  var b = full.getBoundingClientRect();
   var cx = px - b.left - b.width / 2, cy = py - b.top - b.height / 2;
-  nk = Math.min(VUO_MAX, Math.max(1, nk));
-  var f = nk / vuo.k;
-  poserVue(nk, cx - (cx - vuo.x) * f, cy - (cy - vuo.y) * f);
+  nk = Math.min(VIEW_MAX, Math.max(1, nk));
+  var f = nk / view.k;
+  placeView(nk, cx - (cx - view.x) * f, cy - (cy - view.y) * f);
 }
 
-plena.addEventListener("wheel", function(e){
-  if (!plena.classList.contains("mont")) return;
+full.addEventListener("wheel", function(e){
+  if (!full.classList.contains("mont")) return;
   e.preventDefault();
   /* A laptop's trackpad sends a pinch as a wheel held with Ctrl: the two
      are handled alike, but for the step. */
   var pas = e.ctrlKey ? 0.012 : 0.0022;
-  grossir(vuo.k * Math.exp(-e.deltaY * pas), e.clientX, e.clientY);
+  zoom(view.k * Math.exp(-e.deltaY * pas), e.clientX, e.clientY);
 }, {passive:false});
 
-plena.addEventListener("dblclick", function(e){
+full.addEventListener("dblclick", function(e){
   if (e.target.closest(".lupili") || e.target.closest(".fermi")) return;
-  grossir(vuo.k > 1.001 ? 1 : 3, e.clientX, e.clientY);
+  zoom(view.k > 1.001 ? 1 : 3, e.clientX, e.clientY);
 });
 
 document.querySelectorAll(".plena .lupili button").forEach(function(t){
   t.addEventListener("click", function(e){
     e.stopPropagation();
-    var b = plena.getBoundingClientRect();
+    var b = full.getBoundingClientRect();
     var mx = b.left + b.width / 2, my = b.top + b.height / 2;
-    if (t.dataset.lupilo === "+") grossir(vuo.k * 1.5, mx, my);
-    else if (t.dataset.lupilo === "-") grossir(vuo.k / 1.5, mx, my);
-    else poserVue(1, 0, 0);
+    if (t.dataset.lupilo === "+") zoom(view.k * 1.5, mx, my);
+    else if (t.dataset.lupilo === "-") zoom(view.k / 1.5, mx, my);
+    else placeView(1, 0, 0);
   });
 });
 
@@ -1258,61 +1258,61 @@ document.querySelectorAll(".plena .lupili button").forEach(function(t){
    all three — mouse, finger, stylus — and two fingers at once give the
    pinch: we then follow their DISTANCE, which gives the scale, and their
    MIDPOINT, which gives the fixed point. */
-var doigts = new Map(), depart = null, bougea = false;
+var fingers = new Map(), start = null, moved = false;
 
-plena.addEventListener("dragstart", function(e){ e.preventDefault(); });
-plena.addEventListener("pointerdown", function(e){
+full.addEventListener("dragstart", function(e){ e.preventDefault(); });
+full.addEventListener("pointerdown", function(e){
   if (e.target.closest(".lupili") || e.target.closest(".fermi")) return;
-  doigts.set(e.pointerId, {x:e.clientX, y:e.clientY});
-  bougea = false;
-  if (doigts.size === 1){
-    depart = {x:e.clientX, y:e.clientY, vx:vuo.x, vy:vuo.y};
-    plena.classList.add("tiras");
-    plena.setPointerCapture(e.pointerId);
-  } else if (doigts.size === 2){
+  fingers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  moved = false;
+  if (fingers.size === 1){
+    start = {x:e.clientX, y:e.clientY, vx:view.x, vy:view.y};
+    full.classList.add("tiras");
+    full.setPointerCapture(e.pointerId);
+  } else if (fingers.size === 2){
     var d = [...doigts.values()];
-    depart = {ecart:Math.hypot(d[0].x-d[1].x, d[0].y-d[1].y), k:vuo.k,
+    start = {gap:Math.hypot(d[0].x-d[1].x, d[0].y-d[1].y), k:view.k,
               mx:(d[0].x+d[1].x)/2, my:(d[0].y+d[1].y)/2,
-              vx:vuo.x, vy:vuo.y};
+              vx:view.x, vy:view.y};
   }
 });
-plena.addEventListener("pointermove", function(e){
-  if (!doigts.has(e.pointerId) || !depart) return;
-  doigts.set(e.pointerId, {x:e.clientX, y:e.clientY});
-  if (doigts.size >= 2 && depart.ecart){
+full.addEventListener("pointermove", function(e){
+  if (!fingers.has(e.pointerId) || !start) return;
+  fingers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (fingers.size >= 2 && start.ecart){
     var d = [...doigts.values()];
     var ec = Math.hypot(d[0].x-d[1].x, d[0].y-d[1].y);
     if (ec > 4){
-      vuo.x = depart.vx; vuo.y = depart.vy; vuo.k = depart.k;
-      grossir(depart.k * ec / depart.ecart, depart.mx, depart.my);
-      bougea = true;
+      view.x = start.vx; view.y = start.vy; view.k = start.k;
+      zoom(start.k * ec / start.ecart, start.mx, start.my);
+      moved = true;
     }
     return;
   }
-  var dx = e.clientX - depart.x, dy = e.clientY - depart.y;
-  if (Math.abs(dx) + Math.abs(dy) > 4) bougea = true;
-  if (vuo.k > 1.001) poserVue(vuo.k, depart.vx + dx, depart.vy + dy);
+  var dx = e.clientX - start.x, dy = e.clientY - start.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+  if (view.k > 1.001) placeView(view.k, start.vx + dx, start.vy + dy);
 });
-function lacher(e){
-  doigts.delete(e.pointerId);
-  if (doigts.size === 0){ depart = null; plena.classList.remove("tiras"); }
-  else if (doigts.size === 1){
+function release(e){
+  fingers.delete(e.pointerId);
+  if (fingers.size === 0){ start = null; full.classList.remove("tiras"); }
+  else if (fingers.size === 1){
     var d = [...doigts.entries()][0];
-    depart = {x:d[1].x, y:d[1].y, vx:vuo.x, vy:vuo.y};
+    start = {x:d[1].x, y:d[1].y, vx:view.x, vy:view.y};
   }
 }
-plena.addEventListener("pointerup", lacher);
-plena.addEventListener("pointercancel", lacher);
+full.addEventListener("pointerup", release);
+full.addEventListener("pointercancel", release);
 
 document.addEventListener("click", function(e){
   var fig = e.target.closest ? e.target.closest(".gravuro") : null;
-  if (fig){ ouvrirPlena(fig); return; }
-  if (!plena.classList.contains("mont")) return;
+  if (fig){ openFull(fig); return; }
+  if (!full.classList.contains("mont")) return;
   /* WE DO NOT CLOSE BY DRAGGING. A drag ends in a « click » the browser
      sends all the same; without this guard, moving the view closed
      it. */
-  if (bougea){ bougea = false; return; }
-  if (e.target.closest(".fermi")){ fermarPlena(); return; }
+  if (moved){ moved = false; return; }
+  if (e.target.closest(".fermi")){ closeFull(); return; }
   if (e.target.closest(".lupili")) return;
   /* ON THE ENLARGED IMAGE, THE CLICK NO LONGER CLOSES: it serves to
      move it, and closing at the least pause of the hand would be
@@ -1323,30 +1323,30 @@ document.addEventListener("click", function(e){
      reliably — the browser returns now the image, now the ground that
      carries it, for a click landing in the same spot. The rectangle
      does not lie. */
-  if (vuo.k > 1.001){
-    var r = plenaBildo.getBoundingClientRect();
+  if (view.k > 1.001){
+    var r = fullImage.getBoundingClientRect();
     if (e.clientX >= r.left && e.clientX <= r.right &&
         e.clientY >= r.top && e.clientY <= r.bottom) return;
   }
-  fermarPlena();
+  closeFull();
 });
 addEventListener("keydown", function(e){
-  if (!plena.classList.contains("mont")) return;
-  if (e.key === "Escape"){ fermarPlena(); return; }
-  var b = plena.getBoundingClientRect();
+  if (!full.classList.contains("mont")) return;
+  if (e.key === "Escape"){ closeFull(); return; }
+  var b = full.getBoundingClientRect();
   var mx = b.left + b.width / 2, my = b.top + b.height / 2;
-  if (e.key === "+" || e.key === "=") grossir(vuo.k * 1.5, mx, my);
-  else if (e.key === "-") grossir(vuo.k / 1.5, mx, my);
-  else if (e.key === "0") poserVue(1, 0, 0);
-  else if (vuo.k > 1.001 && e.key.indexOf("Arrow") === 0){
+  if (e.key === "+" || e.key === "=") zoom(view.k * 1.5, mx, my);
+  else if (e.key === "-") zoom(view.k / 1.5, mx, my);
+  else if (e.key === "0") placeView(1, 0, 0);
+  else if (view.k > 1.001 && e.key.indexOf("Arrow") === 0){
     var p = 80;
-    poserVue(vuo.k, vuo.x + (e.key === "ArrowLeft" ? p : e.key === "ArrowRight" ? -p : 0),
-                    vuo.y + (e.key === "ArrowUp" ? p : e.key === "ArrowDown" ? -p : 0));
+    placeView(view.k, view.x + (e.key === "ArrowLeft" ? p : e.key === "ArrowRight" ? -p : 0),
+                    view.y + (e.key === "ArrowUp" ? p : e.key === "ArrowDown" ? -p : 0));
     e.preventDefault();
   }
 });
 addEventListener("resize", function(){
-  if (plena.classList.contains("mont")) poserVue(vuo.k, vuo.x, vuo.y);
+  if (full.classList.contains("mont")) placeView(view.k, view.x, view.y);
 });
 
 /* --- THE UNFOLDING OF THE NOTES. The note lives at the end of the
@@ -1359,14 +1359,14 @@ document.addEventListener("click", function(e){
   if (!b) return;
   var n = document.getElementById("noto-" + b.dataset.noto);
   if (!n) return;
-  var ouvert = b.getAttribute("aria-expanded") === "true";
-  if (ouvert){
+  var open_ = b.getAttribute("aria-expanded") === "true";
+  if (open_){
     n.hidden = true;
     b.setAttribute("aria-expanded", "false");
   } else {
-    var rang = b.closest(".r");
-    if (rang && n.previousElementSibling !== rang)
-      rang.parentNode.insertBefore(n, rang.nextSibling);
+    var row = b.closest(".r");
+    if (row && n.previousElementSibling !== row)
+      row.parentNode.insertBefore(n, row.nextSibling);
     n.hidden = false;
     b.setAttribute("aria-expanded", "true");
   }
@@ -1390,18 +1390,18 @@ document.addEventListener("click", function(e){
    image. --- */
 document.addEventListener("click", function(e){
   var b = e.target.closest ? e.target.closest(".lupo") : null;
-  if (b) { ouvrirLupo(b); return; }
+  if (b) { openMagnifier(b); return; }
   var k = e.target.closest ? e.target.closest(".lupo-vido") : null;
   if (k && k.dataset.par){
     var src = document.querySelector('[data-lupo="' + k.dataset.par + '"]');
-    if (src) ouvrirLupo(src);
+    if (src) openMagnifier(src);
   }
 });
 
-var lupoN = 0;
+var magnifierN = 0;
 
-function ouvrirLupo(b){
-  var vide = b.nextElementSibling;
+function openMagnifier(b){
+  var empty = b.nextElementSibling;
   if (b.getAttribute("aria-expanded") === "true"){
     var v = document.querySelector('.lupo-vido[data-par="' + b.dataset.lupo + '"]');
     if (v) v.remove();
@@ -1414,9 +1414,9 @@ function ouvrirLupo(b){
   var W = +fig.dataset.dl, H = +fig.dataset.dh;
   if (!W || !H) return;
 
-  var rang = b.closest(".r");
-  if (!rang) return;
-  if (!b.dataset.lupo) b.dataset.lupo = "l" + (++lupoN);
+  var row = b.closest(".r");
+  if (!row) return;
+  if (!b.dataset.lupo) b.dataset.lupo = "l" + (++magnifierN);
   /* One close-up open at a time: two views of the same plate one below
      the other explain no better than the first. */
   document.querySelectorAll(".lupo-vido").forEach(function(v){
@@ -1425,38 +1425,38 @@ function ouvrirLupo(b){
     v.remove();
   });
 
-  var vue = document.createElement("div");
-  vue.className = "lupo-vido";
-  vue.dataset.par = b.dataset.lupo;
-  var kadro = document.createElement("div");
-  kadro.className = "kadro";
+  var sight = document.createElement("div");
+  sight.className = "lupo-vido";
+  sight.dataset.par = b.dataset.lupo;
+  var frame = document.createElement("div");
+  frame.className = "kadro";
   var dir = document.createElement("div");
   dir.className = "dir";
   dir.innerHTML = '<span><b>(' + b.dataset.n + ')</b> ' +
     (b.getAttribute("title") || "") + '</span>' +
     '<span>' + b.dataset.g.slice(0, 3).toUpperCase().replace("T", "tabelo ")
-      .replace(/^tabelo 0/, "tabelo ") + '</span>';
-  vue.appendChild(kadro);
-  vue.appendChild(dir);
-  rang.parentNode.insertBefore(vue, rang.nextSibling);
+      .replace(/^table 0/, "tabelo ") + '</span>';
+  sight.appendChild(frame);
+  sight.appendChild(dir);
+  row.parentNode.insertBefore(sight, row.nextSibling);
 
   /* The source square, as fractions of the plate. */
-  var demi = 4.5 * c[3];                        /* 9 figure heights */
+  var half = 4.5 * c[3];                        /* 9 figure heights */
   var cx = c[0] + c[2] / 2, cy = c[1] + c[3] / 2;
-  var lg = kadro.clientWidth, ht = kadro.clientHeight;
-  var sh = Math.min(1, demi * 2);
+  var lg = frame.clientWidth, ht = frame.clientHeight;
+  var sh = Math.min(1, half * 2);
   var sw = Math.min(1, (sh * H * lg) / (ht * W));  /* same shape as the frame */
   var sx = Math.min(1 - sw, Math.max(0, cx - sw / 2));
   var sy = Math.min(1 - sh, Math.max(0, cy - sh / 2));
-  kadro.style.backgroundImage = 'url("' + fig.dataset.detalo + '")';
+  frame.style.backgroundImage = 'url("' + fig.dataset.detalo + '")';
   /* THE PLACE IS COUNTED IN SCREEN POINTS, not in per cent. The two say
      the same thing as long as the view does not move; as soon as one
      drags it, per cent forces a return through the fraction of the plate
      at every movement of the finger — and it divides by a margin that is
      zero when the image just fits. In points, to drag is to add. */
-  kadro._vido = {bw: lg / sw, bh: ht / sh, px: -(sx / sw) * lg,
+  frame._vido = {bw: lg / sw, bh: ht / sh, px: -(sx / sw) * lg,
                  py: -(sy / sh) * ht};
-  poserKadro(kadro);
+  placeFrame(frame);
   b.setAttribute("aria-expanded", "true");
 }
 
@@ -1467,78 +1467,78 @@ function ouvrirLupo(b){
    The magnification does not change: it is what it is so that the object
    fits in the frame with what surrounds it, and the reader who wants it
    larger has full screen, which magnifies. --- */
-function poserKadro(kadro){
-  var d = kadro._vido;
+function placeFrame(frame){
+  var d = frame._vido;
   if (!d) return;
-  var lg = kadro.clientWidth, ht = kadro.clientHeight;
+  var lg = frame.clientWidth, ht = frame.clientHeight;
   d.px = Math.min(0, Math.max(lg - d.bw, d.px));
   d.py = Math.min(0, Math.max(ht - d.bh, d.py));
-  kadro.style.backgroundSize = d.bw + "px " + d.bh + "px";
-  kadro.style.backgroundPosition = d.px + "px " + d.py + "px";
+  frame.style.backgroundSize = d.bw + "px " + d.bh + "px";
+  frame.style.backgroundPosition = d.px + "px " + d.py + "px";
 }
 
-var tirage = null, tiraBougea = false;
+var drag = null, dragMoved = false;
 document.addEventListener("pointerdown", function(e){
   var k = e.target.closest ? e.target.closest(".lupo-vido .kadro") : null;
   if (!k || !k._vido) return;
-  tirage = {k:k, x:e.clientX, y:e.clientY, px:k._vido.px, py:k._vido.py};
-  tiraBougea = false;
+  drag = {k:k, x:e.clientX, y:e.clientY, px:k._vido.px, py:k._vido.py};
+  dragMoved = false;
   k.classList.add("tiras");
   k.setPointerCapture(e.pointerId);
 });
 document.addEventListener("pointermove", function(e){
-  if (!tirage) return;
-  var dx = e.clientX - tirage.x, dy = e.clientY - tirage.y;
-  if (Math.abs(dx) + Math.abs(dy) > 4) tiraBougea = true;
-  tirage.k._vido.px = tirage.px + dx;
-  tirage.k._vido.py = tirage.py + dy;
-  poserKadro(tirage.k);
+  if (!drag) return;
+  var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) dragMoved = true;
+  drag.k._vido.px = drag.px + dx;
+  drag.k._vido.py = drag.py + dy;
+  placeFrame(drag.k);
 });
-function lacherKadro(){
-  if (!tirage) return;
-  tirage.k.classList.remove("tiras");
-  tirage = null;
+function releaseFrame(){
+  if (!drag) return;
+  drag.k.classList.remove("tiras");
+  drag = null;
 }
-document.addEventListener("pointerup", lacherKadro);
-document.addEventListener("pointercancel", lacherKadro);
+document.addEventListener("pointerup", releaseFrame);
+document.addEventListener("pointercancel", releaseFrame);
 /* The drag ends in a « click » the browser sends all the same; without
    this guard, moving the view closed it. */
 document.addEventListener("click", function(e){
-  if (!tiraBougea) return;
+  if (!dragMoved) return;
   if (e.target.closest && e.target.closest(".lupo-vido")){
     e.stopPropagation();
-    tiraBougea = false;
+    dragMoved = false;
   }
 }, true);
 addEventListener("resize", function(){
-  document.querySelectorAll(".lupo-vido .kadro").forEach(poserKadro);
+  document.querySelectorAll(".lupo-vido .kadro").forEach(placeFrame);
 });
 
 /* --- THE RUNNING HEAD in the table of contents. We do not follow the
    scroll pixel by pixel: we observe the title blocks, and the last one
    to have passed the top of the window is the one being read. --- */
-var titres = [].slice.call(document.querySelectorAll(".r.sub, .r.apar"));
-var liens = {};
-document.querySelectorAll("nav a").forEach(function(a){ liens[a.dataset.ch] = a; });
-function courant(){
+var titles = [].slice.call(document.querySelectorAll(".r.sub, .r.apar"));
+var links = {};
+document.querySelectorAll("nav a").forEach(function(a){ links[a.dataset.ch] = a; });
+function current(){
   var h = parseInt(getComputedStyle(document.documentElement)
             .getPropertyValue("--kapo")) || 104;
   var vu = null;
-  titres.forEach(function(t){
+  titles.forEach(function(t){
     if (t.getBoundingClientRect().top - h - 14 <= 1) vu = t;
   });
-  for (var c in liens) liens[c].classList.remove("nun");
-  if (vu && liens[vu.dataset.cle]){
-    liens[vu.dataset.cle].classList.add("nun");
-    var a = liens[vu.dataset.cle], p = a.parentNode;
+  for (var c in links) links[c].classList.remove("nun");
+  if (vu && links[vu.dataset.cle]){
+    links[vu.dataset.cle].classList.add("nun");
+    var a = links[vu.dataset.cle], p = a.parentNode;
     if (a.offsetTop < p.scrollTop || a.offsetTop > p.scrollTop + p.clientHeight - 30)
       p.scrollTop = a.offsetTop - p.clientHeight / 2;
   }
 }
 addEventListener("scroll", function(){
-  requestAnimationFrame(courant);
+  requestAnimationFrame(current);
 }, {passive:true});
-courant();
+current();
 </script>
 <!-- The word « Ido » is in the anchor and not in the style sheet: if
      the sheet does not load — a page opened away from the site, a file

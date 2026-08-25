@@ -3156,7 +3156,7 @@ def unify_rules(rows):
 #  removal of an element. We therefore write the page, and say what we
 #  have carried off — it is for the reader to recognise whether he
 #  wanted it.
-MARKS = ("TITRO", "SUBTITRO", "NAV", "LINGUI", "KONTENO", "LINGUIJSON")
+MARKS = ("TITLE", "SUBTITLE", "NAV", "LANGUAGES", "CONTENT", "LANGS_JSON")
 
 
 def lost_lines(template, old_, new_page):
@@ -3590,12 +3590,12 @@ def render(rows):
 
     template = (ROOT / "tools" / "template.html").read_text(encoding="utf-8")
     page = (template
-            .replace("{{TITRO}}", TITLE)
-            .replace("{{SUBTITRO}}", SUBTITLE_)
+            .replace("{{TITLE}}", TITLE)
+            .replace("{{SUBTITLE}}", SUBTITLE_)
             .replace("{{NAV}}", nav)
-            .replace("{{LINGUI}}", options)
-            .replace("{{KONTENO}}", "\n".join(lines))
-            .replace("{{LINGUIJSON}}", json.dumps(LANGS, ensure_ascii=False)))
+            .replace("{{LANGUAGES}}", options)
+            .replace("{{CONTENT}}", "\n".join(lines))
+            .replace("{{LANGS_JSON}}", json.dumps(LANGS, ensure_ascii=False)))
     target = ROOT / "index.html"
     if target.exists():
         lost = lost_lines(template, target.read_text(encoding="utf-8"), page)
