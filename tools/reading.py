@@ -10,7 +10,7 @@ contrast and outputs an image at the width asked for.
 
     python3 tools/reading.py io 7            # one leaf
     python3 tools/reading.py fr 9 13         # a slice
-    python3 tools/reading.py io 7 --moitie   # cut in two across the height
+    python3 tools/reading.py io 7 --half   # cut in two across the height
 
 Output: tools/.reading/<language>-<n>[a|b].png
 """
@@ -82,7 +82,7 @@ def prepared(lang, n, half=False, width_=WIDTH):
 
 def hand():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    half = "--moitie" in sys.argv
+    half = "--half" in sys.argv
     lang = args[0]
     start_ = int(args[1])
     end_ = int(args[2]) if len(args) > 2 else start_

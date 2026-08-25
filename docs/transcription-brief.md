@@ -1,204 +1,201 @@
-# Consigne de relevé — transcription diplomatique
+# Transcription brief — the diplomatic transcription
 
-À lire intégralement avant de relever un seul feuillet.
+To be read through before a single leaf is transcribed.
 
-## 0. Ce qu'on fait
+## 0. What we are doing
 
-On transcrit **ligne à ligne** un livret imprimé en 1926, à partir de
-son fac-similé. La règle unique :
+We transcribe, **line by line**, a booklet printed in 1926, from its
+facsimile. The one rule:
 
-> **UNE LIGNE DU FAC-SIMILÉ = UNE LIGNE DU PDF.**
+> **ONE LINE OF THE FACSIMILE = ONE LINE OF THE PDF.**
 
-Le texte n'est pas remis en forme, pas modernisé, pas corrigé. Les
-coquilles de l'imprimeur sont conservées. On ne « comprend » pas le
-texte pour le récrire : on le **relève**.
+The text is not reset, not modernised, not corrected. The printer's
+typos are kept. We do not "understand" the text in order to rewrite it:
+we **record** it.
 
-## 1. Préparer les images
+## 1. Preparing the images
 
-    python3 outils/lekto.py io 13 18 --moitie
-    python3 outils/lekto.py fr 14 18 --moitie
+    python3 tools/reading.py io 13 18 --half
+    python3 tools/reading.py fr 14 18 --half
 
-produit `outils/.lekto/io-013a.png` (haut de page) et `io-013b.png`
-(bas de page), avec deux lignes de recouvrement entre les deux. Les
-lire avec l'outil `Read`, une image à la fois, et transcrire au fur et
-à mesure. **Ne jamais transcrire de mémoire ni par déduction : chaque
-ligne doit avoir été vue.**
+produces `tools/.reading/io-013a.png` (top of the page) and
+`io-013b.png` (foot of the page), with two lines of overlap between the
+two. Read them with the `Read` tool, one image at a time, and transcribe
+as you go. **Never transcribe from memory or by inference: every line
+must have been seen.**
 
-Si une image est illisible, la regénérer plus grande :
+If an image is illegible, regenerate it larger:
 
-    python3 -c "import sys; sys.path.insert(0,'outils'); \
-      from lekto import prepare; print(prepare('io', 13, True, 2200))"
+    python3 -c "import sys; sys.path.insert(0,'tools'); \
+      from reading import prepared; print(prepared('io', 13, True, 2200))"
 
-## 2. Les deux marques de coupure
+## 2. The two break marks
 
-À la fin de chaque ligne du fac-similé, sauf la dernière d'un alinéa :
+At the end of every line of the facsimile, except the last of a
+paragraph:
 
-| marque | quand | rend |
+| mark | when | renders |
 |---|---|---|
-| `\nl` | la ligne finit sur un mot entier | rien de visible |
-| `\cc` | la ligne finit sur un mot **coupé** | le trait d'union |
+| `\nl` | the line ends on a whole word | nothing visible |
+| `\cc` | the line ends on a **broken** word | the hyphen |
 
-Le trait d'union d'une coupure **ne s'écrit pas** : `\cc` le compose.
-Écrire `ler\cc nanti` et non `ler-\cc nanti`.
+The hyphen of a break **is not written**: `\cc` sets it. Write
+`ler\cc nanti` and not `ler-\cc nanti`.
 
-On n'utilise **jamais** `\\`.
+We **never** use `\\`.
 
-La dernière ligne d'un alinéa ne porte aucune marque — sauf si
-l'alinéa continue sur la page suivante : elle porte alors `\parplein`
-sur sa propre ligne, et la reprise commence par `\VUcontinue`.
+The last line of a paragraph carries no mark — unless the paragraph runs
+on to the next page: it then carries `\parplein` on a line of its own,
+and the resumption begins with `\VUcontinue`.
 
-## 3. Les enrichissements
+## 3. The enrichments
 
-| fac-similé | source |
+| facsimile | source |
 |---|---|
-| gras (demi-gras étroit) | `\VUgras{...}` |
-| italique | `\textit{...}` |
-| renvoi entre parenthèses en exposant, ex. `⁽¹⁸⁾` | `\textsuperscript{(18)}` |
-| petites capitales d'intertitre | voir § 4 |
+| bold (narrow semibold) | `\VUgras{...}` |
+| italic | `\textit{...}` |
+| a superscript reference in brackets, e.g. `⁽¹⁸⁾` | `\textsuperscript{(18)}` |
+| small capitals of a subheading | see § 4 |
 
-**Un mot coupé au milieu d'un passage gras porte deux `\VUgras`**, un
-par ligne :
+**A word broken in the middle of a bold passage carries two `\VUgras`**,
+one per line:
 
     ar\cc
     moro
 
-devient
+becomes
 
     \VUgras{ar}\cc
     \VUgras{moro}
 
-Respecter **exactement** l'étendue du gras : dans « la **nigra tabelo**
-(1) », le renvoi n'est pas gras ; dans « **liceo.** », le point l'est.
-Regarder, ne pas supposer.
+Respect the extent of the bold **exactly**: in « la **nigra tabelo**
+(1) » the reference is not bold; in « **liceo.** » the full stop is.
+Look, do not suppose.
 
-Attention à l'espace **avant** le renvoi : le livret ido met le plus
-souvent une espace (`\VUgras{tabli} \textsuperscript{(18)}`), le livret
-français le plus souvent pas (`\VUgras{tables}\textsuperscript{(18)}`).
-Suivre le fac-similé page par page.
+Mind the space **before** the reference: the Ido booklet most often puts
+one (`\VUgras{tabli} \textsuperscript{(18)}`), the French booklet most
+often does not (`\VUgras{tables}\textsuperscript{(18)}`). Follow the
+facsimile page by page.
 
-## 4. Les rangs de titre
+## 4. The ranks of title
 
-    \VUpk{10.2pt}{40}{Deskripto generala.}      intertitre en petites
-                                                capitales, centré
-    \VUtitre{15.0pt}{60}{TABELO N\textsuperscript{o} 2}   titre de tableau
-    \VUcentre{13.2pt}{90}{DUESMA SERIO}         ligne d'apparat
-    \VUfilet{20mm}                              filet centré
+    \VUpk{10.2pt}{40}{Deskripto generala.}      subheading in small
+                                                capitals, centred
+    \VUtitre{15.0pt}{60}{TABELO N\textsuperscript{o} 2}   table title
+    \VUcentre{13.2pt}{90}{DUESMA SERIO}         a line of apparatus
+    \VUfilet{20mm}                              centred rule
     \VUornamento{9pt}                           fleuron
-    \VUsaut{3.0mm}                              blanc vertical
+    \VUsaut{3.0mm}                              vertical white
 
-Les corps et interlettrages passés en argument sont **provisoires** :
-reprendre ceux du tableau 1 (`texto/io/10-tabelo-01.tex`) plutôt que
-d'en inventer. Ils seront relevés plus tard par `outils/apparat.py`.
+The sizes and letterspacing passed as arguments are **provisional**:
+take those of table 1 (`text/io/10-tabelo-01.tex`) rather than inventing
+any. They will be surveyed later by `tools/measures.py`.
 
-## 5. La structure de page
+## 5. The structure of a page
 
     \begin{VUpage}[13]{11}
     ...
     \end{VUpage}
 
-`[13]` = numéro de **feuillet** du scan ; `{11}` = **folio imprimé**,
-laissé vide `{}` si la page n'en porte pas (ouverture de tableau).
+`[13]` = the **leaf** number in the scan; `{11}` = the **printed
+folio**, left empty `{}` if the page carries none (the opening of a
+table).
 
-Rappel : **folio imprimé = numéro de feuillet − 2**, dans les deux
-livrets.
+Remember: **printed folio = leaf number − 2**, in both booklets.
 
-Entre deux alinéas, écrire `\VUblancAlinea` avant le premier mot.
+Between two paragraphs, write `\VUblancAlinea` before the first word.
 
-### Notes de bas de page
+### Footnotes
 
     \VUnotes{143.2mm}{%
     (*) Por la \textit{baptonomi} on konsilas anke transskribar li\nl
     segun la formo Latina.%
     }
 
-Elles se déclarent **en tête de page**, juste après `\begin{VUpage}`,
-quelle que soit leur place réelle : elles sont posées à une ordonnée
-absolue, en hauteur nulle. L'ordonnée est provisoire — mettre
-`143.2mm` si la note est en bas d'une page pleine.
+They are declared **at the head of the page**, just after
+`\begin{VUpage}`, whatever their real place: they are laid at an
+absolute ordinate, at zero height. The ordinate is provisional — put
+`143.2mm` if the note is at the foot of a full page.
 
-## 6. Les clés d'appariement `%%K`
+## 6. The pairing keys `%%K`
 
-**C'est la partie la plus importante et la plus facile à rater.**
+**This is the most important part, and the easiest to get wrong.**
 
-Avant chaque bloc de texte, une ligne :
+Before each block of text, one line:
 
     %%K t02-09-3 p
 
-* `t02` — numéro du tableau, sur deux chiffres.
-* `09` — **le numéro d'alinéa imprimé par l'auteur** (`9. —`), sur
-  deux chiffres. Les blocs qui ne portent pas de numéro (les alinéas
-  qui suivent, sans chiffre) gardent celui de l'alinéa numéroté qui les
-  précède.
-* `3` — rang du bloc **à l'intérieur** de cet alinéa numéroté : `1`
-  pour celui qui porte le chiffre, `2` pour le suivant, etc.
-* `p` — le type : `p` alinéa courant, `sub` intertitre, `apar` page
-  d'apparat (ouverture de tableau), `noto` note.
+* `t02` — the table's number, on two digits.
+* `09` — **the paragraph number printed by the author** (`9. —`), on
+  two digits. Blocks that carry no number (the paragraphs that follow,
+  with no figure) keep the number of the numbered paragraph before them.
+* `3` — the block's rank **inside** that numbered paragraph: `1` for the
+  one that carries the figure, `2` for the next, and so on.
+* `p` — the type: `p` a running paragraph, `sub` a subheading, `apar` a
+  page of apparatus (the opening of a table), `noto` a note.
 
-Les intertitres et les pages d'apparat se numérotent à part :
-`t02-tit-1`, `t02-tit-2`, … dans l'ordre, et `t02-apar-1`.
+Subheadings and pages of apparatus are numbered apart: `t02-tit-1`,
+`t02-tit-2`, … in order, and `t02-apar-1`.
 
-### Les scènes : ne t'en occupe pas
+### The scenes: leave them alone
 
-Plusieurs tableaux sont découpés en scènes (« Unesma ceno », « Duesma
-ceno »), et **l'auteur remet la numérotation des alinéas à 1 à chaque
-scène**. La même clé `t04-01-1` désigne alors deux alinéas différents.
+Several tables are cut into scenes (« Unesma ceno », « Duesma ceno »),
+and **the author resets the paragraph numbering to 1 at each scene**.
+The same key `t04-01-1` then names two different paragraphs.
 
-**Ce n'est pas ton problème.** Note ce que tu vois : l'imprimé porte
-« 1. — », tu écris `01`. Une passe déterministe (`outils/ceni.py`),
-appliquée après coup et à l'identique aux deux langues, insère l'indice
-de scène (`t04-c2-01-1`) en détectant la décroissance du numéro. Si tu
-le fais toi-même, ta numérotation de scènes et celle de l'autre langue
-risquent de diverger, et l'appariement sera faux.
+**That is not your problem.** Note what you see: the print carries
+« 1. — », you write `01`. A deterministic pass (`tools/scenes.py`),
+applied afterwards and identically to both languages, inserts the scene
+index (`t04-c2-01-1`) by detecting the fall in the number. If you do it
+yourself, your scene numbering and the other language's risk diverging,
+and the pairing will be wrong.
 
-Un alinéa coupé par un changement de page porte **deux fois la même
-clé**, la seconde suivie de `suite` :
+A paragraph cut by a change of page carries **the same key twice**, the
+second followed by `suite`:
 
     %%K t01-13-1 p suite
 
-**Pourquoi cela compte.** Ces clés apparient la colonne ido et la
-colonne française dans la page de lecture. Les deux éditions n'ont ni
-la même pagination, ni le même nombre de lignes, ni le même découpage
-en sections — mais elles numérotent les mêmes alinéas, et c'est le seul
-ancrage qu'elles partagent. Une clé fausse fait mentir la mise en
-regard.
+**Why this matters.** These keys pair the Ido column and the French
+column on the reading page. The two editions have neither the same
+pagination, nor the same number of lines, nor the same division into
+sections — but they number the same paragraphs, and that is the only
+anchor they share. A wrong key makes the side-by-side lie.
 
-Si un bloc n'existe que dans une édition (l'ido ajoute des intertitres
-que le français ne connaît pas), il garde sa clé et n'aura simplement
-pas de vis-à-vis. **Ne jamais forcer une correspondance qui n'existe
-pas, ne jamais fusionner deux alinéas pour qu'ils « tombent en
-face ».**
+If a block exists in one edition only (the Ido adds subheadings the
+French does not know), it keeps its key and simply has no counterpart.
+**Never force a correspondence that does not exist, never merge two
+paragraphs so that they "fall opposite".**
 
-## 7. Orthographe et ponctuation
+## 7. Spelling and punctuation
 
-* Écrire les accents en UTF-8 direct (`é`, `à`, `ô`), pas en macros.
-* Apostrophe : la saisir droite (`'`) ; la conversion la courbe.
-* Tiret cadratin de l'imprimé : `---`. Demi-cadratin : `--`.
-* Espace avant `;` `:` `?` `!` : la saisir normalement, une espace.
-* Guillemets français du fac-similé : `«~...~»` → écrire simplement
+* Write the accents in direct UTF-8 (`é`, `à`, `ô`), not as macros.
+* Apostrophe: type it straight (`'`); the conversion curves it.
+* The print's em dash: `---`. En dash: `--`.
+* A space before `;` `:` `?` `!`: type it normally, one space.
+* The facsimile's French quotation marks `«~...~»`: simply write
   `« ... »`.
-* **Ne pas corriger le texte.** Si l'imprimé porte `et` là où l'ido
-  attend `e`, écrire `et`. Si un point manque, ne pas l'ajouter.
+* **Do not correct the text.** If the print carries `et` where Ido
+  expects `e`, write `et`. If a full stop is missing, do not add it.
 
-## 8. Vérifier avant de rendre
+## 8. Check before handing in
 
-1. Compter les lignes : le nombre de `\nl` + `\cc` + fins d'alinéa
-   d'une page doit égaler le nombre de lignes imprimées de cette page.
-2. Compiler :
+1. Count the lines: the number of `\nl` + `\cc` + paragraph endings on a
+   page must equal the number of printed lines on that page.
+2. Compile:
 
-       pdflatex -interaction=nonstopmode -jobname=essai main-io.tex
+       pdflatex -interaction=nonstopmode -jobname=trial main-io.tex
 
-   **Aucun « Overfull \hbox » ne doit apparaître.** S'il y en a, la
-   ligne relevée est trop longue : c'est presque toujours une coupure
-   oubliée.
-3. Relire les clés `%%K` : suite de numéros d'alinéa sans trou.
+   **No « Overfull \hbox » may appear.** If there is one, the line
+   recorded is too long: it is almost always a break left out.
+3. Reread the `%%K` keys: a run of paragraph numbers with no gap.
 
-## 9. Où écrire
+## 9. Where to write
 
-    texto/io/<NN>-tabelo-<NN>.tex        ex. texto/io/11-tabelo-02.tex
-    texto/fr/<NN>-tableau-<NN>.tex       ex. texto/fr/11-tableau-02.tex
+    text/io/<NN>-tabelo-<NN>.tex        e.g. text/io/11-tabelo-02.tex
+    text/fr/<NN>-tableau-<NN>.tex       e.g. text/fr/11-tableau-02.tex
 
-Le préfixe numérique donne l'ordre d'inclusion : `10` pour le
-tableau 1, `11` pour le 2, … `25` pour le 16.
+The numeric prefix gives the order of inclusion: `10` for table 1, `11`
+for table 2, … `25` for table 16.
 
-Modèle à imiter dans le détail : `texto/io/10-tabelo-01.tex` et
-`texto/fr/10-tableau-01.tex`.
+The model to imitate in detail: `text/io/10-tabelo-01.tex` and
+`text/fr/10-tableau-01.tex`.
