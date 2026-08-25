@@ -1,32 +1,32 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-html.py — construit index.html a partir des sources LaTeX.
+html.py — builds index.html from the LaTeX sources.
 
     python3 tools/html.py
 
-LE TEXTE N'EST SAISI QU'UNE FOIS. Les fichiers de text/ sont la seule
-source : le PDF et la page de lecture en sortent tous deux. Une
-correction de lecture faite dans le .tex se retrouve donc a l'ecran
-sans qu'on ait rien a reporter, et il est impossible que les deux
-etats du texte divergent.
+THE TEXT IS KEYED IN ONLY ONCE. The files in text/ are the sole
+source: the PDF and the reading page both come out of them. A
+correction of the reading made in the .tex therefore turns up on
+screen with nothing to carry over, and it is impossible for the two
+states of the text to diverge.
 
-CE QUE LA PAGE FAIT DU RELEVE DIPLOMATIQUE. Le PDF garde les coupures
-de ligne du fac-simile ; la page de lecture, elle, ne le peut pas —
-sa colonne n'a pas de largeur fixe. Les deux marques du releve y sont
-donc traitees ainsi :
-    \\nl  (fin de ligne sans trait d'union)  ->  une espace
-    \\cc  (fin de ligne AVEC trait d'union)  ->  rien : le mot se
-          recolle, puisque le trait d'union n'appartenait pas au mot
-          mais a la composition.
-C'est la seule maniere de rendre le texte cherchable : « docochambro »
-coupe en « doco-chambro » ne se trouverait pas.
+WHAT THE PAGE MAKES OF THE DIPLOMATIC TRANSCRIPTION. The PDF keeps
+the line breaks of the facsimile; the reading page cannot -- its
+column has no fixed width. The transcription's two marks are
+therefore handled thus:
+    \\nl  (end of line without a hyphen)  ->  a space
+    \\cc  (end of line WITH a hyphen)     ->  nothing: the word glues
+          back together, since the hyphen belonged not to the word but
+          to the composition.
+It is the only way to make the text searchable: « docochambro » broken
+as « doco-chambro » would not be found.
 
-L'APPARIEMENT DES DEUX COLONNES ne se fait ni par page ni par ligne —
-les deux editions n'ont ni la meme pagination ni le meme nombre de
-lignes — mais par les cles « %%K » du releve, qui reprennent la
-NUMEROTATION D'ALINEA DE L'AUTEUR. Elle est la meme dans les deux
-livrets, et c'est le seul ancrage qu'ils partagent.
+THE PAIRING OF THE TWO COLUMNS is done neither by page nor by line --
+the two editions have neither the same pagination nor the same number
+of lines -- but by the transcription's « %%K » keys, which take up the
+AUTHOR'S OWN PARAGRAPH NUMBERING. It is the same in both booklets, and
+it is the only anchor they share.
 """
 import html as H
 import itertools
@@ -37,26 +37,27 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parent.parent
 
 
-# LE TABLEAU MURAL AU-DESSUS DE SON TEXTE. Le livret explique une
-# gravure que le lecteur n'a pas sous les yeux ; la page la lui donne.
-# Le catalogue est ecrit par tools/gravuri.py, qui prepare les images :
-# il porte les dimensions, et c'est par elles que la page reserve la
-# place avant meme le chargement -- sans quoi le texte sursaute quand
-# l'image arrive.
+# THE WALL PLATE ABOVE ITS TEXT. The booklet explains an engraving the
+# reader does not have before him; the page gives it to him. The
+# catalogue is written by tools/plates.py, which prepares the images:
+# it carries the dimensions, and it is by them that the page reserves
+# the space before the image has even loaded -- failing which the text
+# jumps when it arrives.
 def gravuri():
     cat = RACINE / "plates" / "plates.json"
     return json.loads(cat.read_text(encoding="utf-8")) if cat.exists() else {}
 
 
-# LE RENVOI QUE LA PLANCHE NE PORTE PAS. plates/corrections.json dit,
-# tableau par tableau, quel renvoi lire a la place de quel autre : au
-# tableau 5, « les plates-bandes (150) » sont gravees « 50 ». La source
-# ne bouge pas ; c'est la page de lecture qui montre le bon numero.
+# THE CROSS-REFERENCE THE PLATE DOES NOT CARRY. plates/corrections.json
+# says, table by table, which cross-reference to read in place of which
+# other: on table 5, « les plates-bandes (150) » are engraved « 50 ».
+# The source does not move; it is the reading page that shows the right
+# number.
 _KOREKTI = None
 
 
 def korekti(tab):
-    """Les renvois a corriger pour ce tableau : {lu: a lire}."""
+    """The cross-references to correct for this table: {read: to be read}."""
     global _KOREKTI
     if _KOREKTI is None:
         f = RACINE / "plates" / "corrections.json"
@@ -66,16 +67,16 @@ def korekti(tab):
 
 
 def korekti_renvojo(tab, cle=""):
-    """{lu: a lire} pour UN BLOC : les corrections qui valent pour tout
-    le tableau, plus celles que ce bloc-ci porte seul.
+    """{read: to be read} for ONE BLOCK: the corrections that hold for the
+    whole table, plus those this block alone carries.
 
-    UNE CORRECTION NE VAUT PAS TOUJOURS PARTOUT. Le « (150) » du
-    tableau 5 est un numero que la planche n'a nulle part : le corriger
-    partout ne peut rien casser. Le « (6) » que le tableau 6 donne a la
-    femme de chambre, lui, est un numero qui existe par ailleurs — c'est
-    le savon de l'alinea 2 — et le corriger partout ferait pointer
-    le savon sur la femme de chambre. Une entree dont la cle est celle
-    d'un BLOC ne vaut donc que dans ce bloc.
+    A CORRECTION DOES NOT ALWAYS HOLD EVERYWHERE. The « (150) » of
+    table 5 is a number the plate has nowhere: correcting it everywhere
+    can break nothing. The « (6) » that table 6 gives the chambermaid,
+    on the other hand, is a number that exists elsewhere — it is the
+    soap of paragraph 2 — and correcting it everywhere would make the
+    soap point at the chambermaid. An entry whose key is that of a
+    BLOCK therefore holds only within that block.
     """
     t = korekti(tab)
     out = {k: v for k, v in t.items() if isinstance(v, str)}
@@ -85,20 +86,20 @@ def korekti_renvojo(tab, cle=""):
 
 
 def nomo(nm, langue):
-    """Le nom de l'objet DANS LA LANGUE DE LA COLONNE.
+    """The object's name IN THE LANGUAGE OF THE COLUMN.
 
-    Le gros plan porte le nom de ce qu'il montre, et ce nom se lit dans
-    la langue du texte qui l'a appele : « fumeyo » a gauche, « fumoir »
-    au milieu, « smoking room » a droite. Les 1693 objets ne sont pas
-    tous nommes dans les trois -- il faut que le substantif soit en
-    gras devant le renvoi, et une edition l'oublie parfois -- d'ou le
-    repli, dans l'ordre : sa langue, l'ido, le francais.
+    The close-up carries the name of what it shows, and that name is
+    read in the language of the text that called it: « fumeyo » on the
+    left, « fumoir » in the middle, « smoking room » on the right. The
+    1693 objects are not all named in the three -- the noun must be in
+    bold before the cross-reference, and one edition sometimes forgets
+    it -- hence the fallback, in order: its own language, Ido, French.
     """
-    # ET LA VARIANTE LIT LE NOM DE SA COLONNE. plates/objects.json nomme
-    # les objets par colonne — « en », non « en-GB » : les deux editions
-    # anglaises y puisent le meme nom, que le calque regional retouche
-    # ensuite s'il le faut. Sans ce detour, la variante ne trouvait rien
-    # a son code et retombait sur l'ido.
+    # AND THE VARIANT READS THE NAME OF ITS COLUMN. plates/objects.json
+    # names the objects by column — « en », not « en-GB »: the two English
+    # editions draw the same name from it, which the regional overlay then
+    # retouches if it must. Without that detour, the variant found nothing
+    # under its code and fell back on Ido.
     for k in (TABLO.get(langue, langue), "io", "fr"):
         v = nm.get(k)
         if v:
@@ -106,24 +107,24 @@ def nomo(nm, langue):
     return next((v[0] for v in nm.values() if v), "")
 
 
-# UN PLAN N'EST PAS UNE VUE. Le tableau 5 porte, a cote de la maison en
-# coupe, le plan de ses etages : huit numeros s'y lisent, et tous les
-# huit se lisent aussi sur la maison. Le plan les grave un peu plus net,
-# et il gagnait a ce jeu — de sorte que le cabinet d'aisances (20)
-# s'ouvrait sur un rectangle vide entre deux cloisons, quand la maison
-# en coupe en montre la porte, marquee « W. C. 20 ». La nettete du
-# chiffre n'est pas ce qu'on cherche : on cherche la chose. Le plan ne
-# prend donc que les numeros que la vue n'a pas — et il se trouve qu'il
-# n'y en a aucun.
+# A PLAN IS NOT A VIEW. Table 5 carries, beside the house in section,
+# the plan of its floors: eight numbers are read there, and all eight
+# are read on the house as well. The plan engraves them a little more
+# cleanly, and it was winning that contest — so that the water closet
+# (20) opened on an empty rectangle between two partitions, when the
+# house in section shows its door, marked « W. C. 20 ». The sharpness
+# of the figure is not what we are after: we are after the thing. The
+# plan therefore takes only the numbers the view does not have — and it
+# turns out there are none.
 PLANOJ = {"t05-apar-2"}
 
 
 def numeri():
-    """{tabelo: {numero: (cle de gravure, x, y, l, h, noms)}}.
+    """{table: {number: (engraving key, x, y, w, h, names)}}.
 
-    Les positions sont en FRACTION de la planche : la page sert la meme
-    gravure a trois definitions, et le gros plan doit tomber juste sur
-    chacune. Le nom vient du releve des substantifs en gras.
+    The positions are a FRACTION of the plate: the page serves the same
+    engraving at three resolutions, and the close-up must fall right on
+    each. The name comes from the transcription of the bold nouns.
     """
     f = RACINE / "plates" / "numbers.json"
     if not f.exists():
@@ -132,16 +133,16 @@ def numeri():
     noms = json.loads(o.read_text(encoding="utf-8")) if o.exists() else {}
     out, force = {}, {}
     tout = json.loads(f.read_text(encoding="utf-8"))
-    # LES PLANS EN DERNIER : ils ne prennent que ce qui reste.
+    # THE PLANS LAST: they take only what is left.
     for cle in sorted(tout, key=lambda c: c in PLANOJ):
         v = tout[cle]
         tab, plano = cle[:3], cle in PLANOJ
         for n, b in v["numeri"].items():
-            # UN TABLEAU PEUT AVOIR DEUX PLANCHES — le 5 en a deux, le
-            # 12 aussi — et le meme numero peut alors etre lu sur les
-            # deux. On garde la lecture la mieux etayee, non la
-            # derniere venue ; mais un plan ne prend que ce que la vue
-            # n'a pas, si bien etaye soit-il.
+            # A TABLE MAY HAVE TWO PLATES — table 5 has two, table 12
+            # too — and the same number may then be read on both. We
+            # keep the better supported reading, not the last to
+            # arrive; but a plan takes only what the view does not
+            # have, however well supported it may be.
             if plano and (tab, n) in force:
                 continue
             if force.get((tab, n), -1) >= b[4]:
@@ -153,49 +154,52 @@ def numeri():
     return out
 
 
-# LE RENVOI QUI SAIT OU IL POINTE DEVIENT UN BOUTON. Les autres restent
-# du texte : on ne promet pas un gros plan qu'on ne saurait pas montrer.
-# « 94 bis » N'EST PAS 94. Le graveur du tableau 5 a ajoute deux outils
-# apres coup et les a glisses entre les autres plutot que de renumeroter
-# la planche : le ciseau porte « 94bis », le maillet « 95bis ». Le
-# renvoi garde le mot -- en italique du cote francais, nu du cote ido --
-# et le bouton vise l'objet a part, non son voisin.
+# THE CROSS-REFERENCE THAT KNOWS WHERE IT POINTS BECOMES A BUTTON. The
+# others stay text: we do not promise a close-up we would not know how
+# to show.
+# « 94 bis » IS NOT 94. The engraver of table 5 added two tools after
+# the fact and slipped them in among the others rather than renumber
+# the plate: the chisel carries « 94bis », the mallet « 95bis ». The
+# cross-reference keeps the word -- in italic on the French side, bare
+# on the Ido side -- and the button aims at the separate object, not at
+# its neighbour.
 RENVOI_REND = re.compile(
     r'<sup>(\(?)\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)'
     r'(\s*(?:<i>)?bis(?:</i>)?)?\s*(\)?)</sup>')
 
-# Les langues de la colonne de droite. « fr » est le texte source
-# (releve sur le fac-simile) ; les autres sont des traductions, et
-# portent la mention qui convient.
+# The languages of the right-hand column. « fr » is the source text
+# (transcribed from the facsimile); the others are translations, and
+# carry the appropriate mention.
 #
-# « differita » : LA TRADUCTION NE VOYAGE PAS AVEC LA PAGE. Le francais
-# est un fac-simile transcrit, il fait partie de l'objet ; l'anglais
-# n'est qu'une commodite de lecture. index.html pese deja 1,4 Mo pour
-# ses deux colonnes, et coudre une troisieme langue dedans le ferait
-# grossir d'autant pour un lecteur qui, neuf fois sur dix, ne la
-# demandera pas. Les langues marquees ici sortent donc dans un fichier
-# a part, lingui/<kodo>.json, et le navigateur ne va le chercher qu'au
-# moment ou l'on choisit la langue dans le menu. La page, elle, garde
-# les cases vides a leur place -- ce qui arrive n'a plus qu'a s'y
-# verser.
-# LES SIX LANGUES OFFICIELLES DE L'ONU, plus l'ido qui est la source.
-# Le francais est du lot par le fac-simile lui-meme ; l'anglais,
-# l'espagnol, le russe, le chinois et l'arabe sont des traductions de
-# 2026, faites sur l'ido et controlees sur le francais.
+# « differita »: THE TRANSLATION DOES NOT TRAVEL WITH THE PAGE. The
+# French is a transcribed facsimile, it is part of the object; the
+# English is only a convenience for reading. index.html already weighs
+# 1.4 MB for its two columns, and sewing a third language into it would
+# make it grow as much again for a reader who, nine times out of ten,
+# will not ask for it. The languages marked here therefore come out in a
+# separate file, lingui/<kodo>.json, and the browser goes to fetch it
+# only when the language is chosen from the menu. The page, for its
+# part, keeps the empty cells in their place -- what arrives has only to
+# be poured into them.
+# THE SIX OFFICIAL LANGUAGES OF THE UN, plus Ido, which is the source.
+# The French belongs to the set by the facsimile itself; the English,
+# the Spanish, the Russian, the Chinese and the Arabic are translations
+# of 2026, made from the Ido and checked against the French.
 # -------------------------------------------------------------------
-# LES VARIANTES REGIONALES : UN CALQUE, NON UNE COLONNE DE PLUS.
+# THE REGIONAL VARIANTS: AN OVERLAY, NOT ONE MORE COLUMN.
 # -------------------------------------------------------------------
-# Deux editions d'une meme langue ne different, dans ce livret, que par
-# quelques dizaines de mots. En faire deux colonnes de seize fichiers
-# reviendrait a recopier trente mille mots pour en changer trente, et
-# surtout a devoir corriger DEUX FOIS chaque coquille trouvee plus tard.
-# La colonne de base ne bouge donc pas, et text/variants.json dit ce
-# que l'autre edition ecrit a la place.
+# Two editions of one language differ, in this booklet, by only a few
+# dozen words. Making two columns of sixteen files out of them would
+# amount to copying thirty thousand words to change thirty, and above
+# all to having to correct TWICE every slip found later. The base column
+# therefore does not move, and text/variants.json says what the other
+# edition writes in its place.
 #
-# ET AUCUNE DES DEUX N'EST PRIVILEGIEE AU MENU. Celle qui porte les
-# fichiers n'y parait pas sous son nom de dossier : « English (UK) » est
-# text/en telle quelle, « English (US) » est la meme passee par la
-# table, et le lecteur n'a pas a savoir laquelle est laquelle.
+# AND NEITHER OF THE TWO IS PRIVILEGED IN THE MENU. The one that
+# carries the files does not appear there under its directory name:
+# « English (UK) » is text/en as it stands, « English (US) » is the same
+# passed through the table, and the reader does not have to know which
+# is which.
 def varianti():
     f = RACINE / "text" / "variants.json"
     if not f.exists():
@@ -267,172 +271,164 @@ LANGUES = [
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "et", "nomo": "Eesti", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # DEUX COLONNES HORS DES DEUX LISTES. Le polonais n'est pas dans
-    # les vingt-neuf d'Ethnologue -- il vient loin derriere le
-    # bhojpouri -- et n'est pas non plus un des dix-sept pays de
-    # l'ido ; l'afrikaans est plus loin encore. Elles sont la parce
-    # qu'on les a demandees. Le menu ne les distingue pas des autres :
-    # elles ont un nombre de locuteurs, elles prennent leur rang au
-    # nombre, et c'est tout ce que _ordre() sait d'elles.
+    # TWO COLUMNS OUTSIDE BOTH LISTS. Polish is not among Ethnologue's
+    # twenty-nine -- it comes well behind Bhojpuri -- and it is not one
+    # of Ido's seventeen countries either; Afrikaans is further still.
+    # They are there because they were asked for. The menu does not
+    # distinguish them from the others: they have a number of speakers,
+    # they take their rank by that number, and that is all _order() knows
+    # about them.
     {"kodo": "pl", "nomo": "Polski", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "af", "nomo": "Afrikaans", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LES DIX-SEPT LANGUES DE LA COMMUNAUTE IDISTE SONT CLOSES. Ce qui
-    # suit reprend le programme des vingt-neuf langues d'Ethnologue,
-    # dans l'ordre des locuteurs premiers, la ou il s'etait arrete —
-    # apres le turc, et sans le wu, ecarte pour la raison inscrite
-    # dans « ecartita » de text/languages.json.
+    # THE SEVENTEEN LANGUAGES OF THE IDIST COMMUNITY ARE CLOSED. What
+    # follows takes up the programme of Ethnologue's twenty-nine
+    # languages, in order of first-language speakers, where it had
+    # stopped — after Turkish, and without Wu, set aside for the reason
+    # written in « ecartita » of text/languages.json.
     {"kodo": "vi", "nomo": "Tiếng Việt", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE CANTONAIS S'ECRIT, ET C'EST POUR CELA QU'IL EST LA. Il n'a
-    # pas d'academie, mais il a ses caracteres — 嘅, 喺, 唔, 咗, 佢,
-    # 睇 — et Hong Kong les imprime tous les jours, dans ses journaux,
-    # ses romans et ses sous-titres. La colonne s'ecrit donc en
-    # cantonais ECRIT, non en chinois standard lu a la cantonaise :
-    # sans quoi elle ferait double emploi avec « zh » a la graphie
-    # pres, ce qui est exactement le motif pour lequel le WU a ete
-    # ecarte.
+    # CANTONESE IS WRITTEN, AND THAT IS WHY IT IS HERE. It has no
+    # academy, but it has its characters — 嘅, 喺, 唔, 咗, 佢, 睇 — and
+    # Hong Kong prints them every day, in its newspapers, its novels and
+    # its subtitles. The column is therefore written in WRITTEN
+    # Cantonese, not in standard Chinese read the Cantonese way: failing
+    # which it would be redundant with « zh » but for the spelling,
+    # which is exactly the reason WU was set aside.
     {"kodo": "yue", "nomo": "粵語", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # L'ARABE EGYPTIEN S'ECRIT, ET IL S'IMPRIME. Il n'a pas
-    # d'academie non plus, mais il a ses romans, son theatre, ses
-    # sous-titres, ses paroles de chansons et son encyclopedie ; et
-    # il a une grammaire que l'arabe standard n'a pas — ده pour
-    # هذا, مش pour ليس, la negation en ما...ش, le presentatif بـ
-    # devant l'inaccompli, le futur en حـ, et بتاع pour l'annexion.
-    # La colonne s'ecrit donc en egyptien ECRIT, non en arabe
-    # standard lu au Caire : c'est la meme condition qui a fait la
-    # colonne cantonaise et qui a fait ecarter le wu.
+    # EGYPTIAN ARABIC IS WRITTEN, AND IT IS PRINTED. It has no academy
+    # either, but it has its novels, its theatre, its subtitles, its
+    # song lyrics and its encyclopaedia; and it has a grammar that
+    # Standard Arabic does not have — ده for هذا, مش for ليس, the
+    # negation in ما...ش, the presentative بـ before the imperfective,
+    # the future in حـ, and بتاع for the annexation. The column is
+    # therefore written in WRITTEN Egyptian, not in Standard Arabic read
+    # in Cairo: it is the same condition that made the Cantonese column
+    # and that had Wu set aside.
     {"kodo": "arz", "nomo": "مصرى", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "mr", "nomo": "मराठी", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE TELOUGOU EST DRAVIDIEN, ET C'EST LA PREMIERE FOIS. Les seize
-    # colonnes indiennes precedentes — hindi, bengali, pendjabi,
-    # marathi — sont indo-europeennes et cousines de l'ido de loin ;
-    # celle-ci ne l'est pas du tout. Elle agglutine ses cas au lieu
-    # de les postposer, elle n'a pas de genre grammatical mais une
-    # opposition humain / non-humain, et son verbe finit la phrase
-    # sans exception. Aucune autre colonne du releve n'est batie
-    # ainsi.
+    # TELUGU IS DRAVIDIAN, AND IT IS THE FIRST TIME. The sixteen
+    # preceding Indian columns — Hindi, Bengali, Punjabi, Marathi — are
+    # Indo-European and distant cousins of Ido; this one is not at all.
+    # It agglutinates its cases instead of postposing them, it has no
+    # grammatical gender but a human / non-human opposition, and its
+    # verb ends the sentence without exception. No other column of the
+    # transcription is built that way.
     {"kodo": "te", "nomo": "తెలుగు", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE COREEN N'A DE PARENTE AVEC AUCUNE AUTRE COLONNE. Le japonais
-    # lui ressemble par l'ordre des mots et par rien d'autre ; le
-    # chinois et le cantonais lui ont prete son ancien lexique savant
-    # et pas sa grammaire. Il s'ecrit en outre dans un alphabet qui
-    # n'est partage par personne, ce qui rend la colonne facile a
-    # controler : un ideogramme dans text/ko est une faute, et
-    # kolonoj.py le releve.
+    # KOREAN IS RELATED TO NO OTHER COLUMN. Japanese resembles it in
+    # word order and in nothing else; Chinese and Cantonese lent it its
+    # old learned lexicon and not its grammar. It is written, moreover,
+    # in an alphabet shared by nobody, which makes the column easy to
+    # check: an ideogram in text/ko is a fault, and columns.py reports
+    # it.
     {"kodo": "ko", "nomo": "한국어", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE TAMOUL EST LA DEUXIEME COLONNE DRAVIDIENNE, apres le
-    # telougou, et la premiere a avoir un voisin qui LUI ressemble :
-    # le telougou est de sa famille, non de son alphabet. La menace
-    # n'est donc pas graphique — chaque colonne dravidienne a son
-    # ecriture — mais lexicale, et kolonoj.py la prend par la ou elle
-    # se voit.
+    # TAMIL IS THE SECOND DRAVIDIAN COLUMN, after Telugu, and the
+    # first to have a neighbour that resembles IT: Telugu is of its
+    # family, not of its alphabet. The threat is therefore not graphic
+    # — each Dravidian column has its own script — but lexical, and
+    # columns.py takes it where it shows.
     {"kodo": "ta", "nomo": "தமிழ்", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # L'OURDOU EST LA PREMIERE COLONNE A DEUX VOISINES DE NATURES
-    # DIFFERENTES. Il partage la LANGUE avec le hindi — meme
-    # grammaire, meme lexique de base, deux ecritures et deux
-    # registres savants — et l'ECRITURE avec le pendjabi
-    # chahmoukhi, qui est une autre langue. kolonoj.py le defend
-    # donc sur deux fronts a la fois.
+    # URDU IS THE FIRST COLUMN WITH TWO NEIGHBOURS OF DIFFERENT
+    # NATURES. It shares its LANGUAGE with Hindi — same grammar, same
+    # basic lexicon, two scripts and two learned registers — and its
+    # SCRIPT with Shahmukhi Punjabi, which is another language.
+    # columns.py therefore defends it on two fronts at once.
     {"kodo": "ur", "nomo": "اردو", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
-    # L'INDONESIEN N'A PAS DE VOISINE DANS LE RELEVE, ET C'EST
-    # JUSTEMENT LA SA DIFFICULTE. Le malais de Malaisie est la meme
-    # langue a un standard pres, il n'est dans aucune colonne, et
-    # rien ne le signalerait a l'oeil : kolonoj.py le tient donc par
-    # le LEXIQUE. S'y ajoute un second front, qui est une DATE :
-    # l'orthographe d'avant la reforme de 1972 — « boekoe »,
-    # « djalan », « tjelana » — est exactement celle qu'un livret de
-    # 1926 aurait employee, et c'est le piege propre a cette colonne.
+    # INDONESIAN HAS NO NEIGHBOUR IN THE TRANSCRIPTION, AND THAT IS
+    # PRECISELY ITS DIFFICULTY. Malaysian Malay is the same language but
+    # for a standard, it is in no column, and nothing would signal it to
+    # the eye: columns.py therefore holds it by the LEXICON. To which is
+    # added a second front, which is a DATE: the spelling before the 1972
+    # reform — « boekoe », « djalan », « tjelana » — is exactly the one a
+    # booklet of 1926 would have used, and it is the trap peculiar to
+    # this column.
     {"kodo": "id", "nomo": "Indonesia", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE JAVANAIS EST LA PREMIERE COLONNE DONT LA VOISINE VIENT
-    # D'ETRE ECRITE PAR LA MEME MAIN. L'indonesien, qui manquait au
-    # releve quand on defendait la colonne « id », est maintenant
-    # dans text/id — et le danger s'est retourne : ce n'est plus
-    # l'absence de la voisine, c'est sa presence a la ligne
-    # precedente. S'y ajoute ce qu'aucune colonne n'avait encore
-    # eu : des NIVEAUX DE LANGUE grammaticalises (ngoko, krama),
-    # deux lexiques paralleles dans une seule langue.
+    # JAVANESE IS THE FIRST COLUMN WHOSE NEIGHBOUR HAS JUST BEEN
+    # WRITTEN BY THE SAME HAND. Indonesian, which was missing from the
+    # transcription when the « id » column was being defended, is now in
+    # text/id — and the danger has turned about: it is no longer the
+    # neighbour's absence, it is her presence on the line above. To
+    # which is added what no column had yet had: grammaticalised SPEECH
+    # LEVELS (ngoko, krama), two parallel lexicons within one language.
     {"kodo": "jv", "nomo": "Basa Jawa", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE PERSAN A DEUX VOISINES DANS LE RELEVE ET ELLES SONT TOUTES
-    # LES DEUX DANS SON ALPHABET : l'ourdou, qui lui a pris sa
-    # graphie et la moitie de son lexique savant, et l'arabe, qui lui
-    # a donne l'alphabet et l'autre moitie. La difference se joue
-    # donc au CARACTERE autant qu'au mot — ی contre ي, ک contre ك,
-    # ۱ contre ١ —, et ces differences-la sont invisibles a l'oeil.
+    # PERSIAN HAS TWO NEIGHBOURS IN THE TRANSCRIPTION AND BOTH ARE IN
+    # ITS ALPHABET: Urdu, which took from it its script and half its
+    # learned lexicon, and Arabic, which gave it the alphabet and the
+    # other half. The difference is therefore played out at the level of
+    # the CHARACTER as much as the word — ی against ي, ک against ك,
+    # ۱ against ١ —, and those differences are invisible to the eye.
     {"kodo": "fa", "nomo": "فارسی", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
-    # LE HAOUSSA EST LA PREMIERE COLONNE DU RELEVE QUI S'ECRIVE EN
-    # LETTRES LATINES ET DONT LES SIGNES DIACRITIQUES SOIENT DES
-    # LETTRES A PART ENTIERE. ɓ, ɗ, ƙ et ƴ ne sont pas des b, d, k, y
-    # ornes : ce sont quatre lettres de l'alphabet boko, et « kofa »
-    # n'est pas « ƙofa ». Un clavier ordinaire ne les donne pas, et un
-    # correcteur les rend volontiers a leur forme nue : la colonne se
-    # defend donc de sa propre saisie, ce qu'aucune autre n'avait eu a
-    # faire.
+    # HAUSA IS THE FIRST COLUMN OF THE TRANSCRIPTION WRITTEN IN LATIN
+    # LETTERS WHOSE DIACRITICS ARE FULL LETTERS IN THEIR OWN RIGHT. ɓ, ɗ,
+    # ƙ and ƴ are not b, d, k, y with ornaments: they are four letters of
+    # the boko alphabet, and « kofa » is not « ƙofa ». An ordinary
+    # keyboard does not give them, and a spell-checker readily returns
+    # them to their bare form: the column therefore defends itself
+    # against its own typing, which no other has had to do.
     {"kodo": "ha", "nomo": "Hausa", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE GUJARATI A TROIS VOISINES DANS LE RELEVE ET ELLES SONT DE
-    # TROIS NATURES : le hindi, qui est la langue d'Etat et partage
-    # avec lui tout son fonds sanskrit ; le marathi, qui est le
-    # voisin du sud et partage la meme famille d'ecriture ; l'ourdou
-    # et le persan, qui lui ont laisse le lexique du Sultanat. Mais
-    # sa DIFFICULTE PROPRE est ailleurs : l'ecriture gujaratie est la
-    # devanagari SANS LA BARRE, lettre pour lettre ou presque, et un
-    # caractere devanagari glisse dans un mot gujarati se lit sans
-    # qu'on le remarque.
+    # GUJARATI HAS THREE NEIGHBOURS IN THE TRANSCRIPTION AND THEY ARE
+    # OF THREE NATURES: Hindi, which is the state language and shares
+    # with it its whole Sanskrit stock; Marathi, which is the neighbour
+    # to the south and shares the same family of script; Urdu and
+    # Persian, which left it the lexicon of the Sultanate. But its OWN
+    # DIFFICULTY lies elsewhere: the Gujarati script is Devanagari
+    # WITHOUT THE BAR, letter for letter or nearly, and a Devanagari
+    # character slipped into a Gujarati word is read without anyone
+    # noticing.
     {"kodo": "gu", "nomo": "ગુજરાતી", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LA PREMIERE COLONNE DONT LES DEUX VOISINES SONT LA MEME LANGUE
-    # QU'ELLE. Le persan defendait son alphabet contre deux langues
-    # etrangeres qui l'avaient emprunte ; celui-ci defend un REGISTRE
-    # contre deux autres registres de l'arabe, tous les trois deja
-    # dans le releve : « ar » le standard, « arz » l'egyptien. Le
-    # danger n'est pas qu'un mot etranger se glisse, c'est que la
-    # main remonte d'elle-meme vers la forme ecrite qu'on a apprise
-    # a l'ecole.
+    # THE FIRST COLUMN WHOSE TWO NEIGHBOURS ARE THE SAME LANGUAGE AS
+    # ITSELF. Persian defended its alphabet against two foreign
+    # languages that had borrowed it; this one defends a REGISTER
+    # against two other registers of Arabic, all three already in the
+    # transcription: « ar » the standard, « arz » the Egyptian. The
+    # danger is not that a foreign word should slip in, it is that the
+    # hand should climb of its own accord back towards the written form
+    # learnt at school.
     {"kodo": "apc", "nomo": "شامي", "dir": "rtl",
      "fonto": "traduction moderne", "differita": True},
-    # LA SEULE COLONNE DONT LA VOISINE NIE QU'ELLE EXISTE. Toutes les
-    # autres se defendaient contre une langue qui les reconnaissait
-    # comme distinctes ; le bhojpouri, lui, est administre en Inde
-    # comme un « dialecte du hindi », alors qu'il a plus de cinquante
-    # millions de locuteurs. Il partage avec le hindi l'ecriture,
-    # l'essentiel du lexique et une bonne part de la morphologie : il
-    # n'y a donc AUCUNE defense possible au caractere. Ce qui separe
-    # les deux langues, c'est le verbe — la copule बा, la negation
-    # नइखे, le passe en -ल.
+    # THE ONLY COLUMN WHOSE NEIGHBOUR DENIES THAT IT EXISTS. All the
+    # others defended themselves against a language that recognised them
+    # as distinct; Bhojpuri, for its part, is administered in India as a
+    # « dialect of Hindi », though it has more than fifty million
+    # speakers. It shares with Hindi the script, the bulk of the lexicon
+    # and a good part of the morphology: there is therefore NO defence
+    # possible at the character. What separates the two languages is the
+    # verb — the copula बा, the negation नइखे, the past in -ल.
     {"kodo": "bho", "nomo": "भोजपुरी", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "de", "nomo": "Deutsch", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
     {"kodo": "it", "nomo": "Italiano", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
-    # LE FRANCAIS DU CANADA EST UNE TRADUCTION, NON UNE VARIANTE. La
-    # colonne « fr » est la transcription d'un fac-simile de 1926 et la
-    # source ne bouge pas : un calque regional pose sur elle donnerait un
-    # livret de 1926 ecrit avec les mots du Quebec d'aujourd'hui, un
-    # objet qui n'a jamais existe. Celle-ci se traduit donc de l'ido,
-    # comme les trente autres, et se range avec elles.
+    # CANADIAN FRENCH IS A TRANSLATION, NOT A VARIANT. The « fr » column
+    # is the transcription of a facsimile of 1926 and the source does not
+    # move: a regional overlay laid on it would give a booklet of 1926
+    # written with the words of today's Quebec, an object that has never
+    # existed. This one is therefore translated from the Ido, like the
+    # thirty others, and is filed with them.
     {"kodo": "fr-CA", "nomo": "Français (CA)", "dir": "ltr",
      "fonto": "traduction moderne", "differita": True},
 ]
 
 
-# LA VARIANTE PREND SA PLACE DANS LA LISTE, JUSTE APRES SA BASE : au
-# menu les deux editions d'une langue se suivent, et la base y parait
-# sous son nom regional. Tout le reste de la page les traite comme
-# n'importe quelle autre colonne — meme sac « differita », meme
-# lingui/<kodo>.json, meme compte de blocs.
+# THE VARIANT TAKES ITS PLACE IN THE LIST, JUST AFTER ITS BASE: in the
+# menu the two editions of a language follow each other, and the base
+# appears there under its regional name. All the rest of the page
+# treats them like any other column — same « differita » bag, same
+# lingui/<kodo>.json, same count of blocks.
 def poser_varianti(langues):
     out = []
     for lg in langues:
@@ -450,67 +446,68 @@ def poser_varianti(langues):
 
 LANGUES = poser_varianti(LANGUES)
 
-# LES TABLES TENUES A LA MAIN CONNAISSENT LA COLONNE, NON LA VARIANTE.
-# plates/corrections.json corrige « en » : la correction porte sur ce que le
-# releve a ecrit, et les deux editions anglaises la veulent toutes deux.
-# On traduit donc le code de la variante en code de colonne avant toute
-# consultation de table.
+# THE HAND-KEPT TABLES KNOW THE COLUMN, NOT THE VARIANT.
+# plates/corrections.json corrects « en »: the correction bears on what
+# the transcription wrote, and both English editions want it. We
+# therefore translate the variant's code into a column code before any
+# consultation of a table.
 TABLO = {lg["kodo"]: lg.get("dosiero", lg["kodo"]) for lg in LANGUES}
 TABLO["io"] = "io"
 
 
-# L'ORDRE DU MENU NE SE TIENT PLUS A LA MAIN. Les langues sortaient
-# jusqu'ici dans l'ordre ou on les avait ecrites, c'est-a-dire dans
-# l'ordre ou elles avaient ete traduites : le lecteur ne pouvait pas
-# deviner ou chercher la sienne, et chaque colonne nouvelle allongeait
-# la liste par le bas. On la trie donc, et selon une regle qui se
-# verifie :
+# THE ORDER OF THE MENU IS NO LONGER KEPT BY HAND. The languages came
+# out until now in the order in which they had been written, that is,
+# in the order in which they had been translated: the reader could not
+# guess where to look for his own, and each new column lengthened the
+# list at the bottom. We therefore sort it, and by a rule that can be
+# verified:
 #
-#   1. LE FRANCAIS D'ABORD, parce qu'il n'est pas une traduction. Le
-#      livret francais est l'autre original ; son fac-simile est dans
-#      ce depot comme celui de l'ido.
-#   2. PUIS LES LANGUES CONSTRUITES, dans l'ordre ou l'usage idiste les
-#      nomme : l'esperanto, puis l'interlingua. Elles n'ont pas de
-#      locuteurs premiers a compter, et ce sont les plus proches
-#      parentes de la langue du livret.
-#   3. PUIS LES COLONNES QUE LE REGISTRE PORTE « hors liste », c'est-a-dire
-#      celles qu'on ecrit sans les avoir pour langue maternelle. L'arabe
-#      standard est la seule du menu dans ce cas : Ethnologue ne lui donne
-#      pas de chiffre parce qu'il n'a presque pas de locuteurs premiers —
-#      ils sont comptes sur ses varietes, l'egyptien (83) et le levantin
-#      (55), qui sont deux colonnes de ce depot. Ce n'est donc PAS une
-#      langue sans chiffre par accident, c'est une langue declaree hors du
-#      tableau, et le registre le dit lui-meme dans son preambule.
-#   4. PUIS LES AUTRES, PAR NOMBRE DE LOCUTEURS PREMIERS, du plus grand
-#      au plus petit. Le chiffre n'est pas une opinion : il est dans
-#      text/languages.json, tire d'Ethnologue, et c'est ce meme fichier
-#      qui sert de registre a la colonne. Une langue sans chiffre passe
-#      en queue plutot qu'en tete.
+#   1. FRENCH FIRST, because it is not a translation. The French
+#      booklet is the other original; its facsimile is in this
+#      repository as the Ido's is.
+#   2. THEN THE CONSTRUCTED LANGUAGES, in the order Idist usage names
+#      them: Esperanto, then Interlingua. They have no first-language
+#      speakers to count, and they are the closest kin to the
+#      booklet's own language.
+#   3. THEN THE COLUMNS THE REGISTER MARKS « off list », that is, those
+#      written by people who do not have them as a mother tongue.
+#      Standard Arabic is the only one of the menu in that case:
+#      Ethnologue gives it no figure because it has almost no
+#      first-language speakers — they are counted under its varieties,
+#      Egyptian (83) and Levantine (55), which are two columns of this
+#      repository. It is therefore NOT a language without a figure by
+#      accident, it is a language declared outside the table, and the
+#      register says so itself in its preamble.
+#   4. THEN THE OTHERS, BY NUMBER OF FIRST-LANGUAGE SPEAKERS, from the
+#      largest to the smallest. The figure is not an opinion: it is in
+#      text/languages.json, drawn from Ethnologue, and it is that same
+#      file that serves as the column's register. A language without a
+#      figure goes to the tail rather than the head.
 #
-# Le tri LIT le registre au lieu de le repeter : ajouter une colonne ne
-# demande donc plus de choisir sa place, et la place ne peut plus
-# mentir sur le chiffre.
+# The sort READS the register instead of repeating it: adding a column
+# therefore no longer calls for choosing its place, and the place can
+# no longer lie about the figure.
 #
-# LE RANG 3 A ETE AJOUTE APRES COUP, ET IL REPARE UN DEFAUT MESURE.
-# L'arabe standard sortait DERNIER du menu, cinquante-troisieme sur
-# cinquante-trois, sous le romanche et ses quarante mille locuteurs.
-# La cause n'etait pas le registre, qui a raison de ne pas lui donner de
-# chiffre, mais un desaccord entre deux endroits du meme fichier :
-# SEN_NOMBRO, plus bas, declarait QUATRE colonnes legitimement sans
-# chiffre — fr, eo, ia, ar — mais le tri n'en plaçait que trois. Le
-# francais est pris au rang 1, l'esperanto et l'interlingua au rang 2 ;
-# l'arabe, lui, ne tombait sous aucune regle et finissait donc dans la
-# branche par defaut, « une langue sans chiffre passe en queue ».
-# UNE EXEMPTION QUI N'EST PAS AUSSI UNE PLACE N'EXEMPTE DE RIEN : elle
-# fait seulement taire le controle pendant que le defaut s'installe.
-# On lit donc « stato » comme on lisait « milioni », dans le meme
-# registre et par la meme cle, et SEN_NOMBRO se DEDUIT au lieu de se
-# tenir a la main — un rang de plus ne peut plus etre oublie.
+# RANK 3 WAS ADDED AFTER THE FACT, AND IT REPAIRS A MEASURED DEFECT.
+# Standard Arabic came out LAST in the menu, fifty-third of
+# fifty-three, below Romansh and its forty thousand speakers. The cause
+# was not the register, which is right not to give it a figure, but a
+# disagreement between two places in the same file: NO_FIGURE, below,
+# declared FOUR columns legitimately without a figure — fr, eo, ia, ar
+# — but the sort placed only three. French is taken at rank 1,
+# Esperanto and Interlingua at rank 2; Arabic fell under no rule at all
+# and therefore ended in the default branch, « a language without a
+# figure goes to the tail ».
+# AN EXEMPTION THAT IS NOT ALSO A PLACE EXEMPTS FROM NOTHING: it merely
+# silences the check while the defect settles in. We therefore read
+# « stato » as we read « milioni », in the same register and by the
+# same key, and NO_FIGURE is DEDUCED instead of being kept by hand — one
+# more rank can no longer be forgotten.
 KONSTRUKTITA = ["eo", "ia"]
 
 
 def _lire_registre(champ):
-    """{kodo: valeur du champ}, d'apres text/languages.json."""
+    """{kodo: value of the field}, from text/languages.json."""
     f = RACINE / "text" / "languages.json"
     if not f.is_file():
         return {}
@@ -519,37 +516,35 @@ def _lire_registre(champ):
 
 
 def _rango_lingui():
-    """{kodo: millions de locuteurs premiers}, d'apres le registre."""
+    """{kodo: millions of first-language speakers}, from the register."""
     return _lire_registre(2)
 
 
 def _stato_lingui():
-    """{kodo: etat de la colonne}, d'apres le registre."""
+    """{kodo: state of the column}, from the register."""
     return _lire_registre(4)
 
 
-# LE CHIFFRE SE CHERCHE SOUS LE CODE DE LA COLONNE, NON SOUS CELUI DE
-# L'AFFICHAGE, et c'est la faute qui a defait l'ordre du menu quand les
-# variantes regionales sont arrivees. poser_varianti() remplace le code
-# « en » par « en-GB » et « en-US » ; le registre, lui, ne connait que
-# « en ». La recherche echouait donc, les deux editions anglaises
-# passaient pour des langues sans locuteurs, et la regle « une langue
-# sans chiffre passe en queue » les y envoyait. Six langues sur sept y
-# sont tombees d'un coup — le chinois (988 millions), l'espagnol (487),
-# l'anglais (372), le portugais (252), l'allemand (76), le neerlandais
-# (25) — c'est-a-dire les quatre plus parlees du livret, rangees apres
-# le romanche.
+# THE FIGURE IS LOOKED UP UNDER THE COLUMN'S CODE, NOT UNDER THE
+# DISPLAY CODE, and that is the fault that undid the order of the menu
+# when the regional variants arrived. apply_variants() replaces the code
+# « en » with « en-GB » and « en-US »; the register knows only « en ».
+# The lookup therefore failed, both English editions passed for
+# languages without speakers, and the rule « a language without a figure
+# goes to the tail » sent them there. Six languages out of seven fell
+# into it at one stroke — Chinese (988 million), Spanish (487), English
+# (372), Portuguese (252), German (76), Dutch (25) — that is, the four
+# most spoken of the booklet, filed after Romansh.
 #
-# On cherche donc dans cet ordre :
-#   1. « dosiero », qui est le code de la COLONNE — celui des fichiers
-#      et du registre — et que poser_varianti() pose sur les deux
-#      editions ;
-#   2. a defaut le code lui-meme ;
-#   3. a defaut la sous-etiquette de langue, avant le tiret : « fr-CA »
-#      compte avec le francais. Une colonne regionale qui n'est pas une
-#      variante — le quebecois en est une — trouve ainsi sa place sans
-#      qu'on ait a l'inscrire au registre d'Ethnologue, ou elle n'a
-#      rien a faire.
+# We therefore look up in this order:
+#   1. « dosiero », which is the COLUMN's code — that of the files and
+#      of the register — and which apply_variants() lays on both
+#      editions;
+#   2. failing that the code itself;
+#   3. failing that the language subtag, before the hyphen: « fr-CA »
+#      counts with French. A regional column that is not a variant —
+#      Quebec French is one — thus finds its place without having to be
+#      entered in Ethnologue's register, where it has no business.
 def _sub_registre(lg, table):
     for k in (lg.get("dosiero"), lg["kodo"], lg["kodo"].split("-")[0]):
         if k in table:
@@ -569,10 +564,10 @@ def _ordre(lg, milioni, statoj):
     if _sub_registre(lg, statoj) == "hors liste":
         return (2, 0, lg["kodo"])
     m = _milioni(lg, milioni)
-    # LES DEUX EDITIONS D'UNE LANGUE ONT LE MEME CHIFFRE et se suivent
-    # donc forcement. Entre elles on tranche par le code, qui est
-    # neutre : la colonne qui porte les fichiers n'a aucun privilege,
-    # comme text/variants.json le pose en principe.
+    # THE TWO EDITIONS OF A LANGUAGE HAVE THE SAME FIGURE and therefore
+    # necessarily follow each other. Between them we decide by the code,
+    # which is neutral: the column that carries the files has no
+    # privilege, as text/variants.json lays down in principle.
     return (3, -(m if m is not None else -1), lg["kodo"])
 
 
@@ -580,15 +575,14 @@ _RANGO = _rango_lingui()
 _STATOJ = _stato_lingui()
 LANGUES.sort(key=lambda lg: _ordre(lg, _RANGO, _STATOJ))
 
-# UNE COLONNE SANS CHIFFRE TOMBE EN QUEUE SANS RIEN DIRE, et c'est
-# precisement ce qui s'est produit. Le tri ne peut pas se controler
-# lui-meme — il redonnerait le meme resultat faux — mais on peut
-# controler SA MATIERE : toute colonne doit se retrouver dans le
-# registre. Quatre n'ont pas de chiffre et c'est voulu : le francais,
-# qui passe en tete parce qu'il n'est pas une traduction ; l'esperanto
-# et l'interlingua, qui n'ont pas de locuteurs premiers a compter ;
-# l'arabe standard, qui n'en a presque pas et que text/languages.json
-# porte « hors liste ». Toute autre est une faute de branchement.
+# A COLUMN WITHOUT A FIGURE FALLS TO THE TAIL SAYING NOTHING, and that
+# is precisely what happened. The sort cannot check itself — it would
+# give the same wrong result again — but its MATERIAL can be checked:
+# every column must be found in the register. Four have no figure and
+# that is intended: French, which goes to the head because it is not a
+# translation; Esperanto and Interlingua, which have no first-language
+# speakers to count; Standard Arabic, which has almost none and which
+# text/languages.json marks « off list ». Any other is a wiring fault.
 SEN_NOMBRO = ({"fr"} | set(KONSTRUKTITA)
               | {k for k, v in _STATOJ.items() if v == "hors liste"})
 _orfa = [lg["kodo"] for lg in LANGUES
@@ -603,17 +597,17 @@ SUBTITRO = ("J. Guignon &middot; Ido-Kontoro, Thaon-les-Vosges, 1926 "
 
 
 # -------------------------------------------------------------------
-#  1. LECTURE DES SOURCES LaTeX
+#  1. READING THE LaTeX SOURCES
 # -------------------------------------------------------------------
 CLE = re.compile(r"^%%K\s+(\S+)\s+(\S+)(?:\s+(\S+))?\s*$")
 PAGE = re.compile(r"\\begin\{VUpage\}(?:\[(\d+)\])?\{([^}]*)\}")
 
 
 def accolade(s, i):
-    """Contenu de l'accolade qui commence a s[i] == '{'. Renvoie
-    (contenu, index apres l'accolade fermante). Les accolades
-    imbriquees sont comptees : \\VUgras{Ka\\cc rolus} contient lui-meme
-    des macros, et une simple recherche du prochain '}' les couperait."""
+    """Contents of the brace beginning at s[i] == '{'. Returns
+    (contents, index after the closing brace). Nested braces are
+    counted: \\VUgras{Ka\\cc rolus} itself contains macros, and a plain
+    search for the next '}' would cut them."""
     assert s[i] == "{"
     p = 0
     j = i
@@ -628,43 +622,43 @@ def accolade(s, i):
     return s[i + 1:], len(s)
 
 
-# La marque d'un mot coupe par une fin de PAGE. Elle voyage dans le
-# HTML rendu jusqu'a fusionner(), qui recolle les deux moities.
-# LE GRAS MARQUE UN TERME, ET UN MOT-OUTIL N'EN EST PAS UN. Le
-# compositeur l'a parfois pose a cote : « il tenas \VUgras{la} vishilo »
-# met le gras sur l'article et laisse le substantif maigre, « \VUgras
-# {Ica} docisto » sur le demonstratif. On ne deplace pas le gras — le
-# fac-simile ne dit pas jusqu'ou il devrait porter —, on l'ote : la
-# page de lecture n'appuie plus sur « la », « Ica », « ta », « quale »,
-# « e ». Les cinq traductions avaient suivi l'ido mot pour mot, et
-# disaient « \VUgras{This} teacher », « \VUgras{Los} viejos coches »,
-# « \VUgras{Этот} учитель » : la meme liste les corrige.
+# The mark of a word broken by the end of a PAGE. It travels through
+# the rendered HTML as far as merge(), which glues the two halves.
+# BOLD MARKS A TERM, AND A FUNCTION WORD IS NOT ONE. The compositor
+# sometimes set it beside: « il tenas \VUgras{la} vishilo » puts the
+# bold on the article and leaves the noun light, « \VUgras{Ica}
+# docisto » on the demonstrative. We do not move the bold — the
+# facsimile does not say how far it ought to reach —, we take it off:
+# the reading page no longer presses on « la », « Ica », « ta »,
+# « quale », « e ». The five translations had followed the Ido word for
+# word, and said « \VUgras{This} teacher », « \VUgras{Los} viejos
+# coches », « \VUgras{Этот} учитель »: the same list corrects them.
 #
-# LA REGLE S'APPLIQUE APRES LE RECOLLAGE DES BALISES, et il le faut :
-# « \VUgras{quadra}\cc \VUgras{to} » finit sur un « to » qui est un
-# pronom ido — mais ce n'est pas un mot, c'est la queue de
-# « quadrato », et le recollage l'a deja rendue au sien.
+# THE RULE IS APPLIED AFTER THE TAGS ARE GLUED BACK, and it must be:
+# « \VUgras{quadra}\cc \VUgras{to} » ends on a « to » which is an Ido
+# pronoun — but it is not a word, it is the tail of « quadrato », and
+# the gluing has already returned it to its own.
 MOTOJ_VAKA = {
-    # ido
+    # Ido
     "la", "l'", "ica", "ta", "ico", "to", "il", "el", "ol", "li", "lu",
     "un", "una", "mea", "sua", "lia", "nia", "via", "quale", "e", "ed",
     "o", "od", "di", "da", "de",
-    # francais
+    # French
     "le", "les", "ce", "cet", "cette", "ces", "une", "des", "du", "et",
     "ou", "son", "sa", "ses", "leur", "leurs", "elle", "on",
-    # anglais
+    # English
     "the", "a", "an", "this", "that", "these", "those", "his", "her",
     "its", "and", "or",
-    # espagnol
+    # Spanish
     "el", "los", "las", "este", "esta", "ese", "esa", "su", "sus", "y",
     "del",
-    # russe
+    # Russian
     "этот", "эта", "это", "эти", "тот", "та", "те", "и", "или", "его",
     "её", "их",
-    # arabe
+    # Arabic
     "هذا", "هذه", "تلك", "ذلك", "و",
-    # chinois : le demonstratif y traine son classificateur, et « 这位 »
-    # est un mot d'un seul tenant.
+    # Chinese: the demonstrative drags its classifier along, and
+    # « 这位 » is a word of one piece.
     "这", "那", "这位", "那位", "这个", "那个", "这些", "那些", "和", "或",
 }
 PONKTO = " .,;:!?»«\u202f\u2019'\u3001\u3002\uff08\uff09"
@@ -673,86 +667,83 @@ COUPE = "\x02"
 
 
 def texte_html(t):
-    """Convertit un fragment LaTeX du releve en HTML."""
-    # LES COMMENTAIRES D'ABORD. Un « % » ouvre un commentaire jusqu'a la
-    # fin de la ligne, et le releve en use : le contenu d'une note
-    # s'ouvre par « {% » pour que LaTeX n'y prenne pas d'espace, et se
-    # ferme par « .% » pour la meme raison. Sans les oter, le texte
-    # rendu commencait par « % (*) Por la baptonomi... » — et le
-    # marqueur d'appel, precede de ce pourcent, n'etait plus reconnu :
-    # aucune note ne se reliait a son appel.
-    # Le pourcent litteral s'ecrit « \% » dans le releve ; on le
-    # protege avant de couper, et on le rend apres.
+    """Converts a LaTeX fragment of the transcription into HTML."""
+    # THE COMMENTS FIRST. A « % » opens a comment to the end of the line,
+    # and the transcription uses it: a note's content opens with « {% » so
+    # that LaTeX takes no space there, and closes with « .% » for the same
+    # reason. Without taking them out, the rendered text began with
+    # « % (*) Por la baptonomi... » — and the call marker, preceded by that
+    # percent, was no longer recognised: no note attached to its call.
+    # The literal percent is written « \% » in the transcription; we
+    # protect it before cutting, and give it back afterwards.
     t = t.replace("\\%", "\x00")
     t = re.sub(r"%.*?(?:\n|$)", "\n", t)
     t = t.replace("\x00", "%")
 
-    # LE FAC-SIMILE NE GRASSE QUE LA SECONDE MOITIE D'UN MOT QUE LA
-    # LIGNE A COUPE. « ...e ban\cc \VUgras{doliera vildo-sako} » : le
-    # composeur ouvre son gras a la REPRISE, parce que le mot commence
-    # sur la ligne d'avant et que la ligne d'avant est deja composee.
-    # Le mot est un pourtant, et la page de lecture, qui ne coupe pas
-    # au meme endroit, donnait « ban<b>doliera vildo-sako</b> ».
-    # C'est le meme accident que « pesko-\VUgras{barketi} », traite
-    # plus bas, a ceci pres que la soudure ne se fait pas sur un trait
-    # d'union mais sur une fin de ligne : le morceau de gauche n'a
-    # aucune marque, et il faut donc le reconnaitre a ce qu'il TOUCHE
-    # le \VUgras qui suit, sans blanc entre eux.
+    # THE FACSIMILE SETS IN BOLD ONLY THE SECOND HALF OF A WORD THE LINE
+    # HAS BROKEN. « ...e ban\cc \VUgras{doliera vildo-sako} »: the
+    # compositor opens his bold at the RESUMPTION, because the word begins
+    # on the line before and the line before is already set. The word is
+    # one all the same, and the reading page, which does not break in the
+    # same place, gave « ban<b>doliera vildo-sako</b> ».
+    # It is the same accident as « pesko-\VUgras{barketi} », dealt with
+    # below, except that the join falls not on a hyphen but on the end of a
+    # line: the left-hand piece bears no mark at all, and must therefore be
+    # recognised by the fact that it TOUCHES the \VUgras that follows, with
+    # no space between them.
     #
-    # DIX ENDROITS, ET TOUS DANS LES DEUX RELEVES. « bandoliera »,
+    # TEN PLACES, AND ALL IN THE TWO TRANSCRIPTIONS. « bandoliera »,
     # « damzelo », « portreto », « kulbutas », « buketo », « kabini »,
-    # « dolorigas », « generalo » cote ido ; « precedent » et
-    # « baigneurs » cote francais. La regle ne peut pas s'egarer dans
-    # une traduction : « \cc » n'existe que la ou l'on transcrit une
-    # ligne imprimee, et les seize colonnes traduites n'en ont pas un.
+    # « dolorigas », « generalo » on the Ido side; « precedent » and
+    # « baigneurs » on the French. The rule cannot go astray in a
+    # translation: « \cc » exists only where a printed line is transcribed,
+    # and the sixteen translated columns have not one.
     #
-    # ON EXIGE UN BLANC AVANT LE MORCEAU, faute de quoi la regle
-    # mordrait sur le « \VUgras{chas}\cc \VUgras{gardisto} » du meme
-    # tableau, ou les DEUX moities portent deja leur gras et ou c'est
-    # la reunion des balises, plus bas, qui fait le travail.
+    # WE REQUIRE A SPACE BEFORE THE PIECE, failing which the rule would
+    # bite on the « \VUgras{chas}\cc \VUgras{gardisto} » of the same table,
+    # where BOTH halves already carry their bold and where it is the
+    # reunion of the tags, below, that does the work.
     t = re.sub(r"(?<=\s)([^\s{}\\]{1,20})\\cc\n\\VUgras\{",
                r"\\VUgras{\1", t)
 
-    # Les coupures : elles portent la logique du releve.
-    # \ccplein D'ABORD, ET POUR DEUX RAISONS. C'est \cc et \parplein a
-    # la fois : la page finit sur un mot coupe, et l'alinea reprend au
-    # feuillet suivant. Otee apres \cc, la macro perdait ses deux
-    # premieres lettres et laissait « plein » dans le texte — la page
-    # de lecture donnait « dro plein medaro » pour « dromedaro ». Elle
-    # laisse ici une marque que fusionner() lira : le mot est coupe, la
-    # reprise se recolle SANS blanc.
+    # The breaks: they carry the logic of the transcription.
+    # \ccplein FIRST, AND FOR TWO REASONS. It is \cc and \parplein at once:
+    # the page ends on a broken word, and the paragraph resumes on the next
+    # leaf. Taken out after \cc, the macro lost its first two letters and
+    # left « plein » in the text — the reading page gave « dro plein
+    # medaro » for « dromedaro ». It leaves here a mark that merge() will
+    # read: the word is broken, the resumption glues back WITHOUT a space.
     t = t.replace("\\ccplein\n", COUPE).replace("\\ccplein", COUPE)
-    # ET « \\cc » SUIVI DE « \\parplein » VAUT « \\ccplein ». Les deux
-    # macros ecrites a la suite font ce que \\ccplein fait d'un coup, et
-    # onze pages des deux livrets sont composees ainsi. Le PDF n'y voit
-    # que du feu ; la page de lecture, elle, ne trouvait pas la marque
-    # de coupure, et fusionner() recollait AVEC un blanc : « klo vagas »
-    # pour « klovagas », « ma traco » pour « matraco », « tran quila »
-    # pour « tranquila », « efekti gas » pour « efektigas », « par
-    # ticioni » pour « particioni », « yuni no » pour « yunino »,
-    # « kon servar » pour « konservar ». Sept mots de l'ido et quatre du
-    # francais, coupes en deux a l'ecran par la seule fin de feuillet.
+    # AND « \\cc » FOLLOWED BY « \\parplein » IS WORTH « \\ccplein ». The two
+    # macros written one after the other do what \\ccplein does at a stroke,
+    # and eleven pages of the two booklets are set that way. The PDF sees
+    # nothing amiss; the reading page, for its part, did not find the break
+    # mark, and merge() glued back WITH a space: « klo vagas » for
+    # « klovagas », « ma traco » for « matraco », « tran quila » for
+    # « tranquila », « efekti gas » for « efektigas », « par ticioni » for
+    # « particioni », « yuni no » for « yunino », « kon servar » for
+    # « konservar ». Seven words of the Ido and four of the French, cut in
+    # two on screen by the end of a leaf alone.
     t = re.sub(r"\\cc\n(?=\\parplein\b)", COUPE, t)
     t = t.replace("\\cc\n", "").replace("\\cc", "")
-    # UN TRAIT D'UNION EN FIN DE LIGNE NE PREND PAS DE BLANC APRES LUI.
-    # \nl marque une fin de ligne SANS trait d'union compose : le
-    # fac-simile n'en ajoute pas, parce que le mot en porte deja un.
-    # « mason-\nl servisto », « pluv-\nl kanali », « lad-(if-)\nl isto »
-    # sont un seul mot chacun, et l'espace les coupait en deux a
-    # l'ecran : « lad-(if-) isto ». On soude donc quand la ligne finit
-    # sur un trait d'union — le trait, lui, reste : « kroket-partio »
-    # s'ecrit ainsi, et rien ne doit le souder.
+    # A HYPHEN AT THE END OF A LINE TAKES NO SPACE AFTER IT. \nl marks an
+    # end of line WITHOUT a composed hyphen: the facsimile adds none,
+    # because the word already carries one. « mason-\nl servisto »,
+    # « pluv-\nl kanali », « lad-(if-)\nl isto » are one word each, and the
+    # space cut them in two on screen: « lad-(if-) isto ». We therefore
+    # weld when the line ends on a hyphen — the hyphen itself stays:
+    # « kroket-partio » is written so, and nothing must weld it.
     t = re.sub(r"(?<=\w)(-\)?\}?)[ \t]*\\nl\s*", r"\1", t)
     t = t.replace("\\nl\n", " ").replace("\\nl", " ")
-    # LE COMPOSE PREND TOUT LE GRAS. Le fac-simile n'en met parfois
-    # qu'au second membre — « pesko-\VUgras{barketi} », « (muton)-
-    # \VUgras{trupo} », et « mason-\nl \VUgras{servisto} » quand la
-    # ligne coupe le trait. Le mot est un pourtant : deux lignes plus
-    # bas le meme fac-simile compose « \VUgras{tekto-kanali} » d'un
-    # seul tenant. Le premier membre porte le sens — le troupeau est de
-    # moutons, la houlette est de berger — et l'objet se nommait
-    # « po », « bastono ». On etend donc le gras a gauche, apres avoir
-    # ote les coupures : les deux cas se ramenent alors a un seul.
+    # THE COMPOUND TAKES ALL THE BOLD. The facsimile sometimes puts it
+    # only on the second member — « pesko-\VUgras{barketi} », « (muton)-
+    # \VUgras{trupo} », and « mason-\nl \VUgras{servisto} » when the line
+    # breaks the hyphen. The word is one all the same: two lines below, the
+    # same facsimile sets « \VUgras{tekto-kanali} » in one piece. The first
+    # member carries the sense — the flock is of sheep, the crook is a
+    # shepherd's — and the object was named « po », « bastono ». We
+    # therefore extend the bold leftwards, after taking out the breaks: the
+    # two cases then come down to one.
     t = re.sub(r"(?<![\\{])((?:\(?[\w'\u2019]+\)?-)+)\\VUgras\{",
                r"\\VUgras{\1", t)
     t = t.replace("\\parplein", "").replace("\\VUcontinue", "")
@@ -765,33 +756,34 @@ def texte_html(t):
     i = 0
     balises = {"\\VUgras": "b", "\\textit": "i", "\\textsuperscript": "sup",
                "\\emph": "i", "\\textbf": "b"}
-    # Macros a PLUSIEURS arguments : on dit combien il en faut lire et
-    # lequel porte le texte. \VUcentre{corps}{interlettrage}{texte} :
-    # les deux premiers sont des mesures du fac-simile, ils n'ont rien
-    # a faire dans la page de lecture, mais il faut les LIRE, sinon
-    # leur contenu tombe dans le texte — c'est ce qui donnait
-    # « 12.6pt{120}{EXPLIKO - LIBRETO} » au premier essai.
-    # Le troisieme membre est l'habillage HTML du texte garde : les
-    # lignes d'apparat d'une ouverture de tableau sont des LIGNES, et
-    # doivent le rester a l'ecran — sans quoi « EXPLIKO - LIBRETO DI la
-    # Delmas - tabeli helpanta UNESMA SERIO » se lit d'un trait.
-    # \VUpk ne compose rien autour de son texte \u2014 le bloc qui la porte
-    # le centre deja \u2014 mais c'est une LIGNE d'apparat, et la table des
-    # matieres doit la compter comme telle : les titres des tableaux 8,
-    # 11, 12, 13 et 16 passent par elle, et non par \VUtitre. Sans
-    # marque, ils etaient invisibles a la table, qui annoncait ces
-    # tableaux sous leur seul numero. On la marque donc d'une classe
-    # SANS STYLE, \u00ab pk \u00bb : le rendu ne change pas d'un pixel, mais la
-    # ligne se compte. Le nom de la classe doit rester accorde a
-    # LIGNE_AP, qui la relit.
-    # LE CORPS DE CARACTERE SE GARDE, LUI. Les autres mesures du
-    # fac-simile ne servent qu'a l'imprime, mais le corps dit si deux
-    # lignes d'apparat sont une seule et meme chose : le titre du tableau
-    # 6 tient sur deux lignes de 11.4pt, celui du 13 sur deux lignes de
-    # 10.2pt, et la table les annoncait comme un titre suivi d'une
-    # section. Une ligne de corps DIFFERENT, elle, commence autre chose
-    # \u2014 au tableau 2, \u00ab La Korpo homala. \u00bb est en 13.2pt sous un titre
-    # en 11.4pt. On le depose donc dans data-korpo, que la table relit.
+    # Macros with SEVERAL arguments: we say how many are to be read and
+    # which one carries the text. \VUcentre{body}{letterspacing}{text}:
+    # the first two are measurements of the facsimile, they have no
+    # business in the reading page, but they must be READ, or their
+    # contents fall into the text — that is what gave
+    # « 12.6pt{120}{EXPLIKO - LIBRETO} » at the first attempt.
+    # The third member is the HTML wrapping of the text kept: the display
+    # lines of a table's opening are LINES, and must remain so on screen —
+    # failing which « EXPLIKO - LIBRETO DI la Delmas - tabeli helpanta
+    # UNESMA SERIO » reads in one breath.
+    # \VUpk sets nothing around its text — the block that carries it
+    # centres it already — but it is a display LINE, and the table of
+    # contents must count it as such: the titles of tables 8, 11, 12, 13
+    # and 16 pass through it, and not through \VUtitre. Unmarked, they were
+    # invisible to the table, which announced those tables under their
+    # number alone. We therefore mark it with a class WITHOUT STYLE,
+    # « pk »: the rendering does not change by a pixel, but the line is
+    # counted. The class name must stay in agreement with LIGNE_AP, which
+    # reads it back.
+    # THE TYPE SIZE IS KEPT, HOWEVER. The facsimile's other measurements
+    # serve only the printed page, but the size says whether two display
+    # lines are one and the same thing: the title of table 6 holds on two
+    # lines of 11.4pt, that of table 13 on two lines of 10.2pt, and the
+    # table of contents announced them as a title followed by a section. A
+    # line of a DIFFERENT size, on the other hand, begins something else
+    # — on table 2, « La Korpo homala. » is in 13.2pt beneath a title in
+    # 11.4pt. We therefore deposit it in data-korpo, which the table of
+    # contents reads back.
     arite = {"\\VUcentre": (3, 2, '<span class="ln" data-korpo="%(korpo)s">'
                                   '%(text)s</span>'),
              "\\VUtitre": (3, 2, '<span class="ln lg" data-korpo="%(korpo)s">'
@@ -803,11 +795,11 @@ def texte_html(t):
              "\\VUfilet": (1, None, '<span class="fil"></span>'),
              "\\VUornamento": (1, None, '<span class="orn">\u2766</span>'),
              "\\VUnotes": (2, 1, "%(text)s"),
-             # \fontsize{corps}{interligne} : deux mesures du fac-simile,
-             # rien a garder. Non declaree, elle passait pour une macro
-             # inconnue a UN argument : le corps tombait dans le texte et
-             # l'interligne restait entre accolades \u2014 le titre de la
-             # Balneyo s'annoncait \u00ab 10.2pt{10.2pt}[40]{La Balneyo.} \u00bb.
+             # \fontsize{body}{leading}: two measurements of the facsimile,
+             # nothing to keep. Undeclared, it passed for an unknown macro with
+             # ONE argument: the size fell into the text and the leading stayed
+             # between braces — the title of the Balneyo announced itself as
+             # « 10.2pt{10.2pt}[40]{La Balneyo.} ».
              "\\fontsize": (2, None, "")}
     while i < len(t):
         if t[i] == "\\":
@@ -817,10 +809,10 @@ def texte_html(t):
                 j = i + len(nom)
                 while j < len(t) and t[j] == " ":
                     j += 1
-                # L'ARGUMENT OPTIONNEL SE LIT AUSSI. \textls[40]{...}
-                # porte son interlettrage entre crochets ; non lu, il
-                # sortait tel quel — « [40]{La Balneyo.} ». C'est une
-                # mesure du fac-simile : on la lit et on la jette.
+                # THE OPTIONAL ARGUMENT IS READ TOO. \textls[40]{...} carries
+                # its letterspacing in brackets; unread, it came out as it
+                # stood — « [40]{La Balneyo.} ». It is a measurement of the
+                # facsimile: we read it and throw it away.
                 while j < len(t) and t[j] == "[":
                     ferme = t.find("]", j)
                     if ferme < 0:
@@ -858,7 +850,7 @@ def texte_html(t):
                     out.append("~")
                     i = j
                     continue
-                # Macro inconnue : on la laisse tomber avec son argument.
+                # Unknown macro: we let it drop with its argument.
                 if j < len(t) and t[j] == "{":
                     dedans, k = accolade(t, j)
                     out.append(texte_html(dedans))
@@ -866,7 +858,7 @@ def texte_html(t):
                     continue
                 i = j
                 continue
-            # \, \; \: — espaces fines
+            # \, \; \: — thin spaces
             if t[i + 1:i + 2] in (",", ";", ":"):
                 out.append("\u202f")
                 i += 2
@@ -874,14 +866,14 @@ def texte_html(t):
             out.append(t[i + 1:i + 2])
             i += 2
             continue
-        # UN GROUPE N'EST PAS DU TEXTE. Quelques endroits du releve
-        # composent a la main ce que les macros \VU font ailleurs :
-        # « {\centering\textit{(Videz la plano.)}\par} ». Les accolades y
-        # ouvrent une PORTEE LaTeX, elles ne s'impriment pas ; laissees
-        # telles quelles, elles sortaient dans la page et dans la table
-        # des matieres — « {(Videz la plano.)} ». On lit le groupe et on
-        # ne garde que son contenu. L'accolade litterale, elle, s'ecrit
-        # « \{ » dans le releve, et le cas est traite juste au-dessus.
+        # A GROUP IS NOT TEXT. A few places in the transcription set by hand
+        # what the \VU macros do elsewhere:
+        # « {\centering\textit{(Videz la plano.)}\par} ». The braces there open
+        # a LaTeX SCOPE, they do not print; left as they stood, they came out
+        # in the page and in the table of contents — « {(Videz la plano.)} ».
+        # We read the group and keep only its contents. The literal brace, for
+        # its part, is written « \{ » in the transcription, and that case is
+        # handled just above.
         if t[i] == "{":
             dedans, k = accolade(t, i)
             out.append(texte_html(dedans))
@@ -891,78 +883,77 @@ def texte_html(t):
         i += 1
     t = "".join(out)
 
-    # UN MOT COUPE PAR LA COMPOSITION RESTE UN MOT. Quand la coupure
-    # tombe a l'interieur d'un passage en gras, le releve porte deux
-    # \\VUgras — un par ligne — et la conversion naive en rendait deux
-    # balises : « <b>ar</b><b>moro</b> », soit « armoro » aux yeux mais
-    # deux mots pour la recherche du navigateur, qui ne trouvait plus
-    # « armoro ». On recolle donc les balises jointives. Deux appels de
-    # renvoi separes par la coupure — « (9, 11, » et « 12) » — sont le
-    # meme renvoi, et se reunissent de meme, l'espace en plus.
-    # La regle vaut pour les balises JOINTIVES seulement. Premiere
-    # version, elle tolerait l'espace entre les deux — et « une
-    # \\VUgras{armoire}\\nl \\VUgras{vitree} », deux mots gras sur deux
-    # lignes du fac-simile francais, devenait « armoirevitree ».
-    # L'espace distingue les deux cas : \\cc n'en laisse pas, \\nl si.
+    # A WORD BROKEN BY THE COMPOSITION IS STILL A WORD. When the break
+    # falls inside a passage in bold, the transcription carries two
+    # \\VUgras — one per line — and the naive conversion made two tags of
+    # them: « <b>ar</b><b>moro</b> », that is « armoro » to the eye but two
+    # words to the browser's search, which no longer found « armoro ». We
+    # therefore glue adjoining tags back together. Two cross-reference
+    # calls separated by the break — « (9, 11, » and « 12) » — are the same
+    # cross-reference, and are reunited likewise, with the space added.
+    # The rule holds for ADJOINING tags only. In its first version it
+    # tolerated the space between the two — and « une \\VUgras{armoire}\\nl
+    # \\VUgras{vitree} », two bold words on two lines of the French
+    # facsimile, became « armoirevitree ». The space distinguishes the two
+    # cases: \\cc leaves none, \\nl does.
     for b in ("b", "i"):
         t = re.sub(rf"</{b}><{b}>", "", t)
     t = re.sub(r"<b>([^<>]*)</b>",
                lambda m: (m.group(1)
                           if m.group(1).strip(PONKTO).lower() in MOTOJ_VAKA
                           else m.group(0)), t)
-    # Les renvois, eux, se reunissent MEME separes : « (9, 11, » et
-    # « 12) » sont un seul appel que la ligne a coupe en deux.
+    # The cross-references, for their part, are reunited EVEN when
+    # separated: « (9, 11, » and « 12) » are a single call the line has cut
+    # in two.
     t = re.sub(r"</sup>\s*<sup>", " ", t)
 
-    # LE TRAIT D'UNION N'A PAS D'ESPACES. Les titres du livret ido sont
-    # composes en interlettrage, et l'imprimeur y a fait respirer le
-    # trait d'union comme le reste : « EXPLIKO - LIBRETO »,
-    # « Matur - evo ed oldeso. », « la Delmas - tabeli », « la 3 - ma ».
-    # Ces espaces tiennent a la composition, non au mot ; a l'ecran, ou
-    # rien n'est interlettre, ils coupent le mot en deux. Le fac-simile
-    # francais n'en porte aucun. Le tiret cadratin, qui separe vraiment,
-    # s'ecrit « --- » dans le releve et sort deja en « — » : ni lui ni
-    # le tiret court d'un intervalle ne sont touches.
+    # THE HYPHEN HAS NO SPACES. The titles of the Ido booklet are set with
+    # letterspacing, and the printer let the hyphen breathe like the rest:
+    # « EXPLIKO - LIBRETO », « Matur - evo ed oldeso. », « la Delmas -
+    # tabeli », « la 3 - ma ». Those spaces belong to the composition, not
+    # to the word; on screen, where nothing is letterspaced, they cut the
+    # word in two. The French facsimile carries none. The em dash, which
+    # really does separate, is written « --- » in the transcription and
+    # already comes out as « — »: neither it nor the short dash of an
+    # interval is touched.
     t = re.sub(r"(?<=[^\s\u2013\u2014-]) - (?=[^\s\u2013\u2014-])", "-", t)
 
-    # UNE LANGUE SANS ESPACES N'EN VEUT PAS DE LA FIN DE LIGNE. Les
-    # fichiers de traduction coupent leurs lignes pour le confort de qui
-    # les edite, et \nl / le retour simple deviennent un blanc -- ce
-    # qu'il faut pour les langues latines, ou le blanc separe les mots.
-    # Le chinois n'en met aucun : « 有八张\n课桌 » sortait « 有八张 课桌 »,
-    # un trou au milieu du groupe, et 848 fois dans la colonne. Un blanc
-    # pose ENTRE DEUX IDEOGRAMMES n'est jamais voulu -- aucune langue
-    # n'en ecrit -- et il s'ote donc partout, quelle que soit la
-    # colonne. La regle se pose sur le HTML et non sur le texte nu :
-    # deux lignes d'apparat voisines sont separees par leurs balises,
-    # et ce blanc-la, lui, doit rester.
-    # ET LE GRAS NE ROMPT PAS LE GROUPE. « 有八张\n\VUgras{课桌} » met
-    # une balise entre les deux ideogrammes, et la premiere version de
-    # la regle ne les voyait plus voisins : il restait 403 trous sur
-    # 848. On saute donc les balises EN LIGNE -- b, i, sup, button --
-    # mais pas « span », qui est celle des lignes d'apparat : deux
-    # lignes de titre voisines sont bien separees par un blanc, et
-    # celui-la doit rester.
+    # A LANGUAGE WITHOUT SPACES WANTS NONE FROM THE END OF A LINE. The
+    # translation files break their lines for the comfort of whoever edits
+    # them, and \nl / the plain return become a space -- which is what the
+    # Latin languages need, where the space separates the words. Chinese
+    # puts none: « 有八张\n课桌 » came out « 有八张 课桌 », a hole in the
+    # middle of the group, and 848 times in the column. A space set BETWEEN
+    # TWO IDEOGRAMS is never intended -- no language writes any -- and it
+    # is therefore taken out everywhere, whatever the column. The rule is
+    # laid on the HTML and not on the bare text: two neighbouring display
+    # lines are separated by their tags, and that space must stay.
+    # AND THE BOLD DOES NOT BREAK THE GROUP. « 有八张\n\VUgras{课桌} » puts
+    # a tag between the two ideograms, and the first version of the rule no
+    # longer saw them as neighbours: 403 holes out of 848 remained. We
+    # therefore skip the INLINE tags -- b, i, sup, button -- but not
+    # « span », which is that of the display lines: two neighbouring title
+    # lines are indeed separated by a space, and that one must stay.
     _EL = r"(?:</?(?:b|i|sup|button)\b[^>]*>)*"
     _ID = "[\u3000-\u303f\u4e00-\u9fff\uff00-\uffef]"
     t = re.sub(rf"(?<={_ID})({_EL})[ \t\n]+({_EL})(?={_ID})", r"\1\2", t)
 
-    # L'apostrophe des deux fac-similes est la courbe, non la droite :
-    # « l'unesma », « L'Ecole ». La droite est une commodite de clavier
-    # que l'imprime ne connait pas.
+    # The apostrophe of both facsimiles is the curved one, not the
+    # straight: « l'unesma », « L'Ecole ». The straight one is a keyboard
+    # convenience the printed page does not know.
     t = t.replace("'", "\u2019")
 
-    # Ponctuation du fac-simile.
+    # Punctuation of the facsimile.
     t = t.replace("---", "\u2014").replace("--", "\u2013")
     t = re.sub(r"\s+", " ", t).strip()
-    # Le tiret cadratin colle au mot qui suit quand le compositeur
-    # serre sa ligne (« 3. ---Ne omna... », folio 5). C'est une
-    # contrainte de justification, non une intention : la page de
-    # lecture, qui rejustifie, rend l'espace. Le PDF, lui, garde le
-    # fac-simile.
+    # The em dash sticks to the word that follows when the compositor
+    # tightens his line (« 3. ---Ne omna... », folio 5). It is a
+    # constraint of justification, not an intention: the reading page,
+    # which rejustifies, gives the space back. The PDF, for its part,
+    # keeps the facsimile.
     t = re.sub(r"\u2014(?=[^\s\u2014])", "\u2014 ", t)
-    # Espace fine insecable devant la ponctuation haute, usage francais
-    # et ido de l'epoque — les deux livrets la composent.
+    # Thin non-breaking space before high punctuation, French and Ido
+    # usage of the period — both booklets set it.
     t = re.sub(r" ([;:?!])", "\u202f\\1", t)
     t = t.replace("<b> ", " <b>").replace(" </b>", "</b> ")
     t = re.sub(r"\s+", " ", t).strip()
@@ -970,12 +961,12 @@ def texte_html(t):
 
 
 def lire(chemin):
-    """Renvoie la liste des blocs d'un fichier de releve.
+    """Returns the list of blocks of a transcription file.
 
-    Un bloc = {cle, tipo, folio, feuillet, html}. Tout ce qui precede
-    la premiere cle d'une page (les lignes d'apparat d'une ouverture de
-    tableau, les notes) est rattache au bloc qui suit ou porte sa
-    propre cle.
+    A block = {key, type, folio, leaf, html}. Everything preceding a
+    page's first key (the display lines of a table's opening, the
+    notes) is attached to the block that follows or carries its own
+    key.
     """
     src = chemin.read_text(encoding="utf-8")
     blocs = []
@@ -995,9 +986,9 @@ def lire(chemin):
         if m:
             if courant:
                 blocs.append(courant)
-            # Le troisieme membre d'une cle : « suite » pour la reprise
-            # d'un alinea coupe par un changement de page, « pos=<cle> »
-            # pour un bloc qui SE LIT ailleurs qu'il s'imprime.
+            # The third member of a key: « suite » for the resumption of a
+            # paragraph broken by a change of page, « pos=<key> » for a
+            # block that IS READ elsewhere than it is printed.
             extra = m.group(3) or ""
             courant = {"cle": m.group(1), "tipo": m.group(2),
                        "suite": extra == "suite",
@@ -1007,10 +998,9 @@ def lire(chemin):
         if ligne.startswith("%"):
             continue
         if "\\end{VUpage}" in ligne:
-            # La fin d'environnement n'est pas du texte. Sans cette
-            # ligne-ci, « VUpage » se composait a la fin du dernier
-            # alinea de chaque page : la macro inconnue tombait, son
-            # nom restait.
+            # The end of an environment is not text. Without this very
+            # line, « VUpage » was set at the end of each page's last
+            # paragraph: the unknown macro dropped, its name stayed.
             courant = None if courant is None else courant
             if courant is not None:
                 courant["brut"].append(
@@ -1023,15 +1013,15 @@ def lire(chemin):
     if courant:
         blocs.append(courant)
 
-    # Les notes : elles sont declarees en tete de page, avant toute cle.
-    # On les retrouve dans le brut de la source, on les extrait et on en
-    # fait des blocs a part, poses a la fin de leur page.
+    # The notes: they are declared at the head of the page, before any
+    # key. We find them again in the raw source, extract them and make
+    # separate blocks of them, set at the end of their page.
     entier = src
     for mo in re.finditer(r"\\VUnotes\{[^}]*\}\{", entier):
         deb = mo.end() - 1
         dedans, _ = accolade(entier, deb)
-        # A quelle page appartient-elle ? La derniere \begin{VUpage}
-        # avant elle.
+        # Which page does it belong to? The last \begin{VUpage}
+        # before it.
         avant = entier[:mo.start()]
         pages = list(PAGE.finditer(avant))
         f = pages[-1].group(2) if pages else ""
@@ -1044,11 +1034,11 @@ def lire(chemin):
     for b in blocs:
         b["html"] = texte_html("\n".join(b["brut"]))
         del b["brut"]
-    # LE MARQUEUR SE LIT SUR LE TEXTE RENDU, non sur la source. Il y est
-    # parfois enferme dans une macro — « \textit{(*) Pro ke ta vorto...} »
-    # au tableau 8 — et une expression reguliere posee sur le LaTeX ne
-    # le voyait pas. Le HTML, lui, a deja resolu les macros : il ne
-    # reste que le texte, et le marqueur y est en tete.
+    # THE MARKER IS READ ON THE RENDERED TEXT, not on the source. There it
+    # is sometimes shut inside a macro — « \textit{(*) Pro ke ta vorto...} »
+    # on table 8 — and a regular expression laid on the LaTeX did not see
+    # it. The HTML, for its part, has already resolved the macros: only the
+    # text is left, and the marker is at its head.
     for b in blocs:
         if b["tipo"] != "noto":
             b["apelo"] = ""
@@ -1057,11 +1047,11 @@ def lire(chemin):
         m2 = re.match(r"\(([^)]{1,3})\)", nu)
         b["apelo"] = m2.group(1) if m2 else ""
 
-    # DEUX SOURCES POUR UNE MEME NOTE. Certains releves declarent la
-    # note par une cle « %%K ... noto », d'autres la laissent porter par
-    # le seul \VUnotes, que la seconde passe ci-dessus ramasse. Quand
-    # les deux coexistent, la note paraissait deux fois. On ecarte le
-    # doublon sur les premiers caracteres du texte nu.
+    # TWO SOURCES FOR ONE NOTE. Some transcriptions declare the note by
+    # a « %%K ... noto » key, others let it be carried by \VUnotes alone,
+    # which the second pass above gathers up. When the two coexist, the
+    # note appeared twice. We discard the duplicate on the first
+    # characters of the bare text.
     vus = set()
     net = []
     for b in blocs:
@@ -1075,32 +1065,32 @@ def lire(chemin):
 
 
 def fusionner(blocs):
-    """Recolle les blocs « suite » a leur bloc d'origine.
+    """Glues « suite » blocks back to the block they came from.
 
-    Un alinea coupe par un changement de page porte deux fois la meme
-    cle, la seconde marquee « suite ». Dans le PDF ce sont deux pages ;
-    dans la page de lecture c'est un seul alinea, et il doit l'etre,
-    sinon la colonne d'en face — qui ne coupe pas au meme endroit —
-    ne lui repondrait plus.
+    A paragraph broken by a change of page carries the same key twice,
+    the second marked « suite ». In the PDF they are two pages; in the
+    reading page it is one paragraph, and it must be, or the facing
+    column — which does not break in the same place — would no longer
+    answer it.
     """
     out = []
     par_cle = {}
     for b in blocs:
         if b["suite"] and b["cle"] in par_cle:
             a = par_cle[b["cle"]]
-            # UN MOT COUPE PAR LA PAGE NE PREND PAS DE BLANC. \ccplein
-            # a laisse sa marque en fin de moitie gauche : « dro » et
-            # « medaro » font « dromedaro », non « dro medaro ».
+            # A WORD BROKEN BY THE PAGE TAKES NO SPACE. \ccplein has
+            # left its mark at the end of the left-hand half: « dro »
+            # and « medaro » make « dromedaro », not « dro medaro ».
             if a["html"].rstrip().endswith(COUPE):
                 joint = (a["html"].rstrip()[:-len(COUPE)]
                          + b["html"].lstrip()).strip()
-                # ET IL RESTE UN SEUL MOT POUR LA RECHERCHE. Les deux
-                # moities sont chacune dans son \VUgras : recollees
-                # telles quelles, elles donnaient « <b>dro</b><b>meda
-                # ro</b> » — « dromedaro » a l'oeil, deux mots pour le
-                # navigateur. texte_html() reunit les balises jointives
-                # a l'interieur d'un bloc ; ici la coupure passe entre
-                # deux blocs, et la reunion se refait apres coup.
+                # AND IT REMAINS ONE WORD FOR SEARCHING. The two halves
+                # are each in their own \VUgras: glued back as they
+                # stood, they gave « <b>dro</b><b>meda ro</b> » —
+                # « dromedaro » to the eye, two words to the browser.
+                # texte_html() reunites adjoining tags within a block;
+                # here the break falls between two blocks, and the
+                # reunion is done again afterwards.
                 for q in ("b", "i"):
                     joint = joint.replace(f"</{q}><{q}>", "")
                 a["html"] = joint
@@ -1114,7 +1104,7 @@ def fusionner(blocs):
 
 
 # -------------------------------------------------------------------
-#  2. ASSEMBLAGE
+#  2. ASSEMBLY
 # -------------------------------------------------------------------
 DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "en": "en", "es": "es", "ru": "ru", "zh": "zh",
@@ -1133,34 +1123,35 @@ DOSSIER = {"fr": "fr", "fr-CA": "fr-CA",
            "id": "id", "jv": "jv", "fa": "fa", "ha": "ha",
            "gu": "gu", "apc": "apc", "bho": "bho",
            "de": "de", "it": "it",
-           "pl": "pl", "af": "af"}   # langue -> text/<...>
+           "pl": "pl", "af": "af"}   # language -> text/<...>
 
 
-# LA PAGE DE LECTURE NE PORTE QUE LES SEIZE TABLEAUX. Couverture,
-# dedicace, PREFACO, AVERTISSEMENT, tables des matieres, annonces de
-# l'editeur : tout cela est dans les deux PDF, qui reproduisent les
-# volumes entiers, et n'a rien a faire dans une page dont l'objet est
-# de mettre DEUX TEXTES EN REGARD. Ces pieces-la ne se repondent pas
-# d'une edition a l'autre -- la preface de Guignon n'est pas
-# l'avertissement de Rochelle, elle en est meme le contraire par le
-# ton -- et les afficher cote a cote donnait deux colonnes qui se
-# regardaient sans rien avoir a se dire.
+# THE READING PAGE CARRIES ONLY THE SIXTEEN TABLES. Cover,
+# dedication, PREFACO, AVERTISSEMENT, tables of contents, the
+# publisher's announcements: all of that is in the two PDFs, which
+# reproduce the whole volumes, and has no business in a page whose
+# object is to set TWO TEXTS FACE TO FACE. Those pieces do not answer
+# each other from one edition to the other -- Guignon's preface is not
+# Rochelle's avertissement, it is even its opposite in tone -- and
+# displaying them side by side gave two columns looking at each other
+# with nothing to say.
 #
-# Le partage se lit sur le nom du fichier : « 00- » les liminaires,
-# « 90- » la fin, et entre les deux les tableaux.
-# « pos= » : CE QUI S'IMPRIME ICI SE LIT LA. Le fac-simile compose
-# parfois un intertitre a une place que la page de lecture ne peut pas
-# garder. Au tableau 2, « LA KAPO. » est imprime AVANT l'alinea 1 -- qui
-# n'est pas la tete, mais l'annonce des trois parties du corps -- et le
-# volume francais met la, lui, le titre de section « I. Le Corps
-# Humain. ». Les deux colonnes annoncaient donc des choses differentes.
+# The division is read off the filename: « 00- » the front matter,
+# « 90- » the end, and between the two the tables.
+# « pos= »: WHAT IS PRINTED HERE IS READ THERE. The facsimile
+# sometimes sets a subheading in a place the reading page cannot keep.
+# On table 2, « LA KAPO. » is printed BEFORE paragraph 1 -- which is
+# not the head, but the announcement of the body's three parts -- and
+# the French volume puts there, for its part, the section title « I. Le
+# Corps Humain. ». The two columns therefore announced different
+# things.
 #
-# Deplacer la macro dans le releve corrigerait la page de lecture et
-# FAUSSERAIT LE PDF, qui est la transcription diplomatique : la ligne
-# doit rester ou l'imprimeur l'a mise. On note donc le deplacement a
-# cote d'elle, et le PDF ne bouge pas d'un point.
+# Moving the macro in the transcription would correct the reading page
+# and FALSIFY THE PDF, which is the diplomatic transcription: the line
+# must stay where the printer put it. We therefore note the move beside
+# it, and the PDF does not budge by a point.
 def deplacer(blocs):
-    """Repose les blocs marques « pos= » derriere le bloc qu'ils visent."""
+    """Sets the blocks marked « pos= » back behind the block they aim at."""
     fixes = [b for b in blocs if not b.get("apres")]
     for b in [b for b in blocs if b.get("apres")]:
         i = next((k for k, x in enumerate(fixes) if x["cle"] == b["apres"]),
@@ -1172,7 +1163,7 @@ def deplacer(blocs):
 
 
 def lire_langue(sous_dossier):
-    """Les seize tableaux d'une langue, dans l'ordre."""
+    """The sixteen tables of a language, in order."""
     d = RACINE / "text" / sous_dossier
     blocs = []
     for f in sorted(d.glob("*.tex")):
@@ -1182,32 +1173,32 @@ def lire_langue(sous_dossier):
     return blocs
 
 
-# LES INTERTITRES NE S'APPARIENT PAS PAR LEUR CLE. C'est deja la regle
-# du releve, et tools/controles.py la dit : « leur numerotation (tit-1,
-# tit-2...) est propre a chaque edition ». L'ido subdivise plus fin que
-# le francais -- sept intertitres au tableau 2 contre trois -- de sorte
-# que t02-tit-2 ne designe pas la meme chose des deux cotes. Le rendu,
-# lui, appariait tout par la cle : « La Torso. » se retrouvait en face
-# de « II. La Gymnastique. », et les deux colonnes annoncaient des
-# sections differentes. Dix-sept intertitres etaient ainsi mal apparies,
-# sur onze tableaux.
+# SUBHEADINGS ARE NOT PAIRED BY THEIR KEY. That is already the rule of
+# the transcription, and tools/checks.py says so: « their numbering
+# (tit-1, tit-2...) is peculiar to each edition ». The Ido subdivides
+# more finely than the French -- seven subheadings on table 2 against
+# three -- so that t02-tit-2 does not designate the same thing on both
+# sides. The rendering, for its part, paired everything by the key:
+# « La Torso. » found itself facing « II. La Gymnastique. », and the two
+# columns announced different sections. Seventeen subheadings were
+# mispaired that way, across eleven tables.
 #
-# CE QUI LES APPARIE, C'EST LA PLACE. Un intertitre ouvre un alinea, et
-# l'alinea, lui, porte la meme cle dans les deux editions -- c'est la
-# le pivot du releve. On groupe donc les intertitres par l'alinea qu'ils
-# precedent, et l'on apparie DANS L'ORDRE a l'interieur du groupe : la
-# ou une edition en met trois et l'autre deux, les deux premiers se
-# repondent et le troisieme reste seul. Ce qu'il doit rester.
+# WHAT PAIRS THEM IS THE PLACE. A subheading opens a paragraph, and the
+# paragraph carries the same key in both editions -- that is the pivot
+# of the transcription. We therefore group the subheadings by the
+# paragraph they precede, and pair them IN ORDER within the group:
+# where one edition puts three and the other two, the first two answer
+# each other and the third stays alone. As it must.
 def apparier_subs(io_blocs, autre_blocs):
-    """{cle d'intertitre ido: cle d'intertitre de l'autre edition}"""
+    """{Ido subheading key: subheading key of the other edition}"""
     def groupes(blocs):
         g, courant = {}, []
         for b in blocs:
             if b["tipo"] == "sub":
                 courant.append(b["cle"])
             elif b["tipo"] == "p" and courant:
-                # Les cles d'alinea portent leur tableau : deux groupes
-                # de deux tableaux ne peuvent pas se confondre.
+                # Paragraph keys carry their table: two groups from two
+                # tables cannot be confused.
                 g[b["cle"]] = courant
                 courant = []
         return g
@@ -1222,19 +1213,20 @@ def apparier_subs(io_blocs, autre_blocs):
     return lien
 
 
-# LES INTERTITRES QUE LE LIVRET FRANCAIS N'A PAS. Rochelle coupe ses
-# tableaux en deux ou trois sections, Guignon en met sept : cent
-# vingt-huit intertitres d'un cote, trente de l'autre, et
-# quatre-vingt-dix-huit rangs ou la colonne francaise restait vide. Les
-# six traductions modernes les ont toutes, traduites de l'ido ; le
-# francais ne pouvait pas les prendre par la meme voie, text/fr etant
-# un releve et non une traduction — le PDF y reproduit son fac-simile,
-# une ligne pour une ligne, et une ligne de plus le fausserait.
+# THE SUBHEADINGS THE FRENCH BOOKLET DOES NOT HAVE. Rochelle cuts his
+# tables into two or three sections, Guignon puts seven: a hundred and
+# twenty-eight subheadings on one side, thirty on the other, and
+# ninety-eight ranks where the French column stayed empty. The six
+# modern translations all have them, translated from the Ido; the
+# French could not take them by the same route, text/fr being a
+# transcription and not a translation — the PDF reproduces its
+# facsimile there, one line for one line, and one more line would
+# falsify it.
 #
-# ILS SE TIENNENT DONC A COTE, dans text/fr/intertitroj.json, et la
-# page de lecture seule les affiche. Elle les marque « apud » : meme
-# corps et meme place que les autres, mais le lecteur doit pouvoir
-# distinguer ce que Rochelle a ecrit de ce que nous ajoutons.
+# THEY ARE THEREFORE KEPT ALONGSIDE, in text/fr/intertitroj.json, and
+# only the reading page displays them. It marks them « apud »: the same
+# size and the same place as the others, but the reader must be able to
+# tell what Rochelle wrote from what we add.
 def intertitroj_fr():
     f = RACINE / "text" / "fr" / "intertitroj.json"
     if not f.exists():
@@ -1250,9 +1242,9 @@ def paro():
     io = lire_langue("io")
     autres, liens = {}, {}
     for lg in LANGUES:
-        # LA VARIANTE N'A PAS DE DOSSIER : elle se tire de sa base, plus
-        # bas, une fois les blocs faits. « dosiero » dit ou la colonne
-        # de base ecrit ses fichiers, son code ayant pris un suffixe.
+        # THE VARIANT HAS NO DIRECTORY: it is drawn from its base, below,
+        # once the blocks are made. « dosiero » says where the base column
+        # writes its files, its own code having taken a suffix.
         sd = DOSSIER.get(lg.get("dosiero", lg["kodo"]))
         if sd and (RACINE / "text" / sd).is_dir():
             bl = lire_langue(sd)
@@ -1262,11 +1254,11 @@ def paro():
             autres[lg["kodo"]] = {}
             liens[lg["kodo"]] = {}
 
-    # L'ORDRE EST CELUI DE L'IDO. C'est le livret ido qui est l'objet du
-    # site ; la colonne de droite le suit.
-    # Cote ido, la symetrie : un bloc ido sans vis-a-vis francais est
-    # recolle au precedent LORS DU RENDU (voir plus bas), et non ici,
-    # parce qu'il faut d'abord savoir lesquels sont orphelins.
+    # THE ORDER IS THE IDO'S. It is the Ido booklet that is the object of
+    # the site; the right-hand column follows it.
+    # On the Ido side, the symmetry: an Ido block with no French
+    # counterpart is glued back to the previous one AT RENDERING TIME (see
+    # below), and not here, because one must first know which are orphans.
     rangi = []
     for b in io:
         r = {"cle": b["cle"], "tipo": b["tipo"], "io": b["html"],
@@ -1274,15 +1266,15 @@ def paro():
              "folio": b["folio"], "folio2": b.get("folio2", ""),
              "feuillet": b["feuillet"], "tra": {}}
         for lg in LANGUES:
-            # L'intertitre se cherche par sa place, tout le reste par sa
-            # cle. Sans vis-a-vis, la case de droite reste vide : c'est
-            # une subdivision que l'autre edition n'a pas.
+            # The subheading is looked up by its place, everything else by
+            # its key. With no counterpart, the right-hand cell stays
+            # empty: it is a subdivision the other edition does not have.
             cible = (liens[lg["kodo"]].get(b["cle"]) if b["tipo"] == "sub"
                      else b["cle"])
             o = autres[lg["kodo"]].get(cible) if cible else None
             if o is None and lg["kodo"] == "fr" and b["tipo"] == "sub":
-                # LE CORPS SE PREND SUR L'IDO, pour que les deux
-                # colonnes annoncent la section a la meme force.
+                # THE SIZE IS TAKEN FROM THE IDO, so that the two
+                # columns announce the section at the same strength.
                 t = APUD_FR.get(b["cle"])
                 if t:
                     korpo = re.search(r'data-korpo="([^"]+)"', b["html"])
@@ -1299,29 +1291,28 @@ def paro():
                                         "apelo": o.get("apelo", "")}
         rangi.append(r)
 
-    # LE DECOUPAGE EN ALINEAS N'EST PAS LE MEME DES DEUX COTES, et il
-    # faut en faire quelque chose. Rochelle coupe parfois en deux un
-    # alinea que Guignon laisse d'un tenant, ou l'inverse : la cle
-    # « t07-c1-05-2 » existe alors d'un seul cote. Rendue telle quelle,
-    # elle fabrique un rang dont une colonne est vide, et l'oeil y lit
-    # un manque -- alors que le texte, lui, est bien la, deux lignes
-    # plus haut.
+    # THE DIVISION INTO PARAGRAPHS IS NOT THE SAME ON THE TWO SIDES, and
+    # something must be made of it. Rochelle sometimes cuts in two a
+    # paragraph Guignon leaves whole, or the reverse: the key
+    # « t07-c1-05-2 » then exists on one side only. Rendered as it stands,
+    # it makes a row one of whose columns is empty, and the eye reads a
+    # gap there -- when the text is in fact right there, two lines above.
     #
-    # LE PDF GARDE LE FAC-SIMILE ; LA PAGE DE LECTURE REGROUPE. Le
-    # volume est une transcription diplomatique et doit le rester : la
-    # coupure d'alinea y est celle de l'imprime. La page de lecture,
-    # elle, sert a COMPARER deux textes, et une comparaison veut des
-    # rangs qui se repondent. On recolle donc le bloc orphelin au
-    # precedent de la meme langue, avec la marque du retour a la ligne
-    # qu'il portait -- rien n'est perdu, rien n'est deplace, et les
-    # deux colonnes redeviennent paralleles.
+    # THE PDF KEEPS THE FACSIMILE; THE READING PAGE REGROUPS. The volume
+    # is a diplomatic transcription and must remain one: the paragraph
+    # break there is that of the printed page. The reading page, for its
+    # part, serves to COMPARE two texts, and a comparison wants rows that
+    # answer each other. We therefore glue the orphan block back to the
+    # previous one of the same language, with the mark of the line break
+    # it carried -- nothing is lost, nothing is moved, and the two columns
+    # become parallel again.
     #
-    # UN INTERTITRE APPARIE PAR SA PLACE N'EST PAS ORPHELIN. Ce
-    # recollage juge sur la CLE, et les intertitres, eux, s'apparient sur
-    # leur place : un intertitre de traduction dont la cle ne figure pas
-    # cote ido tient pourtant deja sa case, en face de celui qu'il
-    # traduit. Compte pour orphelin, il paraissait DEUX fois -- « Deuxième
-    # scène. » a son rang, et recolle a la fin de l'alinea precedent.
+    # A SUBHEADING PAIRED BY ITS PLACE IS NOT AN ORPHAN. This gluing judges
+    # on the KEY, and subheadings are paired on their place: a translation
+    # subheading whose key does not appear on the Ido side already holds
+    # its cell all the same, facing the one it translates. Counted as an
+    # orphan, it appeared TWICE -- « Deuxième scène. » at its rank, and
+    # glued to the end of the previous paragraph.
     par_cle = {r["cle"]: i for i, r in enumerate(rangi)}
     for lg in LANGUES:
         k = lg["kodo"]
@@ -1332,7 +1323,7 @@ def paro():
                 precedent = par_cle[cle]
                 continue
             if cle in pris:
-                # Il a sa case : c'est desormais lui, le precedent.
+                # It has its cell: from now on it is the previous one.
                 precedent = par_cle.get(pris[cle], precedent)
                 continue
             if precedent is None:
@@ -1345,12 +1336,12 @@ def paro():
     return rangi
 
 
-# LE FOLIO NE DONNE PAS LE NUMERO DE PAGE DU PDF, et la difference
-# n'est pas une constante. Le PDF ne compose que les feuillets releves,
-# et le livret ido en saute deux, vierges (48 et 76). Une soustraction
-# fixe -- ce qu'on faisait quand seul le tableau 1 existait -- envoyait
-# donc le lecteur deux pages trop loin dans tout le second tiers du
-# volume. On numerote les feuillets composes dans l'ordre, une fois.
+# THE FOLIO DOES NOT GIVE THE PDF'S PAGE NUMBER, and the difference is
+# not a constant. The PDF sets only the transcribed leaves, and the Ido
+# booklet skips two, blank (48 and 76). A fixed subtraction -- what was
+# done when table 1 alone existed -- therefore sent the reader two
+# pages too far through the whole second third of the volume. We number
+# the composed leaves in order, once.
 _RANGS = {}
 
 
@@ -1366,32 +1357,32 @@ def rang_pdf(langue, feuillet):
     return _RANGS[sd].get(str(feuillet), 1)
 
 
-# CE QUI PRECEDE UN CHIFFRE ENTRE PARENTHESES EN DIT LA NATURE. Le
-# liminaire francais pose lui-meme la regle : « Nous avons imprime en
+# WHAT PRECEDES A FIGURE IN PARENTHESES SAYS WHAT IT IS. The French
+# foreword lays down the rule itself: « Nous avons imprime en
 # caracteres gras les substantifs qui se trouvent dans le vocabulaire
-# des Tableaux EN LES FAISANT SUIVRE DE LEUR NUMERO. » Un numero
-# d'objet suit donc toujours un substantif en gras -- « la
-# \VUgras{fumee}\textsuperscript{(1)} » -- tandis que l'appel de note
-# suit du texte ordinaire : « qui nous fut servi \textsuperscript{(1)} ».
-# L'exposant, lui, ne tranche rien : les deux volumes composent tantot
-# l'un tantot l'autre en exposant.
+# des Tableaux EN LES FAISANT SUIVRE DE LEUR NUMERO. » An object number
+# therefore always follows a bold noun -- « la
+# \VUgras{fumee}\textsuperscript{(1)} » -- whereas a note call follows
+# ordinary text: « qui nous fut servi \textsuperscript{(1)} ». The
+# superscript settles nothing: both volumes set now one, now the other
+# as a superscript.
 AVANT_OBJET = re.compile(r'</b>\s*(?:<sup>\s*)?$')
 
 
 def appels_note(texte, marque):
-    """Positions des appels de note « (marque) » dans un bloc.
+    """Positions of the note calls « (mark) » within a block.
 
-    Ecarte les renvois au tableau mural, reconnus a leur substantif en
-    gras. Rend des couples (debut, fin) sur le texte donne.
+    Discards cross-references to the wall plate, recognised by their
+    bold noun. Returns pairs (start, end) on the given text.
     """
     if not texte:
         return []
-    # UNE ASTERISQUE N'EST JAMAIS UN NUMERO D'OBJET : quand la note est
-    # marquee « (*) », rien n'est a departager, et le gras ne prouve
-    # rien. Le tableau 1 ido pose justement son appel apres un
-    # substantif en gras — « esas \VUgras{Henrikus} (*) » — parce que la
-    # note porte sur ce mot-la. La regle du gras ne vaut que pour les
-    # marques chiffrees, les seules que les deux emplois partagent.
+    # AN ASTERISK IS NEVER AN OBJECT NUMBER: when the note is marked
+    # « (*) », there is nothing to decide between, and the bold proves
+    # nothing. Ido table 1 sets its call precisely after a bold noun —
+    # « esas \VUgras{Henrikus} (*) » — because the note bears on that
+    # word. The bold rule holds only for the figured marks, the only
+    # ones the two uses share.
     chiffree = marque.isdigit()
     out = []
     for m in re.finditer(re.escape(f"({marque})"), texte):
@@ -1406,55 +1397,54 @@ def ancro(cle):
 
 
 def lier_notes(rangi):
-    """Relie chaque appel de note, dans le texte, a sa note.
+    """Links each note call, in the text, to its note.
 
-    LA NOTE N'EST PAS UN BLOC COMME UN AUTRE. Au bas d'une page du
-    fac-simile elle a sa place naturelle ; dans une colonne qui defile,
-    posee entre deux alineas, elle coupe la lecture — et l'appel, lui,
-    ne mene nulle part. On la replie donc : l'appel devient un bouton,
-    la note s'ouvre sous l'alinea qui la porte, comme dans la page du
-    « Kompleta Gramatiko ».
+    A NOTE IS NOT A BLOCK LIKE ANY OTHER. At the foot of a page of the
+    facsimile it has its natural place; in a scrolling column, set
+    between two paragraphs, it breaks the reading — and the call, for
+    its part, leads nowhere. We therefore fold it away: the call becomes
+    a button, the note opens beneath the paragraph that carries it, as
+    in the page of the « Kompleta Gramatiko ».
 
-    CHAQUE LANGUE A SES NOTES, et ce sont rarement les memes : le
-    livret ido porte une note sur la latinisation des prenoms que le
-    francais ignore, et Rochelle en a que Guignon n'a pas reprises. On
-    relie donc colonne par colonne.
+    EACH LANGUAGE HAS ITS NOTES, and they are rarely the same ones: the
+    Ido booklet carries a note on the latinisation of first names that
+    the French does not have, and Rochelle has some Guignon did not take
+    up. We therefore link column by column.
 
-    L'APPARIEMENT SE FAIT PAR LA PAGE ET PAR LE MARQUEUR, les deux. Un
-    « (1) » de note et un « (1) » de renvoi au tableau mural s'ecrivent
-    pareil ; seule la page les distingue, puisque la note est au bas de
-    la page ou son appel se trouve. Quand le marqueur parait plusieurs
-    fois sur la meme page, on ne lie RIEN plutot que de lier au
-    hasard : la fonction le dit, et l'oeil tranche.
+    THE PAIRING IS DONE BY THE PAGE AND BY THE MARKER, both. A note's
+    « (1) » and a wall-plate cross-reference's « (1) » are written
+    alike; only the page distinguishes them, since the note is at the
+    foot of the page where its call is found. When the marker appears
+    several times on the same page, we link NOTHING rather than link at
+    random: the function says so, and the eye decides.
     """
     rapport = {"lies": 0, "echecs": []}
 
     def relier(notes, lire_texte, ecrire_texte, page_de, langue):
-        # PLUSIEURS NOTES SUR UNE MEME PAGE, TOUTES MARQUEES « (*) ».
-        # Le folio 37 du livret ido en porte deux. Le marqueur ne les
-        # distingue pas — mais l'ORDRE, si : le premier appel de la page
-        # renvoie a la premiere note, le second a la seconde, et c'est
-        # ainsi que le lecteur de 1926 les lisait. On compte donc, pour
-        # chaque note, son rang parmi celles de sa page.
-        # LE RANG SE COMPTE SUR LA PAGE ET LE MARQUEUR, rien de plus.
-        # « page_de » sert a lire la page d'un RANG de la table, non
-        # d'une note : pour la colonne de droite il va chercher
-        # r["tra"], que les notes n'ont pas. Il figurait ici en tete de
-        # « cle_page », dont seuls les deux derniers membres sont lus --
-        # un appel mort, mais qui levait KeyError des qu'une note de
-        # traduction se presentait. Aucune ne se presentait jamais,
-        # faute de cle appariee ; la premiere l'a fait tomber.
-        # UNE TRADUCTION N'A PAS DE PAGES. Le francais et l'ido sont des
-        # fac-similes transcrits : chaque bloc sait de quel feuillet il
-        # vient, et c'est le feuillet qui rapproche une note de son
-        # appel. L'anglais, lui, ne transcrit rien -- il n'a ni page ni
-        # feuillet, et tous ses blocs portaient donc la meme page vide :
-        # les onze notes se cherchaient un appel dans le livre entier,
-        # et se le disputaient. LE TABLEAU REMPLACE ALORS LA PAGE. Il
-        # est plus large qu'un feuillet, mais il suffit : aucun tableau
-        # ne porte plus de deux notes, et le comptage des rangs, qui
-        # departageait deja deux notes d'une meme page, les departage
-        # de meme.
+        # SEVERAL NOTES ON ONE PAGE, ALL MARKED « (*) ». Folio 37 of the
+        # Ido booklet carries two. The marker does not distinguish them —
+        # but the ORDER does: the page's first call refers to the first
+        # note, the second to the second, and that is how the reader of
+        # 1926 read them. We therefore count, for each note, its rank among
+        # those of its page.
+        # THE RANK IS COUNTED ON THE PAGE AND THE MARKER, nothing more.
+        # « page_de » serves to read the page of a ROW of the table, not of
+        # a note: for the right-hand column it goes looking for r["tra"],
+        # which the notes do not have. It stood here at the head of
+        # « cle_page », only the last two members of which are read -- a
+        # dead call, but one that raised KeyError as soon as a translation
+        # note presented itself. None ever did, for want of a paired key;
+        # the first one brought it down.
+        # A TRANSLATION HAS NO PAGES. The French and the Ido are
+        # transcribed facsimiles: each block knows which leaf it comes
+        # from, and it is the leaf that brings a note close to its call.
+        # The English transcribes nothing -- it has neither page nor leaf,
+        # and all its blocks therefore carried the same empty page: the
+        # eleven notes looked for a call in the whole book, and quarrelled
+        # over it. THE TABLE THEN REPLACES THE PAGE. It is wider than a
+        # leaf, but it is enough: no table carries more than two notes, and
+        # the counting of ranks, which already parted two notes of one
+        # page, parts them likewise.
         def zono(n):
             return (n.get("feuillet") or "").strip() or n["cle"][:3]
 
@@ -1469,23 +1459,22 @@ def lier_notes(rangi):
                 rapport["echecs"].append(
                     (langue, n["cle"], "?", "marqueur illisible en tete"))
                 continue
-            # UN « (1) » DE NOTE ET UN « (1) » D'OBJET S'ECRIVENT
-            # PAREIL. Rochelle marque ses notes du meme signe que ses
-            # numeros d'objets, qui vont jusqu'a 150 par planche. Au
-            # tableau 13, l'alinea « au deuxieme etage (1), ou j'ai tres
-            # bien dormi (1) » porte les deux, et on liait le premier :
-            # le bouton s'ouvrait sur l'etage. C'est le gras qui les
-            # separe (voir appels_note).
-            # L'APPEL PEUT ETRE SUR LA PAGE D'AVANT. Un alinea a cheval
-            # commence au verso et sa note tombe au bas du recto : le
-            # releve fusionne les deux moities en un seul bloc, qui
-            # porte alors le feuillet de sa PREMIERE page. On accepte
-            # donc la page de la note et celle qui la precede.
-            # SA PAGE D'ABORD, LA PRECEDENTE ENSUITE, et jamais les
-            # deux ensemble. Chaque page a sa propre note et son propre
-            # « (*) » : chercher sur deux pages a la fois rendait donc
-            # deux appels pour une note, et l'outil renoncait a lier ce
-            # qui n'etait pas ambigu du tout.
+            # A NOTE'S « (1) » AND AN OBJECT'S « (1) » ARE WRITTEN ALIKE.
+            # Rochelle marks his notes with the same sign as his object
+            # numbers, which run to 150 a plate. On table 13, the paragraph
+            # « au deuxieme etage (1), ou j'ai tres bien dormi (1) » carries
+            # both, and we linked the first: the button opened on the floor.
+            # It is the bold that separates them (see appels_note).
+            # THE CALL MAY BE ON THE PREVIOUS PAGE. A paragraph straddling two
+            # pages begins on the verso and its note falls at the foot of the
+            # recto: the transcription merges the two halves into a single
+            # block, which then carries the leaf of its FIRST page. We
+            # therefore accept the note's page and the one before it.
+            # ITS OWN PAGE FIRST, THE PREVIOUS ONE AFTER, and never the two
+            # together. Each page has its own note and its own « (*) »:
+            # searching two pages at once therefore returned two calls for one
+            # note, and the tool gave up linking what was not ambiguous at
+            # all.
             reperer = page_de
             try:
                 f = int(n["feuillet"])
@@ -1496,9 +1485,9 @@ def lier_notes(rangi):
             cands, total = [], 0
             for pages in essais:
                 cands = [r for r in rangi
-                         # « apar » aussi : au tableau 8, l'appel est
-                         # dans le titre meme de la scene, « La Rekolto
-                         # (*) », qui tient sur la page d'ouverture.
+                         # « apar » too: on table 8, the call is in the very
+                         # title of the scene, « La Rekolto (*) », which holds
+                         # on the opening page.
                          if r["tipo"] in ("p", "sub", "apar")
                          and reperer(r) in pages
                          and lire_texte(r) is not None]
@@ -1506,7 +1495,7 @@ def lier_notes(rangi):
                             for r in cands)
                 if total:
                     break
-            vise = rang.get(id(n), 0)      # le rang de cette note-ci
+            vise = rang.get(id(n), 0)      # the rank of this particular note
             if total == 0 or vise >= total:
                 rapport["echecs"].append(
                     (langue, n["cle"], marque,
@@ -1520,16 +1509,15 @@ def lier_notes(rangi):
                 if vu + len(places) <= vise:
                     vu += len(places)
                     continue
-                # L'appel cherche est le (vise - vu)-ieme de ce bloc.
+                # The call sought is the (aimed - seen)-th of this block.
                 a, b = places[vise - vu]
-                # UN SEUL SIGNE POUR TOUTES LES NOTES. Guignon marque
-                # les siennes « (*) », Rochelle « (1) ». Garder a chacun
-                # sa marque, c'etait donner deux signes differents a la
-                # meme note en regard, et surtout reprendre en francais
-                # le signe des renvois au tableau mural. La page de
-                # lecture marque donc toutes les notes « (*) », le signe
-                # que l'ido employait deja partout ; les PDF, eux,
-                # gardent ce que chaque atelier a compose.
+                # ONE SIGN FOR ALL THE NOTES. Guignon marks his « (*) »,
+                # Rochelle « (1) ». To keep each his own mark was to give two
+                # different signs to the same note set face to face, and above
+                # all to take up in French the sign of the wall-plate
+                # cross-references. The reading page therefore marks every note
+                # « (*) », the sign the Ido already used everywhere; the PDFs,
+                # for their part, keep what each workshop composed.
                 bouton = (f'<button class="apel" '
                           f'data-noto="{langue}-{n["cle"]}" '
                           f'aria-expanded="false">(*)</button>')
@@ -1539,14 +1527,14 @@ def lier_notes(rangi):
                 rapport["lies"] += 1
                 break
 
-    # Colonne de gauche.
+    # Left-hand column.
     relier([r for r in rangi if r["tipo"] == "noto"],
            lambda r: r["io"],
            lambda r, v: r.__setitem__("io", v),
            lambda r: r["feuillet"], "io")
 
-    # Colonnes de droite : leurs notes ne sont pas dans `rangi`, elles
-    # sont restees dans les blocs de traduction. On les en tire.
+    # Right-hand columns: their notes are not in `rangi`, they have
+    # stayed in the translation blocks. We draw them out of them.
     for lg in LANGUES:
         k = lg["kodo"]
         notes = []
@@ -1566,29 +1554,31 @@ def lier_notes(rangi):
     rapport["korektiti"] = korekti_teksto(rangi)
     boutons_renvois(rangi)
     boutons_literi(rangi)
-    # APRES LES BOUTONS, ET NON AVANT : le nom du gros plan se compose
-    # dans le « title » du bouton, et il portait le mot recolle.
+    # AFTER THE BUTTONS, AND NOT BEFORE: the close-up's name is set in
+    # the button's « title », and it carried the glued-together word.
     rapport["tratiti"] = retablir_trati(rangi)
     rapport["korektiti"] += korekti_nomi(rangi)
-    # EN DERNIER, ET C'EST VOULU : la variante se tire du texte FINI, une
-    # fois les renvois fermes, les corrections posees, les traits d'union
-    # retablis et les boutons composes. Elle herite donc de tout, et le
-    # nom du gros plan suit le mot de son edition — « vest » et non
-    # « waistcoat » quand on lit l'anglais des Etats-Unis.
+    # LAST, AND DELIBERATELY SO: the variant is drawn from the FINISHED
+    # text, once the cross-references are closed, the corrections laid, the
+    # hyphens restored and the buttons composed. It therefore inherits
+    # everything, and the close-up's name follows the word of its own
+    # edition — « vest » and not « waistcoat » when one is reading the
+    # English of the United States.
     return rapport
 
 
-# LE RENVOI AU TABLEAU MURAL, TOUJOURS COMPOSE DE LA MEME FACON.
-# On prend le numero avec ce qui le porte -- l'exposant s'il en a un --
-# et le blanc qui le precede s'il y en a un.
-# TROIS FORMES DE RENVOI, et il a fallu les trois : la forme
-# ordinaire, le GROUPE — « les tableaux muraux (9, 11, 12) », qui
-# vaut pour trois objets a la fois et dont on ne lisait aucun — et
-# « 41) », ou la parenthese ouvrante manque, en trois endroits des
-# deux livrets. On garde les parentheses TELLES QU'ON LES A
-# RELEVEES : dire si ce 41) vient d'une coquille du releve ou d'une
-# sorte cassee de l'imprimeur demanderait le fac-simile sous les
-# yeux. On uniformise l'exposant et le blanc, rien d'autre.
+# THE WALL-PLATE CROSS-REFERENCE, ALWAYS SET THE SAME WAY.
+# We take the number with what carries it -- the superscript if it has
+# one -- and the space before it if there is one.
+# THREE FORMS OF CROSS-REFERENCE, and all three were needed: the
+# ordinary form, the GROUP — « les tableaux muraux (9, 11, 12) », which
+# stands for three objects at once and of which we read none — and
+# « 41) », where the opening parenthesis is missing, in three places
+# across the two booklets. We keep the parentheses AS WE TRANSCRIBED
+# THEM: to say whether that 41) comes from a slip in the transcription
+# or from a broken sort at the printer's would call for the facsimile
+# before one's eyes. We make the superscript and the space uniform,
+# nothing else.
 RENVOI = re.compile(
     r'(\s*)'
     r'(?:<sup>\s*(\(?\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*\)?)\s*</sup>'
@@ -1596,18 +1586,18 @@ RENVOI = re.compile(
 
 
 def boutons_renvois(rangi):
-    """Le renvoi devient un bouton quand on sait ou il pointe.
+    """The cross-reference becomes a button when we know where it points.
 
-    UN GROS PLAN QU'ON NE SAURAIT PAS MONTRER NE SE PROMET PAS. La
-    lecture des numeros sur les planches est partielle -- la reserve de
-    blanc qui porte le chiffre se referme des que la gravure est dense,
-    et le chiffre se perd dans les hachures. Les renvois dont la
-    position est connue prennent donc un bouton ; les autres restent du
-    texte ordinaire, exactement comme ils etaient. Rien ne bouge dans la
-    ligne : le bouton garde le corps et l'exposant du renvoi.
+    A CLOSE-UP WE WOULD NOT KNOW HOW TO SHOW IS NOT PROMISED. The
+    reading of the numbers on the plates is partial -- the reserve of
+    white that carries the figure closes up as soon as the engraving is
+    dense, and the figure is lost in the hatching. Cross-references
+    whose position is known therefore take a button; the others stay
+    ordinary text, exactly as they were. Nothing moves in the line: the
+    button keeps the size and the superscript of the cross-reference.
 
-    Le bouton porte la CLE DE LA GRAVURE et le cadre en fractions de
-    celle-ci. La page n'a plus qu'a recadrer l'image qu'elle a deja.
+    The button carries the ENGRAVING'S KEY and the frame as fractions of
+    it. The page has then only to re-frame the image it already has.
     """
     num = numeri()
     if not num:
@@ -1618,48 +1608,47 @@ def boutons_renvois(rangi):
         par = num.get(tab)
         if not par:
             continue
-        # LA SCENE DU BLOC DECIDE DE QUEL NUMERO IL S'AGIT. Six planches
-        # portent plusieurs vignettes, et chacune recommence a 1 : le
-        # « (39) » d'un bloc t06-c3 ne montre pas le meme objet que
-        # celui d'un bloc t06-c1. La cle du bloc le dit.
+        # THE BLOCK'S SCENE DECIDES WHICH NUMBER IT IS. Six plates carry
+        # several vignettes, and each starts again at 1: the « (39) » of a
+        # t06-c3 block does not show the same object as that of a t06-c1
+        # block. The block's key says so.
         ms = re.match(r't\d\d-(c\d)-', r["cle"])
         scene = ms.group(1) if ms else ""
-        # Le renvoi que la planche ne porte pas : au tableau 5 le
-        # « (150) » des plates-bandes, gravees « 50 ». On lit la
-        # correction, on la montre, et la source ne bouge pas.
+        # The cross-reference the plate does not carry: on table 5 the
+        # « (150) » of the flower beds, engraved « 50 ». We read the
+        # correction, we show it, and the source does not move.
         kor = korekti_renvojo(tab, r["cle"])
 
         def ouvrir(n, langue, nu):
-            """Le debut du bouton d'un numero, ou None si l'on ignore
-            ou il se trouve : on ne promet pas un gros plan qu'on ne
-            saurait pas montrer."""
+            """The start of a number's button, or None if we do not know
+            where it is: we do not promise a close-up we would not know
+            how to show."""
             v = par.get(f"{scene}:{n}" if scene else str(n))
-            # LE TABLEAU 11 N'A QU'UNE NUMEROTATION, MAIS SES CLES
-            # PORTENT DEUX SCENES — ET IL A PERDU SES QUATRE-VINGT-HUIT
-            # GROS PLANS PENDANT TOUT CE TEMPS, DANS LES 42 COLONNES.
-            # Ses cles disent c1 et c2 parce que la NUMEROTATION DES
-            # ALINEAS y repart de 1 a « L'Incendio » ; les renvois, eux,
-            # continuent la meme serie — la premiere partie va de 1 a
-            # 43, la seconde de 44 a 96. plates/numbers.json le sait et
-            # range donc la planche 11 en numeros nus, comme les
-            # planches a une seule scene. La recherche « c2:46 » ne
-            # trouvait rien, aucun bouton n'etait pose, et rien ne
-            # criait : ouvrir() rend None sans se plaindre, par
-            # construction. On retombe donc sur le numero nu.
+            # TABLE 11 HAS ONLY ONE NUMBERING, BUT ITS KEYS CARRY TWO
+            # SCENES — AND IT LOST ITS EIGHTY-EIGHT CLOSE-UPS FOR ALL
+            # THAT TIME, ACROSS THE 42 COLUMNS. Its keys say c1 and c2
+            # because the NUMBERING OF THE PARAGRAPHS starts again from
+            # 1 at « L'Incendio »; the cross-references, for their part,
+            # continue the same series — the first part runs from 1 to
+            # 43, the second from 44 to 96. plates/numbers.json knows it
+            # and therefore files plate 11 under bare numbers, like the
+            # plates with a single scene. The lookup « c2:46 » found
+            # nothing, no button was set, and nothing cried out:
+            # ouvrir() returns None without complaining, by
+            # construction. We therefore fall back on the bare number.
             #
-            # C'est sans danger : releve fait, aucune planche ne mele
-            # les deux formes — les numeri d'un tableau sont ou tous
-            # prefixes par leur scene (3, 4, 6, 7, 8, 9) ou tous nus
-            # (1, 2, 5, 10, 11, 12 a 16). Un tableau a scenes
-            # veritables n'a donc aucune entree nue a offrir a ce
-            # repli, et le repli ne peut pas y montrer le mauvais
-            # objet.
+            # It is safe: transcription made, no plate mixes the two
+            # forms — the numbers of a table are either all prefixed by
+            # their scene (3, 4, 6, 7, 8, 9) or all bare (1, 2, 5, 10,
+            # 11, 12 to 16). A table with genuine scenes therefore has
+            # no bare entry to offer this fallback, and the fallback
+            # cannot show the wrong object there.
             if not v and scene:
                 v = par.get(str(n))
             if not v:
                 return None
             cle, x, y, w, h, nm = v
-            # LE NOM SUIT SA COLONNE (voir nomo, plus haut).
+            # THE NAME FOLLOWS ITS COLUMN (see nomo, above).
             titre = nomo(nm, langue).replace('"', "&quot;")
             return (f'<button class="lupo{chr(32) + "nuda" if nu else ""}" '
                     f'data-g="{cle}" data-c="{x},{y},{w},{h}" data-n="{n}" '
@@ -1670,10 +1659,9 @@ def boutons_renvois(rangi):
             ouv, corps, bis, fer = (m.group(1), m.group(2),
                                     m.group(3) or "", m.group(4))
             ns = [int(kor.get(x, x)) for x in re.findall(r"\d+", corps)]
-            # UN GROUPE VAUT POUR PLUSIEURS OBJETS A LA FOIS. Chaque
-            # numero y devient cliquable separement ; les parentheses et
-            # les virgules restent du texte, et rien ne bouge dans la
-            # ligne.
+            # A GROUP STANDS FOR SEVERAL OBJECTS AT ONCE. Each number in
+            # it becomes clickable separately; the parentheses and the
+            # commas stay text, and nothing moves in the line.
             if len(ns) > 1:
                 bouts, fait = [], 0
                 for n in ns:
@@ -1706,27 +1694,28 @@ def boutons_renvois(rangi):
 
 
 # -------------------------------------------------------------------
-#  LES RENVOIS A LETTRE
+#  CROSS-REFERENCES BY LETTER
 # -------------------------------------------------------------------
-#  Trois tableaux ne se contentent pas de numeros. « Ni vidas sur la
-#  tabelo la precipua figuri geometriala : rondo (a), quadrato (b) » —
-#  ces lettres sont gravees SUR le tableau noir, qui porte lui-meme le
-#  numero 1, et n'ont de sens que rapportees a lui : le « a » du tableau
-#  noir est un cercle, celui de la carte l'Amerique, celui du tableau de
-#  sciences naturelles un cheval.
+#  Three tables are not content with numbers. « Ni vidas sur la tabelo
+#  la precipua figuri geometriala: rondo (a), quadrato (b) » — those
+#  letters are engraved ON the blackboard, which itself carries the
+#  number 1, and mean nothing except in relation to it: the « a » of the
+#  blackboard is a circle, that of the map America, that of the natural
+#  sciences chart a horse.
 #
-#  plates/letters.json dit, bloc par bloc, de quel objet les lettres
-#  dependent — cela ne se devine pas, le texte ne le disant pas toujours
-#  — et ou chacune se trouve sur la planche.
-# LE RENVOI A LETTRE SE COMPOSE EN ITALIQUE DU COTE FRANCAIS, et nu du
-# cote ido. Sans cette italique dans le motif, les six lettres du
-# tableau d'astronomie n'etaient cliquables qu'en ido : le lecteur du
-# francais lisait « les hemispheres (d) » sans rien pouvoir en voir.
+#  plates/letters.json says, block by block, which object the letters
+#  depend on — that cannot be guessed, the text not always saying so —
+#  and where each is to be found on the plate.
+# THE CROSS-REFERENCE BY LETTER IS SET IN ITALIC ON THE FRENCH SIDE,
+# and bare on the Ido side. Without that italic in the pattern, the six
+# letters of the astronomy table were clickable only in Ido: the reader
+# of the French read « les hemispheres (d) » without being able to see
+# anything of it.
 RENVOI_LIT = re.compile(r'<sup>(<i>)?\(([a-z]{1,2})\)(</i>)?</sup>')
 
 
 def literi():
-    """{planche: {cle: place}} et la table des blocs."""
+    """{plate: {key: place}} and the table of blocks."""
     f = RACINE / "plates" / "letters.json"
     if not f.exists():
         return {}, {}
@@ -1734,27 +1723,28 @@ def literi():
     return d, d.get("patri", {})
 
 
-# UN SEUL SORT POUR DEUX SIGNES. Au tableau 5, la salle de bains porte
-# un renvoi compose « (1) » — dans les deux livrets. Ce n'est pas le
-# numero 1, qui est la facade de la maison : c'est la LETTRE l, et le
-# plan le dit lui-meme, sa legende portant « l. Balneyo » entre le k des
-# enfants et le m du palier. Dans cette fonte le l bas de casse et le
-# chiffre 1 ont le meme dessin, et la casse du compositeur n'avait
-# peut-etre que l'un des deux : rien sur la page ne les separe.
+# ONE FATE FOR TWO SIGNS. On table 5, the bathroom carries a
+# cross-reference set as « (1) » — in both booklets. It is not the
+# number 1, which is the front of the house: it is the LETTER l, and
+# the plan says so itself, its legend reading « l. Balneyo » between the
+# k of the children and the m of the landing. In this font the
+# lower-case l and the figure 1 have the same design, and the
+# compositor's case perhaps held only one of the two: nothing on the
+# page separates them.
 #
-# LA SOURCE NE BOUGE PAS — les deux PDF restent le fac-simile — mais la
-# page de lecture, elle, n'a pas a repeter une ambiguite que le plan
-# leve. On y lit donc « (l) », et le gros plan montre la salle de
-# bains. C'est le seul endroit du livre ou la page de lecture corrige
-# ce que la transcription conserve, et c'est pourquoi il se declare
-# dans letters.json plutot que de se deviner.
+# THE SOURCE DOES NOT MOVE — the two PDFs remain the facsimile — but
+# the reading page has no business repeating an ambiguity the plan
+# resolves. We therefore read « (l) » there, and the close-up shows the
+# bathroom. It is the only place in the book where the reading page
+# corrects what the transcription preserves, and that is why it is
+# declared in letters.json rather than guessed.
 BOUTON_UN = re.compile(
     r'<button class="lupo" data-g="[^"]*" data-c="[^"]*" data-n="1" '
     r'title="[^"]*" aria-expanded="false"><sup>\(1\)</sup></button>')
 
 
 def sorto_unika(t, regles, planche, places, noms, langue):
-    """Redirige vers sa lettre le « (1) » qui n'est pas un numero."""
+    """Redirects to its letter the « (1) » that is not a number."""
     for mot, L in regles:
         i = t.find(f"{mot}</b>")
         v = places.get(L)
@@ -1777,7 +1767,7 @@ def sorto_unika(t, regles, planche, places, noms, langue):
 
 
 def boutons_literi(rangi):
-    """Le renvoi a lettre devient un bouton, comme le renvoi a numero."""
+    """The cross-reference by letter becomes a button, like the one by number."""
     tout, patri = literi()
     if not patri:
         return 0
@@ -1791,14 +1781,14 @@ def boutons_literi(rangi):
             continue
         planche, prefixo = pa
         places = tout.get(planche, {})
-        # UNE LETTRE AUSSI PEUT ETRE FAUSSE. Au tableau 1 les deux
-        # livrets echangent l'Europe et l'Asie ; plates/corrections.json
-        # le dit pour ce bloc. La lettre corrigee est celle qu'on
-        # cherche sur la planche ET celle qu'on ecrit : la page de
-        # lecture ne repete pas une erreur que la gravure dement.
-        # LA LECTURE SE FAIT EN UN SEUL PASSAGE — chaque lettre est
-        # prise dans la table d'origine — sans quoi l'echange « g se
-        # lit e, e se lit g » se defairait a la seconde.
+        # A LETTER TOO MAY BE WRONG. On table 1 the two booklets swap
+        # Europe and Asia; plates/corrections.json says so for that
+        # block. The corrected letter is the one looked for on the plate
+        # AND the one written: the reading page does not repeat an error
+        # the engraving belies.
+        # THE READING IS DONE IN A SINGLE PASS — each letter is taken
+        # from the original table — failing which the swap « g reads e,
+        # e reads g » would undo itself at the second.
         kor = korekti_renvojo(r["cle"][:3], r["cle"])
 
         def bouton(m, langue="io"):
@@ -1822,14 +1812,14 @@ def boutons_literi(rangi):
             if not fait:
                 return m.group(0)
             pose += fait
-            # LA PARENTHESE EST DU RENVOI, ET SE CLIQUE AVEC LUI. Un
-            # numero seul prend tout son groupe dans le bouton —
-            # « (7) » —, et la lettre n'avait que sa lettre : il
-            # fallait viser un caractere large de trois points. Quand
-            # la lettre est seule, elle fait donc comme le numero. Un
-            # groupe de deux — le « (ab) » du tableau 1, seul de son
-            # espece — garde ses parentheses hors du bouton : elles
-            # n'appartiennent a aucune des deux lettres.
+            # THE PARENTHESIS BELONGS TO THE CROSS-REFERENCE, AND IS
+            # CLICKED WITH IT. A number alone takes its whole group into
+            # the button — « (7) » —, and the letter had only its letter:
+            # one had to aim at a character three points wide. When the
+            # letter is alone, it therefore does as the number does. A
+            # group of two — the « (ab) » of table 1, the only one of its
+            # kind — keeps its parentheses outside the button: they belong
+            # to neither of the two letters.
             if len(bouts) == 1 and fait == 1:
                 dedans = bouts[0]
                 i = dedans.index(">") + 1
@@ -1856,31 +1846,31 @@ def boutons_literi(rangi):
 
 
 def uniformiser_renvois(rangi):
-    """Une seule facon d'ecrire « mot (N) », sur toute la page.
+    """One way of writing « word (N) », across the whole page.
 
-    Les deux ateliers hesitent : 2884 renvois sont separes du substantif
-    par un blanc, 478 lui sont colles, et sept — tous ido — ne sont meme
-    pas en exposant. Rien ne distingue ces cas : c'est du flottement de
-    composition. La page de lecture les ecrit donc tous pareil, exposant
-    et blanc.
+    The two workshops waver: 2884 cross-references are separated from
+    the noun by a space, 478 are stuck to it, and seven — all Ido — are
+    not even superscript. Nothing distinguishes those cases: it is
+    wavering of composition. The reading page therefore writes them all
+    alike, superscript and space.
 
-    LE BLANC EST INSECABLE. Un renvoi rejeté seul en tete de ligne ne
-    veut plus rien dire ; en colonne etroite, sur telephone, cela
-    arrivait. Le numero reste desormais accroche a son substantif.
+    THE SPACE IS NON-BREAKING. A cross-reference thrown alone onto the
+    head of a line no longer means anything; in a narrow column, on a
+    telephone, that happened. The number now stays attached to its noun.
 
-    Tous les nombres entre parentheses du texte suivi sont des renvois :
-    ils vont de 1 a 150, et les appels de note portent « (*) ».
+    Every number in parentheses in running text is a cross-reference:
+    they run from 1 to 150, and note calls carry « (*) ».
     """
     n = 0
 
     def poser(m):
-        # Un renvoi qui ouvre un bloc — alinea coupe par un changement
-        # de page — n'a pas de mot devant lui a qui s'accrocher.
-        # « \u00a0 » et non un blanc ordinaire : ecrit en clair,
-        # parce qu'a l'oeil rien ne l'aurait distingue.
+        # A cross-reference that opens a block — a paragraph broken by a
+        # change of page — has no word before it to attach itself to.
+        # «   » and not an ordinary space: written out in full,
+        # because to the eye nothing would have distinguished it.
         blanc = "\u00a0" if m.start() else ""
         corps = m.group(2)
-        if corps is None:                    # releve sans exposant
+        if corps is None:                    # transcribed without a superscript
             corps = f"({m.group(3)})"
         return f'{blanc}<sup>{corps.strip()}</sup>'
 
@@ -1900,25 +1890,25 @@ def uniformiser_renvois(rangi):
     return n
 
 
-# UN RENVOI ENTRE PARENTHESES SE FERME. Six fois dans les deux
-# livrets, une parenthese manque : « buvard 41) » et « ballots 61) » du
-# cote francais, « gobleto 13) » et « mi-sferi d) » du cote ido, un
-# « singe (10 » a qui l'on n'a pas ferme, et le renvoi au tableau de
-# l'Hotel, « n° 13) », dont le francais montre bien qu'il devait
-# s'ouvrir. Sorte cassee de l'imprimeur ou distraction du releveur, on
-# ne peut pas le dire — et cela n'a pas d'importance : la source garde
-# ce qu'elle lit, les deux PDF avec elle, et c'est la page de lecture
-# qui compose proprement.
+# A CROSS-REFERENCE IN PARENTHESES IS CLOSED. Six times across the two
+# booklets, a parenthesis is missing: « buvard 41) » and « ballots 61) »
+# on the French side, « gobleto 13) » and « mi-sferi d) » on the Ido
+# side, a « singe (10 » that was never closed, and the cross-reference
+# to the Hotel table, « n° 13) », which the French shows clearly ought
+# to have opened. Broken sort at the printer's or slip of the
+# transcriber, one cannot say — and it does not matter: the source keeps
+# what it reads, the two PDFs with it, and it is the reading page that
+# sets cleanly.
 #
-# LE CONTROLE QUI LES A TOUS TROUVES tient en une ligne : compter les
-# parentheses de chaque alinea et signaler celles qui ne se repondent
-# pas. Six alineas sur six cent quatre-vingt-trois, et pas un de plus ;
-# aucune de ces six n'etait une vraie parenthese depareillee du texte.
+# THE CHECK THAT FOUND THEM ALL fits in one line: count the parentheses
+# of each paragraph and report those that do not answer each other. Six
+# paragraphs out of six hundred and eighty-three, and not one more; none
+# of those six was a genuine odd parenthesis of the text.
 #
-# On ne touche qu'a CE QUI EST DEJA UN RENVOI : un exposant qui ne
-# porte que des chiffres, ou une lettre avec au moins une parenthese.
-# Sans cette derniere condition on ecrirait « (o) » sur les « n° » du
-# texte, qui sont aussi des exposants.
+# We touch only WHAT IS ALREADY A CROSS-REFERENCE: a superscript
+# carrying figures only, or a letter with at least one parenthesis.
+# Without that last condition we would write « (o) » on the « n° » of
+# the text, which are superscripts too.
 FERME_NUM = re.compile(
     r'<sup>\(?\s*(\d{1,3}(?:\s*,\s*\d{1,3})*(?:\s*(?:<i>)?bis(?:</i>)?)?)'
     r'\s*\)?</sup>')
@@ -1927,7 +1917,7 @@ FERME_LIT = re.compile(
 
 
 def fermer_renvois(rangi):
-    """Rend a chaque renvoi ses deux parentheses."""
+    """Gives each cross-reference back its two parentheses."""
     n = 0
 
     def num(m):
@@ -1959,15 +1949,16 @@ def fermer_renvois(rangi):
     return n
 
 
-# ET CE QUI N'EST PAS UN RENVOI SE CORRIGE A LA MAIN. « La listo esos
-# kompletigata sur la du tabeli « La Hotelo » n° 13) e « La Merkato »
-# (n° 15) » : la seconde parenthese s'ouvre, la premiere non, et le
-# francais de la meme note les ouvre toutes deux. Ce n'est pas un renvoi
-# a un objet de la planche mais a un autre tableau ; aucune regle
-# generale ne l'attrape, et l'on ne va pas en inventer une pour un cas.
-# plates/corrections.json le dit en toutes lettres, bloc par bloc.
+# AND WHAT IS NOT A CROSS-REFERENCE IS CORRECTED BY HAND. « La listo
+# esos kompletigata sur la du tabeli « La Hotelo » n° 13) e « La
+# Merkato » (n° 15) »: the second parenthesis opens, the first does not,
+# and the French of the same note opens both. It is not a
+# cross-reference to an object on the plate but to another table; no
+# general rule catches it, and we are not going to invent one for a
+# single case. plates/corrections.json says so in so many words, block
+# by block.
 def korekti_teksto(rangi):
-    """Les corrections declarees a la main, bloc par bloc."""
+    """The corrections declared by hand, block by block."""
     tab = korekti("teksto")
     if not tab:
         return 0
@@ -1994,39 +1985,41 @@ def korekti_teksto(rangi):
     return n
 
 
-# ET LE TRAIT D'UNION QUE LE RECOLLAGE MANGEAIT. « \\cc » dit que la ligne
-# imprimee se casse ici avec un trait ; on l'ote et l'on recolle, parce que
-# « ler- » plus « nanti » fait « lernanti ». Mais quand la ligne se casse
-# SUR le trait d'union d'un compose -- « choux- » puis « fleurs » -- le meme
-# recollage rend « chouxfleurs », et le gros plan s'intitule ainsi.
+# AND THE HYPHEN THE GLUING USED TO EAT. « \\cc » says the printed line
+# breaks here with a hyphen; we take it out and glue back, because
+# « ler- » plus « nanti » makes « lernanti ». But when the line breaks
+# ON the hyphen of a compound -- « choux- » then « fleurs » -- the same
+# gluing gives « chouxfleurs », and the close-up is titled so.
 #
-# AUCUNE REGLE NE SEPARE LES DEUX CAS, et il ne faut pas en chercher une :
-# le fac-simile compose le meme trait des deux cotes, et le releve n'a pas
-# de quoi les distinguer. C'est la colonne qui tranche, et
-# plates/corrections.json porte ce qu'elle dit -- soit qu'elle ecrive ailleurs
-# le compose non coupe, soit qu'elle ecrive d'autres composes sur la meme
-# moitie, tous avec le trait. Ou elle hesite, on ne tranche pas :
-# « vitberi » et « teretajo » s'ecrivent des deux facons et restent colles.
+# NO RULE SEPARATES THE TWO CASES, and none should be looked for: the
+# facsimile sets the same hyphen on both sides, and the transcription
+# has nothing to distinguish them by. It is the column that decides, and
+# plates/corrections.json carries what it says -- either that it writes
+# the uncut compound elsewhere, or that it writes other compounds on the
+# same half, all with the hyphen. Where it wavers, we do not decide:
+# « vitberi » and « teretajo » are written both ways and stay stuck
+# together.
 #
-# LE RETABLISSEMENT SE FAIT SUR LE TEXTE RENDU, non sur le LaTeX, et pour
-# une raison : les deux moities sont deux \\VUgras{} que la page a deja
-# fondus en un seul <b>. Pose ici, le trait rentre du meme coup dans le
-# « title » du bouton, donc dans le nom du gros plan.
-# ET LE NOM DU GROS PLAN SUIT LE TEXTE. Le « title » du bouton ne vient
-# pas de l'alinea mais de plates/numbers.json, releve sur la planche : la
-# correction posee sur le texte ne l'atteint donc pas, et le bouton du
-# « fourneau de cuisuine » gardait la coquille que la ligne n'avait plus.
-# On repasse la table du texte une fois les boutons composes.
+# THE RESTORATION IS DONE ON THE RENDERED TEXT, not on the LaTeX, and
+# for a reason: the two halves are two \\VUgras{} the page has already
+# merged into a single <b>. Laid here, the hyphen goes at the same
+# stroke into the button's « title », hence into the close-up's name.
+# AND THE CLOSE-UP'S NAME FOLLOWS THE TEXT. The button's « title » comes
+# not from the paragraph but from plates/numbers.json, transcribed from
+# the plate: the correction laid on the text therefore does not reach
+# it, and the button of the « fourneau de cuisuine » kept the slip the
+# line no longer had. We pass the text's table over again once the
+# buttons are composed.
 #
-# MAIS SEULEMENT LES REGLES QU'ON PEUT REPASSER SANS DOMMAGE. « (julio od »
-# devenu « (<b>julio</b> od » ne se retrouve plus : la regle ne mord pas
-# deux fois. « n<sup>o</sup> 13) » devenu « (n<sup>o</sup> 13) » se
-# retrouve LUI-MEME dans son resultat, et un second passage ouvrirait une
-# seconde parenthese. Le depart entre les deux se lit dans la regle : on
-# ne repasse que celles dont le remplacement ne contient pas ce qu'il
-# remplace.
+# BUT ONLY THE RULES THAT CAN BE PASSED AGAIN WITHOUT HARM. « (julio od »
+# turned into « (<b>julio</b> od » is no longer found: the rule does not
+# bite twice. « n<sup>o</sup> 13) » turned into « (n<sup>o</sup> 13) » is
+# found ITSELF within its result, and a second pass would open a second
+# parenthesis. The parting between the two is read off the rule itself:
+# we pass again only those whose replacement does not contain what it
+# replaces.
 def korekti_nomi(rangi):
-    """La table du texte, repassee sur les noms des gros plans."""
+    """The text's table, passed again over the names of the close-ups."""
     tab = korekti("teksto")
     if not tab:
         return 0
@@ -2053,23 +2046,24 @@ def korekti_nomi(rangi):
     return n
 
 
-# ET LA VARIANTE REGIONALE SE TIRE DE SA BASE. text/variants.json dit,
-# colonne par colonne, ce que l'autre edition ecrit a la place : une
-# soixantaine de mots pour l'anglais, la ou une colonne jumelle en aurait
-# recopie trente mille.
+# AND THE REGIONAL VARIANT IS DRAWN FROM ITS BASE. text/variants.json
+# says, column by column, what the other edition writes in its place:
+# some sixty words for English, where a twin column would have copied
+# thirty thousand.
 #
-# DEUX SORTES DE REGLES, et la seconde est indispensable. « [avant,
-# apres] » vaut pour toute la colonne ; « [cle, avant, apres] » ne vaut
-# que dans ce bloc-la, parce qu'un mot peut avoir deux sens :
-# « biscuits » se dit « crackers » a cote du fromage et « cookies » a
-# cote du pain d'epice, « carriage » est une voiture a chevaux au
-# tableau 3 et un wagon au tableau 12. Une regle globale trancherait
-# pour les deux, et se tromperait pour l'un.
+# TWO KINDS OF RULE, and the second is indispensable. « [before,
+# after] » holds for the whole column; « [key, before, after] » holds
+# only within that block, because a word may have two senses:
+# « biscuits » is « crackers » beside the cheese and « cookies » beside
+# the gingerbread, « carriage » is a horse-drawn carriage on table 3 and
+# a railway carriage on table 12. A global rule would decide for both,
+# and would be wrong for one.
 #
-# L'ORDRE DES REGLES EST CELUI DU FICHIER : « luggage van » se traite
-# avant « luggage », sans quoi la premiere ne trouve plus rien.
+# THE ORDER OF THE RULES IS THAT OF THE FILE: « luggage van » is dealt
+# with before « luggage », failing which the first finds nothing any
+# more.
 def deriver_varianti(rangi):
-    """Chaque variante, calquee sur sa base."""
+    """Each variant, cast on its base."""
     if not VARIANTI:
         return 0
     n = 0
@@ -2079,12 +2073,12 @@ def deriver_varianti(rangi):
 
 
 def paroj_varianti():
-    """(variante, base, regles) pour chaque paire declaree.
+    """(variant, base, rules) for each declared pair.
 
-    LES REGLES SE PREPARENT UNE FOIS. Pour un calque de mots elles
-    restent une liste, appliquee dans l'ordre ; pour un calque
-    d'ECRITURE elles deviennent une expression unique, la plus longue
-    d'abord, parce qu'il faut consommer chaque caractere une seule fois.
+    THE RULES ARE PREPARED ONCE. For an overlay of words they stay a
+    list, applied in order; for an overlay of SCRIPT they become a
+    single expression, the longest first, because each character must be
+    consumed once only.
     """
     out = []
     for lg in LANGUES:
@@ -2105,7 +2099,7 @@ PAROJ = paroj_varianti()
 
 
 def deriver_rango(r, paroj):
-    """Un rang, et ses variantes."""
+    """A row, and its variants."""
     n = 0
     if True:
         for kalko, bazo, regles in paroj:
@@ -2114,15 +2108,15 @@ def deriver_rango(r, paroj):
                 continue
             t = o["t"]
             if isinstance(regles, tuple):
-                # UN SEUL BALAYAGE, LA PLUS LONGUE REGLE D'ABORD. Une
-                # conversion d'ECRITURE n'est pas une liste de mots : le
-                # meme caractere se rend de deux facons selon ce qui
-                # l'entoure — « 里 » vaut 裏 dans « 屋里 » et reste 里 dans
-                # « 莫里斯 » — et il faut donc PROTEGER certaines suites.
-                # Un remplacement successif ne sait pas proteger : la
-                # regle « 莫里斯 » -> « 莫里斯 » ne fait rien, et une regle
-                # plus courte vient mordre dedans. Un balayage unique
-                # consomme chaque caractere une fois.
+                # A SINGLE SWEEP, THE LONGEST RULE FIRST. A conversion of
+                # SCRIPT is not a list of words: the same character is
+                # rendered two ways according to what surrounds it —
+                # « 里 » is 裏 in « 屋里 » and stays 里 in « 莫里斯 » — and
+                # certain sequences must therefore be PROTECTED. Successive
+                # replacement cannot protect: the rule « 莫里斯 » ->
+                # « 莫里斯 » does nothing, and a shorter rule comes and
+                # bites into it. A single sweep consumes each character
+                # once.
                 rx, tab = regles
                 t = rx.sub(lambda m: tab[m.group(0)], t)
             else:
@@ -2141,7 +2135,7 @@ def deriver_rango(r, paroj):
 
 
 def retablir_trati(rangi):
-    """Les traits d'union lexicaux que la fin de ligne avait manges."""
+    """The lexical hyphens the end of a line had eaten."""
     tab = korekti("trati")
     if not tab:
         return 0
@@ -2167,12 +2161,12 @@ def retablir_trati(rangi):
     return n
 
 
-# LE CONTROLE QUI A TROUVE LES SIX. Compter les parentheses de chaque
-# alinea et signaler celles qui ne se repondent pas : six alineas sur
-# six cent quatre-vingt-trois, et pas un de plus — aucune n'etait une
-# vraie parenthese depareillee du texte, toutes etaient des renvois
-# estropies. On le laisse tourner a chaque fabrication : le jour ou un
-# relevé en laissera passer une, elle se dira ici.
+# THE CHECK THAT FOUND THE SIX. Count the parentheses of each
+# paragraph and report those that do not answer each other: six
+# paragraphs out of six hundred and eighty-three, and not one more —
+# none was a genuine odd parenthesis of the text, all were maimed
+# cross-references. We let it run at every build: the day a
+# transcription lets one through, it will say so here.
 def depareillees(rangi):
     for r in rangi:
         for k in ["io"] + [lg["kodo"] for lg in LANGUES]:
@@ -2188,14 +2182,13 @@ TETE_NOTE = re.compile(r'^((?:<[^>]+>)*)\((?:\*+|\d+)\)')
 
 
 def uniformiser_notes(rangi):
-    """Marque « (*) » la note elle-meme, comme son appel.
+    """Marks the note itself « (*) », as its call is marked.
 
-    L'appel est deja rendu « (*) » pour tout le monde ; il fallait que
-    la note ouvre sur le meme signe, sans quoi le bouton « (*) » du
-    tableau 13 depliait une note commencant par « (1) ». On ne touche
-    qu'a la marque de tete, jamais au corps de la note -- celle du
-    tableau 6 cite « la E. baby, F. bebe », et ces parentheses-la
-    doivent rester.
+    The call is already rendered « (*) » for everyone; the note had to
+    open on the same sign, failing which the « (*) » button of table 13
+    unfolded a note beginning with « (1) ». We touch only the leading
+    mark, never the body of the note -- that of table 6 quotes « la E.
+    baby, F. bebe », and those parentheses must stay.
     """
     n = 0
     for r in rangi:
@@ -2216,13 +2209,13 @@ def uniformiser_notes(rangi):
     return n
 
 
-# LES LIGNES D'APPARAT, ET LA MEME LISTE POUR TOUT LE MONDE.
-# \VUcentre et \VUtitre portent « ln », \VUpk porte « pk » : les trois
-# composent une LIGNE du fac-simile. Deux endroits les relisent -- la
-# table des matieres, qui en tire ses entrees, et l'ancrage, qui pose un
-# « -lN » sur chacune -- et il faut qu'ils comptent LES MEMES, sinon les
-# renvois de la table tombent a cote de la ligne annoncee. D'ou une
-# seule liste de classes, lue par les deux.
+# THE DISPLAY LINES, AND THE SAME LIST FOR EVERYONE.
+# \VUcentre and \VUtitre carry « ln », \VUpk carries « pk »: all three
+# set a LINE of the facsimile. Two places read them back -- the table of
+# contents, which draws its entries from them, and the anchoring, which
+# lays a « -lN » on each -- and they must count THE SAME ONES, or the
+# table's references fall beside the line announced. Hence a single list
+# of classes, read by both.
 CLASSE_AP = r'ln[^"]*|pk'
 ATTRS_AP = r'(?: [a-z-]+="[^"]*")*'
 LIGNE_AP = re.compile(
@@ -2232,10 +2225,10 @@ KORPO = re.compile(r'data-korpo="([^"]*)"')
 
 
 def net_tdm(x):
-    """Le texte nu d'une ligne, pour la table des matieres."""
-    # L'appel de note est un bouton dans la page ; dans la table il ne
-    # mene nulle part. On l'ote, et on recoud : « La Rekolto (*). » sans
-    # son marqueur laisserait « La Rekolto . ».
+    """The bare text of a line, for the table of contents."""
+    # The note call is a button in the page; in the table of contents it
+    # leads nowhere. We take it out, and sew back up: « La Rekolto (*). »
+    # without its marker would leave « La Rekolto . ».
     x = re.sub(r'<button class="apel".*?</button>', "", x, flags=re.S)
     x = re.sub(r"<[^>]+>", "", x)
     x = re.sub(r"\s+", " ", x)
@@ -2243,399 +2236,388 @@ def net_tdm(x):
 
 
 def est_ceno(x):
-    """Un marqueur de scene -- « Unesma ceno. », « Duesma ceno. »."""
-    # LE FAC-SIMILE LES COMPOSE EN ITALIQUE, et c'est a cela qu'on les
-    # reconnait : le mot, lui, change d'une langue a l'autre. On accepte
-    # la ligne nue comme la ligne encore dans son span.
+    """A scene marker -- « Unesma ceno. », « Duesma ceno. »."""
+    # THE FACSIMILE SETS THEM IN ITALIC, and that is how they are
+    # recognised: the word itself changes from one language to another. We
+    # accept the bare line as well as the line still in its span.
     x = re.sub(rf'^\s*<span class="(?:{CLASSE_AP})"{ATTRS_AP}>', "", x)
     return bool(re.match(r"\s*<i>", x))
 
 
-# LE ROLE SE LIT SUR LE MOT, ET LE MOT CHANGE DE LANGUE. Trois lignes
-# d'apparat se reconnaissent a leur libelle et non a leur macro : le
-# numero du tableau, la serie, la scene. Tant qu'il n'y avait que l'ido
-# et le francais, deux listes de mots suffisaient ; la colonne anglaise
-# n'y figurait pas, et ses trois lignes retombaient toutes sur le role
-# « sekc » -- « CHART No. 7 » se composait comme un intertitre, en face
-# d'un « TABELO No 7 » en grand et gras, et « First scene. » en petites
-# capitales en face d'une « Unesma ceno. » en italique. Une langue de
-# plus, c'est un mot de plus dans chacune des trois listes.
+# THE ROLE IS READ OFF THE WORD, AND THE WORD CHANGES WITH THE
+# LANGUAGE. Three display lines are recognised by their wording and not
+# by their macro: the table number, the series, the scene. As long as
+# there were only Ido and French, two lists of words sufficed; the
+# English column was not among them, and its three lines all fell back
+# on the role « sekc » -- « CHART No. 7 » was set like a subheading,
+# facing a « TABELO No 7 » in large and bold, and « First scene. » in
+# small capitals facing an « Unesma ceno. » in italic. One more
+# language is one more word in each of the three lists.
 #
-# LE NUMERO DU TABLEAU. La comparaison est SENSIBLE A LA CASSE : le
-# fac-simile compose ces trois mots en capitales, et « Charts 3 and 4
-# are arranged... » — l'alinea d'ouverture du tableau 3 — ne doit pas
-# passer pour un titre de tableau.
+# THE TABLE NUMBER. The comparison is CASE-SENSITIVE: the facsimile
+# sets those three words in capitals, and « Charts 3 and 4 are
+# arranged... » — the opening paragraph of table 3 — must not pass for
+# a table title.
 NUMERO_TAB = re.compile(r"TABELO|TABLEAU|CHART|CUADRO|QUADRO|ТАБЛИЦА"
                         r"|图表|لوحة"
-                        # LE CANTONAIS ECRIT EN CARACTERES
-                        # TRADITIONNELS : « 圖表 » est le meme mot que
-                        # le « 图表 » du chinois, dans l'autre graphie.
-                        # Les deux membres sont necessaires, car la
-                        # comparaison se fait sur le caractere.
+                        # CANTONESE IS WRITTEN IN TRADITIONAL
+                        # CHARACTERS: « 圖表 » is the same word as
+                        # Chinese's « 图表 », in the other spelling.
+                        # Both members are necessary, since the
+                        # comparison is made on the character.
                         r"|圖表"
-                        # LE HINDI N'A PAS DE CAPITALE pour distinguer le
-                        # titre de la prose, et « तालिका » se lit aussi
-                        # dans « देल्मास सहायक तालिकाओं से », qui est le
-                        # titre du volume et non celui d'un tableau. On
-                        # exige donc le « सं. » qui suit le mot dans la
-                        # seule ligne qui numerote.
+                        # HINDI HAS NO CAPITALS to distinguish the title
+                        # from the prose, and « तालिका » is read also in
+                        # « देल्मास सहायक तालिकाओं से », which is the
+                        # title of the volume and not that of a table. We
+                        # therefore require the « सं. » that follows the
+                        # word in the numbering line alone.
                         r"|तालिका\s+सं"
-                        # LE MARATHI DIT « तक्ता », qui n'est pas le
-                        # « तालिका » du hindi : deux langues voisines,
-                        # deux mots, et c'est pour cela que la colonne
-                        # se traduit pour elle-meme. Meme raison que
-                        # pour le gourmoukhi et le shahmoukhi.
+                        # MARATHI SAYS « तक्ता », which is not Hindi's
+                        # « तालिका »: two neighbouring languages, two
+                        # words, and that is why the column translates
+                        # for itself. The same reason as for Gurmukhi
+                        # and Shahmukhi.
                         r"|तक्ता\s+क्रमांक"
-                        # LE TELOUGOU DIT « పట్టిక ». Comme pour le
-                        # hindi et le marathi, on exige le mot du
-                        # numero qui suit, faute de capitales.
+                        # TELUGU SAYS « పట్టిక ». As for Hindi and
+                        # Marathi, we require the word of the number
+                        # that follows, for want of capitals.
                         r"|పట్టిక\s+సంఖ్య"
-                        # LE COREEN ecrit « 도표 제 9 호 », batie sur
-                        # le meme moule que le japonais « 図表第 9
-                        # 号 » : le mot, puis le « 제 » qui numerote.
+                        # KOREAN writes « 도표 제 9 호 », built on the
+                        # same mould as the Japanese « 図表第 9 号 »:
+                        # the word, then the « 제 » that numbers.
                         r"|도표\s*제"
-                        # LE TAMOUL DIT « அட்டவணை எண் 1 » : le mot,
-                        # puis « எண் », le numero. Meme raison que
-                        # pour le hindi, le marathi et le telougou —
-                        # pas de capitales, donc on exige le mot du
-                        # numero qui suit.
+                        # TAMIL SAYS « அட்டவணை எண் 1 »: the word,
+                        # then « எண் », the number. The same reason as
+                        # for Hindi, Marathi and Telugu — no capitals,
+                        # so we require the word of the number that
+                        # follows.
                         r"|அட்டவணை\s+எண்"
-                        # L'OURDOU DIT « جدول نمبر 1 ». Le pendjabi
-                        # chahmoukhi dit « نقشہ نمبر » dans le meme
-                        # alphabet : deux mots, deux colonnes.
+                        # URDU SAYS « جدول نمبر 1 ». Shahmukhi Punjabi
+                        # says « نقشہ نمبر » in the same alphabet: two
+                        # words, two columns.
                         r"|جدول\s+نمبر"
-                        # L'INDONESIEN ecrit « BAGAN No. 1 ». Le mot
-                        # ne se lit dans aucun autre membre — le
-                        # « TABEL » neerlandais et le « TABELO » de
-                        # l'ido n'en partagent pas une lettre de
-                        # suite — et le titre du volume, « Tabel
-                        # Bantu Delmas », est compose en bas de casse
-                        # comme au portugais et au turc.
+                        # INDONESIAN writes « BAGAN No. 1 ». The word
+                        # is read in no other member — the Dutch
+                        # « TABEL » and the Ido « TABELO » do not share
+                        # a single letter of it in sequence — and the
+                        # volume's title, « Tabel Bantu Delmas », is
+                        # set in lower case as in Portuguese and
+                        # Turkish.
                         r"|BAGAN"
-                        # LE JAVANAIS ecrit « GAMBAR No. 1 ».
-                        # Le mot est celui de l'image, pas celui du
-                        # tableau : le javanais n'a pas de mot propre
-                        # pour la planche murale, et « bagan » lui
-                        # viendrait de l'indonesien — c'est-a-dire de
-                        # la voisine dont toute cette colonne se
-                        # defend.
+                        # JAVANESE writes « GAMBAR No. 1 ».
+                        # The word is that of the picture, not that of
+                        # the chart: Javanese has no word of its own
+                        # for the wall plate, and « bagan » would come
+                        # to it from Indonesian — that is, from the
+                        # neighbour this whole column defends itself
+                        # against.
                         r"|GAMBAR"
-                        # LE HAOUSSA ecrit « HOTO Na 1 ». Le mot est
-                        # celui de l'image, comme « GAMBAR » en
-                        # javanais et pour la meme raison : le
-                        # haoussa n'a pas de mot propre pour la
-                        # planche murale, et « tebur » ne designe que
-                        # le meuble. Le titre du volume, « Hotunan
-                        # taimako na Delmas », est compose en bas de
-                        # casse et ne passe pas.
+                        # HAUSA writes « HOTO Na 1 ». The word is that
+                        # of the picture, as « GAMBAR » in Javanese and
+                        # for the same reason: Hausa has no word of its
+                        # own for the wall plate, and « tebur »
+                        # designates only the piece of furniture. The
+                        # volume's title, « Hotunan taimako na Delmas »,
+                        # is set in lower case and does not pass.
                         r"|HOTO"
-                        # LE GUJARATI ecrit « કોષ્ટક નં. ૧ ».
-                        # « કોષ્ટક » seul se lirait dans le titre du
-                        # volume, qui parle des « ડેલ્માસ સહાયક
-                        # કોષ્ટકો » ; on exige donc le « નં » qui ne
-                        # suit le mot que dans la ligne qui numerote,
-                        # comme pour le hindi et le bengali.
+                        # GUJARATI writes « કોષ્ટક નં. ૧ ».
+                        # « કોષ્ટક » alone would be read in the volume's
+                        # title, which speaks of the « ડેલ્માસ સહાયક
+                        # કોષ્ટકો »; we therefore require the « નં »
+                        # that follows the word only in the numbering
+                        # line, as for Hindi and Bengali.
                         r"|કોષ્ટક\s+નં"
-                        # LE PERSAN ecrit « تابلوی شمارهٔ ۱ ».
-                        # « تابلو » seul se lirait dans le titre du
-                        # volume, qui parle des « تابلوهای کمکی » ;
-                        # on exige donc le « شماره » qui ne suit le
-                        # mot que dans la ligne qui numerote.
+                        # PERSIAN writes « تابلوی شمارهٔ ۱ ».
+                        # « تابلو » alone would be read in the volume's
+                        # title, which speaks of the « تابلوهای کمکی »;
+                        # we therefore require the « شماره » that
+                        # follows the word only in the numbering line.
                         r"|تابلوی\s+شماره"
-                        # MEME RAISON POUR LE BENGALI : « সারণি » sans
-                        # son « নং » se lirait dans le titre du volume.
+                        # THE SAME REASON FOR BENGALI: « সারণি » without
+                        # its « নং » would be read in the volume's title.
                         r"|সারণি\s+নং"
-                        # LE JAPONAIS ecrit « 図表第 1 号 » comme le
-                        # chinois « 图表第 1 号 », mais avec ses propres
-                        # caracteres : 図 n'est pas 图.
+                        # JAPANESE writes « 図表第 1 号 » as Chinese
+                        # writes « 图表第 1 号 », but with its own
+                        # characters: 図 is not 图.
                         r"|図表\s*第"
-                        # LE PENDJABI CHAHMOUKHI ecrit « نقشہ », qui est
-                        # aussi la carte ordinaire ; on exige le
-                        # « نمبر » qui ne suit le mot que dans la ligne
-                        # qui numerote.
+                        # SHAHMUKHI PUNJABI writes « نقشہ », which is
+                        # also the ordinary map; we require the
+                        # « نمبر » that follows the word only in the
+                        # numbering line.
                         r"|نقشہ\s+نمبر"
-                        # LE GOURMOUKHI ecrit « ਸਾਰਣੀ », qui se lit
-                        # aussi dans le titre du volume : on exige le
-                        # « ਨੰ. » de la ligne qui numerote, comme pour
-                        # le hindi et le bengali.
+                        # GURMUKHI writes « ਸਾਰਣੀ », which is read also
+                        # in the volume's title: we require the « ਨੰ. »
+                        # of the numbering line, as for Hindi and
+                        # Bengali.
                         r"|ਸਾਰਣੀ\s+ਨੰ"
-                        # LE TURC ecrit « TABLO No 1 », et le mot se
-                        # lit aussi dans le titre du volume ;
-                        # mais celui-ci est compose en bas de casse
-                        # — « Delmas Yardimci Tablolarina » — et la
-                        # comparaison est sensible a la casse, comme
-                        # pour le portugais et l'espagnol.
+                        # TURKISH writes « TABLO No 1 », and the word
+                        # is read also in the volume's title;
+                        # but the latter is set in lower case
+                        # — « Delmas Yardimci Tablolarina » — and the
+                        # comparison is case-sensitive, as for
+                        # Portuguese and Spanish.
                         r"|TABLO"
-                        # L'INTERLINGUA ecrit « TABELLA N-o 1 ». Le
-                        # mot ressemble au « TABELO » de l'ido sans
-                        # l'egaler — deux l, un a — et il lui faut
-                        # donc son propre membre. Meme parti que
-                        # pour le portugais : le titre du volume,
-                        # « Tabellas Auxiliar Delmas », est compose
-                        # en bas de casse et ne passe pas.
+                        # INTERLINGUA writes « TABELLA N-o 1 ». The
+                        # word resembles the Ido « TABELO » without
+                        # equalling it — two l's, an a — and it
+                        # therefore needs its own member. The same
+                        # course as for Portuguese: the volume's
+                        # title, « Tabellas Auxiliar Delmas », is set
+                        # in lower case and does not pass.
                         r"|TABELLA"
-                        # LE NEERLANDAIS ecrit « TABEL Nr. 1 », et
-                        # « TABEL » est un morceau du « TABELO » de
-                        # l'ido : le membre seul attraperait les
-                        # deux. On exige donc le « Nr » qui ne suit
-                        # le mot que dans la ligne qui numerote,
-                        # comme pour le hindi et le bengali.
+                        # DUTCH writes « TABEL Nr. 1 », and « TABEL »
+                        # is a piece of the Ido « TABELO »: the member
+                        # alone would catch both. We therefore require
+                        # the « Nr » that follows the word only in the
+                        # numbering line, as for Hindi and Bengali.
                         r"|TABEL\s+Nr"
-                        # LE SUEDOIS ecrit « TABELL Nr 1 ». Meme
-                        # difficulte que le neerlandais — le mot
-                        # contient le « TABEL » de l'ido — et meme
-                        # remede : on exige le « Nr » de la ligne
-                        # qui numerote.
+                        # SWEDISH writes « TABELL Nr 1 ». The same
+                        # difficulty as Dutch — the word contains the
+                        # Ido « TABEL » — and the same remedy: we
+                        # require the « Nr » of the numbering line.
                         r"|TABELL\s+Nr"
-                        # LE FINNOIS ecrit « TAULUKKO N:o 1 ». Le mot
-                        # ne ressemble a aucun autre et n'a besoin
-                        # d'aucune precaution : le titre du volume,
-                        # « Delmas-aputaulukot », est compose en bas
-                        # de casse, et la comparaison est sensible a
-                        # la casse.
+                        # FINNISH writes « TAULUKKO N:o 1 ». The word
+                        # resembles no other and needs no precaution:
+                        # the volume's title, « Delmas-aputaulukot »,
+                        # is set in lower case, and the comparison is
+                        # case-sensitive.
                         r"|TAULUKKO"
-                        # LE CATALAN ecrit « TAULA n.\u00ba 1 ». Le mot ne
-                        # se confond avec aucun autre — le finnois
-                        # « TAULUKKO » a un U la ou celui-ci a un A —
-                        # et le titre du volume, « Taules auxiliars
-                        # Delmas », est compose en bas de casse.
+                        # CATALAN writes « TAULA n.º 1 ». The word is
+                        # confused with no other — the Finnish
+                        # « TAULUKKO » has a U where this one has an A
+                        # — and the volume's title, « Taules auxiliars
+                        # Delmas », is set in lower case.
                         r"|TAULA"
-                        # L'UKRAINIEN ecrit « ТАБЛИЦЯ № 1 ». Le mot ne
-                        # differe du russe « ТАБЛИЦА » que par sa
-                        # derniere lettre — Я contre А — et il lui faut
-                        # donc son propre membre. Aucune precaution a
-                        # prendre : le titre du volume, « Допоміжні
-                        # таблиці Дельма », est compose en bas de casse.
+                        # UKRAINIAN writes « ТАБЛИЦЯ № 1 ». The word
+                        # differs from the Russian « ТАБЛИЦА » only in
+                        # its last letter — Я against А — and therefore
+                        # needs its own member. No precaution to take:
+                        # the volume's title, « Допоміжні таблиці
+                        # Дельма », is set in lower case.
                         r"|ТАБЛИЦЯ"
-                        # LE ROUMAIN ecrit « TABELUL Nr. 1 », l'article
-                        # defini soude au nom comme il le fait partout.
-                        # Le mot ressemble au « TABEL » neerlandais sans
-                        # l'egaler, et le membre neerlandais exige un
-                        # « Nr » separe par un blanc, que le roumain
-                        # place aussi : on aurait donc pu s'en passer.
-                        # On lui donne pourtant son membre, parce que
-                        # « TABELUL » se suffit et n'a besoin d'aucune
-                        # precaution — le titre du volume, « Tabelele
-                        # auxiliare Delmas », est en bas de casse.
+                        # ROMANIAN writes « TABELUL Nr. 1 », the
+                        # definite article welded to the noun as it does
+                        # everywhere. The word resembles the Dutch
+                        # « TABEL » without equalling it, and the Dutch
+                        # member requires an « Nr » separated by a
+                        # space, which Romanian also places: we could
+                        # therefore have done without. We give it its
+                        # member all the same, because « TABELUL »
+                        # suffices on its own and needs no precaution —
+                        # the volume's title, « Tabelele auxiliare
+                        # Delmas », is in lower case.
                         r"|TABELUL"
-                        # L'IRLANDAIS ecrit « TÁBLA Uimh. 1 ». Le mot
-                        # porte un accent aigu sur son A, et ne se
-                        # confond donc avec aucun autre membre de cette
-                        # liste. Le titre du volume est en bas de casse.
+                        # IRISH writes « TÁBLA Uimh. 1 ». The word
+                        # carries an acute accent on its A, and is
+                        # therefore confused with no other member of
+                        # this list. The volume's title is in lower case.
                         r"|TÁBLA"
-                        # LE GALICIEN ecrit « CADRO n.º 1 ». Le mot est
-                        # celui de l'espagnol moins son U — CADRO contre
-                        # CUADRO — et ne se confond donc avec aucun
-                        # autre membre. Le titre du volume, « Cadros
-                        # auxiliares Delmas », est en bas de casse.
+                        # GALICIAN writes « CADRO n.º 1 ». The word is
+                        # the Spanish one less its U — CADRO against
+                        # CUADRO — and is therefore confused with no
+                        # other member. The volume's title, « Cadros
+                        # auxiliares Delmas », is in lower case.
                         r"|CADRO"
-                        # LE TCHEQUE ecrit « TABULKA č. 1 ». Le mot
-                        # commence comme le « TABEL » neerlandais mais
-                        # s'en separe des la quatrieme lettre — TABU
-                        # contre TABE — et ne se confond donc avec
-                        # aucun autre membre. Le titre du volume,
-                        # « Delmasovy pomocné tabulky », est en bas de
-                        # casse.
+                        # CZECH writes « TABULKA č. 1 ». The word
+                        # begins like the Dutch « TABEL » but parts
+                        # from it at the fourth letter — TABU against
+                        # TABE — and is therefore confused with no
+                        # other member. The volume's title,
+                        # « Delmasovy pomocné tabulky », is in lower
+                        # case.
                         r"|TABULKA"
-                        # LE LITUANIEN ecrit « LENTELĖ Nr. 1 ». Le mot
-                        # porte un E surpointe, lettre que nulle autre
-                        # colonne n'emploie, et ne se confond donc avec
-                        # rien. Le titre du volume est en bas de casse.
+                        # LITHUANIAN writes « LENTELĖ Nr. 1 ». The word
+                        # carries an E with a dot above, a letter no
+                        # other column uses, and is therefore confused
+                        # with nothing. The volume's title is in lower
+                        # case.
                         r"|LENTELĖ"
-                        # L'ESTONIEN N'AJOUTE RIEN NON PLUS, mais pour
-                        # une raison de composition et non de hasard :
-                        # il ecrit « TABEL », qui est un morceau du
-                        # « TABELO » de l'ido, et il lui faut donc le
-                        # « Nr » du neerlandais et du suedois. La
-                        # colonne compose donc « TABEL Nr. 1 » avec un
-                        # N capital, comme les deux autres, et le
-                        # membre « TABEL\s+Nr » ci-dessous la prend
-                        # sans qu'on y touche. C'est une decision de
-                        # composition, pas une omission : elle est
-                        # ecrite dans l'en-tete de text/et.
-                        # LE ROMANCHE N'AJOUTE RIEN NON PLUS. Il ecrit
-                        # « TABELLA nr. 1 », mot pour mot le membre de
-                        # l'interlingua ci-dessus. Troisieme cas de la
-                        # serie apres le galicien et le luxembourgeois :
-                        # une langue qui entre sans qu'on touche au
-                        # motif. On le note ici pour que personne ne
-                        # cherche plus tard le membre manquant.
-                        # LE LUXEMBOURGEOIS N'AJOUTE RIEN A CETTE LISTE, et
-                        # c'est le second cas du genre apres le galicien.
-                        # Il ecrit « TABELL Nr. 1 », c'est-a-dire
-                        # exactement ce que le suedois ecrit, et le membre
-                        # suedois — qui exige le « Nr » pour ne pas
-                        # attraper le « TABELO » de l'ido — le couvre mot
-                        # pour mot. Deux langues germaniques, deux pays
-                        # sans frontiere commune, et la meme ligne de
-                        # titre.
-                        # LE VIETNAMIEN ecrit « BẢNG Số 1 ». Le mot ne
-                        # se confond avec aucun autre membre de cette
-                        # liste — aucune autre colonne n'ecrit un A a
-                        # crochet — mais il a chez lui un autre
-                        # emploi : « bảng » est aussi LE TABLEAU NOIR
-                        # de la classe, celui du tableau 1, et le
-                        # titre du volume dit « Bảng trợ giúp
-                        # Delmas ». Ni l'un ni l'autre ne passe : la
-                        # comparaison est sensible a la casse, et
-                        # seuls les titres d'apparat sont composes en
-                        # capitales.
+                        # ESTONIAN ADDS NOTHING EITHER, but for a reason
+                        # of composition and not of chance: it writes
+                        # « TABEL », which is a piece of the Ido
+                        # « TABELO », and it therefore needs the « Nr »
+                        # of Dutch and Swedish. The column accordingly
+                        # sets « TABEL Nr. 1 » with a capital N, like
+                        # the other two, and the member « TABEL\s+Nr »
+                        # below takes it with nothing to touch. It is a
+                        # decision of composition, not an omission: it
+                        # is written in the header of text/et.
+                        # ROMANSH ADDS NOTHING EITHER. It writes
+                        # « TABELLA nr. 1 », word for word the
+                        # Interlingua member above. The third case of
+                        # the series after Galician and Luxembourgish:
+                        # a language that comes in with the pattern
+                        # untouched. We note it here so that nobody
+                        # looks later for the missing member.
+                        # LUXEMBOURGISH ADDS NOTHING TO THIS LIST, and it
+                        # is the second case of the kind after Galician.
+                        # It writes « TABELL Nr. 1 », that is, exactly
+                        # what Swedish writes, and the Swedish member —
+                        # which requires the « Nr » so as not to catch
+                        # the Ido « TABELO » — covers it word for word.
+                        # Two Germanic languages, two countries with no
+                        # common border, and the same title line.
+                        # VIETNAMESE writes « BẢNG Số 1 ». The word is
+                        # confused with no other member of this list —
+                        # no other column writes an A with a hook —
+                        # but it has another use at home: « bảng » is
+                        # also THE BLACKBOARD of the classroom, the
+                        # one on table 1, and the volume's title says
+                        # « Bảng trợ giúp Delmas ». Neither passes:
+                        # the comparison is case-sensitive, and only
+                        # the display titles are set in capitals.
                         r"|BẢNG"
-                        # L'ALLEMAND ecrit « TAFEL Nr. 1 ». « Tabelle »
-                        # existe en allemand, mais c'est le tableau de
-                        # CHIFFRES ; ce que Delmas vend est une image
-                        # murale, et l'allemand l'appelle « Tafel »,
-                        # comme il appelle « Tafel » le tableau noir de
-                        # la classe. Le mot ne se confond avec aucun
-                        # autre membre — aucun ne commence par TAF — et
-                        # le titre du volume, « Delmas-Hilfstafeln »,
-                        # est compose en bas de casse.
+                        # GERMAN writes « TAFEL Nr. 1 ». « Tabelle »
+                        # exists in German, but it is the table of
+                        # FIGURES; what Delmas sells is a wall picture,
+                        # and German calls it « Tafel », as it calls
+                        # « Tafel » the blackboard of the classroom. The
+                        # word is confused with no other member — none
+                        # begins with TAF — and the volume's title,
+                        # « Delmas-Hilfstafeln », is set in lower case.
                         r"|TAFEL"
-                        # L'ITALIEN ecrit « TAVOLA N. 1 ». Le mot est
-                        # celui de la table et du tableau a la fois,
-                        # et il ne se confond avec aucun autre membre
-                        # de cette liste : le « TABELLA » de
-                        # l'interlingua et du romanche a un B la ou
-                        # celui-ci a un V. Le titre du volume,
-                        # « Tavole ausiliarie Delmas », est en bas de
-                        # casse, et la comparaison est sensible a la
-                        # casse.
+                        # ITALIAN writes « TAVOLA N. 1 ». The word is
+                        # that of the table and of the chart at once,
+                        # and it is confused with no other member of
+                        # this list: the « TABELLA » of Interlingua
+                        # and Romansh has a B where this one has a V.
+                        # The volume's title, « Tavole ausiliarie
+                        # Delmas », is in lower case, and the
+                        # comparison is case-sensitive.
                         r"|TAVOLA"
-                        # LE POLONAIS DIT « TABLICA », en alphabet
-                        # latin : le membre cyrillique « ТАБЛИЦА »,
-                        # pose pour le russe, ne le couvre pas.
+                        # POLISH SAYS « TABLICA », in the Latin
+                        # alphabet: the Cyrillic member « ТАБЛИЦА »,
+                        # laid for Russian, does not cover it.
                         r"|TABLICA"
                         )
-# LE BASQUE ECRIT « 1. TAULA », l'ordinal devant le nom comme il place
-# tout determinant. Le mot est le meme que le catalan et l'occitan, et
-# le membre « TAULA » l'attrape deja : rien a ajouter. Ce qui separe
-# les trois colonnes est le dossier — text/ca, text/oc, text/eu —
-# et non le titre.
-# L'OCCITAN ECRIT « TAULA » COMME LE CATALAN, et c'est le meme mot :
-# le membre ci-dessus les attrape tous les deux, et il n'y a rien a
-# ajouter. Les deux colonnes ne se confondent pas pour autant : ce
-# qui les separe est le dossier — text/ca et text/oc — et non le
-# titre.
+# BASQUE WRITES « 1. TAULA », the ordinal before the noun as it places
+# every determiner. The word is the same as the Catalan and the Occitan,
+# and the member « TAULA » catches it already: nothing to add. What
+# separates the three columns is the directory — text/ca, text/oc,
+# text/eu — and not the title.
+# OCCITAN WRITES « TAULA » AS CATALAN DOES, and it is the same word:
+# the member above catches both, and there is nothing to add. The two
+# columns are not confused for all that: what separates them is the
+# directory — text/ca and text/oc — and not the title.
 
-# Les ordinaux des trois langues, pour la serie et pour la scene.
+# The ordinals of the three languages, for the series and for the scene.
 ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
-            # L'ESPERANTO EST SI PROCHE DE L'IDO qu'il n'a pas besoin
-            # d'un membre a lui : ses ordinaux entrent dans la liste
-            # commune, et « serio » comme « sceno » ne demandent qu'un
-            # mot de plus dans les deux groupes ci-dessous.
+            # ESPERANTO IS SO CLOSE TO IDO that it needs no member of
+            # its own: its ordinals go into the common list, and
+            # « serio » like « sceno » calls for only one more word in
+            # each of the two groups below.
             r"|unua|dua|tria|kvara"
-            # L'INTERLINGUA, de meme : ses ordinaux sont assez
-            # proches du francais pour entrer dans la liste
-            # commune, et « serie » y est deja par « s[eé]rie ».
+            # INTERLINGUA likewise: its ordinals are close enough to
+            # the French to go into the common list, and « serie » is
+            # already there by « s[eé]rie ».
             r"|prime|secunde|tertie|quarte"
-            # LE NEERLANDAIS : ses ordinaux entrent dans la liste
-            # commune, et il ne demande qu'un mot de plus dans
-            # chacun des deux groupes — « reeks » et « tafereel ».
+            # DUTCH: its ordinals go into the common list, and it
+            # calls for only one more word in each of the two groups
+            # — « reeks » and « tafereel ».
             r"|eerste|tweede|derde|vierde"
-            # LE SUEDOIS : ordinaux dans la liste commune, et un
-            # mot de plus dans chacun des deux groupes — « serien »
-            # et « scenen », qui portent leur article suffixe.
+            # SWEDISH: ordinals in the common list, and one more word
+            # in each of the two groups — « serien » and « scenen »,
+            # which carry their suffixed article.
             r"|f[öo]rsta|andra|tredje|fj[äa]rde"
-            # LE FINNOIS DECLINE SON ORDINAL comme le nom qui suit,
-            # mais la serie et la scene sont au nominatif : une
-            # seule forme suffit donc, et deux mots de plus dans
-            # les groupes — « sarja » et « kohtaus ».
+            # FINNISH DECLINES ITS ORDINAL like the noun that follows,
+            # but the series and the scene are in the nominative: one
+            # form therefore suffices, and two more words in the
+            # groups — « sarja » and « kohtaus ».
             r"|ensimm[äa]inen|toinen|kolmas|nelj[äa]s"
-            # LE CATALAN : « primera », « tercera » et « quarta » sont
-            # deja dans la liste par l'espagnol ; il ne manque que
-            # « segona » et les quatre formes masculines, dont
-            # l'escena catalane n'a pas besoin mais que la serie
-            # emploie.
+            # CATALAN: « primera », « tercera » and « quarta » are
+            # already in the list by way of Spanish; only « segona »
+            # is missing, and the four masculine forms, which the
+            # Catalan escena does not need but which the series uses.
             r"|segona|primer|segon|tercer|quart"
-            # L'OCCITAN : « primiera » et « segonda » ne sont pas dans
-            # la liste, « tresena » et « quatrena » non plus.
+            # OCCITAN: « primiera » and « segonda » are not in the
+            # list, nor are « tresena » and « quatrena ».
             r"|primi[eè]ra|segonda|tresena|quatrena"
-            # LE ROMANCHE (rumantsch grischun) : « quart » est deja
-            # dans la liste par le catalan, et « emprim », « segund »
-            # et « terz » n'y sont pas. Chacun prend son a final au
-            # feminin — la seria et la scena sont feminines — mais on
-            # laisse la forme masculine ouverte, comme pour le
-            # catalan, parce que le motif sert aussi ailleurs.
+            # ROMANSH (rumantsch grischun): « quart » is already in
+            # the list by way of Catalan, and « emprim », « segund »
+            # and « terz » are not. Each takes its final a in the
+            # feminine — la seria and la scena are feminine — but we
+            # leave the masculine form open, as for Catalan, because
+            # the pattern serves elsewhere too.
             r"|emprim[ao]?|segund[ao]?|terz[ao]?"
-            # L'ESTONIEN : ses quatre ordinaux ne ressemblent a rien
-            # de ce qui precede. Il ne les decline pas ici — la serie
-            # et la scene sont au nominatif — et une seule forme
-            # suffit donc pour chacun, comme en finnois.
+            # ESTONIAN: its four ordinals resemble nothing that
+            # precedes. It does not decline them here — the series and
+            # the scene are in the nominative — and one form therefore
+            # suffices for each, as in Finnish.
             r"|esimene|teine|kolmas|neljas"
-            # L'ALLEMAND : « erste » ressemble au neerlandais
-            # « eerste » sans l'egaler, et « zweite », « dritte » et
-            # « vierte » n'ont aucun equivalent dans la liste. Les
-            # quatre sont a ajouter, avec « Reihe » dans le groupe de
-            # la serie et « Szene » dans celui de la scene.
+            # GERMAN: « erste » resembles the Dutch « eerste »
+            # without equalling it, and « zweite », « dritte » and
+            # « vierte » have no equivalent in the list. All four are
+            # to be added, with « Reihe » in the series group and
+            # « Szene » in the scene group.
             r"|erste|zweite|dritte|vierte"
-            # L'ITALIEN : « prima », « seconda », « terza » et
-            # « quarta ». « terza » est deja dans la liste par le
-            # romanche — « terz[ao]? » — et « prima » ne l'est pas :
-            # l'espagnol donne « primera », le catalan « primer ».
-            # Les quatre s'ecrivent donc en entier, au feminin, qui
-            # est le genre de « serie » comme de « scena ».
+            # ITALIAN: « prima », « seconda », « terza » and
+            # « quarta ». « terza » is already in the list by way of
+            # Romansh — « terz[ao]? » — and « prima » is not:
+            # Spanish gives « primera », Catalan « primer ». All four
+            # are therefore written out in full, in the feminine,
+            # which is the gender of « serie » as of « scena ».
             r"|prima|seconda|quarta"
-            # L'UKRAINIEN : aucun de ses quatre ordinaux n'entre dans
-            # la liste russe. « перша » n'est pas « первая »,
-            # « третя » n'est pas « третья », et « четверта » n'a pas
-            # le Я final de « четвёртая ». Les quatre sont a ajouter,
-            # avec « серія » dans le groupe de la serie ; la scene
-            # s'ecrit « сцена » comme en russe et y est deja.
+            # UKRAINIAN: none of its four ordinals goes into the
+            # Russian list. « перша » is not « первая », « третя » is
+            # not « третья », and « четверта » has not the final Я of
+            # « четвёртая ». All four are to be added, with « серія »
+            # in the series group; the scene is written « сцена » as
+            # in Russian and is already there.
             r"|перша|друга|третя|четверта"
-            # LE BASQUE, seule langue non indo-europeenne de ce
-            # groupe. Ses ordinaux se batissent tous sur le meme
-            # suffixe « -garren », sauf le premier ; ils se placent
-            # AVANT le nom, comme partout ailleurs ici, de sorte que
-            # « \b...\s+... » suffit et qu'il ne faut pas de membre
-            # a part. Deux mots de plus dans les groupes ci-dessous —
-            # « saila » et « agerraldia ».
+            # BASQUE, the only non-Indo-European language of this
+            # group. Its ordinals are all built on the same suffix
+            # « -garren », except the first; they are placed BEFORE the
+            # noun, as everywhere else here, so that « \b...\s+... »
+            # suffices and no separate member is needed. Two more words
+            # in the groups below — « saila » and « agerraldia ».
             r"|lehen|bigarren|hirugarren|laugarren"
-            # LE ROUMAIN accorde son ordinal en genre et le fait
-            # preceder de l'article « a » ou « al » : « prima serie »,
-            # « a doua scena ». Seules les formes feminines servent
-            # ici, la serie et la scene etant feminines toutes deux ;
-            # « prima » manque a la liste, « doua », « treia » et
-            # « patra » aussi.
+            # ROMANIAN agrees its ordinal in gender and has it
+            # preceded by the article « a » or « al »: « prima serie »,
+            # « a doua scena ». Only the feminine forms serve here, the
+            # series and the scene being both feminine; « prima » is
+            # missing from the list, and so are « doua », « treia » and
+            # « patra ».
             r"|prima|doua|treia|patra"
-            # L'IRLANDAIS place son ordinal devant le nom comme tout
-            # determinant, mais il LENIFIE l'initiale apres l'article :
-            # « an chéad shraith » — le premier de la serie, avec un h
-            # insere dans le mot lui-meme. On ecrit donc les deux
-            # etats du premier ordinal, « céad » et « chéad », et on
-            # fait de meme pour la serie plus bas.
+            # IRISH places its ordinal before the noun like any
+            # determiner, but it LENITES the initial after the article:
+            # « an chéad shraith » — the first of the series, with an h
+            # inserted into the word itself. We therefore write both
+            # states of the first ordinal, « céad » and « chéad », and
+            # do the same for the series below.
             r"|ch?[eé]ad|dara|tr[ií][uú]|ceathr[uú]"
-            # LE GALICIEN N'AJOUTE RIEN A CETTE LISTE, et c'est le
-            # premier cas du genre depuis l'esperanto : ses quatre
-            # ordinaux feminins y sont deja, « primeira » et
-            # « terceira » par le portugais, « segunda » et « cuarta »
-            # par l'espagnol. Il ne demande pas davantage dans les deux
-            # groupes ci-dessous : sa serie s'ecrit « serie » et sa
-            # scene « escena », l'une et l'autre deja presentes.
-            # LE TCHEQUE decline son ordinal comme le nom qui suit,
-            # mais la serie et la scene sont toutes deux au nominatif
-            # feminin : une seule forme suffit donc pour chacun des
-            # quatre. « první » vaut pour les deux genres, les trois
-            # autres prennent leur -á feminin.
+            # GALICIAN ADDS NOTHING TO THIS LIST, and it is the first
+            # case of the kind since Esperanto: its four feminine
+            # ordinals are already there, « primeira » and
+            # « terceira » by way of Portuguese, « segunda » and
+            # « cuarta » by way of Spanish. It calls for nothing more in
+            # the two groups below: its series is written « serie » and
+            # its scene « escena », both already present.
+            # CZECH declines its ordinal like the noun that follows,
+            # but the series and the scene are both in the feminine
+            # nominative: one form therefore suffices for each of the
+            # four. « první » holds for both genders, the other three
+            # take their feminine -á.
             r"|prvn[ií]|druh[aá]|tře[tť][ií]|čtvrt[aá]"
-            # LE LITUANIEN a une forme SIMPLE et une forme DEFINIE de
-            # chaque ordinal — « pirma serija » et « pirmoji serija » —
-            # et l'usage prefere la seconde devant un nom precis. On
-            # ecrit les deux etats, comme on avait ecrit les deux
-            # etats du premier ordinal irlandais.
-            # LE TROISIEME ORDINAL LITUANIEN NE SE FORME PAS COMME LES
-            # TROIS AUTRES : « pirma / pirmoji », « antra / antroji »,
-            # « ketvirta / ketvirtoji » gardent leur radical, mais
-            # « trečia » fait « trečioji » et non « trečiaji ». Ecrit
-            # d'abord sur le modele des voisins, le motif a laisse
-            # passer la TREČIOJI SERIJA du tableau 11 : le controle des
-            # roles l'a signalee, et c'est lui qui a rattrape la faute.
+            # LITHUANIAN has a SIMPLE and a DEFINITE form of each
+            # ordinal — « pirma serija » and « pirmoji serija » — and
+            # usage prefers the second before a definite noun. We write
+            # both states, as we had written both states of the first
+            # Irish ordinal.
+            # THE THIRD LITHUANIAN ORDINAL IS NOT FORMED LIKE THE OTHER
+            # THREE: « pirma / pirmoji », « antra / antroji »,
+            # « ketvirta / ketvirtoji » keep their stem, but « trečia »
+            # makes « trečioji » and not « trečiaji ». Written first on
+            # the model of its neighbours, the pattern let the TREČIOJI
+            # SERIJA of table 11 through: the check on the roles
+            # reported it, and it is that check that caught the fault.
             r"|pirm(?:a|oji)|antr(?:a|oji)|treči(?:a|oji)|ketvirt(?:a|oji)"
-            # LE LUXEMBOURGEOIS decline son ordinal comme l'allemand,
-            # mais l'ecrit comme lui-meme : « éischt », « zweet »,
-            # « drëtt », « véiert », avec l'accent aigu et le trema-e
-            # qui sont a lui seul. On accepte l'accent absent pour le
-            # premier et le quatrieme, que l'usage ecrit des deux
-            # facons, et le E ordinaire pour le troisieme.
+            # LUXEMBOURGISH declines its ordinal as German does, but
+            # writes it as itself: « éischt », « zweet », « drëtt »,
+            # « véiert », with the acute accent and the e-diaeresis
+            # that are its own. We accept the accent absent for the
+            # first and the fourth, which usage writes both ways, and
+            # the ordinary E for the third.
             r"|[eé]ischt|zweet|dr[ëe]tt|v[ée]iert"
             r"|premi[eè]re|deuxi[eè]me|troisi[eè]me|quatri[eè]me"
             r"|first|second|third|fourth"
@@ -2643,261 +2625,259 @@ ORDINALO = (r"(?:unesma|duesma|triesma|quaresma"
             r"|primeira|terceira|quarta"
             r"|перва[яй]|втора[яй]|треть[яе]|четв[её]рта[яй])")
 
-# LA SERIE. Le livre en a trois, et le fac-simile l'annonce en tete du
-# tableau qui l'ouvre : « UNESMA SERIO » au 1, « DUESMA SERIO » au 7,
-# « TRIESMA SERIO » au 11. Le volet n'en portait qu'une, ecrite en dur
-# dans le gabarit, de sorte que les seize tableaux paraissaient tous
-# sous la premiere serie.
-# TROIS LANGUES OU L'ORDINAL NE SE PLACE PAS COMME AILLEURS, et ou
-# « \b...\s+... » ne peut donc pas servir. Le chinois soude l'ordinal au
-# nom et n'a pas de blanc : « 第一组 ». L'arabe met l'ordinal APRES le
-# nom : « السلسلة الأولى ». Chacun a donc son propre membre, et non un
-# mot de plus dans la liste commune.
+# THE SERIES. The book has three, and the facsimile announces it at
+# the head of the table that opens it: « UNESMA SERIO » at 1, « DUESMA
+# SERIO » at 7, « TRIESMA SERIO » at 11. The panel carried only one,
+# written hard into the template, so that all sixteen tables appeared
+# under the first series.
+# THREE LANGUAGES WHERE THE ORDINAL IS NOT PLACED AS ELSEWHERE, and
+# where « \b...\s+... » therefore cannot serve. Chinese welds the
+# ordinal to the noun and has no space: « 第一组 ». Arabic puts the
+# ordinal AFTER the noun: « السلسلة الأولى ». Each therefore has its
+# own member, and not one more word in the common list.
 SERIO = re.compile(rf"\b{ORDINALO}\s+(?:serio|s[eéè]ri[ae]|serija|series|reeks|serien|sarja|seeria|reihe|серия|серія|saila|sh?raith)\b"
                    r"|第[一二三四]组"
-                   # LE CANTONAIS, meme mot, autre graphie.
+                   # CANTONESE, the same word, another spelling.
                    r"|第[一二三四]組"
                    r"|السلسلة\s+(?:الأولى|الثانية|الثالثة|الرابعة)"
-                   # LE POLONAIS MET SON ORDINAL APRES LE NOM :
-                   # « SERIA PIERWSZA ». Le groupe commun place
-                   # l'ordinal devant, et aucun ordinal polonais n'y
-                   # est ; c'est donc un membre a lui, comme l'arabe
-                   # en a un pour la meme raison de place.
+                   # POLISH PUTS ITS ORDINAL AFTER THE NOUN:
+                   # « SERIA PIERWSZA ». The common group places the
+                   # ordinal in front, and no Polish ordinal is in it;
+                   # so it is a member of its own, as Arabic has one
+                   # for the same reason of placement.
                    r"|seria\s+(?:pierwsza|druga|trzecia|czwarta)"
-                   # L'ARABE EGYPTIEN FAIT PASSER SA PHONOLOGIE JUSQUE
-                   # DANS L'APPARAT : le ث devient ت, et « الثانية »
-                   # s'ecrit « التانية », « الثالثة » « التالتة ». Le
-                   # membre standard ne les prend pas — c'est la
-                   # premiere fois qu'une regle de prononciation
-                   # oblige a toucher au marquage des roles.
+                   # EGYPTIAN ARABIC CARRIES ITS PHONOLOGY RIGHT INTO
+                   # THE DISPLAY MATTER: the ث becomes ت, and
+                   # « الثانية » is written « التانية », « الثالثة »
+                   # « التالتة ». The standard member does not take
+                   # them — it is the first time a rule of
+                   # pronunciation has forced a change to the marking
+                   # of the roles.
                    r"|السلسلة\s+(?:التانية|التالتة)"
                    r"|(?:पहली|दूसरी|तीसरी|चौथी)\s+शृंखला"
-                   # LE MARATHI : « पहिली मालिका ».
+                   # MARATHI: « पहिली मालिका ».
                    r"|(?:पहिली|दुसरी|तिसरी|चौथी)\s+मालिका"
                    r"|(?:మొదటి|రెండవ|మూడవ|నాలుగవ)\s+శ్రేణి"
-                   # LE COREEN dit « 첫째 계열 ».
+                   # KOREAN says « 첫째 계열 ».
                    r"|(?:첫째|둘째|셋째|넷째)\s+계열"
-                   # LE TAMOUL dit « முதல் தொடர் ».
+                   # TAMIL says « முதல் தொடர் ».
                    r"|(?:முதல்|இரண்டாம்|மூன்றாம்|நான்காம்)\s+தொடர்"
                    r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+পর্যায়"
                    r"|第[一二三四]部"
                    r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+سلسلہ"
-                   # L'OURDOU DIT « سلسلہ » COMME LE PENDJABI
-                   # CHAHMOUKHI — c'est le meme mot arabe dans le
-                   # meme alphabet —, mais ses ORDINAUX different :
-                   # دوسرا, تیسرا contre دوجا, تیجا. C'est la
-                   # premiere fois que deux colonnes du releve
-                   # partagent le nom d'un role et se separent sur
-                   # le mot qui le compte.
+                   # URDU SAYS « سلسلہ » AS SHAHMUKHI PUNJABI DOES —
+                   # it is the same Arabic word in the same alphabet
+                   # —, but their ORDINALS differ: دوسرا, تیسرا
+                   # against دوجا, تیجا. It is the first time two
+                   # columns of the transcription share the name of a
+                   # role and part company over the word that counts
+                   # it.
                    r"|(?:پہلا|دوسرا|تیسرا|چوتھا)\s+سلسلہ"
-                   # L'INDONESIEN MET SON ORDINAL APRES LE NOM, comme
-                   # l'arabe : « Seri Pertama ». Il lui faut donc son
-                   # propre membre et non un mot de plus dans la
-                   # liste commune, que « \b...\s+... » gouverne dans
-                   # l'autre sens.
+                   # INDONESIAN PUTS ITS ORDINAL AFTER THE NOUN, like
+                   # Arabic: « Seri Pertama ». It therefore needs its
+                   # own member and not one more word in the common
+                   # list, which « \b...\s+... » governs the other way
+                   # round.
                    r"|[Ss]eri\s+(?:[Pp]ertama|[Kk]edua|[Kk]etiga"
                    r"|[Kk]eempat)"
-                   # LE JAVANAIS PARTAGE « seri » AVEC
-                   # L'INDONESIEN et s'en separe sur les ordinaux,
-                   # exactement comme l'ourdou et le chahmoukhi se
-                   # separaient sur « سلسلہ » : kapisan, kapindho,
-                   # katelu, kapat contre pertama, kedua, ketiga,
-                   # keempat.
+                   # JAVANESE SHARES « seri » WITH INDONESIAN and
+                   # parts from it over the ordinals, exactly as Urdu
+                   # and Shahmukhi parted over « سلسلہ »: kapisan,
+                   # kapindho, katelu, kapat against pertama, kedua,
+                   # ketiga, keempat.
                    r"|[Ss]eri\s+(?:[Kk]apisan|[Kk]apindho"
                    r"|[Kk]atelu|[Kk]apat)"
-                   # LE PERSAN dit « سری اول ». Ses ordinaux
-                   # ne sont ni ceux de l'ourdou (پہلا) ni ceux de
-                   # l'arabe (الأولى) : اول، دوم، سوم، چهارم.
+                   # PERSIAN says « سری اول ». Its ordinals are
+                   # neither Urdu's (پہلا) nor Arabic's (الأولى):
+                   # اول، دوم، سوم، چهارم.
                    r"|سری\s+(?:اول|دوم|سوم|چهارم)"
-                   # LE HAOUSSA MET SON ORDINAL APRES LE NOM et
-                   # l'introduit par « na » : « Jeri na Farko ». La
-                   # particule est obligatoire — « jeri farko » ne se
-                   # dit pas —, et c'est elle qui rend le membre sur
-                   # au lieu du seul mot, qui signifie aussi la file
-                   # d'attente ordinaire.
+                   # HAUSA PUTS ITS ORDINAL AFTER THE NOUN and
+                   # introduces it with « na »: « Jeri na Farko ». The
+                   # particle is obligatory — « jeri farko » is not
+                   # said —, and it is what makes the member sure
+                   # rather than the word alone, which also means an
+                   # ordinary queue.
                    r"|[Jj]eri\s+na\s+(?:[Ff]arko|[Bb]iyu|[Uu]ku"
                    r"|[Hh]u[ɗd]u)"
-                   # LE GUJARATI DIT « શ્રેણી » LA OU LE MARATHI DIT
-                   # « मालिका » et le hindi « शृंखला » : trois langues
-                   # du meme fonds sanskrit et trois mots, ce qui est
-                   # justement pourquoi chaque colonne se traduit pour
-                   # elle-meme.
+                   # GUJARATI SAYS « શ્રેણી » WHERE MARATHI SAYS
+                   # « मालिका » and Hindi « शृंखला »: three languages of
+                   # the same Sanskrit stock and three words, which is
+                   # precisely why each column translates for itself.
                    r"|(?:પ્રથમ|બીજી|ત્રીજી|ચોથી)\s+શ્રેણી"
-                   # LE GOURMOUKHI DIT « ਲੜੀ » LA OU LE SHAHMOUKHI DIT
-                   # « سلسلہ » : meme langue, deux lexiques, et c'est
-                   # justement pourquoi les deux colonnes se
-                   # traduisent chacune pour elle-meme.
+                   # GURMUKHI SAYS « ਲੜੀ » WHERE SHAHMUKHI SAYS
+                   # « سلسلہ »: the same language, two lexicons, and
+                   # that is precisely why the two columns each
+                   # translate for themselves.
                    r"|(?:ਪਹਿਲੀ|ਦੂਜੀ|ਤੀਜੀ|ਚੌਥੀ)\s+ਲੜੀ"
-                   # LE TURC NE SE MET PAS EN MINUSCULES SANS DEGAT.
-                   # Le « re.I » de Python replie « İ » sur « i »
-                   # suivi d'un point souscrit combinant, et
-                   # « İKİNCİ » cesse alors d'egaler « ikinci ».
-                   # On ecrit donc les deux casses a la main, dans
-                   # la forme exacte ou les fichiers les composent :
-                   # capitales pour la serie, bas de casse pour la
-                   # scene.
+                   # TURKISH CANNOT BE LOWER-CASED WITHOUT DAMAGE.
+                   # Python's « re.I » folds « İ » onto « i » followed
+                   # by a combining dot below, and « İKİNCİ » then
+                   # ceases to equal « ikinci ». We therefore write
+                   # both cases by hand, in the exact form in which
+                   # the files set them: capitals for the series,
+                   # lower case for the scene.
                    r"|(?:B[İi]R[İi]NC[İi]|[İi]K[İi]NC[İi]"
                    r"|[ÜüU]Ç[ÜüU]NC[ÜüU]|D[ÖöO]RD[ÜüU]NC[ÜüU])"
                    r"\s+D[İi]Z[İi]\b"
-                   # LE VIETNAMIEN MET SON ORDINAL APRES LE NOM —
-                   # « LOẠT THỨ NHẤT », la serie ordre premier — et
-                   # ne peut donc pas entrer dans le groupe commun,
-                   # qui attend l'ordinal devant. Il lui faut un
-                   # membre a lui, comme au hindi, au bengali et au
-                   # pendjabi, qui font de meme. Le « re.I » ci-
-                   # dessus le prend aux deux casses : l'apparat
-                   # compose en capitales, ce commentaire en bas de
-                   # casse.
+                   # VIETNAMESE PUTS ITS ORDINAL AFTER THE NOUN —
+                   # « LOẠT THỨ NHẤT », the series order first — and
+                   # therefore cannot go into the common group, which
+                   # expects the ordinal in front. It needs a member
+                   # of its own, as do Hindi, Bengali and Punjabi,
+                   # which do the same. The « re.I » above takes it in
+                   # both cases: the display matter sets in capitals,
+                   # this comment in lower case.
                    r"|loạt\s+thứ\s+(?:nhất|hai|ba|tư)", re.I)
 
-# LE TCHEQUE ECRIT « scéna » AVEC UN E LONG, et le groupe ne prevoyait
-# que « e » et « è ». Un accent de plus dans la classe, et le roumain
-# « scena » comme le tcheque « scéna » y entrent tous deux.
-# LA SCENE, DANS TOUTES LES LANGUES. On la reconnaissait a l'italique du
-# fac-simile ; mais l'italique est justement ce qui differe -- Guignon
-# compose « Unesma ceno. » en italique la ou Rochelle laisse « Première
-# scène. » en romain. Le mot, lui, est sur. C'est le meme parti que pour
-# la serie, juste au-dessus.
-# LE LUXEMBOURGEOIS DIT « Zeen », qui ne ressemble a aucun des mots de
-# ce groupe : ni au « Szene » allemand dont il vient, ni au « scena »
-# roman. Un membre de plus, donc, et non une classe elargie.
+# CZECH WRITES « scéna » WITH A LONG E, and the group provided only
+# for « e » and « è ». One more accent in the class, and the Romanian
+# « scena » and the Czech « scéna » both go in.
+# THE SCENE, IN EVERY LANGUAGE. We used to recognise it by the
+# facsimile's italic; but the italic is precisely what differs --
+# Guignon sets « Unesma ceno. » in italic where Rochelle leaves
+# « Première scène. » in roman. The word, for its part, is sure. It is
+# the same course as for the series, just above.
+# LUXEMBOURGISH SAYS « Zeen », which resembles none of the words of
+# this group: neither the German « Szene » it comes from, nor the
+# Romance « scena ». One more member, therefore, and not a widened
+# class.
 CENO = re.compile(rf"\b{ORDINALO}\s+(?:ceno|sceno|scena|scenen|sc[eè]ne|escena|cena|tafereel|kohtaus|stseen|szene|sc[eèé]n[aă]|сцена|agerraldia|radharc|zeen)\b"
                   r"|第[一二三四]场"
-                  # LE CANTONAIS ecrit « 第一場 », que le japonais
-                  # ecrit deja plus bas : le membre existe, on ne le
-                  # double pas.
+                  # CANTONESE writes « 第一場 », which Japanese
+                  # already writes below: the member exists, we do
+                  # not duplicate it.
                   r"|المشهد\s+(?:الأول|الثاني|الثالث|الرابع)"
-                  # LE POLONAIS, MEME RAISON QU'A LA SERIE : son
-                  # ordinal suit le nom. « scena » est deja dans le
-                  # groupe commun, mais il y attend un ordinal DEVANT
-                  # lui, et le polonais le met derriere.
+                  # POLISH, THE SAME REASON AS AT THE SERIES: its
+                  # ordinal follows the noun. « scena » is already in
+                  # the common group, but it expects an ordinal
+                  # BEFORE it there, and Polish puts it behind.
                   r"|scena\s+(?:pierwsza|druga|trzecia|czwarta)"
-                  # MEME RAISON QU'A LA SERIE : l'egyptien ecrit
-                  # « المشهد التاني » et « المشهد التالت ».
+                  # THE SAME REASON AS AT THE SERIES: the Egyptian
+                  # writes « المشهد التاني » and « المشهد التالت ».
                   r"|المشهد\s+(?:التاني|التالت)"
                   r"|(?:पहला|दूसरा|तीसरा|चौथा)\s+दृश्य"
-                  # LE MARATHI APPELLE UNE SCENE « प्रवेश », le mot
-                  # de son theatre, la ou le hindi dit « दृश्य ».
+                  # MARATHI CALLS A SCENE « प्रवेश », the word of its
+                  # theatre, where Hindi says « दृश्य ».
                   r"|(?:पहिला|दुसरा|तिसरा|चौथा)\s+प्रवेश"
-                  # LE TELOUGOU APPELLE UNE SCENE « రంగం », le mot de
-                  # son theatre, comme le marathi dit प्रवेश : ni l'un
-                  # ni l'autre ne calque le « దృశ్యం » savant.
+                  # TELUGU CALLS A SCENE « రంగం », the word of its
+                  # theatre, as Marathi says प्रवेश: neither of them
+                  # calques the learned « దృశ్యం ».
                   r"|(?:మొదటి|రెండవ|మూడవ|నాలుగవ)\s+రంగం"
-                  # LE COREEN APPELLE UNE SCENE « 마당 », le mot de son
-                  # theatre — celui du 판소리 et du 마당놀이 — la ou le
-                  # calque sino-coreen dirait « 장 ». Troisieme colonne
-                  # de suite a preferer son propre mot de scene apres
-                  # le marathi प्रवेश et le telougou రంగం.
+                  # KOREAN CALLS A SCENE « 마당 », the word of its
+                  # theatre — that of 판소리 and 마당놀이 — where the
+                  # Sino-Korean calque would say « 장 ». The third
+                  # column in a row to prefer its own word for scene,
+                  # after the Marathi प्रवेश and the Telugu రంగం.
                   r"|(?:첫째|둘째|셋째|넷째)\s+마당"
-                  # LE TAMOUL DIT « காட்சி », le mot de son theatre.
-                  # Quatrieme colonne de suite a preferer le sien
-                  # apres le marathe प्रवेश, le telougou రంగం et le
-                  # coreen 마당 : la scene est justement ce qu'aucune
-                  # de ces langues n'emprunte.
+                  # TAMIL SAYS « காட்சி », the word of its theatre.
+                  # The fourth column in a row to prefer its own,
+                  # after the Marathi प्रवेश, the Telugu రంగం and the
+                  # Korean 마당: the scene is precisely what none of
+                  # these languages borrows.
                   r"|(?:முதல்|இரண்டாம்|மூன்றாம்|நான்காம்)\s+காட்சி"
                   r"|(?:প্রথম|দ্বিতীয়|তৃতীয়|চতুর্থ)\s+দৃশ্য"
                   r"|第[一二三四]場"
                   r"|(?:پہلا|دوجا|تیجا|چوتھا)\s+منظر"
-                  # MEME CAS POUR LA SCENE : « منظر » est le mot des
-                  # deux colonnes, et seuls les ordinaux les
-                  # separent.
+                  # THE SAME CASE FOR THE SCENE: « منظر » is the word
+                  # of both columns, and only the ordinals separate
+                  # them.
                   r"|(?:پہلا|دوسرا|تیسرا|چوتھا)\s+منظر"
-                  # MEME PLACE DE L'ORDINAL POUR LA SCENE
-                  # INDONESIENNE : « Adegan Pertama ».
+                  # THE SAME PLACEMENT OF THE ORDINAL FOR THE
+                  # INDONESIAN SCENE: « Adegan Pertama ».
                   r"|[Aa]degan\s+(?:[Pp]ertama|[Kk]edua|[Kk]etiga"
                   r"|[Kk]eempat)"
-                  # ET « adegan » EST UN MOT JAVANAIS QUE
-                  # L'INDONESIEN A EMPRUNTE — la voisine tient ici
-                  # son mot de la colonne dont elle se defend. Seuls
-                  # les ordinaux separent les deux membres.
+                  # AND « adegan » IS A JAVANESE WORD INDONESIAN HAS
+                  # BORROWED — here the neighbour holds her word from
+                  # the column that defends itself against her. Only
+                  # the ordinals separate the two members.
                   r"|[Aa]degan\s+(?:[Kk]apisan|[Kk]apindho"
                   r"|[Kk]atelu|[Kk]apat)"
-                  # MEME CAS POUR LA SCENE PERSANE : « صحنهٔ
-                  # اول ». L'ourdou dit منظر, l'arabe المشهد ; صحنه
-                  # n'est ni l'un ni l'autre.
+                  # THE SAME CASE FOR THE PERSIAN SCENE: « صحنهٔ
+                  # اول ». Urdu says منظر, Arabic المشهد; صحنه is
+                  # neither one nor the other.
                   r"|صحنهٔ?\s+(?:اول|دوم|سوم|چهارم)"
-                  # MEME TOUR POUR LA SCENE HAOUSSA : « Fage na
-                  # Farko ». « fage » est l'aire ou l'on joue —
-                  # l'arene du lutteur, la scene du theatre — et
-                  # l'ordinal suit, precede de son « na ».
+                  # THE SAME TURN FOR THE HAUSA SCENE: « Fage na
+                  # Farko ». « fage » is the ground where one plays —
+                  # the wrestler's arena, the theatre's stage — and
+                  # the ordinal follows, preceded by its « na ».
                   r"|[Ff]age\s+na\s+(?:[Ff]arko|[Bb]iyu|[Uu]ku"
                   r"|[Hh]u[ɗd]u)"
-                  # LE GUJARATI DIT « દૃશ્ય » comme le marathi dit
-                  # « दृश्य » — c'est le meme mot sanskrit —, mais dans
-                  # son ecriture a lui, et avec ses ordinaux :
-                  # પ્રથમ, બીજું, ત્રીજું, ચોથું.
+                  # GUJARATI SAYS « દૃશ્ય » as Marathi says « दृश्य »
+                  # — it is the same Sanskrit word —, but in its own
+                  # script, and with its own ordinals: પ્રથમ, બીજું,
+                  # ત્રીજું, ચોથું.
                   r"|(?:પ્રથમ|બીજું|ત્રીજું|ચોથું)\s+દૃશ્ય"
                   r"|(?:ਪਹਿਲਾ|ਦੂਜਾ|ਤੀਜਾ|ਚੌਥਾ)\s+ਦ੍ਰਿਸ਼"
-                  # LE TURC, aux deux casses ecrites a la main, pour
-                  # la raison dite plus haut a la serie.
+                  # TURKISH, in both cases written by hand, for the
+                  # reason given above at the series.
                   r"|(?:B[İi]r[İi]nc[İi]|[İi]k[İi]nc[İi]"
                   r"|[ÜüU]ç[ÜüU]nc[ÜüU]|D[ÖöO]rd[ÜüU]nc[ÜüU])"
                   r"\s+sahne\b"
-                  # LE VIETNAMIEN, meme ordre inverse qu'a la serie :
-                  # « Cảnh thứ nhất », scene ordre premier.
+                  # VIETNAMESE, the same inverted order as at the
+                  # series: « Cảnh thứ nhất », scene order first.
                   r"|cảnh\s+thứ\s+(?:nhất|hai|ba|tư)", re.I)
 
-# LE SOUS-TITRE ENTRE PARENTHESES. Le point n'est pas du meme cote d'un
-# volume a l'autre -- « (Simpla leciono pri naturcienco.) » chez Guignon,
-# « (Simple leçon d'histoire naturelle). » chez Rochelle -- et un test
-# sur la derniere lettre laissait donc le francais de cote.
-# La parenthese chinoise est pleine chasse -- « （...） » -- et son
-# point aussi : « 。 ». Les garder ne coute qu'un caractere de plus
-# dans chacune des deux classes, et le chinois compose alors comme il
-# se doit ; les remplacer par les signes latins aurait fait, dans une
-# ligne de caracteres pleine chasse, deux trous ou l'oeil bute.
+# THE SUBTITLE IN PARENTHESES. The full stop is not on the same side
+# from one volume to the other -- « (Simpla leciono pri naturcienco.) »
+# in Guignon, « (Simple leçon d'histoire naturelle). » in Rochelle --
+# and a test on the last letter therefore left the French out.
+# The Chinese parenthesis is full-width -- « （...） » -- and so is its
+# full stop: « 。 ». Keeping them costs only one more character in each
+# of the two classes, and the Chinese then sets as it should; replacing
+# them with the Latin signs would have made, in a line of full-width
+# characters, two holes where the eye stumbles.
 SUBT = re.compile(r"[(（].*[)）][\s\u3000]*[.,;:!?。、；：！？]?")
 
 
 def korpo_de(attrs):
-    """Le corps de caractere d'une ligne d'apparat, ou rien."""
+    """The type size of a display line, or nothing."""
     m = KORPO.search(attrs)
     return m.group(1) if m else ""
 
 
-# LE ROLE PREVAUT SUR LA MACRO. Les deux volumes ne composent pas de la
-# meme facon ce qui joue le meme role : le titre du tableau 8 passe par
-# \VUpk cote ido et par \VUtitre cote francais, de sorte que la page
-# donnait « La Rekolto. » en corps de texte en face d'un « La Moisson.
-# --- Les aspects de la campagne. » en gros et gras. De meme la scene :
-# italique d'un cote, romain de l'autre. Le PDF doit garder chaque
-# fac-simile tel qu'il est ; la page de lecture, elle, sert a COMPARER,
-# et deux choses qui se repondent doivent se ressembler.
+# THE ROLE PREVAILS OVER THE MACRO. The two volumes do not set in the
+# same way what plays the same role: the title of table 8 goes through
+# \VUpk on the Ido side and through \VUtitre on the French, so that the
+# page gave « La Rekolto. » in text size facing a « La Moisson. --- Les
+# aspects de la campagne. » in large and bold. The same for the scene:
+# italic on one side, roman on the other. The PDF must keep each
+# facsimile as it is; the reading page, for its part, serves to COMPARE,
+# and two things that answer each other must look alike.
 #
-# On marque donc chaque ligne d'apparat de son ROLE -- numero, titre,
-# serie, scene, section, sous-titre -- et c'est le role, non la macro,
-# que la feuille de style habille. Le role se lit sur la place et sur le
-# mot, les deux seules choses que les deux editions partagent.
+# We therefore mark each display line with its ROLE -- number, title,
+# series, scene, section, subtitle -- and it is the role, not the macro,
+# that the style sheet dresses. The role is read off the place and off
+# the word, the only two things the two editions share.
 def roles_ap(html, porte_titre=False, apres_ceno=False):
-    """Marque chaque ligne d'apparat d'un data-rolo.
+    """Marks each display line with a data-rolo.
 
-    « porte_titre » : ce bloc n'est pas une ouverture, mais il porte le
-    titre du tableau -- aux tableaux 14 et 15 le fac-simile ne met rien
-    sous le numero et le titre ouvre le premier intertitre. Sans cela il
-    se composait en petites capitales de SECTION, si bien que le titre du
-    tableau 14 ne ressemblait pas a celui du tableau 2.
+    « porte_titre »: this block is not an opening, but it carries the
+    table's title -- on tables 14 and 15 the facsimile puts nothing
+    under the number and the title opens the first subheading. Without
+    this it was set in the small capitals of a SECTION, so that the
+    title of table 14 did not look like that of table 2.
 
-    « apres_ceno » : le bloc precedent n'etait qu'un marqueur de scene,
-    et celui-ci porte donc le titre de cette scene. Aux tableaux 3, 7 et
-    9 la scene et son titre sont deux blocs ; au 4 et au 8, un seul.
+    « apres_ceno »: the previous block was only a scene marker, and this
+    one therefore carries that scene's title. On tables 3, 7 and 9 the
+    scene and its title are two blocks; on 4 and 8, a single one.
     """
     trouves = list(LIGNE_AP.finditer(html))
     lignes = [(m.group(1), m.group(2)) for m in trouves]
-    # UN ORNEMENT OU UN FILET SEPARE. Deux lignes de meme corps sont la
-    # suite d'un meme titre -- sauf si l'imprimeur a mis une vignette ou
-    # un filet entre elles, ce qui les donne pour deux choses. Les six
-    # cas de l'edition sont les ouvertures de serie : « la Delmas-tabeli
-    # helpanta » puis un fleuron puis « UNESMA SERIO », et de meme aux
-    # deuxieme et troisieme series, ou la mention de serie precede le
-    # numero du tableau. Sans cette regle on recollerait le titre du
-    # volume et le nom de la serie en une seule ligne.
+    # AN ORNAMENT OR A RULE SEPARATES. Two lines of the same size are the
+    # continuation of one title -- unless the printer has put a vignette or
+    # a rule between them, which gives them as two things. The six cases in
+    # the edition are the series openings: « la Delmas-tabeli helpanta »
+    # then a fleuron then « UNESMA SERIO », and likewise at the second and
+    # third series, where the mention of the series precedes the table's
+    # number. Without this rule we would glue the volume's title and the
+    # name of the series into a single line.
     coupe = [False] * len(trouves)
     for k in range(1, len(trouves)):
         entre = html[trouves[k - 1].end():trouves[k].start()]
         coupe[k] = 'class="orn"' in entre or 'class="fil"' in entre
     if not lignes:
-        # Quelques titres sont composes a la main, sans macro \VU, et
-        # n'ont donc aucune ligne a marquer : on prend le bloc entier.
+        # A few titles are set by hand, without a \VU macro, and therefore
+        # have no line to mark: we take the whole block.
         nu = net_tdm(html)
         if not nu:
             return html
@@ -2917,11 +2897,11 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
         elif SUBT.fullmatch(nu):
             role[k] = "subt"
 
-    # OU COMMENCE LE TITRE, ET LEQUEL. Sous le numero vient le titre du
-    # tableau ; mais si une scene s'intercale -- « Unesma ceno. » au
-    # tableau 8 -- ce qui suit titre la SCENE, non le tableau. Un titre
-    # de scene doit se composer partout de la meme facon, que le tableau
-    # en compte une ou plusieurs, et plus grand qu'un simple intertitre.
+    # WHERE THE TITLE BEGINS, AND WHICH TITLE. Under the number comes the
+    # table's title; but if a scene comes between -- « Unesma ceno. » on
+    # table 8 -- what follows titles the SCENE, not the table. A scene
+    # title must be set the same way everywhere, whether the table has one
+    # or several, and larger than a mere subheading.
     depart, ceno_avant = None, apres_ceno
     if numero is not None:
         depart = numero + 1
@@ -2940,15 +2920,15 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
                                  for k in range(numero + 1, ti))
             quel = "titceno" if ceno_avant else "tit"
             role[ti] = quel
-            # Les lignes de MEME CORPS qui suivent sont la suite du meme
-            # titre (voir la table des matieres, qui les recolle ainsi).
+            # The lines of the SAME SIZE that follow are the continuation of
+            # the same title (see the table of contents, which glues them so).
             for k in range(ti + 1, len(lignes)):
                 if not net_tdm(lignes[k][1]):
                     continue
-                # L'ornement ne change pas la NATURE de la ligne : « Les
-                # Bateaux. » reste un morceau du titre du tableau 12,
-                # comme « La Navi. » cote ido. Il empeche seulement de
-                # les recoller sur une meme ligne, plus bas.
+                # The ornament does not change the NATURE of the line: « Les
+                # Bateaux. » remains a piece of the title of table 12, as
+                # « La Navi. » does on the Ido side. It only prevents them
+                # from being glued onto one line, below.
                 if role[k] is not None or \
                         korpo_de(lignes[k][0]) != korpo_de(lignes[ti][0]):
                     break
@@ -2956,16 +2936,16 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
 
     for k in range(len(lignes)):
         if role[k] is None:
-            # Au-dessus du numero c'est l'apparat du volume lui-meme --
-            # « EXPLIKO - LIBRETO », « DI » ; au-dessous, une section.
+            # Above the number it is the display matter of the volume itself --
+            # « EXPLIKO - LIBRETO », « DI »; below it, a section.
             role[k] = "avan" if (numero is not None and k < numero) else "sekc"
 
-    # UN TITRE COUPE PAR LA COMPOSITION SE RELIT D'UN TRAIT. Le
-    # fac-simile ido casse « La Homala Korpo. --- La Amuztempo. » et
-    # « La Ludi. » sur deux lignes la ou le francais les unit d'un tiret.
-    # On les remet donc sur une ligne, avec le tiret quand la premiere
-    # s'acheve sur un point -- et sans lui quand elle s'acheve sur une
-    # virgule, ou la phrase se poursuit d'elle-meme (tableau 6).
+    # A TITLE BROKEN BY THE COMPOSITION IS READ AGAIN IN ONE BREATH. The
+    # Ido facsimile breaks « La Homala Korpo. --- La Amuztempo. » and
+    # « La Ludi. » over two lines where the French joins them with a dash.
+    # We therefore put them back on one line, with the dash when the first
+    # ends on a full stop -- and without it when it ends on a comma, where
+    # the sentence carries on of itself (table 6).
     joint = [False] * len(lignes)
     k = 0
     while k < len(lignes):
@@ -2992,8 +2972,8 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
         return f'{m.group(0)[:-1]}{att}>'
     html = OUVRE_AP.sub(poser, html)
 
-    # Le liant se pose DANS la ligne suivante, pour que la ligne garde sa
-    # propre ancre : la table des matieres compte les memes lignes.
+    # The joiner is laid IN the following line, so that the line keeps its
+    # own anchor: the table of contents counts the same lines.
     n = [0]
 
     def lier(m):
@@ -3008,10 +2988,10 @@ def roles_ap(html, porte_titre=False, apres_ceno=False):
 
 
 def joindre(morceaux):
-    """Recolle les lignes d'un meme titre, comme le fait la page."""
-    # Le meme liant qu'a l'ecran : un tiret quand la ligne precedente
-    # s'acheve sur un point, rien quand elle s'acheve sur une virgule et
-    # que la phrase se poursuit d'elle-meme.
+    """Glues the lines of one title back together, as the page does."""
+    # The same joiner as on screen: a dash when the previous line ends on
+    # a full stop, nothing when it ends on a comma and the sentence carries
+    # on of itself.
     out = ""
     for m in morceaux:
         if not out:
@@ -3024,11 +3004,11 @@ def joindre(morceaux):
 
 
 def libelle_bloc(brut):
-    """Le texte d'un bloc pour le volet, recolle comme il l'est a l'ecran."""
-    # Deux lignes de MEME CORPS sont un seul titre coupe par la
-    # composition, et se rejoignent avec le liant -- comme dans la page.
-    # Un changement de corps, ou un marqueur de scene, separe deux choses
-    # distinctes : « Unesma ceno. » et son titre gardent leur espace.
+    """A block's text for the panel, glued as it is on screen."""
+    # Two lines of the SAME SIZE are one title broken by the composition,
+    # and are rejoined with the joiner -- as in the page. A change of size,
+    # or a scene marker, separates two distinct things: « Unesma ceno. »
+    # and its title keep their space.
     paires = [(korpo_de(m.group(1)), net_tdm(m.group(2)))
               for m in LIGNE_AP.finditer(brut)]
     paires = [(c, t) for c, t in paires if t]
@@ -3036,11 +3016,11 @@ def libelle_bloc(brut):
         return net_tdm(brut)
     out = paires[0][1]
     for (corps, texte), (corps_av, texte_av) in zip(paires[1:], paires):
-        # UN SOUS-TITRE ENTRE PARENTHESES N'EST PAS LA SUITE DU TITRE,
-        # meme compose au meme corps. « Gimnastiko. » et « (Naraco da un
-        # de la lernanti.) » le sont tous deux en 10.2pt : le volet les
-        # joignait donc d'un tiret, puis otait la parenthese -- et le
-        # tiret restait tout seul, « Gimnastiko. — ».
+        # A SUBTITLE IN PARENTHESES IS NOT THE CONTINUATION OF THE TITLE,
+        # even set at the same size. « Gimnastiko. » and « (Naraco da un
+        # de la lernanti.) » are both in 10.2pt: the panel therefore joined
+        # them with a dash, then took the parenthesis off -- and the dash
+        # was left all alone, « Gimnastiko. — ».
         if corps == corps_av and not CENO.search(texte_av) \
                 and not CENO.search(texte) and not SUBT.fullmatch(texte):
             out = joindre([out, texte])
@@ -3050,19 +3030,19 @@ def libelle_bloc(brut):
 
 
 def sen_subtitro(t):
-    """Le sous-titre entre parentheses ne va pas dans le volet."""
-    # Le fac-simile precise certains titres par une parenthese --
-    # « (Naraco da un de la lernanti.) » sous « Gimnastiko. »,
-    # « (Simpla leciono pri naturcienco.) » sous « La Korpo homala. »,
-    # « (Balno-chambro.) » sous « La Balneyo. ». Cela a sa place dans la
-    # page, qui reproduit la mise en page ; dans le volet, ou l'on
-    # cherche un titre du coin de l'oeil, cela double la longueur de
-    # l'entree sans rien apprendre. On ne l'ote que si elle SUIT un
-    # titre : une entree qui ne serait que parenthese se garde entiere,
-    # faute de mieux que rien.
+    """The subtitle in parentheses does not go into the panel."""
+    # The facsimile qualifies certain titles with a parenthesis --
+    # « (Naraco da un de la lernanti.) » under « Gimnastiko. »,
+    # « (Simpla leciono pri naturcienco.) » under « La Korpo homala. »,
+    # « (Balno-chambro.) » under « La Balneyo. ». That has its place in the
+    # page, which reproduces the layout; in the panel, where one looks for
+    # a title out of the corner of one's eye, it doubles the length of the
+    # entry without teaching anything. We take it off only if it FOLLOWS a
+    # title: an entry that would be nothing but a parenthesis is kept
+    # whole, for want of anything better than nothing.
     court = re.sub(r"\s*\([^()]*\)\s*$", "", t).strip()
-    # Et le liant qui la precedait s'en va avec elle : rien ne doit rester
-    # pendu au bout de l'entree.
+    # And the joiner that preceded it goes with it: nothing must be left
+    # hanging at the end of the entry.
     court = re.sub(r"\s*[—–-]\s*$", "", court).strip()
     return court or t
 
@@ -3070,42 +3050,42 @@ def sen_subtitro(t):
 FILET = '<span class="fil"></span>'
 
 
-# LES DEUX COLONNES DOIVENT ANNONCER LA MEME CHOSE DE LA MEME FACON.
-# Le role d'une ligne d'apparat se lit sur son libelle -- « TABELO »,
-# « UNESMA SERIO », « Unesma ceno. » -- et le libelle change de langue.
-# Quand l'anglais est arrive, ses trois mots ne figuraient dans aucune
-# des listes : « CHART No. 7 » se composait comme un intertitre en face
-# d'un « TABELO No 7 » en grand et gras, et personne ne s'en apercevait
-# a la construction. On compare donc, a chaque construction, la SUITE
-# DES ROLES des colonnes.
+# THE TWO COLUMNS MUST ANNOUNCE THE SAME THING IN THE SAME WAY.
+# The role of a display line is read off its wording -- « TABELO »,
+# « UNESMA SERIO », « Unesma ceno. » -- and the wording changes with the
+# language. When the English arrived, its three words were in none of
+# the lists: « CHART No. 7 » was set like a subheading facing a
+# « TABELO No 7 » in large and bold, and nobody noticed at build time.
+# We therefore compare, at every build, the SEQUENCE OF ROLES of the
+# columns.
 #
-# LES REPETITIONS SE REPLIENT AVANT LA COMPARAISON. Un titre casse en
-# deux lignes par un atelier et d'un tenant chez l'autre donne
-# « nom, tit, tit » contre « nom, tit » : c'est la meme annonce, en
-# deux morceaux, et six ouvertures sont dans ce cas. Ce qui compte est
-# l'ENCHAINEMENT des roles, non le compte des lignes.
+# REPETITIONS ARE FOLDED BEFORE THE COMPARISON. A title broken into two
+# lines by one workshop and set whole by the other gives
+# « nom, tit, tit » against « nom, tit »: it is the same announcement,
+# in two pieces, and six openings are in that case. What counts is the
+# SEQUENCE of roles, not the count of lines.
 def suito_rolo(t):
-    """La suite des roles d'un bloc, repetitions repliees."""
+    """The sequence of a block's roles, repetitions folded."""
     return [k for k, _ in itertools.groupby(
         re.findall(r'data-rolo="([^"]+)"', t or ""))]
 
 
 def uniformiser_filets(rangi):
-    """Met le meme filet dans les deux colonnes.
+    """Puts the same rule in both columns.
 
-    Le filet est une fantaisie d'imprimeur, et les deux ateliers ne
-    l'ont pas posee aux memes endroits : le francais ferme le tableau 2
-    par un filet que l'ido n'a pas, ouvre le tableau 13 par un filet que
-    l'ido n'a pas non plus, tandis que seuls les tableaux 1, 7 et 11
-    portent un filet sous leur titre dans les DEUX volumes. En regard,
-    cela donnait un trait dans une colonne et rien en face, a la meme
-    hauteur -- et un tableau qui s'ouvre autrement que le precedent.
+    The rule is a printer's fancy, and the two workshops did not lay it
+    in the same places: the French closes table 2 with a rule the Ido
+    has not, opens table 13 with a rule the Ido has not either, while
+    only tables 1, 7 and 11 carry a rule beneath their title in BOTH
+    volumes. Face to face, that gave a line in one column and nothing
+    opposite, at the same height -- and a table that opens otherwise
+    than the previous one.
 
-    La page de lecture n'est pas le fac-simile : les PDF gardent ce que
-    l'imprimeur a compose, la page harmonise. Deux regles suffisent :
-    tout tableau s'ouvre sur un filet sous son titre, et tout filet
-    presente dans une colonne se retrouve dans l'autre. On ne touche
-    qu'a la FIN des blocs, la ou tous ces filets se trouvent deja.
+    The reading page is not the facsimile: the PDFs keep what the
+    printer composed, the page harmonises. Two rules suffice: every
+    table opens on a rule beneath its title, and every rule present in
+    one column is found in the other. We touch only the END of the
+    blocks, where all these rules already are.
     """
     pose = 0
     for r in rangi:
@@ -3137,51 +3117,50 @@ def uniformiser_filets(rangi):
 
 
 # -------------------------------------------------------------------
-#  CE QU'ON EFFACERAIT SANS RIEN DIRE
+#  WHAT WE WOULD ERASE WITHOUT SAYING SO
 # -------------------------------------------------------------------
-#  TROIS FOIS EN UN JOUR, UN CHANGEMENT ECRIT A LA MAIN DANS index.html
-#  A FAILLI DISPARAITRE : le bouton de retour vers ido.help, puis
-#  « autocapitalize » sur le champ de recherche, puis le script du meme
-#  bouton — ce dernier ajoute JUSTE SOUS le commentaire qui dit de ne
-#  pas le faire. Chaque fois la page continuait de s'afficher, et le
-#  changement n'etait plus la. Un fichier produit ne previent pas quand
-#  il oublie.
+#  THREE TIMES IN ONE DAY, A CHANGE WRITTEN BY HAND INTO index.html
+#  NEARLY DISAPPEARED: the button back to ido.help, then
+#  « autocapitalize » on the search field, then the script of that same
+#  button — the last added JUST BENEATH the comment that says not to do
+#  it. Each time the page went on displaying, and the change was no
+#  longer there. A produced file does not warn when it forgets.
 #
-#  LA COUTURE EST NETTE, ET C'EST ELLE QUI REND LE CONTROLE EXACT. La
-#  page est le gabarit avec six substitutions, pas davantage : tout ce
-#  qui n'est pas une des six valeurs vient VERBATIM du gabarit. On
-#  decoupe donc le gabarit sur ses six marques, et l'on cherche chacun
-#  des morceaux litteraux, DANS L'ORDRE, dans la page qu'on s'apprete a
-#  remplacer. Ce qui separe deux morceaux trouves est du contenu
-#  engendre, et ne regarde pas ce controle.
+#  THE SEAM IS CLEAN, AND IT IS WHAT MAKES THE CHECK EXACT. The page is
+#  the template with six substitutions, no more: everything that is not
+#  one of the six values comes VERBATIM from the template. We therefore
+#  cut the template on its six marks, and look for each of the literal
+#  pieces, IN ORDER, in the page we are about to replace. What separates
+#  two pieces found is generated content, and is no business of this
+#  check.
 #
-#  UN MORCEAU INTROUVABLE VEUT DIRE QUE L'ARMATURE A DIVERGE, dans un
-#  sens ou dans l'autre : ou bien le gabarit a change — c'est normal,
-#  on vient peut-etre de l'editer —, ou bien la page a ete retouchee a
-#  la main. On ne signale donc pas la divergence elle-meme, mais
-#  seulement les lignes qui n'existent NI dans le gabarit NI dans la
-#  page qu'on va ecrire : celles-la, et elles seules, sont sur le point
-#  d'etre perdues.
+#  A PIECE THAT CANNOT BE FOUND MEANS THE FRAME HAS DIVERGED, one way or
+#  the other: either the template has changed — that is normal, we have
+#  perhaps just edited it —, or the page has been retouched by hand. We
+#  therefore do not report the divergence itself, but only the lines
+#  that exist NEITHER in the template NOR in the page we are about to
+#  write: those, and those alone, are about to be lost.
 #
-#  APPROCHE ESSAYEE ET ABANDONNEE : comparer simplement l'ancienne page
-#  et la nouvelle, ligne a ligne, et signaler les disparues. Le releve
-#  est inutilisable — la moindre correction dans text/ en fait
-#  apparaitre des dizaines, toutes legitimes. C'est le decoupage sur
-#  les marques qui separe l'armature du contenu ; sans lui le controle
-#  crie a chaque passage, et l'on cesse de le lire.
+#  APPROACH TRIED AND ABANDONED: simply comparing the old page and the
+#  new, line by line, and reporting those that had gone. The report is
+#  unusable — the slightest correction in text/ makes dozens appear, all
+#  legitimate. It is the cutting on the marks that separates the frame
+#  from the content; without it the check cries out at every pass, and
+#  one stops reading it.
 #
-#  IL AVERTIT, IL N'INTERROMPT PAS, et c'est voulu. Une ligne qui
-#  disparait n'est pas toujours une perte : effacer une ligne du gabarit
-#  la fait disparaitre de la page aussi, et le releve la signale de la
-#  meme facon puisqu'il ne peut pas savoir laquelle des deux mains a
-#  bouge. Arreter la generation dans ce cas empecherait la suppression
-#  volontaire d'un element. On ecrit donc la page, et l'on dit ce qu'on
-#  a emporte — c'est au lecteur de reconnaitre s'il l'avait voulu.
+#  IT WARNS, IT DOES NOT INTERRUPT, and that is deliberate. A line that
+#  disappears is not always a loss: erasing a line from the template
+#  makes it disappear from the page too, and the report signals it the
+#  same way since it cannot know which of the two hands has moved.
+#  Stopping the generation in that case would prevent the deliberate
+#  removal of an element. We therefore write the page, and say what we
+#  have carried off — it is for the reader to recognise whether he
+#  wanted it.
 MARQUES = ("TITRO", "SUBTITRO", "NAV", "LINGUI", "KONTENO", "LINGUIJSON")
 
 
 def perdues(gabarito, ancienne, nouvelle):
-    """Les lignes de l'ancienne page que la nouvelle n'aura plus."""
+    """The lines of the old page the new one will no longer have."""
     morceaux = [m for m in re.split(
         r"\{\{(?:" + "|".join(MARQUES) + r")\}\}", gabarito) if m]
     pos = 0
@@ -3197,37 +3176,38 @@ def perdues(gabarito, ancienne, nouvelle):
 
 
 def rendre(rangi):
-    # LES LANGUES DIFFEREES SE RANGENT ICI PLUTOT QUE DANS LA PAGE.
-    # Tout est calcule comme pour les autres -- roles d'apparat, appels
-    # de note, boutons de renvoi -- et seul le dernier geste change :
-    # au lieu d'ecrire le texte dans la case, on le pose dans ce sac,
-    # qui partira dans lingui/<kodo>.json, et la case reste vide.
+    # THE DEFERRED LANGUAGES ARE FILED HERE RATHER THAN IN THE PAGE.
+    # Everything is computed as for the others -- display roles, note
+    # calls, cross-reference buttons -- and only the last motion changes:
+    # instead of writing the text into the cell, we put it in this bag,
+    # which will go off into lingui/<kodo>.json, and the cell stays
+    # empty.
     differe = {lg["kodo"]: {"k": {}, "noto": {}}
                for lg in LANGUES if lg.get("differita")}
     diskordi = []
 
-    # La table des matieres se tire des blocs de titre.
-    # LA TABLE DES MATIERES A TROIS RANGS, parce que le livre en a
-    # trois : le tableau, la scene, l'intertitre. Les tableaux a
-    # plusieurs parties -- 3, 4, 7, 8, 9... -- portent « Unesma ceno »
-    # et « Duesma ceno », composes en italique et non en petites
-    # capitales ; c'est ce qui les distingue, et c'est au fac-simile
-    # qu'on le lit, pas a la logique.
+    # The table of contents is drawn from the title blocks.
+    # THE TABLE OF CONTENTS HAS THREE RANKS, because the book has
+    # three: the table, the scene, the subheading. The tables with
+    # several parts -- 3, 4, 7, 8, 9... -- carry « Unesma ceno »
+    # and « Duesma ceno », set in italic and not in small capitals;
+    # that is what distinguishes them, and it is read off the
+    # facsimile, not off logic.
     def texte_de(r):
         return r["io"] or next(iter(r["tra"].values()), {}).get("t", "")
 
     tdm = []
-    # LE LIBELLE COURT DE CHAQUE OUVERTURE DE TABLEAU. La recherche
-    # masque tout ce qui ne repond pas, y compris les titres ; mais un
-    # resultat sans son tableau ne se situe pas, et l'ouverture entiere
-    # ferait quatre lignes d'apparat au-dessus de deux alineas. On garde
-    # donc ici le numero et le titre, deja calcules pour la table, et la
-    # page s'en sert comme titre courant de ses resultats.
+    # THE SHORT WORDING OF EACH TABLE OPENING. The search masks
+    # everything that does not answer, titles included; but a result
+    # without its table cannot be placed, and the whole opening would make
+    # four display lines above two paragraphs. We therefore keep here the
+    # number and the title, already computed for the table of contents, and
+    # the page uses it as a running head for its results.
     tetes = {}
-    # Un intertitre repris en titre de tableau ne s'annonce pas deux fois
-    # (voir plus bas).
+    # A subheading taken up as a table title is not announced twice
+    # (see below).
     empruntes = set()
-    # Un titre de scene annonce avec sa scene ne s'annonce pas deux fois.
+    # A scene title announced with its scene is not announced twice.
     fusionnes = set()
     net = net_tdm
     for idx, r in enumerate(rangi):
@@ -3243,48 +3223,46 @@ def rendre(rangi):
             i = next((k for k, l in enumerate(lignes_ap)
                       if NUMERO_TAB.search(l)), None)
             if i is None:
-                # PAS UNE OUVERTURE DE TABLEAU, DONC PAS UNE ENTREE.
-                # Trois blocs d'apparat tombent en cours de tableau : la
-                # note de l'editeur sur les tableaux 3 et 4, le
-                # « (Videz la plano.) » du tableau 5, l'alinea de
-                # liaison du tableau 6. Ce sont des indications de
-                # lecture, non des titres, et la table les annoncait au
-                # rang des tableaux -- « (La 3 - ma e 4 - ma tabeli esas
-                # tale kombinita ke li prizent ». La branche d'origine
-                # visait la couverture et la dedicace ; mais celles-la
-                # ne parviennent jamais ici, puisque lire_langue ecarte
-                # « 00- » et « 90- ». Elle ne ramassait plus que ces
-                # trois-la.
+                # NOT A TABLE OPENING, THEREFORE NOT AN ENTRY.
+                # Three display blocks fall in mid-table: the publisher's
+                # note on tables 3 and 4, the « (Videz la plano.) » of
+                # table 5, the linking paragraph of table 6. These are
+                # indications for reading, not titles, and the table of
+                # contents announced them at the rank of the tables --
+                # « (La 3 - ma e 4 - ma tabeli esas tale kombinita ke li
+                # prizent ». The original branch aimed at the cover and the
+                # dedication; but those never reach here, since lire_langue
+                # discards « 00- » and « 90- ». It was picking up only these
+                # three.
                 continue
             num = net(lignes_ap[i])
-            # LE TITRE NE SUIT PAS TOUJOURS LE NUMERO. Les tableaux a
-            # plusieurs scenes glissent « Unesma ceno. » entre les deux :
-            # on passe les marqueurs de scene. Et ce n'est pas non plus
-            # la DERNIERE ligne du bloc -- au tableau 2 la derniere est
-            # « (Simpla leciono pri naturcienco.) », le sous-titre d'une
-            # lecon, sous lequel la table annoncait tout le tableau.
-            # UNE SCENE AVANT LE TITRE, ET LE TABLEAU N'EN A PAS. Aux
-            # tableaux 7, 8 et 9 le numero est suivi d'un « Unesma
-            # ceno. » : ce qui vient ensuite titre la SCENE, non le
-            # tableau, et les deux volumes le disent de meme -- le
-            # francais du tableau 8 porte « Première scène. » puis « La
-            # Moisson. --- Les aspects de la campagne. ». La table
-            # annoncait pourtant ce titre de scene comme celui du
-            # tableau, qui n'en a pas.
+            # THE TITLE DOES NOT ALWAYS FOLLOW THE NUMBER. The tables with
+            # several scenes slip « Unesma ceno. » between the two: we skip
+            # the scene markers. And neither is it the LAST line of the
+            # block -- on table 2 the last is « (Simpla leciono pri
+            # naturcienco.) », the subtitle of a lesson, under which the
+            # table of contents announced the whole table.
+            # A SCENE BEFORE THE TITLE, AND THE TABLE HAS NONE. On tables
+            # 7, 8 and 9 the number is followed by an « Unesma ceno. »:
+            # what comes next titles the SCENE, not the table, and the two
+            # volumes say so alike -- the French of table 8 carries
+            # « Première scène. » then « La Moisson. --- Les aspects de la
+            # campagne. ». The table of contents nevertheless announced
+            # that scene title as the table's, which has none.
             premiere = next((k for k in range(i + 1, len(lignes_ap))
                              if net(lignes_ap[k])), None)
             ceno_dabord = premiere is not None and \
                 bool(CENO.search(net(lignes_ap[premiere])))
             ti = None if ceno_dabord else premiere
-            # UN TITRE PEUT TENIR SUR PLUSIEURS LIGNES, et c'est le CORPS
-            # qui le dit : les lignes de meme corps que la premiere sont
-            # la suite du meme titre, une ligne d'un autre corps commence
-            # autre chose. Le titre du tableau 6 tient sur deux lignes de
-            # 11.4pt, celui du 13 sur deux de 10.2pt, celui du 16 sur
-            # deux de 13.2pt ; la table coupait apres la premiere et
-            # annoncait « la Lumizado. », « La Kafeerio. », « La Ludili. »
-            # comme des sections a part -- en italique, au rang des
-            # scenes, alors qu'elles achevent le titre du tableau.
+            # A TITLE MAY RUN TO SEVERAL LINES, and it is the SIZE that
+            # says so: the lines of the same size as the first are the
+            # continuation of the same title, a line of another size begins
+            # something else. The title of table 6 holds on two lines of
+            # 11.4pt, that of table 13 on two of 10.2pt, that of table 16
+            # on two of 13.2pt; the table of contents cut after the first
+            # and announced « la Lumizado. », « La Kafeerio. », « La
+            # Ludili. » as separate sections -- in italic, at the rank of
+            # the scenes, when they finish the table's title.
             suites = []
             if ti is not None:
                 for k in range(ti + 1, len(lignes_ap)):
@@ -3297,15 +3275,15 @@ def rendre(rangi):
                             [net(lignes_ap[k]) for k in suites]) \
                 if ti is not None else ""
             if not titre and not ceno_dabord:
-                # LE TITRE EST PARFOIS HORS DU BLOC D'OUVERTURE. Aux
-                # tableaux 14 et 15, le fac-simile ido ne met
-                # sous le numero qu'un blanc, et le titre ouvre le
-                # premier intertitre qui suit -- la ou le volume
-                # francais, lui, le garde dans l'ouverture. La table
-                # annoncait donc ces cinq tableaux sous leur seul
-                # numero, « TABELO No 10 » et rien de plus. On va le
-                # chercher au premier intertitre qui n'est pas une
-                # scene, sans franchir le tableau suivant.
+                # THE TITLE IS SOMETIMES OUTSIDE THE OPENING BLOCK. On
+                # tables 14 and 15, the Ido facsimile puts nothing but a
+                # blank under the number, and the title opens the first
+                # subheading that follows -- where the French volume keeps
+                # it in the opening. The table of contents therefore
+                # announced those five tables under their number alone,
+                # « TABELO No 10 » and nothing more. We go and fetch it at
+                # the first subheading that is not a scene, without
+                # crossing into the next table.
                 for q in rangi[idx + 1:]:
                     if q["tipo"] == "apar":
                         break
@@ -3313,23 +3291,23 @@ def rendre(rangi):
                         continue
                     suite = texte_de(q)
                     if est_ceno(suite) or CENO.search(net(suite)):
-                        # Une scene ouvre le tableau : ce qui suit la
-                        # titre, elle, et le tableau reste sans titre.
-                        # C'est le cas des tableaux 7 et 9.
+                        # A scene opens the table: what follows titles
+                        # it, and the table is left without a title.
+                        # That is the case of tables 7 and 9.
                         break
                     titre = net(suite)
-                    # ET IL NE S'ANNONCE PAS DEUX FOIS. Emprunte au
-                    # premier intertitre, le titre reparaissait juste
-                    # au-dessous en sous-entree : le volet lisait
-                    # « TABELO No 10 La Maro. --- La Portuo. » puis
+                    # AND IT IS NOT ANNOUNCED TWICE. Borrowed from the
+                    # first subheading, the title reappeared just
+                    # below as a sub-entry: the panel read
+                    # « TABELO No 10 La Maro. --- La Portuo. » then
                     # « La Maro. --- La Portuo. ».
                     empruntes.add(q["cle"])
                     break
-            # LA SERIE S'ANNONCE AVANT LE TABLEAU QUI L'OUVRE, et parfois
-            # dans le bloc d'AVANT : l'ouverture du tableau 1 est coupee
-            # en deux pour loger la gravure, et « UNESMA SERIO » est
-            # reste avec l'apparat du volume. On regarde donc aussi la ou
-            # elle a pu tomber.
+            # THE SERIES IS ANNOUNCED BEFORE THE TABLE THAT OPENS IT, and
+            # sometimes in the PREVIOUS block: the opening of table 1 is
+            # cut in two to make room for the engraving, and « UNESMA
+            # SERIO » stayed with the volume's display matter. We
+            # therefore look also where it may have fallen.
             avant = lignes_ap[:i]
             if idx and rangi[idx - 1]["tipo"] == "apar":
                 avant = [m.group(2) for m in
@@ -3339,25 +3317,26 @@ def rendre(rangi):
             if serie:
                 tdm.append((None, serie.group(0).capitalize(), "parto"))
             tdm.append((r["cle"], f"<b>{num}</b> {titre}".strip(), "tt"))
-            # Le point median, comme dans la ligne d'auteur de la page :
-            # les titres portent deja des tirets cadratins, et un tiret
-            # de plus ne se distinguerait pas d'eux.
+            # The middle dot, as in the page's byline: the titles
+            # already carry em dashes, and one more dash would not be
+            # distinguished from them.
             tetes[r["cle"]] = f"{num} · {titre}" if titre else num
-            # Ce qui reste du bloc -- scene, intertitre -- vaut une
-            # entree a soi. Le titre en est ote : il est deja annonce
-            # au-dessus. Ce qui PRECEDE le numero ne compte pas : c'est
-            # l'apparat de serie, « EXPLIKO - LIBRETO », « UNESMA SERIO ».
+            # What is left of the block -- scene, subheading -- is worth
+            # an entry of its own. The title is taken out of it: it is
+            # already announced above. What PRECEDES the number does not
+            # count: it is the series display matter, « EXPLIKO -
+            # LIBRETO », « UNESMA SERIO ».
             absorbe = set()
             for j in range(i + 1, len(lignes_ap)):
                 if j == ti or j in suites or j in absorbe \
                         or not net(lignes_ap[j]):
                     continue
                 lib = net(lignes_ap[j])
-                # LA SCENE DE L'OUVERTURE EMPORTE SON TITRE, comme celles
-                # qui ont leur bloc a elles : au tableau 8 la scene et son
-                # titre sont tous deux dans l'ouverture, et le volet
-                # annoncait « Unesma ceno. », « La Rekolto. » et « La
-                # Aspekti di la Ruro. » en trois entrees.
+                # THE OPENING'S SCENE CARRIES ITS TITLE WITH IT, like those
+                # that have a block of their own: on table 8 the scene and
+                # its title are both in the opening, and the panel
+                # announced « Unesma ceno. », « La Rekolto. » and « La
+                # Aspekti di la Ruro. » as three entries.
                 if CENO.search(lib):
                     parts, k, base = [], j + 1, None
                     while k < len(lignes_ap):
@@ -3375,24 +3354,25 @@ def rendre(rangi):
                         absorbe.add(k)
                         k += 1
                     if parts:
-                        # Une espace, non le liant : le tiret ne vaut
-                        # qu'entre les lignes d'un MEME titre, et la
-                        # scene n'en est pas une.
+                        # A space, not the joiner: the dash is worth
+                        # something only between the lines of ONE title,
+                        # and the scene is not one of them.
                         lib = f"{lib} {joindre(parts)}"
                 tdm.append((f'{r["cle"]}-l{j}', lib, "sc"))
             continue
 
-        # Un intertitre : scene, ou section.
+        # A subheading: scene, or section.
         if r["cle"] in fusionnes:
             continue
         nues = [net(t) for t in lignes_ap if net(t)] or [net(brut)]
         if est_ceno(brut):
-            # LE TITRE DE LA SCENE S'ANNONCE AVEC ELLE. Aux tableaux 3, 7,
-            # 8 et 9 la scene et son titre sont deux blocs ; au 4, un
-            # seul. Le volet donnait donc « Unesma ceno. » toute seule
-            # ici et « Unesma ceno. La Mariaj-festino. » la, pour la meme
-            # chose. Quand le marqueur est seul dans son bloc, on lui
-            # rattache le bloc suivant, qui porte son titre.
+            # THE SCENE'S TITLE IS ANNOUNCED WITH IT. On tables 3, 7, 8
+            # and 9 the scene and its title are two blocks; on 4, a
+            # single one. The panel therefore gave « Unesma ceno. » all
+            # alone here and « Unesma ceno. La Mariaj-festino. » there,
+            # for the same thing. When the marker is alone in its block,
+            # we attach to it the following block, which carries its
+            # title.
             libelle = libelle_bloc(brut)
             if all(CENO.search(x) for x in nues):
                 for q in rangi[idx + 1:]:
@@ -3417,37 +3397,38 @@ def rendre(rangi):
     for r in rangi:
         cl = ["r", r["tipo"]]
         io = r["io"]
-        # LA GRAVURE PRECEDE LE BLOC QU'ELLE ILLUSTRE, et c'est la CLE
-        # qui le dit -- non le numero du tableau. La plupart des planches
-        # ouvrent leur tableau, mais pas toutes : la figure du corps
-        # humain se pose sous « La Korpo homala. », le plan de la maison
-        # sous le « (Videz la plano.) » du tableau 5, et le tableau 1
-        # entre l'apparat du volume et son propre titre -- ce pourquoi
-        # son ouverture est coupee en deux dans le releve.
+        # THE ENGRAVING PRECEDES THE BLOCK IT ILLUSTRATES, and it is the
+        # KEY that says so -- not the table's number. Most plates open
+        # their table, but not all: the figure of the human body is set
+        # under « La Korpo homala. », the house plan under the
+        # « (Videz la plano.) » of table 5, and table 1 between the
+        # volume's display matter and its own title -- which is why its
+        # opening is cut in two in the transcription.
         g = gravo.get(r["cle"])
         if g:
             v, d = g["vido"], g["detalo"]
-            # LE NOM DE FICHIER NE CHANGE PAS QUAND LA PLANCHE CHANGE.
-            # On reprend les seize gravures une a une sur leur
-            # fac-simile ; le fichier garde son nom, et le navigateur qui
-            # l'a deja vu ressert l'ancienne — celle en couleur — sans
-            # rien demander. Le lecteur croit alors que rien n'a bouge.
-            # On accroche donc a l'adresse le POIDS du fichier, que
-            # plates.json note deja : il change des que l'image change,
-            # et ne bouge pas tant qu'elle ne bouge pas.
+            # THE FILENAME DOES NOT CHANGE WHEN THE PLATE CHANGES.
+            # We are redoing the sixteen engravings one by one from their
+            # facsimile; the file keeps its name, and the browser that has
+            # already seen it serves the old one — the colour one — again
+            # without asking. The reader then believes nothing has moved.
+            # We therefore hang on the address the SIZE of the file, which
+            # plates.json already notes: it changes as soon as the image
+            # changes, and does not move as long as it does not.
             qv, qd = f"?v={v['okteti']}", f"?v={d['okteti']}"
             lignes.append(
                 f'<figure class="gravuro" data-cle="{r["cle"]}" '
                 f'data-detalo="plates/{r["cle"]}-detalo.webp{qd}" '
                 f'data-dl="{d["largeur"]}" data-dh="{d["alteso"]}">'
-                # DEUX DEFINITIONS, ET LE NAVIGATEUR CHOISIT. Sur un
-                # ecran ordinaire la vue d'ensemble suffit ; sur un
-                # Retina, ou chaque point de la page vaut deux points de
-                # l'ecran, elle paraissait floue. « sizes » dit la
-                # largeur reelle d'affichage : un telephone prend donc la
-                # petite, et seul un grand ecran dense va chercher
-                # l'image de detail -- celle-la meme qui servira au plein
-                # ecran et aux gros plans, donc jamais chargee deux fois.
+                # TWO RESOLUTIONS, AND THE BROWSER CHOOSES. On an
+                # ordinary screen the general view suffices; on a
+                # Retina, where each point of the page is worth two
+                # points of the screen, it looked blurred. « sizes »
+                # gives the real display width: a telephone therefore
+                # takes the small one, and only a large dense screen
+                # goes for the detail image -- the very one that will
+                # serve for full screen and for close-ups, hence never
+                # loaded twice.
                 f'<img src="plates/{r["cle"]}-vido.webp{qv}" alt="" '
                 f'srcset="plates/{r["cle"]}-vido.webp{qv} {v["largeur"]}w, '
                 f'plates/{r["cle"]}-detalo.webp{qd} {d["largeur"]}w" '
@@ -3466,73 +3447,72 @@ def rendre(rangi):
             pg = rang_pdf("io", r["feuillet"])
             fol = (f'<a class="fol" href="tabeli.pdf#page={pg}" '
                    f'title="Folio {r["folio"]} en la PDF">{r["folio"]}</a>')
-        # ET LA VARIANTE SE TIRE APRES LES ROLES, pour les heriter. Les
-        # roles d'apparat se lisent sur le TEXTE, par des expressions
-        # liees a la langue — « TABELO », « TABLEAU », « 图表 ». Une
-        # variante d'ECRITURE ne les porte plus : le chinois traditionnel
-        # ecrit 圖表, qu'aucune regle ne reconnaissait, et les dix-sept
-        # ouvertures perdaient leur role. La variante ne doit pas etre
-        # relue : elle doit RECEVOIR ce que sa base a compris.
-        # LE ROLE SE MARQUE AVANT L'ANCRAGE, et sur les deux colonnes :
-        # c'est lui qui les fait se ressembler. Les ouvertures et les
-        # intertitres seuls en portent ; le texte suivi n'a pas d'apparat.
+        # AND THE VARIANT IS DRAWN AFTER THE ROLES, so as to inherit
+        # them. The display roles are read off the TEXT, by expressions
+        # tied to the language — « TABELO », « TABLEAU », « 图表 ». A
+        # variant of SCRIPT no longer carries them: traditional Chinese
+        # writes 圖表, which no rule recognised, and the seventeen
+        # openings lost their role. The variant must not be read again:
+        # it must RECEIVE what its base has understood.
+        # THE ROLE IS MARKED BEFORE THE ANCHORING, and on both columns:
+        # it is what makes them look alike. Only the openings and the
+        # subheadings carry any; running text has no display matter.
         if r["tipo"] in ("apar", "sub"):
             porte = r["cle"] in empruntes
             io = roles_ap(io, porte, apres_ceno)
             for lg in LANGUES:
                 if lg.get("kalko"):
-                    continue        # la variante herite, elle ne se relit pas
+                    continue        # the variant inherits, it is not read again
                 o = r["tra"].get(lg["kodo"])
                 if o and o["t"]:
                     o["t"] = roles_ap(o["t"], porte, apres_ceno)
-                    # Le controle se fait ICI, la ou les deux colonnes
-                    # sont marquees : le role de l'ido n'est pose que
-                    # dans une variable locale, et ne survit pas au
-                    # rendu.
+                    # The check is done HERE, where both columns are
+                    # marked: the Ido's role is laid only in a local
+                    # variable, and does not survive the rendering.
                     a, b = suito_rolo(io), suito_rolo(o["t"])
                     if a and b and a != b:
                         diskordi.append((r["cle"], lg["kodo"], a, b))
-            # Le bloc suivant porte-t-il le titre de cette scene ? Oui si
-            # celui-ci s'acheve sur un marqueur de scene. C'est l'ido qui
-            # en decide : la colonne de droite le suit.
+            # Does the following block carry this scene's title? Yes if
+            # this one ends on a scene marker. It is the Ido that
+            # decides: the right-hand column follows it.
             derniers = re.findall(r'data-rolo="([^"]*)"', io)
             apres_ceno = bool(derniers) and derniers[-1] == "ceno"
         elif r["tipo"] == "p":
             apres_ceno = False
-        # ET LA VARIANTE SE TIRE APRES LES ROLES, pour les heriter. Les
-        # roles d'apparat se lisent sur le TEXTE, par des expressions
-        # liees a la langue — « TABELO », « TABLEAU », « 图表 ». Une
-        # variante d'ECRITURE ne les porte plus : le chinois traditionnel
-        # ecrit 圖表, qu'aucune regle ne reconnait, et les dix-sept
-        # ouvertures perdaient leur role. La variante ne doit pas etre
-        # relue : elle doit RECEVOIR ce que sa base a compris.
+        # AND THE VARIANT IS DRAWN AFTER THE ROLES, so as to inherit
+        # them. The display roles are read off the TEXT, by expressions
+        # tied to the language — « TABELO », « TABLEAU », « 图表 ». A
+        # variant of SCRIPT no longer carries them: traditional Chinese
+        # writes 圖表, which no rule recognises, and the seventeen
+        # openings lost their role. The variant must not be read again:
+        # it must RECEIVE what its base has understood.
         deriver_rango(r, PAROJ)
-        # Les lignes d'apparat recoivent une ancre chacune : la table
-        # des matieres renvoie a la scene, pas seulement au tableau.
+        # The display lines each receive an anchor: the table of
+        # contents refers to the scene, not only to the table.
         if r["tipo"] == "apar":
             n = [0]
 
             def ancrer(m):
                 n[0] += 1
-                # Les attributs de la ligne sont recopies : data-korpo
-                # doit survivre a l'ancrage.
+                # The line's attributes are copied over: data-korpo
+                # must survive the anchoring.
                 return (f'<span id="{r["cle"]}-l{n[0]-1}" '
                         f'class="{m.group(1)}"{m.group(2)}>')
-            # OUVRE_AP, et non « ln » seul : la table compte aussi les
-            # lignes « pk », et les deux numerotations doivent coincider.
+            # OUVRE_AP, and not « ln » alone: the table of contents also
+            # counts the « pk » lines, and the two numberings must coincide.
             io = OUVRE_AP.sub(ancrer, io)
         cel_io = f'<div class="k io" lang="io">{fol}{io}</div>' if io else \
                  '<div class="k io vaka" lang="io"></div>'
         cel = [cel_io]
         for lg in LANGUES:
             k = lg["kodo"]
-            # L'ARABE S'ECRIT DE DROITE A GAUCHE, et il faut le dire au
-            # navigateur : sans « dir », les renvois entre parentheses
-            # et la ponctuation finale se rangeaient du mauvais cote de
-            # la ligne — « (13) » passait a gauche du mot qu'il numerote.
-            # La case est marquee, non la page : les autres colonnes
-            # gardent leur sens, et la marque tient sur la seule langue
-            # qui en a besoin.
+            # ARABIC IS WRITTEN FROM RIGHT TO LEFT, and the browser must
+            # be told: without « dir », the cross-references in
+            # parentheses and the final punctuation were filed on the
+            # wrong side of the line — « (13) » went to the left of the
+            # word it numbers. The cell is marked, not the page: the
+            # other columns keep their direction, and the mark holds on
+            # the one language that needs it.
             sens = "" if lg["dir"] == "ltr" else f' dir="{lg["dir"]}"'
             o = r["tra"].get(k)
             if o:
@@ -3542,10 +3522,10 @@ def rendre(rangi):
                     f2 = (f'<a class="fol fd" href="tableaux.pdf#page={pg2}" '
                           f'title="Folio {o["f"]} dans le PDF">{o["f"]}</a>')
                 if k in differe:
-                    # La case est vide dans le fichier ET marquee « dif » :
-                    # c'est a cette marque que le CSS sait ne pas y mettre
-                    # le tiret des vraies lacunes, et que le script sait
-                    # qu'il a quelque chose a y verser.
+                    # The cell is empty in the file AND marked « dif »: it is
+                    # by that mark that the CSS knows not to put in it the
+                    # dash of the real gaps, and that the script knows it has
+                    # something to pour into it.
                     differe[k]["k"][r["cle"]] = f2 + o["t"]
                     cel.append(f'<div class="k tra vaka dif" '
                                f'data-lg="{k}" lang="{k}"{sens}></div>')
@@ -3556,20 +3536,20 @@ def rendre(rangi):
                 cel.append(f'<div class="k tra vaka" data-lg="{k}" '
                            f'lang="{k}"{sens}></div>')
         if r["tipo"] == "noto":
-            # La note se rend a part : elle n'est pas un rang a deux
-            # colonnes mais un depli attache a l'alinea qui l'appelle.
-            # UNE NOTE PAR LANGUE, et l'identifiant porte la langue :
-            # le bouton d'appel est pose dans une colonne, il doit
-            # ouvrir la note de CETTE colonne. Sans la langue dans
-            # l'identifiant, le bouton francais ouvrait la note ido —
-            # ou, plus souvent, n'ouvrait rien du tout.
+            # The note is rendered apart: it is not a two-column row but
+            # a fold-out attached to the paragraph that calls it.
+            # ONE NOTE PER LANGUAGE, and the identifier carries the
+            # language: the call button is set in a column, it must open
+            # the note of THAT column. Without the language in the
+            # identifier, the French button opened the Ido note — or,
+            # more often, opened nothing at all.
             for k, txt in [("io", r["io"])] + [
                     (lg["kodo"], (r["tra"].get(lg["kodo"]) or {}).get("t"))
                     for lg in LANGUES]:
-                # La case de rang a ete construite plus haut, avant qu'on
-                # sache que ce bloc etait une note : elle ne sera pas
-                # rendue, et ce qu'on avait mis de cote pour elle ferait
-                # double emploi avec la note elle-meme.
+                # The row's cell was built above, before we knew this
+                # block was a note: it will not be rendered, and what we
+                # had set aside for it would be redundant with the note
+                # itself.
                 if k in differe:
                     differe[k]["k"].pop(r["cle"], None)
                 if txt:
@@ -3591,9 +3571,9 @@ def rendre(rangi):
         f'<option value="{lg["kodo"]}">{lg["nomo"]}</option>'
         for lg in LANGUES)
 
-    # L'ADRESSE PORTE LE POIDS DU FICHIER, comme celle des gravures :
-    # le navigateur qui a deja lu une version de la traduction ne doit
-    # pas la resservir quand elle a change.
+    # THE ADDRESS CARRIES THE FILE'S SIZE, like that of the engravings:
+    # the browser that has already read one version of the translation must
+    # not serve it again when it has changed.
     dos = RACINE / "lingui"
     dos.mkdir(exist_ok=True)
     for lg in LANGUES:
