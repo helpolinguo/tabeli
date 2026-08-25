@@ -52,6 +52,8 @@ BOOK = {
                   "la transskribo di ca libro.",
         "fonte": "XCharter-TLF",
         "gras": "ntxtlf",
+        "corps": 10.93,
+        "corps_noto": 9.09, "interligno_noto": 9.72,
     },
     "fr": {
         "titre": "Livret explicatif des Tableaux Auxiliaires Delmas",
@@ -61,13 +63,15 @@ BOOK = {
                   "la transcription de ce livre.",
         "fonte": "XCharter-TLF",
         "gras": "ntxtlf",
+        "corps": 10.70,
+        "corps_noto": 8.45, "interligno_noto": 9.03,
     },
 }
 
 
 def survey(lang):
     inv = json.loads(
-        (ROOT / "tools" / f"inv-{lang}.json").read_text(encoding="utf-8"))
+        (ROOT / "tools" / f"inventory-{lang}.json").read_text(encoding="utf-8"))
     p = {int(k): v for k, v in inv.items()
          if not v.get("vide") and v.get("lignes", 0) >= MIN_LINES}
     L = np.array([v["largeur"] for v in p.values()], float)
@@ -102,17 +106,32 @@ def write_(lang, height_mm):
 
     step_mm = mm(r["pas"])
     step_pt = step_mm / MM_PER_PT
-    # The size follows from the pitch. The current leading of the bookwork
-    # printing of that period is 1.20 times the size; the ratio is verified
-    # page by page by check 11, which compares the composed baseline with the
-    # surveyed baseline.
-    size_pt = step_pt / 1.20
+    # THE SIZE IS MEASURED, NOT DEDUCED FROM THE PITCH. It was first taken
+    # as `size = pitch / 1.20`, the usual leading of the bookwork printing
+    # of the period. Compiled, that gave 294 SHORT LINES over 100 pages for
+    # the Ido and 1179 over 84 for the French -- one line in three failed to
+    # reach the margin, and TeX spread the words to fill it. A ratio is not
+    # a measurement.
+    #
+    # The transcription is diplomatic, so we hold the exact text of every
+    # line of the facsimile: the right size is the one at which THOSE lines,
+    # in the surveyed measure, fill their measure as they fill it on the
+    # paper. tools/chaso.py sweeps the sizes, compiles, and counts. The
+    # minimum is clear on both sides -- 21 loose lines out of some 3700 for
+    # the Ido at 10.93pt, 42 out of some 3400 for the French at 10.70pt --
+    # and it puts the leading at very nearly nothing: composition "solid",
+    # normal for a cheap booklet of that date, and a long way from 1.20.
+    #
+    # The value therefore lives in BOOK, beside the rest of what was
+    # measured on each booklet, and this generator no longer reverts it.
+    # See docs/journal.md, "The size: the 1.20 ratio was wrong".
+    size_pt = bk["corps"]
 
     txt = f"""% ===================================================================
-%  kalibro-{lang}.tex — EVERY measurement of the facsimile « {bk['titre']} ».
+%  calibrate-{lang}.tex — EVERY measurement of the facsimile « {bk['titre']} ».
 %  FILE PRODUCED by tools/calibrate.py: do not edit it by hand.
 %  One constant alone is physical — the width of the paper — and it is
-%  passed as an argument. All the rest comes from tools/inv-{lang}.json.
+%  passed as an argument. All the rest comes from tools/inventory-{lang}.json.
 %
 %  Survey: {r['n']} pages of {MIN_LINES} lines or more.
 %    justification  {r['largeur']:.0f} px  (standard dev. {r['largeur_et']:.0f})
@@ -126,6 +145,11 @@ def write_(lang, height_mm):
 %  {paper_mm:.1f} mm wide.
 % ===================================================================
 
+% THE LANGUAGE IS DECLARED HERE because preamble.tex reads it back:
+% \\InputIfFileExists{{body-\\VUlangue.tex}} loads the per-page sizes. The
+% line was in the file and NOT in this generator, so every run of
+% calibrate.py destroyed it and the next build silently lost body-*.tex.
+\\newcommand{{\\VUlangue}}{{{lang}}}
 \\newcommand{{\\VUmarque}}{{{bk['marque']}}}
 
 % 1. GEOMETRY
@@ -147,8 +171,16 @@ def write_(lang, height_mm):
 % 2. SIZE AND LEADING
 \\newcommand{{\\VUinterligne}}{{{step_pt:.2f}pt}}
 \\newcommand{{\\VUcorps}}{{{size_pt:.2f}pt}}
-\\newcommand{{\\VUcorpsNote}}{{{size_pt * 0.77:.2f}pt}}
-\\newcommand{{\\VUinterligneNote}}{{{step_pt * 0.80:.2f}pt}}
+% THE NOTE'S SIZE AND LEADING ARE MEASURED TOO, and no ratio reproduces
+% them. They stood at 9.09 on 9.72 (io) and 8.45 on 9.03 (fr) in the
+% files this generator claims to produce, while the generator wrote
+% 0.77 x the size and 0.80 x the leading -- four values that answer to
+% no rule and to no pair of ratios: 9.09/10.93 is 0.832, 8.45/10.70 is
+% 0.790. They are what the two volumes have been set in and shipped
+% with. Recording them here as data, beside the size, keeps them: the
+% ratios would have quietly reset the note of both books.
+\\newcommand{{\\VUcorpsNote}}{{{bk['corps_noto']:.2f}pt}}
+\\newcommand{{\\VUinterligneNote}}{{{bk['interligno_noto']:.2f}pt}}
 % Paragraph indent: provisional, to be surveyed (tools/measures.py).
 \\newcommand{{\\VUalinea}}{{{mm(r['largeur']) * 0.05:.2f}mm}}
 \\newcommand{{\\VUalineaNote}}{{{mm(r['largeur']) * 0.04:.2f}mm}}
@@ -169,8 +201,8 @@ def write_(lang, height_mm):
 \\newcommand{{\\VUratioGras}}{{0.98}}
 """
     # The file is written as it stands: it is a product, not a source.
-    (ROOT / f"kalibro-{lang}.tex").write_text(txt, encoding="utf-8")
-    print(f"kalibro-{lang}.tex written  ({pxmm:.3f} px/mm ; "
+    (ROOT / f"calibrate-{lang}.tex").write_text(txt, encoding="utf-8")
+    print(f"calibrate-{lang}.tex written  ({pxmm:.3f} px/mm ; "
           f"size {size_pt:.2f} pt on {step_pt:.2f} pt)")
 
 

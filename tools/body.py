@@ -51,7 +51,7 @@ GAP = [-0.30, -0.15, 0.0, 0.15, 0.30, 0.45, 0.60, 0.75, 0.90,
 
 
 def global_size(lang):
-    kal = (ROOT / f"kalibro-{lang}.tex").read_text(encoding="utf-8")
+    kal = (ROOT / f"calibrate-{lang}.tex").read_text(encoding="utf-8")
     return float(re.search(r"\\VUcorps\}\{([\d.]+)pt", kal).group(1))
 
 
@@ -75,9 +75,9 @@ def trial(lang, file_, size, tmp):
     env = tmp / "essai.tex"
     env.write_text(
         f"\\documentclass{{article}}\n"
-        f"\\input{{{ROOT}/kalibro-{lang}}}\n"
+        f"\\input{{{ROOT}/calibrate-{lang}}}\n"
         f"\\renewcommand{{\\VUcorps}}{{{size:.2f}pt}}\n"
-        f"\\input{{{ROOT}/preambule}}\n"
+        f"\\input{{{ROOT}/preamble}}\n"
         f"\\hbadness=0 \\hfuzz=0pt\n"
         f"\\begin{{document}}\n"
         f"\\input{{{file_}}}\n"
@@ -145,18 +145,18 @@ def hand():
             lines.append(f"\\VUkorpoPage{{{leaf}}}{{{c:.2f}pt}}")
 
     header = (
-        f"% korpi-{lang}.tex — the size proper to each page.\n"
+        f"% body-{lang}.tex — the size proper to each page.\n"
         f"% FILE PRODUCED by tools/body.py: do not edit it by hand. For\n"
         f"% each page, the largest size that makes none of its lines\n"
         f"% overflow. Global size: {base:.2f}pt.\n"
         f"% {len(lines)} pages out of {len(choisis)} receive a value of\n"
         f"% their own; the others keep the global size.\n\n")
-    (ROOT / f"korpi-{lang}.tex").write_text(
+    (ROOT / f"body-{lang}.tex").write_text(
         header + "\n".join(lines) + "\n", encoding="utf-8")
 
     import statistics
     v = sorted(choisis.values())
-    print(f"\nkorpi-{lang}.tex : {len(lines)}/{len(choisis)} pages "
+    print(f"\nbody-{lang}.tex : {len(lines)}/{len(choisis)} pages "
           f"have a size of their own")
     print(f"  global size {base:.2f}pt ; per page: "
           f"min {v[0]:.2f}  median {statistics.median(v):.2f}  "

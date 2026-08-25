@@ -72,7 +72,7 @@ def blank_leaves(name_):
     """Leaves with no ink block, from tools/inventory-<language>.json."""
     import json
     lg = {"ido": "io", "fra": "fr"}[name_]
-    f = ROOT / "tools" / f"inv-{lg}.json"
+    f = ROOT / "tools" / f"inventory-{lg}.json"
     if not f.exists():
         return set()
     inv = json.loads(f.read_text(encoding="utf-8"))
@@ -105,7 +105,7 @@ def check_6(fault):
     import json
     import statistics
     for name_, lg in (("ido", "io"), ("fra", "fr")):
-        f = ROOT / "tools" / f"inv-{lg}.json"
+        f = ROOT / "tools" / f"inventory-{lg}.json"
         if not f.exists():
             continue
         inv = json.loads(f.read_text(encoding="utf-8"))

@@ -92,7 +92,7 @@ def x_height_of_page(path):
 
 def hand():
     lang = sys.argv[1] if len(sys.argv) > 1 else "io"
-    inv = json.loads((ROOT / "tools" / f"inv-{lang}.json")
+    inv = json.loads((ROOT / "tools" / f"inventory-{lang}.json")
                      .read_text(encoding="utf-8"))
     solid_ = sorted(int(k) for k, v in inv.items()
                      if not v.get("vide") and v.get("lignes", 0) >= 35)
@@ -122,7 +122,7 @@ def hand():
     r = float(np.median(ratios))
 
     import re as _re
-    kal = (ROOT / f"kalibro-{lang}.tex").read_text(encoding="utf-8")
+    kal = (ROOT / f"calibrate-{lang}.tex").read_text(encoding="utf-8")
     width_mm = float(_re.search(
         r"\\VUtexteLargeur\}\{([\d.]+)mm", kal).group(1))
     xh_mm = r * width_mm

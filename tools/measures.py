@@ -23,7 +23,7 @@ MIN_LINES = 25
 
 
 def load_(lang):
-    p = ROOT / "tools" / f"inv-{lang}.json"
+    p = ROOT / "tools" / f"inventory-{lang}.json"
     return json.loads(p.read_text(encoding="utf-8"))
 
 

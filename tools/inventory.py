@@ -192,7 +192,7 @@ def hand():
         print(f"{n:3d}  block {x0:5d},{y0:5d} → {x1:5d},{y1:5d}"
               f"  w={x1-x0+1:5d}  lines={len(bases):3d}"
               f"  step={out[n]['pas']}")
-    (ROOT / "tools" / f"inv-{lang}.json").write_text(
+    (ROOT / "tools" / f"inventory-{lang}.json").write_text(
         json.dumps(out, indent=1), encoding="utf-8")
 
 

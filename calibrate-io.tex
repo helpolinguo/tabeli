@@ -1,60 +1,72 @@
 % ===================================================================
-%  calibrate-io.tex — TOUTES les mesures du fac-simile « Expliko-Libreto di la Delmas-Tabeli helpanta ».
-%  Fichier PRODUIT par outils/kalibro.py : ne pas le modifier a la main.
-%  Une seule constante y est physique — la largeur du papier — et elle
-%  est passee en argument. Tout le reste vient de outils/inv-io.json.
+%  calibrate-io.tex — EVERY measurement of the facsimile « Expliko-Libreto di la Delmas-Tabeli helpanta ».
+%  FILE PRODUCED by tools/calibrate.py: do not edit it by hand.
+%  One constant alone is physical — the width of the paper — and it is
+%  passed as an argument. All the rest comes from tools/inventory-io.json.
 %
-%  Releve : 62 pages de 35 lignes ou plus.
-%    justification  1456 px  (ecart-type 320)
-%    hauteur bloc   2762 px
-%    pas des lignes 75.25 px  (ecart-type 15.41)
-%    image de page  1917 x 3300 px
-%    marge gauche   206 px
-%    1re ligne a    120 px du bord
-%  Echelle retenue : 18.333 px/mm, prise sur une hauteur de papier
-%  de 180 mm (notice de bibliotheque) ; la page mesure alors
-%  104.6 mm de large.
+%  Survey: 62 pages of 35 lines or more.
+%    justification  1456 px  (standard dev. 320)
+%    block height   2762 px
+%    line pitch     75.25 px  (standard dev. 15.41)
+%    page image     1917 x 3300 px
+%    left margin    206 px
+%    1st line at    120 px from the edge
+%  Scale adopted: 18.333 px/mm, taken on a paper height of
+%  180 mm (library record); the page is then
+%  104.6 mm wide.
 % ===================================================================
 
+% THE LANGUAGE IS DECLARED HERE because preamble.tex reads it back:
+% \InputIfFileExists{body-\VUlangue.tex} loads the per-page sizes. The
+% line was in the file and NOT in this generator, so every run of
+% calibrate.py destroyed it and the next build silently lost body-*.tex.
 \newcommand{\VUlangue}{io}
 \newcommand{\VUmarque}{Gilles-Philippe Morin kompris, skanis e direktis la transskribo di ca libro.}
 
-% 1. GEOMETRIE
+% 1. GEOMETRY
 \newcommand{\VUpapierLargeur}{104.56mm}
 \newcommand{\VUpapierHauteur}{180.00mm}
 \newcommand{\VUtexteLargeur}{79.42mm}
 \newcommand{\VUtexteHauteur}{150.65mm}
-% LE FOLIO EST LA PREMIERE ENCRE DE LA PAGE, LE TEXTE VIENT APRES.
-% Premiere version : les deux ordonnees etaient egales, et le folio se
-% composait DANS la premiere ligne de texte — « 6 » barrait « esas » au
-% folio 6. La mesure de outils/inventaire.py donne le haut du BLOC
-% D'ENCRE, c'est-a-dire le folio sur toute page foliotee ; le corps du
-% texte commence un rang plus bas. On ajoute donc un pas de ligne, et
-% les pages sans folio (ouvertures de tableau) commencent a la meme
-% ordonnee que les autres, comme au fac-simile.
+% THE FOLIO IS THE PAGE'S FIRST INK, THE TEXT COMES AFTER.
+% First version: the two ordinates were equal, and the folio was set
+% INSIDE the first line of text — « 6 » struck through « esas » on
+% folio 6. The measurement from tools/inventory.py gives the top of the
+% BLOCK OF INK, that is, the folio on every foliated page; the body of
+% the text begins one row lower. We therefore add one line pitch, and
+% the pages without a folio (table openings) begin at the same ordinate
+% as the others, as in the facsimile.
 \newcommand{\VUmargeSup}{10.68mm}
 \newcommand{\VUfolioY}{6.57mm}
 
-% 2. CORPS ET INTERLIGNAGE
+% 2. SIZE AND LEADING
 \newcommand{\VUinterligne}{11.68pt}
 \newcommand{\VUcorps}{10.93pt}
+% THE NOTE'S SIZE AND LEADING ARE MEASURED TOO, and no ratio reproduces
+% them. They stood at 9.09 on 9.72 (io) and 8.45 on 9.03 (fr) in the
+% files this generator claims to produce, while the generator wrote
+% 0.77 x the size and 0.80 x the leading -- four values that answer to
+% no rule and to no pair of ratios: 9.09/10.93 is 0.832, 8.45/10.70 is
+% 0.790. They are what the two volumes have been set in and shipped
+% with. Recording them here as data, beside the size, keeps them: the
+% ratios would have quietly reset the note of both books.
 \newcommand{\VUcorpsNote}{9.09pt}
 \newcommand{\VUinterligneNote}{9.72pt}
-% Renfoncement d'alinea : provisoire, a relever (outils/mesures.py).
+% Paragraph indent: provisional, to be surveyed (tools/measures.py).
 \newcommand{\VUalinea}{3.97mm}
 \newcommand{\VUalineaNote}{3.18mm}
 \newcommand{\VUblancAlineaValeur}{2.22pt}
 \newcommand{\VUblancNote}{2.92pt}
 \newcommand{\VUfiletnoteLargeur}{21.44mm}
 
-% 3. ESPACE-MOT
-% Largeur proche de celle de la fonte, elasticite large : chaque ligne
-% trouve sa mesure sans que TeX ait a couper ailleurs qu'au point releve.
+% 3. WORD SPACE
+% Width close to the font's own, elasticity wide: every line finds its
+% measure without TeX having to break anywhere but at the surveyed point.
 \newcommand{\VUespaceRatio}{0.32}
 \newcommand{\VUespaceEtire}{0.30}
 \newcommand{\VUespaceSerre}{0.14}
 
-% 4. FONTES
+% 4. FONTS
 \newcommand{\VUfonte}{XCharter-TLF}
 \newcommand{\VUfonteGras}{ntxtlf}
 \newcommand{\VUratioGras}{0.98}
