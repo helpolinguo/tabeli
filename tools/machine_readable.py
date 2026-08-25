@@ -157,9 +157,9 @@ def hand() -> None:
                     for k in list_]},
         ensure_ascii=False, indent=1), encoding='utf-8')
 
-    print('  %d rangees' % len(rows))
+    print('  %d rows' % len(rows))
     for n in ('tabeli.json', 'tabeli.md'):
-        print('  %-16s %10s octets' % (n, format((ROOT / n).stat().st_size, ',')))
+        print('  %-16s %10s bytes' % (n, format((ROOT / n).stat().st_size, ',')))
     print('  lingui/index.json  %d languages' % len(list_))
 
 

@@ -3585,8 +3585,8 @@ def render(rows):
                                 separators=(",", ":")) + "\n",
                      encoding="utf-8")
         lg["adreso"] = f'lingui/{lg["kodo"]}.json?v={f.stat().st_size}'
-        print(f'  {f.relative_to(ROOT)} : {len(d["k"])} bloki, '
-              f'{f.stat().st_size // 1024} Ko')
+        print(f'  {f.relative_to(ROOT)} : {len(d["k"])} blocks, '
+              f'{f.stat().st_size // 1024} kB')
 
     template = (ROOT / "tools" / "template.html").read_text(encoding="utf-8")
     page = (template
@@ -3614,8 +3614,8 @@ def render(rows):
     target.write_text(page, encoding="utf-8")
     for key, lg, a, b in discordant:
         print(f"  ROLES DISCORDANTS {key} : io {a} / {lg} {b}")
-    print(f"index.html written: {len(rows)} bloki, "
-          f"{sum(1 for r in rows if r['tipo'] == 'p')} alinei")
+    print(f"index.html written: {len(rows)} blocks, "
+          f"{sum(1 for r in rows if r['tipo'] == 'p')} paragraphs")
 
 
 if __name__ == "__main__":
