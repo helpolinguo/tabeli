@@ -55,32 +55,32 @@
  ]
 }
 </script>
-<!-- LE BOUTON DE RETOUR VERS ido.help. Deux lignes seulement — cette
-     feuille-ci et l'ancre en fin de document — et son apparence n'est
-     dans aucune des deux : elle est dans /shared.css, servi depuis la
-     racine du site, que les trois livres partagent. C'est ce qui
-     garantit que le bouton est identique sur les trois, et que le
-     retoucher se fait a un seul endroit.
+<!-- THE BUTTON BACK TO ido.help. Two lines only — this sheet and the
+     anchor at the end of the document — and its appearance is in
+     neither: it is in /shared.css, served from the root of the site,
+     which the three books share. That is what guarantees the button is
+     identical on all three, and that retouching it is done in one
+     place.
 
-     CES LIGNES ONT D'ABORD ETE POSEES DANS index.html, QUI EST UN
-     FICHIER PRODUIT. La generation suivante les aurait effacees sans
-     rien dire : html.py reecrit la page entiere a partir de ce
-     gabarit. Elles sont donc ici, et nulle part ailleurs.
+     THESE LINES WERE FIRST LAID IN index.html, WHICH IS A PRODUCED
+     FILE. The next build would have erased them without a word:
+     html.py rewrites the whole page from this template. They are
+     therefore here, and nowhere else.
 
-     TROIS FOIS LA LECON S'EST PAYEE, ET LE COMMENTAIRE CI-DESSUS ETAIT
-     DEJA LA LES DEUX DERNIERES FOIS : le bouton de retour d'abord, puis
-     « autocapitalize » sur le champ de recherche, puis ce script-ci,
-     ajoute dans index.html juste SOUS ces lignes qui disent de ne pas
-     le faire. Un fichier produit ne previent pas quand il oublie : la
-     page continue de s'afficher, et le changement a disparu. -->
+     THE LESSON HAS BEEN PAID FOR THREE TIMES, AND THE COMMENT ABOVE WAS
+     ALREADY THERE THE LAST TWO: the back button first, then
+     « autocapitalize » on the search field, then this very script,
+     added to index.html just BENEATH these lines that say not to do it.
+     A produced file does not warn when it forgets: the page goes on
+     displaying, and the change has gone. -->
 <link rel="stylesheet" href="/shared.css">
 <script src="/shared.js" defer></script>
 <style>
 :root{--enk:#1a1a1a;--pap:#fbfaf7;--sub:#6b6560;--acc:#7a4b2a;--lin:#e2ddd5;
  --pap2:#f4f1ea;--flag:#b4552d;
- /* La hauteur des trois commandes de la barre. Voir « LES TROIS
-    COMMANDES SONT UNE RANGEE » plus bas : elle est ici parce qu'elle
-    vaut pour trois regles qui ne se touchent pas. */
+ /* The height of the bar's three controls. See « THE THREE CONTROLS
+    ARE ONE ROW » below: it is here because it holds for three rules
+    that do not touch. */
  --kmd:42px}
 @media(prefers-color-scheme:dark){:root{--enk:#e8e4de;--pap:#16161a;--sub:#9a938c;
  --acc:#d69a6a;--lin:#2c2c33;--pap2:#1c1c21;--flag:#e08a5c}}
@@ -88,20 +88,20 @@
 body{margin:0;background:var(--pap);color:var(--enk);
  font:16px/1.55 "Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif}
 
-/* L'ANCRE S'ARRETE SOUS LA BARRE. La barre est « sticky » : elle
-   recouvre le haut de la page, et un saut vers #t02-apar-1 amenait la
-   cible a zero, donc DERRIERE elle -- le titre ido du tableau etait
-   cache, et la lecture commencait au milieu du bloc. La barre se
-   mesurait bien dans --kapo, mais cette mesure ne servait qu'a poser le
-   volet lateral ; rien ne la retranchait du saut. Une seule declaration
-   sur le conteneur de defilement suffit, et vaut pour toutes les cibles
-   -- les blocs comme les lignes d'apparat, qui sont des <span>. */
+/* THE ANCHOR STOPS BENEATH THE BAR. The bar is « sticky »: it covers
+   the top of the page, and a jump to #t02-apar-1 brought the target to
+   zero, hence BEHIND it -- the table's Ido title was hidden, and the
+   reading began in the middle of the block. The bar was measured
+   properly into --kapo, but that measurement served only to place the
+   side panel; nothing subtracted it from the jump. A single declaration
+   on the scrolling container suffices, and holds for every target --
+   the blocks as well as the display lines, which are <span>s. */
 html{scroll-padding-top:calc(var(--kapo,104px) + 12px)}
 
-/* --- LA BARRE. Elle est glutinoza : ol restas sur la ecrano dum la
-   lekto. Sua alteso ne esas fixa -- du lineo de titulo sur telefono --
-   do la skripto mezuras ol e pozas ol en --kapo ; omna ancero haltas
-   sub ol. --- */
+/* --- THE BAR. It is sticky: it stays on the screen while one reads.
+   Its height is not fixed -- two lines of title on a telephone -- so
+   the script measures it and lays it in --kapo; every anchor stops
+   beneath it. --- */
 header{position:sticky;top:0;background:var(--pap);border-bottom:1px solid var(--lin);
  padding:13px 20px 11px;z-index:20;
 
@@ -135,121 +135,121 @@ h1{margin:0 0 2px;font-size:17px;font-weight:600;letter-spacing:.01em}
 .dl svg{display:block;width:15px;height:15px;stroke:currentColor;fill:none;
  stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:700px){.dl span{display:none}.dl{padding:7px 9px}}
-/* ET LE SOMMAIRE PERD SON MOT COMME LES TELECHARGEMENTS PERDENT LES
-   LEURS. Le globe pose devant le nom de langue coute 21 px, et la barre
-   d'un iPhone n'en avait pas 21 : elle passait a trois lignes des 402 px
-   -- 218 px de haut au lieu de 170, sur une barre COLLANTE, donc autant
-   de moins pour lire. « Materio » vaut 57 px et ne dit rien de plus que
-   les trois barres qui le precedent, lesquelles ne sont d'aucune langue.
-   On l'ote sous 700 px, ou les deux boutons de telechargement ont deja
-   perdu « Ido » et « Francais » pour la meme raison. L'etiquette ARIA
-   reste : ce qui disparait est le mot, non le nom. */
+/* AND THE CONTENTS BUTTON LOSES ITS WORD AS THE DOWNLOADS LOSE THEIRS.
+   The globe set before the language name costs 21 px, and an iPhone's
+   bar did not have 21 to spare: it went to three lines at 402 px -- 218
+   px tall instead of 170, on a STICKY bar, hence that much less to read
+   with. « Materio » is worth 57 px and says nothing the three bars
+   before it do not, and those are of no language. We take it off below
+   700 px, where the two download buttons have already lost « Ido » and
+   « Francais » for the same reason. The ARIA label stays: what
+   disappears is the word, not the name. */
 @media (max-width:700px){.tir span{display:none}}
 .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
-/* --- LES TROIS COMMANDES SONT UNE RANGEE, ET NON TROIS OBJETS.
-   Elles etaient nees a trois moments differents et chacune s'etait
-   reglee pour elle-meme. Mesure au navigateur, sur un iPhone :
+/* --- THE THREE CONTROLS ARE ONE ROW, NOT THREE OBJECTS.
+   They were born at three different moments and each had settled itself
+   for itself. Measured in the browser, on an iPhone:
 
-     sommaire    32,5 px de haut   12,5 px / 600   system-ui   accent
-     recherche   42,8 px de haut   16 px   / 400   serif       encre
-     langue      38,0 px de haut   13 px   / 600   system-ui   encre
+     contents   32.5 px tall   12.5 px / 600   system-ui   accent
+     search     42.8 px tall   16 px   / 400   serif       ink
+     language   38.0 px tall   13 px   / 600   system-ui   ink
 
-   Trois hauteurs, trois polices, trois graisses, et une des trois dans
-   la couleur d'accent -- qui, dans cette feuille, signale un lien vers
-   le dehors (les deux telechargements). Rien ne les tenait ensemble que
-   leur bord et leur rayon.
+   Three heights, three fonts, three weights, and one of the three in
+   the accent colour -- which, in this sheet, signals a link to the
+   outside (the two downloads). Nothing held them together but their
+   border and their radius.
 
-   ON POSE DONC UN SOCLE, et chaque regle particuliere ne garde ensuite
-   que ce qui lui est propre. La hauteur est celle du champ de recherche
-   -- 42 px --, non par gout mais par contrainte : son corps est fixe a
-   16 px pour empecher Safari de zoomer, et c'est ce corps qui commande
-   sa hauteur. Les deux autres n'avaient aucune raison de rester plus
-   basses ; 42 px fait de surcroit une cible tactile honnete.
+   WE THEREFORE LAY A BASE, and each particular rule then keeps only
+   what is its own. The height is that of the search field -- 42 px --
+   not by taste but by constraint: its size is fixed at 16 px to stop
+   Safari zooming, and it is that size that governs its height. The
+   other two had no reason to stay lower; 42 px makes an honest touch
+   target besides.
 
-   LA POLICE EST CELLE DU LIVRE, a 16 px. Le selecteur y perd 13 px de
-   system-ui gras et gagne le serif du texte ; mesure : il passe de 172 a
-   184 px de large, et la barre tient toujours sur deux lignes a 360 px.
-   Douze pixels pour que les deux boites voisines soient de la meme
-   main.
+   THE FONT IS THE BOOK'S, at 16 px. The selector loses 13 px of bold
+   system-ui there and gains the text's serif; measured: it goes from
+   172 to 184 px wide, and the bar still holds on two lines at 360 px.
+   Twelve pixels so that the two neighbouring boxes are of the same
+   hand.
 
-   LES ICONES SONT GRISES, LE TEXTE EST A L'ENCRE. L'accent reste ce
-   qu'il etait : la marque de ce qui sort de la page. --- */
+   THE ICONS ARE GREY, THE TEXT IS IN INK. The accent stays what it was:
+   the mark of what leaves the page. --- */
 .tir,input[type=search],select#lg{
  height:var(--kmd);border:1px solid var(--lin);border-radius:7px;
  background:var(--pap);color:var(--enk);
  font-family:inherit;font-size:16px;font-weight:400;line-height:1}
 .tir:focus-visible,input[type=search]:focus,select#lg:focus{
  outline:2px solid var(--acc);outline-offset:-1px}
-/* L'icone d'une commande ne se lit pas comme son texte : elle dit ce que
-   la commande FAIT, il dit ce qu'elle porte. D'ou le gris. */
+/* A control's icon does not read as its text does: the icon says what
+   the control DOES, the text says what it carries. Hence the grey. */
 .ikon{width:15px;height:15px;flex:none;pointer-events:none;
  stroke:var(--sub);fill:none;stroke-width:1.8;
  stroke-linecap:round;stroke-linejoin:round}
 
-/* --- ET LE PLACEHOLDER NE DIT PAS DAVANTAGE QU'ON EST DEVANT UNE
-   RECHERCHE. « Serchez en la du texti... » est en ido comme le reste de
-   l'interface, et sur un telephone il sort coupe : « Serchez en la d ».
-   Qui ne lit pas l'ido voit un cadre vide avec des mots inconnus dedans.
-   Meme remede que pour le choix de langue, et pour la meme raison : une
-   loupe, qui n'est d'aucune langue.
-   Le champ passe dans une enveloppe pour la porter -- c'est l'enveloppe
-   qui devient l'element souple de la barre, et le champ la remplit. Deux
-   consequences a ne pas manquer : le « flex-basis » qui decide du retour
-   a la ligne se pose desormais sur l'enveloppe, et le selecteur de
-   langue, qui suivait le champ par « ~ », suit maintenant l'enveloppe --
-   par « :focus-within », puisque le curseur est DANS elle et non SUR
-   elle. --- */
+/* --- AND THE PLACEHOLDER SAYS NO MORE THAN THAT ONE IS BEFORE A
+   SEARCH. « Serchez en la du texti... » is in Ido like the rest of the
+   interface, and on a telephone it comes out cut: « Serchez en la d ».
+   Whoever does not read Ido sees an empty frame with unknown words in
+   it. The same remedy as for the language chooser, and for the same
+   reason: a magnifying glass, which is of no language.
+   The field goes into a shell to carry it -- it is the shell that
+   becomes the flexible element of the bar, and the field fills it. Two
+   consequences not to be missed: the « flex-basis » that decides the
+   line break is now laid on the shell, and the language selector, which
+   followed the field by « ~ », now follows the shell -- by
+   « :focus-within », since the cursor is IN it and not ON it. --- */
 .serc{position:relative;flex:1 1 240px;min-width:150px;
  display:flex;align-items:center}
 .lupeto{position:absolute;left:11px}
 input[type=search]{flex:1 1 auto;width:100%;min-width:0;padding:0 11px 0 32px}
-/* 16px exacte, e ne min: Safari sur iPhone zomas automate sur irga
-   kampo di qua la litero-grandeso esas sub 16px, kande onu tushas lu.
-   La altra solvuro -- maximum-scale=1 -- impedus anke la zomo per la
-   fingri, do la lekteblesa por qui bezonas lu. */
-/* --- LE NOM D'UNE LANGUE NE DIT PAS QU'ON EST DEVANT UN CHOIX DE
-   LANGUE. Le selecteur affiche la langue COURANTE, dans sa propre
-   langue : « Francais » a l'ouverture, et c'est bien ainsi -- chacun
-   reconnait le nom de la sienne dans la liste. Mais celui qui ne lit pas
-   le francais voit alors un mot qu'il ne comprend pas, a cote d'une
-   recherche et d'un sommaire : rien ne lui dit que c'est LA qu'on change
-   de langue. L'etiquette ARIA ne l'aide pas non plus -- elle est en ido,
-   et elle ne se voit pas.
-   On pose donc devant le nom le seul signe qui ne soit d'aucune langue :
-   un globe. Il est en SVG et non en emoji, comme les deux boutons de
-   telechargement -- un emoji change de dessin d'un systeme a l'autre et
-   ne suit pas la couleur du texte. Il ne prend pas le clic
-   (« pointer-events:none ») : c'est le selecteur qui reste la cible,
-   sur toute sa surface. --- */
+/* Exactly 16px, and not less: Safari on iPhone zooms automatically on
+   any field whose letter size is below 16px, when it is touched. The
+   other remedy -- maximum-scale=1 -- would also prevent zooming with
+   the fingers, and so the legibility of those who need it. */
+/* --- THE NAME OF A LANGUAGE DOES NOT SAY THAT ONE IS BEFORE A CHOICE
+   OF LANGUAGE. The selector shows the CURRENT language, in its own
+   language: « Francais » on opening, and rightly so -- everyone
+   recognises the name of his own in the list. But whoever does not read
+   French then sees a word he does not understand, beside a search and a
+   contents list: nothing tells him that THAT is where one changes
+   language. The ARIA label does not help him either -- it is in Ido,
+   and it cannot be seen.
+   We therefore set before the name the one sign that is of no language:
+   a globe. It is in SVG and not an emoji, like the two download buttons
+   -- an emoji changes its drawing from one system to another and does
+   not follow the colour of the text. It does not take the click
+   (« pointer-events:none »): the selector remains the target, over its
+   whole surface. --- */
 .lgu{position:relative;flex:none;display:flex;align-items:center}
 .glob{position:absolute;left:10px}
-/* ET LE CHEVRON EST A NOUS, NON AU SYSTEME. Chaque navigateur dessine le
-   sien : Safari empile deux fleches, Chrome pose un triangle. Deux
-   dessins pour la meme commande, et aucun qui s'accorde aux deux icones
-   voisines. « appearance:none » les ote, et l'on pose le chevron comme
-   le globe -- meme trait, meme gris, meme taille, et sans prise au clic.
-   Le selecteur reste la cible sur toute sa surface. */
+/* AND THE CHEVRON IS OURS, NOT THE SYSTEM'S. Every browser draws its
+   own: Safari stacks two arrows, Chrome lays a triangle. Two drawings
+   for the same control, and neither agreeing with the two neighbouring
+   icons. « appearance:none » takes them off, and we lay the chevron as
+   we laid the globe -- same stroke, same grey, same size, and no
+   purchase on the click. The selector remains the target over its whole
+   surface. */
 .shevro{position:absolute;right:10px}
 select#lg{flex:none;padding:0 32px 0 31px;cursor:pointer;
  appearance:none;-webkit-appearance:none}
-/* LE CHOIX DE LANGUE TIENT SUR LA LIGNE DE LA RECHERCHE. Sur telephone
-   il passait a la ligne pour lui seul : « Materio » plus la recherche
-   plus le selecteur depassaient de quelques pixels la largeur d'un
-   iPhone, et ce retour a la ligne enflait la barre -- 215px de haut au
-   lieu de 170 -- qui mange d'autant la page, puisqu'elle est collante.
-   Or le retour a la ligne se decide sur la largeur DE BASE, non sur la
-   largeur minimale : c'est « flex-basis » qu'il faut baisser, et
-   laisser ensuite la recherche s'etirer pour prendre ce qui reste. Le
-   selecteur se retrouve ainsi a droite, sous les deux boutons de
-   telechargement, et la barre tient sur deux lignes jusqu'a 360px.
-   (« Jusqu'a 320px », disait cette ligne : mesure faite, la barre y
-   passe a trois lignes -- 238px de haut -- et elle y passait deja avant
-   qu'on y touche. Ce n'est pas un defaut nouveau, c'est un chiffre qui
-   n'avait pas ete verifie.)
-   CETTE REGLE VIENT APRES CELLES QU'ELLE CORRIGE. Une requete de media
-   n'ajoute rien a la specificite : placee plus haut, elle perdait
-   contre le « min-width:150px » de la recherche, et rien ne bougeait. */
+/* THE LANGUAGE CHOICE HOLDS ON THE SEARCH'S LINE. On a telephone it
+   went onto a line of its own: « Materio » plus the search plus the
+   selector overflowed the width of an iPhone by a few pixels, and that
+   line break swelled the bar -- 215px tall instead of 170 -- which eats
+   as much of the page, the bar being sticky. But the line break is
+   decided on the BASE width, not on the minimum width: it is
+   « flex-basis » that must come down, and the search must then be let
+   stretch to take what is left. The selector thus ends up on the right,
+   under the two download buttons, and the bar holds on two lines down
+   to 360px.
+   (« Down to 320px », this line used to say: measured, the bar goes to
+   three lines there -- 238px tall -- and it did so before anything was
+   touched. It is not a new defect, it is a figure that had not been
+   checked.)
+   THIS RULE COMES AFTER THE ONES IT CORRECTS. A media query adds
+   nothing to specificity: placed higher, it lost against the search's
+   « min-width:150px », and nothing moved. */
 @media (max-width:700px){
  .serc{min-width:0;flex:1 1 60px}
  input[type=search]{padding:0 8px 0 28px}
@@ -258,53 +258,53 @@ select#lg{flex:none;padding:0 32px 0 31px;cursor:pointer;
  .glob{left:8px}.shevro{right:8px}
  .tir{padding:0 9px}}
 
-/* --- LA RECHERCHE PREND TOUTE LA BARRE PENDANT QU'ON Y TAPE. Sur un
-   telephone, les trois commandes se partagent une ligne de 370 px :
-   « Materio » en prend une centaine, le selecteur de langue quatre-
-   vingts, et il reste au champ de quoi montrer « Serchez e » -- le
-   placeholder est coupe au dixieme caractere, et le mot qu'on tape
-   defile dans une fenetre de deux centimetres. On rend donc au champ
-   toute la barre le temps qu'il a le curseur, et on la lui reprend
-   quand il le perd. La barre ne change pas de HAUTEUR : elle est
-   collante, et une ligne de plus se paierait sur toute la page.
+/* --- THE SEARCH TAKES THE WHOLE BAR WHILE ONE TYPES IN IT. On a
+   telephone, the three controls share a line of 370 px: « Materio »
+   takes a hundred of them, the language selector eighty, and what is
+   left lets the field show « Serchez e » -- the placeholder is cut at
+   the tenth character, and the word one types scrolls in a window two
+   centimetres wide. We therefore give the field the whole bar for as
+   long as it has the cursor, and take it back when it loses it. The bar
+   does not change HEIGHT: it is sticky, and one more line would be paid
+   for over the whole page.
 
-   LES VOISINS SE REPLIENT, ILS NE DISPARAISSENT PAS. « display:none »
-   aurait fait sauter la barre et rendu la commande intouchable au
-   milieu d'un geste ; une largeur nulle avec « overflow:hidden » se
-   transitionne et laisse l'element dans le flux, donc dans l'ordre de
-   tabulation.
+   THE NEIGHBOURS FOLD AWAY, THEY DO NOT DISAPPEAR. « display:none »
+   would have made the bar jump and the control untouchable in the
+   middle of a gesture; a zero width with « overflow:hidden »
+   transitions and leaves the element in the flow, hence in the tab
+   order.
 
-   ET CHACUN DES DEUX SE REPLIE SUR SA PROPRE CONDITION. Le selecteur
-   suit le champ (« ~ »), de sorte qu'il se rouvre des qu'on tabule
-   dessus. Le bouton, lui, precede le champ et aucun selecteur ne
-   remonte : il se replie sur « :focus-within » de la barre -- mais
-   « :not(:focus) » le protege, sans quoi un utilisateur au clavier
-   aurait mis le curseur sur un bouton devenu invisible. --- */
+   AND EACH OF THE TWO FOLDS ON ITS OWN CONDITION. The selector follows
+   the field (« ~ »), so that it reopens as soon as one tabs onto it.
+   The button, for its part, precedes the field and no selector goes
+   back up: it folds on the bar's « :focus-within » -- but « :not(:focus) »
+   protects it, failing which a keyboard user would have put the cursor
+   on a button gone invisible. --- */
 @media (max-width:700px){
- /* LA GEOMETRIE NE S'ANIME PAS, ET C'EST LE CORRECTIF. Elle s'animait :
-    « max-width », « padding » et « border-width » passaient a zero en
-    cent soixante millisecondes. Un iPhone montrait alors, a la gauche du
-    champ elargi, un coin arrondi gris avec sa bordure -- et seulement au
-    sommet de la page. La cause est la : ce n'est pas un repli rate, c'est
-    l'ETAT INTERMEDIAIRE DE LA TRANSITION, fige. Mesure sur Chromium au
-    format d'un iPhone, trente millisecondes apres la mise au foyer :
-    largeur 23,56 px, opacite 0,90, bordure 1 px, marge interieure
-    10,78 px -- l'image exacte de la capture d'ecran. Au sommet de la
-    page, Safari n'a nulle part ou defiler quand le clavier monte : il
-    redimensionne la fenetre visuelle, et ce changement de disposition
-    interrompt la transition en cours. Plus bas dans la page il defile a
-    la place, la transition va jusqu'au bout, et le coin ne parait pas.
-    Une geometrie qui bascule en une seule image n'a pas d'etat
-    intermediaire ou se faire surprendre, sur aucun moteur.
-    L'OPACITE, ELLE, PEUT RESTER ANIMEE : meme surprise a mi-course, elle
-    s'applique a une boite large de zero, sans bordure ni marge
-    interieure, qui ne peint rien. */
+ /* THE GEOMETRY IS NOT ANIMATED, AND THAT IS THE FIX. It used to be:
+    « max-width », « padding » and « border-width » went to zero in a
+    hundred and sixty milliseconds. An iPhone then showed, to the left of
+    the widened field, a grey rounded corner with its border -- and only
+    at the top of the page. The cause is there: it is not a failed fold,
+    it is the TRANSITION'S INTERMEDIATE STATE, frozen. Measured on
+    Chromium at an iPhone's format, thirty milliseconds after focus:
+    width 23.56 px, opacity 0.90, border 1 px, inner margin 10.78 px --
+    the exact image of the screenshot. At the top of the page, Safari has
+    nowhere to scroll when the keyboard comes up: it resizes the visual
+    viewport, and that change of layout interrupts the transition under
+    way. Further down the page it scrolls instead, the transition runs to
+    the end, and the corner does not appear. A geometry that flips in a
+    single frame has no intermediate state to be caught in, on any
+    engine.
+    THE OPACITY MAY STAY ANIMATED: even caught mid-course, it applies to
+    a box zero wide, with neither border nor inner margin, which paints
+    nothing. */
  .bar .tir,.bar .lgu{transition:opacity .16s}
- /* LE « gap » DE LA BARRE SURVIT AU REPLI. Un element de largeur nulle
-    reste un element : les dix pixels qui le separaient de son voisin
-    restent la, et le champ « pleine largeur » commencait a vingt-huit
-    pixels du bord au lieu de vingt. La marge negative les reprend, des
-    deux cotes. */
+ /* THE BAR'S « gap » SURVIVES THE FOLD. An element zero wide is still
+    an element: the ten pixels that separated it from its neighbour stay
+    there, and the « full width » field began twenty-eight pixels from
+    the edge instead of twenty. The negative margin takes them back, on
+    both sides. */
  .bar:focus-within .tir:not(:focus),
  .serc:focus-within ~ .lgu{
   max-width:0;width:0;min-width:0;flex-basis:0;
@@ -312,32 +312,32 @@ select#lg{flex:none;padding:0 32px 0 31px;cursor:pointer;
   opacity:0;overflow:hidden}
  .bar:focus-within .tir:not(:focus){margin:0 -10px 0 0}
  .serc:focus-within ~ .lgu{margin:0 0 0 -10px}
- /* « min-width:0 » N'EST PAS UNE REDONDANCE. La taille minimale
-    AUTOMATIQUE d'un element de boite flexible est celle de son contenu,
-    et cette minimale l'emporte sur « max-width » : une largeur nulle ne
-    peut donc rien contre elle. La regle veut qu'elle retombe a zero des
-    que l'element porte un « overflow » autre que « visible » -- ce que
-    fait Chromium, qui rend bien 0,00 px --, mais on ne se repose pas sur
-    une resolution automatique pour un effet qu'on peut demander.
-    Signale sur un iPhone : le bouton du sommaire laissait voir un coin
-    arrondi de six pixels a la gauche du champ elargi.
-    ET LE CONTENU DU BOUTON SE RETIRE AVEC LUI. L'icone mesure 15 px et
-    ne se laisse pas comprimer (« flex:none ») : dans une boite de
-    largeur nulle, elle ne tient que par le rognage. Un rognage qui ne se
-    fait pas est invisible dans le code et bien visible a l'ecran ; on
-    ote donc ce qu'il y a a rogner. Le bouton, lui, reste dans le flux et
-    dans l'ordre de tabulation -- et « :not(:focus) » lui rend son icone
-    des qu'on l'atteint au clavier. Le selecteur de langue, dont l'enfant
-    est le champ focalisable lui-meme, ne peut pas recevoir le meme
-    traitement : lui n'a que la geometrie. */
+ /* « min-width:0 » IS NOT A REDUNDANCY. The AUTOMATIC minimum size of
+    a flex-box element is that of its content, and that minimum beats
+    « max-width »: a zero width can therefore do nothing against it. The
+    specification has it fall back to zero as soon as the element carries
+    an « overflow » other than « visible » -- which Chromium does,
+    rendering a proper 0.00 px -- but we do not rest on an automatic
+    resolution for an effect we can ask for.
+    Reported on an iPhone: the contents button showed a six-pixel rounded
+    corner to the left of the widened field.
+    AND THE BUTTON'S CONTENT WITHDRAWS WITH IT. The icon measures 15 px
+    and will not be compressed (« flex:none »): in a box of zero width it
+    holds only by the clipping. A clipping that does not happen is
+    invisible in the code and very visible on the screen; we therefore
+    take away what there is to clip. The button itself stays in the flow
+    and in the tab order -- and « :not(:focus) » gives it back its icon
+    as soon as one reaches it from the keyboard. The language selector,
+    whose child is the focusable field itself, cannot be given the same
+    treatment: it has only the geometry. */
  .bar:focus-within .tir:not(:focus) > *{display:none}}
 .tir{display:none;flex:none;align-items:center;gap:7px;
  padding:0 12px;cursor:pointer}
 .tir:hover{background:var(--lin)}
 
-/* --- DU PANELI, ne tri. La Kompleta Gramatiko havas anke panelo dextra
-   por la chefa vorti ; ca libro ne havas oli, e la loko qua restas
-   servas la DU KOLONI DI TEXTO, qui bezonas ol. --- */
+/* --- TWO PANELS, not three. The Kompleta Gramatiko also has a right
+   panel for the headwords; this book has none, and the room that is
+   left serves the TWO COLUMNS OF TEXT, which need it. --- */
 main{display:grid;grid-template-columns:250px minmax(0,1fr);
  max-width:1560px;margin:0 auto;gap:0}
 nav{position:sticky;top:var(--kapo,104px);height:calc(100vh - var(--kapo,104px));
@@ -347,11 +347,12 @@ nav .parto{margin:14px 0 5px;font-size:11px;letter-spacing:.07em;
  text-transform:uppercase;color:var(--sub);font-weight:700}
 nav a{display:block;padding:3px 6px;border-radius:5px;text-decoration:none;
  color:var(--enk);line-height:1.35;font-size:12.5px}
-/* Deux rangs dans la table : le tableau, et ses intertitres. Seize
-   tableaux et quatre-vingts intertitres a plat seraient illisibles. */
-/* Trois rangs, parce que le livre en a trois : le tableau, la scene,
-   l'intertitre. Seize tableaux et cent quarante intertitres a plat
-   seraient une liste, non une table. */
+/* Two ranks in the table of contents: the table, and its subheadings.
+   Sixteen tables and eighty subheadings laid flat would be
+   unreadable. */
+/* Three ranks, because the book has three: the table, the scene, the
+   subheading. Sixteen tables and a hundred and forty subheadings laid
+   flat would be a list, not a table of contents. */
 nav a.tt{margin-top:13px;font-size:12.5px;font-weight:600}
 nav a.tt b{color:var(--acc);font-weight:700}
 nav a.sc{padding-left:14px;font-size:12px;font-style:italic}
@@ -360,22 +361,23 @@ nav a.st:hover,nav a.sc:hover{color:var(--enk)}
 nav a:hover{background:var(--lin)}
 nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 
-/* LE BLANC LATERAL DOIT LOGER LE FOLIO. Il se pose HORS de sa colonne
-   -- 30px a gauche pour l'ido, 28px a droite pour la traduction -- et
-   ce blanc-ci est tout ce qu'il a pour s'y tenir. A 26px il en manquait
-   deux a droite : la page depassait la fenetre de 2px, et l'on pouvait
-   la faire glisser lateralement. Cela ne se voyait qu'entre 1181px --
-   sous quoi le folio rentre dans le flux -- et 1600px, ou les marges
-   automatiques de « main » finissent par absorber le debordement ;
-   d'ou une gene qui paraissait aller et venir sans raison. */
+/* THE SIDE MARGIN MUST HOUSE THE FOLIO. The folio is laid OUTSIDE its
+   column -- 30px on the left for the Ido, 28px on the right for the
+   translation -- and this margin is all it has to stand in. At 26px it
+   was two short on the right: the page overflowed the window by 2px,
+   and one could slide it sideways. It showed only between 1181px --
+   below which the folio comes back into the flow -- and 1600px, where
+   the automatic margins of « main » end up absorbing the overflow;
+   hence a nuisance that seemed to come and go for no reason. */
 #kont{padding:22px 32px 140px}
 
-/* --- LA DU KOLONI. Grid e ne du kolumni flotanta : la du celi di un
-   rango devas komencar ye la sama alteso, e nur grid garantias to
-   kande la texti havas diferanta longeso -- to qua eventas sempre,
-   nam la du edituri ne dicas la sama kozo per la sama nombro di vorti.
-   La linio inter la koloni esas la limito : ol montras ke la du texti
-   esas la sama alineo, ne du alinei sucedanta. --- */
+/* --- THE TWO COLUMNS. Grid and not two floating columns: the two
+   cells of one row must begin at the same height, and only grid
+   guarantees that when the texts are of different lengths -- which
+   they always are, since the two editions do not say the same thing in
+   the same number of words. The line between the columns is the
+   boundary: it shows that the two texts are the same paragraph, not
+   two paragraphs one after the other. --- */
 .r{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;
  align-items:start;position:relative}
 .r+.r{margin-top:.62em}
@@ -384,56 +386,54 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .k.io{padding-right:17px;border-right:1px solid var(--lin)}
 .k.tra{padding-left:0}
 .r.sub .k,.r.apar .k{text-align:center}
-/* LE TITRE SE CENTRE SUR LA COLONNE, NON SUR CE QUI RESTE DE LA COLONNE.
-   La case ido porte 17px de marge et 1px de filet A DROITE, pour poser la
-   ligne de partage ; sa boite de contenu est donc de 18px plus etroite que
-   la case francaise, et « text-align:center » centrait dans cette boite-la.
-   Les deux titres d'un meme rang tombaient ainsi a 9px l'un de l'autre --
-   toujours 9, a toute largeur, et que le folio paraisse ou non : ce n'est
-   pas lui qui decalait, c'est le filet. On rend a la case ido, pour les
-   seuls rangs centres, un blanc egal a gauche : le titre retrouve l'axe de
-   sa colonne, et le filet ne bouge pas.
+/* THE TITLE IS CENTRED ON THE COLUMN, NOT ON WHAT IS LEFT OF THE COLUMN.
+   The Ido cell carries 17px of margin and 1px of rule ON THE RIGHT, to lay
+   the dividing line; its content box is therefore 18px narrower than the
+   French cell, and « text-align:center » centred within that box. The two
+   titles of one row thus fell 9px apart -- always 9, at every width, and
+   whether the folio showed or not: it was not the folio that shifted them,
+   it was the rule. We give the Ido cell back, for the centred rows alone,
+   an equal margin on the left: the title finds the axis of its column
+   again, and the rule does not move.
 
-   « QUE LE FOLIO PARAISSE OU NON » N'ETAIT VRAI QU'EN LARGE, et la mesure
-   qui l'affirmait n'avait ete faite qu'en large. Sous 1180px le folio
-   quitte la marge et devient un flottant : il decale alors bel et bien, et
-   d'un ecart different a chaque rang. Voir la derniere regle de cette
-   feuille, qui repare cela ; celle-ci ne vaut que pour la mise en deux
-   colonnes. */
+   « WHETHER THE FOLIO SHOWS OR NOT » WAS TRUE ONLY WIDE, and the
+   measurement that asserted it had been made only wide. Below 1180px the
+   folio leaves the margin and becomes a float: it does then shift things,
+   and by a different amount at every row. See the last rule of this sheet,
+   which repairs that; this one holds only for the two-column layout. */
 .r.sub .k.io,.r.apar .k.io{padding-left:18px}
 .vaka{}
-/* La celo vakua ne esas eroro : ol dicas ke ta alineo ne existas en
-   l'altra edituro. Guignon dividis per intertitli un texto quan
-   Rochelle laisas kurar ; la vakuo esas la diferenco mem, e la kasar
-   igus la du koloni mentiar. */
+/* The empty cell is not an error: it says that that paragraph does not
+   exist in the other edition. Guignon divided by subheadings a text
+   Rochelle lets run; the emptiness is the difference itself, and hiding
+   it would make the two columns lie. */
 .k.tra.vaka::after{content:"—";color:var(--lin);font-size:13px}
 .r.sub .k.tra.vaka::after{content:""}
-/* « dif » : la case attend sa traduction, elle ne manque pas. */
+/* « dif »: the cell is waiting for its translation, it is not missing. */
 .k.tra.vaka.dif::after{content:""}
 
-/* --- L'ARABE VA DE DROITE A GAUCHE, et c'est la CASE qui le dit, non
-   la page : les six autres colonnes gardent leur sens. L'attribut
-   « dir » suffit au navigateur pour l'ordre des mots et pour la
-   ponctuation -- « (13) » se range du bon cote du substantif tout
-   seul -- mais trois choses de la mise en page restent a retourner.
-   Le folio d'abord : il se pose hors de la colonne, a droite pour une
-   traduction, et il doit passer a gauche quand la colonne se lit a
-   l'envers, sans quoi il tombe SUR le debut des lignes. L'alinea
-   ensuite, qui se rentre a droite. La bordure du mode etroit enfin,
-   qui separe les deux textes et doit rester du cote ou l'arabe
-   commence. Les logical properties auraient tout fait d'un coup ;
-   « left » et « right » sont deja partout ailleurs dans cette
-   feuille, et melanger les deux familles se relit mal. */
+/* --- ARABIC RUNS FROM RIGHT TO LEFT, and it is the CELL that says so,
+   not the page: the six other columns keep their direction. The « dir »
+   attribute is enough for the browser as to word order and punctuation
+   -- « (13) » files itself on the right side of the noun by itself --
+   but three things in the layout remain to be turned round.
+   The folio first: it is laid outside the column, on the right for a
+   translation, and must move to the left when the column reads the
+   other way, failing which it falls ON the start of the lines. The
+   paragraph indent next, which indents on the right. The narrow mode's
+   border last, which separates the two texts and must stay on the side
+   where the Arabic begins. Logical properties would have done it all at
+   a stroke; « left » and « right » are already everywhere else in this
+   sheet, and mixing the two families reads badly. */
 .k.tra[dir=rtl]{text-align:justify}
-/* UN INTERTITRE SE CENTRE AUSSI QUAND LA COLONNE SE LIT A L'ENVERS. La
-   ligne ci-dessus compte un attribut de plus que « .r.sub .k{text-align:
-   center} » et l'emportait donc partout, y compris sur les rangs
-   centres : les six colonnes de droite a gauche -- ar, arz, apc, fa, ur,
-   pnb -- collaient leurs 162 titres au bord droit, a toute largeur,
-   depuis le jour ou l'arabe est entre. Ce n'etait pas visible d'un coup
-   d'oeil, parce qu'un titre colle a droite dans une colonne qui se lit a
-   droite a l'air d'etre a sa place. Il ne l'est pas : en face, le titre
-   ido est centre. */
+/* A SUBHEADING IS CENTRED TOO WHEN THE COLUMN READS THE OTHER WAY. The
+   line above counts one attribute more than « .r.sub .k{text-align:
+   center} » and therefore won everywhere, the centred rows included: the
+   six right-to-left columns -- ar, arz, apc, fa, ur, pnb -- pinned their
+   162 titles to the right edge, at every width, from the day Arabic came
+   in. It was not visible at a glance, because a title pinned right in a
+   column that reads rightwards looks as though it were in place. It is
+   not: opposite it, the Ido title is centred. */
 .r.sub .k.tra[dir=rtl],.r.apar .k.tra[dir=rtl]{text-align:center}
 .k.tra[dir=rtl] .fol{left:-28px;right:auto}
 .r.p .k.tra[dir=rtl]{text-indent:1.3em}
@@ -448,26 +448,26 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .ln{display:block;letter-spacing:.09em;margin:.28em 0}
 .ln.lg{font-weight:700;letter-spacing:.01em;font-size:1.32em;margin:.42em 0}
 
-/* --- LE ROLE HABILLE LA LIGNE, NON LA MACRO. Les deux volumes ne
-   composent pas de la meme facon ce qui joue le meme role : le titre du
-   tableau 8 passe par \VUpk cote ido et par \VUtitre cote francais, de
-   sorte que la page donnait « La Rekolto. » en corps de texte en face
-   d'un « La Moisson. --- Les aspects de la campagne. » en gros et gras ;
-   et la scene etait italique d'un cote, romaine de l'autre. Le PDF garde
-   chaque fac-simile tel qu'il est ; la page de lecture, elle, sert a
-   COMPARER, et deux choses qui se repondent doivent se ressembler. Ces
-   regles viennent APRES « .ln » et « .ln.lg », qu'elles annulent : a
-   specificite egale, c'est la derniere qui l'emporte. --- */
-/* « font-variant:normal » des la base : la cellule d'un intertitre
-   porte « small-caps », et un titre de tableau loge dans un intertitre
-   -- tableaux 7, 9, 14, 15 -- en heritait, si bien qu'il sortait en
-   petites capitales quand celui du tableau 10 sortait en gras. C'est
-   « sekc » qui redemande les petites capitales, et lui seul. */
+/* --- THE ROLE DRESSES THE LINE, NOT THE MACRO. The two volumes do not
+   set in the same way what plays the same role: the title of table 8
+   goes through \VUpk on the Ido side and through \VUtitre on the
+   French, so that the page gave « La Rekolto. » in text size facing a
+   « La Moisson. --- Les aspects de la campagne. » in large and bold;
+   and the scene was italic on one side, roman on the other. The PDF
+   keeps each facsimile as it is; the reading page, for its part, serves
+   to COMPARE, and two things that answer each other must look alike.
+   These rules come AFTER « .ln » and « .ln.lg », which they annul: at
+   equal specificity, the last one wins. --- */
+/* « font-variant:normal » from the base: a subheading's cell carries
+   « small-caps », and a table title housed in a subheading -- tables 7,
+   9, 14, 15 -- inherited it, so that it came out in small capitals
+   where table 10's came out bold. It is « sekc » that asks for the
+   small capitals again, and it alone. */
 .k [data-rolo]{display:block;font-style:normal;font-weight:400;
  font-variant:normal;font-size:1rem;letter-spacing:.04em;margin:.3em 0}
-/* L'italique du releve ne decide plus : le role s'en charge. Sans quoi
-   « Unesma ceno. », compose en italique par Guignon, restait penche en
-   face d'un « Première scène. » droit. */
+/* The transcription's italic no longer decides: the role takes charge.
+   Failing which « Unesma ceno. », set in italic by Guignon, stayed
+   slanted facing an upright « Première scène. ». */
 .k [data-rolo] i,.k [data-rolo] em{font-style:inherit}
 .k [data-rolo="avan"]{font-size:.9rem;color:var(--sub);letter-spacing:.09em}
 .k [data-rolo="serio"]{font-size:.82rem;color:var(--sub);letter-spacing:.14em;
@@ -476,16 +476,17 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
  margin:.45em 0 .3em}
 .k [data-rolo="tit"]{font-weight:700;font-size:1.1rem;letter-spacing:.02em;
  margin:.12em 0}
-/* LE TITRE D'UNE SCENE. Il se composait en section, si bien qu'il
-   changeait de taille d'un tableau a l'autre -- gras au tableau 7, ou
-   il tient lieu de titre du tableau, petites capitales au tableau 3, ou
-   il n'en tient pas lieu. C'est pourtant la meme chose. Il a donc son
-   rang a lui, entre le titre du tableau et l'intertitre. */
+/* THE TITLE OF A SCENE. It was set as a section, so that it changed
+   size from one table to the next -- bold on table 7, where it stands
+   for the table's title, small capitals on table 3, where it does not.
+   It is the same thing all the same. It therefore has a rank of its
+   own, between the table's title and the subheading. */
 .k [data-rolo="titceno"]{font-weight:700;font-size:1rem;letter-spacing:.02em;
  margin:.15em 0 .3em}
-/* Les lignes d'un meme titre se relisent d'un trait : « inline-block »
-   les met sur une ligne sans leur oter leurs marges, et le liant -- le
-   tiret ou l'espace -- est pose dans le texte par rendre(). */
+/* The lines of one title are read again in one breath:
+   « inline-block » puts them on one line without taking away their
+   margins, and the joiner -- the dash or the space -- is laid in the
+   text by render(). */
 .k [data-kunligita]{display:inline-block;margin-top:0;margin-bottom:0}
 .k [data-rolo="ceno"]{font-style:italic;font-variant:normal;font-size:.88rem;
  letter-spacing:.03em;margin:.55em 0 .25em}
@@ -494,29 +495,29 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .k [data-rolo="subt"]{font-style:italic;font-size:.78rem;color:var(--sub);
  letter-spacing:.02em;margin:.1em 0 .35em}
 
-/* L'INTERTITRE QUE LE LIVRET FRANCAIS N'A PAS. Il vient de l'ido, il
-   est de nous, et il doit se voir tel : meme corps et meme place que
-   les autres -- la colonne resterait boiteuse a le composer autrement
-   --, mais un crochet de chaque cote, discret, qui dit l'ajout. C'est
-   la convention des editions diplomatiques, et elle ne coute qu'un
-   caractere. L'infobulle donne le reste. */
+/* THE SUBHEADING THE FRENCH BOOKLET DOES NOT HAVE. It comes from the
+   Ido, it is ours, and it must be seen as such: the same size and the
+   same place as the others -- the column would stay lame were it set
+   otherwise -- but a bracket on either side, discreet, saying it is an
+   addition. That is the convention of diplomatic editions, and it costs
+   one character. The tooltip gives the rest. */
 .apud::before{content:"[";color:var(--sub);font-weight:400}
 .apud::after{content:"]";color:var(--sub);font-weight:400}
 .fil{display:block;width:52px;height:1px;background:var(--lin);
  margin:.85em auto}
 .orn{display:block;color:var(--sub);margin:.5em 0;font-size:.9em}
 
-/* La folio se pose EN DEHORS du texte, dans le blanc de gauche de sa
-   colonne : il ne doit ni entrer dans la justification ni la reduire.
-   Sur ecran etroit — ou les deux colonnes s'empilent — il rentre dans
-   le flux, faute de blanc ou se mettre. */
-/* « text-indent:0 » n'est pas un detail. L'alinea porte
-   « text-indent:1.3em », et le folio, qui est un bloc dans cette
-   colonne, en HERITAIT : son numero se trouvait pousse de 21px vers la
-   droite sur les alineas, et restait au bord sur les titres et les
-   ouvertures, qui n'ont pas d'alinea. Le numero semblait donc filer
-   vers la gauche des qu'on quittait un paragraphe -- alors qu'il ne
-   bougeait pas : c'etaient les autres qui etaient de trop a droite. */
+/* The folio is laid OUTSIDE the text, in the left margin of its
+   column: it must neither enter the measure nor reduce it. On a narrow
+   screen — where the two columns stack — it comes back into the flow,
+   for want of a margin to sit in. */
+/* « text-indent:0 » is no detail. The paragraph carries
+   « text-indent:1.3em », and the folio, which is a block in that
+   column, INHERITED it: its number was pushed 21px to the right on the
+   paragraphs, and stayed at the edge on the titles and the openings,
+   which have no indent. The number therefore seemed to run off
+   leftwards as soon as one left a paragraph -- when in fact it did not
+   move: it was the others that were too far right. */
 .fol{position:absolute;left:-30px;top:.15em;font:600 11px/1 system-ui,sans-serif;
  color:var(--sub);text-decoration:none;padding:2px 3px;border-radius:3px;
  text-indent:0}
@@ -527,27 +528,27 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
  .k.tra .fol{float:right;margin:.2em 0 0 .5em}
  .k.tra[dir=rtl] .fol{float:left;margin:.2em .5em 0 0}}
 
-/* --- LA NOTE SE REPLIE. Au bas d'une page imprimee la note a sa
-   place ; dans une colonne qui defile, posee entre deux alineas, elle
-   coupe la lecture. L'appel devient donc un bouton, et la note s'ouvre
-   sous l'alinea qui la porte -- comme dans la page du Kompleta
-   Gramatiko. C'est un <button> et non un <a> : il ne mene nulle part,
-   il montre et il cache ; le clavier et les lecteurs d'ecran le
-   comprennent ainsi, et aria-expanded le leur dit. --- */
-/* L'EXPOSANT GARDE SA BOITE. « vertical-align:super » avec
-   « line-height:0 » la reduisait a zero de haut : le glyphe debordait
-   seul, le pointille lui passait au travers, et l'etat ouvert -- fond
-   « --acc », texte « --pap » -- n'avait plus rien ou se peindre. Le
-   marqueur devenait creme sur creme, donc invisible au clic. On garde
-   donc une boite pleine et on remonte l'exposant par un decalage
-   relatif, qui ne compte pas dans la ligne : les interlignes du releve
-   ne bougent pas d'un pixel. */
+/* --- THE NOTE FOLDS AWAY. At the foot of a printed page the note has
+   its place; in a scrolling column, set between two paragraphs, it
+   breaks the reading. The call therefore becomes a button, and the note
+   opens beneath the paragraph that carries it -- as in the page of the
+   Kompleta Gramatiko. It is a <button> and not an <a>: it leads
+   nowhere, it shows and it hides; the keyboard and the screen readers
+   understand it so, and aria-expanded tells them. --- */
+/* THE SUPERSCRIPT KEEPS ITS BOX. « vertical-align:super » with
+   « line-height:0 » reduced it to zero height: the glyph alone
+   overflowed, the dotted rule passed straight through it, and the open
+   state -- ground « --acc », text « --pap » -- had nothing left to
+   paint itself on. The marker became cream on cream, hence invisible to
+   the click. We therefore keep a full box and raise the superscript by
+   a relative offset, which does not count in the line: the
+   transcription's leading does not move by a pixel. */
 .apel{font:inherit;font-size:.72em;line-height:1;position:relative;top:-.42em;
  background:none;border:0;padding:0 .12em;margin:0;cursor:pointer;
  color:var(--acc);font-weight:600;border-bottom:1px dotted var(--acc)}
 .apel:hover{background:var(--lin)}
-/* Une bordure transparente, et non « 0 » : les deux etats font alors la
-   meme hauteur, et le mot ne tressaute pas quand la note s'ouvre. */
+/* A transparent border, and not « 0 »: the two states are then the
+   same height, and the word does not jump when the note opens. */
 .apel[aria-expanded=true]{background:var(--acc);color:var(--pap);
  border-radius:3px;border-bottom:1px solid transparent}
 .noto{margin:.5em 0 .7em;padding:.6em .8em;border-left:2px solid var(--acc);
@@ -555,11 +556,11 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
  border-radius:0 5px 5px 0}
 .noto b{color:var(--enk)}
 
-/* LE GROS PLAN SUR UN NUMERO. Le renvoi « (12) » garde exactement
-   l'aspect qu'il avait — meme corps, meme exposant, meme place dans la
-   ligne — et ne se signale que par un souligne pointille : la page ne
-   doit pas se couvrir de boutons. Ceux dont on ne connait pas la
-   position sur la planche restent du texte, sans souligne. */
+/* THE CLOSE-UP ON A NUMBER. The cross-reference « (12) » keeps exactly
+   the look it had — same size, same superscript, same place in the
+   line — and announces itself only by a dotted underline: the page must
+   not cover itself in buttons. Those whose position on the plate is not
+   known stay text, with no underline. */
 .lupo{font:inherit;background:none;border:0;padding:0;margin:0;
  cursor:zoom-in;color:inherit;line-height:inherit}
 .lupo sup, .lupo.nuda{border-bottom:1px dotted var(--acc)}
@@ -567,36 +568,38 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .lupo[aria-expanded=true] sup, .lupo.nuda[aria-expanded=true]{
  background:var(--acc);color:var(--pap);
  border-radius:3px;border-bottom-color:transparent}
-/* UN RENVOI PEUT EN VALOIR TROIS. « Les tableaux muraux (9, 11, 12) »
-   nomme trois objets a la fois ; chaque numero y est cliquable pour son
-   compte, tandis que les parentheses et les virgules restent du texte.
-   Le bouton est alors NU -- il n'a pas d'exposant a lui, se trouvant
-   deja dans celui du groupe -- et porte donc lui-meme le pointille.
+/* ONE CROSS-REFERENCE MAY BE WORTH THREE. « Les tableaux muraux
+   (9, 11, 12) » names three objects at once; each number in it is
+   clickable on its own account, while the parentheses and the commas
+   stay text. The button is then BARE -- it has no superscript of its
+   own, being already inside the group's -- and therefore carries the
+   dotted rule itself.
 
-   LA HAUTEUR DE LIGNE DOIT ETRE RENDUE AU BOUTON NU. Un exposant porte
-   « line-height:0 » pour ne pas ecarter les lignes du paragraphe ; le
-   bouton, qui en herite, se retrouve avec une boite haute d'un point,
-   et son pointille tombe alors AU MILIEU des chiffres au lieu de passer
-   dessous -- cinq points trop haut, mesure faite. « normal » lui rend sa
-   boite : elle retombe exactement sur celle des autres renvois, et
-   l'interligne du paragraphe ne bouge pas d'un point. */
+   THE LINE HEIGHT MUST BE GIVEN BACK TO THE BARE BUTTON. A superscript
+   carries « line-height:0 » so as not to spread the paragraph's lines;
+   the button, which inherits it, ends up with a box one point tall, and
+   its dotted rule then falls IN THE MIDDLE of the figures instead of
+   passing beneath them -- five points too high, measured. « normal »
+   gives it back its box: it falls exactly on that of the other
+   cross-references, and the paragraph's leading does not move by a
+   point. */
 .lupo.nuda{font:inherit;line-height:normal}
-/* Le gros plan se pose sous l'alinea, comme une note : c'est la meme
-   idee, montrer sans quitter sa ligne. */
-/* LA VUE EST PANORAMIQUE, ET C'EST VOULU. Sa HAUTEUR est fixe — donc
-   le grossissement aussi, neuf hauteurs de chiffre quelle que soit la
-   fenetre — et sa largeur prend tout ce que la page lui donne. Une
-   fenetre large montre donc plus de la scene autour de l'objet, au
-   meme grossissement ; une fenetre etroite en montre moins. C'est la
-   scene qui explique l'objet, non l'objet seul. */
+/* The close-up is laid beneath the paragraph, like a note: it is the
+   same idea, to show without leaving one's line. */
+/* THE VIEW IS PANORAMIC, AND DELIBERATELY SO. Its HEIGHT is fixed —
+   hence the magnification too, nine figure heights whatever the window
+   — and its width takes all the page gives it. A wide window therefore
+   shows more of the scene around the object, at the same magnification;
+   a narrow window shows less. It is the scene that explains the object,
+   not the object alone. */
 .lupo-vido{margin:.5em 0 .8em;border-left:2px solid var(--acc);
  background:var(--pap2);border-radius:0 5px 5px 0;overflow:hidden}
-/* ET LA VUE SE DEPLACE. Le gros plan tombe sur l'objet nomme, mais
-   l'oeil veut souvent voir a cote — ce qu'il y a au bout du comptoir,
-   qui est le voisin de gauche. On tire donc la vue au doigt ou a la
-   souris, comme une carte. « touch-action:none » est ce qui le rend
-   possible au doigt : sans lui le navigateur prend le glissement pour
-   un defilement de page et ne nous en dit rien. */
+/* AND THE VIEW MOVES. The close-up falls on the named object, but the
+   eye often wants to see beside it — what is at the end of the counter,
+   which is its neighbour on the left. We therefore drag the view with
+   the finger or the mouse, like a map. « touch-action:none » is what
+   makes that possible with the finger: without it the browser takes the
+   drag for a page scroll and tells us nothing about it. */
 .lupo-vido .kadro{width:100%;height:250px;background-repeat:no-repeat;
  background-color:var(--pap2);cursor:grab;touch-action:none;
  -webkit-user-select:none;user-select:none}
@@ -607,11 +610,11 @@ nav a.nun{color:var(--acc);font-weight:700;background:rgba(122,75,42,.07)}
 .lupo-vido .dir b{color:var(--enk);font-weight:600}
 @media (max-width:900px){.lupo-vido .kadro{height:190px}}
 
-/* LA JOINTURE. Rochelle coupe parfois en deux un alinea que Guignon
-   laisse d'un tenant. Le PDF garde chaque edition telle quelle ; ici
-   les deux moities sont recollees pour que les rangs se repondent, et
-   ce filet dit ou l'autre edition allait a la ligne. Un simple blanc
-   se lisait comme une coquille. */
+/* THE JOIN. Rochelle sometimes cuts in two a paragraph Guignon leaves
+   whole. The PDF keeps each edition as it stands; here the two halves
+   are glued back so that the rows answer each other, and this rule says
+   where the other edition began a new paragraph. A plain space read
+   like a slip. */
 .nal{display:inline-block;width:1.1em;margin:0 .25em;
  border-left:1px solid var(--lin);height:.85em;vertical-align:-.05em}
 
@@ -619,54 +622,55 @@ b{font-weight:700}
 sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
 .k.io sup,.k.tra sup{margin-left:.08em}
 
-/* --- LE TABLEAU MURAL. Le livret decrit une gravure que le lecteur de
-   1926 avait au mur ; la page la lui rend, au-dessus du texte qu'elle
-   illustre. Elle ne se charge QUE lorsqu'elle approche du champ --
-   « loading=lazy » --, et ses dimensions sont ecrites dans la balise :
-   la place est donc reservee des le depart, et le texte ne sursaute pas
-   quand l'image arrive. --- */
+/* --- THE WALL PLATE. The booklet describes an engraving the reader of
+   1926 had on the wall; the page gives it back to him, above the text
+   it illustrates. It loads ONLY when it comes near the viewport --
+   « loading=lazy » --, and its dimensions are written into the tag: the
+   room is therefore reserved from the start, and the text does not jump
+   when the image arrives. --- */
 .gravuro{margin:2.2em 0 .6em;text-align:center}
-.gravuro img{width:100%;max-width:1246px;height:auto;/* La gravure remplit son cadre : sans largeur declaree, elle s'arretait
-   a sa taille propre et « sizes » annoncait alors une largeur qu'elle
-   n'occupait pas -- le navigateur choisissait de travers. */
+.gravuro img{width:100%;max-width:1246px;height:auto;/* The engraving fills its frame: with no width declared, it stopped at
+   its own size and « sizes » then announced a width it did not occupy
+   -- the browser chose wrongly. */
  border:1px solid var(--lin);
  border-radius:3px;background:var(--pap2);cursor:zoom-in;
  box-shadow:0 1px 4px rgba(0,0,0,.10);transition:box-shadow .15s}
 .gravuro img:hover{box-shadow:0 2px 10px rgba(0,0,0,.18)}
 @media (prefers-color-scheme:dark){.gravuro img,.gravuro img:hover{box-shadow:none}}
 
-/* --- LE PLEIN ECRAN. Un tableau mural se regarde de pres ; la colonne
-   de lecture est trop etroite pour cela. Au clic il s'ouvre sur toute
-   la fenetre, SANS quitter la page -- ni nouvel onglet, ni nouvelle
-   requete : c'est l'image de detail, celle-la meme ou se decouperont
-   les gros plans, et une fois chargee elle ne l'est plus jamais.
-   La transition porte sur l'opacite et sur une legere echelle : c'est
-   assez pour que l'oeil suive l'ouverture sans que rien ne saute.
-   « prefers-reduced-motion » la coupe pour qui n'en veut pas. --- */
+/* --- FULL SCREEN. A wall plate is looked at close to; the reading
+   column is too narrow for that. On a click it opens over the whole
+   window, WITHOUT leaving the page -- no new tab, no new request: it is
+   the detail image, the very one the close-ups will be cut from, and
+   once loaded it is never loaded again.
+   The transition works on the opacity and on a slight scale: that is
+   enough for the eye to follow the opening without anything jumping.
+   « prefers-reduced-motion » cuts it for those who do not want it. --- */
 .plena{position:fixed;inset:0;z-index:50;display:flex;align-items:center;
  justify-content:center;background:rgba(20,18,16,.94);
  opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s;
  padding:18px;overflow:hidden;touch-action:none}
 .plena.mont{opacity:1;visibility:visible}
-/* « -webkit-user-drag » N'EST PAS UN ORNEMENT. Sans lui, tirer sur une
-   image lance le glisser-deposer du navigateur, qui coupe le suivi du
-   pointeur au deuxieme mouvement : la vue avancait d'un pas puis se
-   figeait. */
+/* « -webkit-user-drag » IS NOT AN ORNAMENT. Without it, dragging an
+   image starts the browser's drag-and-drop, which cuts the pointer
+   tracking at the second movement: the view advanced one step then
+   froze. */
 .plena img{max-width:100%;max-height:100%;object-fit:contain;
  transform:scale(.97);transition:transform .22s ease;border-radius:2px;
  cursor:zoom-in;-webkit-user-select:none;user-select:none;
  -webkit-user-drag:none}
 .plena.mont img{transform:scale(1)}
-/* UNE FOIS AGRANDIE, L'IMAGE SE TIRE. Le curseur le dit, et la
-   transition s'efface : elle est bonne pour l'ouverture, elle
-   traineraient derriere le doigt. */
+/* ONCE ENLARGED, THE IMAGE IS DRAGGED. The cursor says so, and the
+   transition goes: it is good for the opening, it would drag behind the
+   finger. */
 .plena.prox img{cursor:grab;transition:none}
 .plena.prox.tiras img{cursor:grabbing}
 .plena .fermi{position:absolute;top:12px;right:16px;border:0;background:none;
  color:#f2ede6;font:600 26px/1 system-ui,sans-serif;cursor:pointer;padding:6px 10px;
  z-index:2}
-/* LES BOUTONS DE GROSSISSEMENT, pour qui n'a ni molette ni deux doigts.
-   Ils disent aussi que la vue s'agrandit : sans eux rien ne l'annonce. */
+/* THE ZOOM BUTTONS, for whoever has neither a wheel nor two fingers.
+   They also say that the view enlarges: without them nothing announces
+   it. */
 .plena .lupili{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
  display:flex;gap:2px;background:rgba(0,0,0,.42);border-radius:6px;
  padding:3px;z-index:2}
@@ -678,32 +682,31 @@ sup{font-size:.66em;line-height:0;color:var(--sub);font-weight:400}
 @media (prefers-reduced-motion:reduce){
  .plena,.plena img{transition:none}}
 
-/* La recherche : ce qui ne correspond pas disparait, et l'accord se
-   marque dans le texte meme. Le surlignage se pose sur un <mark>
-   fabrique par le script, jamais dans la source. */
+/* The search: what does not answer disappears, and the match is marked
+   in the text itself. The highlight is laid on a <mark> made by the
+   script, never in the source. */
 mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 .for{display:none}
-/* L'ouverture du tableau reste au-dessus de ses resultats, pour qu'on
-   sache OU l'on a trouve. Mais elle n'est pas un resultat : on la
-   reduit a son libelle -- numero et titre, que le script a depose dans
-   data-tete -- au lieu d'etaler les quatre lignes de son apparat, page
-   de serie et sous-titres de lecons comprises, au-dessus de deux
-   alineas. */
+/* The table's opening stays above its results, so that one knows WHERE
+   one has found. But it is not a result: we reduce it to its label --
+   number and title, which the script has deposited in data-tete --
+   instead of spreading the four lines of its display matter, series
+   page and lesson subtitles included, above two paragraphs. */
 .r.apar.tete{display:block;margin:1.6em 0 .1em;padding-bottom:.3em;
  border-bottom:1px solid var(--lin);text-align:left}
 .r.apar.tete>*{display:none}
 .r.apar.tete::before{content:attr(data-tete);display:block;color:var(--acc);
  font:600 13px/1.4 system-ui,sans-serif;letter-spacing:.02em}
-/* Une recherche sans reponse doit se voir : sans cela la page reste
-   simplement vide, et l'on croit a une panne. */
+/* A search with no answer must be seen: without that the page simply
+   stays empty, and one thinks it has broken. */
 .nulo{display:none;padding:2.6em 20px;color:var(--sub);text-align:center;
  font-size:14.5px}
 .nulo.mont{display:block}
 
-/* --- SUR ECRAN ETROIT les deux colonnes s'empilent : l'ido d'abord,
-   la traduction dessous, avec un filet a gauche pour qu'on voie du
-   premier coup d'oeil laquelle on lit. Le paralelismo resta lisible
-   parce que chaque rango garde son bloc. --- */
+/* --- ON A NARROW SCREEN the two columns stack: the Ido first, the
+   translation beneath, with a rule on the left so that one sees at a
+   glance which one is being read. The parallel stays legible because
+   each row keeps its block. --- */
 @media (max-width:900px){
  main{grid-template-columns:1fr}
  nav{position:fixed;left:0;top:var(--kapo,150px);bottom:0;width:270px;
@@ -722,77 +725,77 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 @media (max-width:900px) and (prefers-color-scheme:dark){
  nav{box-shadow:0 0 24px rgba(0,0,0,.6)}}
 
-/* --- UN FLOTTANT NE SE CONTENTE PAS DE SE PLACER : IL RACCOURCIT LA
-   LIGNE. Sous 1180px le folio n'a plus de marge ou se poser et devient un
-   flottant. Sur un alinea justifie cela ne se voit pas : le texte
-   contourne le numero, puis reprend toute sa largeur. Sur un INTERTITRE,
-   si -- « text-align:center » centre alors le titre dans ce qui RESTE de
-   la ligne, et non dans la colonne. Le titre ido part vers la droite de la
-   moitie de son folio, le titre francais vers la gauche de la moitie du
-   sien, et un rang dont le titre ne porte pas de folio reste, lui, bien
-   centre : d'ou un desalignement qui parait capricieux et ne l'est pas.
+/* --- A FLOAT DOES NOT MERELY PLACE ITSELF: IT SHORTENS THE LINE.
+   Below 1180px the folio has no margin left to sit in and becomes a float.
+   On a justified paragraph that does not show: the text goes round the
+   number, then takes its full width again. On a SUBHEADING it does --
+   « text-align:center » then centres the title in what is LEFT of the
+   line, and not in the column. The Ido title moves right by half its
+   folio, the French title left by half of its own, and a row whose title
+   carries no folio stays properly centred: hence a misalignment that looks
+   capricious and is not.
 
-   Releve sur la capture d'un iPhone 16 (402pt, densite 3), en mesurant
-   l'encre elle-meme : axe de la colonne a 603 ; « Detaloza deskripto. »
-   centre a 628 et « La bona lernanti. » a 627,5 -- +8,3px ; « II.
-   Description detaillee. » a 570 -- -11px ; « [Les bons eleves.] », qui
-   n'a pas de folio, a 601 -- juste. Puis au navigateur, sur les 148 rangs
-   centres : 184 titres hors axe a 390px, 194 a 700px, 180 a 1000px, 0 a
-   1400px. L'ecart dominant n'est pas 9px mais 12,8px, parce qu'il vaut la
-   moitie du folio et qu'un folio compte de un a trois chiffres.
+   Read off a screenshot of an iPhone 16 (402pt, density 3), measuring the
+   ink itself: axis of the column at 603; « Detaloza deskripto. » centred
+   at 628 and « La bona lernanti. » at 627.5 -- +8.3px; « II. Description
+   detaillee. » at 570 -- -11px; « [Les bons eleves.] », which has no
+   folio, at 601 -- right. Then in the browser, over the 148 centred rows:
+   184 titles off axis at 390px, 194 at 700px, 180 at 1000px, 0 at 1400px.
+   The dominant gap is not 9px but 12.8px, because it is worth half the
+   folio and a folio runs to one, two or three figures.
 
-   ON REND DONC AU FOLIO SA POSITION ABSOLUE POUR LES SEULS RANGS CENTRES.
-   Hors du flux, il ne raccourcit plus rien, et le titre retrouve l'axe de
-   sa colonne sans compensation -- une compensation aurait du suivre le
-   nombre de chiffres.
+   WE THEREFORE GIVE THE FOLIO BACK ITS ABSOLUTE POSITION FOR THE CENTRED
+   ROWS ALONE. Out of the flow, it shortens nothing any more, and the title
+   finds the axis of its column again with no compensation -- a
+   compensation would have had to follow the number of figures.
 
-   ET L'ON CREUSE UNE GOUTTIERE EGALE DES DEUX COTES pour l'y loger.
-   Absolu, le folio ne pousse plus le texte : il passe DESSOUS. Mesure
-   faite, trois rangs le rencontraient -- t06-apar-2 et t08-tit-6 --, ce
-   qui ne se voyait pas tant que le flottant ecartait le texte. Une
-   gouttiere symetrique ne deplace pas l'axe, par construction ; elle coute
-   8 rangs plus longs sur 148 a 390px, et ce sont justement les titres les
-   plus larges, ceux qui touchaient le folio. On paie donc la ou il fallait
-   payer.
+   AND WE CUT AN EQUAL GUTTER ON BOTH SIDES to house it. Absolute, the
+   folio no longer pushes the text: it passes BENEATH it. Measured, three
+   rows met it -- t06-apar-2 and t08-tit-6 -- which did not show as long as
+   the float pushed the text aside. A symmetrical gutter does not move the
+   axis, by construction; it costs 8 rows out of 148 becoming longer at
+   390px, and those are precisely the widest titles, the ones that were
+   touching the folio. We pay, then, where paying was due.
 
-   CE BLOC EST LE DERNIER DE LA FEUILLE, ET C'EST VOULU. La requete de
-   900px, plus haut, remet a zero les blancs des rangs centres ; ecrite
-   avant elle, la gouttiere aurait ete effacee sur les telephones -- c'est
-   a dire partout ou le defaut se voit. --- */
+   THIS BLOCK IS THE LAST OF THE SHEET, AND DELIBERATELY SO. The 900px
+   query, above, resets the margins of the centred rows; written before it,
+   the gutter would have been erased on telephones -- that is, everywhere
+   the defect shows. --- */
 @media (max-width:1180px){
  .r.sub .k .fol,.r.apar .k .fol{position:absolute;float:none;margin:0;
   top:.15em}
  .r.sub .k.io .fol,.r.apar .k.io .fol{left:0;right:auto}
  .r.sub .k.tra .fol,.r.apar .k.tra .fol{left:auto;right:0}
- /* L'ARABE REPREND TOUT EN ENTIER, ET NON LE SEUL COTE. La regle
-    « .k.tra[dir=rtl] .fol » compte un attribut de plus et l'emporte donc
-    sur « .r.sub .k .fol » : le folio d'une colonne de droite a gauche
-    redevenait flottant, et 162 de ses titres repartaient hors axe alors
-    que les 332 du francais etaient justes. On y redit donc tout. */
+ /* ARABIC TAKES THE WHOLE THING AGAIN, NOT THE SIDE ALONE. The rule
+    « .k.tra[dir=rtl] .fol » counts one attribute more and therefore beats
+    « .r.sub .k .fol »: the folio of a right-to-left column became a float
+    again, and 162 of its titles went off axis while the French's 332 were
+    right. We therefore say it all again here. */
  .r.sub .k.tra[dir=rtl] .fol,.r.apar .k.tra[dir=rtl] .fol{position:absolute;
   float:none;margin:0;top:.15em;left:0;right:auto}
- /* En deux colonnes la case ido garde 17px de marge et 1px de filet a
-    droite : sa gouttiere de gauche vaut donc 26+18, celle de droite
-    26+17, et l'axe reste au milieu. */
+ /* In two columns the Ido cell keeps 17px of margin and 1px of rule on
+    the right: its left gutter is therefore 26+18, its right one 26+17,
+    and the axis stays in the middle. */
  .r.sub .k.io,.r.apar .k.io{padding-left:44px;padding-right:43px}
  .r.sub .k.tra,.r.apar .k.tra{padding-left:26px;padding-right:26px}}
-/* Sous 900px les colonnes s'empilent, le filet passe a gauche de la
-   traduction et la case ido n'a plus rien a compenser : les quatre
-   gouttieres sont egales. */
+/* Below 900px the columns stack, the rule moves to the left of the
+   translation and the Ido cell has nothing left to compensate: the four
+   gutters are equal. */
 @media (max-width:900px){
  .r.sub .k.io,.r.apar .k.io,.r.sub .k.tra,.r.apar .k.tra{
   padding-left:26px;padding-right:26px}
- /* Meme raison qu'au-dessus : « .k.tra[dir=rtl] » pose ici 11px a droite
-    et rien a gauche, pour son filet, et l'emporte sur « .r.sub .k.tra ».
-    Un rang centre n'a pas de filet ; il a deux gouttieres egales.
+ /* The same reason as above: « .k.tra[dir=rtl] » lays 11px on the right
+    here and nothing on the left, for its rule, and beats
+    « .r.sub .k.tra ». A centred row has no rule; it has two equal
+    gutters.
 
-    ET LE FILET AVEC. La regle voisine ote « border-left » aux rangs
-    centres, parce qu'un intertitre n'est pas un alinea a apparier : il
-    n'a rien a separer. Elle ne l'otait qu'a gauche, si bien que les six
-    colonnes de droite a gauche gardaient leur barre de 2px la ou les
-    quarante-trois autres ne l'avaient pas -- et cette barre, comptee dans
-    la boite, deplacait l'axe du titre d'exactement 1px. Une regle ecrite
-    pour un sens de lecture n'en couvre qu'un. */
+    AND THE RULE WITH IT. The neighbouring rule takes « border-left » off
+    the centred rows, because a subheading is not a paragraph to be
+    paired: it has nothing to separate. It took it off on the left only,
+    so that the six right-to-left columns kept their 2px bar where the
+    other forty-three did not -- and that bar, counted in the box, moved
+    the title's axis by exactly 1px. A rule written for one direction of
+    reading covers one only. */
  .r.sub .k.tra[dir=rtl],.r.apar .k.tra[dir=rtl]{
   padding-left:26px;padding-right:26px;border-right:0}}
 
@@ -815,11 +818,11 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
  <button class="tir" id="tirL" aria-label="Tabelo di la materio"><svg class="ikon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Materio</span></button>
  <span class="serc">
   <svg class="ikon lupeto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4L21 21"/></svg>
-  <!-- LE CLAVIER MOBILE NE DOIT NI CAPITALISER NI CORRIGER. Le champ
-       cherche dans deux textes dont l'un est en ido : la majuscule
-       initiale que pose iOS, et la correction automatique qui
-       remplace « serchez » par un mot anglais, faisaient echouer la
-       recherche avant meme qu'elle parte. -->
+  <!-- THE MOBILE KEYBOARD MUST NEITHER CAPITALISE NOR CORRECT. The field
+       searches two texts one of which is in Ido: the initial capital
+       iOS lays, and the autocorrection that replaces « serchez » with
+       an English word, made the search fail before it had even
+       started. -->
   <input type="search" id="q" aria-label="Serchez en la du texti" placeholder="Serchez en la du texti&hellip;" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
  </span>
  <span class="lgu">
@@ -831,12 +834,12 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 </header>
 
 <main>
-<!-- Les divisions de serie viennent avec la table elle-meme : le
-     fac-simile les annonce en tete des tableaux 1, 7 et 11, et les
-     ecrire ici en dur n'en donnait qu'une pour les seize tableaux.
-     NE PAS nommer ici un marqueur du gabarit : rendre() les remplace
-     PARTOUT, commentaires compris, et la table entiere se recopiait
-     dans ce commentaire -- onze kilo-octets invisibles. -->
+<!-- The series divisions come with the table of contents itself: the
+     facsimile announces them at the head of tables 1, 7 and 11, and
+     writing them hard here gave only one for all sixteen tables.
+     DO NOT name a template marker here: render() replaces them
+     EVERYWHERE, comments included, and the whole table of contents was
+     copied into this comment -- eleven invisible kilobytes. -->
 <nav id="nav">{{NAV}}</nav>
 <div><div id="kont">
 {{KONTENO}}
@@ -860,30 +863,29 @@ mark{background:rgba(180,85,45,.22);color:inherit;border-radius:2px}
 "use strict";
 var LANGUES = {{LINGUIJSON}};
 
-/* La hauteur de l'en-tete n'est pas une constante : deux lignes de
-   titre sur telephone, une sur ordinateur. On la mesure au chargement
-   et a chaque redimension, et on la depose dans --kapo ; les valeurs
-   en dur du CSS ne servent que de secours avant que le script ait
-   tourne. */
+/* The header's height is not a constant: two lines of title on a
+   telephone, one on a computer. We measure it at load and at every
+   resize, and deposit it in --kapo; the hard values in the CSS serve
+   only as a fallback before the script has run. */
 function kapo(){
   var h = document.querySelector("header").offsetHeight;
   document.documentElement.style.setProperty("--kapo", h + "px");
 }
 addEventListener("resize", kapo); kapo();
 
-/* Le volet de la table des matieres, sur ecran etroit. */
+/* The table-of-contents panel, on a narrow screen. */
 var nav = document.getElementById("nav");
 document.getElementById("tirL").onclick = function(){ nav.classList.toggle("mont"); };
 nav.addEventListener("click", function(e){
   if (e.target.tagName === "A" && innerWidth <= 900) nav.classList.remove("mont");
 });
-/* UN TOUCHER AU DEHORS LE REFERME. Sur telephone le volet couvre la
-   page ; il ne se fermait qu'en touchant de nouveau « Materio » ou en
-   suivant un renvoi, et l'on restait pris devant la table. On ecoute
-   donc le toucher plutot que le clic -- sur telephone il vient le
-   premier, et le volet part sans attendre les 300ms du clic. Le bouton
-   est exclu : il a deja sa bascule, et la fermer ici la rouvrirait
-   aussitot. */
+/* A TOUCH OUTSIDE CLOSES IT. On a telephone the panel covers the page;
+   it closed only on touching « Materio » again or on following a
+   reference, and one stayed caught in front of the table of contents.
+   We therefore listen for the touch rather than the click -- on a
+   telephone it comes first, and the panel goes without waiting for the
+   click's 300ms. The button is excluded: it already has its toggle, and
+   closing it here would reopen it at once. */
 document.addEventListener("pointerdown", function(e){
   if (!nav.classList.contains("mont")) return;
   if (nav.contains(e.target) || e.target.closest("#tirL")) return;
@@ -891,29 +893,28 @@ document.addEventListener("pointerdown", function(e){
 });
 
 
-/* --- LA RECHERCHE. Elle porte sur LES DEUX textes a la fois : un mot
-   ido trouve le paragraphe, et sa traduction reste en face, meme si
-   elle ne contient pas le mot. C'est le but des deux colonnes ; une
-   recherche qui masquerait la case d'en face les separerait. --- */
+/* --- THE SEARCH. It bears on BOTH texts at once: an Ido word finds
+   the paragraph, and its translation stays opposite, even if it does
+   not contain the word. That is the point of the two columns; a search
+   that masked the facing cell would separate them. --- */
 var q = document.getElementById("q");
 
-/* --- ET LE PLACEHOLDER SE RACCOURCIT SUR TELEPHONE. « Serchez en la du
-   texti... » demande 154 px et le champ n'en avait que 43 : il sortait
-   coupe a « Serchez en », ce qui se lit comme une panne et non comme une
-   invite. Un texte tronque ne dit rien de plus qu'un texte court ; il
-   dit seulement qu'on n'a pas regarde.
+/* --- AND THE PLACEHOLDER SHORTENS ON A TELEPHONE. « Serchez en la du
+   texti... » asks 154 px and the field had but 43: it came out cut at
+   « Serchez en », which reads as a breakdown and not as an invitation. A
+   truncated text says no more than a short one; it says only that nobody
+   looked.
 
-   LE NOM ACCESSIBLE, LUI, NE SE RACCOURCIT PAS. Le champ n'avait pour
-   toute etiquette que son placeholder -- ce qui est deja une faiblesse,
-   puisqu'un placeholder disparait des qu'on tape. Il porte maintenant un
-   « aria-label » qui donne la phrase entiere a toute largeur : ce qui se
-   raccourcit est ce qui se VOIT, jamais ce qui s'annonce.
+   THE ACCESSIBLE NAME, HOWEVER, DOES NOT SHORTEN. The field had for its
+   whole label only its placeholder -- which is already a weakness, since
+   a placeholder disappears as soon as one types. It now carries an
+   « aria-label » that gives the whole sentence at every width: what
+   shortens is what is SEEN, never what is announced.
 
-   Le placeholder est un attribut : aucune feuille de style ne le change,
-   et c'est la seule raison pour laquelle ceci est du script. Le reglage
-   lui-meme est plus bas, dans serBarilo() : il depend de la largeur que
-   le selecteur de langue laisse au champ, et le selecteur n'existe pas
-   encore ici. --- */
+   The placeholder is an attribute: no style sheet changes it, and that
+   is the only reason this is script. The setting itself is below, in
+   serBarilo(): it depends on the width the language selector leaves the
+   field, and the selector does not exist yet here. --- */
 var qLarga = q.getAttribute("placeholder");
 var qKurta = "Serchez\u2026";
 var qEtroita = window.matchMedia("(max-width:700px)");
@@ -926,9 +927,9 @@ function sansAccent(s){
 }
 function surligner(el, brut, terme){
   if (!terme) { el.innerHTML = brut; return false; }
-  /* On surligne dans le TEXTE, pas dans les balises : sans cela un
-     terme qui tombe dans un attribut (href, title) casserait la page.
-     On parcourt donc les noeuds de texte du fragment. */
+  /* We highlight in the TEXT, not in the tags: without that a term
+     falling inside an attribute (href, title) would break the page.
+     We therefore walk the fragment's text nodes. */
   var d = document.createElement("div");
   d.innerHTML = brut;
   var trouve = false;
@@ -959,9 +960,9 @@ q.addEventListener("input", function(){
   clearTimeout(minuteur);
   minuteur = setTimeout(chercher, 110);
 });
-/* Les ouvertures de tableau. La table des matieres les connait deja --
-   ce sont ses entrees de premier rang -- et on s'en sert plutot que de
-   les marquer une seconde fois dans la page. */
+/* The table openings. The table of contents knows them already --
+   they are its first-rank entries -- and we use that rather than mark
+   them a second time in the page. */
 var ouvertures = {};
 document.querySelectorAll("nav a.tt").forEach(function(a){
   ouvertures[a.dataset.ch] = 1;
@@ -971,14 +972,14 @@ var gravuri = [].slice.call(document.querySelectorAll(".gravuro"));
 
 function chercher(){
   var terme = sansAccent(q.value.trim());
-  /* CE QUI NE REPOND PAS DISPARAIT, DE QUELQUE RANG QUE CE SOIT. La
-     condition portait « && r.classList.contains("p") » : seuls les
-     alineas etaient filtres, et les cent quarante-neuf titres du livre
-     -- ouvertures de tableau et intertitres -- restaient a l'ecran quoi
-     qu'on cherche. Deux alineas repondaient a « kranio », et l'on en
-     voyait cent cinquante et un blocs ; une recherche sans reponse ne
-     changeait rien du tout a la page, et l'on croyait le champ mort. Le
-     rang d'un bloc ne dit pas s'il repond : seul son texte le dit. */
+  /* WHAT DOES NOT ANSWER DISAPPEARS, OF WHATEVER RANK. The condition
+     carried « && r.classList.contains("p") »: only the paragraphs were
+     filtered, and the book's hundred and forty-nine titles -- table
+     openings and subheadings -- stayed on screen whatever one searched
+     for. Two paragraphs answered « kranio », and one saw a hundred and
+     fifty-one blocks; a search with no answer changed nothing at all in
+     the page, and one thought the field dead. A block's rank does not
+     say whether it answers: only its text says so. */
   var trouves = rangi.map(function(r, i){
     var trouve = false;
     [].slice.call(r.querySelectorAll(".k")).forEach(function(k, j){
@@ -989,15 +990,15 @@ function chercher(){
     return trouve;
   });
 
-  /* MAIS UN RESULTAT SANS SON TABLEAU NE SE SITUE PAS. On rend donc
-     l'ouverture du tableau qui garde au moins une reponse : elle sert
-     de titre courant a ses resultats. Une seule par tableau, et aucune
-     pour les tableaux qui n'ont rien. */
+  /* BUT A RESULT WITHOUT ITS TABLE CANNOT BE PLACED. We therefore keep
+     the opening of any table that keeps at least one answer: it serves
+     as a running head for its results. One per table, and none for the
+     tables that have nothing. */
   if (terme){
     var tete = null;
     rangi.forEach(function(r, i){
-      // Si l'ouverture repond elle-meme, elle reste un resultat entier
-      // et n'a pas a se replier sur son libelle.
+      // If the opening answers itself, it stays a whole result
+      // and does not have to fold back to its label.
       if (ouvertures[r.dataset.cle]) tete = trouves[i] ? null : r;
       else if (trouves[i] && tete){
         tete.classList.remove("for");
@@ -1006,13 +1007,13 @@ function chercher(){
       }
     });
   }
-  /* LES GRAVURES SE RETIRENT PENDANT LA RECHERCHE. Elles ne sont pas
-     dans les rangs mais a cote d'eux, et le filtre les laissait donc en
-     place : on cherchait un mot, les blocs disparaissaient, et les
-     dix-neuf planches restaient a l'ecran, seules. Une planche fait
-     douze cents points de large ; entre deux resultats elle les separe
-     plus qu'elle ne les eclaire. La liste de resultats est une vue de
-     TEXTE, et le tableau se regarde a sa place, dans la lecture. */
+  /* THE ENGRAVINGS WITHDRAW DURING A SEARCH. They are not in the rows
+     but beside them, and the filter therefore left them in place: one
+     searched for a word, the blocks disappeared, and the nineteen
+     plates stayed on screen, alone. A plate is twelve hundred points
+     wide; between two results it separates them more than it lights
+     them. The list of results is a view of TEXT, and the plate is
+     looked at in its own place, in the reading. */
   gravuri.forEach(function(f){ f.classList.toggle("for", !!terme); });
 
   var rien = !trouves.some(function(v){ return v; });
@@ -1022,25 +1023,25 @@ function chercher(){
   poserLangue(sel.value);
 }
 
-/* --- LE CHOIX DE LANGUE. Une colonne de droite a la fois ; les
-   autres restent dans la page, cachees. Elles n'y sont pas pour rien :
-   la recherche les traverse, et le passage d'une langue a l'autre est
-   instantane.
+/* --- THE CHOICE OF LANGUAGE. One right-hand column at a time; the
+   others stay in the page, hidden. They are not there for nothing: the
+   search goes through them, and the passage from one language to
+   another is instantaneous.
 
-   SAUF CELLES QU'ON N'A PAS ENCORE. Le francais est dans la page --
-   c'est un fac-simile transcrit, il fait partie de l'objet. Les
-   traductions, elles, sont marquees « differita » et vivent dans un
-   fichier a part : la page ne porte que leurs cases vides, et l'on ne
-   va chercher le texte qu'au moment ou le menu le demande. Une fois
-   venu il ne repart plus, et la langue redevient une bascule sans
-   requete.
+   EXCEPT THOSE WE DO NOT YET HAVE. The French is in the page -- it is a
+   transcribed facsimile, it is part of the object. The translations are
+   marked « differita » and live in a separate file: the page carries
+   only their empty cells, and we fetch the text only when the menu asks
+   for it. Once come it does not go again, and the language becomes a
+   toggle with no request.
 
-   CE BLOC EST APRES LA RECHERCHE, ET IL LE FAUT : le texte qui arrive
-   doit entrer dans « origine » -- la copie non surlignee dont la
-   recherche repart -- puis relancer chercher(), sans quoi un mot deja
-   tape ne serait pas surligne dans la langue qui vient d'arriver. --- */
+   THIS BLOCK IS AFTER THE SEARCH, AND IT MUST BE: the text that arrives
+   must enter « origine » -- the unhighlighted copy the search starts
+   from -- and then run chercher() again, failing which a word already
+   typed would not be highlighted in the language that has just
+   arrived. --- */
 var sel = document.getElementById("lg");
-var venus = {};                      /* kodo -> promesse de chargement */
+var venus = {};                      /* kodo -> promise of loading */
 
 function verser(code, d){
   rangi.forEach(function(r, i){
@@ -1087,34 +1088,31 @@ if (memo && [].some.call(sel.options, function(o){ return o.value === memo; }))
   sel.value = memo;
 poserLangue(sel.value);
 
-/* --- LA BARRE SE PARTAGE PAR LA MESURE, ET DANS CET ORDRE : LE
-   SELECTEUR PREND CE QU'IL MONTRE, LE CHAMP PREND LE RESTE, ET LE
-   PLACEHOLDER PREND CE QUI TIENT.
+/* --- THE BAR IS SHARED OUT BY MEASUREMENT, AND IN THIS ORDER: THE
+   SELECTOR TAKES WHAT IT SHOWS, THE FIELD TAKES THE REST, AND THE
+   PLACEHOLDER TAKES WHAT FITS.
 
-   1. UN « select » SE DIMENSIONNE SUR SON OPTION LA PLUS LARGE, non sur
-   celle qu'il affiche : « Español (América) » fait 121 px et fixait la
-   largeur meme quand la case montrait « বাংলা », qui en fait 25. Sur un
-   ecran de 360 px cela donnait 178 px au selecteur et 81 au champ --
-   deux fois plus de place a ce qu'on touche une fois par visite qu'a ce
-   dans quoi on tape. Et c'est cela, non la longueur du texte, qui
-   empechait « Serchez... » de tenir : le placeholder n'etait pas trop
-   long, le champ etait trop court.
+   1. A « select » SIZES ITSELF ON ITS WIDEST OPTION, not on the one it
+   displays: « Español (América) » is 121 px and fixed the width even
+   when the box showed « বাংলা », which is 25. On a 360 px screen that
+   gave 178 px to the selector and 81 to the field -- twice as much room
+   to what one touches once a visit as to what one types in. And it is
+   that, not the length of the text, that kept « Serchez... » from
+   fitting: the placeholder was not too long, the field was too short.
 
-   2. LE PLACEHOLDER SE MESURE AU LIEU DE SE DEVINER. On prend le plus
-   long des textes qui TIENNENT -- la phrase entiere, sinon « Serchez... »,
-   sinon rien. Rien n'est un choix et non un echec : la loupe dit deja ce
-   qu'est le champ, et c'est le cas de la langue au plus long nom sur le
-   plus petit ecran. Une regle mesuree vaut mieux qu'un seuil de plus :
-   celui-ci se corrige tout seul le jour ou l'on changera la police, le
-   texte, ou la liste des langues.
+   2. THE PLACEHOLDER IS MEASURED INSTEAD OF GUESSED. We take the longest
+   of the texts that FIT -- the whole sentence, failing that
+   « Serchez... », failing that nothing. Nothing is a choice and not a
+   failure: the magnifying glass already says what the field is, and this
+   is the case of the longest language name on the smallest screen. A
+   measured rule is worth more than one more threshold: this one corrects
+   itself the day the font, the text or the list of languages changes.
 
-   3. AU LARGE, ON NE TOUCHE A RIEN. La place ne manque pas, et une
-   largeur qui suivrait la langue ferait sauter la barre a chaque
-   changement.
+   3. WIDE, WE TOUCH NOTHING. There is no shortage of room, and a width
+   that followed the language would make the bar jump at every change.
 
-   La mesure se fait au canevas, dans la police CALCULEE des deux
-   champs -- jamais dans une police supposee : elle a deja change une
-   fois. --- */
+   The measurement is made on the canvas, in the COMPUTED font of the two
+   fields -- never in a supposed font: it has already changed once. --- */
 var mezurilo = document.createElement("canvas").getContext("2d");
 function policoDe(e){
   var st = getComputedStyle(e);
@@ -1141,21 +1139,21 @@ function serBarilo(){
 serBarilo();
 if (qEtroita.addEventListener) qEtroita.addEventListener("change", serBarilo);
 else qEtroita.addListener(serBarilo);
-/* La largeur peut changer sans franchir le seuil -- un ecran pliant, une
-   fenetre qu'on tire. On se raccroche donc aussi au redimensionnement,
-   mais une fois par image : la mesure lit clientWidth, et la lire a
-   chaque pixel ferait travailler la mise en page pour rien. */
+/* The width can change without crossing the threshold -- a folding
+   screen, a window being dragged. We therefore hook onto the resize as
+   well, but once per frame: the measurement reads clientWidth, and
+   reading it at every pixel would set the layout working for nothing. */
 var barilo0 = 0;
 window.addEventListener("resize", function(){
   if (barilo0) return;
   barilo0 = requestAnimationFrame(function(){ barilo0 = 0; serBarilo(); });
 });
 
-/* --- LE TABLEAU EN PLEIN ECRAN. Au clic, la gravure s'ouvre sur toute
-   la fenetre, sans quitter la page. Ce n'est pas la vue d'ensemble qu'on
-   y montre mais l'IMAGE DE DETAIL : c'est celle qu'on veut regarder de
-   pres, et c'est la meme ou se decouperont les gros plans -- une fois
-   chargee, elle ne l'est plus jamais. --- */
+/* --- THE PLATE FULL SCREEN. On a click, the engraving opens over the
+   whole window, without leaving the page. What is shown there is not the
+   general view but the DETAIL IMAGE: it is the one to be looked at close
+   to, and it is the same one the close-ups will be cut from -- once
+   loaded, it is never loaded again. --- */
 var plena = document.getElementById("plena");
 var plenaBildo = document.getElementById("plena-bildo");
 var plenaVenis = null;
@@ -1165,8 +1163,8 @@ function ouvrirPlena(fig){
   if (plenaBildo.getAttribute("src") !== url){
     plenaBildo.width = fig.dataset.dl;
     plenaBildo.height = fig.dataset.dh;
-    /* La vue d'ensemble s'affiche le temps que le detail arrive : on ne
-       reste pas devant un rectangle vide. */
+    /* The general view is displayed while the detail arrives: one is not
+       left in front of an empty rectangle. */
     plenaBildo.src = fig.querySelector("img").currentSrc
                   || fig.querySelector("img").src;
     var grand = new Image();
@@ -1185,29 +1183,30 @@ function fermarPlena(){
   if (plenaVenis) plenaVenis.focus({preventScroll:true});
 }
 
-/* --- LE TABLEAU S'AGRANDIT. Le plein ecran montre la planche entiere ;
-   a cette taille une devanture fait deux centimetres et l'on n'y lit
-   rien. On y ajoute donc le grossissement : molette, deux doigts,
-   double-clic, ou les boutons du bas.
+/* --- THE PLATE ENLARGES. Full screen shows the whole plate; at that
+   size a shop front is two centimetres and nothing can be read on it.
+   We therefore add magnification: wheel, two fingers, double click, or
+   the buttons at the bottom.
 
-   L'ECHELLE 1 EST CELLE QUI TIENT DANS LA FENETRE, non celle de
-   l'image : c'est ce que l'oeil appelle « le tableau entier », et le
-   chiffre affiche compte a partir de la. Au-dela de six fois, on
-   verrait la trame du fac-simile et plus la gravure ; en deca de un,
-   la planche flotterait dans du noir. On borne donc.
+   SCALE 1 IS THE ONE THAT FITS THE WINDOW, not the image's: that is
+   what the eye calls « the whole plate », and the figure displayed
+   counts from there. Beyond six times, one would see the facsimile's
+   screen and no longer the engraving; below one, the plate would float
+   in black. We therefore bound it.
 
-   ON DEPLACE EN GARDANT LE POINT SOUS LE DOIGT. Zoomer autour du
-   centre de la fenetre parait juste tant qu'on regarde le centre ; des
-   qu'on vise un coin, l'objet vise s'enfuit. Le point d'ancrage est
-   donc celui qu'on montre — la souris, ou le milieu des deux doigts. --- */
+   WE MOVE KEEPING THE POINT UNDER THE FINGER. Zooming about the centre
+   of the window seems right as long as one is looking at the centre; as
+   soon as one aims at a corner, the object aimed at runs away. The
+   anchor point is therefore the one being pointed at — the mouse, or the
+   midpoint of the two fingers. --- */
 var vuo = {k:1, x:0, y:0};
 var VUO_MAX = 6;
 
 function poserVue(k, x, y){
   vuo.k = Math.min(VUO_MAX, Math.max(1, k));
-  /* LA MARGE DE DEPLACEMENT, c'est ce qui depasse de la fenetre une fois
-     l'image agrandie. A l'echelle 1 elle est nulle des deux cotes :
-     l'image tient tout entiere, et rien ne peut la faire glisser. */
+  /* THE MARGIN FOR MOVEMENT is what overflows the window once the image
+     is enlarged. At scale 1 it is nil on both sides: the image fits
+     whole, and nothing can make it slide. */
   var b = plena.getBoundingClientRect();
   var mx = Math.max(0, (plenaBildo.offsetWidth * vuo.k - b.width) / 2);
   var my = Math.max(0, (plenaBildo.offsetHeight * vuo.k - b.height) / 2);
@@ -1220,8 +1219,8 @@ function poserVue(k, x, y){
   if (g) g.textContent = (Math.round(vuo.k * 10) / 10) + "\u00d7";
 }
 
-/* Le grossissement autour d'un point de la fenetre : ce point ne bouge
-   pas, tout le reste s'ecarte de lui. */
+/* Magnification about a point of the window: that point does not move,
+   everything else moves away from it. */
 function grossir(nk, px, py){
   var b = plena.getBoundingClientRect();
   var cx = px - b.left - b.width / 2, cy = py - b.top - b.height / 2;
@@ -1233,8 +1232,8 @@ function grossir(nk, px, py){
 plena.addEventListener("wheel", function(e){
   if (!plena.classList.contains("mont")) return;
   e.preventDefault();
-  /* Le pave tactile d'un portable envoie un pincement comme une molette
-     tenue avec Ctrl : les deux se traitent pareil, au pas pres. */
+  /* A laptop's trackpad sends a pinch as a wheel held with Ctrl: the two
+     are handled alike, but for the step. */
   var pas = e.ctrlKey ? 0.012 : 0.0022;
   grossir(vuo.k * Math.exp(-e.deltaY * pas), e.clientX, e.clientY);
 }, {passive:false});
@@ -1255,10 +1254,10 @@ document.querySelectorAll(".plena .lupili button").forEach(function(t){
   });
 });
 
-/* LE GLISSEMENT, a la souris comme au doigt. « pointerdown » couvre les
-   trois — souris, doigt, stylet — et deux doigts a la fois donnent le
-   pincement : on suit alors leur ECART, qui donne l'echelle, et leur
-   MILIEU, qui donne le point fixe. */
+/* THE DRAG, with the mouse as with the finger. « pointerdown » covers
+   all three — mouse, finger, stylus — and two fingers at once give the
+   pinch: we then follow their DISTANCE, which gives the scale, and their
+   MIDPOINT, which gives the fixed point. */
 var doigts = new Map(), depart = null, bougea = false;
 
 plena.addEventListener("dragstart", function(e){ e.preventDefault(); });
@@ -1309,21 +1308,21 @@ document.addEventListener("click", function(e){
   var fig = e.target.closest ? e.target.closest(".gravuro") : null;
   if (fig){ ouvrirPlena(fig); return; }
   if (!plena.classList.contains("mont")) return;
-  /* ON NE FERME PAS EN TIRANT. Un glissement finit par un « click » que
-     le navigateur envoie quand meme ; sans cette garde, deplacer la vue
-     la refermait. */
+  /* WE DO NOT CLOSE BY DRAGGING. A drag ends in a « click » the browser
+     sends all the same; without this guard, moving the view closed
+     it. */
   if (bougea){ bougea = false; return; }
   if (e.target.closest(".fermi")){ fermarPlena(); return; }
   if (e.target.closest(".lupili")) return;
-  /* SUR L'IMAGE AGRANDIE, LE CLIC NE FERME PLUS : il sert a la
-     deplacer, et se refermer au moindre arret de la main serait
-     insupportable. On ferme alors par le fond, par la croix, ou par
-     Echap.
-     C'est la PLACE du clic qui decide, non sa cible : une image en
-     « object-fit » agrandie par une transformation ne se designe pas
-     de facon sure — le navigateur rend tantot l'image, tantot le fond
-     qui la porte, pour un clic tombe au meme endroit. Le rectangle,
-     lui, ne ment pas. */
+  /* ON THE ENLARGED IMAGE, THE CLICK NO LONGER CLOSES: it serves to
+     move it, and closing at the least pause of the hand would be
+     unbearable. We close instead by the ground, by the cross, or by
+     Escape.
+     It is the PLACE of the click that decides, not its target: an image
+     in « object-fit » enlarged by a transform cannot be designated
+     reliably — the browser returns now the image, now the ground that
+     carries it, for a click landing in the same spot. The rectangle
+     does not lie. */
   if (vuo.k > 1.001){
     var r = plenaBildo.getBoundingClientRect();
     if (e.clientX >= r.left && e.clientX <= r.right &&
@@ -1350,11 +1349,11 @@ addEventListener("resize", function(){
   if (plena.classList.contains("mont")) poserVue(vuo.k, vuo.x, vuo.y);
 });
 
-/* --- LE DEPLI DES NOTES. La note vit a la fin du document, cachee ;
-   au clic, on la deplace sous l'alinea qui l'appelle, et un second
-   clic la remet. On la DEPLACE au lieu de la copier : ainsi elle
-   n'existe qu'une fois dans la page, et la recherche ne la trouve pas
-   deux fois. --- */
+/* --- THE UNFOLDING OF THE NOTES. The note lives at the end of the
+   document, hidden; on a click, we move it beneath the paragraph that
+   calls it, and a second click puts it back. We MOVE it instead of
+   copying it: so it exists only once in the page, and the search does
+   not find it twice. --- */
 document.addEventListener("click", function(e){
   var b = e.target.closest ? e.target.closest(".apel") : null;
   if (!b) return;
@@ -1373,22 +1372,22 @@ document.addEventListener("click", function(e){
   }
 });
 
-/* --- LE GROS PLAN SUR UN NUMERO. Au clic sur « (12) », l'objet 12 de
-   la planche parait sous l'alinea, agrandi.
+/* --- THE CLOSE-UP ON A NUMBER. On a click on « (12) », object 12 of
+   the plate appears beneath the paragraph, enlarged.
 
-   C'EST UN RECADRAGE, JAMAIS UN CHARGEMENT. On ne va pas chercher une
-   image par numero : on prend celle de DETAIL de la planche — la meme
-   qui sert au plein ecran — et l'on n'en montre qu'un morceau, en
-   jouant sur « background-size » et « background-position ». Le
-   premier gros plan d'un tableau la fait venir s'il ne l'est pas
-   encore ; tous les suivants ne coutent rien du tout, et le plein
-   ecran s'en sert aussi.
+   IT IS A RE-FRAMING, NEVER A LOADING. We do not fetch one image per
+   number: we take the plate's DETAIL image — the same that serves for
+   full screen — and show only a piece of it, playing on
+   « background-size » and « background-position ». The first close-up
+   of a table brings it in if it is not there yet; every one after costs
+   nothing at all, and full screen uses it too.
 
-   LE CADRE SE CALCULE A L'OUVERTURE, non a la fabrication de la page :
-   il depend de la largeur de la colonne, qui depend de la fenetre. On
-   prend un carre de neuf hauteurs de chiffre autour du numero — assez
-   pour que l'objet designe tienne dedans avec son entourage — puis on
-   l'etire a la forme du cadre, sans jamais deformer l'image. --- */
+   THE FRAME IS COMPUTED AT OPENING, not when the page is built: it
+   depends on the width of the column, which depends on the window. We
+   take a square of nine figure heights around the number — enough for
+   the object designated to fit inside with its surroundings — then
+   stretch it to the shape of the frame, without ever deforming the
+   image. --- */
 document.addEventListener("click", function(e){
   var b = e.target.closest ? e.target.closest(".lupo") : null;
   if (b) { ouvrirLupo(b); return; }
@@ -1411,15 +1410,15 @@ function ouvrirLupo(b){
   }
   var fig = document.querySelector('.gravuro[data-cle="' + b.dataset.g + '"]');
   if (!fig) return;
-  var c = b.dataset.c.split(",").map(Number);   /* x, y, largeur, hauteur */
+  var c = b.dataset.c.split(",").map(Number);   /* x, y, width, height */
   var W = +fig.dataset.dl, H = +fig.dataset.dh;
   if (!W || !H) return;
 
   var rang = b.closest(".r");
   if (!rang) return;
   if (!b.dataset.lupo) b.dataset.lupo = "l" + (++lupoN);
-  /* Un seul gros plan ouvert a la fois : deux vues de la meme planche
-     l'une sous l'autre ne s'expliquent pas mieux que la premiere. */
+  /* One close-up open at a time: two views of the same plate one below
+     the other explain no better than the first. */
   document.querySelectorAll(".lupo-vido").forEach(function(v){
     var s = document.querySelector('[data-lupo="' + v.dataset.par + '"]');
     if (s) s.setAttribute("aria-expanded", "false");
@@ -1441,32 +1440,33 @@ function ouvrirLupo(b){
   vue.appendChild(dir);
   rang.parentNode.insertBefore(vue, rang.nextSibling);
 
-  /* Le carre de source, en fractions de la planche. */
-  var demi = 4.5 * c[3];                        /* 9 hauteurs de chiffre */
+  /* The source square, as fractions of the plate. */
+  var demi = 4.5 * c[3];                        /* 9 figure heights */
   var cx = c[0] + c[2] / 2, cy = c[1] + c[3] / 2;
   var lg = kadro.clientWidth, ht = kadro.clientHeight;
   var sh = Math.min(1, demi * 2);
-  var sw = Math.min(1, (sh * H * lg) / (ht * W));  /* meme forme que le cadre */
+  var sw = Math.min(1, (sh * H * lg) / (ht * W));  /* same shape as the frame */
   var sx = Math.min(1 - sw, Math.max(0, cx - sw / 2));
   var sy = Math.min(1 - sh, Math.max(0, cy - sh / 2));
   kadro.style.backgroundImage = 'url("' + fig.dataset.detalo + '")';
-  /* LA PLACE SE COMPTE EN POINTS D'ECRAN, non en pour-cent. Les deux
-     disent la meme chose tant que la vue ne bouge pas ; des qu'on la
-     tire, le pour-cent oblige a repasser par la fraction de planche a
-     chaque mouvement du doigt — et il se divise par une marge qui vaut
-     zero quand l'image tient juste. En points, glisser c'est ajouter. */
+  /* THE PLACE IS COUNTED IN SCREEN POINTS, not in per cent. The two say
+     the same thing as long as the view does not move; as soon as one
+     drags it, per cent forces a return through the fraction of the plate
+     at every movement of the finger — and it divides by a margin that is
+     zero when the image just fits. In points, to drag is to add. */
   kadro._vido = {bw: lg / sw, bh: ht / sh, px: -(sx / sw) * lg,
                  py: -(sy / sh) * ht};
   poserKadro(kadro);
   b.setAttribute("aria-expanded", "true");
 }
 
-/* --- LA VUE SE DEPLACE. Le gros plan tombe sur l'objet nomme ; l'oeil
-   veut ensuite voir a cote — l'etalage au bout du comptoir, la maison
-   d'a cote. On tire donc la vue, a la souris comme au doigt.
-   Le grossissement, lui, ne change pas : il est ce qu'il est pour que
-   l'objet tienne dans le cadre avec ce qui l'entoure, et le lecteur qui
-   veut plus grand a le plein ecran, qui grossit. --- */
+/* --- THE VIEW MOVES. The close-up falls on the named object; the eye
+   then wants to see beside it — the display at the end of the counter,
+   the house next door. We therefore drag the view, with the mouse as
+   with the finger.
+   The magnification does not change: it is what it is so that the object
+   fits in the frame with what surrounds it, and the reader who wants it
+   larger has full screen, which magnifies. --- */
 function poserKadro(kadro){
   var d = kadro._vido;
   if (!d) return;
@@ -1501,8 +1501,8 @@ function lacherKadro(){
 }
 document.addEventListener("pointerup", lacherKadro);
 document.addEventListener("pointercancel", lacherKadro);
-/* Le glissement finit par un « click » que le navigateur envoie quand
-   meme ; sans cette garde, deplacer la vue la refermait. */
+/* The drag ends in a « click » the browser sends all the same; without
+   this guard, moving the view closed it. */
 document.addEventListener("click", function(e){
   if (!tiraBougea) return;
   if (e.target.closest && e.target.closest(".lupo-vido")){
@@ -1514,9 +1514,9 @@ addEventListener("resize", function(){
   document.querySelectorAll(".lupo-vido .kadro").forEach(poserKadro);
 });
 
-/* --- L'INTITULE COURANT dans la table des matieres. On ne suit pas le
-   defilement pixel par pixel : on observe les blocs de titre, et le
-   dernier qui a passe le haut de la fenetre est celui qu'on lit. --- */
+/* --- THE RUNNING HEAD in the table of contents. We do not follow the
+   scroll pixel by pixel: we observe the title blocks, and the last one
+   to have passed the top of the window is the one being read. --- */
 var titres = [].slice.call(document.querySelectorAll(".r.sub, .r.apar"));
 var liens = {};
 document.querySelectorAll("nav a").forEach(function(a){ liens[a.dataset.ch] = a; });
@@ -1540,9 +1540,9 @@ addEventListener("scroll", function(){
 }, {passive:true});
 courant();
 </script>
-<!-- Le mot « Ido » est dans l'ancre et non dans la feuille : si
-     celle-ci ne se charge pas — page ouverte hors du site, fichier
-     deplace —, il reste un lien lisible en fin de document au lieu
-     d'un carre vide. -->
+<!-- The word « Ido » is in the anchor and not in the style sheet: if
+     the sheet does not load — a page opened away from the site, a file
+     moved —, a legible link is left at the end of the document instead
+     of an empty square. -->
 <a class="ido-home" href="/">Ido</a>
 </html>
