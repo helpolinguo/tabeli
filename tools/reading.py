@@ -24,13 +24,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from inventory import block, otsu  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT_PATH = ROOT / "tools" / ".lekto"
+OUT_PATH = ROOT / "tools" / ".reading"
 WIDTH = 1500
 AREA = 0.035          # air left around the block, as a fraction of its width
 
 
 def prepared(lang, n, half=False, width_=WIDTH):
-    src = ROOT / "skan" / lang / f"f-{n:03d}.jpg"
+    src = ROOT / "scan" / lang / f"f-{n:03d}.jpg"
     im = Image.open(src).convert("L")
     g = np.asarray(im)
     ink = g < otsu(g)
@@ -44,7 +44,7 @@ def prepared(lang, n, half=False, width_=WIDTH):
     # and scaling that to 1500 px of width made an image of a billion
     # pixels, which PIL refused to open. We say so rather than suffer it.
     if (x1 - x0) < 0.25 * g.shape[1] or (y1 - y0) < 0.10 * g.shape[0]:
-        print(f"  {lang} {n} : feuillet vierge (aucun bloc d'encre)")
+        print(f"  {lang} {n} : blank leaf (no block of ink)")
         return []
     area = int(AREA * (x1 - x0))
     x0 = max(0, x0 - area)

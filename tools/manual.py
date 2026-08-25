@@ -45,7 +45,7 @@ import numbering as N                                          # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
 ROOT = N.ROOT
-TILES = ROOT / "plates" / "tuili"
+TILES = ROOT / "plates" / "tiles"
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 PAS = 290
 NX = NY = 2
@@ -152,7 +152,7 @@ def tile(key, n=NX, z=1.0, scene=""):
     missing = remaining(key, known)
     if scene:
         missing = [q for q in missing if N.unkey(q)[0] == scene]
-    print(f"  {key} : {len(cads)} tuiles, {len(missing)} numeros manquants")
+    print(f"  {key} : {len(cads)} tiles, {len(missing)} numbers missing")
     print(f"  {missing}")
 
 
@@ -185,7 +185,7 @@ def zone(key, radius=None):
             known[n] = ((v[0] + v[2] / 2) * W, (v[1] + v[3] / 2) * H)
     missing = remaining(key, known)
     if not missing:
-        print(f"  {key} : rien ne manque")
+        print(f"  {key} : nothing missing")
         return
     # The presumed place: the midpoint of the two known neighbours nearest
     # in rank, or the single neighbour when there is only one.
@@ -257,7 +257,7 @@ def zone(key, radius=None):
                 g.text((7, gy * Z + 2), e, fill=(0, 190, 255), font=F)
         t.save(TILES / f"{key}-z{k}.png")
         print(f"  z{k} ({x0},{y0}) : {ns}")
-    print(f"  {key} : {len(zones)} zones, {len(missing)} numeros manquants")
+    print(f"  {key} : {len(zones)} zones, {len(missing)} numbers missing")
 
 
 def cell_(key, tile_, ref):
@@ -346,7 +346,7 @@ def place(key, refs, radius=0.62):
             px, py = x0 + loc[0] + M, y0 + loc[1] + M
             per[k] = [round(px / LA, 6), round(py / HT, 6),
                       round(L / LA, 6), round(size / HT, 6), 1.0]
-            print(f"  {k:>7} cale sur ({px}, {py})  score {mx:.3f}")
+            print(f"  {k:>7} set at ({px}, {py})  score {mx:.3f}")
             continue
         if "," in ref:
             # The eye has read the place off the grid: we take it as it
@@ -356,7 +356,7 @@ def place(key, refs, radius=0.62):
             per[k] = [round((px - L / 2) / LA, 6),
                       round((py - size / 2) / HT, 6),
                       round(L / LA, 6), round(size / HT, 6), 1.0]
-            print(f"  {k:>7} pose a l'oeil en ({px}, {py})")
+            print(f"  {k:>7} placed by eye at ({px}, {py})")
             continue
         cx, cy = cell_(key, tile_, ref)
         T, M, L = template_(n, size)
@@ -364,7 +364,7 @@ def place(key, refs, radius=0.62):
         x0, y0 = int(cx) - R, int(cy) - R
         x1, y1 = int(cx) + R + T.shape[1], int(cy) + R + T.shape[0]
         if x0 < 0 or y0 < 0 or x1 > LA or y1 > HT:
-            print(f"  {n} en {ref} : hors planche")
+            print(f"  {n} at {ref} : outside the plate")
             continue
         r = cv2.matchTemplate(ink_[y0:y1, x0:x1], T, cv2.TM_CCORR)
         # THE PLACES ALREADY TAKEN ARE FORBIDDEN. « 77 » dictated at G5
@@ -399,7 +399,7 @@ def plate(key):
         return
     per = json.loads(f.read_text(encoding="utf-8")).get(key, {})
     if not per:
-        print(f"  {key} : rien de pose a la main")
+        print(f"  {key} : nothing placed by hand")
         return
     d = json.loads((ROOT / "plates" / "numbers.json")
                    .read_text(encoding="utf-8"))[key]
@@ -409,10 +409,10 @@ def plate(key):
                for n, v in per.items()}
     N.REVIEW.mkdir(parents=True, exist_ok=True)
     n = N.check(key, found_,
-                   N.REVIEW / f"{key}-manuali.png", size,
+                   N.REVIEW / f"{key}-manual.png", size,
                    wide=1.5, cols=10)
-    print(f"  {key} : {n} decoupes dans "
-          f"{N.REVIEW / (key + '-manuali.png')}")
+    print(f"  {key} : {n} cut-outs in "
+          f"{N.REVIEW / (key + '-manual.png')}")
 
 
 # THE RE-READING OF THE AUTOMATIC READINGS. The score does not say
@@ -435,7 +435,7 @@ def review(key, page=0, per=24, cols=6, Z=3):
     everything.sort(key=lambda q: N.unkey(q[0]))
     lot = everything[page * per:(page + 1) * per]
     if not lot:
-        print(f"  {key} : plus rien a relire")
+        print(f"  {key} : nothing left to re-read")
         return 0
     im = N.plate(key)
     w, h = round(size * 4.4), round(size * 3.0)
@@ -462,9 +462,9 @@ def review(key, page=0, per=24, cols=6, Z=3):
                f"{v[4]:.2f}   {round(cx)},{round(cy)}",
                fill=(90, 90, 90), font=F2)
     N.REVIEW.mkdir(parents=True, exist_ok=True)
-    dest = N.REVIEW / f"{key}-revizo{page}.png"
+    dest = N.REVIEW / f"{key}-review{page}.png"
     pl.save(dest)
-    print(f"  {key} : page {page}, {len(lot)} lectures sur {len(everything)} "
+    print(f"  {key} : page {page}, {len(lot)} readings out of {len(everything)} "
           f"-> {dest}")
     return len(everything)
 
@@ -499,7 +499,7 @@ def letter(key, refs):
         per[k] = [round((px - size / 2) / LA, 6),
                   round((py - size / 2) / HT, 6),
                   round(size / LA, 6), round(size / HT, 6), 1.0]
-        print(f"  {k:>6} pose a l'oeil en ({px}, {py})")
+        print(f"  {k:>6} placed by eye at ({px}, {py})")
     LETTERS_.write_text(json.dumps(everything, ensure_ascii=False, indent=1) + "\n",
                       encoding="utf-8")
 
@@ -509,7 +509,7 @@ def letters_sheet(key):
     everything = json.loads(LETTERS_.read_text(encoding="utf-8"))
     per = everything.get(key, {})
     if not per:
-        print(f"  {key} : aucune lettre posee")
+        print(f"  {key} : no letter placed")
         return
     d = json.loads((ROOT / "plates" / "numbers.json")
                    .read_text(encoding="utf-8"))[key]
@@ -533,9 +533,9 @@ def letters_sheet(key):
         g.rectangle([X, Y, X + w * Z, Y + h * Z], outline=(200, 0, 0))
         g.text((X + 2, Y + h * Z + 4), k, fill=(0, 0, 0), font=F)
     N.REVIEW.mkdir(parents=True, exist_ok=True)
-    dest = N.REVIEW / f"{key}-literi.png"
+    dest = N.REVIEW / f"{key}-letters.png"
     pl.save(dest)
-    print(f"  {key} : {len(lot)} lettres dans {dest}")
+    print(f"  {key} : {len(lot)} letters in {dest}")
 
 
 
@@ -553,7 +553,7 @@ def hand(args):
         letter(key, [tuple(a.split("=")) for a in args[2:]])
     elif verb == "literi":
         letters_sheet(key)
-    elif verb == "revizo":
+    elif verb == "review":
         review(key, int(args[2]) if len(args) > 2 else 0)
     elif verb == "planche":
         plate(key)

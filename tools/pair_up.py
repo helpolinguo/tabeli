@@ -200,10 +200,10 @@ def hand(args):
         print(f"  {key}")
         for a, b, link_ in p:
             print(f"      ({a}) ← {link_} ← ({b})"
-                  f"      poser ({a}) d'abord, rejeter ({b}) derriere")
+                   f"      place ({a}) first, throw ({b}) behind")
         total += len(p)
-    print(f"\n  {total} paires a retourner"
-          f"{' pour le tableau ' + ', '.join(sorted(aimed_)) if aimed_ else ''}.")
+    print(f"\n  {total} pairs to turn round"
+          f"{' for table ' + ', '.join(sorted(aimed_)) if aimed_ else ''}.")
     return 0
 
 

@@ -40,7 +40,7 @@ OUT_PATH = ROOT / "ornaments"
 
 
 def extract_(lang, n, top, bottom, name_, width_=1600):
-    src = ROOT / "skan" / lang / f"f-{n:03d}.jpg"
+    src = ROOT / "scan" / lang / f"f-{n:03d}.jpg"
     im = Image.open(src).convert("L")
     g = np.asarray(im)
 
@@ -49,7 +49,7 @@ def extract_(lang, n, top, bottom, name_, width_=1600):
     # image would not designate the same thing on two pages.
     b = block(g < otsu(g))
     if b is None:
-        print("aucun bloc d'encre")
+        print("no block of ink")
         return None
     x0, y0, x1, y1 = b
     h = y1 - y0
@@ -79,7 +79,7 @@ def extract_(lang, n, top, bottom, name_, width_=1600):
     # paper.
     part = (x1 - x0 + 2 * area) / (x1 - x0)
     print(f"{p}  ({w2}x{h2} px)")
-    print(f"  largeur = {part:.3f} x la justification")
+    print(f"  width = {part:.3f} x the justification")
     print(f"  hauteur = {(y_b - y_a) / (x1 - x0 + 2 * area):.4f} "
           f"x sa propre largeur")
     return p

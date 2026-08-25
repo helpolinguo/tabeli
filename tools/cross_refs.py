@@ -237,10 +237,10 @@ def check_(lg, verbose=True):
     miss = [k for k in io if k[:3] in dones and k not in tr]
     if verbose:
         for k, a, b in false_:
-            print(f"  {k}\n     io {a if a is not None else '— cle inconnue'}"
-                  f"\n     {lg} {b}")
+            print(f"  {k}\n     io {a if a is not None else '— key unknown'}"
+                   f"\n     {lg} {b}")
         for k in miss:
-            print(f"  {k} : bloc absent de la colonne {lg}")
+            print(f"  {k} : block absent from column {lg}")
     return len(tr), len(false_) + len(miss), len(dones)
 
 
@@ -252,11 +252,11 @@ def hand(args):
     # it is that the two editions show the same object.
     if not args or "fr" in args:
         n, f = substitute()
-        print(f"  fr : {n:4d} blocs, {f} substitution{'s' if f > 1 else ''}")
+        print(f"  fr : {n:4d} blocks, {f} substitution{'s' if f > 1 else ''}")
         total += f
         lgs = [lg for lg in lgs if lg != "fr"]
         if args and not lgs:
-            print(f"\n  {len(APART)} ecarts declares, passes sans rien dire.")
+            print(f"\n  {len(APART)} declared exceptions, passed in silence.")
             return 1 if total else 0
     for lg in lgs:
         if lg not in FOLDER:
@@ -267,9 +267,9 @@ def hand(args):
             continue
         n, f, tab = r
         total += f
-        print(f"  {lg} : {n:4d} blocs sur {tab:2d} tableaux, "
+        print(f"  {lg} : {n:4d} blocks over {tab:2d} tables, "
               f"{f} divergence{'s' if f > 1 else ''}")
-    print(f"\n  {len(APART)} ecarts declares, passes sans rien dire.")
+    print(f"\n  {len(APART)} declared exceptions, passed in silence.")
     return 1 if total else 0
 
 

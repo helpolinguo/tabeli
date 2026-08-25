@@ -124,8 +124,8 @@ def register_scan(key, path, wide=1100, verbose=True):
         print(f"  {key} : quart de tour {turn}, echelle {k:.4f}, "
               f"coin ({round(x0 * sc_dst)}, {round(y0 * sc_dst)}), "
               f"correlation {score:.3f}")
-        print(f"  la gravure y mesure {round(LS * k)} x {round(HS * k)} "
-              f"points (nous : {LS} x {HS})")
+        print(f"  the engraving measures {round(LS * k)} x {round(HS * k)} "
+              f"points there (ours: {LS} x {HS})")
     return M, score, turn
 
 
@@ -176,10 +176,10 @@ def compare(key, path, cx=0.5, cy=0.5, w=0.115, h=0.095, out_path=None):
         d.text((X, OUT[1] + 26), t, fill=(0, 0, 0), font=F)
         d.text((X, OUT[1] + 54), n, fill=(90, 90, 90), font=F2)
     out_path = Path(out_path or (ROOT / "plates" / "review" /
-                             f"{key}-origino.png"))
+                             f"{key}-origin.png"))
     out_path.parent.mkdir(parents=True, exist_ok=True)
     pl.save(out_path)
-    print(f"  comparaison dans {out_path}")
+    print(f"  comparison in {out_path}")
 
 
 # -------------------------------------------------------------------
@@ -494,15 +494,15 @@ def clean_up(path, dest=None, verbose=True):
             return (f"{m[0]:+.3f} (ecart {m[1]:.2f} sur {m[2]} points)"
                     if m else "introuvable")
         print(f"  quart de tour {turn}, redressement {th:+.3f} deg")
-        print(f"    filet du haut : {say(mh)}")
-        print(f"    filet du bas  : {say(mb)}")
-        print(f"  cadre en ({x0}, {y0})-({x1}, {y1}) : {LG} x {HT} points")
+        print(f"    top rule    : {say(mh)}")
+        print(f"    bottom rule : {say(mb)}")
+        print(f"  frame at ({x0}, {y0})-({x1}, {y1}) : {LG} x {HT} points")
         print(f"  verticales laissees de biais : {vg:+.3f} et {vd:+.3f} deg")
     if dest:
         Path(dest).parent.mkdir(parents=True, exist_ok=True)
         Image.fromarray(out).save(dest)
         if verbose:
-            print(f"  ecrit dans {dest}")
+            print(f"  written to {dest}")
     return out, {"tour": turn, "angulo": round(th, 4),
                  "kadro": [int(x0), int(y0), int(x1), int(y1)],
                  # THE TWO RULES SEPARATELY, with their fitting residual:
@@ -548,7 +548,7 @@ def measure_shift(key, clean_, W=1000, verbose=True):
     # 255; afterwards, if we clean again, it is the already cleaned
     # facsimile, where the ink is dark. Without that a second cleaning
     # would start the numbers off from the stencil, which they have left.
-    old_ = ROOT / "originals" / "kovri" / f"{key}-neta-antaua.png"
+    old_ = ROOT / "originals" / "working" / f"{key}-clean-previous.png"
     if old_.exists():
         old = 255.0 - np.asarray(Image.open(old_).convert("L")
                                    ).astype(np.float32)
@@ -594,8 +594,8 @@ def measure_shift(key, clean_, W=1000, verbose=True):
     if verbose:
         print(f"  {key} : correlation {mx:.4f}, echelle {T[0, 0]:.5f}, "
               f"rotation {th:+.2f} deg")
-        print(f"  l'ancienne planche ({LO} x {HO}) se pose en "
-              f"({T[0, 2]:.0f}, {T[1, 2]:.0f}) de la nouvelle ({LN} x {HN})")
+        print(f"  the old plate ({LO} x {HO}) sits at "
+              f"({T[0, 2]:.0f}, {T[1, 2]:.0f}) of the new one ({LN} x {HN})")
     return T, float(mx), (LO, HO), (LN, HN)
 
 
@@ -620,9 +620,9 @@ def carry_over(key, clean_, verbose=True, force=False):
     """Carries the numbers, the scenes and the sizes onto the new plate."""
     if already_carried(key) and not force:
         raise SystemExit(
-            f"  {key} : deja porte sur son original. Recommencer "
-            f"deplacerait les numeros une seconde fois.\n"
-            f"  Si c'est bien ce qu'on veut : ajouter « force ».")
+            f"  {key} : already carried onto its original. Starting over "
+            f"would move the numbers a second time.\n"
+            f"  If that is really what is wanted: add « force ».")
     T, correlation, (LO, HO), (LN, HN) = measure_shift(key, clean_, verbose=verbose)
     k = float(np.hypot(T[0, 0], T[1, 0]))
 
@@ -707,12 +707,12 @@ def carry_over(key, clean_, verbose=True, force=False):
     CATALOGUE.write_text(json.dumps(cat, ensure_ascii=False, indent=1) + "\n",
                         encoding="utf-8")
     if verbose:
-        print(f"  {n} numeros portes, dont {m} poses a la main"
+        print(f"  {n} numbers carried over, of which {m} placed by hand"
               + (f", {c} scenes" if c else "")
               + (f", {lt} lettres" if lt else ""))
         if losts:
-            print(f"  ATTENTION : {len(losts)} sortis de la planche au "
-                  f"rognage, a rechercher — {', '.join(sorted(losts))}")
+            print(f"  WARNING: {len(losts)} fell outside the plate at the "
+                  f"trim, to be looked for again — {', '.join(sorted(losts))}")
     return T
 
 
@@ -818,9 +818,9 @@ def serve(key, clean_, verbose=True, detail_quality=None, tone=True):
     if tone:
         im, by_tone = stretch_tone(im)
         if verbose and by_tone:
-            print(f"  ton : noir {by_tone['noir']:.0f}, "
-                  f"blanc {by_tone['blanc']:.0f}, "
-                  f"facteur x{by_tone['faktoro']:.3f}")
+            print(f"  tone: black {by_tone['noir']:.0f}, "
+                   f"white {by_tone['blanc']:.0f}, "
+                   f"factor x{by_tone['faktoro']:.3f}")
     PLATES = ROOT / "plates"
     size_ = {}
     for name_, width_, quality_ in (("vido", VIEW_WIDTH, VIEW_QUALITY),
@@ -858,12 +858,12 @@ def serve(key, clean_, verbose=True, detail_quality=None, tone=True):
 #
 #      python3 tools/originals.py redo t02-apar-1 originals/t02.jpg
 def redo(key, path, force=False):
-    dest = ROOT / "originals" / "kovri" / f"{key}-neta.png"
+    dest = ROOT / "originals" / "working" / f"{key}-clean.png"
     # We set the previous plate aside: it is on THAT one that the
     # numbers are placed, and it is from it that they will have to be
     # carried over.
     if dest.exists():
-        dest.replace(dest.with_name(f"{key}-neta-antaua.png"))
+        dest.replace(dest.with_name(f"{key}-clean-previous.png"))
     out, per = clean_up(path, dest)
     cat = (json.loads(CATALOGUE.read_text(encoding="utf-8"))
            if CATALOGUE.exists() else {})
@@ -874,8 +874,8 @@ def redo(key, path, force=False):
                         encoding="utf-8")
     carry_over(key, dest, force=force)
     serve(key, dest)
-    print(f"  {key} : repris. Verifier la planche de controle, "
-          f"puis relancer numeri.py et html.py.")
+    print(f"  {key} : redone. Check the check sheet, then run "
+          f"numbering.py and html.py again.")
 
 
 # -------------------------------------------------------------------
@@ -890,20 +890,20 @@ def redo(key, path, force=False):
 def tone_all():
     cat = json.loads((ROOT / "plates" / "plates.json")
                      .read_text(encoding="utf-8"))
-    working = ROOT / "originals" / "kovri"
+    working = ROOT / "originals" / "working"
     n = 0
     for key in sorted(cat):
         if cat[key].get("koloro"):
             print(f"{key} : en couleur, laissee telle quelle")
             continue
-        clean_ = working / f"{key}-neta.png"
+        clean_ = working / f"{key}-clean.png"
         if not clean_.exists():
             print(f"{key} : {clean_.name} introuvable, passee")
             continue
         print(f"{key} :")
         serve(key, clean_)
         n += 1
-    print(f"\n{n} planches re-servies avec leur ton redresse.")
+    print(f"\n{n} plates re-served with their tone straightened.")
 
 
 def hand(args):
@@ -916,8 +916,8 @@ def hand(args):
         redo(key, path, force="force" in args)
     elif verb == "netigar":
         key_ = key
-        out, per = clean_up(path, ROOT / "originals" / "kovri" /
-                           f"{key_}-neta.png")
+        out, per = clean_up(path, ROOT / "originals" / "working" /
+                           f"{key_}-clean.png")
         cat = (json.loads(CATALOGUE.read_text(encoding="utf-8"))
                if CATALOGUE.exists() else {})
         e = cat.setdefault(key_, {})

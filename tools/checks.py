@@ -160,18 +160,18 @@ def check_7():
             gaps.append((abs(a - b), r["cle"], a, b))
     gaps.sort(reverse=True)
     print("=" * 62)
-    print("CONTRÔLE 7 — LE GRAS DES DEUX COLONNES")
+    print("CHECK 7 — THE BOLD OF THE TWO COLUMNS")
     print("=" * 62)
-    print(f"{len(gaps)} alinéas sur {total} n'ont pas le même nombre de "
-          f"passages gras des deux côtés "
+    print(f"{len(gaps)} paragraphs out of {total} do not have the same "
+          f"number of bold passages on both sides "
           f"({100 * len(gaps) / max(1, total):.1f} %)")
     by_table = defaultdict(int)
     for e, key, a, b in gaps:
         by_table[key.split("-")[0]] += 1
-    print("  par tableau :", dict(sorted(by_table.items())))
-    print("  les vingt plus gros écarts :")
+    print("  by table:", dict(sorted(by_table.items())))
+    print("  the twenty widest gaps:")
     for e, key, a, b in gaps[:20]:
-        print(f"    {key:<18} ido {a:>2}  fra {b:>2}   (écart {e})")
+        print(f"    {key:<18} ido {a:>2}  fra {b:>2}   (gap {e})")
     return gaps
 
 
@@ -213,15 +213,15 @@ def check_8():
             gaps.append((round(ratio, 2), r["cle"], a, b))
     gaps.sort(reverse=True)
     print("=" * 62)
-    print("CONTRÔLE 8 — LES DEUX COLONNES PARLENT-ELLES DU MÊME ?")
+    print("CHECK 8 — ARE THE TWO COLUMNS SPEAKING OF THE SAME THING?")
     print("=" * 62)
     total = sum(1 for r in rows if r["tipo"] == "p")
-    print(f"{len(gaps)} rangs sur {total} apparient des textes de "
-          f"longueurs très inégales (rapport > 1,8)")
+    print(f"{len(gaps)} rows out of {total} pair texts of very "
+          f"unequal lengths (ratio > 1.8)")
     per = defaultdict(int)
     for _, key, _, _ in gaps:
         per[key.split("-")[0]] += 1
-    print("  par tableau :", dict(sorted(per.items())))
+    print("  by table:", dict(sorted(per.items())))
     for ratio, key, a, b in gaps[:15]:
         print(f"    {key:<18} ido {a:>4} car.  fra {b:>4} car.  "
               f"(×{ratio})")
@@ -312,9 +312,9 @@ def hand():
             orphan_fr[table_(key)].append(key)
 
     print("=" * 62)
-    print("CONTRÔLE 3 — APPARIEMENT DES DEUX COLONNES")
+    print("CHECK 3 — THE PAIRING OF THE TWO COLUMNS")
     print("=" * 62)
-    print(f"{'tabl.':>6} {'appariés':>9} {'ido seul':>9} {'fra seul':>9}")
+    print(f"{'tabl.':>6} {'paired':>9} {'ido only':>9} {'fra only':>9}")
     total = [0, 0, 0]
     for t in sorted(set(list(paired) + list(orphan_io) + list(orphan_fr))):
         a, i, f = (paired.get(t, 0), len(orphan_io.get(t, [])),
@@ -333,12 +333,12 @@ def hand():
     print()
     print("=" * 62)
     if faults:
-        print(f"CONTRÔLES 1, 2, 4, 5 — {len(faults)} SIGNALEMENTS")
+        print(f"CHECKS 1, 2, 4, 5 — {len(faults)} REPORTS")
         print("=" * 62)
         for m in faults:
             print(" ", m)
     else:
-        print("CONTRÔLES 1, 2, 4, 5 — rien à signaler")
+        print("CHECKS 1, 2, 4, 5 — nothing to report")
     return 1 if faults else 0
 
 

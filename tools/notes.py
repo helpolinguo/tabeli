@@ -121,7 +121,7 @@ def check_(lg, pdf):
                 ix = min(bn[2], bc[2]) - max(bn[0], bc[0])
                 if iy > 1.0 and ix > 5.0:
                     touches += 1
-                    print(f"  NOTE SUR LE TEXTE  {pdf.name} f{fe} (page {pg})")
+                    print(f"  NOTE ON THE TEXT  {pdf.name} f{fe} (page {pg})")
                     break
             else:
                 continue
@@ -129,9 +129,9 @@ def check_(lg, pdf):
         bottom = max(b[3] for b in note)
         if bottom > top:
             overflows += 1
-            print(f"  NOTE HORS DU FEUILLET  {pdf.name} f{fe} (page {pg}) : "
-                  f"{(bottom - top) / MM:.1f} mm sous le bord — cette page porte "
-                  f"plus de matiere que la feuille n'en tient")
+            print(f"  NOTE OFF THE LEAF  {pdf.name} f{fe} (page {pg}) : "
+                  f"{(bottom - top) / MM:.1f} mm below the edge — this page carries "
+                  f"more matter than the sheet holds")
     return touches, overflows
 
 
@@ -142,7 +142,7 @@ def hand():
         h += a
         d += b
     print()
-    print(f"  notes sur le texte : {h}   notes hors du feuillet : {d}")
+    print(f"  notes on the text: {h}   notes off the leaf: {d}")
     return 1 if h else 0
 
 

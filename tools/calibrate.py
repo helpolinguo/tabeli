@@ -109,69 +109,69 @@ def write_(lang, height_mm):
     size_pt = step_pt / 1.20
 
     txt = f"""% ===================================================================
-%  kalibro-{lang}.tex — TOUTES les mesures du fac-simile « {bk['titre']} ».
-%  Fichier PRODUIT par tools/kalibro.py : ne pas le modifier a la main.
-%  Une seule constante y est physique — la largeur du papier — et elle
-%  est passee en argument. Tout le reste vient de tools/inv-{lang}.json.
+%  kalibro-{lang}.tex — EVERY measurement of the facsimile « {bk['titre']} ».
+%  FILE PRODUCED by tools/calibrate.py: do not edit it by hand.
+%  One constant alone is physical — the width of the paper — and it is
+%  passed as an argument. All the rest comes from tools/inv-{lang}.json.
 %
-%  Releve : {r['n']} pages de {MIN_LINES} lignes ou plus.
-%    justification  {r['largeur']:.0f} px  (ecart-type {r['largeur_et']:.0f})
-%    hauteur bloc   {r['hauteur']:.0f} px
-%    pas des lignes {r['pas']:.2f} px  (ecart-type {r['pas_et']:.2f})
-%    image de page  {r['page_l']:.0f} x {r['page_h']:.0f} px
-%    marge gauche   {r['marge_g']:.0f} px
-%    1re ligne a    {r['haut']:.0f} px du bord
-%  Echelle retenue : {pxmm:.3f} px/mm, prise sur une hauteur de papier
-%  de {height_mm:.0f} mm (notice de bibliotheque) ; la page mesure alors
-%  {paper_mm:.1f} mm de large.
+%  Survey: {r['n']} pages of {MIN_LINES} lines or more.
+%    justification  {r['largeur']:.0f} px  (standard dev. {r['largeur_et']:.0f})
+%    block height   {r['hauteur']:.0f} px
+%    line pitch     {r['pas']:.2f} px  (standard dev. {r['pas_et']:.2f})
+%    page image     {r['page_l']:.0f} x {r['page_h']:.0f} px
+%    left margin    {r['marge_g']:.0f} px
+%    1st line at    {r['haut']:.0f} px from the edge
+%  Scale adopted: {pxmm:.3f} px/mm, taken on a paper height of
+%  {height_mm:.0f} mm (library record); the page is then
+%  {paper_mm:.1f} mm wide.
 % ===================================================================
 
 \\newcommand{{\\VUmarque}}{{{bk['marque']}}}
 
-% 1. GEOMETRIE
+% 1. GEOMETRY
 \\newcommand{{\\VUpapierLargeur}}{{{paper_mm:.2f}mm}}
 \\newcommand{{\\VUpapierHauteur}}{{{mm(r['page_h']):.2f}mm}}
 \\newcommand{{\\VUtexteLargeur}}{{{mm(r['largeur']):.2f}mm}}
 \\newcommand{{\\VUtexteHauteur}}{{{mm(r['hauteur']):.2f}mm}}
-% LE FOLIO EST LA PREMIERE ENCRE DE LA PAGE, LE TEXTE VIENT APRES.
-% Premiere version : les deux ordonnees etaient egales, et le folio se
-% composait DANS la premiere ligne de texte — « 6 » barrait « esas » au
-% folio 6. La mesure de tools/inventaire.py donne le haut du BLOC
-% D'ENCRE, c'est-a-dire le folio sur toute page foliotee ; le corps du
-% texte commence un rang plus bas. On ajoute donc un pas de ligne, et
-% les pages sans folio (ouvertures de tableau) commencent a la meme
-% ordonnee que les autres, comme au fac-simile.
+% THE FOLIO IS THE PAGE'S FIRST INK, THE TEXT COMES AFTER.
+% First version: the two ordinates were equal, and the folio was set
+% INSIDE the first line of text — « 6 » struck through « esas » on
+% folio 6. The measurement from tools/inventory.py gives the top of the
+% BLOCK OF INK, that is, the folio on every foliated page; the body of
+% the text begins one row lower. We therefore add one line pitch, and
+% the pages without a folio (table openings) begin at the same ordinate
+% as the others, as in the facsimile.
 \\newcommand{{\\VUmargeSup}}{{{mm(r['haut']) + step_mm:.2f}mm}}
 \\newcommand{{\\VUfolioY}}{{{mm(r['haut']):.2f}mm}}
 
-% 2. CORPS ET INTERLIGNAGE
+% 2. SIZE AND LEADING
 \\newcommand{{\\VUinterligne}}{{{step_pt:.2f}pt}}
 \\newcommand{{\\VUcorps}}{{{size_pt:.2f}pt}}
 \\newcommand{{\\VUcorpsNote}}{{{size_pt * 0.77:.2f}pt}}
 \\newcommand{{\\VUinterligneNote}}{{{step_pt * 0.80:.2f}pt}}
-% Renfoncement d'alinea : provisoire, a relever (tools/mesures.py).
+% Paragraph indent: provisional, to be surveyed (tools/measures.py).
 \\newcommand{{\\VUalinea}}{{{mm(r['largeur']) * 0.05:.2f}mm}}
 \\newcommand{{\\VUalineaNote}}{{{mm(r['largeur']) * 0.04:.2f}mm}}
 \\newcommand{{\\VUblancAlineaValeur}}{{{step_pt * 0.19:.2f}pt}}
 \\newcommand{{\\VUblancNote}}{{{step_pt * 0.25:.2f}pt}}
 \\newcommand{{\\VUfiletnoteLargeur}}{{{mm(r['largeur']) * 0.27:.2f}mm}}
 
-% 3. ESPACE-MOT
-% Largeur proche de celle de la fonte, elasticite large : chaque ligne
-% trouve sa mesure sans que TeX ait a couper ailleurs qu'au point releve.
+% 3. WORD SPACE
+% Width close to the font's own, elasticity wide: every line finds its
+% measure without TeX having to break anywhere but at the surveyed point.
 \\newcommand{{\\VUespaceRatio}}{{0.32}}
 \\newcommand{{\\VUespaceEtire}}{{0.30}}
 \\newcommand{{\\VUespaceSerre}}{{0.14}}
 
-% 4. FONTES
+% 4. FONTS
 \\newcommand{{\\VUfonte}}{{{bk['fonte']}}}
 \\newcommand{{\\VUfonteGras}}{{{bk['gras']}}}
 \\newcommand{{\\VUratioGras}}{{0.98}}
 """
     # The file is written as it stands: it is a product, not a source.
     (ROOT / f"kalibro-{lang}.tex").write_text(txt, encoding="utf-8")
-    print(f"kalibro-{lang}.tex ecrit  ({pxmm:.3f} px/mm ; "
-          f"corps {size_pt:.2f} pt sur {step_pt:.2f} pt)")
+    print(f"kalibro-{lang}.tex written  ({pxmm:.3f} px/mm ; "
+          f"size {size_pt:.2f} pt on {step_pt:.2f} pt)")
 
 
 if __name__ == "__main__":

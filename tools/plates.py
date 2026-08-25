@@ -29,7 +29,7 @@ stack of TWO LAYERS, and therein lies the whole interest.
 The engraving is therefore intact and separate from the colour: one can
 redo either without ever touching the other. That is what makes colour
 corrections possible -- and that is why this tool keeps the two layers
-apart in plates/kovri/ before composing them.
+apart in plates/working/ before composing them.
 
 TWO OUTPUTS, BECAUSE THERE ARE TWO USES.
 
@@ -50,7 +50,7 @@ woodcut, all in hatching, and it compresses far better once the colour is
 underneath. So we compose here.
 
     plates/font/     the original PDFs (not versioned: ~100 MB)
-    plates/kovri/    the two layers extracted (not versioned)
+    plates/working/    the two layers extracted (not versioned)
     plates/          the two WebP per table (VERSIONED, ~1 MB)
 """
 import io
@@ -271,8 +271,8 @@ def compose(colour, line_layer):
         floor = Image.new("RGB", line_layer.size, (255, 255, 255))
     else:
         sx, sy, dx, dy = re_register(colour, line_layer)
-        print(f"  recalage de la couleur : etirement {sx:.4f} x {sy:.4f}, "
-              f"decalage {dx:+d}, {dy:+d} px")
+        print(f"  registering the colour: stretch {sx:.4f} x {sy:.4f}, "
+              f"offset {dx:+d}, {dy:+d} px")
         stretched = colour.resize((max(2, round(line_layer.width * sx)),
                                 max(2, round(line_layer.height * sy))),
                                Image.LANCZOS)
@@ -303,15 +303,15 @@ def place(im, path, width_, quality_):
 
 def prepare_(key, path):
     colour, line_layer = split_layers(path)
-    print(f"  couleur {colour.size if colour else '(aucune)'}"
-          f"   trait {line_layer.size}")
+    print(f"  colour {colour.size if colour else '(none)'}"
+          f"   line layer {line_layer.size}")
 
     # The layers stay apart: it is on them that the colours will be redone,
     # the engraving having no need to suffer for it.
-    work = PLATES / "kovri"
+    work = PLATES / "working"
     work.mkdir(parents=True, exist_ok=True)
     if colour is not None:
-        colour.save(work / f"{key}-koloro.png")
+        colour.save(work / f"{key}-colour.png")
     line_layer.save(work / f"{key}-trako.png")
 
     solid = compose(colour, line_layer)

@@ -436,8 +436,8 @@ def hand(args):
     for tab, per in sorted(everything.items()):
         att = expected(int(tab[1:]))
         all__ = sum(1 for v in per.values() if all(v.get(k) for k, _ in SOURCES))
-        print(f"  {tab}  {len(per):3d}/{len(att):3d} objets nommes, "
-              f"dont {all__:3d} dans les {len(SOURCES)} langues")
+        print(f"  {tab}  {len(per):3d}/{len(att):3d} objects named, "
+              f"of which {all__:3d} in the {len(SOURCES)} languages")
     n = sum(len(p) for p in everything.values())
     a = sum(len(expected(int(t[1:]))) for t in everything)
     print(f"  TOTAL {n}/{a} = {100 * n // a} %")

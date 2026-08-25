@@ -42,11 +42,11 @@ def hand():
         if a == b and not everything:
             continue
         n += 1
-        print(f"\n--- {r['cle']}   ido {a} gras / français {b} gras "
-              f"  (feuillets io {r['feuillet']}, fr {o['fe']})")
+        print(f"\n--- {r['cle']}   ido {a} bold / french {b} bold "
+              f"  (leaves io {r['feuillet']}, fr {o['fe']})")
         print(f"  IDO : {brackets(r['io'])}")
         print(f"  FRA : {brackets(o['t'])}")
-    print(f"\n{n} alinéas à revoir dans {table_}.")
+    print(f"\n{n} paragraphs to review in {table_}.")
 
 
 if __name__ == "__main__":

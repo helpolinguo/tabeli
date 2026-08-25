@@ -93,7 +93,7 @@ import originals as O                                       # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
 ROOT = N.ROOT
-WORKING = ROOT / "originals" / "kovri"
+WORKING = ROOT / "originals" / "working"
 
 WHITENESS = 0.40   # share of the paper's yellow that is removed
 VIVIDNESS = 1.15     # revival of the hue
@@ -114,7 +114,7 @@ def draw_(pdf):
     subprocess.run(["pdfimages", "-all", str(pdf), str(d / "p")], check=True)
     fs = sorted(d.glob("p-*"))
     if not fs:
-        raise SystemExit(f"  aucune image dans {pdf}")
+        raise SystemExit(f"  no image in {pdf}")
     f = max(fs, key=lambda p: p.stat().st_size)
     return np.asarray(Image.open(f).convert("RGB"))
 
@@ -135,7 +135,7 @@ def frame_(grey_, threshold=0.55, edge=0.15):
         for i in range(len(q)):
             if q[i] >= threshold:
                 return i if way > 0 else len(q) - 1 - i
-        raise SystemExit("  cadre introuvable dans l'original en couleur")
+        raise SystemExit("  frame not found in the colour original")
 
     return first(col, 1), first(lig, 1), first(col, -1), first(lig, -1)
 
@@ -178,8 +178,8 @@ def place(key, col, verbose=True):
     for _ in range(3):
         T, n, co = affine(T, col, gp)
     if verbose:
-        print(f"  recalage : correlation {cc:.4f} puis {co:.3f} "
-              f"sur {n} tuiles")
+        print(f"  registration: correlation {cc:.4f} then {co:.3f} "
+              f"over {n} tiles")
     return T, gp
 
 
@@ -275,9 +275,9 @@ def project_(T, col, gp, verbose=True):
         if verbose:
             d = np.array([(q[2], q[3]) for q in t], float)
             n = int(good.sum()) if good is not None else len(t)
-            print(f"  ajustement au flou {sigma:.0f} : {len(t)} tuiles, "
-                  f"{n} retenues, reprise de {np.abs(d).max():.0f} "
-                  f"points au plus")
+            print(f"  fitted at blur {sigma:.0f}: {len(t)} tiles, "
+                  f"{n} kept, correction of {np.abs(d).max():.0f} "
+                  f"points at most")
     return H
 
 
@@ -335,8 +335,8 @@ def restore(im, whiteness=WHITENESS, vividness=VIVIDNESS, sharpness=SHARPNESS,
     pap = L > np.percentile(L, 80)
     ca, cb = float(np.median(A[pap])), float(np.median(B[pap]))
     if verbose:
-        print(f"  le papier tire sur a={ca:+.1f} b={cb:+.1f} ; "
-              f"on lui en retire {whiteness:.0%}")
+        print(f"  the paper pulls towards a={ca:+.1f} b={cb:+.1f} ; "
+              f"we take {whiteness:.0%} of it back")
     A = (A - whiteness * ca) * vividness
     B = (B - whiteness * cb) * vividness
     # THE BITE IS GIVEN TO THE LIGHTNESS ALONE. Sharpening the three
@@ -366,11 +366,11 @@ def colourise_(key, pdf, trial=False, **kw):
     scale = 1.0 / k
     LT, HT = round(LN * scale), round(HN * scale)
     out = restore(render(col, T, H, (LT, HT), scale), **kw)
-    print(f"  rendu {LT} x {HT} points, la planche en faisant {LN} x {HN}")
+    print(f"  rendered {LT} x {HT} points, the plate being {LN} x {HN}")
     WORKING.mkdir(parents=True, exist_ok=True)
-    dest = WORKING / f"{key}-koloro.png"
+    dest = WORKING / f"{key}-colour.png"
     Image.fromarray(out).save(dest)
-    print(f"  ecrit dans {dest}")
+    print(f"  written to {dest}")
     if trial:
         band(key, col, T, H, out, gp)
     return dest
@@ -390,15 +390,15 @@ def band(key, col, T, H, out, gp, box=None):
             np.dstack([gp[y0:y1, x0:x1].astype(np.uint8)] * 3)]
     sep = np.full((y1 - y0, 6, 3), 255, np.uint8)
     im = np.hstack([q for p in zip(trio, [sep] * 3) for q in p][:-1])
-    d = N.REVIEW / f"{key}-koloro.png"
+    d = N.REVIEW / f"{key}-colour.png"
     d.parent.mkdir(parents=True, exist_ok=True)
     Image.fromarray(im).save(d)
-    print(f"  l'original, le rendu et le fac-simile dans {d}")
+    print(f"  the original, the rendering and the facsimile in {d}")
 
 
 def hand(args):
     if len(args) < 2:
-        raise SystemExit(__doc__ or "kolorigo.py <cle> <original.pdf>")
+        raise SystemExit(__doc__ or "colourise.py <key> <original.pdf>")
     key, pdf = args[0], args[1]
     dest = colourise_(key, pdf, trial="--essai" in args)
     if "--essai" in args:

@@ -588,8 +588,8 @@ NO_FIGURE = ({"fr"} | set(BUILT)
 _orphan = [lg["kodo"] for lg in LANGS
          if lg["kodo"] not in NO_FIGURE and _millions(lg, _RANK) is None]
 if _orphan:
-    print("  COLONNES ABSENTES DU REGISTRE, rangees en queue du menu "
-          "faute de chiffre : " + ", ".join(_orphan))
+    print("  COLUMNS ABSENT FROM THE REGISTER, filed at the tail of the "
+          "menu for want of a figure: " + ", ".join(_orphan))
 
 TITLE = "Expliko-Libreto di la Delmas-Tabeli helpanta"
 SUBTITLE_ = ("J. Guignon &middot; Ido-Kontoro, Thaon-les-Vosges, 1926 "
@@ -1157,7 +1157,7 @@ def move_(blocks):
         i = next((k for k, x in enumerate(fixes) if x["cle"] == b["apres"]),
                  None)
         if i is None:
-            raise SystemExit(f'%%K {b["cle"]} : pos={b["apres"]} introuvable')
+            raise SystemExit(f'%%K {b["cle"]} : pos={b["apres"]} not found')
         fixes.insert(i + 1, b)
     return fixes
 
@@ -3601,35 +3601,35 @@ def render(rows):
         lost = lost_lines(template, target.read_text(encoding="utf-8"), page)
         if lost:
             print("\n" + "=" * 64)
-            print("  CE QUI DISPARAIT DE index.html, ET N'EST PAS DANS LE GABARIT")
+            print("  WHAT DISAPPEARS FROM index.html AND IS NOT IN THE TEMPLATE")
             print("=" * 64)
             for l in lost[:20]:
                 print("  " + l.strip()[:98])
             if len(lost) > 20:
                 print(f"  ... et {len(lost) - 20} autres")
-            print("  Si l'une de ces lignes a ete ecrite a la main dans")
-            print("  index.html, elle est perdue : sa place est dans")
-            print("  tools/gabarito.html, qui seul survit a la generation.")
+            print("  If one of these lines was written by hand into")
+            print("  index.html, it is lost: its place is in")
+            print("  tools/template.html, which alone survives the build.")
             print("=" * 64 + "\n")
     target.write_text(page, encoding="utf-8")
     for key, lg, a, b in discordant:
         print(f"  ROLES DISCORDANTS {key} : io {a} / {lg} {b}")
-    print(f"index.html ecrit : {len(rows)} bloki, "
+    print(f"index.html written: {len(rows)} bloki, "
           f"{sum(1 for r in rows if r['tipo'] == 'p')} alinei")
 
 
 if __name__ == "__main__":
     r = pair()
     rap = link_notes(r)
-    print(f"  filets ajoutes pour egaliser les colonnes : "
+    print(f"  rules added to even up the columns: "
           f"{unify_rules(r)}")
     render(r)
-    print(f"  notes reliees a leur appel : {rap['lies']}")
+    print(f"  notes linked to their call: {rap['lies']}")
     if rap.get("fermes") or rap.get("korektiti"):
-        print(f"  parentheses rendues a des renvois : {rap['fermes']}"
-              f", corrections declarees : {rap['korektiti']}")
+        print(f"  parentheses returned to cross-references: {rap['fermes']}"
+              f", corrections declared: {rap['korektiti']}")
     if rap.get("tratiti"):
-        print(f"  traits d'union lexicaux retablis : {rap['tratiti']}")
+        print(f"  lexical hyphens restored: {rap['tratiti']}")
     for key, lg, t in unmatched(r):
         print(f"  PARENTHESE DEPAREILLEE [{lg}] {key} : {t}")
     for lang, key, mark, why in rap["echecs"]:

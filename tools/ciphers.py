@@ -42,8 +42,8 @@
 #      python3 tools/ciphers.py proponar     # proposes, and cuts out
 #      python3 tools/ciphers.py proponar t14-apar-1
 #
-#  The proofing sheet comes out in plates/proponi.png, and the proposed
-#  places in plates/proponi.json — to be copied by hand into manual.json,
+#  The proofing sheet comes out in plates/proposals.png, and the proposed
+#  places in plates/proposals.json — to be copied by hand into manual.json,
 #  those that are kept.
 # ===================================================================
 
@@ -60,8 +60,8 @@ import numbering as N                                          # noqa: E402
 
 ROOT = N.ROOT
 MODELS = ROOT / "tools" / "ciphers-grey.npz"
-PROPOSALS = ROOT / "plates" / "proponi.png"
-PLACES = ROOT / "plates" / "proponi.json"
+PROPOSALS = ROOT / "plates" / "proposals.png"
+PLACES = ROOT / "plates" / "proposals.json"
 GROUPS = 8            # groups by class
 RARE = 0.05            # a group below this weight does not make a model
 
@@ -108,7 +108,7 @@ def harvest():
                 rec[c].append(N.vignette(
                     (lab[y:y + hh, x:x + w] == i).astype(np.uint8) * 255))
             ok += 1
-    print(f"  {ok}/{tot} nombres se sont separes proprement")
+    print(f"  {ok}/{tot} numbers came apart cleanly")
     return rec
 
 
@@ -128,7 +128,7 @@ def learn():
         print(f"  {c} : {len(v):4d} exemplaires, {len(kept)} modeles "
               f"{[int((lab == i).sum()) for i in kept]}")
     np.savez_compressed(MODELS, **out)
-    print(f"  ecrit dans {MODELS}")
+    print(f"  written to {MODELS}")
 
 
 def load_():
@@ -173,13 +173,13 @@ def propose(keys=None):
                               int(b[2]), int(b[3]), round(float(fo), 3)]
         if out:
             prop[key] = out
-            print(f"  {key} : {len(out)} propositions sur "
-                  f"{len(missing)} manquants")
+            print(f"  {key} : {len(out)} proposals out of "
+                  f"{len(missing)} missing")
     PLACES.write_text(json.dumps(prop, ensure_ascii=False, indent=1) + "\n",
                       encoding="utf-8")
     feuille(prop, cat)
-    print(f"  {sum(len(v) for v in prop.values())} propositions — "
-          f"a relire dans {PROPOSALS}")
+    print(f"  {sum(len(v) for v in prop.values())} proposals — "
+          f"to be re-read in {PROPOSALS}")
 
 
 def feuille(prop, cat, cols=6, side=330, foot=66, radius=62):

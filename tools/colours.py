@@ -491,8 +491,8 @@ def hand(args):
             continue
         key, v, b = found
         if key not in hidden:
-            im = Image.open(ROOT / "plates" / "kovri" /
-                            f"{key}-koloro.png").convert("RGB")
+            im = Image.open(ROOT / "plates" / "working" /
+                            f"{key}-colour.png").convert("RGB")
             hidden[key] = np.asarray(
                 im.resize((v["largeur"], v["alteso"]), Image.LANCZOS))
         C = hidden[key]
@@ -519,11 +519,11 @@ def hand(args):
         if v:
             print(f"        {VERDICT[v[0]]} : {v[1]}")
     to_redo = sum(1 for l in lines if l[6] and l[6][0] == "planche")
-    print(f"\n  {agreements} accords, {disagreements} desaccords, "
-          f"{without} sans position sur la planche "
-          f"(sur {len(survey)} couleurs enoncees)")
-    print(f"  {to_redo} endroits ou la planche dement le livret, "
-          f"{len(lines) - sum(1 for l in lines if l[6])} pas encore regardes")
+    print(f"\n  {agreements} agreements, {disagreements} disagreements, "
+          f"{without} with no position on the plate "
+          f"(out of {len(survey)} colours stated)")
+    print(f"  {to_redo} places where the plate belies the booklet, "
+          f"{len(lines) - sum(1 for l in lines if l[6])} not yet looked at")
 
 
 

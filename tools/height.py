@@ -103,13 +103,13 @@ def hand():
     all_ = []
     by_page = {}
     for n in sample:
-        h = x_height_of_page(ROOT / "skan" / lang / f"f-{n:03d}.jpg")
+        h = x_height_of_page(ROOT / "scan" / lang / f"f-{n:03d}.jpg")
         if h:
             by_page[n] = float(np.median(h))
             all_.extend(h)
 
     if not all_:
-        print("aucune mesure")
+        print("no measurement")
         return
 
     # THE X-HEIGHT IS RELATIVE TO THE MEASURE, not to millimetres: the
@@ -130,15 +130,15 @@ def hand():
     size = xh_pt / XCHARTER
 
     print(f"langue            : {lang}")
-    print(f"pages echantillon : {len(by_page)}  ({len(all_)} lignes)")
+    print(f"sample pages   : {len(by_page)}  ({len(all_)} lines)")
     print(f"hauteur d'x       : {np.median(all_):.2f} px "
           f"(ecart-type {np.std(all_):.2f})")
     print(f"  / justification : {r:.5f}")
     print(f"justification     : {width_mm:.2f} mm")
     print(f"hauteur d'x       : {xh_mm:.3f} mm = {xh_pt:.2f} pt")
     print()
-    print(f"CORPS DEDUIT      : {size:.2f} pt "
-          f"(hauteur d'x XCharter = {XCHARTER} du corps)")
+    print(f"SIZE DEDUCED     : {size:.2f} pt "
+          f"(x-height of XCharter = {XCHARTER} of the size)")
 
 
 if __name__ == "__main__":

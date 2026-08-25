@@ -101,17 +101,17 @@ def hand():
         tabelo = "t%02d" % int(tabelo)
     trovita = blocks(tabelo)
     if not trovita:
-        print("  %s : aucun bloc dans text/io" % tabelo)
+        print("  %s : no block in text/io" % tabelo)
         return
     for key, xrefs_, paras in trovita:
         mark_ = "¶%d " % paras if paras > 1 else "   "
         print("  %s%-22s %s" % (mark_, key, " ".join(xrefs_)))
     doubles = sum(1 for _, _, a in trovita if a > 1)
-    print("\n  %d blocs, %d renvois."
+    print("\n  %d blocks, %d cross-references."
           % (len(trovita), sum(len(r) for _, r, _ in trovita)))
     if doubles:
-        print("  %d bloc(s) marque(s) ¶ : une seule cle, plusieurs "
-              "alineas — ne pas en ouvrir une seconde." % doubles)
+        print("  %d block(s) marked ¶ : one key, several "
+              "paragraphs — do not open a second one." % doubles)
 
 
 if __name__ == "__main__":

@@ -1204,8 +1204,8 @@ def hand(args):
         if lg not in cross_refs.FOLDER:
             raise SystemExit(f"  langue inconnue : {lg}")
         if lg in TRANSCRIPTIONS:
-            raise SystemExit(f"  {lg} est une transcription, pas une "
-                             f"traduction : elle suit le fac-simile.")
+            raise SystemExit(f"  {lg} is a transcription, not a "
+                             f"translation: it follows the facsimile.")
         d = ROOT / "text" / lg
         files_ = sorted(d.glob(f"*-{cross_refs.FOLDER[lg]}-*.tex"))
         if not files_:
@@ -1217,8 +1217,8 @@ def hand(args):
         for m in bad:
             print(m)
         total += len(bad)
-        print(f"  {lg} : {len(files_):2d} fichiers, "
-              f"{len(bad)} signalement{'s' if len(bad) > 1 else ''}")
+        print(f"  {lg} : {len(files_):2d} files, "
+              f"{len(bad)} report{'s' if len(bad) > 1 else ''}")
     return 1 if total else 0
 
 

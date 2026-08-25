@@ -59,7 +59,7 @@ import numpy as np
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
-WORKING = ROOT / "plates" / "kovri"
+WORKING = ROOT / "plates" / "working"
 REVIEW = ROOT / "plates" / "review"
 
 H, W = 40, 32
@@ -77,7 +77,7 @@ THRESHOLD_ONE = 0.86
 # cut-outs to the eye therefore pass through here, and no longer have to
 # know where the image comes from.
 def clean_(key):
-    return ROOT / "originals" / "kovri" / f"{key}-neta.png"
+    return ROOT / "originals" / "working" / f"{key}-clean.png"
 
 
 def redone(key):
@@ -800,7 +800,7 @@ def check(path, found_, dest, top, threshold=None, wide=1.1, cols=12):
 
 
 # THE PLATE KEY IS DRAWN FROM THE FILENAME, whatever suffix the sheet
-# carries -- « -dubita », « -manuali », « -revizo2 ». We read it by
+# carries -- « -doubtful », « -manual », « -review2 ». We read it by
 # pattern, rather than strip a list of suffixes that would have to be
 # kept up to date.
 def key_of(dest):
@@ -876,9 +876,9 @@ def hand(keys=None):
                            in sorted(found_.items(),
                                      key=lambda q: order(str(q[0])))}
             check(f, found_, REVIEW / f"{key}.png", top)
-            print(f"  {key}  {len(found_):3d}/{expected_:3d} numeros — "
-                  f"planche d'origine, lecture conservee"
-                  + (f", {len(hands)} poses a la main" if hands else ""))
+            print(f"  {key}  {len(found_):3d}/{expected_:3d} numbers — "
+                  f"original plate, reading kept"
+                  + (f", {len(hands)} placed by hand" if hands else ""))
             t = by_table_.setdefault(key[:3], [set(), 0])
             t[0].update(e["numeri"])
             t[1] = max(t[1], expected_)
@@ -936,7 +936,7 @@ def hand(keys=None):
         # not eight: at eight, the figure at the centre of the cut-out is
         # no more than a few points on screen, and one cannot judge. The
         # sheet is taller, and it can be read.
-        n_d = check(f, found_, REVIEW / f"{key}-dubita.png", top,
+        n_d = check(f, found_, REVIEW / f"{key}-doubtful.png", top,
                        threshold=0.95, wide=3.4, cols=4)
         # AS A FRACTION, not in points: the page serves the plate at three
         # resolutions, and the close-up must fall right on each.
@@ -952,18 +952,18 @@ def hand(keys=None):
                                for n, ((x, y, w, h), f)
                                in sorted(found_.items(),
                                          key=lambda q: order(str(q[0])))}}
-        print(f"  {key}  {len(found_):3d}/{expected_:3d} numeros lus "
-              f"(corps {top} px), dont {n_d} a verifier"
-              + (f", {dropped} ecartes par le voisinage" if dropped else "")
+        print(f"  {key}  {len(found_):3d}/{expected_:3d} numbers read "
+              f"(size {top} px), of which {n_d} to verify"
+              + (f", {dropped} discarded by the neighbourhood" if dropped else "")
               + (f", {len(refused)} refuses a l'oeil" if refused else "")
-              + (f", {len(hands)} poses a la main" if hands else ""))
+              + (f", {len(hands)} placed by hand" if hands else ""))
     fh_.write_text(json.dumps(cat, ensure_ascii=False, indent=1),
                     encoding="utf-8")
     tot_l = sum(len(v[0]) for v in by_table_.values())
     tot_a = sum(v[1] for v in by_table_.values())
     if tot_a:
         print(f"  TOTAL {tot_l}/{tot_a} = {100 * tot_l // tot_a} %")
-    print(f"  planches de controle dans {REVIEW}")
+    print(f"  check sheets in {REVIEW}")
 
 
 if __name__ == "__main__":

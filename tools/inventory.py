@@ -21,7 +21,7 @@ import numpy as np
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-SCAN = ROOT / "skan"
+SCAN = ROOT / "scan"
 
 # Binarisation threshold. Both scans are greyscale; the paper of the Ido
 # booklet is speckled, that of the French booklet dirty and cockled. A
@@ -189,9 +189,9 @@ def hand():
             "bases": bases,
             "pas": pas(bases),
         }
-        print(f"{n:3d}  bloc {x0:5d},{y0:5d} → {x1:5d},{y1:5d}"
-              f"  l={x1-x0+1:5d}  lignes={len(bases):3d}"
-              f"  pas={out[n]['pas']}")
+        print(f"{n:3d}  block {x0:5d},{y0:5d} → {x1:5d},{y1:5d}"
+              f"  w={x1-x0+1:5d}  lines={len(bases):3d}"
+              f"  step={out[n]['pas']}")
     (ROOT / "tools" / f"inv-{lang}.json").write_text(
         json.dumps(out, indent=1), encoding="utf-8")
 

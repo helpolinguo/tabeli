@@ -102,7 +102,7 @@ def hand():
     for c in targets:
         n = process(c if c.is_absolute() else ROOT / c)
         if n:
-            print(f"{c} : {n} clés indicées par scène")
+            print(f"{c} : {n} keys indexed by scene")
 
 
 if __name__ == "__main__":

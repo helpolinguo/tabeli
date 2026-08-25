@@ -145,21 +145,21 @@ def hand():
             lines.append(f"\\VUkorpoPage{{{leaf}}}{{{c:.2f}pt}}")
 
     header = (
-        f"% korpi-{lang}.tex — corps propre a chaque page.\n"
-        f"% Fichier PRODUIT par tools/korpo.py : ne pas le modifier a la\n"
-        f"% main. Pour chaque page, le plus grand corps qui ne fasse\n"
-        f"% deborder aucune de ses lignes. Corps global : {base:.2f}pt.\n"
-        f"% {len(lines)} pages sur {len(choisis)} recoivent une valeur\n"
-        f"% propre ; les autres gardent le corps global.\n\n")
+        f"% korpi-{lang}.tex — the size proper to each page.\n"
+        f"% FILE PRODUCED by tools/body.py: do not edit it by hand. For\n"
+        f"% each page, the largest size that makes none of its lines\n"
+        f"% overflow. Global size: {base:.2f}pt.\n"
+        f"% {len(lines)} pages out of {len(choisis)} receive a value of\n"
+        f"% their own; the others keep the global size.\n\n")
     (ROOT / f"korpi-{lang}.tex").write_text(
         header + "\n".join(lines) + "\n", encoding="utf-8")
 
     import statistics
     v = sorted(choisis.values())
     print(f"\nkorpi-{lang}.tex : {len(lines)}/{len(choisis)} pages "
-          f"ont un corps propre")
-    print(f"  corps global {base:.2f}pt ; par page : "
-          f"min {v[0]:.2f}  mediane {statistics.median(v):.2f}  "
+          f"have a size of their own")
+    print(f"  global size {base:.2f}pt ; per page: "
+          f"min {v[0]:.2f}  median {statistics.median(v):.2f}  "
           f"max {v[-1]:.2f}")
 
 
