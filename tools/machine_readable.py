@@ -15,7 +15,25 @@ having to open the page or run its JavaScript.
 
   tabeli.json       {key: {io, fr}} — the hinge of the corpus.
   tabeli.md         the table laid flat, Ido and French facing.
+  teksti/<kodo>.json {key: text} — THE OTHER 55 LANGUAGES, CLEANED.
   lingui/index.json the 57 languages offered, with their code and weight.
+
+WHY teksti/ EXISTS BESIDE lingui/. They are not two versions of one thing.
+`lingui/<kodo>.json` is what the BROWSER eats: the page keeps its cells
+empty and pours that HTML straight into them, magnifier buttons and all
+(template.html, `k.innerHTML = t`). It is right as it is and must not be
+touched -- stripping the buttons out of it would take the plate references
+off the reading page.
+
+But it is the only form the 55 languages had, so a program that wanted the
+Ido-English pair had to strip the page's furniture itself: 6 027 tags in
+en-GB, 1 742 of them buttons. teksti/ gives those languages what io and fr
+have had all along -- the same text through the same text_(), in the same
+Markdown, under the same keys. MEASURED on en-GB: 458 276 bytes of payload
+become 139 932, and nothing is lost but the markup.
+
+io and fr are NOT repeated there: they are tabeli.json, which is the file
+one joins against.
 
 Generated, never edited by hand. The source stays index.html.
 
@@ -143,8 +161,38 @@ def hand() -> None:
         lin.append('| `%s` | %s | %s |' % (r['cle'], io, fr))
     (ROOT / 'tabeli.md').write_text('\n'.join(lin) + '\n', encoding='utf-8')
 
-    # 3. The languages offered.
-    langs_dir = ROOT / 'lingui'
+    # 3. The other 55 languages, cleaned. The directory is emptied first: a
+    #    language withdrawn from lingui/ must not go on being served here.
+    langs = ROOT / 'lingui'
+    clean = ROOT / 'teksti'
+    if clean.exists():
+        for f in clean.glob('*.json'):
+            f.unlink()
+    else:
+        clean.mkdir()
+    done = []
+    for f in sorted(langs.glob('*.json')):
+        if f.name == 'index.json':
+            continue
+        k = json.loads(f.read_text(encoding='utf-8')).get('k') or {}
+        if not k:
+            continue
+        out = clean / f.name
+        out.write_text(json.dumps({c: text_(v) for c, v in k.items()},
+                                  ensure_ascii=False, separators=(',', ':')),
+                       encoding='utf-8')
+        done.append((f.name[:-5], f.stat().st_size, out.stat().st_size))
+
+    (clean / 'index.json').write_text(json.dumps(
+        {'pri': 'La texti dil Delmas-Tabeli, sen la markizo dil pagino. '
+                'La klefi esas ti di tabeli.json.',
+         'fonto': 'https://ido.help/tabeli/',
+         'enshaltita': {'io': 'en tabeli.json', 'fr': 'en tabeli.json'},
+         'lingui': [{'kodexo': c, 'okteti': n} for c, _, n in done]},
+        ensure_ascii=False, indent=1), encoding='utf-8')
+
+    # 4. The languages offered.
+    langs_dir = langs
     list_ = sorted(f.name[:-5] for f in langs_dir.glob('*.json')
                    if f.name != 'index.json')
     (langs_dir / 'index.json').write_text(json.dumps(
@@ -161,6 +209,12 @@ def hand() -> None:
     for n in ('tabeli.json', 'tabeli.md'):
         print('  %-16s %10s bytes' % (n, format((ROOT / n).stat().st_size, ',')))
     print('  lingui/index.json  %d languages' % len(list_))
+    if done:
+        raw = sum(a for _, a, _ in done)
+        net = sum(b for _, _, b in done)
+        print('  teksti/          %d languages, %s bytes from %s (%.0f%%)'
+              % (len(done), format(net, ','), format(raw, ','),
+                 100.0 * net / raw))
 
 
 if __name__ == '__main__':
