@@ -40,6 +40,7 @@ index.html           the reading page       }  generated: see below
 tabeli.md, .json     the book laid flat     }
 lingui/*.json        one file per deferred language  }
 teksti/*.json        the same, cleaned, for machines  }
+glosaro/*.md, .json  the bold terms paired, Ido to each language }
 plates/              the sixteen plates, and everything read off them
 plates/review/       the check sheets: every number read, in its cut-out
 originals/           the original scans, straightened and trimmed
@@ -54,12 +55,13 @@ docs/journal.md      why every value is what it is
 make -f build.mk                    # tabeli.pdf and tableaux.pdf
 python3 tools/html.py               # index.html, from text/*/
 python3 tools/machine_readable.py   # tabeli.md, tabeli.json, lingui/*.json
+python3 tools/glosaro.py            # glosaro/*.md and *.json — 56 languages
 make -f build.mk checks             # the checks
 ```
 
 `index.html`, `tabeli.md`, `tabeli.json`, `lingui/*.json`,
-`calibrate-*.tex` and `body-*.tex` are **generated, never edited by
-hand**: anything that must change is changed in `text/`, in `tools/` or
+`glosaro/*`, `calibrate-*.tex` and `body-*.tex` are **generated, never
+edited by hand**: anything that must change is changed in `text/`, in `tools/` or
 in `tools/template.html`. The build file is named `build.mk` rather than
 `Makefile` for a reason recorded in the journal.
 
@@ -100,6 +102,52 @@ nothing is lost but the markup. All 55 files carry exactly the 672 keys of
 `io` and `fr` are **not** repeated there: they are `tabeli.json`, which is the
 file one joins against. The directory is emptied at every run, so a language
 withdrawn from `lingui/` stops being served here too.
+
+## The bold is a glossary
+
+Nothing else on `ido.help` answers **what is the Ido for X**. The Dicionario
+defines Ido in Ido and the Gramatiko is in Ido throughout; this booklet is
+the one place where Ido stands beside another language — and it stood there
+as prose, so a program wanting the English for `katedro` had to fetch two
+files of 137 kB and align two sentences itself.
+
+It no longer has to. **The two columns set the same thing in bold** — the
+vocabulary word the wall table illustrates, which is why `tools/bold_diff.py`
+exists to check that correspondence leaf by leaf. So the n-th bold run of a
+segment answers the n-th bold run of that segment in any language, and the
+pairs fall out **by position**. No alignment is guessed at and no gloss is
+composed: every pair is two passages of a printed parallel text.
+
+```
+glosaro/en-GB.md    katedro — desk
+                    desk — katedro
+glosaro/en-GB.json  "katedro":[{"t":"desk","k":["t01-01-1"]}]
+```
+
+The `.md` gives both directions flat, and is the cheapest complete form —
+**82 kB against 136 kB**. The `.json` adds the segment keys, so that any
+pair can be carried back to the printing and checked.
+
+**MEASURED: 2,320 bold runs in the Ido, and 1,897 pairs won in `en-GB`** —
+2,129 in `pl`, which is the best of the 56, and 1,791 in `bho`, which is the
+worst. What is lost is lost to three guards, each of which drops rather than
+guesses:
+
+| | |
+|---|---|
+| the counts do not answer | 317 runs in `en-GB` — five bold in Ido against four in the target says one is missing, and not which |
+| a run holds a comma | it is a **list**, not a term: both sides are split, and paired only if both split into the same number |
+| a run holds a sentence break | `indolenti. Albertus` is two things the transcription ran together |
+
+The second guard is not a formality: it is what wins the language names of
+`t01-04-1`, where the printing sets `(Germana, Angla, Hispana, Italiana,
+Rusa` and `Franca)` as two runs across a parenthesis.
+
+**The punctuation is inside the bold, and § *A translation is not a
+transcription* says it should not be.** It is not, in the source: 201 of the
+2,320 runs carry a mark, and `liceo.`, `(liceestro)`, `Ludovikus,` are the
+ordinary case. Those marks are trimmed from the **edges of a term** here, in
+the glossary alone. The source is not touched.
 
 ## The checks
 

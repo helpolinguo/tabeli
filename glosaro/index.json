@@ -1,0 +1,343 @@
+{
+ "pri": "La glosari dil Delmas-Tabeli. Singla arkivo donas «vorti», de Ido a la lingvo, e «inversa», de la lingvo ad Ido.",
+ "fonto": "https://ido.help/tabeli/",
+ "termini grasa en Ido": 2320,
+ "lingui": [
+  {
+   "kodexo": "af",
+   "pari": 2014,
+   "okteti": 148970,
+   "okteti-md": 89974
+  },
+  {
+   "kodexo": "apc",
+   "pari": 1856,
+   "okteti": 159384,
+   "okteti-md": 106070
+  },
+  {
+   "kodexo": "ar",
+   "pari": 1930,
+   "okteti": 166168,
+   "okteti-md": 110765
+  },
+  {
+   "kodexo": "arz",
+   "pari": 1945,
+   "okteti": 166921,
+   "okteti-md": 111183
+  },
+  {
+   "kodexo": "bho",
+   "pari": 1791,
+   "okteti": 177136,
+   "okteti-md": 124856
+  },
+  {
+   "kodexo": "bn",
+   "pari": 1938,
+   "okteti": 198975,
+   "okteti-md": 143393
+  },
+  {
+   "kodexo": "ca",
+   "pari": 1888,
+   "okteti": 140522,
+   "okteti-md": 85459
+  },
+  {
+   "kodexo": "cs",
+   "pari": 2077,
+   "okteti": 156226,
+   "okteti-md": 96491
+  },
+  {
+   "kodexo": "de-AT",
+   "pari": 1846,
+   "okteti": 136380,
+   "okteti-md": 82842
+  },
+  {
+   "kodexo": "de-DE",
+   "pari": 1846,
+   "okteti": 136410,
+   "okteti-md": 82871
+  },
+  {
+   "kodexo": "en-GB",
+   "pari": 1897,
+   "okteti": 139277,
+   "okteti-md": 84030
+  },
+  {
+   "kodexo": "en-US",
+   "pari": 1897,
+   "okteti": 139246,
+   "okteti-md": 83999
+  },
+  {
+   "kodexo": "eo",
+   "pari": 2076,
+   "okteti": 156719,
+   "okteti-md": 96265
+  },
+  {
+   "kodexo": "es-419",
+   "pari": 1898,
+   "okteti": 142468,
+   "okteti-md": 87180
+  },
+  {
+   "kodexo": "es-ES",
+   "pari": 1898,
+   "okteti": 142503,
+   "okteti-md": 87211
+  },
+  {
+   "kodexo": "et",
+   "pari": 2007,
+   "okteti": 148859,
+   "okteti-md": 91406
+  },
+  {
+   "kodexo": "eu",
+   "pari": 1935,
+   "okteti": 146569,
+   "okteti-md": 91419
+  },
+  {
+   "kodexo": "fa",
+   "pari": 1912,
+   "okteti": 165122,
+   "okteti-md": 109623
+  },
+  {
+   "kodexo": "fi",
+   "pari": 2109,
+   "okteti": 162980,
+   "okteti-md": 102670
+  },
+  {
+   "kodexo": "fr",
+   "pari": 1388,
+   "okteti": 103539,
+   "okteti-md": 63331
+  },
+  {
+   "kodexo": "fr-CA",
+   "pari": 1888,
+   "okteti": 143128,
+   "okteti-md": 87812
+  },
+  {
+   "kodexo": "ga",
+   "pari": 1990,
+   "okteti": 153730,
+   "okteti-md": 96516
+  },
+  {
+   "kodexo": "gl",
+   "pari": 2006,
+   "okteti": 151869,
+   "okteti-md": 92967
+  },
+  {
+   "kodexo": "gu",
+   "pari": 1965,
+   "okteti": 205759,
+   "okteti-md": 149280
+  },
+  {
+   "kodexo": "ha",
+   "pari": 1910,
+   "okteti": 152272,
+   "okteti-md": 97011
+  },
+  {
+   "kodexo": "hi",
+   "pari": 1929,
+   "okteti": 192675,
+   "okteti-md": 136974
+  },
+  {
+   "kodexo": "ia",
+   "pari": 1992,
+   "okteti": 153634,
+   "okteti-md": 94925
+  },
+  {
+   "kodexo": "id",
+   "pari": 1932,
+   "okteti": 149843,
+   "okteti-md": 94013
+  },
+  {
+   "kodexo": "it",
+   "pari": 1805,
+   "okteti": 134982,
+   "okteti-md": 82311
+  },
+  {
+   "kodexo": "ja",
+   "pari": 1885,
+   "okteti": 136571,
+   "okteti-md": 82020
+  },
+  {
+   "kodexo": "jv",
+   "pari": 1919,
+   "okteti": 146375,
+   "okteti-md": 90645
+  },
+  {
+   "kodexo": "ko",
+   "pari": 1892,
+   "okteti": 140971,
+   "okteti-md": 86083
+  },
+  {
+   "kodexo": "lb",
+   "pari": 1968,
+   "okteti": 147869,
+   "okteti-md": 90098
+  },
+  {
+   "kodexo": "lt",
+   "pari": 2086,
+   "okteti": 160464,
+   "okteti-md": 100802
+  },
+  {
+   "kodexo": "mr",
+   "pari": 1957,
+   "okteti": 214663,
+   "okteti-md": 158604
+  },
+  {
+   "kodexo": "nl-BE",
+   "pari": 1990,
+   "okteti": 148584,
+   "okteti-md": 90219
+  },
+  {
+   "kodexo": "nl-NL",
+   "pari": 1990,
+   "okteti": 148560,
+   "okteti-md": 90195
+  },
+  {
+   "kodexo": "oc",
+   "pari": 1885,
+   "okteti": 141276,
+   "okteti-md": 86267
+  },
+  {
+   "kodexo": "pa",
+   "pari": 1929,
+   "okteti": 190666,
+   "okteti-md": 134980
+  },
+  {
+   "kodexo": "pl",
+   "pari": 2129,
+   "okteti": 160463,
+   "okteti-md": 99361
+  },
+  {
+   "kodexo": "pnb",
+   "pari": 1898,
+   "okteti": 160023,
+   "okteti-md": 105191
+  },
+  {
+   "kodexo": "pt-BR",
+   "pari": 1892,
+   "okteti": 142435,
+   "okteti-md": 87249
+  },
+  {
+   "kodexo": "pt-PT",
+   "pari": 1892,
+   "okteti": 142521,
+   "okteti-md": 87335
+  },
+  {
+   "kodexo": "rm",
+   "pari": 1915,
+   "okteti": 146557,
+   "okteti-md": 90232
+  },
+  {
+   "kodexo": "ro",
+   "pari": 1949,
+   "okteti": 146489,
+   "okteti-md": 90611
+  },
+  {
+   "kodexo": "ru",
+   "pari": 1971,
+   "okteti": 175370,
+   "okteti-md": 118898
+  },
+  {
+   "kodexo": "sv",
+   "pari": 2073,
+   "okteti": 155068,
+   "okteti-md": 95307
+  },
+  {
+   "kodexo": "ta",
+   "pari": 1991,
+   "okteti": 266914,
+   "okteti-md": 210126
+  },
+  {
+   "kodexo": "te",
+   "pari": 1927,
+   "okteti": 220307,
+   "okteti-md": 164940
+  },
+  {
+   "kodexo": "tr",
+   "pari": 1984,
+   "okteti": 153145,
+   "okteti-md": 96647
+  },
+  {
+   "kodexo": "uk",
+   "pari": 1962,
+   "okteti": 174161,
+   "okteti-md": 117905
+  },
+  {
+   "kodexo": "ur",
+   "pari": 1884,
+   "okteti": 163734,
+   "okteti-md": 109294
+  },
+  {
+   "kodexo": "vi",
+   "pari": 1886,
+   "okteti": 150371,
+   "okteti-md": 95797
+  },
+  {
+   "kodexo": "yue",
+   "pari": 1831,
+   "okteti": 128726,
+   "okteti-md": 75788
+  },
+  {
+   "kodexo": "zh-Hans",
+   "pari": 1910,
+   "okteti": 133576,
+   "okteti-md": 78507
+  },
+  {
+   "kodexo": "zh-Hant",
+   "pari": 1910,
+   "okteti": 133576,
+   "okteti-md": 78507
+  }
+ ]
+}
