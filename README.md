@@ -39,6 +39,7 @@ build.mk             make -f build.mk         -> tabeli.pdf, tableaux.pdf
 index.html           the reading page       }  generated: see below
 tabeli.md, .json     the book laid flat     }
 lingui/*.json        one file per deferred language  }
+teksti/*.json        the same, cleaned, for machines  }
 plates/              the sixteen plates, and everything read off them
 plates/review/       the check sheets: every number read, in its cut-out
 originals/           the original scans, straightened and trimmed
@@ -67,6 +68,38 @@ need Python 3 with `numpy`, `Pillow` and `opencv-python`; the
 scan-facing ones also want `pdftotext`, `pdfinfo` and `mutool`. The
 180 MB scan is not in the repository — the transcription, the two
 composed volumes and the plates are.
+
+## The fifty-five languages, twice
+
+`lingui/` and `teksti/` are not two versions of one thing.
+
+**`lingui/<code>.json` is what the browser eats.** The page keeps the cells
+of the deferred languages empty and pours that HTML straight into them —
+`k.innerHTML = t` in `tools/template.html` — magnifier buttons and all. It is
+right as it is, and **it must not be cleaned**: the buttons are the plate
+references, and stripping them would take them off the reading page.
+
+**`teksti/<code>.json` is what a program reads.** The same text through the
+same `text_()` that has always made `tabeli.json`, in the same Markdown,
+under the same keys. `{key: text}`, one file per language.
+
+It exists because `lingui/` was the *only* form those languages had, so
+anything joining the Ido–English pair had to strip the page's furniture
+itself — 6,027 tags in `en-GB`, 1,742 of them buttons. Now the join is flat:
+
+```
+tabeli.json        t01-01-1  io  1. — Ica tabelo reprezentas **docochambro** en **liceo.** …
+teksti/en-GB.json  t01-01-1      1. — This chart shows a **classroom** in a **secondary school**. …
+teksti/ja.json     t01-01-1      1. — この図表が描いているのは、**中学校**の**教室**である。…
+```
+
+**MEASURED: 27,322,703 bytes of payload become 9,620,260 — 35 %** — and
+nothing is lost but the markup. All 55 files carry exactly the 672 keys of
+`tabeli.json`, and none carries an HTML tag.
+
+`io` and `fr` are **not** repeated there: they are `tabeli.json`, which is the
+file one joins against. The directory is emptied at every run, so a language
+withdrawn from `lingui/` stops being served here too.
 
 ## The checks
 
