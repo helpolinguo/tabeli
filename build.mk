@@ -29,8 +29,13 @@ inventory:
 	python3 tools/inventory.py io
 	python3 tools/inventory.py fr
 
+# The glossary is drawn from tabeli.json and teksti/, so it follows
+# machine_readable.py and never precedes it.
+glosaro: tools/glosaro.py tabeli.json teksti/*.json
+	python3 tools/glosaro.py
+
 checks: tabeli.pdf tableaux.pdf
 	python3 tools/checks.py
 	python3 tools/notes.py
 
-.PHONY: all calibrate inventory checks
+.PHONY: all calibrate inventory checks glosaro
